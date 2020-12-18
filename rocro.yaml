@@ -32,8 +32,9 @@ inspecode:
     grep:
       thresholds: {num-issues: 999}
 
-    infer:
-      thresholds: {num-issues: 999}
+    ### Infer was aborted unexpectedly.
+    # infer:
+    #   thresholds: {num-issues: 999}
 
     jscpd:
       thresholds: {num-issues: 999}
