@@ -24,8 +24,8 @@
 
 #include "core/gimpchannel-select.h"
 #include "core/gimpcontext.h"
-#include "core/gimpimage.h"
 #include "core/gimpimage-colormap.h"
+#include "core/gimpimage.h"
 
 #include "widgets/gimpcolormapeditor.h"
 #include "widgets/gimpcolormapselection.h"
@@ -33,69 +33,57 @@
 #include "actions.h"
 #include "colormap-commands.h"
 
-
 /*  public functions  */
 
-void
-colormap_edit_color_cmd_callback (GimpAction *action,
-                                  GVariant   *value,
-                                  gpointer data)
-{
-	GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR (data);
+void colormap_edit_color_cmd_callback(GimpAction *action, GVariant *value,
+                                      gpointer data) {
+  GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR(data);
 
-	gimp_colormap_editor_edit_color (editor);
+  gimp_colormap_editor_edit_color(editor);
 }
 
-void
-colormap_add_color_cmd_callback (GimpAction *action,
-                                 GVariant   *value,
-                                 gpointer data)
-{
-	GimpContext *context;
-	GimpImage   *image;
-	gboolean background;
-	return_if_no_context (context, data);
-	return_if_no_image (image, data);
+void colormap_add_color_cmd_callback(GimpAction *action, GVariant *value,
+                                     gpointer data) {
+  GimpContext *context;
+  GimpImage *image;
+  gboolean background;
+  return_if_no_context(context, data);
+  return_if_no_image(image, data);
 
-	background = (gboolean) g_variant_get_int32 (value);
+  background = (gboolean)g_variant_get_int32(value);
 
-	if (gimp_image_get_colormap_size (image) < 256)
-	{
-		GimpRGB color;
+  if (gimp_image_get_colormap_size(image) < 256) {
+    GimpRGB color;
 
-		if (background)
-			gimp_context_get_background (context, &color);
-		else
-			gimp_context_get_foreground (context, &color);
+    if (background)
+      gimp_context_get_background(context, &color);
+    else
+      gimp_context_get_foreground(context, &color);
 
-		gimp_image_add_colormap_entry (image, &color);
-		gimp_image_flush (image);
-	}
+    gimp_image_add_colormap_entry(image, &color);
+    gimp_image_flush(image);
+  }
 }
 
-void
-colormap_to_selection_cmd_callback (GimpAction *action,
-                                    GVariant   *value,
-                                    gpointer data)
-{
-	GimpColormapSelection *selection;
-	GimpColormapEditor    *editor;
-	GimpImage             *image;
-	GimpChannelOps op;
-	gint col_index;
+void colormap_to_selection_cmd_callback(GimpAction *action, GVariant *value,
+                                        gpointer data) {
+  GimpColormapSelection *selection;
+  GimpColormapEditor *editor;
+  GimpImage *image;
+  GimpChannelOps op;
+  gint col_index;
 
-	return_if_no_image (image, data);
+  return_if_no_image(image, data);
 
-	editor    = GIMP_COLORMAP_EDITOR (data);
-	selection = GIMP_COLORMAP_SELECTION (editor->selection);
-	col_index = gimp_colormap_selection_get_index (selection, NULL);
+  editor = GIMP_COLORMAP_EDITOR(data);
+  selection = GIMP_COLORMAP_SELECTION(editor->selection);
+  col_index = gimp_colormap_selection_get_index(selection, NULL);
 
-	op = (GimpChannelOps) g_variant_get_int32 (value);
+  op = (GimpChannelOps)g_variant_get_int32(value);
 
-	gimp_channel_select_by_index (gimp_image_get_mask (image),
-	                              gimp_image_get_active_drawable (image),
-	                              col_index, op,
-	                              FALSE, 0.0, 0.0);
+  gimp_channel_select_by_index(gimp_image_get_mask(image),
+                               gimp_image_get_active_drawable(image), col_index,
+                               op, FALSE, 0.0, 0.0);
 
-	gimp_image_flush (image);
+  gimp_image_flush(image);
 }

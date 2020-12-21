@@ -21,27 +21,22 @@
 #ifndef __GIMP_BEZIER_DESC_H__
 #define __GIMP_BEZIER_DESC_H__
 
+#define GIMP_TYPE_BEZIER_DESC (gimp_bezier_desc_get_type())
 
-#define          GIMP_TYPE_BEZIER_DESC     (gimp_bezier_desc_get_type ())
-
-GType            gimp_bezier_desc_get_type (void) G_GNUC_CONST;
-
+GType gimp_bezier_desc_get_type(void) G_GNUC_CONST;
 
 /* takes ownership of "data" */
-GimpBezierDesc * gimp_bezier_desc_new                 (cairo_path_data_t    *data,
-                                                       gint n_data);
+GimpBezierDesc *gimp_bezier_desc_new(cairo_path_data_t *data, gint n_data);
 
 /* expects sorted GimpBoundSegs */
-GimpBezierDesc * gimp_bezier_desc_new_from_bound_segs (GimpBoundSeg         *bound_segs,
-                                                       gint n_bound_segs,
-                                                       gint n_bound_groups);
+GimpBezierDesc *gimp_bezier_desc_new_from_bound_segs(GimpBoundSeg *bound_segs,
+                                                     gint n_bound_segs,
+                                                     gint n_bound_groups);
 
-void             gimp_bezier_desc_translate           (GimpBezierDesc       *desc,
-                                                       gdouble offset_x,
-                                                       gdouble offset_y);
+void gimp_bezier_desc_translate(GimpBezierDesc *desc, gdouble offset_x,
+                                gdouble offset_y);
 
-GimpBezierDesc * gimp_bezier_desc_copy                (const GimpBezierDesc *desc);
-void             gimp_bezier_desc_free                (GimpBezierDesc       *desc);
-
+GimpBezierDesc *gimp_bezier_desc_copy(const GimpBezierDesc *desc);
+void gimp_bezier_desc_free(GimpBezierDesc *desc);
 
 #endif /* __GIMP_BEZIER_DESC_H__ */

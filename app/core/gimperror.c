@@ -21,7 +21,6 @@
 
 #include "gimperror.h"
 
-
 /**
  * gimp_error_quark:
  *
@@ -29,8 +28,6 @@
  *
  * Returns: the #GQuark that defines the general GIMP error domain.
  **/
-GQuark
-gimp_error_quark (void)
-{
-	return g_quark_from_static_string ("gimp-error-quark");
+GQuark gimp_error_quark(void) {
+  return g_quark_from_static_string("gimp-error-quark");
 }

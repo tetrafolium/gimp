@@ -21,50 +21,46 @@
 #ifndef __GIMP_TOOL_ITEM_H__
 #define __GIMP_TOOL_ITEM_H__
 
-
 #include "gimpviewable.h"
 
-
-#define GIMP_TYPE_TOOL_ITEM            (gimp_tool_item_get_type ())
-#define GIMP_TOOL_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_ITEM, GimpToolItem))
-#define GIMP_TOOL_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_ITEM, GimpToolItemClass))
-#define GIMP_IS_TOOL_ITEM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_ITEM))
-#define GIMP_IS_TOOL_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_ITEM))
-#define GIMP_TOOL_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_ITEM, GimpToolItemClass))
-
+#define GIMP_TYPE_TOOL_ITEM (gimp_tool_item_get_type())
+#define GIMP_TOOL_ITEM(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_ITEM, GimpToolItem))
+#define GIMP_TOOL_ITEM_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_ITEM, GimpToolItemClass))
+#define GIMP_IS_TOOL_ITEM(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_ITEM))
+#define GIMP_IS_TOOL_ITEM_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_ITEM))
+#define GIMP_TOOL_ITEM_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_ITEM, GimpToolItemClass))
 
 typedef struct _GimpToolItemPrivate GimpToolItemPrivate;
 typedef struct _GimpToolItemClass GimpToolItemClass;
 
-struct _GimpToolItem
-{
-	GimpViewable parent_instance;
+struct _GimpToolItem {
+  GimpViewable parent_instance;
 
-	GimpToolItemPrivate *priv;
+  GimpToolItemPrivate *priv;
 };
 
-struct _GimpToolItemClass
-{
-	GimpViewableClass parent_class;
+struct _GimpToolItemClass {
+  GimpViewableClass parent_class;
 
-	/*  signals  */
-	void (* visible_changed) (GimpToolItem *tool_item);
-	void (* shown_changed)   (GimpToolItem *tool_item);
+  /*  signals  */
+  void (*visible_changed)(GimpToolItem *tool_item);
+  void (*shown_changed)(GimpToolItem *tool_item);
 };
 
+GType gimp_tool_item_get_type(void) G_GNUC_CONST;
 
-GType      gimp_tool_item_get_type      (void) G_GNUC_CONST;
+void gimp_tool_item_set_visible(GimpToolItem *tool_item, gboolean visible);
+gboolean gimp_tool_item_get_visible(GimpToolItem *tool_item);
 
-void       gimp_tool_item_set_visible   (GimpToolItem *tool_item,
-                                         gboolean visible);
-gboolean   gimp_tool_item_get_visible   (GimpToolItem *tool_item);
-
-gboolean   gimp_tool_item_get_shown     (GimpToolItem *tool_item);
-
+gboolean gimp_tool_item_get_shown(GimpToolItem *tool_item);
 
 /*  protected  */
 
-void       gimp_tool_item_shown_changed (GimpToolItem *tool_item);
+void gimp_tool_item_shown_changed(GimpToolItem *tool_item);
 
-
-#endif  /*  __GIMP_TOOL_ITEM_H__  */
+#endif /*  __GIMP_TOOL_ITEM_H__  */

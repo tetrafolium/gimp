@@ -18,10 +18,7 @@
 #ifndef __TOOL_PRESET_EDITOR_ACTIONS_H__
 #define __TOOL_PRESET_EDITOR_ACTIONS_H__
 
-
-void   tool_preset_editor_actions_setup  (GimpActionGroup *group);
-void   tool_preset_editor_actions_update (GimpActionGroup *group,
-                                          gpointer data);
-
+void tool_preset_editor_actions_setup(GimpActionGroup *group);
+void tool_preset_editor_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __TOOL_PRESET_EDITOR_ACTIONS_H__ */

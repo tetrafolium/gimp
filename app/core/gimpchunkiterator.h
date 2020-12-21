@@ -21,24 +21,22 @@
 #ifndef __GIMP_CHUNK_ITEARTOR_H__
 #define __GIMP_CHUNK_ITEARTOR_H__
 
+GimpChunkIterator *gimp_chunk_iterator_new(cairo_region_t *region);
 
-GimpChunkIterator * gimp_chunk_iterator_new               (cairo_region_t      *region);
+void gimp_chunk_iterator_set_tile_rect(GimpChunkIterator *iter,
+                                       const GeglRectangle *rect);
 
-void                gimp_chunk_iterator_set_tile_rect     (GimpChunkIterator   *iter,
-                                                           const GeglRectangle *rect);
+void gimp_chunk_iterator_set_priority_rect(GimpChunkIterator *iter,
+                                           const GeglRectangle *rect);
 
-void                gimp_chunk_iterator_set_priority_rect (GimpChunkIterator   *iter,
-                                                           const GeglRectangle *rect);
+void gimp_chunk_iterator_set_interval(GimpChunkIterator *iter,
+                                      gdouble interval);
 
-void                gimp_chunk_iterator_set_interval      (GimpChunkIterator   *iter,
-                                                           gdouble interval);
+gboolean gimp_chunk_iterator_next(GimpChunkIterator *iter);
+gboolean gimp_chunk_iterator_get_rect(GimpChunkIterator *iter,
+                                      GeglRectangle *rect);
 
-gboolean            gimp_chunk_iterator_next              (GimpChunkIterator   *iter);
-gboolean            gimp_chunk_iterator_get_rect          (GimpChunkIterator   *iter,
-                                                           GeglRectangle       *rect);
+cairo_region_t *gimp_chunk_iterator_stop(GimpChunkIterator *iter,
+                                         gboolean free_region);
 
-cairo_region_t    * gimp_chunk_iterator_stop              (GimpChunkIterator   *iter,
-                                                           gboolean free_region);
-
-
-#endif  /*  __GIMP_CHUNK_ITEARTOR_H__  */
+#endif /*  __GIMP_CHUNK_ITEARTOR_H__  */

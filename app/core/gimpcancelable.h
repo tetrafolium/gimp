@@ -21,21 +21,16 @@
 #ifndef __GIMP_CANCELABLE_H__
 #define __GIMP_CANCELABLE_H__
 
+#define GIMP_TYPE_CANCELABLE (gimp_cancelable_get_type())
+G_DECLARE_INTERFACE(GimpCancelable, gimp_cancelable, GIMP, CANCELABLE, GObject)
 
-#define GIMP_TYPE_CANCELABLE (gimp_cancelable_get_type ())
-G_DECLARE_INTERFACE (GimpCancelable, gimp_cancelable, GIMP, CANCELABLE, GObject)
+struct _GimpCancelableInterface {
+  GTypeInterface base_iface;
 
-
-struct _GimpCancelableInterface
-{
-	GTypeInterface base_iface;
-
-	/*  signals  */
-	void (* cancel) (GimpCancelable *cancelable);
+  /*  signals  */
+  void (*cancel)(GimpCancelable *cancelable);
 };
 
+void gimp_cancelable_cancel(GimpCancelable *cancelable);
 
-void    gimp_cancelable_cancel   (GimpCancelable *cancelable);
-
-
-#endif  /* __GIMP_CANCELABLE_H__ */
+#endif /* __GIMP_CANCELABLE_H__ */

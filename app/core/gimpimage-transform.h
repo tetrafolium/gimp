@@ -21,14 +21,11 @@
 #ifndef __GIMP_IMAGE_TRANSFORM_H__
 #define __GIMP_IMAGE_TRANSFORM_H__
 
-
-void   gimp_image_transform (GimpImage              *image,
-                             GimpContext            *context,
-                             const GimpMatrix3      *matrix,
-                             GimpTransformDirection direction,
-                             GimpInterpolationType interpolation_type,
-                             GimpTransformResize clip_result,
-                             GimpProgress           *progress);
-
+void gimp_image_transform(GimpImage *image, GimpContext *context,
+                          const GimpMatrix3 *matrix,
+                          GimpTransformDirection direction,
+                          GimpInterpolationType interpolation_type,
+                          GimpTransformResize clip_result,
+                          GimpProgress *progress);
 
 #endif /* __GIMP_IMAGE_TRANSFORM_H__ */

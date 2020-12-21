@@ -18,10 +18,7 @@
 #ifndef __COLORMAP_ACTIONS_H__
 #define __COLORMAP_ACTIONS_H__
 
-
-void   colormap_actions_setup  (GimpActionGroup *group);
-void   colormap_actions_update (GimpActionGroup *group,
-                                gpointer data);
-
+void colormap_actions_setup(GimpActionGroup *group);
+void colormap_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __COLORMAP_ACTIONS_H__ */

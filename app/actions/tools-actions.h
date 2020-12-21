@@ -18,10 +18,7 @@
 #ifndef __TOOLS_ACTIONS_H__
 #define __TOOLS_ACTIONS_H__
 
-
-void   tools_actions_setup  (GimpActionGroup *group);
-void   tools_actions_update (GimpActionGroup *group,
-                             gpointer data);
-
+void tools_actions_setup(GimpActionGroup *group);
+void tools_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __TOOLS_ACTIONS_H__ */

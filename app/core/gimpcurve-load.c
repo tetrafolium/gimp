@@ -24,31 +24,23 @@
 
 #include "core-types.h"
 
-#include "gimpcurve.h"
 #include "gimpcurve-load.h"
+#include "gimpcurve.h"
 
+GList *gimp_curve_load(GFile *file, GInputStream *input, GError **error) {
+  GimpCurve *curve;
 
-GList *
-gimp_curve_load (GFile         *file,
-                 GInputStream  *input,
-                 GError       **error)
-{
-	GimpCurve *curve;
+  g_return_val_if_fail(G_IS_FILE(file), NULL);
+  g_return_val_if_fail(G_IS_INPUT_STREAM(input), NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	g_return_val_if_fail (G_IS_FILE (file), NULL);
-	g_return_val_if_fail (G_IS_INPUT_STREAM (input), NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  curve = g_object_new(GIMP_TYPE_CURVE, NULL);
 
-	curve = g_object_new (GIMP_TYPE_CURVE, NULL);
+  if (gimp_config_deserialize_stream(GIMP_CONFIG(curve), input, NULL, error)) {
+    return g_list_prepend(NULL, curve);
+  }
 
-	if (gimp_config_deserialize_stream (GIMP_CONFIG (curve),
-	                                    input,
-	                                    NULL, error))
-	{
-		return g_list_prepend (NULL, curve);
-	}
+  g_object_unref(curve);
 
-	g_object_unref (curve);
-
-	return NULL;
+  return NULL;
 }

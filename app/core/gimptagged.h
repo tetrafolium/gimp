@@ -21,46 +21,33 @@
 #ifndef __GIMP_TAGGED_H__
 #define __GIMP_TAGGED_H__
 
+#define GIMP_TYPE_TAGGED (gimp_tagged_get_type())
+G_DECLARE_INTERFACE(GimpTagged, gimp_tagged, GIMP, TAGGED, GObject)
 
-#define GIMP_TYPE_TAGGED (gimp_tagged_get_type ())
-G_DECLARE_INTERFACE (GimpTagged, gimp_tagged, GIMP, TAGGED, GObject)
+struct _GimpTaggedInterface {
+  GTypeInterface base_iface;
 
+  /*  signals            */
+  void (*tag_added)(GimpTagged *tagged, GimpTag *tag);
+  void (*tag_removed)(GimpTagged *tagged, GimpTag *tag);
 
-struct _GimpTaggedInterface
-{
-	GTypeInterface base_iface;
-
-	/*  signals            */
-	void (* tag_added)      (GimpTagged *tagged,
-	                         GimpTag    *tag);
-	void (* tag_removed)    (GimpTagged *tagged,
-	                         GimpTag    *tag);
-
-	/*  virtual functions  */
-	gboolean (* add_tag)        (GimpTagged *tagged,
-	                             GimpTag    *tag);
-	gboolean (* remove_tag)     (GimpTagged *tagged,
-	                             GimpTag    *tag);
-	GList    * (* get_tags)       (GimpTagged *tagged);
-	gchar    * (* get_identifier) (GimpTagged *tagged);
-	gchar    * (* get_checksum)   (GimpTagged *tagged);
+  /*  virtual functions  */
+  gboolean (*add_tag)(GimpTagged *tagged, GimpTag *tag);
+  gboolean (*remove_tag)(GimpTagged *tagged, GimpTag *tag);
+  GList *(*get_tags)(GimpTagged *tagged);
+  gchar *(*get_identifier)(GimpTagged *tagged);
+  gchar *(*get_checksum)(GimpTagged *tagged);
 };
 
+void gimp_tagged_add_tag(GimpTagged *tagged, GimpTag *tag);
+void gimp_tagged_remove_tag(GimpTagged *tagged, GimpTag *tag);
 
-void       gimp_tagged_add_tag        (GimpTagged *tagged,
-                                       GimpTag    *tag);
-void       gimp_tagged_remove_tag     (GimpTagged *tagged,
-                                       GimpTag    *tag);
+void gimp_tagged_set_tags(GimpTagged *tagged, GList *tags);
+GList *gimp_tagged_get_tags(GimpTagged *tagged);
 
-void       gimp_tagged_set_tags       (GimpTagged *tagged,
-                                       GList      *tags);
-GList    * gimp_tagged_get_tags       (GimpTagged *tagged);
+gchar *gimp_tagged_get_identifier(GimpTagged *tagged);
+gchar *gimp_tagged_get_checksum(GimpTagged *tagged);
 
-gchar    * gimp_tagged_get_identifier (GimpTagged *tagged);
-gchar    * gimp_tagged_get_checksum   (GimpTagged *tagged);
+gboolean gimp_tagged_has_tag(GimpTagged *tagged, GimpTag *tag);
 
-gboolean   gimp_tagged_has_tag        (GimpTagged *tagged,
-                                       GimpTag    *tag);
-
-
-#endif  /* __GIMP_TAGGED_H__ */
+#endif /* __GIMP_TAGGED_H__ */

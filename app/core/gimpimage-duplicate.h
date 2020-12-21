@@ -18,8 +18,6 @@
 #ifndef __GIMP_IMAGE_DUPLICATE_H__
 #define __GIMP_IMAGE_DUPLICATE_H__
 
+GimpImage *gimp_image_duplicate(GimpImage *image);
 
-GimpImage * gimp_image_duplicate (GimpImage *image);
-
-
-#endif  /*  __GIMP_IMAGE_DUPLICATE_H__  */
+#endif /*  __GIMP_IMAGE_DUPLICATE_H__  */

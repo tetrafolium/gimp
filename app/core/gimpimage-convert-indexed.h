@@ -18,24 +18,15 @@
 #ifndef __GIMP_IMAGE_CONVERT_INDEXED_H__
 #define __GIMP_IMAGE_CONVERT_INDEXED_H__
 
-
 #define MAXNUMCOLORS 256
 
+gboolean gimp_image_convert_indexed(
+    GimpImage *image, GimpConvertPaletteType palette_type, gint max_colors,
+    gboolean remove_duplicates, GimpConvertDitherType dither_type,
+    gboolean dither_alpha, gboolean dither_text_layers,
+    GimpPalette *custom_palette, GimpProgress *progress, GError **error);
 
-gboolean   gimp_image_convert_indexed      (GimpImage               *image,
-                                            GimpConvertPaletteType palette_type,
-                                            gint max_colors,
-                                            gboolean remove_duplicates,
-                                            GimpConvertDitherType dither_type,
-                                            gboolean dither_alpha,
-                                            gboolean dither_text_layers,
-                                            GimpPalette             *custom_palette,
-                                            GimpProgress            *progress,
-                                            GError                 **error);
+void gimp_image_convert_indexed_set_dither_matrix(const guchar *matrix,
+                                                  gint width, gint height);
 
-void  gimp_image_convert_indexed_set_dither_matrix (const guchar *matrix,
-                                                    gint width,
-                                                    gint height);
-
-
-#endif  /*  __GIMP_IMAGE_CONVERT_INDEXED_H__  */
+#endif /*  __GIMP_IMAGE_CONVERT_INDEXED_H__  */

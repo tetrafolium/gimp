@@ -21,14 +21,12 @@
 #ifndef __GIMP_BACKTRACE_BACKEND_H__
 #define __GIMP_BACKTRACE_BACKEND_H__
 
-
 #ifdef __gnu_linux__
-# define GIMP_BACKTRACE_BACKEND_LINUX
-#elif defined (G_OS_WIN32) && defined (ARCH_X86)
-# define GIMP_BACKTRACE_BACKEND_WINDOWS
+#define GIMP_BACKTRACE_BACKEND_LINUX
+#elif defined(G_OS_WIN32) && defined(ARCH_X86)
+#define GIMP_BACKTRACE_BACKEND_WINDOWS
 #else
-# define GIMP_BACKTRACE_BACKEND_NONE
+#define GIMP_BACKTRACE_BACKEND_NONE
 #endif
 
-
-#endif  /*  __GIMP_BACKTRACE_BACKEND_H__  */
+#endif /*  __GIMP_BACKTRACE_BACKEND_H__  */

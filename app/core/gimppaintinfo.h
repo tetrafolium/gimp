@@ -18,52 +18,47 @@
 #ifndef __GIMP_PAINT_INFO_H__
 #define __GIMP_PAINT_INFO_H__
 
-
 #include "gimpviewable.h"
 
-
-#define GIMP_TYPE_PAINT_INFO            (gimp_paint_info_get_type ())
-#define GIMP_PAINT_INFO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINT_INFO, GimpPaintInfo))
-#define GIMP_PAINT_INFO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PAINT_INFO, GimpPaintInfoClass))
-#define GIMP_IS_PAINT_INFO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PAINT_INFO))
-#define GIMP_IS_PAINT_INFO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINT_INFO))
-#define GIMP_PAINT_INFO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_INFO, GimpPaintInfoClass))
-
+#define GIMP_TYPE_PAINT_INFO (gimp_paint_info_get_type())
+#define GIMP_PAINT_INFO(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PAINT_INFO, GimpPaintInfo))
+#define GIMP_PAINT_INFO_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PAINT_INFO, GimpPaintInfoClass))
+#define GIMP_IS_PAINT_INFO(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PAINT_INFO))
+#define GIMP_IS_PAINT_INFO_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PAINT_INFO))
+#define GIMP_PAINT_INFO_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PAINT_INFO, GimpPaintInfoClass))
 
 typedef struct _GimpPaintInfoClass GimpPaintInfoClass;
 
-struct _GimpPaintInfo
-{
-	GimpViewable parent_instance;
+struct _GimpPaintInfo {
+  GimpViewable parent_instance;
 
-	Gimp             *gimp;
+  Gimp *gimp;
 
-	GType paint_type;
-	GType paint_options_type;
+  GType paint_type;
+  GType paint_options_type;
 
-	gchar            *blurb;
+  gchar *blurb;
 
-	GimpPaintOptions *paint_options;
+  GimpPaintOptions *paint_options;
 };
 
-struct _GimpPaintInfoClass
-{
-	GimpViewableClass parent_class;
+struct _GimpPaintInfoClass {
+  GimpViewableClass parent_class;
 };
 
+GType gimp_paint_info_get_type(void) G_GNUC_CONST;
 
-GType           gimp_paint_info_get_type     (void) G_GNUC_CONST;
+GimpPaintInfo *gimp_paint_info_new(Gimp *gimp, GType paint_type,
+                                   GType paint_options_type,
+                                   const gchar *identifier, const gchar *blurb,
+                                   const gchar *icon_name);
 
-GimpPaintInfo * gimp_paint_info_new          (Gimp          *gimp,
-                                              GType paint_type,
-                                              GType paint_options_type,
-                                              const gchar   *identifier,
-                                              const gchar   *blurb,
-                                              const gchar   *icon_name);
+void gimp_paint_info_set_standard(Gimp *gimp, GimpPaintInfo *paint_info);
+GimpPaintInfo *gimp_paint_info_get_standard(Gimp *gimp);
 
-void            gimp_paint_info_set_standard (Gimp          *gimp,
-                                              GimpPaintInfo *paint_info);
-GimpPaintInfo * gimp_paint_info_get_standard (Gimp          *gimp);
-
-
-#endif  /*  __GIMP_PAINT_INFO_H__  */
+#endif /*  __GIMP_PAINT_INFO_H__  */

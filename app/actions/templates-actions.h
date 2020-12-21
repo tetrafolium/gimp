@@ -18,10 +18,7 @@
 #ifndef __TEMPLATES_ACTIONS_H__
 #define __TEMPLATES_ACTIONS_H__
 
-
-void   templates_actions_setup  (GimpActionGroup *group);
-void   templates_actions_update (GimpActionGroup *group,
-                                 gpointer data);
-
+void templates_actions_setup(GimpActionGroup *group);
+void templates_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __TEMPLATES_COMMANDS_H__ */

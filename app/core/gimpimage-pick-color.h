@@ -15,21 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_IMAGE_PICK_COLOR_H__
-#define  __GIMP_IMAGE_PICK_COLOR_H__
+#ifndef __GIMP_IMAGE_PICK_COLOR_H__
+#define __GIMP_IMAGE_PICK_COLOR_H__
 
+gboolean gimp_image_pick_color(GimpImage *image, GList *drawables, gint x,
+                               gint y, gboolean show_all,
+                               gboolean sample_merged, gboolean sample_average,
+                               gdouble average_radius,
+                               const Babl **sample_format, gpointer pixel,
+                               GimpRGB *color);
 
-gboolean   gimp_image_pick_color (GimpImage     *image,
-                                  GList         *drawables,
-                                  gint x,
-                                  gint y,
-                                  gboolean show_all,
-                                  gboolean sample_merged,
-                                  gboolean sample_average,
-                                  gdouble average_radius,
-                                  const Babl   **sample_format,
-                                  gpointer pixel,
-                                  GimpRGB       *color);
-
-
-#endif  /* __GIMP_IMAGE_PICK_COLOR_H__ */
+#endif /* __GIMP_IMAGE_PICK_COLOR_H__ */

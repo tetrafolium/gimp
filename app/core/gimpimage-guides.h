@@ -18,37 +18,26 @@
 #ifndef __GIMP_IMAGE_GUIDES_H__
 #define __GIMP_IMAGE_GUIDES_H__
 
-
 /*  public guide adding API
  */
-GimpGuide * gimp_image_add_hguide     (GimpImage *image,
-                                       gint position,
-                                       gboolean push_undo);
-GimpGuide * gimp_image_add_vguide     (GimpImage *image,
-                                       gint position,
-                                       gboolean push_undo);
+GimpGuide *gimp_image_add_hguide(GimpImage *image, gint position,
+                                 gboolean push_undo);
+GimpGuide *gimp_image_add_vguide(GimpImage *image, gint position,
+                                 gboolean push_undo);
 
 /*  internal guide adding API, does not check the guide's position and
  *  is publicly declared only to be used from undo
  */
-void        gimp_image_add_guide      (GimpImage *image,
-                                       GimpGuide *guide,
-                                       gint position);
+void gimp_image_add_guide(GimpImage *image, GimpGuide *guide, gint position);
 
-void        gimp_image_remove_guide   (GimpImage *image,
-                                       GimpGuide *guide,
-                                       gboolean push_undo);
-void        gimp_image_move_guide     (GimpImage *image,
-                                       GimpGuide *guide,
-                                       gint position,
-                                       gboolean push_undo);
+void gimp_image_remove_guide(GimpImage *image, GimpGuide *guide,
+                             gboolean push_undo);
+void gimp_image_move_guide(GimpImage *image, GimpGuide *guide, gint position,
+                           gboolean push_undo);
 
-GList     * gimp_image_get_guides     (GimpImage *image);
-GimpGuide * gimp_image_get_guide      (GimpImage *image,
-                                       guint32 id);
-GimpGuide * gimp_image_get_next_guide (GimpImage *image,
-                                       guint32 id,
-                                       gboolean  *guide_found);
-
+GList *gimp_image_get_guides(GimpImage *image);
+GimpGuide *gimp_image_get_guide(GimpImage *image, guint32 id);
+GimpGuide *gimp_image_get_next_guide(GimpImage *image, guint32 id,
+                                     gboolean *guide_found);
 
 #endif /* __GIMP_IMAGE_GUIDES_H__ */

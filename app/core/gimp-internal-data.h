@@ -21,14 +21,9 @@
 #ifndef __GIMP_INTERNAL_DATA__
 #define __GIMP_INTERNAL_DATA__
 
+gboolean gimp_internal_data_load(Gimp *gimp, GError **error);
+gboolean gimp_internal_data_save(Gimp *gimp, GError **error);
 
-gboolean   gimp_internal_data_load  (Gimp    *gimp,
-                                     GError **error);
-gboolean   gimp_internal_data_save  (Gimp    *gimp,
-                                     GError **error);
-
-gboolean   gimp_internal_data_clear (Gimp    *gimp,
-                                     GError **error);
-
+gboolean gimp_internal_data_clear(Gimp *gimp, GError **error);
 
 #endif /* __GIMP_INTERNAL_DATA__ */

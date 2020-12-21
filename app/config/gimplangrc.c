@@ -29,205 +29,167 @@
 
 #include "gimplangrc.h"
 
-enum
-{
-	PROP_0,
-	PROP_VERBOSE,
-	PROP_SYSTEM_GIMPRC,
-	PROP_USER_GIMPRC,
-	PROP_LANGUAGE
+enum {
+  PROP_0,
+  PROP_VERBOSE,
+  PROP_SYSTEM_GIMPRC,
+  PROP_USER_GIMPRC,
+  PROP_LANGUAGE
 };
 
-
-static void         gimp_lang_rc_constructed       (GObject      *object);
-static void         gimp_lang_rc_finalize          (GObject      *object);
-static void         gimp_lang_rc_set_property      (GObject      *object,
-                                                    guint property_id,
-                                                    const GValue *value,
-                                                    GParamSpec   *pspec);
-static void         gimp_lang_rc_get_property      (GObject      *object,
-                                                    guint property_id,
-                                                    GValue       *value,
-                                                    GParamSpec   *pspec);
-
+static void gimp_lang_rc_constructed(GObject *object);
+static void gimp_lang_rc_finalize(GObject *object);
+static void gimp_lang_rc_set_property(GObject *object, guint property_id,
+                                      const GValue *value, GParamSpec *pspec);
+static void gimp_lang_rc_get_property(GObject *object, guint property_id,
+                                      GValue *value, GParamSpec *pspec);
 
 /* Just use GimpConfig interface's default implementation which will
  * fill the PROP_LANGUAGE property. */
-G_DEFINE_TYPE_WITH_CODE (GimpLangRc, gimp_lang_rc, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL))
+G_DEFINE_TYPE_WITH_CODE(GimpLangRc, gimp_lang_rc, G_TYPE_OBJECT,
+                        G_IMPLEMENT_INTERFACE(GIMP_TYPE_CONFIG, NULL))
 
 #define parent_class gimp_lang_rc_parent_class
 
+static void gimp_lang_rc_class_init(GimpLangRcClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void
-gimp_lang_rc_class_init (GimpLangRcClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->constructed = gimp_lang_rc_constructed;
+  object_class->finalize = gimp_lang_rc_finalize;
+  object_class->set_property = gimp_lang_rc_set_property;
+  object_class->get_property = gimp_lang_rc_get_property;
 
-	object_class->constructed  = gimp_lang_rc_constructed;
-	object_class->finalize     = gimp_lang_rc_finalize;
-	object_class->set_property = gimp_lang_rc_set_property;
-	object_class->get_property = gimp_lang_rc_get_property;
+  g_object_class_install_property(
+      object_class, PROP_VERBOSE,
+      g_param_spec_boolean("verbose", NULL, NULL, FALSE,
+                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-	g_object_class_install_property (object_class, PROP_VERBOSE,
-	                                 g_param_spec_boolean ("verbose",
-	                                                       NULL, NULL,
-	                                                       FALSE,
-	                                                       G_PARAM_READWRITE |
-	                                                       G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property(
+      object_class, PROP_SYSTEM_GIMPRC,
+      g_param_spec_object("system-gimprc", NULL, NULL, G_TYPE_FILE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-	g_object_class_install_property (object_class, PROP_SYSTEM_GIMPRC,
-	                                 g_param_spec_object ("system-gimprc",
-	                                                      NULL, NULL,
-	                                                      G_TYPE_FILE,
-	                                                      G_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property(
+      object_class, PROP_USER_GIMPRC,
+      g_param_spec_object("user-gimprc", NULL, NULL, G_TYPE_FILE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-	g_object_class_install_property (object_class, PROP_USER_GIMPRC,
-	                                 g_param_spec_object ("user-gimprc",
-	                                                      NULL, NULL,
-	                                                      G_TYPE_FILE,
-	                                                      G_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT_ONLY));
-
-	GIMP_CONFIG_PROP_STRING (object_class, PROP_LANGUAGE,
-	                         "language", NULL, NULL, NULL,
-	                         GIMP_PARAM_STATIC_STRINGS);
-
+  GIMP_CONFIG_PROP_STRING(object_class, PROP_LANGUAGE, "language", NULL, NULL,
+                          NULL, GIMP_PARAM_STATIC_STRINGS);
 }
 
-static void
-gimp_lang_rc_init (GimpLangRc *rc)
-{
+static void gimp_lang_rc_init(GimpLangRc *rc) {}
+
+static void gimp_lang_rc_constructed(GObject *object) {
+  GimpLangRc *rc = GIMP_LANG_RC(object);
+  GError *error = NULL;
+
+  if (rc->verbose)
+    g_print("Parsing '%s' for configured language.\n",
+            gimp_file_get_utf8_name(rc->system_gimprc));
+
+  if (!gimp_config_deserialize_file(GIMP_CONFIG(rc), rc->system_gimprc, NULL,
+                                    &error)) {
+    if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
+      g_message("%s", error->message);
+
+    g_clear_error(&error);
+  }
+
+  if (rc->verbose)
+    g_print("Parsing '%s' for configured language.\n",
+            gimp_file_get_utf8_name(rc->user_gimprc));
+
+  if (!gimp_config_deserialize_file(GIMP_CONFIG(rc), rc->user_gimprc, NULL,
+                                    &error)) {
+    if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
+      g_message("%s", error->message);
+
+    g_clear_error(&error);
+  }
+
+  if (rc->verbose) {
+    if (rc->language)
+      g_print("Language property found: %s.\n", rc->language);
+    else
+      g_print("No language property found.\n");
+  }
 }
 
-static void
-gimp_lang_rc_constructed (GObject *object)
-{
-	GimpLangRc *rc = GIMP_LANG_RC (object);
-	GError     *error = NULL;
+static void gimp_lang_rc_finalize(GObject *object) {
+  GimpLangRc *rc = GIMP_LANG_RC(object);
 
-	if (rc->verbose)
-		g_print ("Parsing '%s' for configured language.\n",
-		         gimp_file_get_utf8_name (rc->system_gimprc));
+  g_clear_object(&rc->system_gimprc);
+  g_clear_object(&rc->user_gimprc);
 
-	if (!gimp_config_deserialize_file (GIMP_CONFIG (rc),
-	                                   rc->system_gimprc, NULL, &error))
-	{
-		if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
-			g_message ("%s", error->message);
+  g_clear_pointer(&rc->language, g_free);
 
-		g_clear_error (&error);
-	}
-
-	if (rc->verbose)
-		g_print ("Parsing '%s' for configured language.\n",
-		         gimp_file_get_utf8_name (rc->user_gimprc));
-
-	if (!gimp_config_deserialize_file (GIMP_CONFIG (rc),
-	                                   rc->user_gimprc, NULL, &error))
-	{
-		if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
-			g_message ("%s", error->message);
-
-		g_clear_error (&error);
-	}
-
-	if (rc->verbose)
-	{
-		if (rc->language)
-			g_print ("Language property found: %s.\n", rc->language);
-		else
-			g_print ("No language property found.\n");
-	}
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-static void
-gimp_lang_rc_finalize (GObject *object)
-{
-	GimpLangRc *rc = GIMP_LANG_RC (object);
+static void gimp_lang_rc_set_property(GObject *object, guint property_id,
+                                      const GValue *value, GParamSpec *pspec) {
+  GimpLangRc *rc = GIMP_LANG_RC(object);
 
-	g_clear_object (&rc->system_gimprc);
-	g_clear_object (&rc->user_gimprc);
+  switch (property_id) {
+  case PROP_VERBOSE:
+    rc->verbose = g_value_get_boolean(value);
+    break;
 
-	g_clear_pointer (&rc->language, g_free);
+  case PROP_SYSTEM_GIMPRC:
+    if (rc->system_gimprc)
+      g_object_unref(rc->system_gimprc);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+    if (g_value_get_object(value))
+      rc->system_gimprc = g_value_dup_object(value);
+    else
+      rc->system_gimprc = gimp_sysconf_directory_file("gimprc", NULL);
+    break;
+
+  case PROP_USER_GIMPRC:
+    if (rc->user_gimprc)
+      g_object_unref(rc->user_gimprc);
+
+    if (g_value_get_object(value))
+      rc->user_gimprc = g_value_dup_object(value);
+    else
+      rc->user_gimprc = gimp_directory_file("gimprc", NULL);
+    break;
+
+  case PROP_LANGUAGE:
+    if (rc->language)
+      g_free(rc->language);
+    rc->language = g_value_dup_string(value);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_lang_rc_set_property (GObject      *object,
-                           guint property_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
-{
-	GimpLangRc *rc = GIMP_LANG_RC (object);
+static void gimp_lang_rc_get_property(GObject *object, guint property_id,
+                                      GValue *value, GParamSpec *pspec) {
+  GimpLangRc *rc = GIMP_LANG_RC(object);
 
-	switch (property_id)
-	{
-	case PROP_VERBOSE:
-		rc->verbose = g_value_get_boolean (value);
-		break;
+  switch (property_id) {
+  case PROP_VERBOSE:
+    g_value_set_boolean(value, rc->verbose);
+    break;
+  case PROP_SYSTEM_GIMPRC:
+    g_value_set_object(value, rc->system_gimprc);
+    break;
+  case PROP_USER_GIMPRC:
+    g_value_set_object(value, rc->user_gimprc);
+    break;
+  case PROP_LANGUAGE:
+    g_value_set_string(value, rc->language);
+    break;
 
-	case PROP_SYSTEM_GIMPRC:
-		if (rc->system_gimprc)
-			g_object_unref (rc->system_gimprc);
-
-		if (g_value_get_object (value))
-			rc->system_gimprc = g_value_dup_object (value);
-		else
-			rc->system_gimprc = gimp_sysconf_directory_file ("gimprc", NULL);
-		break;
-
-	case PROP_USER_GIMPRC:
-		if (rc->user_gimprc)
-			g_object_unref (rc->user_gimprc);
-
-		if (g_value_get_object (value))
-			rc->user_gimprc = g_value_dup_object (value);
-		else
-			rc->user_gimprc = gimp_directory_file ("gimprc", NULL);
-		break;
-
-	case PROP_LANGUAGE:
-		if (rc->language)
-			g_free (rc->language);
-		rc->language = g_value_dup_string (value);
-		break;
-
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gimp_lang_rc_get_property (GObject    *object,
-                           guint property_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
-{
-	GimpLangRc *rc = GIMP_LANG_RC (object);
-
-	switch (property_id)
-	{
-	case PROP_VERBOSE:
-		g_value_set_boolean (value, rc->verbose);
-		break;
-	case PROP_SYSTEM_GIMPRC:
-		g_value_set_object (value, rc->system_gimprc);
-		break;
-	case PROP_USER_GIMPRC:
-		g_value_set_object (value, rc->user_gimprc);
-		break;
-	case PROP_LANGUAGE:
-		g_value_set_string (value, rc->language);
-		break;
-
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
 /**
@@ -243,25 +205,17 @@ gimp_lang_rc_get_property (GObject    *object,
  *
  * Returns: the new #GimpLangRc.
  */
-GimpLangRc *
-gimp_lang_rc_new (GFile    *system_gimprc,
-                  GFile    *user_gimprc,
-                  gboolean verbose)
-{
-	GimpLangRc *rc;
+GimpLangRc *gimp_lang_rc_new(GFile *system_gimprc, GFile *user_gimprc,
+                             gboolean verbose) {
+  GimpLangRc *rc;
 
-	g_return_val_if_fail (system_gimprc == NULL || G_IS_FILE (system_gimprc),
-	                      NULL);
-	g_return_val_if_fail (user_gimprc == NULL || G_IS_FILE (user_gimprc),
-	                      NULL);
+  g_return_val_if_fail(system_gimprc == NULL || G_IS_FILE(system_gimprc), NULL);
+  g_return_val_if_fail(user_gimprc == NULL || G_IS_FILE(user_gimprc), NULL);
 
-	rc = g_object_new (GIMP_TYPE_LANG_RC,
-	                   "verbose",       verbose,
-	                   "system-gimprc", system_gimprc,
-	                   "user-gimprc",   user_gimprc,
-	                   NULL);
+  rc = g_object_new(GIMP_TYPE_LANG_RC, "verbose", verbose, "system-gimprc",
+                    system_gimprc, "user-gimprc", user_gimprc, NULL);
 
-	return rc;
+  return rc;
 }
 
 /**
@@ -273,8 +227,6 @@ gimp_lang_rc_new (GFile    *system_gimprc,
  * Returns: a newly allocated string representing the language or
  *               %NULL if the key couldn't be found.
  **/
-gchar *
-gimp_lang_rc_get_language (GimpLangRc *rc)
-{
-	return rc->language ? g_strdup (rc->language) : NULL;
+gchar *gimp_lang_rc_get_language(GimpLangRc *rc) {
+  return rc->language ? g_strdup(rc->language) : NULL;
 }

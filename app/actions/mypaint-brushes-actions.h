@@ -18,10 +18,7 @@
 #ifndef __MYPAINT_BRUSHES_ACTIONS_H__
 #define __MYPAINT_BRUSHES_ACTIONS_H__
 
-
-void   mypaint_brushes_actions_setup  (GimpActionGroup *group);
-void   mypaint_brushes_actions_update (GimpActionGroup *group,
-                                       gpointer data);
-
+void mypaint_brushes_actions_setup(GimpActionGroup *group);
+void mypaint_brushes_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __MYPAINT_BRUSHES_ACTIONS_H__ */

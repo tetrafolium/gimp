@@ -21,60 +21,53 @@
 #ifndef __GIMP_TAG_H__
 #define __GIMP_TAG_H__
 
-
 #include <glib-object.h>
 
-
-#define GIMP_TYPE_TAG            (gimp_tag_get_type ())
-#define GIMP_TAG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TAG, GimpTag))
-#define GIMP_TAG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TAG, GimpTagClass))
-#define GIMP_IS_TAG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TAG))
-#define GIMP_IS_TAG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TAG))
-#define GIMP_TAG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TAG, GimpTagClass))
-
+#define GIMP_TYPE_TAG (gimp_tag_get_type())
+#define GIMP_TAG(obj)                                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TAG, GimpTag))
+#define GIMP_TAG_CLASS(klass)                                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TAG, GimpTagClass))
+#define GIMP_IS_TAG(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TAG))
+#define GIMP_IS_TAG_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TAG))
+#define GIMP_TAG_GET_CLASS(obj)                                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TAG, GimpTagClass))
 
 typedef struct _GimpTagClass GimpTagClass;
 
-struct _GimpTag
-{
-	GObject parent_instance;
+struct _GimpTag {
+  GObject parent_instance;
 
-	GQuark tag;
-	GQuark collate_key;
+  GQuark tag;
+  GQuark collate_key;
 
-	gboolean internal; /* Tags that are not serialized to disk */
+  gboolean internal; /* Tags that are not serialized to disk */
 };
 
-struct _GimpTagClass
-{
-	GObjectClass parent_class;
+struct _GimpTagClass {
+  GObjectClass parent_class;
 };
 
-GType         gimp_tag_get_type            (void) G_GNUC_CONST;
+GType gimp_tag_get_type(void) G_GNUC_CONST;
 
-GimpTag     * gimp_tag_new                 (const gchar *tag_string);
-GimpTag     * gimp_tag_try_new             (const gchar *tag_string);
+GimpTag *gimp_tag_new(const gchar *tag_string);
+GimpTag *gimp_tag_try_new(const gchar *tag_string);
 
-const gchar * gimp_tag_get_name            (GimpTag     *tag);
-guint         gimp_tag_get_hash            (GimpTag     *tag);
+const gchar *gimp_tag_get_name(GimpTag *tag);
+guint gimp_tag_get_hash(GimpTag *tag);
 
-gboolean      gimp_tag_get_internal        (GimpTag     *tag);
-void          gimp_tag_set_internal        (GimpTag     *tag,
-                                            gboolean internal);
+gboolean gimp_tag_get_internal(GimpTag *tag);
+void gimp_tag_set_internal(GimpTag *tag, gboolean internal);
 
-gboolean      gimp_tag_equals              (GimpTag     *tag,
-                                            GimpTag     *other);
-gint          gimp_tag_compare_func        (const void  *p1,
-                                            const void  *p2);
-gint          gimp_tag_compare_with_string (GimpTag     *tag,
-                                            const gchar *tag_string);
-gboolean      gimp_tag_has_prefix          (GimpTag     *tag,
-                                            const gchar *prefix_string);
-gchar       * gimp_tag_string_make_valid   (const gchar *tag_string);
-gboolean      gimp_tag_is_tag_separator    (gunichar c);
+gboolean gimp_tag_equals(GimpTag *tag, GimpTag *other);
+gint gimp_tag_compare_func(const void *p1, const void *p2);
+gint gimp_tag_compare_with_string(GimpTag *tag, const gchar *tag_string);
+gboolean gimp_tag_has_prefix(GimpTag *tag, const gchar *prefix_string);
+gchar *gimp_tag_string_make_valid(const gchar *tag_string);
+gboolean gimp_tag_is_tag_separator(gunichar c);
 
-void          gimp_tag_or_null_ref         (GimpTag     *tag_or_null);
-void          gimp_tag_or_null_unref       (GimpTag     *tag_or_null);
-
+void gimp_tag_or_null_ref(GimpTag *tag_or_null);
+void gimp_tag_or_null_unref(GimpTag *tag_or_null);
 
 #endif /* __GIMP_TAG_H__ */

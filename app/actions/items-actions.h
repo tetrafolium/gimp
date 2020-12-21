@@ -18,12 +18,8 @@
 #ifndef __ITEMS_ACTIONS_H__
 #define __ITEMS_ACTIONS_H__
 
-
-void   items_actions_setup  (GimpActionGroup *group,
-                             const gchar     *prefix);
-void   items_actions_update (GimpActionGroup *group,
-                             const gchar     *prefix,
-                             GList           *items);
-
+void items_actions_setup(GimpActionGroup *group, const gchar *prefix);
+void items_actions_update(GimpActionGroup *group, const gchar *prefix,
+                          GList *items);
 
 #endif /* __ITEMS_ACTIONS_H__ */

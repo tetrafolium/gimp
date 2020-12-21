@@ -18,9 +18,6 @@
 #ifndef __GIMP_DRAWABLE_EQUALIZE_H__
 #define __GIMP_DRAWABLE_EQUALIZE_H__
 
+void gimp_drawable_equalize(GimpDrawable *drawable, gboolean mask_only);
 
-void   gimp_drawable_equalize (GimpDrawable *drawable,
-                               gboolean mask_only);
-
-
-#endif  /*  __GIMP_DRAWABLE_EQUALIZE_H__  */
+#endif /*  __GIMP_DRAWABLE_EQUALIZE_H__  */

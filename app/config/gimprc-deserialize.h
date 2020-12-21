@@ -21,11 +21,7 @@
 #ifndef __GIMP_RC_DESERIALIZE_H__
 #define __GIMP_RC_DESERIALIZE_H__
 
-
-gboolean  gimp_rc_deserialize (GimpConfig *config,
-                               GScanner   *scanner,
-                               gint nest_level,
-                               gpointer data);
-
+gboolean gimp_rc_deserialize(GimpConfig *config, GScanner *scanner,
+                             gint nest_level, gpointer data);
 
 #endif /* __GIMP_RC_DESERIALIZE_H__ */

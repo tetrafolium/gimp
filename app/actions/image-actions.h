@@ -18,10 +18,7 @@
 #ifndef __IMAGE_ACTIONS_H__
 #define __IMAGE_ACTIONS_H__
 
-
-void   image_actions_setup  (GimpActionGroup *group);
-void   image_actions_update (GimpActionGroup *group,
-                             gpointer data);
-
+void image_actions_setup(GimpActionGroup *group);
+void image_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __IMAGE_ACTIONS_H__ */

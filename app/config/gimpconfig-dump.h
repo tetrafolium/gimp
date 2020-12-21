@@ -20,18 +20,13 @@
 #ifndef __GIMP_CONFIG_DUMP_H__
 #define __GIMP_CONFIG_DUMP_H__
 
-
-typedef enum
-{
-	GIMP_CONFIG_DUMP_NONE,
-	GIMP_CONFIG_DUMP_GIMPRC,
-	GIMP_CONFIG_DUMP_GIMPRC_SYSTEM,
-	GIMP_CONFIG_DUMP_GIMPRC_MANPAGE
+typedef enum {
+  GIMP_CONFIG_DUMP_NONE,
+  GIMP_CONFIG_DUMP_GIMPRC,
+  GIMP_CONFIG_DUMP_GIMPRC_SYSTEM,
+  GIMP_CONFIG_DUMP_GIMPRC_MANPAGE
 } GimpConfigDumpFormat;
 
+gboolean gimp_config_dump(GObject *gimp, GimpConfigDumpFormat format);
 
-gboolean  gimp_config_dump (GObject              *gimp,
-                            GimpConfigDumpFormat format);
-
-
-#endif  /* __GIMP_CONFIG_DUMP_H__ */
+#endif /* __GIMP_CONFIG_DUMP_H__ */

@@ -18,26 +18,20 @@
 #ifndef __GIMP_IMAGE_QUICK_MASK_H__
 #define __GIMP_IMAGE_QUICK_MASK_H__
 
-
 /*  don't change this string, it's used to identify the Quick Mask
  *  when opening files.
  */
 #define GIMP_IMAGE_QUICK_MASK_NAME "Qmask"
 
+void gimp_image_set_quick_mask_state(GimpImage *image, gboolean active);
+gboolean gimp_image_get_quick_mask_state(GimpImage *image);
 
-void          gimp_image_set_quick_mask_state    (GimpImage     *image,
-                                                  gboolean active);
-gboolean      gimp_image_get_quick_mask_state    (GimpImage     *image);
+void gimp_image_set_quick_mask_color(GimpImage *image, const GimpRGB *color);
+void gimp_image_get_quick_mask_color(GimpImage *image, GimpRGB *color);
 
-void          gimp_image_set_quick_mask_color    (GimpImage     *image,
-                                                  const GimpRGB *color);
-void          gimp_image_get_quick_mask_color    (GimpImage     *image,
-                                                  GimpRGB       *color);
+GimpChannel *gimp_image_get_quick_mask(GimpImage *image);
 
-GimpChannel * gimp_image_get_quick_mask          (GimpImage     *image);
-
-void          gimp_image_quick_mask_invert       (GimpImage     *image);
-gboolean      gimp_image_get_quick_mask_inverted (GimpImage     *image);
-
+void gimp_image_quick_mask_invert(GimpImage *image);
+gboolean gimp_image_get_quick_mask_inverted(GimpImage *image);
 
 #endif /* __GIMP_IMAGE_QUICK_MASK_H__ */

@@ -18,12 +18,8 @@
 #ifndef __GIMP_IMAGE_CONVERT_TYPE_H__
 #define __GIMP_IMAGE_CONVERT_TYPE_H__
 
+gboolean gimp_image_convert_type(GimpImage *image, GimpImageBaseType new_type,
+                                 GimpColorProfile *dest_profile,
+                                 GimpProgress *progress, GError **error);
 
-gboolean   gimp_image_convert_type (GimpImage          *image,
-                                    GimpImageBaseType new_type,
-                                    GimpColorProfile   *dest_profile,
-                                    GimpProgress       *progress,
-                                    GError            **error);
-
-
-#endif  /*  __GIMP_IMAGE_CONVERT_TYPE_H__  */
+#endif /*  __GIMP_IMAGE_CONVERT_TYPE_H__  */

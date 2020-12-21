@@ -28,49 +28,29 @@
 #include "gimptag.h"
 #include "gimptagged.h"
 
+enum { TAG_ADDED, TAG_REMOVED, LAST_SIGNAL };
 
-enum
-{
-	TAG_ADDED,
-	TAG_REMOVED,
-	LAST_SIGNAL
+G_DEFINE_INTERFACE(GimpTagged, gimp_tagged, G_TYPE_OBJECT)
+
+static guint gimp_tagged_signals[LAST_SIGNAL] = {
+    0,
 };
-
-
-G_DEFINE_INTERFACE (GimpTagged, gimp_tagged, G_TYPE_OBJECT)
-
-
-static guint gimp_tagged_signals[LAST_SIGNAL] = { 0, };
-
 
 /*  private functions  */
 
+static void gimp_tagged_default_init(GimpTaggedInterface *iface) {
+  gimp_tagged_signals[TAG_ADDED] =
+      g_signal_new("tag-added", GIMP_TYPE_TAGGED, G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET(GimpTaggedInterface, tag_added), NULL, NULL,
+                   NULL, G_TYPE_NONE, 1, GIMP_TYPE_TAG);
 
-static void
-gimp_tagged_default_init (GimpTaggedInterface *iface)
-{
-	gimp_tagged_signals[TAG_ADDED] =
-		g_signal_new ("tag-added",
-		              GIMP_TYPE_TAGGED,
-		              G_SIGNAL_RUN_LAST,
-		              G_STRUCT_OFFSET (GimpTaggedInterface, tag_added),
-		              NULL, NULL, NULL,
-		              G_TYPE_NONE, 1,
-		              GIMP_TYPE_TAG);
-
-	gimp_tagged_signals[TAG_REMOVED] =
-		g_signal_new ("tag-removed",
-		              GIMP_TYPE_TAGGED,
-		              G_SIGNAL_RUN_LAST,
-		              G_STRUCT_OFFSET (GimpTaggedInterface, tag_removed),
-		              NULL, NULL, NULL,
-		              G_TYPE_NONE, 1,
-		              GIMP_TYPE_TAG);
+  gimp_tagged_signals[TAG_REMOVED] =
+      g_signal_new("tag-removed", GIMP_TYPE_TAGGED, G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET(GimpTaggedInterface, tag_removed), NULL,
+                   NULL, NULL, G_TYPE_NONE, 1, GIMP_TYPE_TAG);
 }
 
-
 /*  public functions  */
-
 
 /**
  * gimp_tagged_add_tag:
@@ -81,17 +61,13 @@ gimp_tagged_default_init (GimpTaggedInterface *iface)
  * is emitted if and only if the @tag was not already assigned to this
  * object.
  **/
-void
-gimp_tagged_add_tag (GimpTagged *tagged,
-                     GimpTag    *tag)
-{
-	g_return_if_fail (GIMP_IS_TAGGED (tagged));
-	g_return_if_fail (GIMP_IS_TAG (tag));
+void gimp_tagged_add_tag(GimpTagged *tagged, GimpTag *tag) {
+  g_return_if_fail(GIMP_IS_TAGGED(tagged));
+  g_return_if_fail(GIMP_IS_TAG(tag));
 
-	if (GIMP_TAGGED_GET_IFACE (tagged)->add_tag (tagged, tag))
-	{
-		g_signal_emit (tagged, gimp_tagged_signals[TAG_ADDED], 0, tag);
-	}
+  if (GIMP_TAGGED_GET_IFACE(tagged)->add_tag(tagged, tag)) {
+    g_signal_emit(tagged, gimp_tagged_signals[TAG_ADDED], 0, tag);
+  }
 }
 
 /**
@@ -103,36 +79,28 @@ gimp_tagged_add_tag (GimpTagged *tagged,
  * signal is emitted if and only if the @tag was actually assigned to
  * this object.
  **/
-void
-gimp_tagged_remove_tag (GimpTagged *tagged,
-                        GimpTag    *tag)
-{
-	GList *tag_iter;
+void gimp_tagged_remove_tag(GimpTagged *tagged, GimpTag *tag) {
+  GList *tag_iter;
 
-	g_return_if_fail (GIMP_IS_TAGGED (tagged));
-	g_return_if_fail (GIMP_IS_TAG (tag));
+  g_return_if_fail(GIMP_IS_TAGGED(tagged));
+  g_return_if_fail(GIMP_IS_TAG(tag));
 
-	for (tag_iter = gimp_tagged_get_tags (tagged);
-	     tag_iter;
-	     tag_iter = g_list_next (tag_iter))
-	{
-		GimpTag *tag_ref = tag_iter->data;
+  for (tag_iter = gimp_tagged_get_tags(tagged); tag_iter;
+       tag_iter = g_list_next(tag_iter)) {
+    GimpTag *tag_ref = tag_iter->data;
 
-		if (gimp_tag_equals (tag_ref, tag))
-		{
-			g_object_ref (tag_ref);
+    if (gimp_tag_equals(tag_ref, tag)) {
+      g_object_ref(tag_ref);
 
-			if (GIMP_TAGGED_GET_IFACE (tagged)->remove_tag (tagged, tag_ref))
-			{
-				g_signal_emit (tagged, gimp_tagged_signals[TAG_REMOVED], 0,
-				               tag_ref);
-			}
+      if (GIMP_TAGGED_GET_IFACE(tagged)->remove_tag(tagged, tag_ref)) {
+        g_signal_emit(tagged, gimp_tagged_signals[TAG_REMOVED], 0, tag_ref);
+      }
 
-			g_object_unref (tag_ref);
+      g_object_unref(tag_ref);
 
-			return;
-		}
-	}
+      return;
+    }
+  }
 }
 
 /**
@@ -143,30 +111,25 @@ gimp_tagged_remove_tag (GimpTagged *tagged,
  * Sets the list of tags assigned to this object. The passed list of
  * tags is copied and should be freed by the caller.
  **/
-void
-gimp_tagged_set_tags (GimpTagged *tagged,
-                      GList      *tags)
-{
-	GList *old_tags;
-	GList *list;
+void gimp_tagged_set_tags(GimpTagged *tagged, GList *tags) {
+  GList *old_tags;
+  GList *list;
 
-	g_return_if_fail (GIMP_IS_TAGGED (tagged));
+  g_return_if_fail(GIMP_IS_TAGGED(tagged));
 
-	old_tags = g_list_copy (gimp_tagged_get_tags (tagged));
+  old_tags = g_list_copy(gimp_tagged_get_tags(tagged));
 
-	for (list = old_tags; list; list = g_list_next (list))
-	{
-		gimp_tagged_remove_tag (tagged, list->data);
-	}
+  for (list = old_tags; list; list = g_list_next(list)) {
+    gimp_tagged_remove_tag(tagged, list->data);
+  }
 
-	g_list_free (old_tags);
+  g_list_free(old_tags);
 
-	for (list = tags; list; list = g_list_next (list))
-	{
-		g_return_if_fail (GIMP_IS_TAG (list->data));
+  for (list = tags; list; list = g_list_next(list)) {
+    g_return_if_fail(GIMP_IS_TAG(list->data));
 
-		gimp_tagged_add_tag (tagged, list->data);
-	}
+    gimp_tagged_add_tag(tagged, list->data);
+  }
 }
 
 /**
@@ -178,12 +141,10 @@ gimp_tagged_set_tags (GimpTagged *tagged,
  *
  * Returns: a list of tags
  **/
-GList *
-gimp_tagged_get_tags (GimpTagged *tagged)
-{
-	g_return_val_if_fail (GIMP_IS_TAGGED (tagged), NULL);
+GList *gimp_tagged_get_tags(GimpTagged *tagged) {
+  g_return_val_if_fail(GIMP_IS_TAGGED(tagged), NULL);
 
-	return GIMP_TAGGED_GET_IFACE (tagged)->get_tags (tagged);
+  return GIMP_TAGGED_GET_IFACE(tagged)->get_tags(tagged);
 }
 
 /**
@@ -200,12 +161,10 @@ gimp_tagged_get_tags (GimpTagged *tagged)
  * Returns: a newly allocated string containing unique identifier
  * of the object. It must be freed using #g_free.
  **/
-gchar *
-gimp_tagged_get_identifier (GimpTagged *tagged)
-{
-	g_return_val_if_fail (GIMP_IS_TAGGED (tagged), NULL);
+gchar *gimp_tagged_get_identifier(GimpTagged *tagged) {
+  g_return_val_if_fail(GIMP_IS_TAGGED(tagged), NULL);
 
-	return GIMP_TAGGED_GET_IFACE (tagged)->get_identifier (tagged);
+  return GIMP_TAGGED_GET_IFACE(tagged)->get_identifier(tagged);
 }
 
 /**
@@ -222,12 +181,10 @@ gimp_tagged_get_identifier (GimpTagged *tagged)
  * Returns: (nullable): checksum string if object needs identifier remapping,
  * %NULL otherwise. Returned string must be freed with #g_free().
  **/
-gchar *
-gimp_tagged_get_checksum (GimpTagged *tagged)
-{
-	g_return_val_if_fail (GIMP_IS_TAGGED (tagged), FALSE);
+gchar *gimp_tagged_get_checksum(GimpTagged *tagged) {
+  g_return_val_if_fail(GIMP_IS_TAGGED(tagged), FALSE);
 
-	return GIMP_TAGGED_GET_IFACE (tagged)->get_checksum (tagged);
+  return GIMP_TAGGED_GET_IFACE(tagged)->get_checksum(tagged);
 }
 
 /**
@@ -237,22 +194,17 @@ gimp_tagged_get_checksum (GimpTagged *tagged)
  *
  * Returns: %TRUE if the object has @tag, %FALSE otherwise.
  **/
-gboolean
-gimp_tagged_has_tag (GimpTagged *tagged,
-                     GimpTag    *tag)
-{
-	GList *tag_iter;
+gboolean gimp_tagged_has_tag(GimpTagged *tagged, GimpTag *tag) {
+  GList *tag_iter;
 
-	g_return_val_if_fail (GIMP_IS_TAGGED (tagged), FALSE);
-	g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
+  g_return_val_if_fail(GIMP_IS_TAGGED(tagged), FALSE);
+  g_return_val_if_fail(GIMP_IS_TAG(tag), FALSE);
 
-	for (tag_iter = gimp_tagged_get_tags (tagged);
-	     tag_iter;
-	     tag_iter = g_list_next (tag_iter))
-	{
-		if (gimp_tag_equals (tag_iter->data, tag))
-			return TRUE;
-	}
+  for (tag_iter = gimp_tagged_get_tags(tagged); tag_iter;
+       tag_iter = g_list_next(tag_iter)) {
+    if (gimp_tag_equals(tag_iter->data, tag))
+      return TRUE;
+  }
 
-	return FALSE;
+  return FALSE;
 }

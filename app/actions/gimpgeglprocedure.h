@@ -21,50 +21,46 @@
 #ifndef __GIMP_GEGL_PROCEDURE_H__
 #define __GIMP_GEGL_PROCEDURE_H__
 
-
 #include "pdb/gimpprocedure.h"
 
-
-#define GIMP_TYPE_GEGL_PROCEDURE            (gimp_gegl_procedure_get_type ())
-#define GIMP_GEGL_PROCEDURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GEGL_PROCEDURE, GimpGeglProcedure))
-#define GIMP_GEGL_PROCEDURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_GEGL_PROCEDURE, GimpGeglProcedureClass))
-#define GIMP_IS_GEGL_PROCEDURE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_GEGL_PROCEDURE))
-#define GIMP_IS_GEGL_PROCEDURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_GEGL_PROCEDURE))
-#define GIMP_GEGL_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GEGL_PROCEDURE, GimpGeglProcedureClass))
-
+#define GIMP_TYPE_GEGL_PROCEDURE (gimp_gegl_procedure_get_type())
+#define GIMP_GEGL_PROCEDURE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_GEGL_PROCEDURE,                 \
+                              GimpGeglProcedure))
+#define GIMP_GEGL_PROCEDURE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_GEGL_PROCEDURE,                  \
+                           GimpGeglProcedureClass))
+#define GIMP_IS_GEGL_PROCEDURE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_GEGL_PROCEDURE))
+#define GIMP_IS_GEGL_PROCEDURE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_GEGL_PROCEDURE))
+#define GIMP_GEGL_PROCEDURE_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_GEGL_PROCEDURE,                  \
+                             GimpGeglProcedureClass))
 
 typedef struct _GimpGeglProcedure GimpGeglProcedure;
 typedef struct _GimpGeglProcedureClass GimpGeglProcedureClass;
 
-struct _GimpGeglProcedure
-{
-	GimpProcedure parent_instance;
+struct _GimpGeglProcedure {
+  GimpProcedure parent_instance;
 
-	gchar         *operation;
+  gchar *operation;
 
-	GimpRunMode default_run_mode;
-	GimpObject    *default_settings;
+  GimpRunMode default_run_mode;
+  GimpObject *default_settings;
 
-	gchar         *menu_label;
+  gchar *menu_label;
 };
 
-struct _GimpGeglProcedureClass
-{
-	GimpProcedureClass parent_class;
+struct _GimpGeglProcedureClass {
+  GimpProcedureClass parent_class;
 };
 
+GType gimp_gegl_procedure_get_type(void) G_GNUC_CONST;
 
-GType           gimp_gegl_procedure_get_type (void) G_GNUC_CONST;
-
-GimpProcedure * gimp_gegl_procedure_new      (Gimp        *gimp,
-                                              GimpRunMode default_run_mode,
-                                              GimpObject  *default_settings,
-                                              const gchar *operation,
-                                              const gchar *name,
-                                              const gchar *menu_label,
-                                              const gchar *tooltip,
-                                              const gchar *icon_name,
-                                              const gchar *help_id);
-
+GimpProcedure *gimp_gegl_procedure_new(
+    Gimp *gimp, GimpRunMode default_run_mode, GimpObject *default_settings,
+    const gchar *operation, const gchar *name, const gchar *menu_label,
+    const gchar *tooltip, const gchar *icon_name, const gchar *help_id);
 
 #endif /* __GIMP_GEGL_PROCEDURE_H__ */

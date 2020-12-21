@@ -18,11 +18,8 @@
 #ifndef __GIMP_PATTERN_SAVE_H__
 #define __GIMP_PATTERN_SAVE_H__
 
-
 /*  don't call this function directly, use gimp_data_save() instead  */
-gboolean   gimp_pattern_save (GimpData       *data,
-                              GOutputStream  *output,
-                              GError        **error);
+gboolean gimp_pattern_save(GimpData *data, GOutputStream *output,
+                           GError **error);
 
-
-#endif  /*  __GIMP_PATTERN_SAVE_H__  */
+#endif /*  __GIMP_PATTERN_SAVE_H__  */

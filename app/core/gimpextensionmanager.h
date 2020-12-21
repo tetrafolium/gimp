@@ -21,65 +21,67 @@
 #ifndef __GIMP_EXTENSION_MANAGER_H__
 #define __GIMP_EXTENSION_MANAGER_H__
 
-
 #include "core/gimpobject.h"
 
-
-#define GIMP_TYPE_EXTENSION_MANAGER            (gimp_extension_manager_get_type ())
-#define GIMP_EXTENSION_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_EXTENSION_MANAGER, GimpExtensionManager))
-#define GIMP_EXTENSION_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_EXTENSION_MANAGER, GimpExtensionManagerClass))
-#define GIMP_IS_EXTENSION_MANAGER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_EXTENSION_MANAGER))
-#define GIMP_IS_EXTENSION_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_EXTENSION_MANAGER))
-#define GIMP_EXTENSION_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_EXTENSION_MANAGER, GimpExtensionManagerClass))
-
+#define GIMP_TYPE_EXTENSION_MANAGER (gimp_extension_manager_get_type())
+#define GIMP_EXTENSION_MANAGER(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_EXTENSION_MANAGER,              \
+                              GimpExtensionManager))
+#define GIMP_EXTENSION_MANAGER_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_EXTENSION_MANAGER,               \
+                           GimpExtensionManagerClass))
+#define GIMP_IS_EXTENSION_MANAGER(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_EXTENSION_MANAGER))
+#define GIMP_IS_EXTENSION_MANAGER_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_EXTENSION_MANAGER))
+#define GIMP_EXTENSION_MANAGER_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_EXTENSION_MANAGER,               \
+                             GimpExtensionManagerClass))
 
 typedef struct _GimpExtensionManagerClass GimpExtensionManagerClass;
 typedef struct _GimpExtensionManagerPrivate GimpExtensionManagerPrivate;
 
-struct _GimpExtensionManager
-{
-	GimpObject parent_instance;
+struct _GimpExtensionManager {
+  GimpObject parent_instance;
 
-	GimpExtensionManagerPrivate *p;
+  GimpExtensionManagerPrivate *p;
 };
 
-struct _GimpExtensionManagerClass
-{
-	GimpObjectClass parent_class;
+struct _GimpExtensionManagerClass {
+  GimpObjectClass parent_class;
 
-	void (* extension_installed) (GimpExtensionManager *manager,
-	                              GimpExtension        *extension,
-	                              gboolean is_system_ext);
-	void (* extension_removed)   (GimpExtensionManager *manager,
-	                              gchar                *extension_id);
+  void (*extension_installed)(GimpExtensionManager *manager,
+                              GimpExtension *extension, gboolean is_system_ext);
+  void (*extension_removed)(GimpExtensionManager *manager, gchar *extension_id);
 };
 
+GType gimp_extension_manager_get_type(void) G_GNUC_CONST;
 
-GType                  gimp_extension_manager_get_type              (void) G_GNUC_CONST;
+GimpExtensionManager *gimp_extension_manager_new(Gimp *gimp);
 
-GimpExtensionManager * gimp_extension_manager_new                   (Gimp                 *gimp);
+void gimp_extension_manager_initialize(GimpExtensionManager *manager);
+void gimp_extension_manager_exit(GimpExtensionManager *manager);
 
-void                   gimp_extension_manager_initialize            (GimpExtensionManager *manager);
-void                   gimp_extension_manager_exit                  (GimpExtensionManager *manager);
+const GList *
+gimp_extension_manager_get_system_extensions(GimpExtensionManager *manager);
+const GList *
+gimp_extension_manager_get_user_extensions(GimpExtensionManager *manager);
 
-const GList          * gimp_extension_manager_get_system_extensions (GimpExtensionManager *manager);
-const GList          * gimp_extension_manager_get_user_extensions   (GimpExtensionManager *manager);
+gboolean gimp_extension_manager_is_running(GimpExtensionManager *manager,
+                                           GimpExtension *extension);
+gboolean gimp_extension_manager_can_run(GimpExtensionManager *manager,
+                                        GimpExtension *extension);
+gboolean gimp_extension_manager_is_removed(GimpExtensionManager *manager,
+                                           GimpExtension *extension);
 
-gboolean               gimp_extension_manager_is_running            (GimpExtensionManager *manager,
-                                                                     GimpExtension        *extension);
-gboolean               gimp_extension_manager_can_run               (GimpExtensionManager *manager,
-                                                                     GimpExtension        *extension);
-gboolean               gimp_extension_manager_is_removed            (GimpExtensionManager *manager,
-                                                                     GimpExtension        *extension);
+gboolean gimp_extension_manager_install(GimpExtensionManager *manager,
+                                        GimpExtension *extension,
+                                        GError **error);
+gboolean gimp_extension_manager_remove(GimpExtensionManager *manager,
+                                       GimpExtension *extension,
+                                       GError **error);
+gboolean gimp_extension_manager_undo_remove(GimpExtensionManager *manager,
+                                            GimpExtension *extension,
+                                            GError **error);
 
-gboolean               gimp_extension_manager_install               (GimpExtensionManager *manager,
-                                                                     GimpExtension        *extension,
-                                                                     GError              **error);
-gboolean               gimp_extension_manager_remove                (GimpExtensionManager *manager,
-                                                                     GimpExtension        *extension,
-                                                                     GError              **error);
-gboolean               gimp_extension_manager_undo_remove           (GimpExtensionManager *manager,
-                                                                     GimpExtension        *extension,
-                                                                     GError              **error);
-
-#endif  /* __GIMP_EXTENSION_MANAGER_H__ */
+#endif /* __GIMP_EXTENSION_MANAGER_H__ */

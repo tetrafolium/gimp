@@ -21,50 +21,43 @@
 #ifndef __GIMP_LIST_H__
 #define __GIMP_LIST_H__
 
-
 #include "gimpcontainer.h"
 
-
-#define GIMP_TYPE_LIST            (gimp_list_get_type ())
-#define GIMP_LIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LIST, GimpList))
-#define GIMP_LIST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LIST, GimpListClass))
-#define GIMP_IS_LIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LIST))
-#define GIMP_IS_LIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LIST))
-#define GIMP_LIST_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LIST, GimpListClass))
-
+#define GIMP_TYPE_LIST (gimp_list_get_type())
+#define GIMP_LIST(obj)                                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LIST, GimpList))
+#define GIMP_LIST_CLASS(klass)                                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LIST, GimpListClass))
+#define GIMP_IS_LIST(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LIST))
+#define GIMP_IS_LIST_CLASS(klass)                                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LIST))
+#define GIMP_LIST_GET_CLASS(obj)                                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LIST, GimpListClass))
 
 typedef struct _GimpListClass GimpListClass;
 
-struct _GimpList
-{
-	GimpContainer parent_instance;
+struct _GimpList {
+  GimpContainer parent_instance;
 
-	GQueue        *queue;
-	gboolean unique_names;
-	GCompareFunc sort_func;
-	gboolean append;
+  GQueue *queue;
+  gboolean unique_names;
+  GCompareFunc sort_func;
+  gboolean append;
 };
 
-struct _GimpListClass
-{
-	GimpContainerClass parent_class;
+struct _GimpListClass {
+  GimpContainerClass parent_class;
 };
 
+GType gimp_list_get_type(void) G_GNUC_CONST;
 
-GType           gimp_list_get_type      (void) G_GNUC_CONST;
+GimpContainer *gimp_list_new(GType children_type, gboolean unique_names);
+GimpContainer *gimp_list_new_weak(GType children_type, gboolean unique_names);
 
-GimpContainer * gimp_list_new           (GType children_type,
-                                         gboolean unique_names);
-GimpContainer * gimp_list_new_weak      (GType children_type,
-                                         gboolean unique_names);
+void gimp_list_reverse(GimpList *list);
+void gimp_list_set_sort_func(GimpList *list, GCompareFunc sort_func);
+GCompareFunc gimp_list_get_sort_func(GimpList *list);
+void gimp_list_sort(GimpList *list, GCompareFunc sort_func);
+void gimp_list_sort_by_name(GimpList *list);
 
-void            gimp_list_reverse       (GimpList     *list);
-void            gimp_list_set_sort_func (GimpList     *list,
-                                         GCompareFunc sort_func);
-GCompareFunc    gimp_list_get_sort_func (GimpList     *list);
-void            gimp_list_sort          (GimpList     *list,
-                                         GCompareFunc sort_func);
-void            gimp_list_sort_by_name  (GimpList     *list);
-
-
-#endif  /* __GIMP_LIST_H__ */
+#endif /* __GIMP_LIST_H__ */

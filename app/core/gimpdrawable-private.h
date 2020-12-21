@@ -18,29 +18,28 @@
 #ifndef __GIMP_DRAWABLE_PRIVATE_H__
 #define __GIMP_DRAWABLE_PRIVATE_H__
 
-struct _GimpDrawablePrivate
-{
-	GeglBuffer       *buffer;/* buffer for drawable data */
-	GeglBuffer       *shadow;/* shadow buffer            */
+struct _GimpDrawablePrivate {
+  GeglBuffer *buffer; /* buffer for drawable data */
+  GeglBuffer *shadow; /* shadow buffer            */
 
-	GimpColorProfile *format_profile;
+  GimpColorProfile *format_profile;
 
-	GeglNode         *source_node;
-	GeglNode         *buffer_source_node;
-	GimpContainer    *filter_stack;
-	GeglRectangle bounding_box;
+  GeglNode *source_node;
+  GeglNode *buffer_source_node;
+  GimpContainer *filter_stack;
+  GeglRectangle bounding_box;
 
-	GimpLayer        *floating_selection;
-	GimpFilter       *fs_filter;
-	GeglNode         *fs_crop_node;
-	GimpApplicator   *fs_applicator;
+  GimpLayer *floating_selection;
+  GimpFilter *fs_filter;
+  GeglNode *fs_crop_node;
+  GimpApplicator *fs_applicator;
 
-	GeglNode         *mode_node;
+  GeglNode *mode_node;
 
-	gint paint_count;
-	GeglBuffer       *paint_buffer;
-	cairo_region_t   *paint_copy_region;
-	cairo_region_t   *paint_update_region;
+  gint paint_count;
+  GeglBuffer *paint_buffer;
+  cairo_region_t *paint_copy_region;
+  cairo_region_t *paint_update_region;
 };
 
 #endif /* __GIMP_DRAWABLE_PRIVATE_H__ */

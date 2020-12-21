@@ -18,37 +18,38 @@
 #ifndef __GIMP_SAMPLE_POINT_UNDO_H__
 #define __GIMP_SAMPLE_POINT_UNDO_H__
 
-
 #include "gimpauxitemundo.h"
 
-
-#define GIMP_TYPE_SAMPLE_POINT_UNDO            (gimp_sample_point_undo_get_type ())
-#define GIMP_SAMPLE_POINT_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SAMPLE_POINT_UNDO, GimpSamplePointUndo))
-#define GIMP_SAMPLE_POINT_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SAMPLE_POINT_UNDO, GimpSamplePointUndoClass))
-#define GIMP_IS_SAMPLE_POINT_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SAMPLE_POINT_UNDO))
-#define GIMP_IS_SAMPLE_POINT_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SAMPLE_POINT_UNDO))
-#define GIMP_SAMPLE_POINT_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SAMPLE_POINT_UNDO, GimpSamplePointUndoClass))
-
+#define GIMP_TYPE_SAMPLE_POINT_UNDO (gimp_sample_point_undo_get_type())
+#define GIMP_SAMPLE_POINT_UNDO(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SAMPLE_POINT_UNDO,              \
+                              GimpSamplePointUndo))
+#define GIMP_SAMPLE_POINT_UNDO_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SAMPLE_POINT_UNDO,               \
+                           GimpSamplePointUndoClass))
+#define GIMP_IS_SAMPLE_POINT_UNDO(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SAMPLE_POINT_UNDO))
+#define GIMP_IS_SAMPLE_POINT_UNDO_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SAMPLE_POINT_UNDO))
+#define GIMP_SAMPLE_POINT_UNDO_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SAMPLE_POINT_UNDO,               \
+                             GimpSamplePointUndoClass))
 
 typedef struct _GimpSamplePointUndo GimpSamplePointUndo;
 typedef struct _GimpSamplePointUndoClass GimpSamplePointUndoClass;
 
-struct _GimpSamplePointUndo
-{
-	GimpAuxItemUndo parent_instance;
+struct _GimpSamplePointUndo {
+  GimpAuxItemUndo parent_instance;
 
-	gint x;
-	gint y;
-	GimpColorPickMode pick_mode;
+  gint x;
+  gint y;
+  GimpColorPickMode pick_mode;
 };
 
-struct _GimpSamplePointUndoClass
-{
-	GimpAuxItemUndoClass parent_class;
+struct _GimpSamplePointUndoClass {
+  GimpAuxItemUndoClass parent_class;
 };
 
-
-GType   gimp_sample_point_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_sample_point_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_SAMPLE_POINT_UNDO_H__ */

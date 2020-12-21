@@ -18,10 +18,7 @@
 #ifndef __HELP_ACTIONS_H__
 #define __HELP_ACTIONS_H__
 
-
-void   help_actions_setup  (GimpActionGroup *group);
-void   help_actions_update (GimpActionGroup *group,
-                            gpointer data);
-
+void help_actions_setup(GimpActionGroup *group);
+void help_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __HELP_ACTIONS_H__ */

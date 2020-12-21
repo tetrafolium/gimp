@@ -18,10 +18,7 @@
 #ifndef __GIMP_BATCH_H__
 #define __GIMP_BATCH_H__
 
-
-void   gimp_batch_run (Gimp         *gimp,
-                       const gchar  *batch_interpreter,
-                       const gchar **batch_commands);
-
+void gimp_batch_run(Gimp *gimp, const gchar *batch_interpreter,
+                    const gchar **batch_commands);
 
 #endif /* __GIMP_BATCH_H__ */

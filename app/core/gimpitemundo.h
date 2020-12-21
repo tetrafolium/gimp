@@ -18,35 +18,33 @@
 #ifndef __GIMP_ITEM_UNDO_H__
 #define __GIMP_ITEM_UNDO_H__
 
-
 #include "gimpundo.h"
 
-
-#define GIMP_TYPE_ITEM_UNDO            (gimp_item_undo_get_type ())
-#define GIMP_ITEM_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ITEM_UNDO, GimpItemUndo))
-#define GIMP_ITEM_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ITEM_UNDO, GimpItemUndoClass))
-#define GIMP_IS_ITEM_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ITEM_UNDO))
-#define GIMP_IS_ITEM_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ITEM_UNDO))
-#define GIMP_ITEM_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ITEM_UNDO, GimpItemUndoClass))
-
+#define GIMP_TYPE_ITEM_UNDO (gimp_item_undo_get_type())
+#define GIMP_ITEM_UNDO(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ITEM_UNDO, GimpItemUndo))
+#define GIMP_ITEM_UNDO_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ITEM_UNDO, GimpItemUndoClass))
+#define GIMP_IS_ITEM_UNDO(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ITEM_UNDO))
+#define GIMP_IS_ITEM_UNDO_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ITEM_UNDO))
+#define GIMP_ITEM_UNDO_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ITEM_UNDO, GimpItemUndoClass))
 
 typedef struct _GimpItemUndo GimpItemUndo;
 typedef struct _GimpItemUndoClass GimpItemUndoClass;
 
-struct _GimpItemUndo
-{
-	GimpUndo parent_instance;
+struct _GimpItemUndo {
+  GimpUndo parent_instance;
 
-	GimpItem *item; /* the item this undo is for */
+  GimpItem *item; /* the item this undo is for */
 };
 
-struct _GimpItemUndoClass
-{
-	GimpUndoClass parent_class;
+struct _GimpItemUndoClass {
+  GimpUndoClass parent_class;
 };
 
-
-GType   gimp_item_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_item_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_ITEM_UNDO_H__ */

@@ -18,13 +18,8 @@
 #ifndef __HELP_COMMANDS_H__
 #define __HELP_COMMANDS_H__
 
-
-void   help_help_cmd_callback         (GimpAction *action,
-                                       GVariant   *value,
-                                       gpointer data);
-void   help_context_help_cmd_callback (GimpAction *action,
-                                       GVariant   *value,
-                                       gpointer data);
-
+void help_help_cmd_callback(GimpAction *action, GVariant *value, gpointer data);
+void help_context_help_cmd_callback(GimpAction *action, GVariant *value,
+                                    gpointer data);
 
 #endif /* __HELP_COMMANDS_H__ */

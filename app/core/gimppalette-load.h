@@ -18,49 +18,32 @@
 #ifndef __GIMP_PALETTE_LOAD_H__
 #define __GIMP_PALETTE_LOAD_H__
 
-
 #define GIMP_PALETTE_FILE_EXTENSION ".gpl"
 
-
-typedef enum
-{
-	GIMP_PALETTE_FILE_FORMAT_UNKNOWN,
-	GIMP_PALETTE_FILE_FORMAT_GPL,  /* GIMP palette                        */
-	GIMP_PALETTE_FILE_FORMAT_RIFF_PAL, /* RIFF palette                        */
-	GIMP_PALETTE_FILE_FORMAT_ACT,  /* Photoshop binary color palette      */
-	GIMP_PALETTE_FILE_FORMAT_PSP_PAL, /* JASC's Paint Shop Pro color palette */
-	GIMP_PALETTE_FILE_FORMAT_ACO,  /* Photoshop ACO color file            */
-	GIMP_PALETTE_FILE_FORMAT_CSS   /* Cascaded Stylesheet file (CSS)      */
+typedef enum {
+  GIMP_PALETTE_FILE_FORMAT_UNKNOWN,
+  GIMP_PALETTE_FILE_FORMAT_GPL,      /* GIMP palette                        */
+  GIMP_PALETTE_FILE_FORMAT_RIFF_PAL, /* RIFF palette                        */
+  GIMP_PALETTE_FILE_FORMAT_ACT,      /* Photoshop binary color palette      */
+  GIMP_PALETTE_FILE_FORMAT_PSP_PAL,  /* JASC's Paint Shop Pro color palette */
+  GIMP_PALETTE_FILE_FORMAT_ACO,      /* Photoshop ACO color file            */
+  GIMP_PALETTE_FILE_FORMAT_CSS       /* Cascaded Stylesheet file (CSS)      */
 } GimpPaletteFileFormat;
 
+GList *gimp_palette_load(GimpContext *context, GFile *file, GInputStream *input,
+                         GError **error);
+GList *gimp_palette_load_act(GimpContext *context, GFile *file,
+                             GInputStream *input, GError **error);
+GList *gimp_palette_load_riff(GimpContext *context, GFile *file,
+                              GInputStream *input, GError **error);
+GList *gimp_palette_load_psp(GimpContext *context, GFile *file,
+                             GInputStream *input, GError **error);
+GList *gimp_palette_load_aco(GimpContext *context, GFile *file,
+                             GInputStream *input, GError **error);
+GList *gimp_palette_load_css(GimpContext *context, GFile *file,
+                             GInputStream *input, GError **error);
 
-GList               * gimp_palette_load               (GimpContext   *context,
-                                                       GFile         *file,
-                                                       GInputStream  *input,
-                                                       GError       **error);
-GList               * gimp_palette_load_act           (GimpContext   *context,
-                                                       GFile         *file,
-                                                       GInputStream  *input,
-                                                       GError       **error);
-GList               * gimp_palette_load_riff          (GimpContext   *context,
-                                                       GFile         *file,
-                                                       GInputStream  *input,
-                                                       GError       **error);
-GList               * gimp_palette_load_psp           (GimpContext   *context,
-                                                       GFile         *file,
-                                                       GInputStream  *input,
-                                                       GError       **error);
-GList               * gimp_palette_load_aco           (GimpContext   *context,
-                                                       GFile         *file,
-                                                       GInputStream  *input,
-                                                       GError       **error);
-GList               * gimp_palette_load_css           (GimpContext   *context,
-                                                       GFile         *file,
-                                                       GInputStream  *input,
-                                                       GError       **error);
-
-GimpPaletteFileFormat gimp_palette_load_detect_format (GFile         *file,
-                                                       GInputStream  *input);
-
+GimpPaletteFileFormat gimp_palette_load_detect_format(GFile *file,
+                                                      GInputStream *input);
 
 #endif /* __GIMP_PALETTE_H__ */

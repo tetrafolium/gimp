@@ -18,49 +18,47 @@
 #ifndef __GIMP_OBJECT_QUEUE_H__
 #define __GIMP_OBJECT_QUEUE_H__
 
-
 #include "gimpsubprogress.h"
 
-
-#define GIMP_TYPE_OBJECT_QUEUE            (gimp_object_queue_get_type ())
-#define GIMP_OBJECT_QUEUE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OBJECT_QUEUE, GimpObjectQueue))
-#define GIMP_OBJECT_QUEUE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_OBJECT_QUEUE, GimpObjectQueueClass))
-#define GIMP_IS_OBJECT_QUEUE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OBJECT_QUEUE))
-#define GIMP_IS_OBJECT_QUEUE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_OBJECT_QUEUE))
-#define GIMP_OBJECT_QUEUE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OBJECT_QUEUE, GimpObjectQueueClass))
-
+#define GIMP_TYPE_OBJECT_QUEUE (gimp_object_queue_get_type())
+#define GIMP_OBJECT_QUEUE(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OBJECT_QUEUE, GimpObjectQueue))
+#define GIMP_OBJECT_QUEUE_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OBJECT_QUEUE,                    \
+                           GimpObjectQueueClass))
+#define GIMP_IS_OBJECT_QUEUE(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OBJECT_QUEUE))
+#define GIMP_IS_OBJECT_QUEUE_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OBJECT_QUEUE))
+#define GIMP_OBJECT_QUEUE_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OBJECT_QUEUE,                    \
+                             GimpObjectQueueClass))
 
 typedef struct _GimpObjectQueueClass GimpObjectQueueClass;
 
-struct _GimpObjectQueue
-{
-	GimpSubProgress parent_instance;
+struct _GimpObjectQueue {
+  GimpSubProgress parent_instance;
 
-	GQueue items;
-	gint64 processed_memsize;
-	gint64 total_memsize;
+  GQueue items;
+  gint64 processed_memsize;
+  gint64 total_memsize;
 };
 
-struct _GimpObjectQueueClass
-{
-	GimpSubProgressClass parent_class;
+struct _GimpObjectQueueClass {
+  GimpSubProgressClass parent_class;
 };
 
+GType gimp_object_queue_get_type(void) G_GNUC_CONST;
 
-GType             gimp_object_queue_get_type       (void) G_GNUC_CONST;
+GimpObjectQueue *gimp_object_queue_new(GimpProgress *progress);
 
-GimpObjectQueue * gimp_object_queue_new            (GimpProgress    *progress);
+void gimp_object_queue_clear(GimpObjectQueue *queue);
 
-void              gimp_object_queue_clear          (GimpObjectQueue *queue);
+void gimp_object_queue_push(GimpObjectQueue *queue, gpointer object);
+void gimp_object_queue_push_container(GimpObjectQueue *queue,
+                                      GimpContainer *container);
+void gimp_object_queue_push_list(GimpObjectQueue *queue, GList *list);
 
-void              gimp_object_queue_push           (GimpObjectQueue *queue,
-                                                    gpointer object);
-void              gimp_object_queue_push_container (GimpObjectQueue *queue,
-                                                    GimpContainer   *container);
-void              gimp_object_queue_push_list      (GimpObjectQueue *queue,
-                                                    GList           *list);
-
-gpointer          gimp_object_queue_pop            (GimpObjectQueue *queue);
-
+gpointer gimp_object_queue_pop(GimpObjectQueue *queue);
 
 #endif /* __GIMP_OBJECT_QUEUE_H__ */

@@ -20,69 +20,65 @@
 #ifndef __GIMP_BRUSH_GENERATED_H__
 #define __GIMP_BRUSH_GENERATED_H__
 
-
 #include "gimpbrush.h"
 
-
-#define GIMP_TYPE_BRUSH_GENERATED            (gimp_brush_generated_get_type ())
-#define GIMP_BRUSH_GENERATED(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_GENERATED, GimpBrushGenerated))
-#define GIMP_BRUSH_GENERATED_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_GENERATED, GimpBrushGeneratedClass))
-#define GIMP_IS_BRUSH_GENERATED(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_GENERATED))
-#define GIMP_IS_BRUSH_GENERATED_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_GENERATED))
-#define GIMP_BRUSH_GENERATED_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_GENERATED, GimpBrushGeneratedClass))
-
+#define GIMP_TYPE_BRUSH_GENERATED (gimp_brush_generated_get_type())
+#define GIMP_BRUSH_GENERATED(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_GENERATED,                \
+                              GimpBrushGenerated))
+#define GIMP_BRUSH_GENERATED_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_GENERATED,                 \
+                           GimpBrushGeneratedClass))
+#define GIMP_IS_BRUSH_GENERATED(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_GENERATED))
+#define GIMP_IS_BRUSH_GENERATED_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_GENERATED))
+#define GIMP_BRUSH_GENERATED_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_GENERATED,                 \
+                             GimpBrushGeneratedClass))
 
 typedef struct _GimpBrushGeneratedClass GimpBrushGeneratedClass;
 
-struct _GimpBrushGenerated
-{
-	GimpBrush parent_instance;
+struct _GimpBrushGenerated {
+  GimpBrush parent_instance;
 
-	GimpBrushGeneratedShape shape;
-	gfloat radius;
-	gint spikes;                      /* 2 - 20     */
-	gfloat hardness;                  /* 0.0 - 1.0  */
-	gfloat aspect_ratio;              /* y/x        */
-	gfloat angle;                     /* in degrees */
+  GimpBrushGeneratedShape shape;
+  gfloat radius;
+  gint spikes;         /* 2 - 20     */
+  gfloat hardness;     /* 0.0 - 1.0  */
+  gfloat aspect_ratio; /* y/x        */
+  gfloat angle;        /* in degrees */
 };
 
-struct _GimpBrushGeneratedClass
-{
-	GimpBrushClass parent_class;
+struct _GimpBrushGeneratedClass {
+  GimpBrushClass parent_class;
 };
 
+GType gimp_brush_generated_get_type(void) G_GNUC_CONST;
 
-GType       gimp_brush_generated_get_type     (void) G_GNUC_CONST;
-
-GimpData  * gimp_brush_generated_new          (const gchar             *name,
-                                               GimpBrushGeneratedShape shape,
-                                               gfloat radius,
-                                               gint spikes,
-                                               gfloat hardness,
-                                               gfloat aspect_ratio,
-                                               gfloat angle);
+GimpData *gimp_brush_generated_new(const gchar *name,
+                                   GimpBrushGeneratedShape shape, gfloat radius,
+                                   gint spikes, gfloat hardness,
+                                   gfloat aspect_ratio, gfloat angle);
 
 GimpBrushGeneratedShape
-gimp_brush_generated_set_shape        (GimpBrushGenerated      *brush,
-                                       GimpBrushGeneratedShape shape);
-gfloat  gimp_brush_generated_set_radius       (GimpBrushGenerated      *brush,
-                                               gfloat radius);
-gint    gimp_brush_generated_set_spikes       (GimpBrushGenerated      *brush,
-                                               gint spikes);
-gfloat  gimp_brush_generated_set_hardness     (GimpBrushGenerated      *brush,
-                                               gfloat hardness);
-gfloat  gimp_brush_generated_set_aspect_ratio (GimpBrushGenerated      *brush,
-                                               gfloat ratio);
-gfloat  gimp_brush_generated_set_angle        (GimpBrushGenerated      *brush,
-                                               gfloat angle);
+gimp_brush_generated_set_shape(GimpBrushGenerated *brush,
+                               GimpBrushGeneratedShape shape);
+gfloat gimp_brush_generated_set_radius(GimpBrushGenerated *brush,
+                                       gfloat radius);
+gint gimp_brush_generated_set_spikes(GimpBrushGenerated *brush, gint spikes);
+gfloat gimp_brush_generated_set_hardness(GimpBrushGenerated *brush,
+                                         gfloat hardness);
+gfloat gimp_brush_generated_set_aspect_ratio(GimpBrushGenerated *brush,
+                                             gfloat ratio);
+gfloat gimp_brush_generated_set_angle(GimpBrushGenerated *brush, gfloat angle);
 
 GimpBrushGeneratedShape
-gimp_brush_generated_get_shape        (GimpBrushGenerated      *brush);
-gfloat  gimp_brush_generated_get_radius       (GimpBrushGenerated      *brush);
-gint    gimp_brush_generated_get_spikes       (GimpBrushGenerated      *brush);
-gfloat  gimp_brush_generated_get_hardness     (GimpBrushGenerated      *brush);
-gfloat  gimp_brush_generated_get_aspect_ratio (GimpBrushGenerated      *brush);
-gfloat  gimp_brush_generated_get_angle        (GimpBrushGenerated      *brush);
+gimp_brush_generated_get_shape(GimpBrushGenerated *brush);
+gfloat gimp_brush_generated_get_radius(GimpBrushGenerated *brush);
+gint gimp_brush_generated_get_spikes(GimpBrushGenerated *brush);
+gfloat gimp_brush_generated_get_hardness(GimpBrushGenerated *brush);
+gfloat gimp_brush_generated_get_aspect_ratio(GimpBrushGenerated *brush);
+gfloat gimp_brush_generated_get_angle(GimpBrushGenerated *brush);
 
-
-#endif  /*  __GIMP_BRUSH_GENERATED_H__  */
+#endif /*  __GIMP_BRUSH_GENERATED_H__  */

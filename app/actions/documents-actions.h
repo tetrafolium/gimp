@@ -18,10 +18,7 @@
 #ifndef __DOCUMENTS_ACTIONS_H__
 #define __DOCUMENTS_ACTIONS_H__
 
-
-void   documents_actions_setup  (GimpActionGroup *group);
-void   documents_actions_update (GimpActionGroup *group,
-                                 gpointer data);
-
+void documents_actions_setup(GimpActionGroup *group);
+void documents_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __DOCUMENTS_ACTIONS_H__ */

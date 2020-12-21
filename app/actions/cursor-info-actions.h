@@ -18,10 +18,7 @@
 #ifndef __CURSOR_INFO_ACIONS_H__
 #define __CURSOR_INFO_ACIONS_H__
 
-
-void   cursor_info_actions_setup  (GimpActionGroup *group);
-void   cursor_info_actions_update (GimpActionGroup *group,
-                                   gpointer data);
-
+void cursor_info_actions_setup(GimpActionGroup *group);
+void cursor_info_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __CURSOR_INFO_ACTIONS_H__ */

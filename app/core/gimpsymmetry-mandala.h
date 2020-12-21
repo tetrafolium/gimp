@@ -21,41 +21,39 @@
 #ifndef __GIMP_MANDALA_H__
 #define __GIMP_MANDALA_H__
 
-
 #include "gimpsymmetry.h"
 
-
-#define GIMP_TYPE_MANDALA            (gimp_mandala_get_type ())
-#define GIMP_MANDALA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MANDALA, GimpMandala))
-#define GIMP_MANDALA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MANDALA, GimpMandalaClass))
-#define GIMP_IS_MANDALA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MANDALA))
-#define GIMP_IS_MANDALA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MANDALA))
-#define GIMP_MANDALA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MANDALA, GimpMandalaClass))
-
+#define GIMP_TYPE_MANDALA (gimp_mandala_get_type())
+#define GIMP_MANDALA(obj)                                                      \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MANDALA, GimpMandala))
+#define GIMP_MANDALA_CLASS(klass)                                              \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MANDALA, GimpMandalaClass))
+#define GIMP_IS_MANDALA(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MANDALA))
+#define GIMP_IS_MANDALA_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MANDALA))
+#define GIMP_MANDALA_GET_CLASS(obj)                                            \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MANDALA, GimpMandalaClass))
 
 typedef struct _GimpMandalaClass GimpMandalaClass;
 
-struct _GimpMandala
-{
-	GimpSymmetry parent_instance;
+struct _GimpMandala {
+  GimpSymmetry parent_instance;
 
-	gdouble center_x;
-	gdouble center_y;
-	gint size;
-	gboolean disable_transformation;
-	gboolean enable_reflection;
+  gdouble center_x;
+  gdouble center_y;
+  gint size;
+  gboolean disable_transformation;
+  gboolean enable_reflection;
 
-	GimpGuide    *horizontal_guide;
-	GimpGuide    *vertical_guide;
+  GimpGuide *horizontal_guide;
+  GimpGuide *vertical_guide;
 };
 
-struct _GimpMandalaClass
-{
-	GimpSymmetryClass parent_class;
+struct _GimpMandalaClass {
+  GimpSymmetryClass parent_class;
 };
 
+GType gimp_mandala_get_type(void) G_GNUC_CONST;
 
-GType   gimp_mandala_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_MANDALA_H__  */
+#endif /*  __GIMP_MANDALA_H__  */

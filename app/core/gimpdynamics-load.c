@@ -24,32 +24,25 @@
 
 #include "core-types.h"
 
-#include "gimpdynamics.h"
 #include "gimpdynamics-load.h"
+#include "gimpdynamics.h"
 
+GList *gimp_dynamics_load(GimpContext *context, GFile *file,
+                          GInputStream *input, GError **error) {
+  GimpDynamics *dynamics;
 
-GList *
-gimp_dynamics_load (GimpContext   *context,
-                    GFile         *file,
-                    GInputStream  *input,
-                    GError       **error)
-{
-	GimpDynamics *dynamics;
+  g_return_val_if_fail(G_IS_FILE(file), NULL);
+  g_return_val_if_fail(G_IS_INPUT_STREAM(input), NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	g_return_val_if_fail (G_IS_FILE (file), NULL);
-	g_return_val_if_fail (G_IS_INPUT_STREAM (input), NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  dynamics = g_object_new(GIMP_TYPE_DYNAMICS, NULL);
 
-	dynamics = g_object_new (GIMP_TYPE_DYNAMICS, NULL);
+  if (gimp_config_deserialize_stream(GIMP_CONFIG(dynamics), input, NULL,
+                                     error)) {
+    return g_list_prepend(NULL, dynamics);
+  }
 
-	if (gimp_config_deserialize_stream (GIMP_CONFIG (dynamics),
-	                                    input,
-	                                    NULL, error))
-	{
-		return g_list_prepend (NULL, dynamics);
-	}
+  g_object_unref(dynamics);
 
-	g_object_unref (dynamics);
-
-	return NULL;
+  return NULL;
 }

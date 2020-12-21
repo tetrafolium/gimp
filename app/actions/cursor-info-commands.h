@@ -18,10 +18,7 @@
 #ifndef __CURSOR_INFO_COMMANDS_H__
 #define __CURSOR_INFO_COMMANDS_H__
 
-
-void   cursor_info_sample_merged_cmd_callback (GimpAction *action,
-                                               GVariant   *value,
-                                               gpointer data);
-
+void cursor_info_sample_merged_cmd_callback(GimpAction *action, GVariant *value,
+                                            gpointer data);
 
 #endif /* __CURSOR_INFO_COMMANDS_H__ */

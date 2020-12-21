@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "config.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -29,43 +28,25 @@
 #include "gimpcancelable.h"
 #include "gimpmarshal.h"
 
+enum { CANCEL, LAST_SIGNAL };
 
-enum
-{
-	CANCEL,
-	LAST_SIGNAL
-};
+G_DEFINE_INTERFACE(GimpCancelable, gimp_cancelable, G_TYPE_OBJECT)
 
-
-G_DEFINE_INTERFACE (GimpCancelable, gimp_cancelable, G_TYPE_OBJECT)
-
-
-static guint cancelable_signals[LAST_SIGNAL] = { 0 };
-
+static guint cancelable_signals[LAST_SIGNAL] = {0};
 
 /*  private functions  */
 
-
-static void
-gimp_cancelable_default_init (GimpCancelableInterface *iface)
-{
-	cancelable_signals[CANCEL] =
-		g_signal_new ("cancel",
-		              G_TYPE_FROM_CLASS (iface),
-		              G_SIGNAL_RUN_FIRST,
-		              G_STRUCT_OFFSET (GimpCancelableInterface, cancel),
-		              NULL, NULL, NULL,
-		              G_TYPE_NONE, 0);
+static void gimp_cancelable_default_init(GimpCancelableInterface *iface) {
+  cancelable_signals[CANCEL] =
+      g_signal_new("cancel", G_TYPE_FROM_CLASS(iface), G_SIGNAL_RUN_FIRST,
+                   G_STRUCT_OFFSET(GimpCancelableInterface, cancel), NULL, NULL,
+                   NULL, G_TYPE_NONE, 0);
 }
-
 
 /*  public functions  */
 
+void gimp_cancelable_cancel(GimpCancelable *cancelable) {
+  g_return_if_fail(GIMP_IS_CANCELABLE(cancelable));
 
-void
-gimp_cancelable_cancel (GimpCancelable *cancelable)
-{
-	g_return_if_fail (GIMP_IS_CANCELABLE (cancelable));
-
-	g_signal_emit (cancelable, cancelable_signals[CANCEL], 0);
+  g_signal_emit(cancelable, cancelable_signals[CANCEL], 0);
 }

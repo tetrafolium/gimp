@@ -21,39 +21,30 @@
 
 #include "core-types.h"
 
-#include "gimpbrushpipe.h"
 #include "gimpbrushpipe-save.h"
+#include "gimpbrushpipe.h"
 
+gboolean gimp_brush_pipe_save(GimpData *data, GOutputStream *output,
+                              GError **error) {
+  GimpBrushPipe *pipe = GIMP_BRUSH_PIPE(data);
+  const gchar *name;
+  gint i;
 
-gboolean
-gimp_brush_pipe_save (GimpData       *data,
-                      GOutputStream  *output,
-                      GError        **error)
-{
-	GimpBrushPipe *pipe = GIMP_BRUSH_PIPE (data);
-	const gchar   *name;
-	gint i;
+  name = gimp_object_get_name(pipe);
 
-	name = gimp_object_get_name (pipe);
+  if (!g_output_stream_printf(output, NULL, NULL, error, "%s\n%d %s\n", name,
+                              pipe->n_brushes, pipe->params)) {
+    return FALSE;
+  }
 
-	if (!g_output_stream_printf (output, NULL, NULL, error,
-	                             "%s\n%d %s\n",
-	                             name, pipe->n_brushes, pipe->params))
-	{
-		return FALSE;
-	}
+  for (i = 0; i < pipe->n_brushes; i++) {
+    GimpBrush *brush = pipe->brushes[i];
 
-	for (i = 0; i < pipe->n_brushes; i++)
-	{
-		GimpBrush *brush = pipe->brushes[i];
+    if (brush &&
+        !GIMP_DATA_GET_CLASS(brush)->save(GIMP_DATA(brush), output, error)) {
+      return FALSE;
+    }
+  }
 
-		if (brush &&
-		    !GIMP_DATA_GET_CLASS (brush)->save (GIMP_DATA (brush),
-		                                        output, error))
-		{
-			return FALSE;
-		}
-	}
-
-	return TRUE;
+  return TRUE;
 }

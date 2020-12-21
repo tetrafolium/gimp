@@ -21,63 +21,50 @@
 #ifndef __GIMP_BRUSH_CACHE_H__
 #define __GIMP_BRUSH_CACHE_H__
 
-
 #include "gimpobject.h"
 
-
-#define GIMP_TYPE_BRUSH_CACHE            (gimp_brush_cache_get_type ())
-#define GIMP_BRUSH_CACHE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_CACHE, GimpBrushCache))
-#define GIMP_BRUSH_CACHE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_CACHE, GimpBrushCacheClass))
-#define GIMP_IS_BRUSH_CACHE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_CACHE))
-#define GIMP_IS_BRUSH_CACHE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_CACHE))
-#define GIMP_BRUSH_CACHE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_CACHE, GimpBrushCacheClass))
-
+#define GIMP_TYPE_BRUSH_CACHE (gimp_brush_cache_get_type())
+#define GIMP_BRUSH_CACHE(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_CACHE, GimpBrushCache))
+#define GIMP_BRUSH_CACHE_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_CACHE, GimpBrushCacheClass))
+#define GIMP_IS_BRUSH_CACHE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_CACHE))
+#define GIMP_IS_BRUSH_CACHE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_CACHE))
+#define GIMP_BRUSH_CACHE_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_CACHE, GimpBrushCacheClass))
 
 typedef struct _GimpBrushCacheClass GimpBrushCacheClass;
 
-struct _GimpBrushCache
-{
-	GimpObject parent_instance;
+struct _GimpBrushCache {
+  GimpObject parent_instance;
 
-	GDestroyNotify data_destroy;
+  GDestroyNotify data_destroy;
 
-	GList          *cached_units;
+  GList *cached_units;
 
-	gchar debug_hit;
-	gchar debug_miss;
+  gchar debug_hit;
+  gchar debug_miss;
 };
 
-struct _GimpBrushCacheClass
-{
-	GimpObjectClass parent_class;
+struct _GimpBrushCacheClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_brush_cache_get_type(void) G_GNUC_CONST;
 
-GType            gimp_brush_cache_get_type (void) G_GNUC_CONST;
+GimpBrushCache *gimp_brush_cache_new(GDestroyNotify data_destory,
+                                     gchar debug_hit, gchar debug_miss);
 
-GimpBrushCache * gimp_brush_cache_new      (GDestroyNotify data_destory,
-                                            gchar debug_hit,
-                                            gchar debug_miss);
+void gimp_brush_cache_clear(GimpBrushCache *cache);
 
-void             gimp_brush_cache_clear    (GimpBrushCache *cache);
+gconstpointer gimp_brush_cache_get(GimpBrushCache *cache, gint width,
+                                   gint height, gdouble scale,
+                                   gdouble aspect_ratio, gdouble angle,
+                                   gboolean reflect, gdouble hardness);
+void gimp_brush_cache_add(GimpBrushCache *cache, gpointer data, gint width,
+                          gint height, gdouble scale, gdouble aspect_ratio,
+                          gdouble angle, gboolean reflect, gdouble hardness);
 
-gconstpointer    gimp_brush_cache_get      (GimpBrushCache *cache,
-                                            gint width,
-                                            gint height,
-                                            gdouble scale,
-                                            gdouble aspect_ratio,
-                                            gdouble angle,
-                                            gboolean reflect,
-                                            gdouble hardness);
-void             gimp_brush_cache_add      (GimpBrushCache *cache,
-                                            gpointer data,
-                                            gint width,
-                                            gint height,
-                                            gdouble scale,
-                                            gdouble aspect_ratio,
-                                            gdouble angle,
-                                            gboolean reflect,
-                                            gdouble hardness);
-
-
-#endif  /*  __GIMP_BRUSH_CACHE_H__  */
+#endif /*  __GIMP_BRUSH_CACHE_H__  */

@@ -21,15 +21,12 @@
 #ifndef __CONFIG_TYPES_H__
 #define __CONFIG_TYPES_H__
 
-
 #include "libgimpconfig/gimpconfigtypes.h"
 
 #include "config/config-enums.h"
 
-
-#define GIMP_OPACITY_TRANSPARENT      0.0
-#define GIMP_OPACITY_OPAQUE           1.0
-
+#define GIMP_OPACITY_TRANSPARENT 0.0
+#define GIMP_OPACITY_OPAQUE 1.0
 
 typedef struct _GimpGeglConfig GimpGeglConfig;
 typedef struct _GimpCoreConfig GimpCoreConfig;
@@ -48,12 +45,10 @@ typedef struct _GimpDisplayOptions GimpDisplayOptions;
 typedef struct _GimpGrid GimpGrid;
 typedef struct _GimpTemplate GimpTemplate;
 
-
 /* for now these are defines, but can be turned into something
  * fancier for nicer debugging
  */
-#define gimp_assert             g_assert
+#define gimp_assert g_assert
 #define gimp_assert_not_reached g_assert_not_reached
-
 
 #endif /* __CONFIG_TYPES_H__ */

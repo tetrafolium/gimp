@@ -18,7 +18,6 @@
 #ifndef __DIALOGS_ACTIONS_H__
 #define __DIALOGS_ACTIONS_H__
 
-
 /*  this check is needed for the extern declaration below to be correct  */
 #ifndef __GIMP_ACTION_GROUP_H__
 #error "widgets/gimpactiongroup.h must be included prior to dialogs-actions.h"
@@ -27,12 +26,9 @@
 extern const GimpStringActionEntry dialogs_dockable_actions[];
 extern gint n_dialogs_dockable_actions;
 
+void dialogs_actions_setup(GimpActionGroup *group);
+void dialogs_actions_update(GimpActionGroup *group, gpointer data);
 
-void       dialogs_actions_setup          (GimpActionGroup *group);
-void       dialogs_actions_update         (GimpActionGroup *group,
-                                           gpointer data);
-
-gboolean   dialogs_actions_toolbox_exists (Gimp            *gimp);
-
+gboolean dialogs_actions_toolbox_exists(Gimp *gimp);
 
 #endif /* __DIALOGS_ACTIONS_H__ */

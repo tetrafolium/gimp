@@ -24,21 +24,15 @@
 
 #include "core-types.h"
 
-#include "gimpdynamics.h"
 #include "gimpdynamics-save.h"
+#include "gimpdynamics.h"
 
+gboolean gimp_dynamics_save(GimpData *data, GOutputStream *output,
+                            GError **error) {
+  g_return_val_if_fail(GIMP_IS_DYNAMICS(data), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-gboolean
-gimp_dynamics_save (GimpData       *data,
-                    GOutputStream  *output,
-                    GError        **error)
-{
-	g_return_val_if_fail (GIMP_IS_DYNAMICS (data), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-	return gimp_config_serialize_to_stream (GIMP_CONFIG (data),
-	                                        output,
-	                                        "GIMP dynamics file",
-	                                        "end of GIMP dynamics file",
-	                                        NULL, error);
+  return gimp_config_serialize_to_stream(
+      GIMP_CONFIG(data), output, "GIMP dynamics file",
+      "end of GIMP dynamics file", NULL, error);
 }

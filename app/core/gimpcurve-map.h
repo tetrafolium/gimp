@@ -18,17 +18,10 @@
 #ifndef __GIMP_CURVE_MAP_H__
 #define __GIMP_CURVE_MAP_H__
 
-
-gdouble         gimp_curve_map_value         (GimpCurve     *curve,
-                                              gdouble value);
-void            gimp_curve_map_pixels        (GimpCurve     *curve_colors,
-                                              GimpCurve     *curve_red,
-                                              GimpCurve     *curve_green,
-                                              GimpCurve     *curve_blue,
-                                              GimpCurve     *curve_alpha,
-                                              gfloat        *src,
-                                              gfloat        *dest,
-                                              glong samples);
-
+gdouble gimp_curve_map_value(GimpCurve *curve, gdouble value);
+void gimp_curve_map_pixels(GimpCurve *curve_colors, GimpCurve *curve_red,
+                           GimpCurve *curve_green, GimpCurve *curve_blue,
+                           GimpCurve *curve_alpha, gfloat *src, gfloat *dest,
+                           glong samples);
 
 #endif /* __GIMP_CURVE_MAP_H__ */

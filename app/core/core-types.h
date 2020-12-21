@@ -18,10 +18,9 @@
 #ifndef __CORE_TYPES_H__
 #define __CORE_TYPES_H__
 
-
 #include "libgimpbase/gimpbasetypes.h"
-#include "libgimpmath/gimpmathtypes.h"
 #include "libgimpcolor/gimpcolortypes.h"
+#include "libgimpmath/gimpmathtypes.h"
 #include "libgimpmodule/gimpmoduletypes.h"
 #include "libgimpthumb/gimpthumb-types.h"
 
@@ -29,61 +28,55 @@
 
 #include "core/core-enums.h"
 
-
 /*  former base/ defines  */
 
-#define MAX_CHANNELS  4
+#define MAX_CHANNELS 4
 
-#define RED           0
-#define GREEN         1
-#define BLUE          2
-#define ALPHA         3
+#define RED 0
+#define GREEN 1
+#define BLUE 2
+#define ALPHA 3
 
-#define GRAY          0
-#define ALPHA_G       1
+#define GRAY 0
+#define ALPHA_G 1
 
-#define INDEXED       0
-#define ALPHA_I       1
-
+#define INDEXED 0
+#define ALPHA_I 1
 
 /*  defines  */
 
-#define GIMP_COORDS_MIN_PRESSURE      0.0
-#define GIMP_COORDS_MAX_PRESSURE      1.0
-#define GIMP_COORDS_DEFAULT_PRESSURE  1.0
+#define GIMP_COORDS_MIN_PRESSURE 0.0
+#define GIMP_COORDS_MAX_PRESSURE 1.0
+#define GIMP_COORDS_DEFAULT_PRESSURE 1.0
 
-#define GIMP_COORDS_MIN_TILT         -1.0
-#define GIMP_COORDS_MAX_TILT          1.0
-#define GIMP_COORDS_DEFAULT_TILT      0.0
+#define GIMP_COORDS_MIN_TILT -1.0
+#define GIMP_COORDS_MAX_TILT 1.0
+#define GIMP_COORDS_DEFAULT_TILT 0.0
 
-#define GIMP_COORDS_MIN_WHEEL         0.0
-#define GIMP_COORDS_MAX_WHEEL         1.0
-#define GIMP_COORDS_DEFAULT_WHEEL     0.5
+#define GIMP_COORDS_MIN_WHEEL 0.0
+#define GIMP_COORDS_MAX_WHEEL 1.0
+#define GIMP_COORDS_DEFAULT_WHEEL 0.5
 
-#define GIMP_COORDS_DEFAULT_DISTANCE  0.0
-#define GIMP_COORDS_DEFAULT_ROTATION  0.0
-#define GIMP_COORDS_DEFAULT_SLIDER    0.0
+#define GIMP_COORDS_DEFAULT_DISTANCE 0.0
+#define GIMP_COORDS_DEFAULT_ROTATION 0.0
+#define GIMP_COORDS_DEFAULT_SLIDER 0.0
 
-#define GIMP_COORDS_DEFAULT_VELOCITY  0.0
+#define GIMP_COORDS_DEFAULT_VELOCITY 0.0
 
 #define GIMP_COORDS_DEFAULT_DIRECTION 0.0
 
-#define GIMP_COORDS_DEFAULT_XSCALE    1.0
-#define GIMP_COORDS_DEFAULT_YSCALE    1.0
+#define GIMP_COORDS_DEFAULT_XSCALE 1.0
+#define GIMP_COORDS_DEFAULT_YSCALE 1.0
 
-#define GIMP_COORDS_DEFAULT_VALUES    { 0.0, 0.0, \
-		                        GIMP_COORDS_DEFAULT_PRESSURE, \
-		                        GIMP_COORDS_DEFAULT_TILT,     \
-		                        GIMP_COORDS_DEFAULT_TILT,     \
-		                        GIMP_COORDS_DEFAULT_WHEEL,    \
-		                        GIMP_COORDS_DEFAULT_DISTANCE, \
-		                        GIMP_COORDS_DEFAULT_ROTATION, \
-		                        GIMP_COORDS_DEFAULT_SLIDER,   \
-		                        GIMP_COORDS_DEFAULT_VELOCITY, \
-		                        GIMP_COORDS_DEFAULT_DIRECTION, \
-		                        GIMP_COORDS_DEFAULT_XSCALE,   \
-		                        GIMP_COORDS_DEFAULT_YSCALE }
-
+#define GIMP_COORDS_DEFAULT_VALUES                                             \
+  {                                                                            \
+    0.0, 0.0, GIMP_COORDS_DEFAULT_PRESSURE, GIMP_COORDS_DEFAULT_TILT,          \
+        GIMP_COORDS_DEFAULT_TILT, GIMP_COORDS_DEFAULT_WHEEL,                   \
+        GIMP_COORDS_DEFAULT_DISTANCE, GIMP_COORDS_DEFAULT_ROTATION,            \
+        GIMP_COORDS_DEFAULT_SLIDER, GIMP_COORDS_DEFAULT_VELOCITY,              \
+        GIMP_COORDS_DEFAULT_DIRECTION, GIMP_COORDS_DEFAULT_XSCALE,             \
+        GIMP_COORDS_DEFAULT_YSCALE                                             \
+  }
 
 /*  base classes  */
 
@@ -98,7 +91,6 @@ typedef struct _GimpImage GimpImage;
 
 typedef struct _GimpDisplay GimpDisplay;
 
-
 /*  containers  */
 
 typedef struct _GimpContainer GimpContainer;
@@ -112,11 +104,9 @@ typedef struct _GimpLayerStack GimpLayerStack;
 typedef struct _GimpTaggedContainer GimpTaggedContainer;
 typedef struct _GimpTreeProxy GimpTreeProxy;
 
-
 /*  not really a container  */
 
 typedef struct _GimpItemTree GimpItemTree;
-
 
 /*  context objects  */
 
@@ -125,14 +115,12 @@ typedef struct _GimpFillOptions GimpFillOptions;
 typedef struct _GimpStrokeOptions GimpStrokeOptions;
 typedef struct _GimpToolOptions GimpToolOptions;
 
-
 /*  info objects  */
 
 typedef struct _GimpPaintInfo GimpPaintInfo;
 typedef struct _GimpToolGroup GimpToolGroup;
 typedef struct _GimpToolInfo GimpToolInfo;
 typedef struct _GimpToolItem GimpToolItem;
-
 
 /*  data objects  */
 
@@ -156,7 +144,6 @@ typedef struct _GimpPatternClipboard GimpPatternClipboard;
 typedef struct _GimpToolPreset GimpToolPreset;
 typedef struct _GimpTagCache GimpTagCache;
 
-
 /*  drawable objects  */
 
 typedef struct _GimpDrawable GimpDrawable;
@@ -166,12 +153,10 @@ typedef struct _GimpSelection GimpSelection;
 typedef struct _GimpLayer GimpLayer;
 typedef struct _GimpGroupLayer GimpGroupLayer;
 
-
 /*  auxiliary image items  */
 
 typedef struct _GimpGuide GimpGuide;
 typedef struct _GimpSamplePoint GimpSamplePoint;
-
 
 /*  undo objects  */
 
@@ -179,14 +164,12 @@ typedef struct _GimpUndo GimpUndo;
 typedef struct _GimpUndoStack GimpUndoStack;
 typedef struct _GimpUndoAccumulator GimpUndoAccumulator;
 
-
 /* Symmetry transformations */
 
 typedef struct _GimpSymmetry GimpSymmetry;
 typedef struct _GimpMirror GimpMirror;
 typedef struct _GimpTiling GimpTiling;
 typedef struct _GimpMandala GimpMandala;
-
 
 /*  misc objects  */
 
@@ -214,16 +197,14 @@ typedef struct _GimpTreeHandler GimpTreeHandler;
 typedef struct _GimpTriviallyCancelableWaitable GimpTriviallyCancelableWaitable;
 typedef struct _GimpUncancelableWaitable GimpUncancelableWaitable;
 
-
 /*  interfaces  */
 
-typedef struct _GimpCancelable GimpCancelable;                   /* dummy typedef */
-typedef struct _GimpPickable GimpPickable;                       /* dummy typedef */
-typedef struct _GimpProgress GimpProgress;                       /* dummy typedef */
-typedef struct _GimpProjectable GimpProjectable;                 /* dummy typedef */
-typedef struct _GimpTagged GimpTagged;                           /* dummy typedef */
-typedef struct _GimpWaitable GimpWaitable;                       /* dummy typedef */
-
+typedef struct _GimpCancelable GimpCancelable;   /* dummy typedef */
+typedef struct _GimpPickable GimpPickable;       /* dummy typedef */
+typedef struct _GimpProgress GimpProgress;       /* dummy typedef */
+typedef struct _GimpProjectable GimpProjectable; /* dummy typedef */
+typedef struct _GimpTagged GimpTagged;           /* dummy typedef */
+typedef struct _GimpWaitable GimpWaitable;       /* dummy typedef */
 
 /*  non-object types  */
 
@@ -235,7 +216,7 @@ typedef struct _GimpGradientSegment GimpGradientSegment;
 typedef struct _GimpPaletteEntry GimpPaletteEntry;
 typedef struct _GimpScanConvert GimpScanConvert;
 typedef struct _GimpTempBuf GimpTempBuf;
-typedef         guint32 GimpTattoo;
+typedef guint32 GimpTattoo;
 
 /* The following hack is made so that we can reuse the definition
  * the cairo definition of cairo_path_t without having to translate
@@ -251,71 +232,62 @@ typedef         guint32 GimpTattoo;
 #ifdef CAIRO_VERSION
 typedef cairo_path_t GimpBezierDesc;
 #else
-typedef void * GimpBezierDesc;
+typedef void *GimpBezierDesc;
 #endif
-
 
 /*  functions  */
 
-typedef void (* GimpInitStatusFunc)    (const gchar *text1,
-                                        const gchar *text2,
-                                        gdouble percentage);
+typedef void (*GimpInitStatusFunc)(const gchar *text1, const gchar *text2,
+                                   gdouble percentage);
 
-typedef gboolean (* GimpObjectFilterFunc)  (GimpObject  *object,
-                                            gpointer user_data);
+typedef gboolean (*GimpObjectFilterFunc)(GimpObject *object,
+                                         gpointer user_data);
 
-typedef gint64 (* GimpMemsizeFunc)       (gpointer instance,
-                                          gint64      *gui_size);
+typedef gint64 (*GimpMemsizeFunc)(gpointer instance, gint64 *gui_size);
 
-typedef void (* GimpRunAsyncFunc)      (GimpAsync   *async,
-                                        gpointer user_data);
-
+typedef void (*GimpRunAsyncFunc)(GimpAsync *async, gpointer user_data);
 
 /*  structs  */
 
-struct _GimpCoords
-{
-	/* axes as reported by the device */
-	gdouble x;
-	gdouble y;
-	gdouble pressure;
-	gdouble xtilt;
-	gdouble ytilt;
-	gdouble wheel;
-	gdouble distance;
-	gdouble rotation;
-	gdouble slider;
+struct _GimpCoords {
+  /* axes as reported by the device */
+  gdouble x;
+  gdouble y;
+  gdouble pressure;
+  gdouble xtilt;
+  gdouble ytilt;
+  gdouble wheel;
+  gdouble distance;
+  gdouble rotation;
+  gdouble slider;
 
-	/* synthetic axes */
-	gdouble velocity;
-	gdouble direction;
+  /* synthetic axes */
+  gdouble velocity;
+  gdouble direction;
 
-	/* view transform */
-	gdouble xscale; /* the view scale                */
-	gdouble yscale;
-	gdouble angle; /* the view rotation angle       */
-	gboolean reflect; /* whether the view is reflected */
+  /* view transform */
+  gdouble xscale; /* the view scale                */
+  gdouble yscale;
+  gdouble angle;    /* the view rotation angle       */
+  gboolean reflect; /* whether the view is reflected */
 };
 
 /*  temp hack as replacement for GdkSegment  */
 
 typedef struct _GimpSegment GimpSegment;
 
-struct _GimpSegment
-{
-	gint x1;
-	gint y1;
-	gint x2;
-	gint y2;
+struct _GimpSegment {
+  gint x1;
+  gint y1;
+  gint x2;
+  gint y2;
 };
-
 
 #include "gegl/gimp-gegl-types.h"
 #include "paint/paint-types.h"
-#include "text/text-types.h"
-#include "vectors/vectors-types.h"
 #include "pdb/pdb-types.h"
 #include "plug-in/plug-in-types.h"
-
+#include "text/text-types.h"
+#include "vectors/vectors-types.h"
 
 #endif /* __CORE_TYPES_H__ */

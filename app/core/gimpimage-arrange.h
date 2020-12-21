@@ -18,12 +18,9 @@
 #ifndef __GIMP_IMAGE_ARRANGE_H__
 #define __GIMP_IMAGE_ARRANGE_H__
 
+void gimp_image_arrange_objects(GimpImage *image, GList *list,
+                                GimpAlignmentType alignment, GObject *reference,
+                                GimpAlignmentType reference_alignment,
+                                gint offset);
 
-void gimp_image_arrange_objects (GimpImage         *image,
-                                 GList             *list,
-                                 GimpAlignmentType alignment,
-                                 GObject           *reference,
-                                 GimpAlignmentType reference_alignment,
-                                 gint offset);
-
-#endif  /*  __GIMP_IMAGE_ARRANGE_H__  */
+#endif /*  __GIMP_IMAGE_ARRANGE_H__  */

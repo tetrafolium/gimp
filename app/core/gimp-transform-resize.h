@@ -18,17 +18,9 @@
 #ifndef __GIMP_TRANSFORM_RESIZE_H__
 #define __GIMP_TRANSFORM_RESIZE_H__
 
+gboolean gimp_transform_resize_boundary(const GimpMatrix3 *inv,
+                                        GimpTransformResize resize, gdouble u1,
+                                        gdouble v1, gdouble u2, gdouble v2,
+                                        gint *x1, gint *y1, gint *x2, gint *y2);
 
-gboolean   gimp_transform_resize_boundary (const GimpMatrix3   *inv,
-                                           GimpTransformResize resize,
-                                           gdouble u1,
-                                           gdouble v1,
-                                           gdouble u2,
-                                           gdouble v2,
-                                           gint                *x1,
-                                           gint                *y1,
-                                           gint                *x2,
-                                           gint                *y2);
-
-
-#endif  /*  __GIMP_TRANSFORM_RESIZE_H__  */
+#endif /*  __GIMP_TRANSFORM_RESIZE_H__  */

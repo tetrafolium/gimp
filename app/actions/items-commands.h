@@ -18,55 +18,32 @@
 #ifndef __ITEMS_COMMANDS_H__
 #define __ITEMS_COMMANDS_H__
 
+void items_visible_cmd_callback(GimpAction *action, GVariant *value,
+                                GimpImage *image, GimpItem *item);
+void items_linked_cmd_callback(GimpAction *action, GVariant *value,
+                               GimpImage *image, GimpItem *item);
+void items_lock_content_cmd_callback(GimpAction *action, GVariant *value,
+                                     GimpImage *image, GimpItem *item);
+void items_lock_position_cmd_callback(GimpAction *action, GVariant *value,
+                                      GimpImage *image, GimpItem *item);
 
-void   items_visible_cmd_callback          (GimpAction   *action,
-                                            GVariant     *value,
-                                            GimpImage    *image,
-                                            GimpItem     *item);
-void   items_linked_cmd_callback           (GimpAction   *action,
-                                            GVariant     *value,
-                                            GimpImage    *image,
-                                            GimpItem     *item);
-void   items_lock_content_cmd_callback     (GimpAction   *action,
-                                            GVariant     *value,
-                                            GimpImage    *image,
-                                            GimpItem     *item);
-void   items_lock_position_cmd_callback    (GimpAction   *action,
-                                            GVariant     *value,
-                                            GimpImage    *image,
-                                            GimpItem     *item);
+void items_color_tag_cmd_callback(GimpAction *action, GimpImage *image,
+                                  GimpItem *item, GimpColorTag color_tag);
 
-void   items_color_tag_cmd_callback        (GimpAction   *action,
-                                            GimpImage    *image,
-                                            GimpItem     *item,
-                                            GimpColorTag color_tag);
+void items_fill_cmd_callback(GimpAction *action, GimpImage *image,
+                             GimpItem *item, const gchar *dialog_key,
+                             const gchar *dialog_title,
+                             const gchar *dialog_icon_name,
+                             const gchar *dialog_help_id, gpointer data);
+void items_fill_last_vals_cmd_callback(GimpAction *action, GimpImage *image,
+                                       GimpItem *item, gpointer data);
 
-void   items_fill_cmd_callback             (GimpAction   *action,
-                                            GimpImage    *image,
-                                            GimpItem     *item,
-                                            const gchar  *dialog_key,
-                                            const gchar  *dialog_title,
-                                            const gchar  *dialog_icon_name,
-                                            const gchar  *dialog_help_id,
-                                            gpointer data);
-void   items_fill_last_vals_cmd_callback   (GimpAction   *action,
-                                            GimpImage    *image,
-                                            GimpItem     *item,
-                                            gpointer data);
-
-void   items_stroke_cmd_callback           (GimpAction   *action,
-                                            GimpImage    *image,
-                                            GimpItem     *item,
-                                            const gchar  *dialog_key,
-                                            const gchar  *dialog_title,
-                                            const gchar  *dialog_icon_name,
-                                            const gchar  *dialog_help_id,
-                                            gpointer data);
-void   items_stroke_last_vals_cmd_callback (GimpAction   *action,
-                                            GimpImage    *image,
-                                            GimpItem     *item,
-                                            gpointer data);
-
-
+void items_stroke_cmd_callback(GimpAction *action, GimpImage *image,
+                               GimpItem *item, const gchar *dialog_key,
+                               const gchar *dialog_title,
+                               const gchar *dialog_icon_name,
+                               const gchar *dialog_help_id, gpointer data);
+void items_stroke_last_vals_cmd_callback(GimpAction *action, GimpImage *image,
+                                         GimpItem *item, gpointer data);
 
 #endif /* __ITEMS_COMMANDS_H__ */

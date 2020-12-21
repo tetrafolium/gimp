@@ -21,35 +21,33 @@
 #ifndef __GIMP_GEGL_CONFIG_H__
 #define __GIMP_GEGL_CONFIG_H__
 
-
-#define GIMP_TYPE_GEGL_CONFIG            (gimp_gegl_config_get_type ())
-#define GIMP_GEGL_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GEGL_CONFIG, GimpGeglConfig))
-#define GIMP_GEGL_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_GEGL_CONFIG, GimpGeglConfigClass))
-#define GIMP_IS_GEGL_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_GEGL_CONFIG))
-#define GIMP_IS_GEGL_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_GEGL_CONFIG))
-
+#define GIMP_TYPE_GEGL_CONFIG (gimp_gegl_config_get_type())
+#define GIMP_GEGL_CONFIG(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_GEGL_CONFIG, GimpGeglConfig))
+#define GIMP_GEGL_CONFIG_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_GEGL_CONFIG, GimpGeglConfigClass))
+#define GIMP_IS_GEGL_CONFIG(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_GEGL_CONFIG))
+#define GIMP_IS_GEGL_CONFIG_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_GEGL_CONFIG))
 
 typedef struct _GimpGeglConfigClass GimpGeglConfigClass;
 
-struct _GimpGeglConfig
-{
-	GObject parent_instance;
+struct _GimpGeglConfig {
+  GObject parent_instance;
 
-	gchar    *temp_path;
-	gchar    *swap_path;
-	gchar    *swap_compression;
-	gint num_processors;
-	guint64 tile_cache_size;
-	gboolean use_opencl;
+  gchar *temp_path;
+  gchar *swap_path;
+  gchar *swap_compression;
+  gint num_processors;
+  guint64 tile_cache_size;
+  gboolean use_opencl;
 };
 
-struct _GimpGeglConfigClass
-{
-	GObjectClass parent_class;
+struct _GimpGeglConfigClass {
+  GObjectClass parent_class;
 };
 
-
-GType  gimp_gegl_config_get_type (void) G_GNUC_CONST;
-
+GType gimp_gegl_config_get_type(void) G_GNUC_CONST;
 
 #endif /* GIMP_GEGL_CONFIG_H__ */

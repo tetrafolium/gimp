@@ -18,15 +18,8 @@
 #ifndef __GIMP_BRUSH_BOUNDARY_H__
 #define __GIMP_BRUSH_BOUNDARY_H__
 
-
-GimpBezierDesc * gimp_brush_real_transform_boundary (GimpBrush *brush,
-                                                     gdouble scale,
-                                                     gdouble aspect_ratio,
-                                                     gdouble angle,
-                                                     gboolean reflect,
-                                                     gdouble hardness,
-                                                     gint      *width,
-                                                     gint      *height);
-
+GimpBezierDesc *gimp_brush_real_transform_boundary(
+    GimpBrush *brush, gdouble scale, gdouble aspect_ratio, gdouble angle,
+    gboolean reflect, gdouble hardness, gint *width, gint *height);
 
 #endif /* __GIMP_BRUSH_BOUNDARY_H__ */

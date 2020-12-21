@@ -18,44 +18,41 @@
 #ifndef __GIMP_DISPLAY_H__
 #define __GIMP_DISPLAY_H__
 
-
 #include "gimpobject.h"
 
-
-#define GIMP_TYPE_DISPLAY            (gimp_display_get_type ())
-#define GIMP_DISPLAY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DISPLAY, GimpDisplay))
-#define GIMP_DISPLAY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DISPLAY, GimpDisplayClass))
-#define GIMP_IS_DISPLAY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DISPLAY))
-#define GIMP_IS_DISPLAY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DISPLAY))
-#define GIMP_DISPLAY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DISPLAY, GimpDisplayClass))
-
+#define GIMP_TYPE_DISPLAY (gimp_display_get_type())
+#define GIMP_DISPLAY(obj)                                                      \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DISPLAY, GimpDisplay))
+#define GIMP_DISPLAY_CLASS(klass)                                              \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DISPLAY, GimpDisplayClass))
+#define GIMP_IS_DISPLAY(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DISPLAY))
+#define GIMP_IS_DISPLAY_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DISPLAY))
+#define GIMP_DISPLAY_GET_CLASS(obj)                                            \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DISPLAY, GimpDisplayClass))
 
 typedef struct _GimpDisplayClass GimpDisplayClass;
 typedef struct _GimpDisplayPrivate GimpDisplayPrivate;
 
-struct _GimpDisplay
-{
-	GimpObject parent_instance;
+struct _GimpDisplay {
+  GimpObject parent_instance;
 
-	Gimp               *gimp;
-	GimpDisplayConfig  *config;
+  Gimp *gimp;
+  GimpDisplayConfig *config;
 
-	GimpDisplayPrivate *priv;
+  GimpDisplayPrivate *priv;
 };
 
-struct _GimpDisplayClass
-{
-	GimpObjectClass parent_class;
+struct _GimpDisplayClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_display_get_type(void) G_GNUC_CONST;
 
-GType         gimp_display_get_type  (void) G_GNUC_CONST;
+gint gimp_display_get_id(GimpDisplay *display);
+GimpDisplay *gimp_display_get_by_id(Gimp *gimp, gint id);
 
-gint          gimp_display_get_id    (GimpDisplay *display);
-GimpDisplay * gimp_display_get_by_id (Gimp        *gimp,
-                                      gint id);
-
-Gimp        * gimp_display_get_gimp  (GimpDisplay *display);
-
+Gimp *gimp_display_get_gimp(GimpDisplay *display);
 
 #endif /*  __GIMP_DISPLAY_H__  */

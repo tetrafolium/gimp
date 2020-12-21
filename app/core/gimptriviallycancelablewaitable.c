@@ -29,64 +29,55 @@
 #include "gimptriviallycancelablewaitable.h"
 #include "gimpwaitable.h"
 
-
 /*  local function prototypes  */
 
-static void   gimp_trivially_cancelable_waitable_cancelable_iface_init (GimpCancelableInterface *iface);
+static void gimp_trivially_cancelable_waitable_cancelable_iface_init(
+    GimpCancelableInterface *iface);
 
-static void   gimp_trivially_cancelable_waitable_cancel                (GimpCancelable          *cancelable);
+static void
+gimp_trivially_cancelable_waitable_cancel(GimpCancelable *cancelable);
 
-
-G_DEFINE_TYPE_WITH_CODE (GimpTriviallyCancelableWaitable, gimp_trivially_cancelable_waitable, GIMP_TYPE_UNCANCELABLE_WAITABLE,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CANCELABLE,
-                                                gimp_trivially_cancelable_waitable_cancelable_iface_init))
+G_DEFINE_TYPE_WITH_CODE(
+    GimpTriviallyCancelableWaitable, gimp_trivially_cancelable_waitable,
+    GIMP_TYPE_UNCANCELABLE_WAITABLE,
+    G_IMPLEMENT_INTERFACE(
+        GIMP_TYPE_CANCELABLE,
+        gimp_trivially_cancelable_waitable_cancelable_iface_init))
 
 #define parent_class gimp_trivially_cancelable_waitable_parent_class
 
-
 /*  private functions  */
 
+static void gimp_trivially_cancelable_waitable_class_init(
+    GimpTriviallyCancelableWaitableClass *klass) {}
 
-static void
-gimp_trivially_cancelable_waitable_class_init (GimpTriviallyCancelableWaitableClass *klass)
-{
+static void gimp_trivially_cancelable_waitable_cancelable_iface_init(
+    GimpCancelableInterface *iface) {
+  iface->cancel = gimp_trivially_cancelable_waitable_cancel;
 }
 
-static void
-gimp_trivially_cancelable_waitable_cancelable_iface_init (GimpCancelableInterface *iface)
-{
-	iface->cancel = gimp_trivially_cancelable_waitable_cancel;
-}
+static void gimp_trivially_cancelable_waitable_init(
+    GimpTriviallyCancelableWaitable *trivially_cancelable_waitable) {}
 
 static void
-gimp_trivially_cancelable_waitable_init (GimpTriviallyCancelableWaitable *trivially_cancelable_waitable)
-{
+gimp_trivially_cancelable_waitable_cancel(GimpCancelable *cancelable) {
+  GimpUncancelableWaitable *uncancelable_waitable =
+      GIMP_UNCANCELABLE_WAITABLE(cancelable);
+
+  g_clear_object(&uncancelable_waitable->waitable);
 }
-
-static void
-gimp_trivially_cancelable_waitable_cancel (GimpCancelable *cancelable)
-{
-	GimpUncancelableWaitable *uncancelable_waitable =
-		GIMP_UNCANCELABLE_WAITABLE (cancelable);
-
-	g_clear_object (&uncancelable_waitable->waitable);
-}
-
 
 /*  public functions  */
 
+GimpWaitable *gimp_trivially_cancelable_waitable_new(GimpWaitable *waitable) {
+  GimpUncancelableWaitable *uncancelable_waitable;
 
-GimpWaitable *
-gimp_trivially_cancelable_waitable_new (GimpWaitable *waitable)
-{
-	GimpUncancelableWaitable *uncancelable_waitable;
+  g_return_val_if_fail(GIMP_IS_WAITABLE(waitable), NULL);
 
-	g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), NULL);
+  uncancelable_waitable =
+      g_object_new(GIMP_TYPE_TRIVIALLY_CANCELABLE_WAITABLE, NULL);
 
-	uncancelable_waitable = g_object_new (GIMP_TYPE_TRIVIALLY_CANCELABLE_WAITABLE,
-	                                      NULL);
+  uncancelable_waitable->waitable = g_object_ref(waitable);
 
-	uncancelable_waitable->waitable = g_object_ref (waitable);
-
-	return GIMP_WAITABLE (uncancelable_waitable);
+  return GIMP_WAITABLE(uncancelable_waitable);
 }

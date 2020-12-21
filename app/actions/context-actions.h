@@ -18,10 +18,7 @@
 #ifndef __CONTEXT_ACTIONS_H__
 #define __CONTEXT_ACTIONS_H__
 
-
-void   context_actions_setup  (GimpActionGroup *group);
-void   context_actions_update (GimpActionGroup *group,
-                               gpointer data);
-
+void context_actions_setup(GimpActionGroup *group);
+void context_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __CONTEXT_ACTIONS_H__ */

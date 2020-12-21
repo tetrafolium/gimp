@@ -27,116 +27,91 @@
 #include "gimp.h"
 #include "gimppaintinfo.h"
 
+static void gimp_paint_info_dispose(GObject *object);
+static void gimp_paint_info_finalize(GObject *object);
+static gchar *gimp_paint_info_get_description(GimpViewable *viewable,
+                                              gchar **tooltip);
 
-static void    gimp_paint_info_dispose         (GObject       *object);
-static void    gimp_paint_info_finalize        (GObject       *object);
-static gchar * gimp_paint_info_get_description (GimpViewable  *viewable,
-                                                gchar        **tooltip);
-
-
-G_DEFINE_TYPE (GimpPaintInfo, gimp_paint_info, GIMP_TYPE_VIEWABLE)
+G_DEFINE_TYPE(GimpPaintInfo, gimp_paint_info, GIMP_TYPE_VIEWABLE)
 
 #define parent_class gimp_paint_info_parent_class
 
+static void gimp_paint_info_class_init(GimpPaintInfoClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS(klass);
 
-static void
-gimp_paint_info_class_init (GimpPaintInfoClass *klass)
-{
-	GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
-	GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
+  object_class->dispose = gimp_paint_info_dispose;
+  object_class->finalize = gimp_paint_info_finalize;
 
-	object_class->dispose           = gimp_paint_info_dispose;
-	object_class->finalize          = gimp_paint_info_finalize;
-
-	viewable_class->get_description = gimp_paint_info_get_description;
+  viewable_class->get_description = gimp_paint_info_get_description;
 }
 
-static void
-gimp_paint_info_init (GimpPaintInfo *paint_info)
-{
-	paint_info->gimp          = NULL;
-	paint_info->paint_type    = G_TYPE_NONE;
-	paint_info->blurb         = NULL;
-	paint_info->paint_options = NULL;
+static void gimp_paint_info_init(GimpPaintInfo *paint_info) {
+  paint_info->gimp = NULL;
+  paint_info->paint_type = G_TYPE_NONE;
+  paint_info->blurb = NULL;
+  paint_info->paint_options = NULL;
 }
 
-static void
-gimp_paint_info_dispose (GObject *object)
-{
-	GimpPaintInfo *paint_info = GIMP_PAINT_INFO (object);
+static void gimp_paint_info_dispose(GObject *object) {
+  GimpPaintInfo *paint_info = GIMP_PAINT_INFO(object);
 
-	if (paint_info->paint_options)
-	{
-		g_object_run_dispose (G_OBJECT (paint_info->paint_options));
-		g_clear_object (&paint_info->paint_options);
-	}
+  if (paint_info->paint_options) {
+    g_object_run_dispose(G_OBJECT(paint_info->paint_options));
+    g_clear_object(&paint_info->paint_options);
+  }
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+  G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
-static void
-gimp_paint_info_finalize (GObject *object)
-{
-	GimpPaintInfo *paint_info = GIMP_PAINT_INFO (object);
+static void gimp_paint_info_finalize(GObject *object) {
+  GimpPaintInfo *paint_info = GIMP_PAINT_INFO(object);
 
-	g_clear_pointer (&paint_info->blurb, g_free);
+  g_clear_pointer(&paint_info->blurb, g_free);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-static gchar *
-gimp_paint_info_get_description (GimpViewable  *viewable,
-                                 gchar        **tooltip)
-{
-	GimpPaintInfo *paint_info = GIMP_PAINT_INFO (viewable);
+static gchar *gimp_paint_info_get_description(GimpViewable *viewable,
+                                              gchar **tooltip) {
+  GimpPaintInfo *paint_info = GIMP_PAINT_INFO(viewable);
 
-	return g_strdup (paint_info->blurb);
+  return g_strdup(paint_info->blurb);
 }
 
-GimpPaintInfo *
-gimp_paint_info_new (Gimp        *gimp,
-                     GType paint_type,
-                     GType paint_options_type,
-                     const gchar *identifier,
-                     const gchar *blurb,
-                     const gchar *icon_name)
-{
-	GimpPaintInfo *paint_info;
+GimpPaintInfo *gimp_paint_info_new(Gimp *gimp, GType paint_type,
+                                   GType paint_options_type,
+                                   const gchar *identifier, const gchar *blurb,
+                                   const gchar *icon_name) {
+  GimpPaintInfo *paint_info;
 
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-	g_return_val_if_fail (identifier != NULL, NULL);
-	g_return_val_if_fail (blurb != NULL, NULL);
-	g_return_val_if_fail (icon_name != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
+  g_return_val_if_fail(identifier != NULL, NULL);
+  g_return_val_if_fail(blurb != NULL, NULL);
+  g_return_val_if_fail(icon_name != NULL, NULL);
 
-	paint_info = g_object_new (GIMP_TYPE_PAINT_INFO,
-	                           "name",      identifier,
-	                           "icon-name", icon_name,
-	                           NULL);
+  paint_info = g_object_new(GIMP_TYPE_PAINT_INFO, "name", identifier,
+                            "icon-name", icon_name, NULL);
 
-	paint_info->gimp               = gimp;
-	paint_info->paint_type         = paint_type;
-	paint_info->paint_options_type = paint_options_type;
-	paint_info->blurb              = g_strdup (blurb);
+  paint_info->gimp = gimp;
+  paint_info->paint_type = paint_type;
+  paint_info->paint_options_type = paint_options_type;
+  paint_info->blurb = g_strdup(blurb);
 
-	paint_info->paint_options      = gimp_paint_options_new (paint_info);
+  paint_info->paint_options = gimp_paint_options_new(paint_info);
 
-	return paint_info;
+  return paint_info;
 }
 
-void
-gimp_paint_info_set_standard (Gimp          *gimp,
-                              GimpPaintInfo *paint_info)
-{
-	g_return_if_fail (GIMP_IS_GIMP (gimp));
-	g_return_if_fail (!paint_info || GIMP_IS_PAINT_INFO (paint_info));
+void gimp_paint_info_set_standard(Gimp *gimp, GimpPaintInfo *paint_info) {
+  g_return_if_fail(GIMP_IS_GIMP(gimp));
+  g_return_if_fail(!paint_info || GIMP_IS_PAINT_INFO(paint_info));
 
-	g_set_object (&gimp->standard_paint_info, paint_info);
+  g_set_object(&gimp->standard_paint_info, paint_info);
 }
 
-GimpPaintInfo *
-gimp_paint_info_get_standard (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GimpPaintInfo *gimp_paint_info_get_standard(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return gimp->standard_paint_info;
+  return gimp->standard_paint_info;
 }

@@ -21,38 +21,36 @@
 #ifndef __GIMP_TILING_H__
 #define __GIMP_TILING_H__
 
-
 #include "gimpsymmetry.h"
 
-
-#define GIMP_TYPE_TILING            (gimp_tiling_get_type ())
-#define GIMP_TILING(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TILING, GimpTiling))
-#define GIMP_TILING_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TILING, GimpTilingClass))
-#define GIMP_IS_TILING(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TILING))
-#define GIMP_IS_TILING_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TILING))
-#define GIMP_TILING_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TILING, GimpTilingClass))
-
+#define GIMP_TYPE_TILING (gimp_tiling_get_type())
+#define GIMP_TILING(obj)                                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TILING, GimpTiling))
+#define GIMP_TILING_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TILING, GimpTilingClass))
+#define GIMP_IS_TILING(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TILING))
+#define GIMP_IS_TILING_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TILING))
+#define GIMP_TILING_GET_CLASS(obj)                                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TILING, GimpTilingClass))
 
 typedef struct _GimpTilingClass GimpTilingClass;
 
-struct _GimpTiling
-{
-	GimpSymmetry parent_instance;
+struct _GimpTiling {
+  GimpSymmetry parent_instance;
 
-	gdouble interval_x;
-	gdouble interval_y;
-	gdouble shift;
-	gint max_x;
-	gint max_y;
+  gdouble interval_x;
+  gdouble interval_y;
+  gdouble shift;
+  gint max_x;
+  gint max_y;
 };
 
-struct _GimpTilingClass
-{
-	GimpSymmetryClass parent_class;
+struct _GimpTilingClass {
+  GimpSymmetryClass parent_class;
 };
 
+GType gimp_tiling_get_type(void) G_GNUC_CONST;
 
-GType   gimp_tiling_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_TILING_H__  */
+#endif /*  __GIMP_TILING_H__  */

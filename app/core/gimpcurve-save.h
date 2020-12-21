@@ -18,11 +18,7 @@
 #ifndef __GIMP_CURVE_SAVE_H__
 #define __GIMP_CURVE_SAVE_H__
 
-
 /*  don't call this function directly, use gimp_data_save() instead  */
-gboolean   gimp_curve_save (GimpData       *data,
-                            GOutputStream  *output,
-                            GError        **error);
-
+gboolean gimp_curve_save(GimpData *data, GOutputStream *output, GError **error);
 
 #endif /* __GIMP_CURVE_SAVE_H__ */

@@ -21,36 +21,37 @@
 #ifndef __GIMP_PATTERN_CLIPBOARD_H__
 #define __GIMP_PATTERN_CLIPBOARD_H__
 
-
 #include "gimppattern.h"
 
-
-#define GIMP_TYPE_PATTERN_CLIPBOARD            (gimp_pattern_clipboard_get_type ())
-#define GIMP_PATTERN_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PATTERN_CLIPBOARD, GimpPatternClipboard))
-#define GIMP_PATTERN_CLIPBOARD_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PATTERN_CLIPBOARD, GimpPatternClipboardClass))
-#define GIMP_IS_PATTERN_CLIPBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PATTERN_CLIPBOARD))
-#define GIMP_IS_PATTERN_CLIPBOARD_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PATTERN_CLIPBOARD))
-#define GIMP_PATTERN_CLIPBOARD_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PATTERN_CLIPBOARD, GimpPatternClipboardClass))
-
+#define GIMP_TYPE_PATTERN_CLIPBOARD (gimp_pattern_clipboard_get_type())
+#define GIMP_PATTERN_CLIPBOARD(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PATTERN_CLIPBOARD,              \
+                              GimpPatternClipboard))
+#define GIMP_PATTERN_CLIPBOARD_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PATTERN_CLIPBOARD,               \
+                           GimpPatternClipboardClass))
+#define GIMP_IS_PATTERN_CLIPBOARD(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PATTERN_CLIPBOARD))
+#define GIMP_IS_PATTERN_CLIPBOARD_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PATTERN_CLIPBOARD))
+#define GIMP_PATTERN_CLIPBOARD_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PATTERN_CLIPBOARD,               \
+                             GimpPatternClipboardClass))
 
 typedef struct _GimpPatternClipboardClass GimpPatternClipboardClass;
 
-struct _GimpPatternClipboard
-{
-	GimpPattern parent_instance;
+struct _GimpPatternClipboard {
+  GimpPattern parent_instance;
 
-	Gimp        *gimp;
+  Gimp *gimp;
 };
 
-struct _GimpPatternClipboardClass
-{
-	GimpPatternClass parent_class;
+struct _GimpPatternClipboardClass {
+  GimpPatternClass parent_class;
 };
 
+GType gimp_pattern_clipboard_get_type(void) G_GNUC_CONST;
 
-GType      gimp_pattern_clipboard_get_type (void) G_GNUC_CONST;
+GimpData *gimp_pattern_clipboard_new(Gimp *gimp);
 
-GimpData * gimp_pattern_clipboard_new      (Gimp *gimp);
-
-
-#endif  /*  __GIMP_PATTERN_CLIPBOARD_H__  */
+#endif /*  __GIMP_PATTERN_CLIPBOARD_H__  */

@@ -18,14 +18,9 @@
 #ifndef __GIMP_TOOL_PRESET_LOAD_H__
 #define __GIMP_TOOL_PRESET_LOAD_H__
 
-
 #define GIMP_TOOL_PRESET_FILE_EXTENSION ".gtp"
 
-
-GList * gimp_tool_preset_load (GimpContext   *context,
-                               GFile         *file,
-                               GInputStream  *input,
-                               GError       **error);
-
+GList *gimp_tool_preset_load(GimpContext *context, GFile *file,
+                             GInputStream *input, GError **error);
 
 #endif /* __GIMP_TOOL_PRESET_LOAD_H__ */

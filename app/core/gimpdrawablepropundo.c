@@ -25,134 +25,105 @@
 #include "gegl/gimp-gegl-utils.h"
 
 #include "gimp-memsize.h"
-#include "gimpimage.h"
 #include "gimpdrawable.h"
 #include "gimpdrawablepropundo.h"
+#include "gimpimage.h"
 
+enum { PROP_0 };
 
-enum
-{
-	PROP_0
-};
+static void gimp_drawable_prop_undo_constructed(GObject *object);
+static void gimp_drawable_prop_undo_set_property(GObject *object,
+                                                 guint property_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec);
+static void gimp_drawable_prop_undo_get_property(GObject *object,
+                                                 guint property_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec);
 
+static void gimp_drawable_prop_undo_pop(GimpUndo *undo, GimpUndoMode undo_mode,
+                                        GimpUndoAccumulator *accum);
 
-static void   gimp_drawable_prop_undo_constructed  (GObject             *object);
-static void   gimp_drawable_prop_undo_set_property (GObject             *object,
-                                                    guint property_id,
-                                                    const GValue        *value,
-                                                    GParamSpec          *pspec);
-static void   gimp_drawable_prop_undo_get_property (GObject             *object,
-                                                    guint property_id,
-                                                    GValue              *value,
-                                                    GParamSpec          *pspec);
-
-static void   gimp_drawable_prop_undo_pop          (GimpUndo            *undo,
-                                                    GimpUndoMode undo_mode,
-                                                    GimpUndoAccumulator *accum);
-
-
-G_DEFINE_TYPE (GimpDrawablePropUndo, gimp_drawable_prop_undo,
-               GIMP_TYPE_ITEM_UNDO)
+G_DEFINE_TYPE(GimpDrawablePropUndo, gimp_drawable_prop_undo,
+              GIMP_TYPE_ITEM_UNDO)
 
 #define parent_class gimp_drawable_prop_undo_parent_class
 
-
 static void
-gimp_drawable_prop_undo_class_init (GimpDrawablePropUndoClass *klass)
-{
-	GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-	GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
+gimp_drawable_prop_undo_class_init(GimpDrawablePropUndoClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GimpUndoClass *undo_class = GIMP_UNDO_CLASS(klass);
 
-	object_class->constructed  = gimp_drawable_prop_undo_constructed;
-	object_class->set_property = gimp_drawable_prop_undo_set_property;
-	object_class->get_property = gimp_drawable_prop_undo_get_property;
+  object_class->constructed = gimp_drawable_prop_undo_constructed;
+  object_class->set_property = gimp_drawable_prop_undo_set_property;
+  object_class->get_property = gimp_drawable_prop_undo_get_property;
 
-	undo_class->pop            = gimp_drawable_prop_undo_pop;
+  undo_class->pop = gimp_drawable_prop_undo_pop;
 }
 
-static void
-gimp_drawable_prop_undo_init (GimpDrawablePropUndo *undo)
-{
+static void gimp_drawable_prop_undo_init(GimpDrawablePropUndo *undo) {}
+
+static void gimp_drawable_prop_undo_constructed(GObject *object) {
+  GimpDrawablePropUndo *drawable_prop_undo = GIMP_DRAWABLE_PROP_UNDO(object);
+  GimpDrawable *drawable;
+
+  G_OBJECT_CLASS(parent_class)->constructed(object);
+
+  gimp_assert(GIMP_IS_DRAWABLE(GIMP_ITEM_UNDO(object)->item));
+
+  drawable = GIMP_DRAWABLE(GIMP_ITEM_UNDO(object)->item);
+
+  switch (GIMP_UNDO(object)->undo_type) {
+  case GIMP_UNDO_DRAWABLE_FORMAT:
+    drawable_prop_undo->format = gimp_drawable_get_format(drawable);
+    break;
+
+  default:
+    g_return_if_reached();
+  }
 }
 
-static void
-gimp_drawable_prop_undo_constructed (GObject *object)
-{
-	GimpDrawablePropUndo *drawable_prop_undo = GIMP_DRAWABLE_PROP_UNDO (object);
-	GimpDrawable         *drawable;
-
-	G_OBJECT_CLASS (parent_class)->constructed (object);
-
-	gimp_assert (GIMP_IS_DRAWABLE (GIMP_ITEM_UNDO (object)->item));
-
-	drawable = GIMP_DRAWABLE (GIMP_ITEM_UNDO (object)->item);
-
-	switch (GIMP_UNDO (object)->undo_type)
-	{
-	case GIMP_UNDO_DRAWABLE_FORMAT:
-		drawable_prop_undo->format = gimp_drawable_get_format (drawable);
-		break;
-
-	default:
-		g_return_if_reached ();
-	}
+static void gimp_drawable_prop_undo_set_property(GObject *object,
+                                                 guint property_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec) {
+  switch (property_id) {
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_drawable_prop_undo_set_property (GObject      *object,
-                                      guint property_id,
-                                      const GValue *value,
-                                      GParamSpec   *pspec)
-{
-	switch (property_id)
-	{
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+static void gimp_drawable_prop_undo_get_property(GObject *object,
+                                                 guint property_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec) {
+  switch (property_id) {
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_drawable_prop_undo_get_property (GObject    *object,
-                                      guint property_id,
-                                      GValue     *value,
-                                      GParamSpec *pspec)
-{
-	switch (property_id)
-	{
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
+static void gimp_drawable_prop_undo_pop(GimpUndo *undo, GimpUndoMode undo_mode,
+                                        GimpUndoAccumulator *accum) {
+  GimpDrawablePropUndo *drawable_prop_undo = GIMP_DRAWABLE_PROP_UNDO(undo);
+  GimpDrawable *drawable;
 
-static void
-gimp_drawable_prop_undo_pop (GimpUndo            *undo,
-                             GimpUndoMode undo_mode,
-                             GimpUndoAccumulator *accum)
-{
-	GimpDrawablePropUndo *drawable_prop_undo = GIMP_DRAWABLE_PROP_UNDO (undo);
-	GimpDrawable         *drawable;
+  drawable = GIMP_DRAWABLE(GIMP_ITEM_UNDO(undo)->item);
 
-	drawable = GIMP_DRAWABLE (GIMP_ITEM_UNDO (undo)->item);
+  GIMP_UNDO_CLASS(parent_class)->pop(undo, undo_mode, accum);
 
-	GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
+  switch (undo->undo_type) {
+  case GIMP_UNDO_DRAWABLE_FORMAT: {
+    const Babl *format = gimp_drawable_get_format(drawable);
 
-	switch (undo->undo_type)
-	{
-	case GIMP_UNDO_DRAWABLE_FORMAT:
-	{
-		const Babl *format = gimp_drawable_get_format (drawable);
+    gimp_drawable_set_format(drawable, drawable_prop_undo->format, TRUE, FALSE);
 
-		gimp_drawable_set_format (drawable,
-		                          drawable_prop_undo->format,
-		                          TRUE, FALSE);
+    drawable_prop_undo->format = format;
+  } break;
 
-		drawable_prop_undo->format = format;
-	}
-	break;
-
-	default:
-		g_return_if_reached ();
-	}
+  default:
+    g_return_if_reached();
+  }
 }

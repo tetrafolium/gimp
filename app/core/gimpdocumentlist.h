@@ -20,35 +20,33 @@
 
 #include "core/gimplist.h"
 
-
-#define GIMP_TYPE_DOCUMENT_LIST           (gimp_document_list_get_type ())
-#define GIMP_DOCUMENT_LIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DOCUMENT_LIST, GimpDocumentList))
-#define GIMP_DOCUMENT_LIST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DOCUMENT_LIST, GimpDocumentListClass))
-#define GIMP_IS_DOCUMENT_LIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DOCUMENT_LIST))
-#define GIMP_IS_DOCUMENT_LIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DOCUMENT_LIST))
-
+#define GIMP_TYPE_DOCUMENT_LIST (gimp_document_list_get_type())
+#define GIMP_DOCUMENT_LIST(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DOCUMENT_LIST, GimpDocumentList))
+#define GIMP_DOCUMENT_LIST_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DOCUMENT_LIST,                   \
+                           GimpDocumentListClass))
+#define GIMP_IS_DOCUMENT_LIST(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DOCUMENT_LIST))
+#define GIMP_IS_DOCUMENT_LIST_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DOCUMENT_LIST))
 
 typedef struct _GimpDocumentListClass GimpDocumentListClass;
 
-struct _GimpDocumentList
-{
-	GimpList parent_instance;
+struct _GimpDocumentList {
+  GimpList parent_instance;
 
-	Gimp     *gimp;
+  Gimp *gimp;
 };
 
-struct _GimpDocumentListClass
-{
-	GimpListClass parent_class;
+struct _GimpDocumentListClass {
+  GimpListClass parent_class;
 };
 
+GType gimp_document_list_get_type(void) G_GNUC_CONST;
+GimpContainer *gimp_document_list_new(Gimp *gimp);
 
-GType           gimp_document_list_get_type (void) G_GNUC_CONST;
-GimpContainer * gimp_document_list_new      (Gimp             *gimp);
+GimpImagefile *gimp_document_list_add_file(GimpDocumentList *document_list,
+                                           GFile *file, const gchar *mime_type);
 
-GimpImagefile * gimp_document_list_add_file (GimpDocumentList *document_list,
-                                             GFile            *file,
-                                             const gchar      *mime_type);
-
-
-#endif  /*  __GIMP_DOCUMENT_LIST_H__  */
+#endif /*  __GIMP_DOCUMENT_LIST_H__  */

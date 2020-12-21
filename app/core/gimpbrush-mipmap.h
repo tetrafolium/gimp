@@ -21,18 +21,16 @@
 #ifndef __GIMP_BRUSH_MIPMAP_H__
 #define __GIMP_BRUSH_MIPMAP_H__
 
+void gimp_brush_mipmap_clear(GimpBrush *brush);
 
-void                gimp_brush_mipmap_clear       (GimpBrush *brush);
+const GimpTempBuf *gimp_brush_mipmap_get_mask(GimpBrush *brush,
+                                              gdouble *scale_x,
+                                              gdouble *scale_y);
 
-const GimpTempBuf * gimp_brush_mipmap_get_mask    (GimpBrush *brush,
-                                                   gdouble   *scale_x,
-                                                   gdouble   *scale_y);
+const GimpTempBuf *gimp_brush_mipmap_get_pixmap(GimpBrush *brush,
+                                                gdouble *scale_x,
+                                                gdouble *scale_y);
 
-const GimpTempBuf * gimp_brush_mipmap_get_pixmap  (GimpBrush *brush,
-                                                   gdouble   *scale_x,
-                                                   gdouble   *scale_y);
+gsize gimp_brush_mipmap_get_memsize(GimpBrush *brush);
 
-gsize               gimp_brush_mipmap_get_memsize (GimpBrush *brush);
-
-
-#endif  /*  __GIMP_BRUSH_MIPMAP_H__  */
+#endif /*  __GIMP_BRUSH_MIPMAP_H__  */

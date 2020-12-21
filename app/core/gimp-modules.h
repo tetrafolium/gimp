@@ -21,14 +21,12 @@
 #ifndef __GIMP_MODULES_H__
 #define __GIMP_MODULES_H__
 
+void gimp_modules_init(Gimp *gimp);
+void gimp_modules_exit(Gimp *gimp);
 
-void   gimp_modules_init    (Gimp *gimp);
-void   gimp_modules_exit    (Gimp *gimp);
+void gimp_modules_load(Gimp *gimp);
+void gimp_modules_unload(Gimp *gimp);
 
-void   gimp_modules_load    (Gimp *gimp);
-void   gimp_modules_unload  (Gimp *gimp);
+void gimp_modules_refresh(Gimp *gimp);
 
-void   gimp_modules_refresh (Gimp *gimp);
-
-
-#endif  /* __GIMP_MODULES_H__ */
+#endif /* __GIMP_MODULES_H__ */

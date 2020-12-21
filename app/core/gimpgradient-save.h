@@ -18,15 +18,11 @@
 #ifndef __GIMP_GRADIENT_SAVE_H__
 #define __GIMP_GRADIENT_SAVE_H__
 
-
 /*  don't call this function directly, use gimp_data_save() instead  */
-gboolean   gimp_gradient_save     (GimpData       *data,
-                                   GOutputStream  *output,
-                                   GError        **error);
+gboolean gimp_gradient_save(GimpData *data, GOutputStream *output,
+                            GError **error);
 
-gboolean   gimp_gradient_save_pov (GimpGradient   *gradient,
-                                   GFile          *file,
-                                   GError        **error);
-
+gboolean gimp_gradient_save_pov(GimpGradient *gradient, GFile *file,
+                                GError **error);
 
 #endif /* __GIMP_GRADIENT_SAVE_H__ */

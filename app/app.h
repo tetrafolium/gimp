@@ -18,40 +18,24 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-
 #ifndef GIMP_APP_GLUE_COMPILATION
 #error You must not #include "app.h" from a subdir
 #endif
 
+void app_libs_init(GOptionContext *context, gboolean no_interface);
+void app_abort(gboolean no_interface,
+               const gchar *abort_message) G_GNUC_NORETURN;
+void app_exit(gint status) G_GNUC_NORETURN;
 
-void  app_libs_init (GOptionContext      *context,
-                     gboolean no_interface);
-void  app_abort     (gboolean no_interface,
-                     const gchar         *abort_message) G_GNUC_NORETURN;
-void  app_exit      (gint status) G_GNUC_NORETURN;
-
-void  app_run       (const gchar         *full_prog_name,
-                     const gchar        **filenames,
-                     GFile               *alternate_system_gimprc,
-                     GFile               *alternate_gimprc,
-                     const gchar         *session_name,
-                     const gchar         *batch_interpreter,
-                     const gchar        **batch_commands,
-                     gboolean as_new,
-                     gboolean no_interface,
-                     gboolean no_data,
-                     gboolean no_fonts,
-                     gboolean no_splash,
-                     gboolean be_verbose,
-                     gboolean use_shm,
-                     gboolean use_cpu_accel,
-                     gboolean console_messages,
-                     gboolean use_debug_handler,
-                     gboolean show_playground,
-                     gboolean show_debug_menu,
-                     GimpStackTraceMode stack_trace_mode,
-                     GimpPDBCompatMode pdb_compat_mode,
-                     const gchar         *backtrace_file);
-
+void app_run(const gchar *full_prog_name, const gchar **filenames,
+             GFile *alternate_system_gimprc, GFile *alternate_gimprc,
+             const gchar *session_name, const gchar *batch_interpreter,
+             const gchar **batch_commands, gboolean as_new,
+             gboolean no_interface, gboolean no_data, gboolean no_fonts,
+             gboolean no_splash, gboolean be_verbose, gboolean use_shm,
+             gboolean use_cpu_accel, gboolean console_messages,
+             gboolean use_debug_handler, gboolean show_playground,
+             gboolean show_debug_menu, GimpStackTraceMode stack_trace_mode,
+             GimpPDBCompatMode pdb_compat_mode, const gchar *backtrace_file);
 
 #endif /* __APP_H__ */

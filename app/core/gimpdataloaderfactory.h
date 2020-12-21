@@ -21,58 +21,53 @@
 #ifndef __GIMP_DATA_LOADER_FACTORY_H__
 #define __GIMP_DATA_LOADER_FACTORY_H__
 
-
 #include "gimpdatafactory.h"
 
+typedef GList *(*GimpDataLoadFunc)(GimpContext *context, GFile *file,
+                                   GInputStream *input, GError **error);
 
-typedef GList * (* GimpDataLoadFunc) (GimpContext   *context,
-                                      GFile         *file,
-                                      GInputStream  *input,
-                                      GError       **error);
-
-
-#define GIMP_TYPE_DATA_LOADER_FACTORY            (gimp_data_loader_factory_get_type ())
-#define GIMP_DATA_LOADER_FACTORY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DATA_LOADER_FACTORY, GimpDataLoaderFactory))
-#define GIMP_DATA_LOADER_FACTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DATA_LOADER_FACTORY, GimpDataLoaderFactoryClass))
-#define GIMP_IS_DATA_LOADER_FACTORY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DATA_LOADER_FACTORY))
-#define GIMP_IS_DATA_LOADER_FACTORY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DATA_LOADER_FACTORY))
-#define GIMP_DATA_LOADER_FACTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DATA_LOADER_FACTORY, GimpDataLoaderFactoryClass))
-
+#define GIMP_TYPE_DATA_LOADER_FACTORY (gimp_data_loader_factory_get_type())
+#define GIMP_DATA_LOADER_FACTORY(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DATA_LOADER_FACTORY,            \
+                              GimpDataLoaderFactory))
+#define GIMP_DATA_LOADER_FACTORY_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DATA_LOADER_FACTORY,             \
+                           GimpDataLoaderFactoryClass))
+#define GIMP_IS_DATA_LOADER_FACTORY(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DATA_LOADER_FACTORY))
+#define GIMP_IS_DATA_LOADER_FACTORY_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DATA_LOADER_FACTORY))
+#define GIMP_DATA_LOADER_FACTORY_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DATA_LOADER_FACTORY,             \
+                             GimpDataLoaderFactoryClass))
 
 typedef struct _GimpDataLoaderFactoryPrivate GimpDataLoaderFactoryPrivate;
 typedef struct _GimpDataLoaderFactoryClass GimpDataLoaderFactoryClass;
 
-struct _GimpDataLoaderFactory
-{
-	GimpDataFactory parent_instance;
+struct _GimpDataLoaderFactory {
+  GimpDataFactory parent_instance;
 
-	GimpDataLoaderFactoryPrivate *priv;
+  GimpDataLoaderFactoryPrivate *priv;
 };
 
-struct _GimpDataLoaderFactoryClass
-{
-	GimpDataFactoryClass parent_class;
+struct _GimpDataLoaderFactoryClass {
+  GimpDataFactoryClass parent_class;
 };
 
+GType gimp_data_loader_factory_get_type(void) G_GNUC_CONST;
 
-GType             gimp_data_loader_factory_get_type     (void) G_GNUC_CONST;
+GimpDataFactory *gimp_data_loader_factory_new(
+    Gimp *gimp, GType data_type, const gchar *path_property_name,
+    const gchar *writable_property_name, const gchar *ext_property_name,
+    GimpDataNewFunc new_func, GimpDataGetStandardFunc get_standard_func);
 
-GimpDataFactory * gimp_data_loader_factory_new          (Gimp                    *gimp,
-                                                         GType data_type,
-                                                         const gchar             *path_property_name,
-                                                         const gchar             *writable_property_name,
-                                                         const gchar             *ext_property_name,
-                                                         GimpDataNewFunc new_func,
-                                                         GimpDataGetStandardFunc get_standard_func);
+void gimp_data_loader_factory_add_loader(GimpDataFactory *factory,
+                                         const gchar *name,
+                                         GimpDataLoadFunc load_func,
+                                         const gchar *extension,
+                                         gboolean writable);
+void gimp_data_loader_factory_add_fallback(GimpDataFactory *factory,
+                                           const gchar *name,
+                                           GimpDataLoadFunc load_func);
 
-void              gimp_data_loader_factory_add_loader   (GimpDataFactory         *factory,
-                                                         const gchar             *name,
-                                                         GimpDataLoadFunc load_func,
-                                                         const gchar             *extension,
-                                                         gboolean writable);
-void              gimp_data_loader_factory_add_fallback (GimpDataFactory         *factory,
-                                                         const gchar             *name,
-                                                         GimpDataLoadFunc load_func);
-
-
-#endif  /*  __GIMP_DATA_LOADER_FACTORY_H__  */
+#endif /*  __GIMP_DATA_LOADER_FACTORY_H__  */

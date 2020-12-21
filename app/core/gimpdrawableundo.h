@@ -18,37 +18,37 @@
 #ifndef __GIMP_DRAWABLE_UNDO_H__
 #define __GIMP_DRAWABLE_UNDO_H__
 
-
 #include "gimpitemundo.h"
 
-
-#define GIMP_TYPE_DRAWABLE_UNDO            (gimp_drawable_undo_get_type ())
-#define GIMP_DRAWABLE_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DRAWABLE_UNDO, GimpDrawableUndo))
-#define GIMP_DRAWABLE_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DRAWABLE_UNDO, GimpDrawableUndoClass))
-#define GIMP_IS_DRAWABLE_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DRAWABLE_UNDO))
-#define GIMP_IS_DRAWABLE_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DRAWABLE_UNDO))
-#define GIMP_DRAWABLE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DRAWABLE_UNDO, GimpDrawableUndoClass))
-
+#define GIMP_TYPE_DRAWABLE_UNDO (gimp_drawable_undo_get_type())
+#define GIMP_DRAWABLE_UNDO(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DRAWABLE_UNDO, GimpDrawableUndo))
+#define GIMP_DRAWABLE_UNDO_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DRAWABLE_UNDO,                   \
+                           GimpDrawableUndoClass))
+#define GIMP_IS_DRAWABLE_UNDO(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DRAWABLE_UNDO))
+#define GIMP_IS_DRAWABLE_UNDO_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DRAWABLE_UNDO))
+#define GIMP_DRAWABLE_UNDO_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DRAWABLE_UNDO,                   \
+                             GimpDrawableUndoClass))
 
 typedef struct _GimpDrawableUndo GimpDrawableUndo;
 typedef struct _GimpDrawableUndoClass GimpDrawableUndoClass;
 
-struct _GimpDrawableUndo
-{
-	GimpItemUndo parent_instance;
+struct _GimpDrawableUndo {
+  GimpItemUndo parent_instance;
 
-	GeglBuffer   *buffer;
-	gint x;
-	gint y;
+  GeglBuffer *buffer;
+  gint x;
+  gint y;
 };
 
-struct _GimpDrawableUndoClass
-{
-	GimpItemUndoClass parent_class;
+struct _GimpDrawableUndoClass {
+  GimpItemUndoClass parent_class;
 };
 
-
-GType   gimp_drawable_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_drawable_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_DRAWABLE_UNDO_H__ */

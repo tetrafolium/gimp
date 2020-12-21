@@ -18,10 +18,7 @@
 #ifndef __VECTORS_ACTIONS_H__
 #define __VECTORS_ACTIONS_H__
 
-
-void   vectors_actions_setup  (GimpActionGroup *group);
-void   vectors_actions_update (GimpActionGroup *group,
-                               gpointer data);
-
+void vectors_actions_setup(GimpActionGroup *group);
+void vectors_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __VECTORS_ACTIONS_H__ */

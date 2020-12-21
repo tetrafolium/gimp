@@ -18,10 +18,7 @@
 #ifndef __GRADIENTS_COMMANDS_H__
 #define __GRADIENTS_COMMANDS_H__
 
-
-void   gradients_save_as_pov_ray_cmd_callback (GimpAction *action,
-                                               GVariant   *value,
-                                               gpointer data);
-
+void gradients_save_as_pov_ray_cmd_callback(GimpAction *action, GVariant *value,
+                                            gpointer data);
 
 #endif /* __GRADIENTS_COMMANDS_H__ */

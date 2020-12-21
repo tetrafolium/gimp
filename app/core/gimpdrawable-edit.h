@@ -18,12 +18,8 @@
 #ifndef __GIMP_DRAWABLE_EDIT_H__
 #define __GIMP_DRAWABLE_EDIT_H__
 
+void gimp_drawable_edit_clear(GimpDrawable *drawable, GimpContext *context);
+void gimp_drawable_edit_fill(GimpDrawable *drawable, GimpFillOptions *options,
+                             const gchar *undo_desc);
 
-void   gimp_drawable_edit_clear (GimpDrawable    *drawable,
-                                 GimpContext     *context);
-void   gimp_drawable_edit_fill  (GimpDrawable    *drawable,
-                                 GimpFillOptions *options,
-                                 const gchar     *undo_desc);
-
-
-#endif  /*  __GIMP_DRAWABLE_EDIT_H__  */
+#endif /*  __GIMP_DRAWABLE_EDIT_H__  */

@@ -18,50 +18,47 @@
 #ifndef __GIMP_TOOL_PRESET_H__
 #define __GIMP_TOOL_PRESET_H__
 
-
 #include "gimpdata.h"
 
-
-#define GIMP_TYPE_TOOL_PRESET            (gimp_tool_preset_get_type ())
-#define GIMP_TOOL_PRESET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_PRESET, GimpToolPreset))
-#define GIMP_TOOL_PRESET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_PRESET, GimpToolPresetClass))
-#define GIMP_IS_TOOL_PRESET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_PRESET))
-#define GIMP_IS_TOOL_PRESET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_PRESET))
-#define GIMP_TOOL_PRESET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_PRESET, GimpToolPresetClass))
-
+#define GIMP_TYPE_TOOL_PRESET (gimp_tool_preset_get_type())
+#define GIMP_TOOL_PRESET(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_PRESET, GimpToolPreset))
+#define GIMP_TOOL_PRESET_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_PRESET, GimpToolPresetClass))
+#define GIMP_IS_TOOL_PRESET(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_PRESET))
+#define GIMP_IS_TOOL_PRESET_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_PRESET))
+#define GIMP_TOOL_PRESET_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_PRESET, GimpToolPresetClass))
 
 typedef struct _GimpToolPresetClass GimpToolPresetClass;
 
-struct _GimpToolPreset
-{
-	GimpData parent_instance;
+struct _GimpToolPreset {
+  GimpData parent_instance;
 
-	Gimp            *gimp;
-	GimpToolOptions *tool_options;
+  Gimp *gimp;
+  GimpToolOptions *tool_options;
 
-	gboolean use_fg_bg;
-	gboolean use_opacity_paint_mode;
-	gboolean use_brush;
-	gboolean use_dynamics;
-	gboolean use_mybrush;
-	gboolean use_gradient;
-	gboolean use_pattern;
-	gboolean use_palette;
-	gboolean use_font;
+  gboolean use_fg_bg;
+  gboolean use_opacity_paint_mode;
+  gboolean use_brush;
+  gboolean use_dynamics;
+  gboolean use_mybrush;
+  gboolean use_gradient;
+  gboolean use_pattern;
+  gboolean use_palette;
+  gboolean use_font;
 };
 
-struct _GimpToolPresetClass
-{
-	GimpDataClass parent_class;
+struct _GimpToolPresetClass {
+  GimpDataClass parent_class;
 };
 
+GType gimp_tool_preset_get_type(void) G_GNUC_CONST;
 
-GType                 gimp_tool_preset_get_type      (void) G_GNUC_CONST;
+GimpData *gimp_tool_preset_new(GimpContext *context, const gchar *unused);
 
-GimpData            * gimp_tool_preset_new           (GimpContext    *context,
-                                                      const gchar    *unused);
+GimpContextPropMask gimp_tool_preset_get_prop_mask(GimpToolPreset *preset);
 
-GimpContextPropMask   gimp_tool_preset_get_prop_mask (GimpToolPreset *preset);
-
-
-#endif  /*  __GIMP_TOOL_PRESET_H__  */
+#endif /*  __GIMP_TOOL_PRESET_H__  */

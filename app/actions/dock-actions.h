@@ -18,10 +18,7 @@
 #ifndef __DOCK_ACTIONS_H__
 #define __DOCK_ACTIONS_H__
 
-
-void   dock_actions_setup  (GimpActionGroup *group);
-void   dock_actions_update (GimpActionGroup *group,
-                            gpointer data);
-
+void dock_actions_setup(GimpActionGroup *group);
+void dock_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __DOCK_ACTIONS_H__ */

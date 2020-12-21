@@ -18,36 +18,34 @@
 #ifndef __GIMP_GUIDE_UNDO_H__
 #define __GIMP_GUIDE_UNDO_H__
 
-
 #include "gimpauxitemundo.h"
 
-
-#define GIMP_TYPE_GUIDE_UNDO            (gimp_guide_undo_get_type ())
-#define GIMP_GUIDE_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndo))
-#define GIMP_GUIDE_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndoClass))
-#define GIMP_IS_GUIDE_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_GUIDE_UNDO))
-#define GIMP_IS_GUIDE_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_GUIDE_UNDO))
-#define GIMP_GUIDE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndoClass))
-
+#define GIMP_TYPE_GUIDE_UNDO (gimp_guide_undo_get_type())
+#define GIMP_GUIDE_UNDO(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndo))
+#define GIMP_GUIDE_UNDO_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndoClass))
+#define GIMP_IS_GUIDE_UNDO(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_GUIDE_UNDO))
+#define GIMP_IS_GUIDE_UNDO_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_GUIDE_UNDO))
+#define GIMP_GUIDE_UNDO_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndoClass))
 
 typedef struct _GimpGuideUndo GimpGuideUndo;
 typedef struct _GimpGuideUndoClass GimpGuideUndoClass;
 
-struct _GimpGuideUndo
-{
-	GimpAuxItemUndo parent_instance;
+struct _GimpGuideUndo {
+  GimpAuxItemUndo parent_instance;
 
-	GimpOrientationType orientation;
-	gint position;
+  GimpOrientationType orientation;
+  gint position;
 };
 
-struct _GimpGuideUndoClass
-{
-	GimpAuxItemUndoClass parent_class;
+struct _GimpGuideUndoClass {
+  GimpAuxItemUndoClass parent_class;
 };
 
-
-GType   gimp_guide_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_guide_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_GUIDE_UNDO_H__ */

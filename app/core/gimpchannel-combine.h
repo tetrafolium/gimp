@@ -18,43 +18,20 @@
 #ifndef __GIMP_CHANNEL_COMBINE_H__
 #define __GIMP_CHANNEL_COMBINE_H__
 
+void gimp_channel_combine_rect(GimpChannel *mask, GimpChannelOps op, gint x,
+                               gint y, gint w, gint h);
+void gimp_channel_combine_ellipse(GimpChannel *mask, GimpChannelOps op, gint x,
+                                  gint y, gint w, gint h, gboolean antialias);
+void gimp_channel_combine_ellipse_rect(GimpChannel *mask, GimpChannelOps op,
+                                       gint x, gint y, gint w, gint h,
+                                       gdouble rx, gdouble ry,
+                                       gboolean antialias);
+void gimp_channel_combine_mask(GimpChannel *mask, GimpChannel *add_on,
+                               GimpChannelOps op, gint off_x, gint off_y);
+void gimp_channel_combine_buffer(GimpChannel *mask, GeglBuffer *add_on_buffer,
+                                 GimpChannelOps op, gint off_x, gint off_y);
 
-void   gimp_channel_combine_rect         (GimpChannel    *mask,
-                                          GimpChannelOps op,
-                                          gint x,
-                                          gint y,
-                                          gint w,
-                                          gint h);
-void   gimp_channel_combine_ellipse      (GimpChannel    *mask,
-                                          GimpChannelOps op,
-                                          gint x,
-                                          gint y,
-                                          gint w,
-                                          gint h,
-                                          gboolean antialias);
-void   gimp_channel_combine_ellipse_rect (GimpChannel    *mask,
-                                          GimpChannelOps op,
-                                          gint x,
-                                          gint y,
-                                          gint w,
-                                          gint h,
-                                          gdouble rx,
-                                          gdouble ry,
-                                          gboolean antialias);
-void   gimp_channel_combine_mask         (GimpChannel    *mask,
-                                          GimpChannel    *add_on,
-                                          GimpChannelOps op,
-                                          gint off_x,
-                                          gint off_y);
-void   gimp_channel_combine_buffer       (GimpChannel    *mask,
-                                          GeglBuffer     *add_on_buffer,
-                                          GimpChannelOps op,
-                                          gint off_x,
-                                          gint off_y);
-
-void   gimp_channel_combine_items        (GimpChannel    *mask,
-                                          GList          *items,
-                                          GimpChannelOps op);
-
+void gimp_channel_combine_items(GimpChannel *mask, GList *items,
+                                GimpChannelOps op);
 
 #endif /* __GIMP_CHANNEL_COMBINE_H__ */

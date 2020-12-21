@@ -18,10 +18,7 @@
 #ifndef __VIEW_ACTIONS_H__
 #define __VIEW_ACTIONS_H__
 
-
-void   view_actions_setup  (GimpActionGroup *group);
-void   view_actions_update (GimpActionGroup *group,
-                            gpointer data);
-
+void view_actions_setup(GimpActionGroup *group);
+void view_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __VIEW_ACTIONS_H__ */

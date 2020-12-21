@@ -21,40 +21,36 @@
 #ifndef __GIMP_LANG_RC_H__
 #define __GIMP_LANG_RC_H__
 
-
-#define GIMP_TYPE_LANG_RC            (gimp_lang_rc_get_type ())
-#define GIMP_LANG_RC(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LANG_RC, GimpLangRc))
-#define GIMP_LANG_RC_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LANG_RC, GimpLangRcClass))
-#define GIMP_IS_LANG_RC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LANG_RC))
-#define GIMP_IS_LANG_RC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LANG_RC))
-
+#define GIMP_TYPE_LANG_RC (gimp_lang_rc_get_type())
+#define GIMP_LANG_RC(obj)                                                      \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LANG_RC, GimpLangRc))
+#define GIMP_LANG_RC_CLASS(klass)                                              \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LANG_RC, GimpLangRcClass))
+#define GIMP_IS_LANG_RC(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LANG_RC))
+#define GIMP_IS_LANG_RC_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LANG_RC))
 
 typedef struct _GimpLangRcClass GimpLangRcClass;
 
-struct _GimpLangRc
-{
-	GObject parent_instance;
+struct _GimpLangRc {
+  GObject parent_instance;
 
-	GFile         *user_gimprc;
-	GFile         *system_gimprc;
-	gboolean verbose;
+  GFile *user_gimprc;
+  GFile *system_gimprc;
+  gboolean verbose;
 
-	gchar         *language;
+  gchar *language;
 };
 
-struct _GimpLangRcClass
-{
-	GObjectClass parent_class;
+struct _GimpLangRcClass {
+  GObjectClass parent_class;
 };
 
+GType gimp_lang_rc_get_type(void) G_GNUC_CONST;
 
-GType         gimp_lang_rc_get_type     (void) G_GNUC_CONST;
-
-GimpLangRc  * gimp_lang_rc_new          (GFile      *system_gimprc,
-                                         GFile      *user_gimprc,
-                                         gboolean verbose);
-gchar       * gimp_lang_rc_get_language (GimpLangRc *rc);
-
+GimpLangRc *gimp_lang_rc_new(GFile *system_gimprc, GFile *user_gimprc,
+                             gboolean verbose);
+gchar *gimp_lang_rc_get_language(GimpLangRc *rc);
 
 #endif /* GIMP_LANG_RC_H__ */
-

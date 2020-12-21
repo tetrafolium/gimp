@@ -21,38 +21,38 @@
 #ifndef __GIMP_BRUSH_CLIPBOARD_H__
 #define __GIMP_BRUSH_CLIPBOARD_H__
 
-
 #include "gimpbrush.h"
 
-
-#define GIMP_TYPE_BRUSH_CLIPBOARD            (gimp_brush_clipboard_get_type ())
-#define GIMP_BRUSH_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_CLIPBOARD, GimpBrushClipboard))
-#define GIMP_BRUSH_CLIPBOARD_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_CLIPBOARD, GimpBrushClipboardClass))
-#define GIMP_IS_BRUSH_CLIPBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_CLIPBOARD))
-#define GIMP_IS_BRUSH_CLIPBOARD_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_CLIPBOARD))
-#define GIMP_BRUSH_CLIPBOARD_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_CLIPBOARD, GimpBrushClipboardClass))
-
+#define GIMP_TYPE_BRUSH_CLIPBOARD (gimp_brush_clipboard_get_type())
+#define GIMP_BRUSH_CLIPBOARD(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_CLIPBOARD,                \
+                              GimpBrushClipboard))
+#define GIMP_BRUSH_CLIPBOARD_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_CLIPBOARD,                 \
+                           GimpBrushClipboardClass))
+#define GIMP_IS_BRUSH_CLIPBOARD(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_CLIPBOARD))
+#define GIMP_IS_BRUSH_CLIPBOARD_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_CLIPBOARD))
+#define GIMP_BRUSH_CLIPBOARD_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_CLIPBOARD,                 \
+                             GimpBrushClipboardClass))
 
 typedef struct _GimpBrushClipboardClass GimpBrushClipboardClass;
 
-struct _GimpBrushClipboard
-{
-	GimpBrush parent_instance;
+struct _GimpBrushClipboard {
+  GimpBrush parent_instance;
 
-	Gimp      *gimp;
-	gboolean mask_only;
+  Gimp *gimp;
+  gboolean mask_only;
 };
 
-struct _GimpBrushClipboardClass
-{
-	GimpBrushClass parent_class;
+struct _GimpBrushClipboardClass {
+  GimpBrushClass parent_class;
 };
 
+GType gimp_brush_clipboard_get_type(void) G_GNUC_CONST;
 
-GType      gimp_brush_clipboard_get_type (void) G_GNUC_CONST;
+GimpData *gimp_brush_clipboard_new(Gimp *gimp, gboolean mask_only);
 
-GimpData * gimp_brush_clipboard_new      (Gimp     *gimp,
-                                          gboolean mask_only);
-
-
-#endif  /*  __GIMP_BRUSH_CLIPBOARD_H__  */
+#endif /*  __GIMP_BRUSH_CLIPBOARD_H__  */

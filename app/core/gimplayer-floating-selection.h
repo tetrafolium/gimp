@@ -18,16 +18,11 @@
 #ifndef __GIMP_LAYER_FLOATING_SELECTION_H__
 #define __GIMP_LAYER_FLOATING_SELECTION_H__
 
-
-void                 floating_sel_attach            (GimpLayer     *layer,
-                                                     GimpDrawable  *drawable);
-void                 floating_sel_anchor            (GimpLayer     *layer);
-gboolean             floating_sel_to_layer          (GimpLayer     *layer,
-                                                     GError       **error);
-void                 floating_sel_activate_drawable (GimpLayer     *layer);
-const GimpBoundSeg * floating_sel_boundary          (GimpLayer     *layer,
-                                                     gint          *n_segs);
-void                 floating_sel_invalidate        (GimpLayer     *layer);
-
+void floating_sel_attach(GimpLayer *layer, GimpDrawable *drawable);
+void floating_sel_anchor(GimpLayer *layer);
+gboolean floating_sel_to_layer(GimpLayer *layer, GError **error);
+void floating_sel_activate_drawable(GimpLayer *layer);
+const GimpBoundSeg *floating_sel_boundary(GimpLayer *layer, gint *n_segs);
+void floating_sel_invalidate(GimpLayer *layer);
 
 #endif /* __GIMP_LAYER_FLOATING_SELECTION_H__ */

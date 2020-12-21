@@ -20,17 +20,12 @@
 #ifndef __GIMP_CONTEXTS_H__
 #define __GIMP_CONTEXTS_H__
 
+void gimp_contexts_init(Gimp *gimp);
+void gimp_contexts_exit(Gimp *gimp);
 
-void       gimp_contexts_init  (Gimp    *gimp);
-void       gimp_contexts_exit  (Gimp    *gimp);
+gboolean gimp_contexts_load(Gimp *gimp, GError **error);
+gboolean gimp_contexts_save(Gimp *gimp, GError **error);
 
-gboolean   gimp_contexts_load  (Gimp    *gimp,
-                                GError **error);
-gboolean   gimp_contexts_save  (Gimp    *gimp,
-                                GError **error);
+gboolean gimp_contexts_clear(Gimp *gimp, GError **error);
 
-gboolean   gimp_contexts_clear (Gimp    *gimp,
-                                GError **error);
-
-
-#endif  /*  __GIMP_CONTEXTS_H__  */
+#endif /*  __GIMP_CONTEXTS_H__  */

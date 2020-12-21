@@ -20,27 +20,19 @@
 #ifndef __GIMP_DRAWABLE_FILTERS_H__
 #define __GIMP_DRAWABLE_FILTERS_H__
 
+GimpContainer *gimp_drawable_get_filters(GimpDrawable *drawable);
 
-GimpContainer * gimp_drawable_get_filters   (GimpDrawable *drawable);
+gboolean gimp_drawable_has_filters(GimpDrawable *drawable);
 
-gboolean        gimp_drawable_has_filters   (GimpDrawable *drawable);
+void gimp_drawable_add_filter(GimpDrawable *drawable, GimpFilter *filter);
+void gimp_drawable_remove_filter(GimpDrawable *drawable, GimpFilter *filter);
 
-void            gimp_drawable_add_filter    (GimpDrawable *drawable,
-                                             GimpFilter   *filter);
-void            gimp_drawable_remove_filter (GimpDrawable *drawable,
-                                             GimpFilter   *filter);
+gboolean gimp_drawable_has_filter(GimpDrawable *drawable, GimpFilter *filter);
 
-gboolean        gimp_drawable_has_filter    (GimpDrawable *drawable,
-                                             GimpFilter   *filter);
-
-gboolean        gimp_drawable_merge_filter  (GimpDrawable *drawable,
-                                             GimpFilter   *filter,
-                                             GimpProgress *progress,
-                                             const gchar  *undo_desc,
-                                             const Babl   *format,
-                                             gboolean clip,
-                                             gboolean cancellable,
-                                             gboolean update);
-
+gboolean gimp_drawable_merge_filter(GimpDrawable *drawable, GimpFilter *filter,
+                                    GimpProgress *progress,
+                                    const gchar *undo_desc, const Babl *format,
+                                    gboolean clip, gboolean cancellable,
+                                    gboolean update);
 
 #endif /* __GIMP_DRAWABLE_FILTERS_H__ */

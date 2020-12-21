@@ -21,34 +21,36 @@
 #ifndef __GIMP_UNCANCELABLE_WAITABLE_H__
 #define __GIMP_UNCANCELABLE_WAITABLE_H__
 
-
-#define GIMP_TYPE_UNCANCELABLE_WAITABLE            (gimp_uncancelable_waitable_get_type ())
-#define GIMP_UNCANCELABLE_WAITABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_UNCANCELABLE_WAITABLE, GimpUncancelableWaitable))
-#define GIMP_UNCANCELABLE_WAITABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_UNCANCELABLE_WAITABLE, GimpUncancelableWaitableClass))
-#define GIMP_IS_UNCANCELABLE_WAITABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_UNCANCELABLE_WAITABLE))
-#define GIMP_IS_UNCANCELABLE_WAITABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_UNCANCELABLE_WAITABLE))
-#define GIMP_UNCANCELABLE_WAITABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_UNCANCELABLE_WAITABLE, GimpUncancelableWaitableClass))
-
+#define GIMP_TYPE_UNCANCELABLE_WAITABLE (gimp_uncancelable_waitable_get_type())
+#define GIMP_UNCANCELABLE_WAITABLE(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_UNCANCELABLE_WAITABLE,          \
+                              GimpUncancelableWaitable))
+#define GIMP_UNCANCELABLE_WAITABLE_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_UNCANCELABLE_WAITABLE,           \
+                           GimpUncancelableWaitableClass))
+#define GIMP_IS_UNCANCELABLE_WAITABLE(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_UNCANCELABLE_WAITABLE))
+#define GIMP_IS_UNCANCELABLE_WAITABLE_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_UNCANCELABLE_WAITABLE))
+#define GIMP_UNCANCELABLE_WAITABLE_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_UNCANCELABLE_WAITABLE,           \
+                             GimpUncancelableWaitableClass))
 
 typedef struct _GimpUncancelableWaitablePrivate GimpUncancelableWaitablePrivate;
 typedef struct _GimpUncancelableWaitableClass GimpUncancelableWaitableClass;
 
-struct _GimpUncancelableWaitable
-{
-	GObject parent_instance;
+struct _GimpUncancelableWaitable {
+  GObject parent_instance;
 
-	GimpWaitable *waitable;
+  GimpWaitable *waitable;
 };
 
-struct _GimpUncancelableWaitableClass
-{
-	GObjectClass parent_class;
+struct _GimpUncancelableWaitableClass {
+  GObjectClass parent_class;
 };
 
+GType gimp_uncancelable_waitable_get_type(void) G_GNUC_CONST;
 
-GType          gimp_uncancelable_waitable_get_type (void) G_GNUC_CONST;
-
-GimpWaitable * gimp_uncancelable_waitable_new      (GimpWaitable *waitable);
-
+GimpWaitable *gimp_uncancelable_waitable_new(GimpWaitable *waitable);
 
 #endif /* __GIMP_UNCANCELABLE_WAITABLE_H__ */

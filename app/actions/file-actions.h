@@ -18,10 +18,7 @@
 #ifndef __FILE_ACTIONS_H__
 #define __FILE_ACTIONS_H__
 
-
-void   file_actions_setup  (GimpActionGroup *group);
-void   file_actions_update (GimpActionGroup *group,
-                            gpointer data);
-
+void file_actions_setup(GimpActionGroup *group);
+void file_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __FILE_ACTIONS_H__ */

@@ -18,10 +18,7 @@
 #ifndef __BRUSH_EDITOR_ACTIONS_H__
 #define __BRUSH_EDITOR_ACTIONS_H__
 
-
-void   brush_editor_actions_setup  (GimpActionGroup *group);
-void   brush_editor_actions_update (GimpActionGroup *group,
-                                    gpointer data);
-
+void brush_editor_actions_setup(GimpActionGroup *group);
+void brush_editor_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __BRUSH_EDITOR_ACTIONS_H__ */

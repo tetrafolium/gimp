@@ -18,8 +18,6 @@
 #ifndef __GIMP_TAGS_H__
 #define __GIMP_TAGS_H__
 
+gboolean gimp_tags_user_install(void);
 
-gboolean gimp_tags_user_install (void);
-
-
-#endif  /*  __GIMP_TAGS_H__  */
+#endif /*  __GIMP_TAGS_H__  */

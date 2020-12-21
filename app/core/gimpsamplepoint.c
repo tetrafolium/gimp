@@ -26,190 +26,138 @@
 
 #include "gimpsamplepoint.h"
 
+enum { PROP_0, PROP_POSITION_X, PROP_POSITION_Y, PROP_PICK_MODE };
 
-enum
-{
-	PROP_0,
-	PROP_POSITION_X,
-	PROP_POSITION_Y,
-	PROP_PICK_MODE
+struct _GimpSamplePointPrivate {
+  gint position_x;
+  gint position_y;
+  GimpColorPickMode pick_mode;
 };
 
+static void gimp_sample_point_get_property(GObject *object, guint property_id,
+                                           GValue *value, GParamSpec *pspec);
+static void gimp_sample_point_set_property(GObject *object, guint property_id,
+                                           const GValue *value,
+                                           GParamSpec *pspec);
 
-struct _GimpSamplePointPrivate
-{
-	gint position_x;
-	gint position_y;
-	GimpColorPickMode pick_mode;
-};
+G_DEFINE_TYPE_WITH_PRIVATE(GimpSamplePoint, gimp_sample_point,
+                           GIMP_TYPE_AUX_ITEM)
 
+static void gimp_sample_point_class_init(GimpSamplePointClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void   gimp_sample_point_get_property (GObject      *object,
-                                              guint property_id,
-                                              GValue       *value,
-                                              GParamSpec   *pspec);
-static void   gimp_sample_point_set_property (GObject      *object,
-                                              guint property_id,
-                                              const GValue *value,
-                                              GParamSpec   *pspec);
+  object_class->get_property = gimp_sample_point_get_property;
+  object_class->set_property = gimp_sample_point_set_property;
 
+  GIMP_CONFIG_PROP_INT(object_class, PROP_POSITION_X, "position-x", NULL, NULL,
+                       GIMP_SAMPLE_POINT_POSITION_UNDEFINED,
+                       GIMP_MAX_IMAGE_SIZE,
+                       GIMP_SAMPLE_POINT_POSITION_UNDEFINED, 0);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GimpSamplePoint, gimp_sample_point,
-                            GIMP_TYPE_AUX_ITEM)
+  GIMP_CONFIG_PROP_INT(object_class, PROP_POSITION_Y, "position-y", NULL, NULL,
+                       GIMP_SAMPLE_POINT_POSITION_UNDEFINED,
+                       GIMP_MAX_IMAGE_SIZE,
+                       GIMP_SAMPLE_POINT_POSITION_UNDEFINED, 0);
 
-
-static void
-gimp_sample_point_class_init (GimpSamplePointClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->get_property = gimp_sample_point_get_property;
-	object_class->set_property = gimp_sample_point_set_property;
-
-	GIMP_CONFIG_PROP_INT (object_class, PROP_POSITION_X,
-	                      "position-x",
-	                      NULL, NULL,
-	                      GIMP_SAMPLE_POINT_POSITION_UNDEFINED,
-	                      GIMP_MAX_IMAGE_SIZE,
-	                      GIMP_SAMPLE_POINT_POSITION_UNDEFINED,
-	                      0);
-
-	GIMP_CONFIG_PROP_INT (object_class, PROP_POSITION_Y,
-	                      "position-y",
-	                      NULL, NULL,
-	                      GIMP_SAMPLE_POINT_POSITION_UNDEFINED,
-	                      GIMP_MAX_IMAGE_SIZE,
-	                      GIMP_SAMPLE_POINT_POSITION_UNDEFINED,
-	                      0);
-
-	GIMP_CONFIG_PROP_ENUM (object_class, PROP_PICK_MODE,
-	                       "pick-mode",
-	                       NULL, NULL,
-	                       GIMP_TYPE_COLOR_PICK_MODE,
-	                       GIMP_COLOR_PICK_MODE_PIXEL,
-	                       0);
+  GIMP_CONFIG_PROP_ENUM(object_class, PROP_PICK_MODE, "pick-mode", NULL, NULL,
+                        GIMP_TYPE_COLOR_PICK_MODE, GIMP_COLOR_PICK_MODE_PIXEL,
+                        0);
 }
 
-static void
-gimp_sample_point_init (GimpSamplePoint *sample_point)
-{
-	sample_point->priv = gimp_sample_point_get_instance_private (sample_point);
+static void gimp_sample_point_init(GimpSamplePoint *sample_point) {
+  sample_point->priv = gimp_sample_point_get_instance_private(sample_point);
 }
 
-static void
-gimp_sample_point_get_property (GObject    *object,
-                                guint property_id,
-                                GValue     *value,
-                                GParamSpec *pspec)
-{
-	GimpSamplePoint *sample_point = GIMP_SAMPLE_POINT (object);
+static void gimp_sample_point_get_property(GObject *object, guint property_id,
+                                           GValue *value, GParamSpec *pspec) {
+  GimpSamplePoint *sample_point = GIMP_SAMPLE_POINT(object);
 
-	switch (property_id)
-	{
-	case PROP_POSITION_X:
-		g_value_set_int (value, sample_point->priv->position_x);
-		break;
-	case PROP_POSITION_Y:
-		g_value_set_int (value, sample_point->priv->position_y);
-		break;
-	case PROP_PICK_MODE:
-		g_value_set_enum (value, sample_point->priv->pick_mode);
-		break;
+  switch (property_id) {
+  case PROP_POSITION_X:
+    g_value_set_int(value, sample_point->priv->position_x);
+    break;
+  case PROP_POSITION_Y:
+    g_value_set_int(value, sample_point->priv->position_y);
+    break;
+  case PROP_PICK_MODE:
+    g_value_set_enum(value, sample_point->priv->pick_mode);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_sample_point_set_property (GObject      *object,
-                                guint property_id,
-                                const GValue *value,
-                                GParamSpec   *pspec)
-{
-	GimpSamplePoint *sample_point = GIMP_SAMPLE_POINT (object);
+static void gimp_sample_point_set_property(GObject *object, guint property_id,
+                                           const GValue *value,
+                                           GParamSpec *pspec) {
+  GimpSamplePoint *sample_point = GIMP_SAMPLE_POINT(object);
 
-	switch (property_id)
-	{
-	case PROP_POSITION_X:
-		sample_point->priv->position_x = g_value_get_int (value);
-		break;
-	case PROP_POSITION_Y:
-		sample_point->priv->position_y = g_value_get_int (value);
-		break;
-	case PROP_PICK_MODE:
-		sample_point->priv->pick_mode = g_value_get_enum (value);
-		break;
+  switch (property_id) {
+  case PROP_POSITION_X:
+    sample_point->priv->position_x = g_value_get_int(value);
+    break;
+  case PROP_POSITION_Y:
+    sample_point->priv->position_y = g_value_get_int(value);
+    break;
+  case PROP_PICK_MODE:
+    sample_point->priv->pick_mode = g_value_get_enum(value);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-GimpSamplePoint *
-gimp_sample_point_new (guint32 sample_point_ID)
-{
-	return g_object_new (GIMP_TYPE_SAMPLE_POINT,
-	                     "id", sample_point_ID,
-	                     NULL);
+GimpSamplePoint *gimp_sample_point_new(guint32 sample_point_ID) {
+  return g_object_new(GIMP_TYPE_SAMPLE_POINT, "id", sample_point_ID, NULL);
 }
 
-void
-gimp_sample_point_get_position (GimpSamplePoint *sample_point,
-                                gint            *position_x,
-                                gint            *position_y)
-{
-	g_return_if_fail (GIMP_IS_SAMPLE_POINT (sample_point));
-	g_return_if_fail (position_x != NULL);
-	g_return_if_fail (position_y != NULL);
+void gimp_sample_point_get_position(GimpSamplePoint *sample_point,
+                                    gint *position_x, gint *position_y) {
+  g_return_if_fail(GIMP_IS_SAMPLE_POINT(sample_point));
+  g_return_if_fail(position_x != NULL);
+  g_return_if_fail(position_y != NULL);
 
-	*position_x = sample_point->priv->position_x;
-	*position_y = sample_point->priv->position_y;
+  *position_x = sample_point->priv->position_x;
+  *position_y = sample_point->priv->position_y;
 }
 
-void
-gimp_sample_point_set_position (GimpSamplePoint *sample_point,
-                                gint position_x,
-                                gint position_y)
-{
-	g_return_if_fail (GIMP_IS_SAMPLE_POINT (sample_point));
+void gimp_sample_point_set_position(GimpSamplePoint *sample_point,
+                                    gint position_x, gint position_y) {
+  g_return_if_fail(GIMP_IS_SAMPLE_POINT(sample_point));
 
-	if (sample_point->priv->position_x != position_x ||
-	    sample_point->priv->position_y != position_y)
-	{
-		sample_point->priv->position_x = position_x;
-		sample_point->priv->position_y = position_y;
+  if (sample_point->priv->position_x != position_x ||
+      sample_point->priv->position_y != position_y) {
+    sample_point->priv->position_x = position_x;
+    sample_point->priv->position_y = position_y;
 
-		g_object_freeze_notify (G_OBJECT (sample_point));
+    g_object_freeze_notify(G_OBJECT(sample_point));
 
-		g_object_notify (G_OBJECT (sample_point), "position-x");
-		g_object_notify (G_OBJECT (sample_point), "position-y");
+    g_object_notify(G_OBJECT(sample_point), "position-x");
+    g_object_notify(G_OBJECT(sample_point), "position-y");
 
-		g_object_thaw_notify (G_OBJECT (sample_point));
-	}
+    g_object_thaw_notify(G_OBJECT(sample_point));
+  }
 }
 
 GimpColorPickMode
-gimp_sample_point_get_pick_mode (GimpSamplePoint *sample_point)
-{
-	g_return_val_if_fail (GIMP_IS_SAMPLE_POINT (sample_point),
-	                      GIMP_COLOR_PICK_MODE_PIXEL);
+gimp_sample_point_get_pick_mode(GimpSamplePoint *sample_point) {
+  g_return_val_if_fail(GIMP_IS_SAMPLE_POINT(sample_point),
+                       GIMP_COLOR_PICK_MODE_PIXEL);
 
-	return sample_point->priv->pick_mode;
+  return sample_point->priv->pick_mode;
 }
 
-void
-gimp_sample_point_set_pick_mode (GimpSamplePoint   *sample_point,
-                                 GimpColorPickMode pick_mode)
-{
-	g_return_if_fail (GIMP_IS_SAMPLE_POINT (sample_point));
+void gimp_sample_point_set_pick_mode(GimpSamplePoint *sample_point,
+                                     GimpColorPickMode pick_mode) {
+  g_return_if_fail(GIMP_IS_SAMPLE_POINT(sample_point));
 
-	if (sample_point->priv->pick_mode != pick_mode)
-	{
-		sample_point->priv->pick_mode = pick_mode;
+  if (sample_point->priv->pick_mode != pick_mode) {
+    sample_point->priv->pick_mode = pick_mode;
 
-		g_object_notify (G_OBJECT (sample_point), "pick-mode");
-	}
+    g_object_notify(G_OBJECT(sample_point), "pick-mode");
+  }
 }

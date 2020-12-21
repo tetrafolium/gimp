@@ -18,11 +18,8 @@
 #ifndef __WINDOW_ACTIONS_H__
 #define __WINDOW_ACTIONS_H__
 
-
-void   window_actions_setup  (GimpActionGroup *group,
-                              const gchar     *move_to_screen_help_id);
-void   window_actions_update (GimpActionGroup *group,
-                              GtkWidget       *window);
-
+void window_actions_setup(GimpActionGroup *group,
+                          const gchar *move_to_screen_help_id);
+void window_actions_update(GimpActionGroup *group, GtkWidget *window);
 
 #endif /* __WINDOW_ACTIONS_H__ */

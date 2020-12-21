@@ -21,22 +21,17 @@
 #ifndef __GIMP_EXTENSION_ERROR_H__
 #define __GIMP_EXTENSION_ERROR_H__
 
-
-typedef enum
-{
-	/* Generic error condition. */
-	GIMP_EXTENSION_FAILED,
-	GIMP_EXTENSION_BAD_APPDATA,
-	GIMP_EXTENSION_BAD_ID,
-	GIMP_EXTENSION_NO_VERSION,
-	GIMP_EXTENSION_BAD_PATH
+typedef enum {
+  /* Generic error condition. */
+  GIMP_EXTENSION_FAILED,
+  GIMP_EXTENSION_BAD_APPDATA,
+  GIMP_EXTENSION_BAD_ID,
+  GIMP_EXTENSION_NO_VERSION,
+  GIMP_EXTENSION_BAD_PATH
 } GimpExtensionErrorCode;
 
+#define GIMP_EXTENSION_ERROR (gimp_extension_error_quark())
 
-#define GIMP_EXTENSION_ERROR (gimp_extension_error_quark ())
-
-GQuark  gimp_extension_error_quark (void) G_GNUC_CONST;
-
+GQuark gimp_extension_error_quark(void) G_GNUC_CONST;
 
 #endif /* __GIMP_EXTENSION_ERROR_H__ */
-

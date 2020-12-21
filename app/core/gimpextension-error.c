@@ -24,7 +24,6 @@
 
 #include "gimpextension-error.h"
 
-
 /**
  * gimp_extension_error_quark:
  *
@@ -32,8 +31,6 @@
  *
  * Returns: the #GQuark that defines the GimpExtension error domain.
  **/
-GQuark
-gimp_extension_error_quark (void)
-{
-	return g_quark_from_static_string ("gimp-extension-error-quark");
+GQuark gimp_extension_error_quark(void) {
+  return g_quark_from_static_string("gimp-extension-error-quark");
 }

@@ -18,10 +18,7 @@
 #ifndef __QUICK_MASK_ACTIONS_H__
 #define __QUICK_MASK_ACTIONS_H__
 
-
-void   quick_mask_actions_setup  (GimpActionGroup *group);
-void   quick_mask_actions_update (GimpActionGroup *group,
-                                  gpointer data);
-
+void quick_mask_actions_setup(GimpActionGroup *group);
+void quick_mask_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __QUICK_MASK_ACTIONS_H__ */

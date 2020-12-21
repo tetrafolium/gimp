@@ -18,44 +18,38 @@
 #ifndef __GIMP_LAYER_MASK_H__
 #define __GIMP_LAYER_MASK_H__
 
-
 #include "gimpchannel.h"
 
-
-#define GIMP_TYPE_LAYER_MASK            (gimp_layer_mask_get_type ())
-#define GIMP_LAYER_MASK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LAYER_MASK, GimpLayerMask))
-#define GIMP_LAYER_MASK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LAYER_MASK, GimpLayerMaskClass))
-#define GIMP_IS_LAYER_MASK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LAYER_MASK))
-#define GIMP_IS_LAYER_MASK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LAYER_MASK))
-#define GIMP_LAYER_MASK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LAYER_MASK, GimpLayerMaskClass))
-
+#define GIMP_TYPE_LAYER_MASK (gimp_layer_mask_get_type())
+#define GIMP_LAYER_MASK(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LAYER_MASK, GimpLayerMask))
+#define GIMP_LAYER_MASK_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LAYER_MASK, GimpLayerMaskClass))
+#define GIMP_IS_LAYER_MASK(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LAYER_MASK))
+#define GIMP_IS_LAYER_MASK_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LAYER_MASK))
+#define GIMP_LAYER_MASK_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LAYER_MASK, GimpLayerMaskClass))
 
 typedef struct _GimpLayerMaskClass GimpLayerMaskClass;
 
-struct _GimpLayerMask
-{
-	GimpChannel parent_instance;
+struct _GimpLayerMask {
+  GimpChannel parent_instance;
 
-	GimpLayer   *layer;
+  GimpLayer *layer;
 };
 
-struct _GimpLayerMaskClass
-{
-	GimpChannelClass parent_class;
+struct _GimpLayerMaskClass {
+  GimpChannelClass parent_class;
 };
 
+GType gimp_layer_mask_get_type(void) G_GNUC_CONST;
 
-GType           gimp_layer_mask_get_type  (void) G_GNUC_CONST;
+GimpLayerMask *gimp_layer_mask_new(GimpImage *image, gint width, gint height,
+                                   const gchar *name, const GimpRGB *color);
 
-GimpLayerMask * gimp_layer_mask_new       (GimpImage     *image,
-                                           gint width,
-                                           gint height,
-                                           const gchar   *name,
-                                           const GimpRGB *color);
-
-void            gimp_layer_mask_set_layer (GimpLayerMask *layer_mask,
-                                           GimpLayer     *layer);
-GimpLayer     * gimp_layer_mask_get_layer (GimpLayerMask *layer_mask);
-
+void gimp_layer_mask_set_layer(GimpLayerMask *layer_mask, GimpLayer *layer);
+GimpLayer *gimp_layer_mask_get_layer(GimpLayerMask *layer_mask);
 
 #endif /* __GIMP_LAYER_MASK_H__ */

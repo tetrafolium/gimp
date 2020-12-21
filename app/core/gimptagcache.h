@@ -21,43 +21,41 @@
 #ifndef __GIMP_TAG_CACHE_H__
 #define __GIMP_TAG_CACHE_H__
 
-
 #include "gimpobject.h"
 
-
-#define GIMP_TYPE_TAG_CACHE            (gimp_tag_cache_get_type ())
-#define GIMP_TAG_CACHE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TAG_CACHE, GimpTagCache))
-#define GIMP_TAG_CACHE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TAG_CACHE, GimpTagCacheClass))
-#define GIMP_IS_TAG_CACHE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TAG_CACHE))
-#define GIMP_IS_TAG_CACHE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TAG_CACHE))
-#define GIMP_TAG_CACHE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TAG_CACHE, GimpTagCacheClass))
-
+#define GIMP_TYPE_TAG_CACHE (gimp_tag_cache_get_type())
+#define GIMP_TAG_CACHE(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TAG_CACHE, GimpTagCache))
+#define GIMP_TAG_CACHE_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TAG_CACHE, GimpTagCacheClass))
+#define GIMP_IS_TAG_CACHE(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TAG_CACHE))
+#define GIMP_IS_TAG_CACHE_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TAG_CACHE))
+#define GIMP_TAG_CACHE_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TAG_CACHE, GimpTagCacheClass))
 
 typedef struct _GimpTagCacheClass GimpTagCacheClass;
 typedef struct _GimpTagCachePrivate GimpTagCachePrivate;
 
-struct _GimpTagCache
-{
-	GimpObject parent_instance;
+struct _GimpTagCache {
+  GimpObject parent_instance;
 
-	GimpTagCachePrivate *priv;
+  GimpTagCachePrivate *priv;
 };
 
-struct _GimpTagCacheClass
-{
-	GimpObjectClass parent_class;
+struct _GimpTagCacheClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_tag_cache_get_type(void) G_GNUC_CONST;
 
-GType           gimp_tag_cache_get_type      (void) G_GNUC_CONST;
+GimpTagCache *gimp_tag_cache_new(void);
 
-GimpTagCache *  gimp_tag_cache_new           (void);
+void gimp_tag_cache_save(GimpTagCache *cache);
+void gimp_tag_cache_load(GimpTagCache *cache);
 
-void            gimp_tag_cache_save          (GimpTagCache  *cache);
-void            gimp_tag_cache_load          (GimpTagCache  *cache);
+void gimp_tag_cache_add_container(GimpTagCache *cache,
+                                  GimpContainer *container);
 
-void            gimp_tag_cache_add_container (GimpTagCache  *cache,
-                                              GimpContainer *container);
-
-
-#endif  /*  __GIMP_TAG_CACHE_H__  */
+#endif /*  __GIMP_TAG_CACHE_H__  */

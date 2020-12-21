@@ -29,134 +29,87 @@
 
 #include "gimpguide.h"
 
+enum { PROP_0, PROP_ORIENTATION, PROP_POSITION, PROP_STYLE };
 
-enum
-{
-	PROP_0,
-	PROP_ORIENTATION,
-	PROP_POSITION,
-	PROP_STYLE
+struct _GimpGuidePrivate {
+  GimpOrientationType orientation;
+  gint position;
+
+  GimpGuideStyle style;
 };
 
+static void gimp_guide_get_property(GObject *object, guint property_id,
+                                    GValue *value, GParamSpec *pspec);
+static void gimp_guide_set_property(GObject *object, guint property_id,
+                                    const GValue *value, GParamSpec *pspec);
 
-struct _GimpGuidePrivate
-{
-	GimpOrientationType orientation;
-	gint position;
+G_DEFINE_TYPE_WITH_PRIVATE(GimpGuide, gimp_guide, GIMP_TYPE_AUX_ITEM)
 
-	GimpGuideStyle style;
-};
+static void gimp_guide_class_init(GimpGuideClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
+  object_class->get_property = gimp_guide_get_property;
+  object_class->set_property = gimp_guide_set_property;
 
-static void   gimp_guide_get_property (GObject      *object,
-                                       guint property_id,
-                                       GValue       *value,
-                                       GParamSpec   *pspec);
-static void   gimp_guide_set_property (GObject      *object,
-                                       guint property_id,
-                                       const GValue *value,
-                                       GParamSpec   *pspec);
+  GIMP_CONFIG_PROP_ENUM(object_class, PROP_ORIENTATION, "orientation", NULL,
+                        NULL, GIMP_TYPE_ORIENTATION_TYPE,
+                        GIMP_ORIENTATION_UNKNOWN, 0);
 
+  GIMP_CONFIG_PROP_INT(object_class, PROP_POSITION, "position", NULL, NULL,
+                       GIMP_GUIDE_POSITION_UNDEFINED, GIMP_MAX_IMAGE_SIZE,
+                       GIMP_GUIDE_POSITION_UNDEFINED, 0);
 
-G_DEFINE_TYPE_WITH_PRIVATE (GimpGuide, gimp_guide, GIMP_TYPE_AUX_ITEM)
-
-
-static void
-gimp_guide_class_init (GimpGuideClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->get_property = gimp_guide_get_property;
-	object_class->set_property = gimp_guide_set_property;
-
-	GIMP_CONFIG_PROP_ENUM (object_class, PROP_ORIENTATION,
-	                       "orientation",
-	                       NULL, NULL,
-	                       GIMP_TYPE_ORIENTATION_TYPE,
-	                       GIMP_ORIENTATION_UNKNOWN,
-	                       0);
-
-	GIMP_CONFIG_PROP_INT (object_class, PROP_POSITION,
-	                      "position",
-	                      NULL, NULL,
-	                      GIMP_GUIDE_POSITION_UNDEFINED,
-	                      GIMP_MAX_IMAGE_SIZE,
-	                      GIMP_GUIDE_POSITION_UNDEFINED,
-	                      0);
-
-	GIMP_CONFIG_PROP_ENUM (object_class, PROP_STYLE,
-	                       "style",
-	                       NULL, NULL,
-	                       GIMP_TYPE_GUIDE_STYLE,
-	                       GIMP_GUIDE_STYLE_NONE,
-	                       0);
+  GIMP_CONFIG_PROP_ENUM(object_class, PROP_STYLE, "style", NULL, NULL,
+                        GIMP_TYPE_GUIDE_STYLE, GIMP_GUIDE_STYLE_NONE, 0);
 }
 
-static void
-gimp_guide_init (GimpGuide *guide)
-{
-	guide->priv = gimp_guide_get_instance_private (guide);
+static void gimp_guide_init(GimpGuide *guide) {
+  guide->priv = gimp_guide_get_instance_private(guide);
 }
 
-static void
-gimp_guide_get_property (GObject    *object,
-                         guint property_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
-{
-	GimpGuide *guide = GIMP_GUIDE (object);
+static void gimp_guide_get_property(GObject *object, guint property_id,
+                                    GValue *value, GParamSpec *pspec) {
+  GimpGuide *guide = GIMP_GUIDE(object);
 
-	switch (property_id)
-	{
-	case PROP_ORIENTATION:
-		g_value_set_enum (value, guide->priv->orientation);
-		break;
-	case PROP_POSITION:
-		g_value_set_int (value, guide->priv->position);
-		break;
-	case PROP_STYLE:
-		g_value_set_enum (value, guide->priv->style);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch (property_id) {
+  case PROP_ORIENTATION:
+    g_value_set_enum(value, guide->priv->orientation);
+    break;
+  case PROP_POSITION:
+    g_value_set_int(value, guide->priv->position);
+    break;
+  case PROP_STYLE:
+    g_value_set_enum(value, guide->priv->style);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_guide_set_property (GObject      *object,
-                         guint property_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
-{
-	GimpGuide *guide = GIMP_GUIDE (object);
+static void gimp_guide_set_property(GObject *object, guint property_id,
+                                    const GValue *value, GParamSpec *pspec) {
+  GimpGuide *guide = GIMP_GUIDE(object);
 
-	switch (property_id)
-	{
-	case PROP_ORIENTATION:
-		guide->priv->orientation = g_value_get_enum (value);
-		break;
-	case PROP_POSITION:
-		guide->priv->position = g_value_get_int (value);
-		break;
-	case PROP_STYLE:
-		guide->priv->style = g_value_get_enum (value);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch (property_id) {
+  case PROP_ORIENTATION:
+    guide->priv->orientation = g_value_get_enum(value);
+    break;
+  case PROP_POSITION:
+    guide->priv->position = g_value_get_int(value);
+    break;
+  case PROP_STYLE:
+    guide->priv->style = g_value_get_enum(value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-GimpGuide *
-gimp_guide_new (GimpOrientationType orientation,
-                guint32 guide_ID)
-{
-	return g_object_new (GIMP_TYPE_GUIDE,
-	                     "id",          guide_ID,
-	                     "orientation", orientation,
-	                     "style",       GIMP_GUIDE_STYLE_NORMAL,
-	                     NULL);
+GimpGuide *gimp_guide_new(GimpOrientationType orientation, guint32 guide_ID) {
+  return g_object_new(GIMP_TYPE_GUIDE, "id", guide_ID, "orientation",
+                      orientation, "style", GIMP_GUIDE_STYLE_NORMAL, NULL);
 }
 
 /**
@@ -175,68 +128,49 @@ gimp_guide_new (GimpOrientationType orientation,
  *
  * Returns: the custom #GimpGuide.
  **/
-GimpGuide *
-gimp_guide_custom_new (GimpOrientationType orientation,
-                       guint32 guide_ID,
-                       GimpGuideStyle guide_style)
-{
-	return g_object_new (GIMP_TYPE_GUIDE,
-	                     "id",          guide_ID,
-	                     "orientation", orientation,
-	                     "style",       guide_style,
-	                     NULL);
+GimpGuide *gimp_guide_custom_new(GimpOrientationType orientation,
+                                 guint32 guide_ID, GimpGuideStyle guide_style) {
+  return g_object_new(GIMP_TYPE_GUIDE, "id", guide_ID, "orientation",
+                      orientation, "style", guide_style, NULL);
 }
 
-GimpOrientationType
-gimp_guide_get_orientation (GimpGuide *guide)
-{
-	g_return_val_if_fail (GIMP_IS_GUIDE (guide), GIMP_ORIENTATION_UNKNOWN);
+GimpOrientationType gimp_guide_get_orientation(GimpGuide *guide) {
+  g_return_val_if_fail(GIMP_IS_GUIDE(guide), GIMP_ORIENTATION_UNKNOWN);
 
-	return guide->priv->orientation;
+  return guide->priv->orientation;
 }
 
-void
-gimp_guide_set_orientation (GimpGuide           *guide,
-                            GimpOrientationType orientation)
-{
-	g_return_if_fail (GIMP_IS_GUIDE (guide));
+void gimp_guide_set_orientation(GimpGuide *guide,
+                                GimpOrientationType orientation) {
+  g_return_if_fail(GIMP_IS_GUIDE(guide));
 
-	guide->priv->orientation = orientation;
+  guide->priv->orientation = orientation;
 
-	g_object_notify (G_OBJECT (guide), "orientation");
+  g_object_notify(G_OBJECT(guide), "orientation");
 }
 
-gint
-gimp_guide_get_position (GimpGuide *guide)
-{
-	g_return_val_if_fail (GIMP_IS_GUIDE (guide), GIMP_GUIDE_POSITION_UNDEFINED);
+gint gimp_guide_get_position(GimpGuide *guide) {
+  g_return_val_if_fail(GIMP_IS_GUIDE(guide), GIMP_GUIDE_POSITION_UNDEFINED);
 
-	return guide->priv->position;
+  return guide->priv->position;
 }
 
-void
-gimp_guide_set_position (GimpGuide *guide,
-                         gint position)
-{
-	g_return_if_fail (GIMP_IS_GUIDE (guide));
+void gimp_guide_set_position(GimpGuide *guide, gint position) {
+  g_return_if_fail(GIMP_IS_GUIDE(guide));
 
-	guide->priv->position = position;
+  guide->priv->position = position;
 
-	g_object_notify (G_OBJECT (guide), "position");
+  g_object_notify(G_OBJECT(guide), "position");
 }
 
-GimpGuideStyle
-gimp_guide_get_style (GimpGuide *guide)
-{
-	g_return_val_if_fail (GIMP_IS_GUIDE (guide), GIMP_GUIDE_STYLE_NONE);
+GimpGuideStyle gimp_guide_get_style(GimpGuide *guide) {
+  g_return_val_if_fail(GIMP_IS_GUIDE(guide), GIMP_GUIDE_STYLE_NONE);
 
-	return guide->priv->style;
+  return guide->priv->style;
 }
 
-gboolean
-gimp_guide_is_custom (GimpGuide *guide)
-{
-	g_return_val_if_fail (GIMP_IS_GUIDE (guide), FALSE);
+gboolean gimp_guide_is_custom(GimpGuide *guide) {
+  g_return_val_if_fail(GIMP_IS_GUIDE(guide), FALSE);
 
-	return guide->priv->style != GIMP_GUIDE_STYLE_NORMAL;
+  return guide->priv->style != GIMP_GUIDE_STYLE_NORMAL;
 }

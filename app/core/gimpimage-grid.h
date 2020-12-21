@@ -21,11 +21,7 @@
 #ifndef __GIMP_IMAGE_GRID_H__
 #define __GIMP_IMAGE_GRID_H__
 
-
-GimpGrid * gimp_image_get_grid (GimpImage *image);
-void       gimp_image_set_grid (GimpImage *image,
-                                GimpGrid  *grid,
-                                gboolean push_undo);
-
+GimpGrid *gimp_image_get_grid(GimpImage *image);
+void gimp_image_set_grid(GimpImage *image, GimpGrid *grid, gboolean push_undo);
 
 #endif /* __GIMP_IMAGE_GRID_H__ */

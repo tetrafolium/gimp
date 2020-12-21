@@ -23,34 +23,33 @@
 
 #include "config/gimpdialogconfig.h"
 
-
-#define GIMP_TYPE_PLUGIN_CONFIG            (gimp_plugin_config_get_type ())
-#define GIMP_PLUGIN_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PLUGIN_CONFIG, GimpPluginConfig))
-#define GIMP_PLUGIN_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PLUGIN_CONFIG, GimpPluginConfigClass))
-#define GIMP_IS_PLUGIN_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PLUGIN_CONFIG))
-#define GIMP_IS_PLUGIN_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PLUGIN_CONFIG))
-
+#define GIMP_TYPE_PLUGIN_CONFIG (gimp_plugin_config_get_type())
+#define GIMP_PLUGIN_CONFIG(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PLUGIN_CONFIG, GimpPluginConfig))
+#define GIMP_PLUGIN_CONFIG_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PLUGIN_CONFIG,                   \
+                           GimpPluginConfigClass))
+#define GIMP_IS_PLUGIN_CONFIG(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PLUGIN_CONFIG))
+#define GIMP_IS_PLUGIN_CONFIG_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PLUGIN_CONFIG))
 
 typedef struct _GimpPluginConfigClass GimpPluginConfigClass;
 
-struct _GimpPluginConfig
-{
-	GimpDialogConfig parent_instance;
+struct _GimpPluginConfig {
+  GimpDialogConfig parent_instance;
 
-	gchar              *fractalexplorer_path;
-	gchar              *gfig_path;
-	gchar              *gflare_path;
-	gchar              *gimpressionist_path;
-	gchar              *script_fu_path;
+  gchar *fractalexplorer_path;
+  gchar *gfig_path;
+  gchar *gflare_path;
+  gchar *gimpressionist_path;
+  gchar *script_fu_path;
 };
 
-struct _GimpPluginConfigClass
-{
-	GimpGuiConfigClass parent_class;
+struct _GimpPluginConfigClass {
+  GimpGuiConfigClass parent_class;
 };
 
-
-GType  gimp_plugin_config_get_type (void) G_GNUC_CONST;
-
+GType gimp_plugin_config_get_type(void) G_GNUC_CONST;
 
 #endif /* GIMP_PLUGIN_CONFIG_H__ */

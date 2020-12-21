@@ -32,97 +32,81 @@
 #include "operations/gimp-operation-config.h"
 #include "operations/gimpoperationsettings.h"
 
-#include "gimpdrawable.h"
 #include "gimpdrawable-operation.h"
+#include "gimpdrawable.h"
 #include "gimpdrawablefilter.h"
 #include "gimpprogress.h"
 #include "gimpsettings.h"
 
-
 /*  public functions  */
 
-void
-gimp_drawable_apply_operation (GimpDrawable *drawable,
-                               GimpProgress *progress,
-                               const gchar  *undo_desc,
-                               GeglNode     *operation)
-{
-	gimp_drawable_apply_operation_with_config (drawable,
-	                                           progress, undo_desc,
-	                                           operation, NULL);
+void gimp_drawable_apply_operation(GimpDrawable *drawable,
+                                   GimpProgress *progress,
+                                   const gchar *undo_desc,
+                                   GeglNode *operation) {
+  gimp_drawable_apply_operation_with_config(drawable, progress, undo_desc,
+                                            operation, NULL);
 }
 
-void
-gimp_drawable_apply_operation_with_config (GimpDrawable *drawable,
+void gimp_drawable_apply_operation_with_config(GimpDrawable *drawable,
+                                               GimpProgress *progress,
+                                               const gchar *undo_desc,
+                                               GeglNode *operation,
+                                               GObject *config) {
+  GimpDrawableFilter *filter;
+
+  g_return_if_fail(GIMP_IS_DRAWABLE(drawable));
+  g_return_if_fail(gimp_item_is_attached(GIMP_ITEM(drawable)));
+  g_return_if_fail(progress == NULL || GIMP_IS_PROGRESS(progress));
+  g_return_if_fail(undo_desc != NULL);
+  g_return_if_fail(GEGL_IS_NODE(operation));
+  g_return_if_fail(config == NULL || GIMP_IS_OPERATION_SETTINGS(config));
+
+  if (!gimp_item_mask_intersect(GIMP_ITEM(drawable), NULL, NULL, NULL, NULL)) {
+    return;
+  }
+
+  filter = gimp_drawable_filter_new(drawable, undo_desc, operation, NULL);
+
+  gimp_drawable_filter_set_add_alpha(
+      filter, gimp_gegl_node_has_key(operation, "needs-alpha"));
+
+  if (config) {
+    gimp_operation_config_sync_node(config, operation);
+
+    gimp_operation_settings_sync_drawable_filter(
+        GIMP_OPERATION_SETTINGS(config), filter);
+  }
+
+  gimp_drawable_filter_apply(filter, NULL);
+  gimp_drawable_filter_commit(filter, progress, TRUE);
+
+  g_object_unref(filter);
+
+  if (progress)
+    gimp_progress_end(progress);
+}
+
+void gimp_drawable_apply_operation_by_name(GimpDrawable *drawable,
                                            GimpProgress *progress,
-                                           const gchar  *undo_desc,
-                                           GeglNode     *operation,
-                                           GObject      *config)
-{
-	GimpDrawableFilter *filter;
+                                           const gchar *undo_desc,
+                                           const gchar *operation_type,
+                                           GObject *config) {
+  GeglNode *node;
 
-	g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-	g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-	g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-	g_return_if_fail (undo_desc != NULL);
-	g_return_if_fail (GEGL_IS_NODE (operation));
-	g_return_if_fail (config == NULL || GIMP_IS_OPERATION_SETTINGS (config));
+  g_return_if_fail(GIMP_IS_DRAWABLE(drawable));
+  g_return_if_fail(gimp_item_is_attached(GIMP_ITEM(drawable)));
+  g_return_if_fail(progress == NULL || GIMP_IS_PROGRESS(progress));
+  g_return_if_fail(undo_desc != NULL);
+  g_return_if_fail(operation_type != NULL);
+  g_return_if_fail(config == NULL || GIMP_IS_SETTINGS(config));
 
-	if (!gimp_item_mask_intersect (GIMP_ITEM (drawable),
-	                               NULL, NULL, NULL, NULL))
-	{
-		return;
-	}
+  node = g_object_new(GEGL_TYPE_NODE, "operation", operation_type, NULL);
 
-	filter = gimp_drawable_filter_new (drawable, undo_desc, operation, NULL);
+  if (config)
+    gegl_node_set(node, "config", config, NULL);
 
-	gimp_drawable_filter_set_add_alpha (filter,
-	                                    gimp_gegl_node_has_key (operation,
-	                                                            "needs-alpha"));
+  gimp_drawable_apply_operation(drawable, progress, undo_desc, node);
 
-	if (config)
-	{
-		gimp_operation_config_sync_node (config, operation);
-
-		gimp_operation_settings_sync_drawable_filter (
-			GIMP_OPERATION_SETTINGS (config), filter);
-	}
-
-	gimp_drawable_filter_apply  (filter, NULL);
-	gimp_drawable_filter_commit (filter, progress, TRUE);
-
-	g_object_unref (filter);
-
-	if (progress)
-		gimp_progress_end (progress);
-}
-
-void
-gimp_drawable_apply_operation_by_name (GimpDrawable *drawable,
-                                       GimpProgress *progress,
-                                       const gchar  *undo_desc,
-                                       const gchar  *operation_type,
-                                       GObject      *config)
-{
-	GeglNode *node;
-
-	g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-	g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-	g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-	g_return_if_fail (undo_desc != NULL);
-	g_return_if_fail (operation_type != NULL);
-	g_return_if_fail (config == NULL || GIMP_IS_SETTINGS (config));
-
-	node = g_object_new (GEGL_TYPE_NODE,
-	                     "operation", operation_type,
-	                     NULL);
-
-	if (config)
-		gegl_node_set (node,
-		               "config", config,
-		               NULL);
-
-	gimp_drawable_apply_operation (drawable, progress, undo_desc, node);
-
-	g_object_unref (node);
+  g_object_unref(node);
 }

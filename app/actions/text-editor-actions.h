@@ -18,10 +18,7 @@
 #ifndef __TEXT_EDITOR_ACIONS_H__
 #define __TEXT_EDITOR_ACIONS_H__
 
-
-void   text_editor_actions_setup  (GimpActionGroup *group);
-void   text_editor_actions_update (GimpActionGroup *group,
-                                   gpointer data);
-
+void text_editor_actions_setup(GimpActionGroup *group);
+void text_editor_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __TEXT_EDITOR_ACTIONS_H__ */

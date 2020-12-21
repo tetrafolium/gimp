@@ -20,16 +20,13 @@
 #ifndef __GIMP_MYBRUSH_PRIVATE_H__
 #define __GIMP_MYBRUSH_PRIVATE_H__
 
-
-struct _GimpMybrushPrivate
-{
-	gchar   *brush_json;
-	gdouble radius;
-	gdouble opaque;
-	gdouble hardness;
-	gdouble offset_by_random;
-	gboolean eraser;
+struct _GimpMybrushPrivate {
+  gchar *brush_json;
+  gdouble radius;
+  gdouble opaque;
+  gdouble hardness;
+  gdouble offset_by_random;
+  gboolean eraser;
 };
-
 
 #endif /* __GIMP_MYBRUSH_PRIVATE_H__ */

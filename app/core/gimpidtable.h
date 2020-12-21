@@ -21,48 +21,40 @@
 #ifndef __GIMP_ID_TABLE_H__
 #define __GIMP_ID_TABLE_H__
 
-
 #include "gimpobject.h"
 
-
-#define GIMP_TYPE_ID_TABLE            (gimp_id_table_get_type ())
-#define GIMP_ID_TABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ID_TABLE, GimpIdTable))
-#define GIMP_ID_TABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ID_TABLE, GimpIdTableClass))
-#define GIMP_IS_ID_TABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ID_TABLE))
-#define GIMP_IS_ID_TABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ID_TABLE))
-#define GIMP_ID_TABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ID_TABLE, GimpIdTableClass))
-
+#define GIMP_TYPE_ID_TABLE (gimp_id_table_get_type())
+#define GIMP_ID_TABLE(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ID_TABLE, GimpIdTable))
+#define GIMP_ID_TABLE_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ID_TABLE, GimpIdTableClass))
+#define GIMP_IS_ID_TABLE(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ID_TABLE))
+#define GIMP_IS_ID_TABLE_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ID_TABLE))
+#define GIMP_ID_TABLE_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ID_TABLE, GimpIdTableClass))
 
 typedef struct _GimpIdTableClass GimpIdTableClass;
 typedef struct _GimpIdTablePrivate GimpIdTablePrivate;
 
-struct _GimpIdTable
-{
-	GimpObject parent_instance;
+struct _GimpIdTable {
+  GimpObject parent_instance;
 
-	GimpIdTablePrivate *priv;
+  GimpIdTablePrivate *priv;
 };
 
-struct _GimpIdTableClass
-{
-	GimpObjectClass parent_class;
+struct _GimpIdTableClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_id_table_get_type(void) G_GNUC_CONST;
+GimpIdTable *gimp_id_table_new(void);
+gint gimp_id_table_insert(GimpIdTable *id_table, gpointer data);
+gint gimp_id_table_insert_with_id(GimpIdTable *id_table, gint id,
+                                  gpointer data);
+void gimp_id_table_replace(GimpIdTable *id_table, gint id, gpointer data);
+gpointer gimp_id_table_lookup(GimpIdTable *id_table, gint id);
+gboolean gimp_id_table_remove(GimpIdTable *id_table, gint id);
 
-GType          gimp_id_table_get_type       (void) G_GNUC_CONST;
-GimpIdTable *  gimp_id_table_new            (void);
-gint           gimp_id_table_insert         (GimpIdTable *id_table,
-                                             gpointer data);
-gint           gimp_id_table_insert_with_id (GimpIdTable *id_table,
-                                             gint id,
-                                             gpointer data);
-void           gimp_id_table_replace        (GimpIdTable *id_table,
-                                             gint id,
-                                             gpointer data);
-gpointer       gimp_id_table_lookup         (GimpIdTable *id_table,
-                                             gint id);
-gboolean       gimp_id_table_remove         (GimpIdTable *id_table,
-                                             gint id);
-
-
-#endif  /*  __GIMP_ID_TABLE_H__  */
+#endif /*  __GIMP_ID_TABLE_H__  */

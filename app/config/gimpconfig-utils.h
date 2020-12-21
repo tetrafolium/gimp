@@ -21,16 +21,10 @@
 #ifndef __APP_GIMP_CONFIG_UTILS_H__
 #define __APP_GIMP_CONFIG_UTILS_H__
 
+void gimp_config_connect(GObject *a, GObject *b, const gchar *property_name);
+void gimp_config_connect_full(GObject *a, GObject *b,
+                              const gchar *property_name_a,
+                              const gchar *property_name_b);
+void gimp_config_disconnect(GObject *a, GObject *b);
 
-void   gimp_config_connect      (GObject     *a,
-                                 GObject     *b,
-                                 const gchar *property_name);
-void   gimp_config_connect_full (GObject     *a,
-                                 GObject     *b,
-                                 const gchar *property_name_a,
-                                 const gchar *property_name_b);
-void   gimp_config_disconnect   (GObject     *a,
-                                 GObject     *b);
-
-
-#endif  /* __APP_GIMP_CONFIG_UTILS_H__ */
+#endif /* __APP_GIMP_CONFIG_UTILS_H__ */

@@ -21,41 +21,38 @@
 #ifndef __GIMP_ASYNC_SET_H__
 #define __GIMP_ASYNC_SET_H__
 
-
-#define GIMP_TYPE_ASYNC_SET            (gimp_async_set_get_type ())
-#define GIMP_ASYNC_SET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ASYNC_SET, GimpAsyncSet))
-#define GIMP_ASYNC_SET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ASYNC_SET, GimpAsyncSetClass))
-#define GIMP_IS_ASYNC_SET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ASYNC_SET))
-#define GIMP_IS_ASYNC_SET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ASYNC_SET))
-#define GIMP_ASYNC_SET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ASYNC_SET, GimpAsyncSetClass))
-
+#define GIMP_TYPE_ASYNC_SET (gimp_async_set_get_type())
+#define GIMP_ASYNC_SET(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ASYNC_SET, GimpAsyncSet))
+#define GIMP_ASYNC_SET_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ASYNC_SET, GimpAsyncSetClass))
+#define GIMP_IS_ASYNC_SET(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ASYNC_SET))
+#define GIMP_IS_ASYNC_SET_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ASYNC_SET))
+#define GIMP_ASYNC_SET_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ASYNC_SET, GimpAsyncSetClass))
 
 typedef struct _GimpAsyncSetPrivate GimpAsyncSetPrivate;
 typedef struct _GimpAsyncSetClass GimpAsyncSetClass;
 
-struct _GimpAsyncSet
-{
-	GObject parent_instance;
+struct _GimpAsyncSet {
+  GObject parent_instance;
 
-	GimpAsyncSetPrivate *priv;
+  GimpAsyncSetPrivate *priv;
 };
 
-struct _GimpAsyncSetClass
-{
-	GObjectClass parent_class;
+struct _GimpAsyncSetClass {
+  GObjectClass parent_class;
 };
 
+GType gimp_async_set_get_type(void) G_GNUC_CONST;
 
-GType          gimp_async_set_get_type (void) G_GNUC_CONST;
+GimpAsyncSet *gimp_async_set_new(void);
 
-GimpAsyncSet * gimp_async_set_new      (void);
-
-void           gimp_async_set_add      (GimpAsyncSet *async_set,
-                                        GimpAsync    *async);
-void           gimp_async_set_remove   (GimpAsyncSet *async_set,
-                                        GimpAsync    *async);
-void           gimp_async_set_clear    (GimpAsyncSet *async_set);
-gboolean       gimp_async_set_is_empty (GimpAsyncSet *async_set);
-
+void gimp_async_set_add(GimpAsyncSet *async_set, GimpAsync *async);
+void gimp_async_set_remove(GimpAsyncSet *async_set, GimpAsync *async);
+void gimp_async_set_clear(GimpAsyncSet *async_set);
+gboolean gimp_async_set_is_empty(GimpAsyncSet *async_set);
 
 #endif /* __GIMP_ASYNC_SET_H__ */

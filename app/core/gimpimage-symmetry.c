@@ -20,35 +20,32 @@
 
 #include "config.h"
 
-#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
-#include "gimpsymmetry.h"
-#include "gimpimage.h"
 #include "gimpimage-private.h"
 #include "gimpimage-symmetry.h"
+#include "gimpimage.h"
 #include "gimpsymmetry-mandala.h"
 #include "gimpsymmetry-mirror.h"
 #include "gimpsymmetry-tiling.h"
-
+#include "gimpsymmetry.h"
 
 /**
  * gimp_image_symmetry_list:
  *
  * Returns a list of #GType of all existing symmetries.
  **/
-GList *
-gimp_image_symmetry_list (void)
-{
-	GList *list = NULL;
+GList *gimp_image_symmetry_list(void) {
+  GList *list = NULL;
 
-	list = g_list_prepend (list, GINT_TO_POINTER (GIMP_TYPE_MIRROR));
-	list = g_list_prepend (list, GINT_TO_POINTER (GIMP_TYPE_TILING));
-	list = g_list_prepend (list, GINT_TO_POINTER (GIMP_TYPE_MANDALA));
+  list = g_list_prepend(list, GINT_TO_POINTER(GIMP_TYPE_MIRROR));
+  list = g_list_prepend(list, GINT_TO_POINTER(GIMP_TYPE_TILING));
+  list = g_list_prepend(list, GINT_TO_POINTER(GIMP_TYPE_MANDALA));
 
-	return list;
+  return list;
 }
 
 /**
@@ -63,19 +60,14 @@ gimp_image_symmetry_list (void)
  *
  * Returns: the new #GimpSymmetry.
  **/
-GimpSymmetry *
-gimp_image_symmetry_new (GimpImage *image,
-                         GType type)
-{
-	GimpSymmetry *sym = NULL;
+GimpSymmetry *gimp_image_symmetry_new(GimpImage *image, GType type) {
+  GimpSymmetry *sym = NULL;
 
-	g_return_val_if_fail (g_type_is_a (type, GIMP_TYPE_SYMMETRY), NULL);
+  g_return_val_if_fail(g_type_is_a(type, GIMP_TYPE_SYMMETRY), NULL);
 
-	sym = g_object_new (type,
-	                    "image", image,
-	                    NULL);
+  sym = g_object_new(type, "image", image, NULL);
 
-	return sym;
+  return sym;
 }
 
 /**
@@ -86,19 +78,17 @@ gimp_image_symmetry_new (GimpImage *image,
  * Add a symmetry of type @type to @image and make it the
  * active transformation.
  **/
-void
-gimp_image_symmetry_add (GimpImage    *image,
-                         GimpSymmetry *sym)
-{
-	GimpImagePrivate *private;
+void gimp_image_symmetry_add(GimpImage *image, GimpSymmetry *sym) {
+  GimpImagePrivate *private;
 
-	g_return_if_fail (GIMP_IS_IMAGE (image));
-	g_return_if_fail (GIMP_IS_SYMMETRY (sym));
+  g_return_if_fail(GIMP_IS_IMAGE(image));
+  g_return_if_fail(GIMP_IS_SYMMETRY(sym));
 
-	private = GIMP_IMAGE_GET_PRIVATE (image);
+private
+  = GIMP_IMAGE_GET_PRIVATE(image);
 
-	private->symmetries = g_list_prepend (private->symmetries,
-	                                      g_object_ref (sym));
+private
+  ->symmetries = g_list_prepend(private->symmetries, g_object_ref(sym));
 }
 
 /**
@@ -109,22 +99,21 @@ gimp_image_symmetry_add (GimpImage    *image,
  * Remove @sym from the list of symmetries of @image.
  * If it was the active transformation, unselect it first.
  **/
-void
-gimp_image_symmetry_remove (GimpImage    *image,
-                            GimpSymmetry *sym)
-{
-	GimpImagePrivate *private;
+void gimp_image_symmetry_remove(GimpImage *image, GimpSymmetry *sym) {
+  GimpImagePrivate *private;
 
-	g_return_if_fail (GIMP_IS_SYMMETRY (sym));
-	g_return_if_fail (GIMP_IS_IMAGE (image));
+  g_return_if_fail(GIMP_IS_SYMMETRY(sym));
+  g_return_if_fail(GIMP_IS_IMAGE(image));
 
-	private = GIMP_IMAGE_GET_PRIVATE (image);
+private
+  = GIMP_IMAGE_GET_PRIVATE(image);
 
-	if (private->active_symmetry == sym)
-		gimp_image_set_active_symmetry (image, GIMP_TYPE_SYMMETRY);
+  if (private->active_symmetry == sym)
+    gimp_image_set_active_symmetry(image, GIMP_TYPE_SYMMETRY);
 
-	private->symmetries = g_list_remove (private->symmetries, sym);
-	g_object_unref (sym);
+private
+  ->symmetries = g_list_remove(private->symmetries, sym);
+  g_object_unref(sym);
 }
 
 /**
@@ -134,16 +123,15 @@ gimp_image_symmetry_remove (GimpImage    *image,
  * Returns: the list of #GimpSymmetry set on @image.
  * The returned list belongs to @image and should not be freed.
  **/
-GList *
-gimp_image_symmetry_get (GimpImage *image)
-{
-	GimpImagePrivate *private;
+GList *gimp_image_symmetry_get(GimpImage *image) {
+  GimpImagePrivate *private;
 
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
 
-	private = GIMP_IMAGE_GET_PRIVATE (image);
+private
+  = GIMP_IMAGE_GET_PRIVATE(image);
 
-	return private->symmetries;
+  return private->symmetries;
 }
 
 /**
@@ -157,17 +145,12 @@ gimp_image_symmetry_get (GimpImage *image)
  *
  * Returns TRUE on success, FALSE if no such symmetry was found.
  **/
-gboolean
-gimp_image_set_active_symmetry (GimpImage *image,
-                                GType type)
-{
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+gboolean gimp_image_set_active_symmetry(GimpImage *image, GType type) {
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
 
-	g_object_set (image,
-	              "symmetry", type,
-	              NULL);
+  g_object_set(image, "symmetry", type, NULL);
 
-	return TRUE;
+  return TRUE;
 }
 
 /**
@@ -176,14 +159,13 @@ gimp_image_set_active_symmetry (GimpImage *image,
  *
  * Returns the #GimpSymmetry transformation active on @image.
  **/
-GimpSymmetry *
-gimp_image_get_active_symmetry (GimpImage *image)
-{
-	GimpImagePrivate *private;
+GimpSymmetry *gimp_image_get_active_symmetry(GimpImage *image) {
+  GimpImagePrivate *private;
 
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
 
-	private = GIMP_IMAGE_GET_PRIVATE (image);
+private
+  = GIMP_IMAGE_GET_PRIVATE(image);
 
-	return private->active_symmetry;
+  return private->active_symmetry;
 }

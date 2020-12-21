@@ -18,17 +18,10 @@
 #ifndef __GIMP_IMAGE_FLIP_H__
 #define __GIMP_IMAGE_FLIP_H__
 
-
-void   gimp_image_flip      (GimpImage           *image,
-                             GimpContext         *context,
-                             GimpOrientationType flip_type,
-                             GimpProgress        *progress);
-void   gimp_image_flip_full (GimpImage           *image,
-                             GimpContext         *context,
-                             GimpOrientationType flip_type,
-                             gdouble axis,
-                             gboolean clip_result,
-                             GimpProgress        *progress);
-
+void gimp_image_flip(GimpImage *image, GimpContext *context,
+                     GimpOrientationType flip_type, GimpProgress *progress);
+void gimp_image_flip_full(GimpImage *image, GimpContext *context,
+                          GimpOrientationType flip_type, gdouble axis,
+                          gboolean clip_result, GimpProgress *progress);
 
 #endif /* __GIMP_IMAGE_FLIP_H__ */

@@ -18,10 +18,7 @@
 #ifndef __DYNAMICS_ACTIONS_H__
 #define __DYNAMICS_ACTIONS_H__
 
-
-void   dynamics_actions_setup  (GimpActionGroup *group);
-void   dynamics_actions_update (GimpActionGroup *group,
-                                gpointer user_data);
-
+void dynamics_actions_setup(GimpActionGroup *group);
+void dynamics_actions_update(GimpActionGroup *group, gpointer user_data);
 
 #endif /* __DYNAMICS_ACTIONS_H__ */

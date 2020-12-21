@@ -18,10 +18,7 @@
 #ifndef __DRAWABLE_ACTIONS_H__
 #define __DRAWABLE_ACTIONS_H__
 
-
-void   drawable_actions_setup  (GimpActionGroup *group);
-void   drawable_actions_update (GimpActionGroup *group,
-                                gpointer data);
-
+void drawable_actions_setup(GimpActionGroup *group);
+void drawable_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __DRAWABLE_ACTIONS_H__ */

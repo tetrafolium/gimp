@@ -18,51 +18,52 @@
 #ifndef __GIMP_DYNAMICS_OUTPUT_H__
 #define __GIMP_DYNAMICS_OUTPUT_H__
 
-
 #include "gimpobject.h"
 
-
-#define GIMP_TYPE_DYNAMICS_OUTPUT            (gimp_dynamics_output_get_type ())
-#define GIMP_DYNAMICS_OUTPUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DYNAMICS_OUTPUT, GimpDynamicsOutput))
-#define GIMP_DYNAMICS_OUTPUT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DYNAMICS_OUTPUT, GimpDynamicsOutputClass))
-#define GIMP_IS_DYNAMICS_OUTPUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DYNAMICS_OUTPUT))
-#define GIMP_IS_DYNAMICS_OUTPUT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DYNAMICS_OUTPUT))
-#define GIMP_DYNAMICS_OUTPUT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DYNAMICS_OUTPUT, GimpDynamicsOutputClass))
-
+#define GIMP_TYPE_DYNAMICS_OUTPUT (gimp_dynamics_output_get_type())
+#define GIMP_DYNAMICS_OUTPUT(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DYNAMICS_OUTPUT,                \
+                              GimpDynamicsOutput))
+#define GIMP_DYNAMICS_OUTPUT_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DYNAMICS_OUTPUT,                 \
+                           GimpDynamicsOutputClass))
+#define GIMP_IS_DYNAMICS_OUTPUT(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DYNAMICS_OUTPUT))
+#define GIMP_IS_DYNAMICS_OUTPUT_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DYNAMICS_OUTPUT))
+#define GIMP_DYNAMICS_OUTPUT_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DYNAMICS_OUTPUT,                 \
+                             GimpDynamicsOutputClass))
 
 typedef struct _GimpDynamicsOutputClass GimpDynamicsOutputClass;
 
-struct _GimpDynamicsOutput
-{
-	GimpObject parent_instance;
+struct _GimpDynamicsOutput {
+  GimpObject parent_instance;
 };
 
-struct _GimpDynamicsOutputClass
-{
-	GimpObjectClass parent_class;
+struct _GimpDynamicsOutputClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_dynamics_output_get_type(void) G_GNUC_CONST;
 
-GType                gimp_dynamics_output_get_type (void) G_GNUC_CONST;
+GimpDynamicsOutput *gimp_dynamics_output_new(const gchar *name,
+                                             GimpDynamicsOutputType type);
 
-GimpDynamicsOutput * gimp_dynamics_output_new      (const gchar            *name,
-                                                    GimpDynamicsOutputType type);
+gboolean gimp_dynamics_output_is_enabled(GimpDynamicsOutput *output);
 
-gboolean   gimp_dynamics_output_is_enabled         (GimpDynamicsOutput *output);
+gdouble gimp_dynamics_output_get_linear_value(GimpDynamicsOutput *output,
+                                              const GimpCoords *coords,
+                                              GimpPaintOptions *options,
+                                              gdouble fade_point);
 
-gdouble    gimp_dynamics_output_get_linear_value   (GimpDynamicsOutput *output,
-                                                    const GimpCoords   *coords,
-                                                    GimpPaintOptions   *options,
-                                                    gdouble fade_point);
+gdouble gimp_dynamics_output_get_angular_value(GimpDynamicsOutput *output,
+                                               const GimpCoords *coords,
+                                               GimpPaintOptions *options,
+                                               gdouble fade_point);
+gdouble gimp_dynamics_output_get_aspect_value(GimpDynamicsOutput *output,
+                                              const GimpCoords *coords,
+                                              GimpPaintOptions *options,
+                                              gdouble fade_point);
 
-gdouble    gimp_dynamics_output_get_angular_value  (GimpDynamicsOutput *output,
-                                                    const GimpCoords   *coords,
-                                                    GimpPaintOptions   *options,
-                                                    gdouble fade_point);
-gdouble    gimp_dynamics_output_get_aspect_value   (GimpDynamicsOutput *output,
-                                                    const GimpCoords   *coords,
-                                                    GimpPaintOptions   *options,
-                                                    gdouble fade_point);
-
-
-#endif  /*  __GIMP_DYNAMICS_OUTPUT_H__  */
+#endif /*  __GIMP_DYNAMICS_OUTPUT_H__  */

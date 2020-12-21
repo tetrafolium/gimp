@@ -18,10 +18,7 @@
 #ifndef __DYNAMICS_EDITOR_ACTIONS_H__
 #define __DYNAMICS_EDITOR_ACTIONS_H__
 
-
-void   dynamics_editor_actions_setup  (GimpActionGroup *group);
-void   dynamics_editor_actions_update (GimpActionGroup *group,
-                                       gpointer data);
-
+void dynamics_editor_actions_setup(GimpActionGroup *group);
+void dynamics_editor_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __DYNAMICS_EDITOR_ACTIONS_H__ */

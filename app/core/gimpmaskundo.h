@@ -18,41 +18,39 @@
 #ifndef __GIMP_MASK_UNDO_H__
 #define __GIMP_MASK_UNDO_H__
 
-
 #include "gimpitemundo.h"
 
-
-#define GIMP_TYPE_MASK_UNDO            (gimp_mask_undo_get_type ())
-#define GIMP_MASK_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MASK_UNDO, GimpMaskUndo))
-#define GIMP_MASK_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MASK_UNDO, GimpMaskUndoClass))
-#define GIMP_IS_MASK_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MASK_UNDO))
-#define GIMP_IS_MASK_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MASK_UNDO))
-#define GIMP_MASK_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MASK_UNDO, GimpMaskUndoClass))
-
+#define GIMP_TYPE_MASK_UNDO (gimp_mask_undo_get_type())
+#define GIMP_MASK_UNDO(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MASK_UNDO, GimpMaskUndo))
+#define GIMP_MASK_UNDO_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MASK_UNDO, GimpMaskUndoClass))
+#define GIMP_IS_MASK_UNDO(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MASK_UNDO))
+#define GIMP_IS_MASK_UNDO_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MASK_UNDO))
+#define GIMP_MASK_UNDO_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MASK_UNDO, GimpMaskUndoClass))
 
 typedef struct _GimpMaskUndo GimpMaskUndo;
 typedef struct _GimpMaskUndoClass GimpMaskUndoClass;
 
-struct _GimpMaskUndo
-{
-	GimpItemUndo parent_instance;
+struct _GimpMaskUndo {
+  GimpItemUndo parent_instance;
 
-	gboolean convert_format;
+  gboolean convert_format;
 
-	const Babl    *format;
-	GeglBuffer    *buffer;
-	GeglRectangle bounds;
-	gint x;
-	gint y;
+  const Babl *format;
+  GeglBuffer *buffer;
+  GeglRectangle bounds;
+  gint x;
+  gint y;
 };
 
-struct _GimpMaskUndoClass
-{
-	GimpItemUndoClass parent_class;
+struct _GimpMaskUndoClass {
+  GimpItemUndoClass parent_class;
 };
 
-
-GType   gimp_mask_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_mask_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_MASK_UNDO_H__ */

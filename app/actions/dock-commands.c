@@ -25,61 +25,49 @@
 #include "actions-types.h"
 
 #include "widgets/gimpdockwindow.h"
-#include "widgets/gimpdockwindow.h"
 
 #include "actions.h"
 #include "dock-commands.h"
 
-
 static GimpDockWindow *
-dock_commands_get_dock_window_from_widget (GtkWidget *widget)
-{
-	GtkWidget      *toplevel    = gtk_widget_get_toplevel (widget);
-	GimpDockWindow *dock_window = NULL;
+dock_commands_get_dock_window_from_widget(GtkWidget *widget) {
+  GtkWidget *toplevel = gtk_widget_get_toplevel(widget);
+  GimpDockWindow *dock_window = NULL;
 
-	if (GIMP_IS_DOCK_WINDOW (toplevel))
-		dock_window = GIMP_DOCK_WINDOW (toplevel);
+  if (GIMP_IS_DOCK_WINDOW(toplevel))
+    dock_window = GIMP_DOCK_WINDOW(toplevel);
 
-	return dock_window;
+  return dock_window;
 }
-
 
 /*  public functions  */
 
-void
-dock_toggle_image_menu_cmd_callback (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer data)
-{
-	GtkWidget      *widget      = NULL;
-	GimpDockWindow *dock_window = NULL;
-	return_if_no_widget (widget, data);
+void dock_toggle_image_menu_cmd_callback(GimpAction *action, GVariant *value,
+                                         gpointer data) {
+  GtkWidget *widget = NULL;
+  GimpDockWindow *dock_window = NULL;
+  return_if_no_widget(widget, data);
 
-	dock_window = dock_commands_get_dock_window_from_widget (widget);
+  dock_window = dock_commands_get_dock_window_from_widget(widget);
 
-	if (dock_window)
-	{
-		gboolean active = g_variant_get_boolean (value);
+  if (dock_window) {
+    gboolean active = g_variant_get_boolean(value);
 
-		gimp_dock_window_set_show_image_menu (dock_window, active);
-	}
+    gimp_dock_window_set_show_image_menu(dock_window, active);
+  }
 }
 
-void
-dock_toggle_auto_cmd_callback (GimpAction *action,
-                               GVariant   *value,
-                               gpointer data)
-{
-	GtkWidget      *widget      = NULL;
-	GimpDockWindow *dock_window = NULL;
-	return_if_no_widget (widget, data);
+void dock_toggle_auto_cmd_callback(GimpAction *action, GVariant *value,
+                                   gpointer data) {
+  GtkWidget *widget = NULL;
+  GimpDockWindow *dock_window = NULL;
+  return_if_no_widget(widget, data);
 
-	dock_window = dock_commands_get_dock_window_from_widget (widget);
+  dock_window = dock_commands_get_dock_window_from_widget(widget);
 
-	if (dock_window)
-	{
-		gboolean active = g_variant_get_boolean (value);
+  if (dock_window) {
+    gboolean active = g_variant_get_boolean(value);
 
-		gimp_dock_window_set_auto_follow_active (dock_window, active);
-	}
+    gimp_dock_window_set_auto_follow_active(dock_window, active);
+  }
 }

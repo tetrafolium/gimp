@@ -18,11 +18,9 @@
 #ifndef __GIMP_TEMPLATES_H__
 #define __GIMP_TEMPLATES_H__
 
+void gimp_templates_load(Gimp *gimp);
+void gimp_templates_save(Gimp *gimp);
 
-void  gimp_templates_load    (Gimp        *gimp);
-void  gimp_templates_save    (Gimp        *gimp);
+void gimp_templates_migrate(const gchar *olddir);
 
-void  gimp_templates_migrate (const gchar *olddir);
-
-
-#endif  /*  __GIMP_TEMPLATES_H__  */
+#endif /*  __GIMP_TEMPLATES_H__  */

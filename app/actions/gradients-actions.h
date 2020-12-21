@@ -18,10 +18,7 @@
 #ifndef __GRADIENTS_ACTIONS_H__
 #define __GRADIENTS_ACTIONS_H__
 
-
-void   gradients_actions_setup  (GimpActionGroup *group);
-void   gradients_actions_update (GimpActionGroup *group,
-                                 gpointer user_data);
-
+void gradients_actions_setup(GimpActionGroup *group);
+void gradients_actions_update(GimpActionGroup *group, gpointer user_data);
 
 #endif /* __GRADIENT_ACTIONS_H__ */

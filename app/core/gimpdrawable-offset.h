@@ -18,13 +18,8 @@
 #ifndef __GIMP_DRAWABLE_OFFSET_H__
 #define __GIMP_DRAWABLE_OFFSET_H__
 
+void gimp_drawable_offset(GimpDrawable *drawable, GimpContext *context,
+                          gboolean wrap_around, GimpOffsetType fill_type,
+                          gint offset_x, gint offset_y);
 
-void   gimp_drawable_offset (GimpDrawable   *drawable,
-                             GimpContext    *context,
-                             gboolean wrap_around,
-                             GimpOffsetType fill_type,
-                             gint offset_x,
-                             gint offset_y);
-
-
-#endif  /*  __GIMP_DRAWABLE_OFFSET_H__  */
+#endif /*  __GIMP_DRAWABLE_OFFSET_H__  */

@@ -23,33 +23,32 @@
 
 #include "gimplist.h"
 
-
-#define GIMP_TYPE_FILTER_STACK            (gimp_filter_stack_get_type ())
-#define GIMP_FILTER_STACK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FILTER_STACK, GimpFilterStack))
-#define GIMP_FILTER_STACK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FILTER_STACK, GimpFilterStackClass))
-#define GIMP_IS_FILTER_STACK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FILTER_STACK))
-#define GIMP_IS_FILTER_STACK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FILTER_STACK))
-
+#define GIMP_TYPE_FILTER_STACK (gimp_filter_stack_get_type())
+#define GIMP_FILTER_STACK(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FILTER_STACK, GimpFilterStack))
+#define GIMP_FILTER_STACK_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FILTER_STACK,                    \
+                           GimpFilterStackClass))
+#define GIMP_IS_FILTER_STACK(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FILTER_STACK))
+#define GIMP_IS_FILTER_STACK_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FILTER_STACK))
 
 typedef struct _GimpFilterStackClass GimpFilterStackClass;
 
-struct _GimpFilterStack
-{
-	GimpList parent_instance;
+struct _GimpFilterStack {
+  GimpList parent_instance;
 
-	GeglNode *graph;
+  GeglNode *graph;
 };
 
-struct _GimpFilterStackClass
-{
-	GimpListClass parent_class;
+struct _GimpFilterStackClass {
+  GimpListClass parent_class;
 };
 
+GType gimp_filter_stack_get_type(void) G_GNUC_CONST;
+GimpContainer *gimp_filter_stack_new(GType filter_type);
 
-GType           gimp_filter_stack_get_type  (void) G_GNUC_CONST;
-GimpContainer * gimp_filter_stack_new       (GType filter_type);
+GeglNode *gimp_filter_stack_get_graph(GimpFilterStack *stack);
 
-GeglNode *      gimp_filter_stack_get_graph (GimpFilterStack *stack);
-
-
-#endif  /*  __GIMP_FILTER_STACK_H__  */
+#endif /*  __GIMP_FILTER_STACK_H__  */

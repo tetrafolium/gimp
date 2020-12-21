@@ -18,9 +18,7 @@
 #ifndef __GIMP_TILE_HANDLER_PROJECTABLE_H__
 #define __GIMP_TILE_HANDLER_PROJECTABLE_H__
 
-
 #include "gegl/gimptilehandlervalidate.h"
-
 
 /***
  * GimpTileHandlerProjectable is a GeglTileHandler that renders a
@@ -32,33 +30,38 @@
  * lifetime.
  */
 
-#define GIMP_TYPE_TILE_HANDLER_PROJECTABLE            (gimp_tile_handler_projectable_get_type ())
-#define GIMP_TILE_HANDLER_PROJECTABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TILE_HANDLER_PROJECTABLE, GimpTileHandlerProjectable))
-#define GIMP_TILE_HANDLER_PROJECTABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_TILE_HANDLER_PROJECTABLE, GimpTileHandlerProjectableClass))
-#define GIMP_IS_TILE_HANDLER_PROJECTABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TILE_HANDLER_PROJECTABLE))
-#define GIMP_IS_TILE_HANDLER_PROJECTABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_TILE_HANDLER_PROJECTABLE))
-#define GIMP_TILE_HANDLER_PROJECTABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_TILE_HANDLER_PROJECTABLE, GimpTileHandlerProjectableClass))
-
+#define GIMP_TYPE_TILE_HANDLER_PROJECTABLE                                     \
+  (gimp_tile_handler_projectable_get_type())
+#define GIMP_TILE_HANDLER_PROJECTABLE(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TILE_HANDLER_PROJECTABLE,       \
+                              GimpTileHandlerProjectable))
+#define GIMP_TILE_HANDLER_PROJECTABLE_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TILE_HANDLER_PROJECTABLE,        \
+                           GimpTileHandlerProjectableClass))
+#define GIMP_IS_TILE_HANDLER_PROJECTABLE(obj)                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TILE_HANDLER_PROJECTABLE))
+#define GIMP_IS_TILE_HANDLER_PROJECTABLE_CLASS(klass)                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TILE_HANDLER_PROJECTABLE))
+#define GIMP_TILE_HANDLER_PROJECTABLE_GET_CLASS(obj)                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TILE_HANDLER_PROJECTABLE,        \
+                             GimpTileHandlerProjectableClass))
 
 typedef struct _GimpTileHandlerProjectable GimpTileHandlerProjectable;
 typedef struct _GimpTileHandlerProjectableClass GimpTileHandlerProjectableClass;
 
-struct _GimpTileHandlerProjectable
-{
-	GimpTileHandlerValidate parent_instance;
+struct _GimpTileHandlerProjectable {
+  GimpTileHandlerValidate parent_instance;
 
-	GimpProjectable         *projectable;
+  GimpProjectable *projectable;
 };
 
-struct _GimpTileHandlerProjectableClass
-{
-	GimpTileHandlerValidateClass parent_class;
+struct _GimpTileHandlerProjectableClass {
+  GimpTileHandlerValidateClass parent_class;
 };
 
+GType gimp_tile_handler_projectable_get_type(void) G_GNUC_CONST;
 
-GType             gimp_tile_handler_projectable_get_type (void) G_GNUC_CONST;
-
-GeglTileHandler * gimp_tile_handler_projectable_new      (GimpProjectable *projectable);
-
+GeglTileHandler *
+gimp_tile_handler_projectable_new(GimpProjectable *projectable);
 
 #endif /* __GIMP_TILE_HANDLER_PROJECTABLE_H__ */

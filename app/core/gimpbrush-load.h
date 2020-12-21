@@ -18,26 +18,17 @@
 #ifndef __GIMP_BRUSH_LOAD_H__
 #define __GIMP_BRUSH_LOAD_H__
 
-
-#define GIMP_BRUSH_FILE_EXTENSION        ".gbr"
+#define GIMP_BRUSH_FILE_EXTENSION ".gbr"
 #define GIMP_BRUSH_PIXMAP_FILE_EXTENSION ".gpb"
-#define GIMP_BRUSH_PS_FILE_EXTENSION     ".abr"
-#define GIMP_BRUSH_PSP_FILE_EXTENSION    ".jbr"
+#define GIMP_BRUSH_PS_FILE_EXTENSION ".abr"
+#define GIMP_BRUSH_PSP_FILE_EXTENSION ".jbr"
 
+GList *gimp_brush_load(GimpContext *context, GFile *file, GInputStream *input,
+                       GError **error);
+GimpBrush *gimp_brush_load_brush(GimpContext *context, GFile *file,
+                                 GInputStream *input, GError **error);
 
-GList     * gimp_brush_load        (GimpContext   *context,
-                                    GFile         *file,
-                                    GInputStream  *input,
-                                    GError       **error);
-GimpBrush * gimp_brush_load_brush  (GimpContext   *context,
-                                    GFile         *file,
-                                    GInputStream  *input,
-                                    GError       **error);
-
-GList     * gimp_brush_load_abr    (GimpContext   *context,
-                                    GFile         *file,
-                                    GInputStream  *input,
-                                    GError       **error);
-
+GList *gimp_brush_load_abr(GimpContext *context, GFile *file,
+                           GInputStream *input, GError **error);
 
 #endif /* __GIMP_BRUSH_LOAD_H__ */

@@ -18,109 +18,69 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "config.h"
 
 #include <gio/gio.h>
 
 #include "gimpbacktrace-backend.h"
 
-
 #ifdef GIMP_BACKTRACE_BACKEND_NONE
-
 
 #include "core-types.h"
 
 #include "gimpbacktrace.h"
 
-
 /*  public functions  */
 
+void gimp_backtrace_init(void) {}
 
-void
-gimp_backtrace_init (void)
-{
+gboolean gimp_backtrace_start(void) { return FALSE; }
+
+void gimp_backtrace_stop(void) {}
+
+GimpBacktrace *gimp_backtrace_new(gboolean include_current_thread) {
+  return NULL;
 }
 
-gboolean
-gimp_backtrace_start (void)
-{
-	return FALSE;
+void gimp_backtrace_free(GimpBacktrace *backtrace) {
+  g_return_if_fail(backtrace == NULL);
 }
 
-void
-gimp_backtrace_stop (void)
-{
+gint gimp_backtrace_get_n_threads(GimpBacktrace *backtrace) {
+  g_return_val_if_reached(0);
 }
 
-GimpBacktrace *
-gimp_backtrace_new (gboolean include_current_thread)
-{
-	return NULL;
+guintptr gimp_backtrace_get_thread_id(GimpBacktrace *backtrace, gint thread) {
+  g_return_val_if_reached(0);
 }
 
-void
-gimp_backtrace_free (GimpBacktrace *backtrace)
-{
-	g_return_if_fail (backtrace == NULL);
+const gchar *gimp_backtrace_get_thread_name(GimpBacktrace *backtrace,
+                                            gint thread) {
+  g_return_val_if_reached(NULL);
 }
 
-gint
-gimp_backtrace_get_n_threads (GimpBacktrace *backtrace)
-{
-	g_return_val_if_reached (0);
+gboolean gimp_backtrace_is_thread_running(GimpBacktrace *backtrace,
+                                          gint thread) {
+  g_return_val_if_reached(FALSE);
 }
 
-guintptr
-gimp_backtrace_get_thread_id (GimpBacktrace *backtrace,
-                              gint thread)
-{
-	g_return_val_if_reached (0);
+gint gimp_backtrace_find_thread_by_id(GimpBacktrace *backtrace,
+                                      guintptr thread_id, gint thread_hint) {
+  g_return_val_if_reached(-1);
 }
 
-const gchar *
-gimp_backtrace_get_thread_name (GimpBacktrace *backtrace,
-                                gint thread)
-{
-	g_return_val_if_reached (NULL);
+gint gimp_backtrace_get_n_frames(GimpBacktrace *backtrace, gint thread) {
+  g_return_val_if_reached(0);
 }
 
-gboolean
-gimp_backtrace_is_thread_running (GimpBacktrace *backtrace,
-                                  gint thread)
-{
-	g_return_val_if_reached (FALSE);
+guintptr gimp_backtrace_get_frame_address(GimpBacktrace *backtrace, gint thread,
+                                          gint frame) {
+  g_return_val_if_reached(0);
 }
 
-gint
-gimp_backtrace_find_thread_by_id (GimpBacktrace *backtrace,
-                                  guintptr thread_id,
-                                  gint thread_hint)
-{
-	g_return_val_if_reached (-1);
+gboolean gimp_backtrace_get_address_info(guintptr address,
+                                         GimpBacktraceAddressInfo *info) {
+  return FALSE;
 }
-
-gint
-gimp_backtrace_get_n_frames (GimpBacktrace *backtrace,
-                             gint thread)
-{
-	g_return_val_if_reached (0);
-}
-
-guintptr
-gimp_backtrace_get_frame_address (GimpBacktrace *backtrace,
-                                  gint thread,
-                                  gint frame)
-{
-	g_return_val_if_reached (0);
-}
-
-gboolean
-gimp_backtrace_get_address_info (guintptr address,
-                                 GimpBacktraceAddressInfo *info)
-{
-	return FALSE;
-}
-
 
 #endif /* GIMP_BACKTRACE_BACKEND_NONE */

@@ -18,8 +18,6 @@
 #ifndef __GIMP_PARAM_SPECS_DESC_H__
 #define __GIMP_PARAM_SPECS_DESC_H__
 
+gchar *gimp_param_spec_get_desc(GParamSpec *pspec);
 
-gchar * gimp_param_spec_get_desc (GParamSpec *pspec);
-
-
-#endif  /*  __GIMP_PARAM_SPECS_DESC_H__  */
+#endif /*  __GIMP_PARAM_SPECS_DESC_H__  */

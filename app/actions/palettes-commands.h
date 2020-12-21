@@ -18,13 +18,9 @@
 #ifndef __PALETTES_COMMANDS_H__
 #define __PALETTES_COMMANDS_H__
 
-
-void   palettes_import_cmd_callback (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer data);
-void   palettes_merge_cmd_callback  (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer data);
-
+void palettes_import_cmd_callback(GimpAction *action, GVariant *value,
+                                  gpointer data);
+void palettes_merge_cmd_callback(GimpAction *action, GVariant *value,
+                                 gpointer data);
 
 #endif /* __PALETTES_COMMANDS_H__ */

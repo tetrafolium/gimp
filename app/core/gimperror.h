@@ -18,16 +18,12 @@
 #ifndef __GIMP_ERROR_H__
 #define __GIMP_ERROR_H__
 
-
-typedef enum
-{
-	GIMP_FAILED, /* generic error condition */
+typedef enum {
+  GIMP_FAILED, /* generic error condition */
 } GimpErrorCode;
 
+#define GIMP_ERROR (gimp_error_quark())
 
-#define GIMP_ERROR (gimp_error_quark ())
-
-GQuark  gimp_error_quark (void) G_GNUC_CONST;
-
+GQuark gimp_error_quark(void) G_GNUC_CONST;
 
 #endif /* __GIMP_ERROR_H__ */

@@ -19,62 +19,58 @@
 #ifndef __GIMP_BRUSH_PIPE_H__
 #define __GIMP_BRUSH_PIPE_H__
 
-
 #include "gimpbrush.h"
 
+#define GIMP_TYPE_BRUSH_PIPE (gimp_brush_pipe_get_type())
+#define GIMP_BRUSH_PIPE(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_PIPE, GimpBrushPipe))
+#define GIMP_BRUSH_PIPE_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_PIPE, GimpBrushPipeClass))
+#define GIMP_IS_BRUSH_PIPE(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_PIPE))
+#define GIMP_IS_BRUSH_PIPE_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_PIPE))
+#define GIMP_BRUSH_PIPE_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_PIPE, GimpBrushPipeClass))
 
-#define GIMP_TYPE_BRUSH_PIPE            (gimp_brush_pipe_get_type ())
-#define GIMP_BRUSH_PIPE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_PIPE, GimpBrushPipe))
-#define GIMP_BRUSH_PIPE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_PIPE, GimpBrushPipeClass))
-#define GIMP_IS_BRUSH_PIPE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_PIPE))
-#define GIMP_IS_BRUSH_PIPE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_PIPE))
-#define GIMP_BRUSH_PIPE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_PIPE, GimpBrushPipeClass))
-
-
-typedef enum
-{
-	PIPE_SELECT_CONSTANT,
-	PIPE_SELECT_INCREMENTAL,
-	PIPE_SELECT_ANGULAR,
-	PIPE_SELECT_VELOCITY,
-	PIPE_SELECT_RANDOM,
-	PIPE_SELECT_PRESSURE,
-	PIPE_SELECT_TILT_X,
-	PIPE_SELECT_TILT_Y
+typedef enum {
+  PIPE_SELECT_CONSTANT,
+  PIPE_SELECT_INCREMENTAL,
+  PIPE_SELECT_ANGULAR,
+  PIPE_SELECT_VELOCITY,
+  PIPE_SELECT_RANDOM,
+  PIPE_SELECT_PRESSURE,
+  PIPE_SELECT_TILT_X,
+  PIPE_SELECT_TILT_Y
 } PipeSelectModes;
-
 
 typedef struct _GimpBrushPipeClass GimpBrushPipeClass;
 
-struct _GimpBrushPipe
-{
-	GimpBrush parent_instance;
+struct _GimpBrushPipe {
+  GimpBrush parent_instance;
 
-	gint dimension;
-	gint             *rank;   /* Size in each dimension */
-	gint             *stride; /* Aux for indexing */
-	PipeSelectModes  *select; /* One mode per dimension */
+  gint dimension;
+  gint *rank;              /* Size in each dimension */
+  gint *stride;            /* Aux for indexing */
+  PipeSelectModes *select; /* One mode per dimension */
 
-	gint             *index;  /* Current index for incremental dimensions */
+  gint *index; /* Current index for incremental dimensions */
 
-	gint n_brushes;           /* Might be less than the product of the
-	                           * ranks in some odd special case */
-	GimpBrush       **brushes;
-	GimpBrush        *current;/* Currently selected brush */
+  gint n_brushes; /* Might be less than the product of the
+                   * ranks in some odd special case */
+  GimpBrush **brushes;
+  GimpBrush *current; /* Currently selected brush */
 
-	gchar            *params; /* For pipe <-> image conversion */
+  gchar *params; /* For pipe <-> image conversion */
 };
 
-struct _GimpBrushPipeClass
-{
-	GimpBrushClass parent_class;
+struct _GimpBrushPipeClass {
+  GimpBrushClass parent_class;
 };
 
+GType gimp_brush_pipe_get_type(void) G_GNUC_CONST;
 
-GType      gimp_brush_pipe_get_type   (void) G_GNUC_CONST;
+gboolean gimp_brush_pipe_set_params(GimpBrushPipe *pipe,
+                                    const gchar *paramstring);
 
-gboolean   gimp_brush_pipe_set_params (GimpBrushPipe *pipe,
-                                       const gchar   *paramstring);
-
-
-#endif  /* __GIMP_BRUSH_PIPE_H__ */
+#endif /* __GIMP_BRUSH_PIPE_H__ */

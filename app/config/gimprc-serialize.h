@@ -21,10 +21,7 @@
 #ifndef __GIMP_RC_SERIALIZE_H__
 #define __GIMP_RC_SERIALIZE_H__
 
-
-gboolean  gimp_rc_serialize (GimpConfig       *config,
-                             GimpConfigWriter *writer,
-                             gpointer data);
-
+gboolean gimp_rc_serialize(GimpConfig *config, GimpConfigWriter *writer,
+                           gpointer data);
 
 #endif /* __GIMP_RC_SERIALIZE_H__ */

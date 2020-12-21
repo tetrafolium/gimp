@@ -15,17 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__
-#define  __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__
+#ifndef __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__
+#define __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__
 
+GeglBuffer *gimp_drawable_foreground_extract(
+    GimpDrawable *drawable, GimpMattingEngine engine, gint global_iterations,
+    gint levin_levels, gint levin_active_levels, GeglBuffer *trimap,
+    GimpProgress *progress);
 
-GeglBuffer * gimp_drawable_foreground_extract (GimpDrawable       *drawable,
-                                               GimpMattingEngine engine,
-                                               gint global_iterations,
-                                               gint levin_levels,
-                                               gint levin_active_levels,
-                                               GeglBuffer         *trimap,
-                                               GimpProgress       *progress);
-
-
-#endif  /*  __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__  */
+#endif /*  __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__  */

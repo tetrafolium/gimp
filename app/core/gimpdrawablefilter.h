@@ -18,27 +18,30 @@
 #ifndef __GIMP_DRAWABLE_FILTER_H__
 #define __GIMP_DRAWABLE_FILTER_H__
 
-
 #include "gimpfilter.h"
 
-
-#define GIMP_TYPE_DRAWABLE_FILTER            (gimp_drawable_filter_get_type ())
-#define GIMP_DRAWABLE_FILTER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DRAWABLE_FILTER, GimpDrawableFilter))
-#define GIMP_DRAWABLE_FILTER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DRAWABLE_FILTER, GimpDrawableFilterClass))
-#define GIMP_IS_DRAWABLE_FILTER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DRAWABLE_FILTER))
-#define GIMP_IS_DRAWABLE_FILTER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DRAWABLE_FILTER))
-#define GIMP_DRAWABLE_FILTER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DRAWABLE_FILTER, GimpDrawableFilterClass))
-
+#define GIMP_TYPE_DRAWABLE_FILTER (gimp_drawable_filter_get_type())
+#define GIMP_DRAWABLE_FILTER(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DRAWABLE_FILTER,                \
+                              GimpDrawableFilter))
+#define GIMP_DRAWABLE_FILTER_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DRAWABLE_FILTER,                 \
+                           GimpDrawableFilterClass))
+#define GIMP_IS_DRAWABLE_FILTER(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DRAWABLE_FILTER))
+#define GIMP_IS_DRAWABLE_FILTER_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DRAWABLE_FILTER))
+#define GIMP_DRAWABLE_FILTER_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DRAWABLE_FILTER,                 \
+                             GimpDrawableFilterClass))
 
 typedef struct _GimpDrawableFilterClass GimpDrawableFilterClass;
 
-struct _GimpDrawableFilterClass
-{
-	GimpFilterClass parent_class;
+struct _GimpDrawableFilterClass {
+  GimpFilterClass parent_class;
 
-	void (* flush) (GimpDrawableFilter *filter);
+  void (*flush)(GimpDrawableFilter *filter);
 };
-
 
 /*  Drawable Filter functions  */
 
@@ -47,59 +50,51 @@ struct _GimpDrawableFilterClass
  *  remove the live filter from the drawable.
  */
 
-GType      gimp_drawable_filter_get_type       (void) G_GNUC_CONST;
+GType gimp_drawable_filter_get_type(void) G_GNUC_CONST;
 
-GimpDrawableFilter *
-gimp_drawable_filter_new            (GimpDrawable        *drawable,
-                                     const gchar         *undo_desc,
-                                     GeglNode            *operation,
-                                     const gchar         *icon_name);
+GimpDrawableFilter *gimp_drawable_filter_new(GimpDrawable *drawable,
+                                             const gchar *undo_desc,
+                                             GeglNode *operation,
+                                             const gchar *icon_name);
 
-GimpDrawable *
-gimp_drawable_filter_get_drawable   (GimpDrawableFilter  *filter);
-GeglNode * gimp_drawable_filter_get_operation  (GimpDrawableFilter  *filter);
+GimpDrawable *gimp_drawable_filter_get_drawable(GimpDrawableFilter *filter);
+GeglNode *gimp_drawable_filter_get_operation(GimpDrawableFilter *filter);
 
-void       gimp_drawable_filter_set_clip       (GimpDrawableFilter  *filter,
-                                                gboolean clip);
-void       gimp_drawable_filter_set_region     (GimpDrawableFilter  *filter,
-                                                GimpFilterRegion region);
-void       gimp_drawable_filter_set_crop       (GimpDrawableFilter  *filter,
-                                                const GeglRectangle *rect,
-                                                gboolean update);
-void       gimp_drawable_filter_set_preview    (GimpDrawableFilter  *filter,
-                                                gboolean enabled);
-void       gimp_drawable_filter_set_preview_split
-        (GimpDrawableFilter  *filter,
-        gboolean enabled,
-        GimpAlignmentType alignment,
-        gint split_position);
-void       gimp_drawable_filter_set_opacity    (GimpDrawableFilter  *filter,
-                                                gdouble opacity);
-void       gimp_drawable_filter_set_mode       (GimpDrawableFilter  *filter,
-                                                GimpLayerMode paint_mode,
-                                                GimpLayerColorSpace blend_space,
-                                                GimpLayerColorSpace composite_space,
-                                                GimpLayerCompositeMode composite_mode);
-void       gimp_drawable_filter_set_add_alpha  (GimpDrawableFilter  *filter,
-                                                gboolean add_alpha);
+void gimp_drawable_filter_set_clip(GimpDrawableFilter *filter, gboolean clip);
+void gimp_drawable_filter_set_region(GimpDrawableFilter *filter,
+                                     GimpFilterRegion region);
+void gimp_drawable_filter_set_crop(GimpDrawableFilter *filter,
+                                   const GeglRectangle *rect, gboolean update);
+void gimp_drawable_filter_set_preview(GimpDrawableFilter *filter,
+                                      gboolean enabled);
+void gimp_drawable_filter_set_preview_split(GimpDrawableFilter *filter,
+                                            gboolean enabled,
+                                            GimpAlignmentType alignment,
+                                            gint split_position);
+void gimp_drawable_filter_set_opacity(GimpDrawableFilter *filter,
+                                      gdouble opacity);
+void gimp_drawable_filter_set_mode(GimpDrawableFilter *filter,
+                                   GimpLayerMode paint_mode,
+                                   GimpLayerColorSpace blend_space,
+                                   GimpLayerColorSpace composite_space,
+                                   GimpLayerCompositeMode composite_mode);
+void gimp_drawable_filter_set_add_alpha(GimpDrawableFilter *filter,
+                                        gboolean add_alpha);
 
-void       gimp_drawable_filter_set_gamma_hack (GimpDrawableFilter  *filter,
-                                                gboolean gamma_hack);
+void gimp_drawable_filter_set_gamma_hack(GimpDrawableFilter *filter,
+                                         gboolean gamma_hack);
 
-void       gimp_drawable_filter_set_override_constraints
-        (GimpDrawableFilter  *filter,
-        gboolean override_constraints);
+void gimp_drawable_filter_set_override_constraints(
+    GimpDrawableFilter *filter, gboolean override_constraints);
 
-const Babl *
-gimp_drawable_filter_get_format     (GimpDrawableFilter  *filter);
+const Babl *gimp_drawable_filter_get_format(GimpDrawableFilter *filter);
 
-void       gimp_drawable_filter_apply          (GimpDrawableFilter  *filter,
-                                                const GeglRectangle *area);
+void gimp_drawable_filter_apply(GimpDrawableFilter *filter,
+                                const GeglRectangle *area);
 
-gboolean   gimp_drawable_filter_commit         (GimpDrawableFilter  *filter,
-                                                GimpProgress        *progress,
-                                                gboolean cancellable);
-void       gimp_drawable_filter_abort          (GimpDrawableFilter  *filter);
-
+gboolean gimp_drawable_filter_commit(GimpDrawableFilter *filter,
+                                     GimpProgress *progress,
+                                     gboolean cancellable);
+void gimp_drawable_filter_abort(GimpDrawableFilter *filter);
 
 #endif /* __GIMP_DRAWABLE_FILTER_H__ */

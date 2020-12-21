@@ -15,54 +15,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_BOUNDARY_H__
-#define  __GIMP_BOUNDARY_H__
-
+#ifndef __GIMP_BOUNDARY_H__
+#define __GIMP_BOUNDARY_H__
 
 /* half intensity for mask */
 #define GIMP_BOUNDARY_HALF_WAY 0.5
 
-
-typedef enum
-{
-	GIMP_BOUNDARY_WITHIN_BOUNDS,
-	GIMP_BOUNDARY_IGNORE_BOUNDS
+typedef enum {
+  GIMP_BOUNDARY_WITHIN_BOUNDS,
+  GIMP_BOUNDARY_IGNORE_BOUNDS
 } GimpBoundaryType;
 
-
-struct _GimpBoundSeg
-{
-	gint x1;
-	gint y1;
-	gint x2;
-	gint y2;
-	guint open    : 1;
-	guint visited : 1;
+struct _GimpBoundSeg {
+  gint x1;
+  gint y1;
+  gint x2;
+  gint y2;
+  guint open : 1;
+  guint visited : 1;
 };
 
-
-GimpBoundSeg * gimp_boundary_find      (GeglBuffer          *buffer,
-                                        const GeglRectangle *region,
-                                        const Babl          *format,
-                                        GimpBoundaryType type,
-                                        gint x1,
-                                        gint y1,
-                                        gint x2,
-                                        gint y2,
-                                        gfloat threshold,
-                                        gint                *num_segs);
-GimpBoundSeg * gimp_boundary_sort      (const GimpBoundSeg  *segs,
-                                        gint num_segs,
-                                        gint                *num_groups);
-GimpBoundSeg * gimp_boundary_simplify  (GimpBoundSeg        *sorted_segs,
-                                        gint num_groups,
-                                        gint                *num_segs);
+GimpBoundSeg *gimp_boundary_find(GeglBuffer *buffer,
+                                 const GeglRectangle *region,
+                                 const Babl *format, GimpBoundaryType type,
+                                 gint x1, gint y1, gint x2, gint y2,
+                                 gfloat threshold, gint *num_segs);
+GimpBoundSeg *gimp_boundary_sort(const GimpBoundSeg *segs, gint num_segs,
+                                 gint *num_groups);
+GimpBoundSeg *gimp_boundary_simplify(GimpBoundSeg *sorted_segs, gint num_groups,
+                                     gint *num_segs);
 
 /* offsets in-place */
-void       gimp_boundary_offset        (GimpBoundSeg        *segs,
-                                        gint num_segs,
-                                        gint off_x,
-                                        gint off_y);
+void gimp_boundary_offset(GimpBoundSeg *segs, gint num_segs, gint off_x,
+                          gint off_y);
 
-
-#endif  /*  __GIMP_BOUNDARY_H__  */
+#endif /*  __GIMP_BOUNDARY_H__  */

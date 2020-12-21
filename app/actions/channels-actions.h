@@ -18,10 +18,7 @@
 #ifndef __CHANNELS_ACTIONS_H__
 #define __CHANNELS_ACTIONS_H__
 
-
-void   channels_actions_setup  (GimpActionGroup *group);
-void   channels_actions_update (GimpActionGroup *group,
-                                gpointer data);
-
+void channels_actions_setup(GimpActionGroup *group);
+void channels_actions_update(GimpActionGroup *group, gpointer data);
 
 #endif /* __CHANNELS_ACTIONS_H__ */

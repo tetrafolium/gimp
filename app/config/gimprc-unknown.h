@@ -21,20 +21,14 @@
 #ifndef __GIMP_RC_UNKNOWN_H__
 #define __GIMP_RC_UNKNOWN_H__
 
+typedef void (*GimpConfigForeachFunc)(const gchar *key, const gchar *value,
+                                      gpointer user_data);
 
-typedef void (* GimpConfigForeachFunc) (const gchar *key,
-                                        const gchar *value,
-                                        gpointer user_data);
+void gimp_rc_add_unknown_token(GimpConfig *config, const gchar *key,
+                               const gchar *value);
+const gchar *gimp_rc_lookup_unknown_token(GimpConfig *config, const gchar *key);
+void gimp_rc_foreach_unknown_token(GimpConfig *config,
+                                   GimpConfigForeachFunc func,
+                                   gpointer user_data);
 
-
-void          gimp_rc_add_unknown_token     (GimpConfig            *config,
-                                             const gchar           *key,
-                                             const gchar           *value);
-const gchar * gimp_rc_lookup_unknown_token  (GimpConfig            *config,
-                                             const gchar           *key);
-void          gimp_rc_foreach_unknown_token (GimpConfig            *config,
-                                             GimpConfigForeachFunc func,
-                                             gpointer user_data);
-
-
-#endif  /* __GIMP_RC_UNKNOWN_H__ */
+#endif /* __GIMP_RC_UNKNOWN_H__ */

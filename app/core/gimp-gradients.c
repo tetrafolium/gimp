@@ -25,150 +25,122 @@
 
 #include "core-types.h"
 
-#include "gimp.h"
 #include "gimp-gradients.h"
-#include "gimpcontext.h"
+#include "gimp.h"
 #include "gimpcontainer.h"
+#include "gimpcontext.h"
 #include "gimpdatafactory.h"
 #include "gimpgradient.h"
 
 #include "gimp-intl.h"
 
-
-#define CUSTOM_KEY         "gimp-gradient-custom"
-#define FG_BG_RGB_KEY      "gimp-gradient-fg-bg-rgb"
+#define CUSTOM_KEY "gimp-gradient-custom"
+#define FG_BG_RGB_KEY "gimp-gradient-fg-bg-rgb"
 #define FG_BG_HARDEDGE_KEY "gimp-gradient-fg-bg-rgb-hardedge"
-#define FG_BG_HSV_CCW_KEY  "gimp-gradient-fg-bg-hsv-ccw"
-#define FG_BG_HSV_CW_KEY   "gimp-gradient-fg-bg-hsv-cw"
+#define FG_BG_HSV_CCW_KEY "gimp-gradient-fg-bg-hsv-ccw"
+#define FG_BG_HSV_CW_KEY "gimp-gradient-fg-bg-hsv-cw"
 #define FG_TRANSPARENT_KEY "gimp-gradient-fg-transparent"
-
 
 /*  local function prototypes  */
 
-static GimpGradient * gimp_gradients_add_gradient (Gimp        *gimp,
-                                                   const gchar *name,
-                                                   const gchar *id);
-
+static GimpGradient *gimp_gradients_add_gradient(Gimp *gimp, const gchar *name,
+                                                 const gchar *id);
 
 /*  public functions  */
 
-void
-gimp_gradients_init (Gimp *gimp)
-{
-	GimpGradient *gradient;
+void gimp_gradients_init(Gimp *gimp) {
+  GimpGradient *gradient;
 
-	g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail(GIMP_IS_GIMP(gimp));
 
-	/* Custom */
-	gradient = gimp_gradients_add_gradient (gimp,
-	                                        _("Custom"),
-	                                        CUSTOM_KEY);
-	g_object_set (gradient,
-	              "writable", TRUE,
-	              NULL);
-	gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
-	gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
+  /* Custom */
+  gradient = gimp_gradients_add_gradient(gimp, _("Custom"), CUSTOM_KEY);
+  g_object_set(gradient, "writable", TRUE, NULL);
+  gradient->segments->left_color_type = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
 
-	/* FG to BG (RGB) */
-	gradient = gimp_gradients_add_gradient (gimp,
-	                                        _("FG to BG (RGB)"),
-	                                        FG_BG_RGB_KEY);
-	gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
-	gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
-	gimp_context_set_gradient (gimp->user_context, gradient);
+  /* FG to BG (RGB) */
+  gradient =
+      gimp_gradients_add_gradient(gimp, _("FG to BG (RGB)"), FG_BG_RGB_KEY);
+  gradient->segments->left_color_type = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
+  gimp_context_set_gradient(gimp->user_context, gradient);
 
-	/* FG to BG (Hardedge) */
-	gradient = gimp_gradients_add_gradient (gimp,
-	                                        _("FG to BG (Hardedge)"),
-	                                        FG_BG_HARDEDGE_KEY);
-	gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
-	gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
-	gradient->segments->type             = GIMP_GRADIENT_SEGMENT_STEP;
+  /* FG to BG (Hardedge) */
+  gradient = gimp_gradients_add_gradient(gimp, _("FG to BG (Hardedge)"),
+                                         FG_BG_HARDEDGE_KEY);
+  gradient->segments->left_color_type = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
+  gradient->segments->type = GIMP_GRADIENT_SEGMENT_STEP;
 
-	/* FG to BG (HSV counter-clockwise) */
-	gradient = gimp_gradients_add_gradient (gimp,
-	                                        _("FG to BG (HSV counter-clockwise)"),
-	                                        FG_BG_HSV_CCW_KEY);
-	gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
-	gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
-	gradient->segments->color            = GIMP_GRADIENT_SEGMENT_HSV_CCW;
+  /* FG to BG (HSV counter-clockwise) */
+  gradient = gimp_gradients_add_gradient(
+      gimp, _("FG to BG (HSV counter-clockwise)"), FG_BG_HSV_CCW_KEY);
+  gradient->segments->left_color_type = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
+  gradient->segments->color = GIMP_GRADIENT_SEGMENT_HSV_CCW;
 
-	/* FG to BG (HSV clockwise hue) */
-	gradient = gimp_gradients_add_gradient (gimp,
-	                                        _("FG to BG (HSV clockwise hue)"),
-	                                        FG_BG_HSV_CW_KEY);
-	gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
-	gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
-	gradient->segments->color            = GIMP_GRADIENT_SEGMENT_HSV_CW;
+  /* FG to BG (HSV clockwise hue) */
+  gradient = gimp_gradients_add_gradient(
+      gimp, _("FG to BG (HSV clockwise hue)"), FG_BG_HSV_CW_KEY);
+  gradient->segments->left_color_type = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
+  gradient->segments->color = GIMP_GRADIENT_SEGMENT_HSV_CW;
 
-	/* FG to Transparent */
-	gradient = gimp_gradients_add_gradient (gimp,
-	                                        _("FG to Transparent"),
-	                                        FG_TRANSPARENT_KEY);
-	gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
-	gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_FOREGROUND_TRANSPARENT;
+  /* FG to Transparent */
+  gradient = gimp_gradients_add_gradient(gimp, _("FG to Transparent"),
+                                         FG_TRANSPARENT_KEY);
+  gradient->segments->left_color_type = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type =
+      GIMP_GRADIENT_COLOR_FOREGROUND_TRANSPARENT;
 }
 
-GimpGradient *
-gimp_gradients_get_custom (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GimpGradient *gimp_gradients_get_custom(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return g_object_get_data (G_OBJECT (gimp), CUSTOM_KEY);
+  return g_object_get_data(G_OBJECT(gimp), CUSTOM_KEY);
 }
 
-GimpGradient *
-gimp_gradients_get_fg_bg_rgb (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GimpGradient *gimp_gradients_get_fg_bg_rgb(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return g_object_get_data (G_OBJECT (gimp), FG_BG_RGB_KEY);
+  return g_object_get_data(G_OBJECT(gimp), FG_BG_RGB_KEY);
 }
 
-GimpGradient *
-gimp_gradients_get_fg_bg_hsv_ccw (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GimpGradient *gimp_gradients_get_fg_bg_hsv_ccw(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return g_object_get_data (G_OBJECT (gimp), FG_BG_HSV_CCW_KEY);
+  return g_object_get_data(G_OBJECT(gimp), FG_BG_HSV_CCW_KEY);
 }
 
-GimpGradient *
-gimp_gradients_get_fg_bg_hsv_cw (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GimpGradient *gimp_gradients_get_fg_bg_hsv_cw(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return g_object_get_data (G_OBJECT (gimp), FG_BG_HSV_CW_KEY);
+  return g_object_get_data(G_OBJECT(gimp), FG_BG_HSV_CW_KEY);
 }
 
-GimpGradient *
-gimp_gradients_get_fg_transparent (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GimpGradient *gimp_gradients_get_fg_transparent(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return g_object_get_data (G_OBJECT (gimp), FG_TRANSPARENT_KEY);
+  return g_object_get_data(G_OBJECT(gimp), FG_TRANSPARENT_KEY);
 }
-
 
 /*  private functions  */
 
-static GimpGradient *
-gimp_gradients_add_gradient (Gimp        *gimp,
-                             const gchar *name,
-                             const gchar *id)
-{
-	GimpGradient *gradient;
+static GimpGradient *gimp_gradients_add_gradient(Gimp *gimp, const gchar *name,
+                                                 const gchar *id) {
+  GimpGradient *gradient;
 
-	gradient = GIMP_GRADIENT (gimp_gradient_new (gimp_get_user_context (gimp),
-	                                             name));
+  gradient =
+      GIMP_GRADIENT(gimp_gradient_new(gimp_get_user_context(gimp), name));
 
-	gimp_data_make_internal (GIMP_DATA (gradient), id);
+  gimp_data_make_internal(GIMP_DATA(gradient), id);
 
-	gimp_container_add (gimp_data_factory_get_container (gimp->gradient_factory),
-	                    GIMP_OBJECT (gradient));
-	g_object_unref (gradient);
+  gimp_container_add(gimp_data_factory_get_container(gimp->gradient_factory),
+                     GIMP_OBJECT(gradient));
+  g_object_unref(gradient);
 
-	g_object_set_data (G_OBJECT (gimp), id, gradient);
+  g_object_set_data(G_OBJECT(gimp), id, gradient);
 
-	return gradient;
+  return gradient;
 }

@@ -21,29 +21,21 @@
 #ifndef __GIMP_WAITABLE_H__
 #define __GIMP_WAITABLE_H__
 
+#define GIMP_TYPE_WAITABLE (gimp_waitable_get_type())
+G_DECLARE_INTERFACE(GimpWaitable, gimp_waitable, GIMP, WAITABLE, GObject)
 
-#define GIMP_TYPE_WAITABLE (gimp_waitable_get_type ())
-G_DECLARE_INTERFACE (GimpWaitable, gimp_waitable, GIMP, WAITABLE, GObject)
+struct _GimpWaitableInterface {
+  GTypeInterface base_iface;
 
-
-struct _GimpWaitableInterface
-{
-	GTypeInterface base_iface;
-
-	/*  virtual functions  */
-	void (* wait)       (GimpWaitable *waitable);
-	gboolean (* try_wait)   (GimpWaitable *waitable);
-	gboolean (* wait_until) (GimpWaitable *waitable,
-	                         gint64 end_time);
+  /*  virtual functions  */
+  void (*wait)(GimpWaitable *waitable);
+  gboolean (*try_wait)(GimpWaitable *waitable);
+  gboolean (*wait_until)(GimpWaitable *waitable, gint64 end_time);
 };
 
+void gimp_waitable_wait(GimpWaitable *waitable);
+gboolean gimp_waitable_try_wait(GimpWaitable *waitable);
+gboolean gimp_waitable_wait_until(GimpWaitable *waitable, gint64 end_time);
+gboolean gimp_waitable_wait_for(GimpWaitable *waitable, gint64 wait_duration);
 
-void       gimp_waitable_wait       (GimpWaitable *waitable);
-gboolean   gimp_waitable_try_wait   (GimpWaitable *waitable);
-gboolean   gimp_waitable_wait_until (GimpWaitable *waitable,
-                                     gint64 end_time);
-gboolean   gimp_waitable_wait_for   (GimpWaitable *waitable,
-                                     gint64 wait_duration);
-
-
-#endif  /* __GIMP_WAITABLE_H__ */
+#endif /* __GIMP_WAITABLE_H__ */
