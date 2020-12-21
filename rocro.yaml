@@ -8,46 +8,43 @@ inspecode:
     astyle:
     # - auto-fix: true
     #   thresholds: {num-issues: 999}   # too many issues detected: 2827 > 1000 (when not split)
+    - input:  app/[a-c]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[d-r]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[s-z]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
     - ignore: app/*/
-      auto-fix: true
-      thresholds: {num-issues: 999}
-    - input:  app/[a-m]*/
-      auto-fix: true
-      thresholds: {num-issues: 999}
-    - input:  app/[o-z]*/
       auto-fix: true
       thresholds: {num-issues: 999}
 
     clang-format:
     # - auto-fix: true
     #   thresholds: {num-issues: 999}   # too many issues detected: 3233 > 1000 (when not split)
-    - ignore: app/*/
+    - input:  "app/[a-c]*/"
       auto-fix: true
       thresholds: {num-issues: 999}
-    - input:  app/[a-c]*/
+    - input:  "app/[d-r]*/"
       auto-fix: true
       thresholds: {num-issues: 999}
-    - input:  app/[d-m]*/
+    - input:  "app/[s-z]*/"
       auto-fix: true
       thresholds: {num-issues: 999}
-    - input:  app/[n-r]*/
+    - input:  "[a-n]*"
+      ignore: "app/"
       auto-fix: true
       thresholds: {num-issues: 999}
-    - input:  app/[st]*/
-      auto-fix: true
-      thresholds: {num-issues: 999}
-    - input:  app/[u-z]*/
+    - input:  "[o-z]*"
       auto-fix: true
       thresholds: {num-issues: 999}
 
     cpd:
     # - options: [--skip-lexical-errors]
     #   thresholds: {num-issues: 999}   # the console log exceeds the maximum size
-    - ignore: app/
-      options: [--skip-lexical-errors]
-      thresholds: {num-issues: 999}
-    - input:  app/
-      ignore: app/dialogs/lebl-dialog.h
+    - ignore: app/dialogs/lebl-dialog.h
       options: [--skip-lexical-errors]
       thresholds: {num-issues: 999}
 
@@ -84,6 +81,16 @@ inspecode:
       thresholds: {num-issues: 999}   # no project detected
 
     uncrustify:
+    - input:  app/[a-c]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}   # too many issues detected: 2985 > 1000
+    - input:  app/[d-r]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}   # too many issues detected: 2985 > 1000
+    - input:  app/[s-z]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}   # too many issues detected: 2985 > 1000
+    - ignore: app/*/
       auto-fix: true
       thresholds: {num-issues: 999}   # too many issues detected: 2985 > 1000
 
