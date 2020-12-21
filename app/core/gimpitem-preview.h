@@ -24,15 +24,15 @@
  */
 
 void      gimp_item_get_preview_size (GimpViewable *viewable,
-                                      gint          size,
-                                      gboolean      is_popup,
-                                      gboolean      dot_for_dot,
+                                      gint size,
+                                      gboolean is_popup,
+                                      gboolean dot_for_dot,
                                       gint         *width,
                                       gint         *height);
 gboolean  gimp_item_get_popup_size   (GimpViewable *viewable,
-                                      gint          width,
-                                      gint          height,
-                                      gboolean      dot_for_dot,
+                                      gint width,
+                                      gint height,
+                                      gboolean dot_for_dot,
                                       gint         *popup_width,
                                       gint         *popup_height);
 

@@ -31,16 +31,16 @@ typedef struct _GimpSubProgressClass GimpSubProgressClass;
 
 struct _GimpSubProgress
 {
-    GObject       parent_instance;
+	GObject parent_instance;
 
-    GimpProgress *progress;
-    gdouble       start;
-    gdouble       end;
+	GimpProgress *progress;
+	gdouble start;
+	gdouble end;
 };
 
 struct _GimpSubProgressClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 };
 
 
@@ -48,11 +48,11 @@ GType          gimp_sub_progress_get_type (void) G_GNUC_CONST;
 
 GimpProgress * gimp_sub_progress_new       (GimpProgress    *progress);
 void           gimp_sub_progress_set_range (GimpSubProgress *progress,
-        gdouble          start,
-        gdouble          end);
+                                            gdouble start,
+                                            gdouble end);
 void           gimp_sub_progress_set_step  (GimpSubProgress *progress,
-        gint             index,
-        gint             num_steps);
+                                            gint index,
+                                            gint num_steps);
 
 
 

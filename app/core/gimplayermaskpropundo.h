@@ -30,20 +30,20 @@
 #define GIMP_LAYER_MASK_PROP_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LAYER_MASK_PROP_UNDO, GimpLayerMaskPropUndoClass))
 
 
-typedef struct _GimpLayerMaskPropUndo      GimpLayerMaskPropUndo;
+typedef struct _GimpLayerMaskPropUndo GimpLayerMaskPropUndo;
 typedef struct _GimpLayerMaskPropUndoClass GimpLayerMaskPropUndoClass;
 
 struct _GimpLayerMaskPropUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    gboolean      apply;
-    gboolean      show;
+	gboolean apply;
+	gboolean show;
 };
 
 struct _GimpLayerMaskPropUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

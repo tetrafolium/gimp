@@ -21,7 +21,7 @@
 
 void   dynamics_editor_actions_setup  (GimpActionGroup *group);
 void   dynamics_editor_actions_update (GimpActionGroup *group,
-                                       gpointer         data);
+                                       gpointer data);
 
 
 #endif /* __DYNAMICS_EDITOR_ACTIONS_H__ */

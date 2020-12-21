@@ -25,20 +25,20 @@
 GimpChunkIterator * gimp_chunk_iterator_new               (cairo_region_t      *region);
 
 void                gimp_chunk_iterator_set_tile_rect     (GimpChunkIterator   *iter,
-        const GeglRectangle *rect);
+                                                           const GeglRectangle *rect);
 
 void                gimp_chunk_iterator_set_priority_rect (GimpChunkIterator   *iter,
-        const GeglRectangle *rect);
+                                                           const GeglRectangle *rect);
 
 void                gimp_chunk_iterator_set_interval      (GimpChunkIterator   *iter,
-        gdouble              interval);
+                                                           gdouble interval);
 
 gboolean            gimp_chunk_iterator_next              (GimpChunkIterator   *iter);
 gboolean            gimp_chunk_iterator_get_rect          (GimpChunkIterator   *iter,
-        GeglRectangle       *rect);
+                                                           GeglRectangle       *rect);
 
 cairo_region_t    * gimp_chunk_iterator_stop              (GimpChunkIterator   *iter,
-        gboolean             free_region);
+                                                           gboolean free_region);
 
 
 #endif  /*  __GIMP_CHUNK_ITEARTOR_H__  */

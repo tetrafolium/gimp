@@ -33,19 +33,19 @@ typedef struct _GimpParasiteListClass GimpParasiteListClass;
 
 struct _GimpParasiteList
 {
-    GimpObject  object;
+	GimpObject object;
 
-    GHashTable *table;
+	GHashTable *table;
 };
 
 struct _GimpParasiteListClass
 {
-    GimpObjectClass parent_class;
+	GimpObjectClass parent_class;
 
-    void (* add)    (GimpParasiteList *list,
-                     GimpParasite     *parasite);
-    void (* remove) (GimpParasiteList *list,
-                     GimpParasite     *parasite);
+	void (* add)    (GimpParasiteList *list,
+	                 GimpParasite     *parasite);
+	void (* remove) (GimpParasiteList *list,
+	                 GimpParasite     *parasite);
 };
 
 
@@ -54,16 +54,16 @@ GType                gimp_parasite_list_get_type (void) G_GNUC_CONST;
 GimpParasiteList   * gimp_parasite_list_new      (void);
 GimpParasiteList   * gimp_parasite_list_copy     (GimpParasiteList       *list);
 void                 gimp_parasite_list_add      (GimpParasiteList       *list,
-        const GimpParasite     *parasite);
+                                                  const GimpParasite     *parasite);
 void                 gimp_parasite_list_remove   (GimpParasiteList       *list,
-        const gchar            *name);
+                                                  const gchar            *name);
 gint                 gimp_parasite_list_length   (GimpParasiteList       *list);
 gint                 gimp_parasite_list_persistent_length (GimpParasiteList *list);
 void                 gimp_parasite_list_foreach  (GimpParasiteList       *list,
-        GHFunc                  function,
-        gpointer                user_data);
+                                                  GHFunc function,
+                                                  gpointer user_data);
 const GimpParasite * gimp_parasite_list_find     (GimpParasiteList       *list,
-        const gchar            *name);
+                                                  const gchar            *name);
 
 
 #endif  /*  __GIMP_PARASITE_LIST_H__  */

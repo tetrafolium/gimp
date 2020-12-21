@@ -21,26 +21,26 @@
 
 GimpValueArray * procedure_commands_get_run_mode_arg (GimpProcedure  *procedure);
 GimpValueArray * procedure_commands_get_data_args    (GimpProcedure  *procedure,
-        GimpObject     *object);
+                                                      GimpObject     *object);
 GimpValueArray * procedure_commands_get_image_args   (GimpProcedure  *procedure,
-        GimpImage      *image);
+                                                      GimpImage      *image);
 GimpValueArray * procedure_commands_get_item_args    (GimpProcedure  *procedure,
-        GimpImage      *image,
-        GimpItem       *item);
+                                                      GimpImage      *image,
+                                                      GimpItem       *item);
 GimpValueArray * procedure_commands_get_display_args (GimpProcedure  *procedure,
-        GimpDisplay    *display,
-        GimpObject     *settings);
+                                                      GimpDisplay    *display,
+                                                      GimpObject     *settings);
 
 gboolean      procedure_commands_run_procedure       (GimpProcedure  *procedure,
-        Gimp           *gimp,
-        GimpProgress   *progress,
-        GimpValueArray *args);
+                                                      Gimp           *gimp,
+                                                      GimpProgress   *progress,
+                                                      GimpValueArray *args);
 gboolean      procedure_commands_run_procedure_async (GimpProcedure  *procedure,
-        Gimp           *gimp,
-        GimpProgress   *progress,
-        GimpRunMode     run_mode,
-        GimpValueArray *args,
-        GimpDisplay    *display);
+                                                      Gimp           *gimp,
+                                                      GimpProgress   *progress,
+                                                      GimpRunMode run_mode,
+                                                      GimpValueArray *args,
+                                                      GimpDisplay    *display);
 
 
 #endif /* __PROCEDURE_COMMANDS_H__ */

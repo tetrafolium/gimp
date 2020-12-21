@@ -39,64 +39,60 @@
 
 static const GimpActionEntry images_actions[] =
 {
-    {   "images-popup", GIMP_ICON_DIALOG_IMAGES,
-        NC_("images-action", "Images Menu"), NULL, NULL, NULL,
-        GIMP_HELP_IMAGE_DIALOG
-    },
+	{   "images-popup", GIMP_ICON_DIALOG_IMAGES,
+	    NC_("images-action", "Images Menu"), NULL, NULL, NULL,
+	    GIMP_HELP_IMAGE_DIALOG},
 
-    {   "images-raise-views", GIMP_ICON_GO_TOP,
-        NC_("images-action", "_Raise Views"), NULL,
-        NC_("images-action", "Raise this image's displays"),
-        images_raise_views_cmd_callback,
-        NULL
-    },
+	{   "images-raise-views", GIMP_ICON_GO_TOP,
+	    NC_("images-action", "_Raise Views"), NULL,
+	    NC_("images-action", "Raise this image's displays"),
+	    images_raise_views_cmd_callback,
+	    NULL},
 
-    {   "images-new-view", GIMP_ICON_DOCUMENT_NEW,
-        NC_("images-action", "_New View"), NULL,
-        NC_("images-action", "Create a new display for this image"),
-        images_new_view_cmd_callback,
-        NULL
-    },
+	{   "images-new-view", GIMP_ICON_DOCUMENT_NEW,
+	    NC_("images-action", "_New View"), NULL,
+	    NC_("images-action", "Create a new display for this image"),
+	    images_new_view_cmd_callback,
+	    NULL},
 
-    {   "images-delete", GIMP_ICON_EDIT_DELETE,
-        NC_("images-action", "_Delete Image"), NULL,
-        NC_("images-action", "Delete this image"),
-        images_delete_image_cmd_callback,
-        NULL
-    }
+	{   "images-delete", GIMP_ICON_EDIT_DELETE,
+	    NC_("images-action", "_Delete Image"), NULL,
+	    NC_("images-action", "Delete this image"),
+	    images_delete_image_cmd_callback,
+	    NULL}
 };
 
 
 void
 images_actions_setup (GimpActionGroup *group)
 {
-    gimp_action_group_add_actions (group, "images-action",
-                                   images_actions,
-                                   G_N_ELEMENTS (images_actions));
+	gimp_action_group_add_actions (group, "images-action",
+	                               images_actions,
+	                               G_N_ELEMENTS (images_actions));
 }
 
 void
 images_actions_update (GimpActionGroup *group,
-                       gpointer         data)
+                       gpointer data)
 {
-    GimpContext *context    = action_data_get_context (data);
-    GimpImage   *image      = NULL;
-    gint         disp_count = 0;
+	GimpContext *context    = action_data_get_context (data);
+	GimpImage   *image      = NULL;
+	gint disp_count = 0;
 
-    if (context)
-    {
-        image = gimp_context_get_image (context);
+	if (context)
+	{
+		image = gimp_context_get_image (context);
 
-        if (image)
-            disp_count = gimp_image_get_display_count (image);
-    }
+		if (image)
+			disp_count = gimp_image_get_display_count (image);
+	}
 
 #define SET_SENSITIVE(action,condition) \
-        gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
+	gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-    SET_SENSITIVE ("images-raise-views", image);
-    SET_SENSITIVE ("images-new-view",    image);
-    SET_SENSITIVE ("images-delete",      image && disp_count == 0);
+	SET_SENSITIVE ("images-raise-views", image);
+	SET_SENSITIVE ("images-new-view",    image);
+	SET_SENSITIVE ("images-delete",      image && disp_count == 0);
 
 #undef SET_SENSITIVE
 }

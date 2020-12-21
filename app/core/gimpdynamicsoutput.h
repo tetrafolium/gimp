@@ -34,35 +34,35 @@ typedef struct _GimpDynamicsOutputClass GimpDynamicsOutputClass;
 
 struct _GimpDynamicsOutput
 {
-    GimpObject  parent_instance;
+	GimpObject parent_instance;
 };
 
 struct _GimpDynamicsOutputClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
 GType                gimp_dynamics_output_get_type (void) G_GNUC_CONST;
 
 GimpDynamicsOutput * gimp_dynamics_output_new      (const gchar            *name,
-        GimpDynamicsOutputType  type);
+                                                    GimpDynamicsOutputType type);
 
 gboolean   gimp_dynamics_output_is_enabled         (GimpDynamicsOutput *output);
 
 gdouble    gimp_dynamics_output_get_linear_value   (GimpDynamicsOutput *output,
-        const GimpCoords   *coords,
-        GimpPaintOptions   *options,
-        gdouble             fade_point);
+                                                    const GimpCoords   *coords,
+                                                    GimpPaintOptions   *options,
+                                                    gdouble fade_point);
 
 gdouble    gimp_dynamics_output_get_angular_value  (GimpDynamicsOutput *output,
-        const GimpCoords   *coords,
-        GimpPaintOptions   *options,
-        gdouble             fade_point);
+                                                    const GimpCoords   *coords,
+                                                    GimpPaintOptions   *options,
+                                                    gdouble fade_point);
 gdouble    gimp_dynamics_output_get_aspect_value   (GimpDynamicsOutput *output,
-        const GimpCoords   *coords,
-        GimpPaintOptions   *options,
-        gdouble             fade_point);
+                                                    const GimpCoords   *coords,
+                                                    GimpPaintOptions   *options,
+                                                    gdouble fade_point);
 
 
 #endif  /*  __GIMP_DYNAMICS_OUTPUT_H__  */

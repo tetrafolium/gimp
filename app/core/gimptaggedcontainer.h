@@ -37,19 +37,19 @@ typedef struct _GimpTaggedContainerClass GimpTaggedContainerClass;
 
 struct _GimpTaggedContainer
 {
-    GimpFilteredContainer  parent_instance;
+	GimpFilteredContainer parent_instance;
 
-    GList                 *filter;
-    GHashTable            *tag_ref_counts;
-    gint                   tag_count;
+	GList                 *filter;
+	GHashTable            *tag_ref_counts;
+	gint tag_count;
 };
 
 struct _GimpTaggedContainerClass
 {
-    GimpFilteredContainerClass  parent_class;
+	GimpFilteredContainerClass parent_class;
 
-    void (* tag_count_changed) (GimpTaggedContainer *container,
-                                gint                 count);
+	void (* tag_count_changed) (GimpTaggedContainer *container,
+	                            gint count);
 };
 
 
@@ -58,7 +58,7 @@ GType           gimp_tagged_container_get_type      (void) G_GNUC_CONST;
 GimpContainer * gimp_tagged_container_new           (GimpContainer       *src_container);
 
 void            gimp_tagged_container_set_filter    (GimpTaggedContainer *tagged_container,
-        GList               *tags);
+                                                     GList               *tags);
 const GList   * gimp_tagged_container_get_filter    (GimpTaggedContainer *tagged_container);
 
 gint            gimp_tagged_container_get_tag_count (GimpTaggedContainer *container);

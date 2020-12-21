@@ -30,19 +30,19 @@
 #define GIMP_CHANNEL_PROP_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CHANNEL_PROP_UNDO, GimpChannelPropUndoClass))
 
 
-typedef struct _GimpChannelPropUndo      GimpChannelPropUndo;
+typedef struct _GimpChannelPropUndo GimpChannelPropUndo;
 typedef struct _GimpChannelPropUndoClass GimpChannelPropUndoClass;
 
 struct _GimpChannelPropUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    GimpRGB       color;
+	GimpRGB color;
 };
 
 struct _GimpChannelPropUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

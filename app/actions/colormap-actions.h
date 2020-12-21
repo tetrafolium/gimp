@@ -21,7 +21,7 @@
 
 void   colormap_actions_setup  (GimpActionGroup *group);
 void   colormap_actions_update (GimpActionGroup *group,
-                                gpointer         data);
+                                gpointer data);
 
 
 #endif /* __COLORMAP_ACTIONS_H__ */

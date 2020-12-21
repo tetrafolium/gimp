@@ -30,25 +30,25 @@
 #define GIMP_MASK_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MASK_UNDO, GimpMaskUndoClass))
 
 
-typedef struct _GimpMaskUndo      GimpMaskUndo;
+typedef struct _GimpMaskUndo GimpMaskUndo;
 typedef struct _GimpMaskUndoClass GimpMaskUndoClass;
 
 struct _GimpMaskUndo
 {
-    GimpItemUndo   parent_instance;
+	GimpItemUndo parent_instance;
 
-    gboolean       convert_format;
+	gboolean convert_format;
 
-    const Babl    *format;
-    GeglBuffer    *buffer;
-    GeglRectangle  bounds;
-    gint           x;
-    gint           y;
+	const Babl    *format;
+	GeglBuffer    *buffer;
+	GeglRectangle bounds;
+	gint x;
+	gint y;
 };
 
 struct _GimpMaskUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

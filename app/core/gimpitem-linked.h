@@ -22,26 +22,26 @@
 gboolean gimp_item_linked_is_locked (GimpItem               *item);
 
 void     gimp_item_linked_translate (GimpItem               *item,
-                                     gint                    offset_x,
-                                     gint                    offset_y,
-                                     gboolean                push_undo);
+                                     gint offset_x,
+                                     gint offset_y,
+                                     gboolean push_undo);
 void     gimp_item_linked_flip      (GimpItem               *item,
                                      GimpContext            *context,
-                                     GimpOrientationType     flip_type,
-                                     gdouble                 axis,
-                                     gboolean                clip_result);
+                                     GimpOrientationType flip_type,
+                                     gdouble axis,
+                                     gboolean clip_result);
 void     gimp_item_linked_rotate    (GimpItem               *item,
                                      GimpContext            *context,
-                                     GimpRotationType        rotate_type,
-                                     gdouble                 center_x,
-                                     gdouble                 center_y,
-                                     gboolean                clip_result);
+                                     GimpRotationType rotate_type,
+                                     gdouble center_x,
+                                     gdouble center_y,
+                                     gboolean clip_result);
 void     gimp_item_linked_transform (GimpItem               *item,
                                      GimpContext            *context,
                                      const GimpMatrix3      *matrix,
-                                     GimpTransformDirection  direction,
-                                     GimpInterpolationType   interpolation_type,
-                                     GimpTransformResize     clip_result,
+                                     GimpTransformDirection direction,
+                                     GimpInterpolationType interpolation_type,
+                                     GimpTransformResize clip_result,
                                      GimpProgress           *progress);
 
 

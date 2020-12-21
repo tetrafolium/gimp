@@ -37,36 +37,36 @@
 
 
 typedef struct _GimpGuidePrivate GimpGuidePrivate;
-typedef struct _GimpGuideClass   GimpGuideClass;
+typedef struct _GimpGuideClass GimpGuideClass;
 
 struct _GimpGuide
 {
-    GimpAuxItem       parent_instance;
+	GimpAuxItem parent_instance;
 
-    GimpGuidePrivate *priv;
+	GimpGuidePrivate *priv;
 };
 
 struct _GimpGuideClass
 {
-    GimpAuxItemClass  parent_class;
+	GimpAuxItemClass parent_class;
 };
 
 
 GType               gimp_guide_get_type         (void) G_GNUC_CONST;
 
-GimpGuide *         gimp_guide_new              (GimpOrientationType  orientation,
-        guint32              guide_ID);
-GimpGuide *         gimp_guide_custom_new       (GimpOrientationType  orientation,
-        guint32              guide_ID,
-        GimpGuideStyle       guide_style);
+GimpGuide *         gimp_guide_new              (GimpOrientationType orientation,
+                                                 guint32 guide_ID);
+GimpGuide *         gimp_guide_custom_new       (GimpOrientationType orientation,
+                                                 guint32 guide_ID,
+                                                 GimpGuideStyle guide_style);
 
 GimpOrientationType gimp_guide_get_orientation  (GimpGuide           *guide);
 void                gimp_guide_set_orientation  (GimpGuide           *guide,
-        GimpOrientationType  orientation);
+                                                 GimpOrientationType orientation);
 
 gint                gimp_guide_get_position     (GimpGuide           *guide);
 void                gimp_guide_set_position     (GimpGuide           *guide,
-        gint                 position);
+                                                 gint position);
 
 GimpGuideStyle      gimp_guide_get_style        (GimpGuide           *guide);
 gboolean            gimp_guide_is_custom        (GimpGuide           *guide);

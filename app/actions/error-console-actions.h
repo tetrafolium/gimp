@@ -21,7 +21,7 @@
 
 void   error_console_actions_setup  (GimpActionGroup *group);
 void   error_console_actions_update (GimpActionGroup *group,
-                                     gpointer         data);
+                                     gpointer data);
 
 
 #endif /* __ERROR_CONSOLE_ACTIONS_H__ */

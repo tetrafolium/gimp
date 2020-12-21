@@ -33,78 +33,78 @@
 GeglBuffer *
 gimp_drawable_get_shadow_buffer (GimpDrawable *drawable)
 {
-    GimpItem   *item;
-    gint        width;
-    gint        height;
-    const Babl *format;
+	GimpItem   *item;
+	gint width;
+	gint height;
+	const Babl *format;
 
-    g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+	g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
 
-    item = GIMP_ITEM (drawable);
+	item = GIMP_ITEM (drawable);
 
-    width  = gimp_item_get_width  (item);
-    height = gimp_item_get_height (item);
-    format = gimp_drawable_get_format (drawable);
+	width  = gimp_item_get_width  (item);
+	height = gimp_item_get_height (item);
+	format = gimp_drawable_get_format (drawable);
 
-    if (drawable->private->shadow)
-    {
-        if ((width  != gegl_buffer_get_width  (drawable->private->shadow)) ||
-                (height != gegl_buffer_get_height (drawable->private->shadow)) ||
-                (format != gegl_buffer_get_format (drawable->private->shadow)))
-        {
-            gimp_drawable_free_shadow_buffer (drawable);
-        }
-        else
-        {
-            return drawable->private->shadow;
-        }
-    }
+	if (drawable->private->shadow)
+	{
+		if ((width  != gegl_buffer_get_width  (drawable->private->shadow)) ||
+		    (height != gegl_buffer_get_height (drawable->private->shadow)) ||
+		    (format != gegl_buffer_get_format (drawable->private->shadow)))
+		{
+			gimp_drawable_free_shadow_buffer (drawable);
+		}
+		else
+		{
+			return drawable->private->shadow;
+		}
+	}
 
-    drawable->private->shadow = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
-                                width, height),
-                                format);
+	drawable->private->shadow = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+	                                                             width, height),
+	                                             format);
 
-    return drawable->private->shadow;
+	return drawable->private->shadow;
 }
 
 void
 gimp_drawable_free_shadow_buffer (GimpDrawable *drawable)
 {
-    g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+	g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
 
-    g_clear_object (&drawable->private->shadow);
+	g_clear_object (&drawable->private->shadow);
 }
 
 void
 gimp_drawable_merge_shadow_buffer (GimpDrawable *drawable,
-                                   gboolean      push_undo,
+                                   gboolean push_undo,
                                    const gchar  *undo_desc)
 {
-    gint x, y;
-    gint width, height;
+	gint x, y;
+	gint width, height;
 
-    g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-    g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-    g_return_if_fail (GEGL_IS_BUFFER (drawable->private->shadow));
+	g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+	g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
+	g_return_if_fail (GEGL_IS_BUFFER (drawable->private->shadow));
 
-    /*  A useful optimization here is to limit the update to the
-     *  extents of the selection mask, as it cannot extend beyond
-     *  them.
-     */
-    if (gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
-    {
-        GeglBuffer *buffer = g_object_ref (drawable->private->shadow);
+	/*  A useful optimization here is to limit the update to the
+	 *  extents of the selection mask, as it cannot extend beyond
+	 *  them.
+	 */
+	if (gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
+	{
+		GeglBuffer *buffer = g_object_ref (drawable->private->shadow);
 
-        gimp_drawable_apply_buffer (drawable, buffer,
-                                    GEGL_RECTANGLE (x, y, width, height),
-                                    push_undo, undo_desc,
-                                    GIMP_OPACITY_OPAQUE,
-                                    GIMP_LAYER_MODE_REPLACE,
-                                    GIMP_LAYER_COLOR_SPACE_AUTO,
-                                    GIMP_LAYER_COLOR_SPACE_AUTO,
-                                    GIMP_LAYER_COMPOSITE_AUTO,
-                                    NULL, x, y);
+		gimp_drawable_apply_buffer (drawable, buffer,
+		                            GEGL_RECTANGLE (x, y, width, height),
+		                            push_undo, undo_desc,
+		                            GIMP_OPACITY_OPAQUE,
+		                            GIMP_LAYER_MODE_REPLACE,
+		                            GIMP_LAYER_COLOR_SPACE_AUTO,
+		                            GIMP_LAYER_COLOR_SPACE_AUTO,
+		                            GIMP_LAYER_COMPOSITE_AUTO,
+		                            NULL, x, y);
 
-        g_object_unref (buffer);
-    }
+		g_object_unref (buffer);
+	}
 }

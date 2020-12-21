@@ -40,19 +40,19 @@
 #define GIMP_TILE_HANDLER_PROJECTABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_TILE_HANDLER_PROJECTABLE, GimpTileHandlerProjectableClass))
 
 
-typedef struct _GimpTileHandlerProjectable      GimpTileHandlerProjectable;
+typedef struct _GimpTileHandlerProjectable GimpTileHandlerProjectable;
 typedef struct _GimpTileHandlerProjectableClass GimpTileHandlerProjectableClass;
 
 struct _GimpTileHandlerProjectable
 {
-    GimpTileHandlerValidate  parent_instance;
+	GimpTileHandlerValidate parent_instance;
 
-    GimpProjectable         *projectable;
+	GimpProjectable         *projectable;
 };
 
 struct _GimpTileHandlerProjectableClass
 {
-    GimpTileHandlerValidateClass  parent_class;
+	GimpTileHandlerValidateClass parent_class;
 };
 
 

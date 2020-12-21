@@ -37,18 +37,18 @@ typedef struct _GimpTilingClass GimpTilingClass;
 
 struct _GimpTiling
 {
-    GimpSymmetry  parent_instance;
+	GimpSymmetry parent_instance;
 
-    gdouble       interval_x;
-    gdouble       interval_y;
-    gdouble       shift;
-    gint          max_x;
-    gint          max_y;
+	gdouble interval_x;
+	gdouble interval_y;
+	gdouble shift;
+	gint max_x;
+	gint max_y;
 };
 
 struct _GimpTilingClass
 {
-    GimpSymmetryClass  parent_class;
+	GimpSymmetryClass parent_class;
 };
 
 

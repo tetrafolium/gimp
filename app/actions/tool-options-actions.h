@@ -21,7 +21,7 @@
 
 void   tool_options_actions_setup  (GimpActionGroup *group);
 void   tool_options_actions_update (GimpActionGroup *group,
-                                    gpointer         data);
+                                    gpointer data);
 
 
 #endif /* __TOOL_OPTIONS_ACTIONS_H__ */

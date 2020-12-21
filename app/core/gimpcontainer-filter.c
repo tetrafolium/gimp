@@ -33,9 +33,9 @@
 
 typedef struct
 {
-    GimpObjectFilterFunc   filter;
-    GimpContainer         *container;
-    gpointer               user_data;
+	GimpObjectFilterFunc filter;
+	GimpContainer         *container;
+	gpointer user_data;
 } GimpContainerFilterContext;
 
 
@@ -43,8 +43,8 @@ static void
 gimp_container_filter_foreach_func (GimpObject                 *object,
                                     GimpContainerFilterContext *context)
 {
-    if (context->filter (object, context->user_data))
-        gimp_container_add (context->container, object);
+	if (context->filter (object, context->user_data))
+		gimp_container_add (context->container, object);
 }
 
 /**
@@ -60,35 +60,35 @@ gimp_container_filter_foreach_func (GimpObject                 *object,
  **/
 GimpContainer *
 gimp_container_filter (GimpContainer        *container,
-                       GimpObjectFilterFunc  filter,
-                       gpointer              user_data)
+                       GimpObjectFilterFunc filter,
+                       gpointer user_data)
 {
-    GimpContainer              *result;
-    GimpContainerFilterContext  context;
+	GimpContainer              *result;
+	GimpContainerFilterContext context;
 
-    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-    g_return_val_if_fail (filter != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (filter != NULL, NULL);
 
-    result =
-        g_object_new (G_TYPE_FROM_INSTANCE (container),
-                      "children-type", gimp_container_get_children_type (container),
-                      "policy",        GIMP_CONTAINER_POLICY_WEAK,
-                      NULL);
+	result =
+		g_object_new (G_TYPE_FROM_INSTANCE (container),
+		              "children-type", gimp_container_get_children_type (container),
+		              "policy",        GIMP_CONTAINER_POLICY_WEAK,
+		              NULL);
 
-    context.filter    = filter;
-    context.container = result;
-    context.user_data = user_data;
+	context.filter    = filter;
+	context.container = result;
+	context.user_data = user_data;
 
-    gimp_container_foreach (container,
-                            (GFunc) gimp_container_filter_foreach_func,
-                            &context);
+	gimp_container_foreach (container,
+	                        (GFunc) gimp_container_filter_foreach_func,
+	                        &context);
 
-    /*  This is somewhat ugly, but it keeps lists in the same order.  */
-    if (GIMP_IS_LIST (result))
-        gimp_list_reverse (GIMP_LIST (result));
+	/*  This is somewhat ugly, but it keeps lists in the same order.  */
+	if (GIMP_IS_LIST (result))
+		gimp_list_reverse (GIMP_LIST (result));
 
 
-    return result;
+	return result;
 }
 
 
@@ -96,7 +96,7 @@ static gboolean
 gimp_object_filter_by_name (GimpObject   *object,
                             const GRegex *regex)
 {
-    return g_regex_match (regex, gimp_object_get_name (object), 0, NULL);
+	return g_regex_match (regex, gimp_object_get_name (object), 0, NULL);
 }
 
 /**
@@ -115,27 +115,27 @@ gimp_container_filter_by_name (GimpContainer  *container,
                                const gchar    *regexp,
                                GError        **error)
 {
-    GimpContainer *result;
-    GRegex        *regex;
+	GimpContainer *result;
+	GRegex        *regex;
 
-    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-    g_return_val_if_fail (regexp != NULL, NULL);
-    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (regexp != NULL, NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-    regex = g_regex_new (regexp, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0,
-                         error);
+	regex = g_regex_new (regexp, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0,
+	                     error);
 
-    if (! regex)
-        return NULL;
+	if (!regex)
+		return NULL;
 
-    result =
-        gimp_container_filter (container,
-                               (GimpObjectFilterFunc) gimp_object_filter_by_name,
-                               regex);
+	result =
+		gimp_container_filter (container,
+		                       (GimpObjectFilterFunc) gimp_object_filter_by_name,
+		                       regex);
 
-    g_regex_unref (regex);
+	g_regex_unref (regex);
 
-    return result;
+	return result;
 }
 
 
@@ -144,31 +144,31 @@ gimp_container_get_filtered_name_array (GimpContainer *container,
                                         const gchar   *regexp,
                                         gint          *length)
 {
-    GimpContainer *weak;
-    GError        *error = NULL;
+	GimpContainer *weak;
+	GError        *error = NULL;
 
-    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-    g_return_val_if_fail (length != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (length != NULL, NULL);
 
-    if (regexp == NULL || strlen (regexp) == 0)
-        return (gimp_container_get_name_array (container, length));
+	if (regexp == NULL || strlen (regexp) == 0)
+		return (gimp_container_get_name_array (container, length));
 
-    weak = gimp_container_filter_by_name (container, regexp, &error);
+	weak = gimp_container_filter_by_name (container, regexp, &error);
 
-    if (weak)
-    {
-        gchar **retval = gimp_container_get_name_array (weak, length);
+	if (weak)
+	{
+		gchar **retval = gimp_container_get_name_array (weak, length);
 
-        g_object_unref (weak);
+		g_object_unref (weak);
 
-        return retval;
-    }
-    else
-    {
-        g_warning ("%s", error->message);
-        g_error_free (error);
+		return retval;
+	}
+	else
+	{
+		g_warning ("%s", error->message);
+		g_error_free (error);
 
-        *length = 0;
-        return NULL;
-    }
+		*length = 0;
+		return NULL;
+	}
 }

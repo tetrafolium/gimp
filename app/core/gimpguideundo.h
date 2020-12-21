@@ -30,20 +30,20 @@
 #define GIMP_GUIDE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GUIDE_UNDO, GimpGuideUndoClass))
 
 
-typedef struct _GimpGuideUndo      GimpGuideUndo;
+typedef struct _GimpGuideUndo GimpGuideUndo;
 typedef struct _GimpGuideUndoClass GimpGuideUndoClass;
 
 struct _GimpGuideUndo
 {
-    GimpAuxItemUndo      parent_instance;
+	GimpAuxItemUndo parent_instance;
 
-    GimpOrientationType  orientation;
-    gint                 position;
+	GimpOrientationType orientation;
+	gint position;
 };
 
 struct _GimpGuideUndoClass
 {
-    GimpAuxItemUndoClass  parent_class;
+	GimpAuxItemUndoClass parent_class;
 };
 
 

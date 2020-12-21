@@ -20,42 +20,42 @@
 
 
 GimpObject  * gimp_edit_cut                (GimpImage       *image,
-        GList           *drawables,
-        GimpContext     *context,
-        GError         **error);
+                                            GList           *drawables,
+                                            GimpContext     *context,
+                                            GError         **error);
 GimpObject  * gimp_edit_copy               (GimpImage       *image,
-        GList           *drawables,
-        GimpContext     *context,
-        GError         **error);
+                                            GList           *drawables,
+                                            GimpContext     *context,
+                                            GError         **error);
 GimpBuffer  * gimp_edit_copy_visible       (GimpImage       *image,
-        GimpContext     *context,
-        GError         **error);
+                                            GimpContext     *context,
+                                            GError         **error);
 
 GimpLayer   * gimp_edit_paste              (GimpImage       *image,
-        GimpDrawable    *drawable,
-        GimpObject      *paste,
-        GimpPasteType    paste_type,
-        gint             viewport_x,
-        gint             viewport_y,
-        gint             viewport_width,
-        gint             viewport_height);
+                                            GimpDrawable    *drawable,
+                                            GimpObject      *paste,
+                                            GimpPasteType paste_type,
+                                            gint viewport_x,
+                                            gint viewport_y,
+                                            gint viewport_width,
+                                            gint viewport_height);
 GimpImage   * gimp_edit_paste_as_new_image (Gimp            *gimp,
-        GimpObject      *paste);
+                                            GimpObject      *paste);
 
 const gchar * gimp_edit_named_cut          (GimpImage       *image,
-        const gchar     *name,
-        GList           *drawables,
-        GimpContext     *context,
-        GError         **error);
+                                            const gchar     *name,
+                                            GList           *drawables,
+                                            GimpContext     *context,
+                                            GError         **error);
 const gchar * gimp_edit_named_copy         (GimpImage       *image,
-        const gchar     *name,
-        GList           *drawables,
-        GimpContext     *context,
-        GError         **error);
+                                            const gchar     *name,
+                                            GList           *drawables,
+                                            GimpContext     *context,
+                                            GError         **error);
 const gchar * gimp_edit_named_copy_visible (GimpImage       *image,
-        const gchar     *name,
-        GimpContext     *context,
-        GError         **error);
+                                            const gchar     *name,
+                                            GimpContext     *context,
+                                            GError         **error);
 
 
 #endif  /*  __GIMP_EDIT_H__  */

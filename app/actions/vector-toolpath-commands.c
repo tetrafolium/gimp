@@ -44,51 +44,51 @@
 
 void
 vector_toolpath_delete_anchor_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                            GVariant   *value,
+                                            gpointer data)
 {
-    GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
+	GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
 
-    gimp_tool_path_delete_anchor (tool_path);
+	gimp_tool_path_delete_anchor (tool_path);
 }
 
 void
 vector_toolpath_shift_start_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                          GVariant   *value,
+                                          gpointer data)
 {
-    GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
+	GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
 
-    gimp_tool_path_shift_start (tool_path);
+	gimp_tool_path_shift_start (tool_path);
 }
 
 void
 vector_toolpath_insert_anchor_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                            GVariant   *value,
+                                            gpointer data)
 {
-    GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
+	GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
 
-    gimp_tool_path_insert_anchor (tool_path);
+	gimp_tool_path_insert_anchor (tool_path);
 }
 
 void
 vector_toolpath_delete_segment_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                             GVariant   *value,
+                                             gpointer data)
 {
-    GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
+	GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
 
-    gimp_tool_path_delete_segment (tool_path);
+	gimp_tool_path_delete_segment (tool_path);
 }
 
 void
 vector_toolpath_reverse_stroke_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                             GVariant   *value,
+                                             gpointer data)
 {
-    GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
+	GimpToolPath *tool_path = GIMP_TOOL_PATH (data);
 
-    gimp_tool_path_reverse_stroke (tool_path);
+	gimp_tool_path_reverse_stroke (tool_path);
 }
 

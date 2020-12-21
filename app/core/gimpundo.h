@@ -24,18 +24,18 @@
 
 struct _GimpUndoAccumulator
 {
-    gboolean mode_changed;
-    gboolean precision_changed;
+	gboolean mode_changed;
+	gboolean precision_changed;
 
-    gboolean size_changed;
-    gint     previous_origin_x;
-    gint     previous_origin_y;
-    gint     previous_width;
-    gint     previous_height;
+	gboolean size_changed;
+	gint previous_origin_x;
+	gint previous_origin_y;
+	gint previous_width;
+	gint previous_height;
 
-    gboolean resolution_changed;
+	gboolean resolution_changed;
 
-    gboolean unit_changed;
+	gboolean unit_changed;
 };
 
 
@@ -51,45 +51,45 @@ typedef struct _GimpUndoClass GimpUndoClass;
 
 struct _GimpUndo
 {
-    GimpViewable      parent_instance;
+	GimpViewable parent_instance;
 
-    GimpImage        *image;          /* the image this undo is part of     */
-    guint             time;           /* time of undo step construction     */
+	GimpImage        *image;      /* the image this undo is part of     */
+	guint time;                   /* time of undo step construction     */
 
-    GimpUndoType      undo_type;      /* undo type                          */
-    GimpDirtyMask     dirty_mask;     /* affected parts of the image        */
+	GimpUndoType undo_type;       /* undo type                          */
+	GimpDirtyMask dirty_mask;     /* affected parts of the image        */
 
-    GimpTempBuf      *preview;
-    guint             preview_idle_id;
+	GimpTempBuf      *preview;
+	guint preview_idle_id;
 };
 
 struct _GimpUndoClass
 {
-    GimpViewableClass  parent_class;
+	GimpViewableClass parent_class;
 
-    void (* pop)  (GimpUndo            *undo,
-                   GimpUndoMode         undo_mode,
-                   GimpUndoAccumulator *accum);
-    void (* free) (GimpUndo            *undo,
-                   GimpUndoMode         undo_mode);
+	void (* pop)  (GimpUndo            *undo,
+	               GimpUndoMode undo_mode,
+	               GimpUndoAccumulator *accum);
+	void (* free) (GimpUndo            *undo,
+	               GimpUndoMode undo_mode);
 };
 
 
 GType         gimp_undo_get_type        (void) G_GNUC_CONST;
 
 void          gimp_undo_pop             (GimpUndo            *undo,
-        GimpUndoMode         undo_mode,
-        GimpUndoAccumulator *accum);
+                                         GimpUndoMode undo_mode,
+                                         GimpUndoAccumulator *accum);
 void          gimp_undo_free            (GimpUndo            *undo,
-        GimpUndoMode         undo_mode);
+                                         GimpUndoMode undo_mode);
 
 void          gimp_undo_create_preview  (GimpUndo            *undo,
-        GimpContext         *context,
-        gboolean             create_now);
+                                         GimpContext         *context,
+                                         gboolean create_now);
 void          gimp_undo_refresh_preview (GimpUndo            *undo,
-        GimpContext         *context);
+                                         GimpContext         *context);
 
-const gchar * gimp_undo_type_to_name    (GimpUndoType         type);
+const gchar * gimp_undo_type_to_name    (GimpUndoType type);
 
 gboolean      gimp_undo_is_weak         (GimpUndo            *undo);
 gint          gimp_undo_get_age         (GimpUndo            *undo);

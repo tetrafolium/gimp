@@ -44,9 +44,9 @@ gimp_tag_class_init (GimpTagClass *klass)
 static void
 gimp_tag_init (GimpTag *tag)
 {
-    tag->tag         = 0;
-    tag->collate_key = 0;
-    tag->internal    = FALSE;
+	tag->tag         = 0;
+	tag->collate_key = 0;
+	tag->internal    = FALSE;
 }
 
 /**
@@ -61,29 +61,29 @@ gimp_tag_init (GimpTag *tag)
 GimpTag *
 gimp_tag_new (const char *tag_string)
 {
-    GimpTag *tag;
-    gchar   *tag_name;
-    gchar   *case_folded;
-    gchar   *collate_key;
+	GimpTag *tag;
+	gchar   *tag_name;
+	gchar   *case_folded;
+	gchar   *collate_key;
 
-    g_return_val_if_fail (tag_string != NULL, NULL);
+	g_return_val_if_fail (tag_string != NULL, NULL);
 
-    tag_name = gimp_tag_string_make_valid (tag_string);
-    if (! tag_name)
-        return NULL;
+	tag_name = gimp_tag_string_make_valid (tag_string);
+	if (!tag_name)
+		return NULL;
 
-    tag = g_object_new (GIMP_TYPE_TAG, NULL);
+	tag = g_object_new (GIMP_TYPE_TAG, NULL);
 
-    tag->tag = g_quark_from_string (tag_name);
+	tag->tag = g_quark_from_string (tag_name);
 
-    case_folded = g_utf8_casefold (tag_name, -1);
-    collate_key = g_utf8_collate_key (case_folded, -1);
-    tag->collate_key = g_quark_from_string (collate_key);
-    g_free (collate_key);
-    g_free (case_folded);
-    g_free (tag_name);
+	case_folded = g_utf8_casefold (tag_name, -1);
+	collate_key = g_utf8_collate_key (case_folded, -1);
+	tag->collate_key = g_quark_from_string (collate_key);
+	g_free (collate_key);
+	g_free (case_folded);
+	g_free (tag_name);
 
-    return tag;
+	return tag;
 }
 
 /**
@@ -101,39 +101,39 @@ gimp_tag_new (const char *tag_string)
 GimpTag *
 gimp_tag_try_new (const char *tag_string)
 {
-    GimpTag *tag;
-    gchar   *tag_name;
-    gchar   *case_folded;
-    gchar   *collate_key;
-    GQuark   tag_quark;
-    GQuark   collate_key_quark;
+	GimpTag *tag;
+	gchar   *tag_name;
+	gchar   *case_folded;
+	gchar   *collate_key;
+	GQuark tag_quark;
+	GQuark collate_key_quark;
 
-    tag_name = gimp_tag_string_make_valid (tag_string);
-    if (! tag_name)
-        return NULL;
+	tag_name = gimp_tag_string_make_valid (tag_string);
+	if (!tag_name)
+		return NULL;
 
-    case_folded = g_utf8_casefold (tag_name, -1);
-    collate_key = g_utf8_collate_key (case_folded, -1);
-    collate_key_quark = g_quark_try_string (collate_key);
-    g_free (collate_key);
-    g_free (case_folded);
+	case_folded = g_utf8_casefold (tag_name, -1);
+	collate_key = g_utf8_collate_key (case_folded, -1);
+	collate_key_quark = g_quark_try_string (collate_key);
+	g_free (collate_key);
+	g_free (case_folded);
 
-    if (! collate_key_quark)
-    {
-        g_free (tag_name);
-        return NULL;
-    }
+	if (!collate_key_quark)
+	{
+		g_free (tag_name);
+		return NULL;
+	}
 
-    tag_quark = g_quark_from_string (tag_name);
-    g_free (tag_name);
-    if (! tag_quark)
-        return NULL;
+	tag_quark = g_quark_from_string (tag_name);
+	g_free (tag_name);
+	if (!tag_quark)
+		return NULL;
 
-    tag = g_object_new (GIMP_TYPE_TAG, NULL);
-    tag->tag = tag_quark;
-    tag->collate_key = collate_key_quark;
+	tag = g_object_new (GIMP_TYPE_TAG, NULL);
+	tag->tag = tag_quark;
+	tag->collate_key = collate_key_quark;
 
-    return tag;
+	return tag;
 }
 
 /**
@@ -147,9 +147,9 @@ gimp_tag_try_new (const char *tag_string)
 gboolean
 gimp_tag_get_internal (GimpTag *tag)
 {
-    g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
+	g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
 
-    return tag->internal;
+	return tag->internal;
 }
 
 /**
@@ -164,9 +164,9 @@ gimp_tag_get_internal (GimpTag *tag)
 void
 gimp_tag_set_internal (GimpTag *tag, gboolean internal)
 {
-    g_return_if_fail (GIMP_IS_TAG (tag));
+	g_return_if_fail (GIMP_IS_TAG (tag));
 
-    tag->internal = internal;
+	tag->internal = internal;
 }
 
 
@@ -181,9 +181,9 @@ gimp_tag_set_internal (GimpTag *tag, gboolean internal)
 const gchar *
 gimp_tag_get_name (GimpTag *tag)
 {
-    g_return_val_if_fail (GIMP_IS_TAG (tag), NULL);
+	g_return_val_if_fail (GIMP_IS_TAG (tag), NULL);
 
-    return g_quark_to_string (tag->tag);
+	return g_quark_to_string (tag->tag);
 }
 
 /**
@@ -198,9 +198,9 @@ gimp_tag_get_name (GimpTag *tag)
 guint
 gimp_tag_get_hash (GimpTag *tag)
 {
-    g_return_val_if_fail (GIMP_IS_TAG (tag), -1);
+	g_return_val_if_fail (GIMP_IS_TAG (tag), -1);
 
-    return tag->collate_key;
+	return tag->collate_key;
 }
 
 /**
@@ -216,10 +216,10 @@ gboolean
 gimp_tag_equals (GimpTag *tag,
                  GimpTag *other)
 {
-    g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
-    g_return_val_if_fail (GIMP_IS_TAG (other), FALSE);
+	g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
+	g_return_val_if_fail (GIMP_IS_TAG (other), FALSE);
 
-    return tag->collate_key == other->collate_key;
+	return tag->collate_key == other->collate_key;
 }
 
 /**
@@ -236,11 +236,11 @@ int
 gimp_tag_compare_func (const void *p1,
                        const void *p2)
 {
-    GimpTag      *t1 = GIMP_TAG (p1);
-    GimpTag      *t2 = GIMP_TAG (p2);
+	GimpTag      *t1 = GIMP_TAG (p1);
+	GimpTag      *t2 = GIMP_TAG (p2);
 
-    return g_strcmp0 (g_quark_to_string (t1->collate_key),
-                      g_quark_to_string (t2->collate_key));
+	return g_strcmp0 (g_quark_to_string (t1->collate_key),
+	                  g_quark_to_string (t2->collate_key));
 }
 
 /**
@@ -258,22 +258,22 @@ gint
 gimp_tag_compare_with_string (GimpTag     *tag,
                               const gchar *tag_string)
 {
-    gchar        *case_folded;
-    const gchar  *collate_key;
-    gchar        *collate_key2;
-    gint          result;
+	gchar        *case_folded;
+	const gchar  *collate_key;
+	gchar        *collate_key2;
+	gint result;
 
-    g_return_val_if_fail (GIMP_IS_TAG (tag), 0);
-    g_return_val_if_fail (tag_string != NULL, 0);
+	g_return_val_if_fail (GIMP_IS_TAG (tag), 0);
+	g_return_val_if_fail (tag_string != NULL, 0);
 
-    collate_key = g_quark_to_string (tag->collate_key);
-    case_folded = g_utf8_casefold (tag_string, -1);
-    collate_key2 = g_utf8_collate_key (case_folded, -1);
-    result = g_strcmp0 (collate_key, collate_key2);
-    g_free (collate_key2);
-    g_free (case_folded);
+	collate_key = g_quark_to_string (tag->collate_key);
+	case_folded = g_utf8_casefold (tag_string, -1);
+	collate_key2 = g_utf8_collate_key (case_folded, -1);
+	result = g_strcmp0 (collate_key, collate_key2);
+	g_free (collate_key2);
+	g_free (case_folded);
 
-    return result;
+	return result;
 }
 
 /**
@@ -291,25 +291,25 @@ gboolean
 gimp_tag_has_prefix (GimpTag     *tag,
                      const gchar *prefix_string)
 {
-    gchar    *case_folded1;
-    gchar    *case_folded2;
-    gboolean  has_prefix;
+	gchar    *case_folded1;
+	gchar    *case_folded2;
+	gboolean has_prefix;
 
-    g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
-    g_return_val_if_fail (prefix_string != NULL, FALSE);
+	g_return_val_if_fail (GIMP_IS_TAG (tag), FALSE);
+	g_return_val_if_fail (prefix_string != NULL, FALSE);
 
-    case_folded1 = g_utf8_casefold (g_quark_to_string (tag->tag), -1);
-    case_folded2 = g_utf8_casefold (prefix_string, -1);
+	case_folded1 = g_utf8_casefold (g_quark_to_string (tag->tag), -1);
+	case_folded2 = g_utf8_casefold (prefix_string, -1);
 
-    has_prefix = g_str_has_prefix (case_folded1, case_folded2);
+	has_prefix = g_str_has_prefix (case_folded1, case_folded2);
 
-    g_free (case_folded1);
-    g_free (case_folded2);
+	g_free (case_folded1);
+	g_free (case_folded2);
 
-    g_printerr ("'%s' has prefix '%s': %d\n",
-                g_quark_to_string (tag->tag), prefix_string, has_prefix);
+	g_printerr ("'%s' has prefix '%s': %d\n",
+	            g_quark_to_string (tag->tag), prefix_string, has_prefix);
 
-    return has_prefix;
+	return has_prefix;
 }
 
 /**
@@ -325,52 +325,52 @@ gimp_tag_has_prefix (GimpTag     *tag,
 gchar *
 gimp_tag_string_make_valid (const gchar *tag_string)
 {
-    gchar    *tag;
-    GString  *buffer;
-    gchar    *tag_cursor;
-    gunichar  c;
+	gchar    *tag;
+	GString  *buffer;
+	gchar    *tag_cursor;
+	gunichar c;
 
-    g_return_val_if_fail (tag_string, NULL);
+	g_return_val_if_fail (tag_string, NULL);
 
-    tag = g_utf8_normalize (tag_string, -1, G_NORMALIZE_ALL);
-    if (! tag)
-        return NULL;
+	tag = g_utf8_normalize (tag_string, -1, G_NORMALIZE_ALL);
+	if (!tag)
+		return NULL;
 
-    tag = g_strstrip (tag);
-    if (! *tag)
-    {
-        g_free (tag);
-        return NULL;
-    }
+	tag = g_strstrip (tag);
+	if (!*tag)
+	{
+		g_free (tag);
+		return NULL;
+	}
 
-    buffer = g_string_new ("");
-    tag_cursor = tag;
-    if (g_str_has_prefix (tag_cursor, GIMP_TAG_INTERNAL_PREFIX))
-    {
-        tag_cursor += strlen (GIMP_TAG_INTERNAL_PREFIX);
-    }
-    do
-    {
-        c = g_utf8_get_char (tag_cursor);
-        tag_cursor = g_utf8_next_char (tag_cursor);
-        if (g_unichar_isprint (c)
-                && ! gimp_tag_is_tag_separator (c))
-        {
-            g_string_append_unichar (buffer, c);
-        }
-    } while (c);
+	buffer = g_string_new ("");
+	tag_cursor = tag;
+	if (g_str_has_prefix (tag_cursor, GIMP_TAG_INTERNAL_PREFIX))
+	{
+		tag_cursor += strlen (GIMP_TAG_INTERNAL_PREFIX);
+	}
+	do
+	{
+		c = g_utf8_get_char (tag_cursor);
+		tag_cursor = g_utf8_next_char (tag_cursor);
+		if (g_unichar_isprint (c)
+		    && !gimp_tag_is_tag_separator (c))
+		{
+			g_string_append_unichar (buffer, c);
+		}
+	} while (c);
 
-    g_free (tag);
-    tag = g_string_free (buffer, FALSE);
-    tag = g_strstrip (tag);
+	g_free (tag);
+	tag = g_string_free (buffer, FALSE);
+	tag = g_strstrip (tag);
 
-    if (! *tag)
-    {
-        g_free (tag);
-        return NULL;
-    }
+	if (!*tag)
+	{
+		g_free (tag);
+		return NULL;
+	}
 
-    return tag;
+	return tag;
 }
 
 /**
@@ -387,24 +387,24 @@ gimp_tag_string_make_valid (const gchar *tag_string)
 gboolean
 gimp_tag_is_tag_separator (gunichar c)
 {
-    switch (c)
-    {
-    case 0x002C: /* COMMA */
-    case 0x060C: /* ARABIC COMMA */
-    case 0x07F8: /* NKO COMMA */
-    case 0x1363: /* ETHIOPIC COMMA */
-    case 0x1802: /* MONGOLIAN COMMA */
-    case 0x1808: /* MONGOLIAN MANCHU COMMA */
-    case 0x3001: /* IDEOGRAPHIC COMMA */
-    case 0xA60D: /* VAI COMMA */
-    case 0xFE50: /* SMALL COMMA */
-    case 0xFF0C: /* FULLWIDTH COMMA */
-    case 0xFF64: /* HALFWIDTH IDEOGRAPHIC COMMA */
-        return TRUE;
+	switch (c)
+	{
+	case 0x002C: /* COMMA */
+	case 0x060C: /* ARABIC COMMA */
+	case 0x07F8: /* NKO COMMA */
+	case 0x1363: /* ETHIOPIC COMMA */
+	case 0x1802: /* MONGOLIAN COMMA */
+	case 0x1808: /* MONGOLIAN MANCHU COMMA */
+	case 0x3001: /* IDEOGRAPHIC COMMA */
+	case 0xA60D: /* VAI COMMA */
+	case 0xFE50: /* SMALL COMMA */
+	case 0xFF0C: /* FULLWIDTH COMMA */
+	case 0xFF64: /* HALFWIDTH IDEOGRAPHIC COMMA */
+		return TRUE;
 
-    default:
-        return FALSE;
-    }
+	default:
+		return FALSE;
+	}
 }
 
 /**
@@ -416,12 +416,12 @@ gimp_tag_is_tag_separator (gunichar c)
 void
 gimp_tag_or_null_ref (GimpTag *tag_or_null)
 {
-    if (tag_or_null)
-    {
-        g_return_if_fail (GIMP_IS_TAG (tag_or_null));
+	if (tag_or_null)
+	{
+		g_return_if_fail (GIMP_IS_TAG (tag_or_null));
 
-        g_object_ref (tag_or_null);
-    }
+		g_object_ref (tag_or_null);
+	}
 }
 
 /**
@@ -433,10 +433,10 @@ gimp_tag_or_null_ref (GimpTag *tag_or_null)
 void
 gimp_tag_or_null_unref (GimpTag *tag_or_null)
 {
-    if (tag_or_null)
-    {
-        g_return_if_fail (GIMP_IS_TAG (tag_or_null));
+	if (tag_or_null)
+	{
+		g_return_if_fail (GIMP_IS_TAG (tag_or_null));
 
-        g_object_unref (tag_or_null);
-    }
+		g_object_unref (tag_or_null);
+	}
 }

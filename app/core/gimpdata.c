@@ -38,37 +38,37 @@
 
 enum
 {
-    DIRTY,
-    LAST_SIGNAL
+	DIRTY,
+	LAST_SIGNAL
 };
 
 enum
 {
-    PROP_0,
-    PROP_FILE,
-    PROP_WRITABLE,
-    PROP_DELETABLE,
-    PROP_MIME_TYPE
+	PROP_0,
+	PROP_FILE,
+	PROP_WRITABLE,
+	PROP_DELETABLE,
+	PROP_MIME_TYPE
 };
 
 
 struct _GimpDataPrivate
 {
-    GFile  *file;
-    GQuark  mime_type;
-    guint   writable  : 1;
-    guint   deletable : 1;
-    guint   dirty     : 1;
-    guint   internal  : 1;
-    gint    freeze_count;
-    gint64  mtime;
+	GFile  *file;
+	GQuark mime_type;
+	guint writable  : 1;
+	guint deletable : 1;
+	guint dirty     : 1;
+	guint internal  : 1;
+	gint freeze_count;
+	gint64 mtime;
 
-    /* Identifies the GimpData object across sessions. Used when there
-     * is not a filename associated with the object.
-     */
-    gchar  *identifier;
+	/* Identifies the GimpData object across sessions. Used when there
+	 * is not a filename associated with the object.
+	 */
+	gchar  *identifier;
 
-    GList  *tags;
+	GList  *tags;
 };
 
 #define GIMP_DATA_GET_PRIVATE(obj) (((GimpData *) (obj))->priv)
@@ -79,29 +79,29 @@ static void       gimp_data_tagged_iface_init (GimpTaggedInterface *iface);
 static void       gimp_data_constructed       (GObject             *object);
 static void       gimp_data_finalize          (GObject             *object);
 static void       gimp_data_set_property      (GObject             *object,
-        guint                property_id,
-        const GValue        *value,
-        GParamSpec          *pspec);
+                                               guint property_id,
+                                               const GValue        *value,
+                                               GParamSpec          *pspec);
 static void       gimp_data_get_property      (GObject             *object,
-        guint                property_id,
-        GValue              *value,
-        GParamSpec          *pspec);
+                                               guint property_id,
+                                               GValue              *value,
+                                               GParamSpec          *pspec);
 
 static void       gimp_data_name_changed      (GimpObject          *object);
 static gint64     gimp_data_get_memsize       (GimpObject          *object,
-        gint64              *gui_size);
+                                               gint64              *gui_size);
 
 static gboolean   gimp_data_is_name_editable  (GimpViewable        *viewable);
 
 static void       gimp_data_real_dirty        (GimpData            *data);
 static GimpData * gimp_data_real_duplicate    (GimpData            *data);
 static gint       gimp_data_real_compare      (GimpData            *data1,
-        GimpData            *data2);
+                                               GimpData            *data2);
 
 static gboolean   gimp_data_add_tag           (GimpTagged          *tagged,
-        GimpTag             *tag);
+                                               GimpTag             *tag);
 static gboolean   gimp_data_remove_tag        (GimpTagged          *tagged,
-        GimpTag             *tag);
+                                               GimpTag             *tag);
 static GList    * gimp_data_get_tags          (GimpTagged          *tagged);
 static gchar    * gimp_data_get_identifier    (GimpTagged          *tagged);
 static gchar    * gimp_data_get_checksum      (GimpTagged          *tagged);
@@ -110,7 +110,7 @@ static gchar    * gimp_data_get_checksum      (GimpTagged          *tagged);
 G_DEFINE_TYPE_WITH_CODE (GimpData, gimp_data, GIMP_TYPE_VIEWABLE,
                          G_ADD_PRIVATE (GimpData)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_TAGGED,
-                                 gimp_data_tagged_iface_init))
+                                                gimp_data_tagged_iface_init))
 
 #define parent_class gimp_data_parent_class
 
@@ -120,377 +120,377 @@ static guint data_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_data_class_init (GimpDataClass *klass)
 {
-    GObjectClass      *object_class      = G_OBJECT_CLASS (klass);
-    GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
-    GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
+	GObjectClass      *object_class      = G_OBJECT_CLASS (klass);
+	GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+	GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
 
-    parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (klass);
 
-    data_signals[DIRTY] =
-        g_signal_new ("dirty",
-                      G_TYPE_FROM_CLASS (klass),
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (GimpDataClass, dirty),
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 0);
+	data_signals[DIRTY] =
+		g_signal_new ("dirty",
+		              G_TYPE_FROM_CLASS (klass),
+		              G_SIGNAL_RUN_FIRST,
+		              G_STRUCT_OFFSET (GimpDataClass, dirty),
+		              NULL, NULL, NULL,
+		              G_TYPE_NONE, 0);
 
-    object_class->constructed        = gimp_data_constructed;
-    object_class->finalize           = gimp_data_finalize;
-    object_class->set_property       = gimp_data_set_property;
-    object_class->get_property       = gimp_data_get_property;
+	object_class->constructed        = gimp_data_constructed;
+	object_class->finalize           = gimp_data_finalize;
+	object_class->set_property       = gimp_data_set_property;
+	object_class->get_property       = gimp_data_get_property;
 
-    gimp_object_class->name_changed  = gimp_data_name_changed;
-    gimp_object_class->get_memsize   = gimp_data_get_memsize;
+	gimp_object_class->name_changed  = gimp_data_name_changed;
+	gimp_object_class->get_memsize   = gimp_data_get_memsize;
 
-    viewable_class->name_editable    = TRUE;
-    viewable_class->is_name_editable = gimp_data_is_name_editable;
+	viewable_class->name_editable    = TRUE;
+	viewable_class->is_name_editable = gimp_data_is_name_editable;
 
-    klass->dirty                     = gimp_data_real_dirty;
-    klass->save                      = NULL;
-    klass->get_extension             = NULL;
-    klass->copy                      = NULL;
-    klass->duplicate                 = gimp_data_real_duplicate;
-    klass->compare                   = gimp_data_real_compare;
+	klass->dirty                     = gimp_data_real_dirty;
+	klass->save                      = NULL;
+	klass->get_extension             = NULL;
+	klass->copy                      = NULL;
+	klass->duplicate                 = gimp_data_real_duplicate;
+	klass->compare                   = gimp_data_real_compare;
 
-    g_object_class_install_property (object_class, PROP_FILE,
-                                     g_param_spec_object ("file", NULL, NULL,
-                                             G_TYPE_FILE,
-                                             GIMP_PARAM_READWRITE));
+	g_object_class_install_property (object_class, PROP_FILE,
+	                                 g_param_spec_object ("file", NULL, NULL,
+	                                                      G_TYPE_FILE,
+	                                                      GIMP_PARAM_READWRITE));
 
-    g_object_class_install_property (object_class, PROP_WRITABLE,
-                                     g_param_spec_boolean ("writable", NULL, NULL,
-                                             FALSE,
-                                             GIMP_PARAM_READWRITE));
+	g_object_class_install_property (object_class, PROP_WRITABLE,
+	                                 g_param_spec_boolean ("writable", NULL, NULL,
+	                                                       FALSE,
+	                                                       GIMP_PARAM_READWRITE));
 
-    g_object_class_install_property (object_class, PROP_DELETABLE,
-                                     g_param_spec_boolean ("deletable", NULL, NULL,
-                                             FALSE,
-                                             GIMP_PARAM_READWRITE));
+	g_object_class_install_property (object_class, PROP_DELETABLE,
+	                                 g_param_spec_boolean ("deletable", NULL, NULL,
+	                                                       FALSE,
+	                                                       GIMP_PARAM_READWRITE));
 
-    g_object_class_install_property (object_class, PROP_MIME_TYPE,
-                                     g_param_spec_string ("mime-type", NULL, NULL,
-                                             NULL,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_MIME_TYPE,
+	                                 g_param_spec_string ("mime-type", NULL, NULL,
+	                                                      NULL,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
 gimp_data_tagged_iface_init (GimpTaggedInterface *iface)
 {
-    iface->add_tag        = gimp_data_add_tag;
-    iface->remove_tag     = gimp_data_remove_tag;
-    iface->get_tags       = gimp_data_get_tags;
-    iface->get_identifier = gimp_data_get_identifier;
-    iface->get_checksum   = gimp_data_get_checksum;
+	iface->add_tag        = gimp_data_add_tag;
+	iface->remove_tag     = gimp_data_remove_tag;
+	iface->get_tags       = gimp_data_get_tags;
+	iface->get_identifier = gimp_data_get_identifier;
+	iface->get_checksum   = gimp_data_get_checksum;
 }
 
 static void
 gimp_data_init (GimpData *data)
 {
-    GimpDataPrivate *private = gimp_data_get_instance_private (data);
+	GimpDataPrivate *private = gimp_data_get_instance_private (data);
 
-    data->priv = private;
+	data->priv = private;
 
-    private->writable  = TRUE;
-    private->deletable = TRUE;
-    private->dirty     = TRUE;
+	private->writable  = TRUE;
+	private->deletable = TRUE;
+	private->dirty     = TRUE;
 
-    /*  freeze the data object during construction  */
-    gimp_data_freeze (data);
+	/*  freeze the data object during construction  */
+	gimp_data_freeze (data);
 }
 
 static void
 gimp_data_constructed (GObject *object)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    if (! GIMP_DATA_GET_CLASS (object)->save)
-        private->writable = FALSE;
+	if (!GIMP_DATA_GET_CLASS (object)->save)
+		private->writable = FALSE;
 
-    gimp_data_thaw (GIMP_DATA (object));
+	gimp_data_thaw (GIMP_DATA (object));
 }
 
 static void
 gimp_data_finalize (GObject *object)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
 
-    g_clear_object (&private->file);
+	g_clear_object (&private->file);
 
-    if (private->tags)
-    {
-        g_list_free_full (private->tags, (GDestroyNotify) g_object_unref);
-        private->tags = NULL;
-    }
+	if (private->tags)
+	{
+		g_list_free_full (private->tags, (GDestroyNotify) g_object_unref);
+		private->tags = NULL;
+	}
 
-    g_clear_pointer (&private->identifier, g_free);
+	g_clear_pointer (&private->identifier, g_free);
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gimp_data_set_property (GObject      *object,
-                        guint         property_id,
+                        guint property_id,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
-    GimpData        *data    = GIMP_DATA (object);
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (data);
+	GimpData        *data    = GIMP_DATA (object);
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (data);
 
-    switch (property_id)
-    {
-    case PROP_FILE:
-        gimp_data_set_file (data,
-                            g_value_get_object (value),
-                            private->writable,
-                            private->deletable);
-        break;
+	switch (property_id)
+	{
+	case PROP_FILE:
+		gimp_data_set_file (data,
+		                    g_value_get_object (value),
+		                    private->writable,
+		                    private->deletable);
+		break;
 
-    case PROP_WRITABLE:
-        private->writable = g_value_get_boolean (value);
-        break;
+	case PROP_WRITABLE:
+		private->writable = g_value_get_boolean (value);
+		break;
 
-    case PROP_DELETABLE:
-        private->deletable = g_value_get_boolean (value);
-        break;
+	case PROP_DELETABLE:
+		private->deletable = g_value_get_boolean (value);
+		break;
 
-    case PROP_MIME_TYPE:
-        if (g_value_get_string (value))
-            private->mime_type = g_quark_from_string (g_value_get_string (value));
-        else
-            private->mime_type = 0;
-        break;
+	case PROP_MIME_TYPE:
+		if (g_value_get_string (value))
+			private->mime_type = g_quark_from_string (g_value_get_string (value));
+		else
+			private->mime_type = 0;
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_data_get_property (GObject    *object,
-                        guint       property_id,
+                        guint property_id,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
 
-    switch (property_id)
-    {
-    case PROP_FILE:
-        g_value_set_object (value, private->file);
-        break;
+	switch (property_id)
+	{
+	case PROP_FILE:
+		g_value_set_object (value, private->file);
+		break;
 
-    case PROP_WRITABLE:
-        g_value_set_boolean (value, private->writable);
-        break;
+	case PROP_WRITABLE:
+		g_value_set_boolean (value, private->writable);
+		break;
 
-    case PROP_DELETABLE:
-        g_value_set_boolean (value, private->deletable);
-        break;
+	case PROP_DELETABLE:
+		g_value_set_boolean (value, private->deletable);
+		break;
 
-    case PROP_MIME_TYPE:
-        g_value_set_string (value, g_quark_to_string (private->mime_type));
-        break;
+	case PROP_MIME_TYPE:
+		g_value_set_string (value, g_quark_to_string (private->mime_type));
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_data_name_changed (GimpObject *object)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
 
-    private->dirty = TRUE;
+	private->dirty = TRUE;
 
-    if (GIMP_OBJECT_CLASS (parent_class)->name_changed)
-        GIMP_OBJECT_CLASS (parent_class)->name_changed (object);
+	if (GIMP_OBJECT_CLASS (parent_class)->name_changed)
+		GIMP_OBJECT_CLASS (parent_class)->name_changed (object);
 }
 
 static gint64
 gimp_data_get_memsize (GimpObject *object,
                        gint64     *gui_size)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
-    gint64           memsize = 0;
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (object);
+	gint64 memsize = 0;
 
-    memsize += gimp_g_object_get_memsize (G_OBJECT (private->file));
+	memsize += gimp_g_object_get_memsize (G_OBJECT (private->file));
 
-    return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
-            gui_size);
+	return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+	                                                                gui_size);
 }
 
 static gboolean
 gimp_data_is_name_editable (GimpViewable *viewable)
 {
-    return gimp_data_is_writable (GIMP_DATA (viewable)) &&
-           ! gimp_data_is_internal (GIMP_DATA (viewable));
+	return gimp_data_is_writable (GIMP_DATA (viewable)) &&
+	       !gimp_data_is_internal (GIMP_DATA (viewable));
 }
 
 static void
 gimp_data_real_dirty (GimpData *data)
 {
-    gimp_viewable_invalidate_preview (GIMP_VIEWABLE (data));
+	gimp_viewable_invalidate_preview (GIMP_VIEWABLE (data));
 
-    /* Emit the "name-changed" to signal general dirtiness, our name
-     * changed implementation will also set the "dirty" flag to TRUE.
-     */
-    gimp_object_name_changed (GIMP_OBJECT (data));
+	/* Emit the "name-changed" to signal general dirtiness, our name
+	 * changed implementation will also set the "dirty" flag to TRUE.
+	 */
+	gimp_object_name_changed (GIMP_OBJECT (data));
 }
 
 static GimpData *
 gimp_data_real_duplicate (GimpData *data)
 {
-    if (GIMP_DATA_GET_CLASS (data)->copy)
-    {
-        GimpData *new = g_object_new (G_OBJECT_TYPE (data), NULL);
+	if (GIMP_DATA_GET_CLASS (data)->copy)
+	{
+		GimpData *new = g_object_new (G_OBJECT_TYPE (data), NULL);
 
-        gimp_data_copy (new, data);
+		gimp_data_copy (new, data);
 
-        return new;
-    }
+		return new;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 static gint
 gimp_data_real_compare (GimpData *data1,
                         GimpData *data2)
 {
-    GimpDataPrivate *private1 = GIMP_DATA_GET_PRIVATE (data1);
-    GimpDataPrivate *private2 = GIMP_DATA_GET_PRIVATE (data2);
+	GimpDataPrivate *private1 = GIMP_DATA_GET_PRIVATE (data1);
+	GimpDataPrivate *private2 = GIMP_DATA_GET_PRIVATE (data2);
 
-    /*  move the internal objects (like the FG -> BG) gradient) to the top  */
-    if (private1->internal != private2->internal)
-        return private1->internal ? -1 : 1;
+	/*  move the internal objects (like the FG -> BG) gradient) to the top  */
+	if (private1->internal != private2->internal)
+		return private1->internal ? -1 : 1;
 
-    /*  keep user-deletable objects above system resource files  */
-    if (private1->deletable != private2->deletable)
-        return private1->deletable ? -1 : 1;
+	/*  keep user-deletable objects above system resource files  */
+	if (private1->deletable != private2->deletable)
+		return private1->deletable ? -1 : 1;
 
-    return gimp_object_name_collate ((GimpObject *) data1,
-                                     (GimpObject *) data2);
+	return gimp_object_name_collate ((GimpObject *) data1,
+	                                 (GimpObject *) data2);
 }
 
 static gboolean
 gimp_data_add_tag (GimpTagged *tagged,
                    GimpTag    *tag)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (tagged);
-    GList           *list;
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (tagged);
+	GList           *list;
 
-    for (list = private->tags; list; list = g_list_next (list))
-    {
-        GimpTag *this = GIMP_TAG (list->data);
+	for (list = private->tags; list; list = g_list_next (list))
+	{
+		GimpTag *this = GIMP_TAG (list->data);
 
-        if (gimp_tag_equals (tag, this))
-            return FALSE;
-    }
+		if (gimp_tag_equals (tag, this))
+			return FALSE;
+	}
 
-    private->tags = g_list_prepend (private->tags, g_object_ref (tag));
+	private->tags = g_list_prepend (private->tags, g_object_ref (tag));
 
-    return TRUE;
+	return TRUE;
 }
 
 static gboolean
 gimp_data_remove_tag (GimpTagged *tagged,
                       GimpTag    *tag)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (tagged);
-    GList           *list;
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (tagged);
+	GList           *list;
 
-    for (list = private->tags; list; list = g_list_next (list))
-    {
-        GimpTag *this = GIMP_TAG (list->data);
+	for (list = private->tags; list; list = g_list_next (list))
+	{
+		GimpTag *this = GIMP_TAG (list->data);
 
-        if (gimp_tag_equals (tag, this))
-        {
-            private->tags = g_list_delete_link (private->tags, list);
-            g_object_unref (this);
-            return TRUE;
-        }
-    }
+		if (gimp_tag_equals (tag, this))
+		{
+			private->tags = g_list_delete_link (private->tags, list);
+			g_object_unref (this);
+			return TRUE;
+		}
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 static GList *
 gimp_data_get_tags (GimpTagged *tagged)
 {
-    GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (tagged);
+	GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (tagged);
 
-    return private->tags;
+	return private->tags;
 }
 
 static gchar *
 gimp_data_get_identifier (GimpTagged *tagged)
 {
-    GimpDataPrivate *private    = GIMP_DATA_GET_PRIVATE (tagged);
-    gchar           *identifier = NULL;
+	GimpDataPrivate *private    = GIMP_DATA_GET_PRIVATE (tagged);
+	gchar           *identifier = NULL;
 
-    if (private->file)
-    {
-        const gchar *data_dir = gimp_data_directory ();
-        const gchar *gimp_dir = gimp_directory ();
-        gchar       *path     = g_file_get_path (private->file);
-        gchar       *tmp;
+	if (private->file)
+	{
+		const gchar *data_dir = gimp_data_directory ();
+		const gchar *gimp_dir = gimp_directory ();
+		gchar       *path     = g_file_get_path (private->file);
+		gchar       *tmp;
 
-        if (g_str_has_prefix (path, data_dir))
-        {
-            tmp = g_strconcat ("${gimp_data_dir}",
-                               path + strlen (data_dir),
-                               NULL);
-            identifier = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
-            g_free (tmp);
-        }
-        else if (g_str_has_prefix (path, gimp_dir))
-        {
-            tmp = g_strconcat ("${gimp_dir}",
-                               path + strlen (gimp_dir),
-                               NULL);
-            identifier = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
-            g_free (tmp);
-        }
-        else if (g_str_has_prefix (path, MYPAINT_BRUSHES_DIR))
-        {
-            tmp = g_strconcat ("${mypaint_brushes_dir}",
-                               path + strlen (MYPAINT_BRUSHES_DIR),
-                               NULL);
-            identifier = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
-            g_free (tmp);
-        }
-        else
-        {
-            identifier = g_filename_to_utf8 (path, -1,
-                                             NULL, NULL, NULL);
-        }
+		if (g_str_has_prefix (path, data_dir))
+		{
+			tmp = g_strconcat ("${gimp_data_dir}",
+			                   path + strlen (data_dir),
+			                   NULL);
+			identifier = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
+			g_free (tmp);
+		}
+		else if (g_str_has_prefix (path, gimp_dir))
+		{
+			tmp = g_strconcat ("${gimp_dir}",
+			                   path + strlen (gimp_dir),
+			                   NULL);
+			identifier = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
+			g_free (tmp);
+		}
+		else if (g_str_has_prefix (path, MYPAINT_BRUSHES_DIR))
+		{
+			tmp = g_strconcat ("${mypaint_brushes_dir}",
+			                   path + strlen (MYPAINT_BRUSHES_DIR),
+			                   NULL);
+			identifier = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
+			g_free (tmp);
+		}
+		else
+		{
+			identifier = g_filename_to_utf8 (path, -1,
+			                                 NULL, NULL, NULL);
+		}
 
-        if (! identifier)
-        {
-            g_printerr ("%s: failed to convert '%s' to utf8.\n",
-                        G_STRFUNC, path);
-            identifier = g_strdup (path);
-        }
+		if (!identifier)
+		{
+			g_printerr ("%s: failed to convert '%s' to utf8.\n",
+			            G_STRFUNC, path);
+			identifier = g_strdup (path);
+		}
 
-        g_free (path);
-    }
-    else if (private->internal)
-    {
-        identifier = g_strdup (private->identifier);
-    }
+		g_free (path);
+	}
+	else if (private->internal)
+	{
+		identifier = g_strdup (private->identifier);
+	}
 
-    return identifier;
+	return identifier;
 }
 
 static gchar *
 gimp_data_get_checksum (GimpTagged *tagged)
 {
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -510,89 +510,89 @@ gboolean
 gimp_data_save (GimpData  *data,
                 GError   **error)
 {
-    GimpDataPrivate *private;
-    gboolean         success = FALSE;
+	GimpDataPrivate *private;
+	gboolean success = FALSE;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
-    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    g_return_val_if_fail (private->writable == TRUE, FALSE);
+	g_return_val_if_fail (private->writable == TRUE, FALSE);
 
-    if (private->internal)
-    {
-        private->dirty = FALSE;
-        return TRUE;
-    }
+	if (private->internal)
+	{
+		private->dirty = FALSE;
+		return TRUE;
+	}
 
-    g_return_val_if_fail (G_IS_FILE (private->file), FALSE);
+	g_return_val_if_fail (G_IS_FILE (private->file), FALSE);
 
-    if (GIMP_DATA_GET_CLASS (data)->save)
-    {
-        GOutputStream *output;
+	if (GIMP_DATA_GET_CLASS (data)->save)
+	{
+		GOutputStream *output;
 
-        output = G_OUTPUT_STREAM (g_file_replace (private->file,
-                                  NULL, FALSE, G_FILE_CREATE_NONE,
-                                  NULL, error));
+		output = G_OUTPUT_STREAM (g_file_replace (private->file,
+		                                          NULL, FALSE, G_FILE_CREATE_NONE,
+		                                          NULL, error));
 
-        if (output)
-        {
-            success = GIMP_DATA_GET_CLASS (data)->save (data, output, error);
+		if (output)
+		{
+			success = GIMP_DATA_GET_CLASS (data)->save (data, output, error);
 
-            if (success)
-            {
-                if (! g_output_stream_close (output, NULL, error))
-                {
-                    g_prefix_error (error,
-                                    _("Error saving '%s': "),
-                                    gimp_file_get_utf8_name (private->file));
-                    success = FALSE;
-                }
-            }
-            else
-            {
-                GCancellable *cancellable = g_cancellable_new ();
+			if (success)
+			{
+				if (!g_output_stream_close (output, NULL, error))
+				{
+					g_prefix_error (error,
+					                _("Error saving '%s': "),
+					                gimp_file_get_utf8_name (private->file));
+					success = FALSE;
+				}
+			}
+			else
+			{
+				GCancellable *cancellable = g_cancellable_new ();
 
-                g_cancellable_cancel (cancellable);
-                if (error && *error)
-                {
-                    g_prefix_error (error,
-                                    _("Error saving '%s': "),
-                                    gimp_file_get_utf8_name (private->file));
-                }
-                else
-                {
-                    g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_WRITE,
-                                 _("Error saving '%s'"),
-                                 gimp_file_get_utf8_name (private->file));
-                }
-                g_output_stream_close (output, cancellable, NULL);
-                g_object_unref (cancellable);
-            }
+				g_cancellable_cancel (cancellable);
+				if (error && *error)
+				{
+					g_prefix_error (error,
+					                _("Error saving '%s': "),
+					                gimp_file_get_utf8_name (private->file));
+				}
+				else
+				{
+					g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_WRITE,
+					             _("Error saving '%s'"),
+					             gimp_file_get_utf8_name (private->file));
+				}
+				g_output_stream_close (output, cancellable, NULL);
+				g_object_unref (cancellable);
+			}
 
-            g_object_unref (output);
-        }
-    }
+			g_object_unref (output);
+		}
+	}
 
-    if (success)
-    {
-        GFileInfo *info = g_file_query_info (private->file,
-                                             G_FILE_ATTRIBUTE_TIME_MODIFIED,
-                                             G_FILE_QUERY_INFO_NONE,
-                                             NULL, NULL);
-        if (info)
-        {
-            private->mtime =
-                g_file_info_get_attribute_uint64 (info,
-                                                  G_FILE_ATTRIBUTE_TIME_MODIFIED);
-            g_object_unref (info);
-        }
+	if (success)
+	{
+		GFileInfo *info = g_file_query_info (private->file,
+		                                     G_FILE_ATTRIBUTE_TIME_MODIFIED,
+		                                     G_FILE_QUERY_INFO_NONE,
+		                                     NULL, NULL);
+		if (info)
+		{
+			private->mtime =
+				g_file_info_get_attribute_uint64 (info,
+				                                  G_FILE_ATTRIBUTE_TIME_MODIFIED);
+			g_object_unref (info);
+		}
 
-        private->dirty = FALSE;
-    }
+		private->dirty = FALSE;
+	}
 
-    return success;
+	return success;
 }
 
 /**
@@ -606,38 +606,38 @@ gimp_data_save (GimpData  *data,
 void
 gimp_data_dirty (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (data));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    if (private->freeze_count == 0)
-        g_signal_emit (data, data_signals[DIRTY], 0);
+	if (private->freeze_count == 0)
+		g_signal_emit (data, data_signals[DIRTY], 0);
 }
 
 void
 gimp_data_clean (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (data));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    private->dirty = FALSE;
+	private->dirty = FALSE;
 }
 
 gboolean
 gimp_data_is_dirty (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->dirty;
+	return private->dirty;
 }
 
 /**
@@ -651,13 +651,13 @@ gimp_data_is_dirty (GimpData *data)
 void
 gimp_data_freeze (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (data));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    private->freeze_count++;
+	private->freeze_count++;
 }
 
 /**
@@ -672,30 +672,30 @@ gimp_data_freeze (GimpData *data)
 void
 gimp_data_thaw (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (data));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    g_return_if_fail (private->freeze_count > 0);
+	g_return_if_fail (private->freeze_count > 0);
 
-    private->freeze_count--;
+	private->freeze_count--;
 
-    if (private->freeze_count == 0)
-        gimp_data_dirty (data);
+	if (private->freeze_count == 0)
+		gimp_data_dirty (data);
 }
 
 gboolean
 gimp_data_is_frozen (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->freeze_count > 0;
+	return private->freeze_count > 0;
 }
 
 /**
@@ -715,31 +715,31 @@ gboolean
 gimp_data_delete_from_disk (GimpData  *data,
                             GError   **error)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
-    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    g_return_val_if_fail (private->file      != NULL, FALSE);
-    g_return_val_if_fail (private->deletable == TRUE, FALSE);
+	g_return_val_if_fail (private->file      != NULL, FALSE);
+	g_return_val_if_fail (private->deletable == TRUE, FALSE);
 
-    if (private->internal)
-        return TRUE;
+	if (private->internal)
+		return TRUE;
 
-    return g_file_delete (private->file, NULL, error);
+	return g_file_delete (private->file, NULL, error);
 }
 
 const gchar *
 gimp_data_get_extension (GimpData *data)
 {
-    g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
+	g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
 
-    if (GIMP_DATA_GET_CLASS (data)->get_extension)
-        return GIMP_DATA_GET_CLASS (data)->get_extension (data);
+	if (GIMP_DATA_GET_CLASS (data)->get_extension)
+		return GIMP_DATA_GET_CLASS (data)->get_extension (data);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -758,100 +758,100 @@ gimp_data_get_extension (GimpData *data)
 void
 gimp_data_set_file (GimpData *data,
                     GFile    *file,
-                    gboolean  writable,
-                    gboolean  deletable)
+                    gboolean writable,
+                    gboolean deletable)
 {
-    GimpDataPrivate *private;
-    gchar           *path;
+	GimpDataPrivate *private;
+	gchar           *path;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
-    g_return_if_fail (G_IS_FILE (file));
+	g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (G_IS_FILE (file));
 
-    path = g_file_get_path (file);
+	path = g_file_get_path (file);
 
-    g_return_if_fail (path != NULL);
-    g_return_if_fail (g_path_is_absolute (path));
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (g_path_is_absolute (path));
 
-    g_free (path);
+	g_free (path);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    if (private->internal)
-        return;
+	if (private->internal)
+		return;
 
-    g_set_object (&private->file, file);
+	g_set_object (&private->file, file);
 
-    private->writable  = FALSE;
-    private->deletable = FALSE;
+	private->writable  = FALSE;
+	private->deletable = FALSE;
 
-    /*  if the data is supposed to be writable or deletable,
-     *  still check if it really is
-     */
-    if (writable || deletable)
-    {
-        GFileInfo *info;
+	/*  if the data is supposed to be writable or deletable,
+	 *  still check if it really is
+	 */
+	if (writable || deletable)
+	{
+		GFileInfo *info;
 
-        if (g_file_query_exists (private->file, NULL)) /* check if it exists */
-        {
-            info = g_file_query_info (private->file,
-                                      G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE,
-                                      G_FILE_QUERY_INFO_NONE,
-                                      NULL, NULL);
+		if (g_file_query_exists (private->file, NULL)) /* check if it exists */
+		{
+			info = g_file_query_info (private->file,
+			                          G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE,
+			                          G_FILE_QUERY_INFO_NONE,
+			                          NULL, NULL);
 
-            /* and we can write it */
-            if (info)
-            {
-                if (g_file_info_get_attribute_boolean (info,
-                                                       G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE))
-                {
-                    private->writable  = writable  ? TRUE : FALSE;
-                    private->deletable = deletable ? TRUE : FALSE;
-                }
+			/* and we can write it */
+			if (info)
+			{
+				if (g_file_info_get_attribute_boolean (info,
+				                                       G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE))
+				{
+					private->writable  = writable  ? TRUE : FALSE;
+					private->deletable = deletable ? TRUE : FALSE;
+				}
 
-                g_object_unref (info);
-            }
-        }
-        else /* OR it doesn't exist */
-        {
-            GFile *parent = g_file_get_parent (private->file);
+				g_object_unref (info);
+			}
+		}
+		else /* OR it doesn't exist */
+		{
+			GFile *parent = g_file_get_parent (private->file);
 
-            info = g_file_query_info (parent,
-                                      G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE,
-                                      G_FILE_QUERY_INFO_NONE,
-                                      NULL, NULL);
+			info = g_file_query_info (parent,
+			                          G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE,
+			                          G_FILE_QUERY_INFO_NONE,
+			                          NULL, NULL);
 
-            /* and we can write to its parent directory */
-            if (info)
-            {
-                if (g_file_info_get_attribute_boolean (info,
-                                                       G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE))
-                {
-                    private->writable  = writable  ? TRUE : FALSE;
-                    private->deletable = deletable ? TRUE : FALSE;
-                }
+			/* and we can write to its parent directory */
+			if (info)
+			{
+				if (g_file_info_get_attribute_boolean (info,
+				                                       G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE))
+				{
+					private->writable  = writable  ? TRUE : FALSE;
+					private->deletable = deletable ? TRUE : FALSE;
+				}
 
-                g_object_unref (info);
-            }
+				g_object_unref (info);
+			}
 
-            g_object_unref (parent);
-        }
+			g_object_unref (parent);
+		}
 
-        /*  if we can't save, we are not writable  */
-        if (! GIMP_DATA_GET_CLASS (data)->save)
-            private->writable = FALSE;
-    }
+		/*  if we can't save, we are not writable  */
+		if (!GIMP_DATA_GET_CLASS (data)->save)
+			private->writable = FALSE;
+	}
 }
 
 GFile *
 gimp_data_get_file (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
+	g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->file;
+	return private->file;
 }
 
 /**
@@ -869,73 +869,72 @@ void
 gimp_data_create_filename (GimpData *data,
                            GFile    *dest_dir)
 {
-    GimpDataPrivate *private;
-    gchar           *safename;
-    gchar           *basename;
-    GFile           *file;
-    gint             i;
-    gint             unum  = 1;
-    GError          *error = NULL;
+	GimpDataPrivate *private;
+	gchar           *safename;
+	gchar           *basename;
+	GFile           *file;
+	gint i;
+	gint unum  = 1;
+	GError          *error = NULL;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
-    g_return_if_fail (G_IS_FILE (dest_dir));
+	g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (G_IS_FILE (dest_dir));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    if (private->internal)
-        return;
+	if (private->internal)
+		return;
 
-    safename = g_strstrip (g_strdup (gimp_object_get_name (data)));
+	safename = g_strstrip (g_strdup (gimp_object_get_name (data)));
 
-    if (safename[0] == '.')
-        safename[0] = '-';
+	if (safename[0] == '.')
+		safename[0] = '-';
 
-    for (i = 0; safename[i]; i++)
-        if (strchr ("\\/*?\"`'<>{}|\n\t ;:$^&", safename[i]))
-            safename[i] = '-';
+	for (i = 0; safename[i]; i++)
+		if (strchr ("\\/*?\"`'<>{}|\n\t ;:$^&", safename[i]))
+			safename[i] = '-';
 
-    basename = g_strconcat (safename, gimp_data_get_extension (data), NULL);
+	basename = g_strconcat (safename, gimp_data_get_extension (data), NULL);
 
-    file = g_file_get_child_for_display_name (dest_dir, basename, &error);
-    g_free (basename);
+	file = g_file_get_child_for_display_name (dest_dir, basename, &error);
+	g_free (basename);
 
-    if (! file)
-    {
-        g_warning ("gimp_data_create_filename:\n"
-                   "g_file_get_child_for_display_name() failed for '%s': %s",
-                   gimp_object_get_name (data), error->message);
-        g_clear_error (&error);
-        g_free (safename);
-        return;
-    }
+	if (!file)
+	{
+		g_warning ("gimp_data_create_filename:\n"
+		           "g_file_get_child_for_display_name() failed for '%s': %s",
+		           gimp_object_get_name (data), error->message);
+		g_clear_error (&error);
+		g_free (safename);
+		return;
+	}
 
-    while (g_file_query_exists (file, NULL))
-    {
-        g_object_unref (file);
+	while (g_file_query_exists (file, NULL))
+	{
+		g_object_unref (file);
 
-        basename = g_strdup_printf ("%s-%d%s",
-                                    safename,
-                                    unum++,
-                                    gimp_data_get_extension (data));
+		basename = g_strdup_printf ("%s-%d%s",
+		                            safename,
+		                            unum++,
+		                            gimp_data_get_extension (data));
 
-        file = g_file_get_child_for_display_name (dest_dir, basename, NULL);
-        g_free (basename);
-    }
+		file = g_file_get_child_for_display_name (dest_dir, basename, NULL);
+		g_free (basename);
+	}
 
-    g_free (safename);
+	g_free (safename);
 
-    gimp_data_set_file (data, file, TRUE, TRUE);
+	gimp_data_set_file (data, file, TRUE, TRUE);
 
-    g_object_unref (file);
+	g_object_unref (file);
 }
 
 static const gchar *tag_blacklist[] = { "brushes",
-                                        "dynamics",
-                                        "patterns",
-                                        "palettes",
-                                        "gradients",
-                                        "tool-presets"
-                                      };
+	                                "dynamics",
+	                                "patterns",
+	                                "palettes",
+	                                "gradients",
+	                                "tool-presets"};
 
 /**
  * gimp_data_set_folder_tags:
@@ -956,141 +955,141 @@ void
 gimp_data_set_folder_tags (GimpData *data,
                            GFile    *top_directory)
 {
-    GimpDataPrivate *private;
-    gchar           *tmp;
-    gchar           *dirname;
-    gchar           *top_path;
+	GimpDataPrivate *private;
+	gchar           *tmp;
+	gchar           *dirname;
+	gchar           *top_path;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
-    g_return_if_fail (G_IS_FILE (top_directory));
+	g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (G_IS_FILE (top_directory));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    if (private->internal)
-        return;
+	if (private->internal)
+		return;
 
-    g_return_if_fail (private->file != NULL);
+	g_return_if_fail (private->file != NULL);
 
-    tmp = g_file_get_path (private->file);
-    dirname = g_path_get_dirname (tmp);
-    g_free (tmp);
+	tmp = g_file_get_path (private->file);
+	dirname = g_path_get_dirname (tmp);
+	g_free (tmp);
 
-    top_path = g_file_get_path (top_directory);
+	top_path = g_file_get_path (top_directory);
 
-    g_return_if_fail (g_str_has_prefix (dirname, top_path));
+	g_return_if_fail (g_str_has_prefix (dirname, top_path));
 
-    /*  walk up the hierarchy and set each folder on the way as tag,
-     *  except the top_directory
-     */
-    while (strcmp (dirname, top_path))
-    {
-        gchar   *basename = g_path_get_basename (dirname);
-        GimpTag *tag      = gimp_tag_new (basename);
+	/*  walk up the hierarchy and set each folder on the way as tag,
+	 *  except the top_directory
+	 */
+	while (strcmp (dirname, top_path))
+	{
+		gchar   *basename = g_path_get_basename (dirname);
+		GimpTag *tag      = gimp_tag_new (basename);
 
-        gimp_tag_set_internal (tag, TRUE);
-        gimp_tagged_add_tag (GIMP_TAGGED (data), tag);
-        g_object_unref (tag);
-        g_free (basename);
+		gimp_tag_set_internal (tag, TRUE);
+		gimp_tagged_add_tag (GIMP_TAGGED (data), tag);
+		g_object_unref (tag);
+		g_free (basename);
 
-        tmp = g_path_get_dirname (dirname);
-        g_free (dirname);
-        dirname = tmp;
-    }
+		tmp = g_path_get_dirname (dirname);
+		g_free (dirname);
+		dirname = tmp;
+	}
 
-    g_free (top_path);
+	g_free (top_path);
 
-    if (dirname)
-    {
-        gchar *basename = g_path_get_basename (dirname);
-        gint   i;
+	if (dirname)
+	{
+		gchar *basename = g_path_get_basename (dirname);
+		gint i;
 
-        for (i = 0; i <  G_N_ELEMENTS (tag_blacklist); i++)
-        {
-            if (! strcmp (basename, tag_blacklist[i]))
-                break;
-        }
+		for (i = 0; i <  G_N_ELEMENTS (tag_blacklist); i++)
+		{
+			if (!strcmp (basename, tag_blacklist[i]))
+				break;
+		}
 
-        if (i == G_N_ELEMENTS (tag_blacklist))
-        {
-            GimpTag *tag = gimp_tag_new (basename);
+		if (i == G_N_ELEMENTS (tag_blacklist))
+		{
+			GimpTag *tag = gimp_tag_new (basename);
 
-            gimp_tag_set_internal (tag, TRUE);
-            gimp_tagged_add_tag (GIMP_TAGGED (data), tag);
-            g_object_unref (tag);
-        }
+			gimp_tag_set_internal (tag, TRUE);
+			gimp_tagged_add_tag (GIMP_TAGGED (data), tag);
+			g_object_unref (tag);
+		}
 
-        g_free (basename);
-        g_free (dirname);
-    }
+		g_free (basename);
+		g_free (dirname);
+	}
 }
 
 const gchar *
 gimp_data_get_mime_type (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
+	g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return g_quark_to_string (private->mime_type);
+	return g_quark_to_string (private->mime_type);
 }
 
 gboolean
 gimp_data_is_writable (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->writable;
+	return private->writable;
 }
 
 gboolean
 gimp_data_is_deletable (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->deletable;
+	return private->deletable;
 }
 
 void
 gimp_data_set_mtime (GimpData *data,
-                     gint64    mtime)
+                     gint64 mtime)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (data));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    private->mtime = mtime;
+	private->mtime = mtime;
 }
 
 gint64
 gimp_data_get_mtime (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), 0);
+	g_return_val_if_fail (GIMP_IS_DATA (data), 0);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->mtime;
+	return private->mtime;
 }
 
 gboolean
 gimp_data_is_copyable (GimpData *data)
 {
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    return GIMP_DATA_GET_CLASS (data)->copy != NULL;
+	return GIMP_DATA_GET_CLASS (data)->copy != NULL;
 }
 
 /**
@@ -1105,25 +1104,25 @@ void
 gimp_data_copy (GimpData *data,
                 GimpData *src_data)
 {
-    g_return_if_fail (GIMP_IS_DATA (data));
-    g_return_if_fail (GIMP_IS_DATA (src_data));
-    g_return_if_fail (GIMP_DATA_GET_CLASS (data)->copy != NULL);
-    g_return_if_fail (GIMP_DATA_GET_CLASS (data)->copy ==
-                      GIMP_DATA_GET_CLASS (src_data)->copy);
+	g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (src_data));
+	g_return_if_fail (GIMP_DATA_GET_CLASS (data)->copy != NULL);
+	g_return_if_fail (GIMP_DATA_GET_CLASS (data)->copy ==
+	                  GIMP_DATA_GET_CLASS (src_data)->copy);
 
-    if (data != src_data)
-        GIMP_DATA_GET_CLASS (data)->copy (data, src_data);
+	if (data != src_data)
+		GIMP_DATA_GET_CLASS (data)->copy (data, src_data);
 }
 
 gboolean
 gimp_data_is_duplicatable (GimpData *data)
 {
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    if (GIMP_DATA_GET_CLASS (data)->duplicate == gimp_data_real_duplicate)
-        return gimp_data_is_copyable (data);
-    else
-        return GIMP_DATA_GET_CLASS (data)->duplicate != NULL;
+	if (GIMP_DATA_GET_CLASS (data)->duplicate == gimp_data_real_duplicate)
+		return gimp_data_is_copyable (data);
+	else
+		return GIMP_DATA_GET_CLASS (data)->duplicate != NULL;
 }
 
 /**
@@ -1140,25 +1139,25 @@ gimp_data_is_duplicatable (GimpData *data)
 GimpData *
 gimp_data_duplicate (GimpData *data)
 {
-    g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
+	g_return_val_if_fail (GIMP_IS_DATA (data), NULL);
 
-    if (gimp_data_is_duplicatable (data))
-    {
-        GimpData        *new     = GIMP_DATA_GET_CLASS (data)->duplicate (data);
-        GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (new);
+	if (gimp_data_is_duplicatable (data))
+	{
+		GimpData        *new     = GIMP_DATA_GET_CLASS (data)->duplicate (data);
+		GimpDataPrivate *private = GIMP_DATA_GET_PRIVATE (new);
 
-        g_object_set (new,
-                      "name",      NULL,
-                      "writable",  GIMP_DATA_GET_CLASS (new)->save != NULL,
-                      "deletable", TRUE,
-                      NULL);
+		g_object_set (new,
+		              "name",      NULL,
+		              "writable",  GIMP_DATA_GET_CLASS (new)->save != NULL,
+		              "deletable", TRUE,
+		              NULL);
 
-        g_clear_object (&private->file);
+		g_clear_object (&private->file);
 
-        return new;
-    }
+		return new;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -1177,32 +1176,32 @@ void
 gimp_data_make_internal (GimpData    *data,
                          const gchar *identifier)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_if_fail (GIMP_IS_DATA (data));
+	g_return_if_fail (GIMP_IS_DATA (data));
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    g_clear_object (&private->file);
+	g_clear_object (&private->file);
 
-    g_free (private->identifier);
-    private->identifier = g_strdup (identifier);
+	g_free (private->identifier);
+	private->identifier = g_strdup (identifier);
 
-    private->writable  = FALSE;
-    private->deletable = FALSE;
-    private->internal  = TRUE;
+	private->writable  = FALSE;
+	private->deletable = FALSE;
+	private->internal  = TRUE;
 }
 
 gboolean
 gimp_data_is_internal (GimpData *data)
 {
-    GimpDataPrivate *private;
+	GimpDataPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
+	g_return_val_if_fail (GIMP_IS_DATA (data), FALSE);
 
-    private = GIMP_DATA_GET_PRIVATE (data);
+	private = GIMP_DATA_GET_PRIVATE (data);
 
-    return private->internal;
+	return private->internal;
 }
 
 /**
@@ -1223,12 +1222,12 @@ gint
 gimp_data_compare (GimpData *data1,
                    GimpData *data2)
 {
-    g_return_val_if_fail (GIMP_IS_DATA (data1), 0);
-    g_return_val_if_fail (GIMP_IS_DATA (data2), 0);
-    g_return_val_if_fail (GIMP_DATA_GET_CLASS (data1)->compare ==
-                          GIMP_DATA_GET_CLASS (data2)->compare, 0);
+	g_return_val_if_fail (GIMP_IS_DATA (data1), 0);
+	g_return_val_if_fail (GIMP_IS_DATA (data2), 0);
+	g_return_val_if_fail (GIMP_DATA_GET_CLASS (data1)->compare ==
+	                      GIMP_DATA_GET_CLASS (data2)->compare, 0);
 
-    return GIMP_DATA_GET_CLASS (data1)->compare (data1, data2);
+	return GIMP_DATA_GET_CLASS (data1)->compare (data1, data2);
 }
 
 /**
@@ -1242,5 +1241,5 @@ gimp_data_compare (GimpData *data1,
 GQuark
 gimp_data_error_quark (void)
 {
-    return g_quark_from_static_string ("gimp-data-error-quark");
+	return g_quark_from_static_string ("gimp-data-error-quark");
 }

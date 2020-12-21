@@ -37,27 +37,27 @@ typedef struct _GimpTreeHandlerClass GimpTreeHandlerClass;
 
 struct _GimpTreeHandler
 {
-    GimpObject     parent_instance;
+	GimpObject parent_instance;
 
-    GimpContainer *container;
+	GimpContainer *container;
 
-    gchar         *signal_name;
-    GCallback      callback;
-    gpointer       user_data;
+	gchar         *signal_name;
+	GCallback callback;
+	gpointer user_data;
 };
 
 struct _GimpTreeHandlerClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
 GType             gimp_tree_handler_get_type   (void) G_GNUC_CONST;
 
 GimpTreeHandler * gimp_tree_handler_connect    (GimpContainer   *container,
-        const gchar     *signal_name,
-        GCallback        callback,
-        gpointer         user_data);
+                                                const gchar     *signal_name,
+                                                GCallback callback,
+                                                gpointer user_data);
 void              gimp_tree_handler_disconnect (GimpTreeHandler *handler);
 
 

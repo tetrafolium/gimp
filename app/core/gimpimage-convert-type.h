@@ -20,7 +20,7 @@
 
 
 gboolean   gimp_image_convert_type (GimpImage          *image,
-                                    GimpImageBaseType   new_type,
+                                    GimpImageBaseType new_type,
                                     GimpColorProfile   *dest_profile,
                                     GimpProgress       *progress,
                                     GError            **error);

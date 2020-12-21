@@ -30,21 +30,21 @@
 #define GIMP_SAMPLE_POINT_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SAMPLE_POINT_UNDO, GimpSamplePointUndoClass))
 
 
-typedef struct _GimpSamplePointUndo      GimpSamplePointUndo;
+typedef struct _GimpSamplePointUndo GimpSamplePointUndo;
 typedef struct _GimpSamplePointUndoClass GimpSamplePointUndoClass;
 
 struct _GimpSamplePointUndo
 {
-    GimpAuxItemUndo    parent_instance;
+	GimpAuxItemUndo parent_instance;
 
-    gint               x;
-    gint               y;
-    GimpColorPickMode  pick_mode;
+	gint x;
+	gint y;
+	GimpColorPickMode pick_mode;
 };
 
 struct _GimpSamplePointUndoClass
 {
-    GimpAuxItemUndoClass  parent_class;
+	GimpAuxItemUndoClass parent_class;
 };
 
 

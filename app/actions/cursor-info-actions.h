@@ -21,7 +21,7 @@
 
 void   cursor_info_actions_setup  (GimpActionGroup *group);
 void   cursor_info_actions_update (GimpActionGroup *group,
-                                   gpointer         data);
+                                   gpointer data);
 
 
 #endif /* __CURSOR_INFO_ACTIONS_H__ */

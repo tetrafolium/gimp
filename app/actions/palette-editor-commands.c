@@ -36,61 +36,61 @@
 void
 palette_editor_edit_color_cmd_callback (GimpAction *action,
                                         GVariant   *value,
-                                        gpointer    data)
+                                        gpointer data)
 {
-    GimpPaletteEditor *editor = GIMP_PALETTE_EDITOR (data);
+	GimpPaletteEditor *editor = GIMP_PALETTE_EDITOR (data);
 
-    gimp_palette_editor_edit_color (editor);
+	gimp_palette_editor_edit_color (editor);
 }
 
 void
 palette_editor_new_color_cmd_callback (GimpAction *action,
                                        GVariant   *value,
-                                       gpointer    data)
+                                       gpointer data)
 {
-    GimpPaletteEditor *editor      = GIMP_PALETTE_EDITOR (data);
-    GimpDataEditor    *data_editor = GIMP_DATA_EDITOR (data);
-    gboolean           background  = (gboolean) g_variant_get_int32 (value);
+	GimpPaletteEditor *editor      = GIMP_PALETTE_EDITOR (data);
+	GimpDataEditor    *data_editor = GIMP_DATA_EDITOR (data);
+	gboolean background  = (gboolean) g_variant_get_int32 (value);
 
-    if (data_editor->data_editable)
-    {
-        GimpPalette      *palette = GIMP_PALETTE (data_editor->data);
-        GimpPaletteEntry *entry;
-        GimpRGB           color;
+	if (data_editor->data_editable)
+	{
+		GimpPalette      *palette = GIMP_PALETTE (data_editor->data);
+		GimpPaletteEntry *entry;
+		GimpRGB color;
 
-        if (background)
-            gimp_context_get_background (data_editor->context, &color);
-        else
-            gimp_context_get_foreground (data_editor->context, &color);
+		if (background)
+			gimp_context_get_background (data_editor->context, &color);
+		else
+			gimp_context_get_foreground (data_editor->context, &color);
 
-        entry = gimp_palette_add_entry (palette, -1, NULL, &color);
-        gimp_palette_view_select_entry (GIMP_PALETTE_VIEW (editor->view), entry);
-    }
+		entry = gimp_palette_add_entry (palette, -1, NULL, &color);
+		gimp_palette_view_select_entry (GIMP_PALETTE_VIEW (editor->view), entry);
+	}
 }
 
 void
 palette_editor_delete_color_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                          GVariant   *value,
+                                          gpointer data)
 {
-    GimpPaletteEditor *editor      = GIMP_PALETTE_EDITOR (data);
-    GimpDataEditor    *data_editor = GIMP_DATA_EDITOR (data);
+	GimpPaletteEditor *editor      = GIMP_PALETTE_EDITOR (data);
+	GimpDataEditor    *data_editor = GIMP_DATA_EDITOR (data);
 
-    if (data_editor->data_editable && editor->color)
-    {
-        GimpPalette *palette = GIMP_PALETTE (data_editor->data);
+	if (data_editor->data_editable && editor->color)
+	{
+		GimpPalette *palette = GIMP_PALETTE (data_editor->data);
 
-        gimp_palette_delete_entry (palette, editor->color);
-    }
+		gimp_palette_delete_entry (palette, editor->color);
+	}
 }
 
 void
 palette_editor_zoom_cmd_callback (GimpAction *action,
                                   GVariant   *value,
-                                  gpointer    data)
+                                  gpointer data)
 {
-    GimpPaletteEditor *editor    = GIMP_PALETTE_EDITOR (data);
-    GimpZoomType       zoom_type = (GimpZoomType) g_variant_get_int32 (value);
+	GimpPaletteEditor *editor    = GIMP_PALETTE_EDITOR (data);
+	GimpZoomType zoom_type = (GimpZoomType) g_variant_get_int32 (value);
 
-    gimp_palette_editor_zoom (editor, zoom_type);
+	gimp_palette_editor_zoom (editor, zoom_type);
 }

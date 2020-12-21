@@ -21,7 +21,7 @@
 
 void   filters_actions_setup  (GimpActionGroup *group);
 void   filters_actions_update (GimpActionGroup *group,
-                               gpointer         data);
+                               gpointer data);
 
 
 #endif /* __FILTERS_ACTIONS_H__ */

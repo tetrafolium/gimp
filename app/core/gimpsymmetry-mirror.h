@@ -37,22 +37,22 @@ typedef struct _GimpMirrorClass GimpMirrorClass;
 
 struct _GimpMirror
 {
-    GimpSymmetry  parent_instance;
+	GimpSymmetry parent_instance;
 
-    gboolean      horizontal_mirror;
-    gboolean      vertical_mirror;
-    gboolean      point_symmetry;
-    gboolean      disable_transformation;
+	gboolean horizontal_mirror;
+	gboolean vertical_mirror;
+	gboolean point_symmetry;
+	gboolean disable_transformation;
 
-    gdouble       mirror_position_y;
-    gdouble       mirror_position_x;
-    GimpGuide    *horizontal_guide;
-    GimpGuide    *vertical_guide;
+	gdouble mirror_position_y;
+	gdouble mirror_position_x;
+	GimpGuide    *horizontal_guide;
+	GimpGuide    *vertical_guide;
 };
 
 struct _GimpMirrorClass
 {
-    GimpSymmetryClass  parent_class;
+	GimpSymmetryClass parent_class;
 };
 
 

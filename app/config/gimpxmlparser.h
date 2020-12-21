@@ -23,23 +23,23 @@
 
 
 GimpXmlParser * gimp_xml_parser_new              (const GMarkupParser *markup_parser,
-        gpointer             user_data);
+                                                  gpointer user_data);
 gboolean        gimp_xml_parser_parse_file       (GimpXmlParser       *parser,
-        const gchar         *filename,
-        GError             **error);
+                                                  const gchar         *filename,
+                                                  GError             **error);
 gboolean        gimp_xml_parser_parse_gfile      (GimpXmlParser       *parser,
-        GFile               *file,
-        GError             **error);
+                                                  GFile               *file,
+                                                  GError             **error);
 gboolean        gimp_xml_parser_parse_fd         (GimpXmlParser       *parser,
-        gint                 fd,
-        GError             **error);
+                                                  gint fd,
+                                                  GError             **error);
 gboolean        gimp_xml_parser_parse_io_channel (GimpXmlParser       *parser,
-        GIOChannel          *io,
-        GError             **error);
+                                                  GIOChannel          *io,
+                                                  GError             **error);
 gboolean        gimp_xml_parser_parse_buffer     (GimpXmlParser       *parser,
-        const gchar         *buffer,
-        gssize               len,
-        GError             **error);
+                                                  const gchar         *buffer,
+                                                  gssize len,
+                                                  GError             **error);
 void            gimp_xml_parser_free             (GimpXmlParser       *parser);
 
 

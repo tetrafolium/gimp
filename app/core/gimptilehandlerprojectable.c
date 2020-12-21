@@ -40,12 +40,12 @@ G_DEFINE_TYPE (GimpTileHandlerProjectable, gimp_tile_handler_projectable,
 static void
 gimp_tile_handler_projectable_class_init (GimpTileHandlerProjectableClass *klass)
 {
-    GimpTileHandlerValidateClass *validate_class;
+	GimpTileHandlerValidateClass *validate_class;
 
-    validate_class = GIMP_TILE_HANDLER_VALIDATE_CLASS (klass);
+	validate_class = GIMP_TILE_HANDLER_VALIDATE_CLASS (klass);
 
-    validate_class->begin_validate = gimp_tile_handler_projectable_begin_validate;
-    validate_class->end_validate   = gimp_tile_handler_projectable_end_validate;
+	validate_class->begin_validate = gimp_tile_handler_projectable_begin_validate;
+	validate_class->end_validate   = gimp_tile_handler_projectable_end_validate;
 }
 
 static void
@@ -56,36 +56,36 @@ gimp_tile_handler_projectable_init (GimpTileHandlerProjectable *projectable)
 static void
 gimp_tile_handler_projectable_begin_validate (GimpTileHandlerValidate *validate)
 {
-    GimpTileHandlerProjectable *handler = GIMP_TILE_HANDLER_PROJECTABLE (validate);
+	GimpTileHandlerProjectable *handler = GIMP_TILE_HANDLER_PROJECTABLE (validate);
 
-    GIMP_TILE_HANDLER_VALIDATE_CLASS (parent_class)->begin_validate (validate);
+	GIMP_TILE_HANDLER_VALIDATE_CLASS (parent_class)->begin_validate (validate);
 
-    gimp_projectable_begin_render (handler->projectable);
+	gimp_projectable_begin_render (handler->projectable);
 }
 
 static void
 gimp_tile_handler_projectable_end_validate (GimpTileHandlerValidate *validate)
 {
-    GimpTileHandlerProjectable *handler = GIMP_TILE_HANDLER_PROJECTABLE (validate);
+	GimpTileHandlerProjectable *handler = GIMP_TILE_HANDLER_PROJECTABLE (validate);
 
-    gimp_projectable_end_render (handler->projectable);
+	gimp_projectable_end_render (handler->projectable);
 
-    GIMP_TILE_HANDLER_VALIDATE_CLASS (parent_class)->end_validate (validate);
+	GIMP_TILE_HANDLER_VALIDATE_CLASS (parent_class)->end_validate (validate);
 }
 
 GeglTileHandler *
 gimp_tile_handler_projectable_new (GimpProjectable *projectable)
 {
-    GimpTileHandlerProjectable *handler;
+	GimpTileHandlerProjectable *handler;
 
-    g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), NULL);
+	g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), NULL);
 
-    handler = g_object_new (GIMP_TYPE_TILE_HANDLER_PROJECTABLE, NULL);
+	handler = g_object_new (GIMP_TYPE_TILE_HANDLER_PROJECTABLE, NULL);
 
-    GIMP_TILE_HANDLER_VALIDATE (handler)->graph =
-        g_object_ref (gimp_projectable_get_graph (projectable));
+	GIMP_TILE_HANDLER_VALIDATE (handler)->graph =
+		g_object_ref (gimp_projectable_get_graph (projectable));
 
-    handler->projectable = projectable;
+	handler->projectable = projectable;
 
-    return GEGL_TILE_HANDLER (handler);
+	return GEGL_TILE_HANDLER (handler);
 }

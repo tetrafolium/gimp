@@ -33,25 +33,25 @@
 static void   gimp_tree_handler_dispose          (GObject         *object);
 
 static void   gimp_tree_handler_freeze           (GimpTreeHandler *handler,
-        GimpContainer   *container);
+                                                  GimpContainer   *container);
 static void   gimp_tree_handler_thaw             (GimpTreeHandler *handler,
-        GimpContainer   *container);
+                                                  GimpContainer   *container);
 
 static void   gimp_tree_handler_add_container    (GimpTreeHandler *handler,
-        GimpContainer   *container);
+                                                  GimpContainer   *container);
 static void   gimp_tree_handler_add_foreach      (GimpViewable    *viewable,
-        GimpTreeHandler *handler);
+                                                  GimpTreeHandler *handler);
 static void   gimp_tree_handler_add              (GimpTreeHandler *handler,
-        GimpViewable    *viewable,
-        GimpContainer   *container);
+                                                  GimpViewable    *viewable,
+                                                  GimpContainer   *container);
 
 static void   gimp_tree_handler_remove_container (GimpTreeHandler *handler,
-        GimpContainer   *container);
+                                                  GimpContainer   *container);
 static void   gimp_tree_handler_remove_foreach   (GimpViewable    *viewable,
-        GimpTreeHandler *handler);
+                                                  GimpTreeHandler *handler);
 static void   gimp_tree_handler_remove           (GimpTreeHandler *handler,
-        GimpViewable    *viewable,
-        GimpContainer   *container);
+                                                  GimpViewable    *viewable,
+                                                  GimpContainer   *container);
 
 
 G_DEFINE_TYPE (GimpTreeHandler, gimp_tree_handler, GIMP_TYPE_OBJECT)
@@ -62,9 +62,9 @@ G_DEFINE_TYPE (GimpTreeHandler, gimp_tree_handler, GIMP_TYPE_OBJECT)
 static void
 gimp_tree_handler_class_init (GimpTreeHandlerClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->dispose = gimp_tree_handler_dispose;
+	object_class->dispose = gimp_tree_handler_dispose;
 }
 
 static void
@@ -75,25 +75,25 @@ gimp_tree_handler_init (GimpTreeHandler *handler)
 static void
 gimp_tree_handler_dispose (GObject *object)
 {
-    GimpTreeHandler *handler = GIMP_TREE_HANDLER (object);
+	GimpTreeHandler *handler = GIMP_TREE_HANDLER (object);
 
-    if (handler->container)
-    {
-        g_signal_handlers_disconnect_by_func (handler->container,
-                                              gimp_tree_handler_freeze,
-                                              handler);
-        g_signal_handlers_disconnect_by_func (handler->container,
-                                              gimp_tree_handler_thaw,
-                                              handler);
+	if (handler->container)
+	{
+		g_signal_handlers_disconnect_by_func (handler->container,
+		                                      gimp_tree_handler_freeze,
+		                                      handler);
+		g_signal_handlers_disconnect_by_func (handler->container,
+		                                      gimp_tree_handler_thaw,
+		                                      handler);
 
-        if (! gimp_container_frozen (handler->container))
-            gimp_tree_handler_remove_container (handler, handler->container);
+		if (!gimp_container_frozen (handler->container))
+			gimp_tree_handler_remove_container (handler, handler->container);
 
-        g_clear_object (&handler->container);
-        g_clear_pointer (&handler->signal_name, g_free);
-    }
+		g_clear_object (&handler->container);
+		g_clear_pointer (&handler->signal_name, g_free);
+	}
 
-    G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 
@@ -102,43 +102,43 @@ gimp_tree_handler_dispose (GObject *object)
 GimpTreeHandler *
 gimp_tree_handler_connect (GimpContainer *container,
                            const gchar   *signal_name,
-                           GCallback      callback,
-                           gpointer       user_data)
+                           GCallback callback,
+                           gpointer user_data)
 {
-    GimpTreeHandler *handler;
+	GimpTreeHandler *handler;
 
-    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-    g_return_val_if_fail (signal_name != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (signal_name != NULL, NULL);
 
-    handler = g_object_new (GIMP_TYPE_TREE_HANDLER, NULL);
+	handler = g_object_new (GIMP_TYPE_TREE_HANDLER, NULL);
 
-    handler->container   = g_object_ref (container);
-    handler->signal_name = g_strdup (signal_name);
-    handler->callback    = callback;
-    handler->user_data   = user_data;
+	handler->container   = g_object_ref (container);
+	handler->signal_name = g_strdup (signal_name);
+	handler->callback    = callback;
+	handler->user_data   = user_data;
 
-    if (! gimp_container_frozen (container))
-        gimp_tree_handler_add_container (handler, container);
+	if (!gimp_container_frozen (container))
+		gimp_tree_handler_add_container (handler, container);
 
-    g_signal_connect_object (container, "freeze",
-                             G_CALLBACK (gimp_tree_handler_freeze),
-                             handler,
-                             G_CONNECT_SWAPPED);
-    g_signal_connect_object (container, "thaw",
-                             G_CALLBACK (gimp_tree_handler_thaw),
-                             handler,
-                             G_CONNECT_SWAPPED);
+	g_signal_connect_object (container, "freeze",
+	                         G_CALLBACK (gimp_tree_handler_freeze),
+	                         handler,
+	                         G_CONNECT_SWAPPED);
+	g_signal_connect_object (container, "thaw",
+	                         G_CALLBACK (gimp_tree_handler_thaw),
+	                         handler,
+	                         G_CONNECT_SWAPPED);
 
-    return handler;
+	return handler;
 }
 
 void
 gimp_tree_handler_disconnect (GimpTreeHandler *handler)
 {
-    g_return_if_fail (GIMP_IS_TREE_HANDLER (handler));
+	g_return_if_fail (GIMP_IS_TREE_HANDLER (handler));
 
-    g_object_run_dispose (G_OBJECT (handler));
-    g_object_unref (handler);
+	g_object_run_dispose (G_OBJECT (handler));
+	g_object_unref (handler);
 }
 
 
@@ -148,39 +148,39 @@ static void
 gimp_tree_handler_freeze (GimpTreeHandler *handler,
                           GimpContainer   *container)
 {
-    gimp_tree_handler_remove_container (handler, container);
+	gimp_tree_handler_remove_container (handler, container);
 }
 
 static void
 gimp_tree_handler_thaw (GimpTreeHandler *handler,
                         GimpContainer   *container)
 {
-    gimp_tree_handler_add_container (handler, container);
+	gimp_tree_handler_add_container (handler, container);
 }
 
 static void
 gimp_tree_handler_add_container (GimpTreeHandler *handler,
                                  GimpContainer   *container)
 {
-    gimp_container_foreach (container,
-                            (GFunc) gimp_tree_handler_add_foreach,
-                            handler);
+	gimp_container_foreach (container,
+	                        (GFunc) gimp_tree_handler_add_foreach,
+	                        handler);
 
-    g_signal_connect_object (container, "add",
-                             G_CALLBACK (gimp_tree_handler_add),
-                             handler,
-                             G_CONNECT_SWAPPED);
-    g_signal_connect_object (container, "remove",
-                             G_CALLBACK (gimp_tree_handler_remove),
-                             handler,
-                             G_CONNECT_SWAPPED);
+	g_signal_connect_object (container, "add",
+	                         G_CALLBACK (gimp_tree_handler_add),
+	                         handler,
+	                         G_CONNECT_SWAPPED);
+	g_signal_connect_object (container, "remove",
+	                         G_CALLBACK (gimp_tree_handler_remove),
+	                         handler,
+	                         G_CONNECT_SWAPPED);
 }
 
 static void
 gimp_tree_handler_add_foreach (GimpViewable    *viewable,
                                GimpTreeHandler *handler)
 {
-    gimp_tree_handler_add (handler, viewable, NULL);
+	gimp_tree_handler_add (handler, viewable, NULL);
 }
 
 static void
@@ -188,38 +188,38 @@ gimp_tree_handler_add (GimpTreeHandler *handler,
                        GimpViewable    *viewable,
                        GimpContainer   *unused)
 {
-    GimpContainer *children = gimp_viewable_get_children (viewable);
+	GimpContainer *children = gimp_viewable_get_children (viewable);
 
-    g_signal_connect (viewable,
-                      handler->signal_name,
-                      handler->callback,
-                      handler->user_data);
+	g_signal_connect (viewable,
+	                  handler->signal_name,
+	                  handler->callback,
+	                  handler->user_data);
 
-    if (children)
-        gimp_tree_handler_add_container (handler, children);
+	if (children)
+		gimp_tree_handler_add_container (handler, children);
 }
 
 static void
 gimp_tree_handler_remove_container (GimpTreeHandler *handler,
                                     GimpContainer   *container)
 {
-    g_signal_handlers_disconnect_by_func (container,
-                                          gimp_tree_handler_add,
-                                          handler);
-    g_signal_handlers_disconnect_by_func (container,
-                                          gimp_tree_handler_remove,
-                                          handler);
+	g_signal_handlers_disconnect_by_func (container,
+	                                      gimp_tree_handler_add,
+	                                      handler);
+	g_signal_handlers_disconnect_by_func (container,
+	                                      gimp_tree_handler_remove,
+	                                      handler);
 
-    gimp_container_foreach (container,
-                            (GFunc) gimp_tree_handler_remove_foreach,
-                            handler);
+	gimp_container_foreach (container,
+	                        (GFunc) gimp_tree_handler_remove_foreach,
+	                        handler);
 }
 
 static void
 gimp_tree_handler_remove_foreach (GimpViewable    *viewable,
                                   GimpTreeHandler *handler)
 {
-    gimp_tree_handler_remove (handler, viewable, NULL);
+	gimp_tree_handler_remove (handler, viewable, NULL);
 }
 
 static void
@@ -227,12 +227,12 @@ gimp_tree_handler_remove (GimpTreeHandler *handler,
                           GimpViewable    *viewable,
                           GimpContainer   *unused)
 {
-    GimpContainer *children = gimp_viewable_get_children (viewable);
+	GimpContainer *children = gimp_viewable_get_children (viewable);
 
-    if (children)
-        gimp_tree_handler_remove_container (handler, children);
+	if (children)
+		gimp_tree_handler_remove_container (handler, children);
 
-    g_signal_handlers_disconnect_by_func (viewable,
-                                          handler->callback,
-                                          handler->user_data);
+	g_signal_handlers_disconnect_by_func (viewable,
+	                                      handler->callback,
+	                                      handler->user_data);
 }

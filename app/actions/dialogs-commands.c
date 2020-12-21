@@ -39,39 +39,39 @@
 void
 dialogs_create_toplevel_cmd_callback (GimpAction *action,
                                       GVariant   *value,
-                                      gpointer    data)
+                                      gpointer data)
 {
-    GtkWidget   *widget;
-    const gchar *identifier;
-    return_if_no_widget (widget, data);
+	GtkWidget   *widget;
+	const gchar *identifier;
+	return_if_no_widget (widget, data);
 
-    identifier = g_variant_get_string (value, NULL);
+	identifier = g_variant_get_string (value, NULL);
 
-    if (identifier)
-        gimp_dialog_factory_dialog_new (gimp_dialog_factory_get_singleton (),
-                                        gimp_widget_get_monitor (widget),
-                                        NULL /*ui_manager*/,
-                                        widget,
-                                        identifier, -1, TRUE);
+	if (identifier)
+		gimp_dialog_factory_dialog_new (gimp_dialog_factory_get_singleton (),
+		                                gimp_widget_get_monitor (widget),
+		                                NULL /*ui_manager*/,
+		                                widget,
+		                                identifier, -1, TRUE);
 }
 
 void
 dialogs_create_dockable_cmd_callback (GimpAction *action,
                                       GVariant   *value,
-                                      gpointer    data)
+                                      gpointer data)
 {
-    Gimp        *gimp;
-    GtkWidget   *widget;
-    const gchar *identifier;
-    return_if_no_gimp   (gimp, data);
-    return_if_no_widget (widget, data);
+	Gimp        *gimp;
+	GtkWidget   *widget;
+	const gchar *identifier;
+	return_if_no_gimp   (gimp, data);
+	return_if_no_widget (widget, data);
 
-    identifier = g_variant_get_string (value, NULL);
+	identifier = g_variant_get_string (value, NULL);
 
-    if (identifier)
-        gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
-                gimp,
-                gimp_dialog_factory_get_singleton (),
-                gimp_widget_get_monitor (widget),
-                identifier);
+	if (identifier)
+		gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
+		                                           gimp,
+		                                           gimp_dialog_factory_get_singleton (),
+		                                           gimp_widget_get_monitor (widget),
+		                                           identifier);
 }

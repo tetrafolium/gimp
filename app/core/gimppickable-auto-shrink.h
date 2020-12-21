@@ -21,21 +21,21 @@
 
 typedef enum
 {
-    GIMP_AUTO_SHRINK_SHRINK,
-    GIMP_AUTO_SHRINK_EMPTY,
-    GIMP_AUTO_SHRINK_UNSHRINKABLE
+	GIMP_AUTO_SHRINK_SHRINK,
+	GIMP_AUTO_SHRINK_EMPTY,
+	GIMP_AUTO_SHRINK_UNSHRINKABLE
 } GimpAutoShrink;
 
 
 GimpAutoShrink   gimp_pickable_auto_shrink (GimpPickable *pickable,
-        gint         x,
-        gint         y,
-        gint         width,
-        gint         height,
-        gint        *shrunk_x,
-        gint        *shrunk_y,
-        gint        *shrunk_width,
-        gint        *shrunk_height);
+                                            gint x,
+                                            gint y,
+                                            gint width,
+                                            gint height,
+                                            gint        *shrunk_x,
+                                            gint        *shrunk_y,
+                                            gint        *shrunk_width,
+                                            gint        *shrunk_height);
 
 
 #endif  /* __GIMP_PICKABLE_AUTO_SHRINK_H__ */

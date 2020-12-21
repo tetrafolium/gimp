@@ -20,29 +20,29 @@
 
 
 void   data_open_as_image_cmd_callback        (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_new_cmd_callback                  (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_duplicate_cmd_callback            (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_copy_location_cmd_callback        (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_show_in_file_manager_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_delete_cmd_callback               (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_refresh_cmd_callback              (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 void   data_edit_cmd_callback                 (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                               GVariant   *value,
+                                               gpointer data);
 
 
 #endif /* __DATA_COMMANDS_H__ */

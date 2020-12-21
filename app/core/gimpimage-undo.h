@@ -38,20 +38,20 @@ void            gimp_image_undo_free            (GimpImage     *image);
 
 gint            gimp_image_get_undo_group_count (GimpImage     *image);
 gboolean        gimp_image_undo_group_start     (GimpImage     *image,
-        GimpUndoType   undo_type,
-        const gchar   *name);
+                                                 GimpUndoType undo_type,
+                                                 const gchar   *name);
 gboolean        gimp_image_undo_group_end       (GimpImage     *image);
 
 GimpUndo      * gimp_image_undo_push            (GimpImage     *image,
-        GType          object_type,
-        GimpUndoType   undo_type,
-        const gchar   *name,
-        GimpDirtyMask  dirty_mask,
-        ...) G_GNUC_NULL_TERMINATED;
+                                                 GType object_type,
+                                                 GimpUndoType undo_type,
+                                                 const gchar   *name,
+                                                 GimpDirtyMask dirty_mask,
+                                                 ...) G_GNUC_NULL_TERMINATED;
 
 GimpUndo      * gimp_image_undo_can_compress    (GimpImage     *image,
-        GType          object_type,
-        GimpUndoType   undo_type);
+                                                 GType object_type,
+                                                 GimpUndoType undo_type);
 
 
 #endif /* __GIMP_IMAGE__UNDO_H__ */

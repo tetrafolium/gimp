@@ -22,9 +22,9 @@
 #define __GIMP_COORDS_H__
 
 
-void     gimp_coords_mix            (const gdouble     amul,
+void     gimp_coords_mix            (const gdouble amul,
                                      const GimpCoords *a,
-                                     const gdouble     bmul,
+                                     const gdouble bmul,
                                      const GimpCoords *b,
                                      GimpCoords       *ret_val);
 void     gimp_coords_average        (const GimpCoords *a,
@@ -36,7 +36,7 @@ void     gimp_coords_add            (const GimpCoords *a,
 void     gimp_coords_difference     (const GimpCoords *a,
                                      const GimpCoords *b,
                                      GimpCoords       *difference);
-void     gimp_coords_scale          (const gdouble     f,
+void     gimp_coords_scale          (const gdouble f,
                                      const GimpCoords *a,
                                      GimpCoords       *ret_product);
 

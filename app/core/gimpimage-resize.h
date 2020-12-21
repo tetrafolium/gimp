@@ -21,21 +21,21 @@
 
 void   gimp_image_resize              (GimpImage    *image,
                                        GimpContext  *context,
-                                       gint          new_width,
-                                       gint          new_height,
-                                       gint          offset_x,
-                                       gint          offset_y,
+                                       gint new_width,
+                                       gint new_height,
+                                       gint offset_x,
+                                       gint offset_y,
                                        GimpProgress *progress);
 
 void   gimp_image_resize_with_layers  (GimpImage    *image,
                                        GimpContext  *context,
-                                       GimpFillType  fill_type,
-                                       gint          new_width,
-                                       gint          new_height,
-                                       gint          offset_x,
-                                       gint          offset_y,
-                                       GimpItemSet   layer_set,
-                                       gboolean      resize_text_layers,
+                                       GimpFillType fill_type,
+                                       gint new_width,
+                                       gint new_height,
+                                       gint offset_x,
+                                       gint offset_y,
+                                       GimpItemSet layer_set,
+                                       gboolean resize_text_layers,
                                        GimpProgress *progress);
 
 void   gimp_image_resize_to_layers    (GimpImage    *image,

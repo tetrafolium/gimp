@@ -47,8 +47,8 @@
 /*  local function prototypes  */
 
 static void   text_tool_load_dialog_response (GtkWidget    *dialog,
-        gint          response_id,
-        GimpTextTool *tool);
+                                              gint response_id,
+                                              GimpTextTool *tool);
 
 
 /*  public functions  */
@@ -56,145 +56,145 @@ static void   text_tool_load_dialog_response (GtkWidget    *dialog,
 void
 text_tool_cut_cmd_callback (GimpAction *action,
                             GVariant   *value,
-                            gpointer    data)
+                            gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
 
-    gimp_text_tool_cut_clipboard (text_tool);
+	gimp_text_tool_cut_clipboard (text_tool);
 }
 
 void
 text_tool_copy_cmd_callback (GimpAction *action,
                              GVariant   *value,
-                             gpointer    data)
+                             gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
 
-    gimp_text_tool_copy_clipboard (text_tool);
+	gimp_text_tool_copy_clipboard (text_tool);
 }
 
 void
 text_tool_paste_cmd_callback (GimpAction *action,
                               GVariant   *value,
-                              gpointer    data)
+                              gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
 
-    gimp_text_tool_paste_clipboard (text_tool);
+	gimp_text_tool_paste_clipboard (text_tool);
 }
 
 void
 text_tool_delete_cmd_callback (GimpAction *action,
                                GVariant   *value,
-                               gpointer    data)
+                               gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
 
-    gimp_text_tool_delete_selection (text_tool);
+	gimp_text_tool_delete_selection (text_tool);
 }
 
 void
 text_tool_load_cmd_callback (GimpAction *action,
                              GVariant   *value,
-                             gpointer    data)
+                             gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
-    GtkWidget    *dialog;
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GtkWidget    *dialog;
 
-    dialog = dialogs_get_dialog (G_OBJECT (text_tool), "gimp-text-file-dialog");
+	dialog = dialogs_get_dialog (G_OBJECT (text_tool), "gimp-text-file-dialog");
 
-    if (! dialog)
-    {
-        GtkWidget *parent = NULL;
+	if (!dialog)
+	{
+		GtkWidget *parent = NULL;
 
-        if (GIMP_TOOL (text_tool)->display)
-        {
-            GimpDisplayShell *shell;
+		if (GIMP_TOOL (text_tool)->display)
+		{
+			GimpDisplayShell *shell;
 
-            shell = gimp_display_get_shell (GIMP_TOOL (text_tool)->display);
+			shell = gimp_display_get_shell (GIMP_TOOL (text_tool)->display);
 
-            parent = gtk_widget_get_toplevel (GTK_WIDGET (shell));
-        }
+			parent = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+		}
 
-        dialog = gtk_file_chooser_dialog_new (_("Open Text File (UTF-8)"),
-                                              parent ? GTK_WINDOW (parent) : NULL,
-                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+		dialog = gtk_file_chooser_dialog_new (_("Open Text File (UTF-8)"),
+		                                      parent ? GTK_WINDOW (parent) : NULL,
+		                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
-                                              _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                              _("_Open"),   GTK_RESPONSE_OK,
+		                                      _("_Cancel"), GTK_RESPONSE_CANCEL,
+		                                      _("_Open"),   GTK_RESPONSE_OK,
 
-                                              NULL);
+		                                      NULL);
 
-        gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-        gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                GTK_RESPONSE_OK,
-                GTK_RESPONSE_CANCEL,
-                -1);
+		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+		gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+		                                          GTK_RESPONSE_OK,
+		                                          GTK_RESPONSE_CANCEL,
+		                                          -1);
 
-        gtk_window_set_role (GTK_WINDOW (dialog), "gimp-text-load-file");
-        gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+		gtk_window_set_role (GTK_WINDOW (dialog), "gimp-text-load-file");
+		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
 
-        g_signal_connect (dialog, "response",
-                          G_CALLBACK (text_tool_load_dialog_response),
-                          text_tool);
-        g_signal_connect (dialog, "delete-event",
-                          G_CALLBACK (gtk_true),
-                          NULL);
+		g_signal_connect (dialog, "response",
+		                  G_CALLBACK (text_tool_load_dialog_response),
+		                  text_tool);
+		g_signal_connect (dialog, "delete-event",
+		                  G_CALLBACK (gtk_true),
+		                  NULL);
 
-        dialogs_attach_dialog (G_OBJECT (text_tool),
-                               "gimp-text-file-dialog", dialog);
-    }
+		dialogs_attach_dialog (G_OBJECT (text_tool),
+		                       "gimp-text-file-dialog", dialog);
+	}
 
-    gtk_window_present (GTK_WINDOW (dialog));
+	gtk_window_present (GTK_WINDOW (dialog));
 }
 
 void
 text_tool_clear_cmd_callback (GimpAction *action,
                               GVariant   *value,
-                              gpointer    data)
+                              gpointer data)
 {
-    GimpTextTool  *text_tool = GIMP_TEXT_TOOL (data);
-    GtkTextBuffer *buffer    = GTK_TEXT_BUFFER (text_tool->buffer);
-    GtkTextIter    start, end;
+	GimpTextTool  *text_tool = GIMP_TEXT_TOOL (data);
+	GtkTextBuffer *buffer    = GTK_TEXT_BUFFER (text_tool->buffer);
+	GtkTextIter start, end;
 
-    gtk_text_buffer_get_bounds (buffer, &start, &end);
-    gtk_text_buffer_select_range (buffer, &start, &end);
-    gimp_text_tool_delete_selection (text_tool);
+	gtk_text_buffer_get_bounds (buffer, &start, &end);
+	gtk_text_buffer_select_range (buffer, &start, &end);
+	gimp_text_tool_delete_selection (text_tool);
 }
 
 void
 text_tool_text_to_path_cmd_callback (GimpAction *action,
                                      GVariant   *value,
-                                     gpointer    data)
+                                     gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
 
-    gimp_text_tool_create_vectors (text_tool);
+	gimp_text_tool_create_vectors (text_tool);
 }
 
 void
 text_tool_text_along_path_cmd_callback (GimpAction *action,
                                         GVariant   *value,
-                                        gpointer    data)
+                                        gpointer data)
 {
-    GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextTool *text_tool = GIMP_TEXT_TOOL (data);
 
-    gimp_text_tool_create_vectors_warped (text_tool);
+	gimp_text_tool_create_vectors_warped (text_tool);
 }
 
 void
 text_tool_direction_cmd_callback (GimpAction *action,
                                   GVariant   *value,
-                                  gpointer    data)
+                                  gpointer data)
 {
-    GimpTextTool      *text_tool = GIMP_TEXT_TOOL (data);
-    GimpTextDirection  direction;
+	GimpTextTool      *text_tool = GIMP_TEXT_TOOL (data);
+	GimpTextDirection direction;
 
-    direction = (GimpTextDirection) g_variant_get_int32 (value);
+	direction = (GimpTextDirection) g_variant_get_int32 (value);
 
-    g_object_set (text_tool->proxy,
-                  "base-direction", direction,
-                  NULL);
+	g_object_set (text_tool->proxy,
+	              "base-direction", direction,
+	              NULL);
 }
 
 
@@ -202,28 +202,28 @@ text_tool_direction_cmd_callback (GimpAction *action,
 
 static void
 text_tool_load_dialog_response (GtkWidget    *dialog,
-                                gint          response_id,
+                                gint response_id,
                                 GimpTextTool *tool)
 {
-    if (response_id == GTK_RESPONSE_OK)
-    {
-        GFile  *file  = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
-        GError *error = NULL;
+	if (response_id == GTK_RESPONSE_OK)
+	{
+		GFile  *file  = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+		GError *error = NULL;
 
-        if (! gimp_text_buffer_load (tool->buffer, file, &error))
-        {
-            gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (dialog),
-                          GIMP_MESSAGE_ERROR,
-                          _("Could not open '%s' for reading: %s"),
-                          gimp_file_get_utf8_name (file),
-                          error->message);
-            g_clear_error (&error);
-            g_object_unref (file);
-            return;
-        }
+		if (!gimp_text_buffer_load (tool->buffer, file, &error))
+		{
+			gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (dialog),
+			              GIMP_MESSAGE_ERROR,
+			              _("Could not open '%s' for reading: %s"),
+			              gimp_file_get_utf8_name (file),
+			              error->message);
+			g_clear_error (&error);
+			g_object_unref (file);
+			return;
+		}
 
-        g_object_unref (file);
-    }
+		g_object_unref (file);
+	}
 
-    gtk_widget_hide (dialog);
+	gtk_widget_hide (dialog);
 }

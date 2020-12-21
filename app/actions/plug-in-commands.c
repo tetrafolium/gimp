@@ -60,8 +60,8 @@
 /*  local function prototypes  */
 
 static void   plug_in_reset_all_response (GtkWidget *dialog,
-        gint       response_id,
-        Gimp      *gimp);
+                                          gint response_id,
+                                          Gimp      *gimp);
 
 
 /*  public functions  */
@@ -69,141 +69,141 @@ static void   plug_in_reset_all_response (GtkWidget *dialog,
 void
 plug_in_run_cmd_callback (GimpAction *action,
                           GVariant   *value,
-                          gpointer    data)
+                          gpointer data)
 {
-    Gimp           *gimp;
-    GimpValueArray *args    = NULL;
-    GimpDisplay    *display = NULL;
-    GimpProcedure  *procedure;
-    gsize           hack;
-    return_if_no_gimp (gimp, data);
+	Gimp           *gimp;
+	GimpValueArray *args    = NULL;
+	GimpDisplay    *display = NULL;
+	GimpProcedure  *procedure;
+	gsize hack;
+	return_if_no_gimp (gimp, data);
 
-    hack = g_variant_get_uint64 (value);
+	hack = g_variant_get_uint64 (value);
 
-    procedure = GSIZE_TO_POINTER (hack);
+	procedure = GSIZE_TO_POINTER (hack);
 
-    switch (procedure->proc_type)
-    {
-    case GIMP_PDB_PROC_TYPE_EXTENSION:
-        args = procedure_commands_get_run_mode_arg (procedure);
-        break;
+	switch (procedure->proc_type)
+	{
+	case GIMP_PDB_PROC_TYPE_EXTENSION:
+		args = procedure_commands_get_run_mode_arg (procedure);
+		break;
 
-    case GIMP_PDB_PROC_TYPE_PLUGIN:
-    case GIMP_PDB_PROC_TYPE_TEMPORARY:
-        if (GIMP_IS_DATA_FACTORY_VIEW (data) ||
-                GIMP_IS_BUFFER_VIEW (data))
-        {
-            GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-            GimpContainer       *container;
-            GimpContext         *context;
-            GimpObject          *object;
+	case GIMP_PDB_PROC_TYPE_PLUGIN:
+	case GIMP_PDB_PROC_TYPE_TEMPORARY:
+		if (GIMP_IS_DATA_FACTORY_VIEW (data) ||
+		    GIMP_IS_BUFFER_VIEW (data))
+		{
+			GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+			GimpContainer       *container;
+			GimpContext         *context;
+			GimpObject          *object;
 
-            container = gimp_container_view_get_container (editor->view);
-            context   = gimp_container_view_get_context (editor->view);
+			container = gimp_container_view_get_container (editor->view);
+			context   = gimp_container_view_get_context (editor->view);
 
-            object = gimp_context_get_by_type (context,
-                                               gimp_container_get_children_type (container));
+			object = gimp_context_get_by_type (context,
+			                                   gimp_container_get_children_type (container));
 
-            args = procedure_commands_get_data_args (procedure, object);
-        }
-        else if (GIMP_IS_IMAGE_EDITOR (data))
-        {
-            GimpImageEditor *editor = GIMP_IMAGE_EDITOR (data);
-            GimpImage       *image;
+			args = procedure_commands_get_data_args (procedure, object);
+		}
+		else if (GIMP_IS_IMAGE_EDITOR (data))
+		{
+			GimpImageEditor *editor = GIMP_IMAGE_EDITOR (data);
+			GimpImage       *image;
 
-            image = gimp_image_editor_get_image (editor);
+			image = gimp_image_editor_get_image (editor);
 
-            args = procedure_commands_get_image_args (procedure, image);
-        }
-        else if (GIMP_IS_ITEM_TREE_VIEW (data))
-        {
-            GimpItemTreeView *view = GIMP_ITEM_TREE_VIEW (data);
-            GimpImage        *image;
-            GimpItem         *item;
+			args = procedure_commands_get_image_args (procedure, image);
+		}
+		else if (GIMP_IS_ITEM_TREE_VIEW (data))
+		{
+			GimpItemTreeView *view = GIMP_ITEM_TREE_VIEW (data);
+			GimpImage        *image;
+			GimpItem         *item;
 
-            image = gimp_item_tree_view_get_image (view);
+			image = gimp_item_tree_view_get_image (view);
 
-            if (image)
-                item = GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (image);
-            else
-                item = NULL;
+			if (image)
+				item = GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (image);
+			else
+				item = NULL;
 
-            args = procedure_commands_get_item_args (procedure, image, item);
-        }
-        else
-        {
-            display = action_data_get_display (data);
+			args = procedure_commands_get_item_args (procedure, image, item);
+		}
+		else
+		{
+			display = action_data_get_display (data);
 
-            args = procedure_commands_get_display_args (procedure, display, NULL);
-        }
-        break;
+			args = procedure_commands_get_display_args (procedure, display, NULL);
+		}
+		break;
 
-    case GIMP_PDB_PROC_TYPE_INTERNAL:
-        g_warning ("Unhandled procedure type.");
-        break;
-    }
+	case GIMP_PDB_PROC_TYPE_INTERNAL:
+		g_warning ("Unhandled procedure type.");
+		break;
+	}
 
-    if (args)
-    {
-        if (procedure_commands_run_procedure_async (procedure, gimp,
-                GIMP_PROGRESS (display),
-                GIMP_RUN_INTERACTIVE, args,
-                display))
-        {
-            /* remember only image plug-ins */
-            if (procedure->num_args >= 2 &&
-                    GIMP_IS_PARAM_SPEC_IMAGE (procedure->args[1]))
-            {
-                gimp_filter_history_add (gimp, procedure);
-            }
-        }
+	if (args)
+	{
+		if (procedure_commands_run_procedure_async (procedure, gimp,
+		                                            GIMP_PROGRESS (display),
+		                                            GIMP_RUN_INTERACTIVE, args,
+		                                            display))
+		{
+			/* remember only image plug-ins */
+			if (procedure->num_args >= 2 &&
+			    GIMP_IS_PARAM_SPEC_IMAGE (procedure->args[1]))
+			{
+				gimp_filter_history_add (gimp, procedure);
+			}
+		}
 
-        gimp_value_array_unref (args);
-    }
+		gimp_value_array_unref (args);
+	}
 }
 
 void
 plug_in_reset_all_cmd_callback (GimpAction *action,
                                 GVariant   *value,
-                                gpointer    data)
+                                gpointer data)
 {
-    Gimp      *gimp;
-    GtkWidget *dialog;
-    return_if_no_gimp (gimp, data);
+	Gimp      *gimp;
+	GtkWidget *dialog;
+	return_if_no_gimp (gimp, data);
 
 #define RESET_FILTERS_DIALOG_KEY "gimp-reset-all-filters-dialog"
 
-    dialog = dialogs_get_dialog (G_OBJECT (gimp), RESET_FILTERS_DIALOG_KEY);
+	dialog = dialogs_get_dialog (G_OBJECT (gimp), RESET_FILTERS_DIALOG_KEY);
 
-    if (! dialog)
-    {
-        dialog = gimp_message_dialog_new (_("Reset all Filters"),
-                                          GIMP_ICON_DIALOG_QUESTION,
-                                          NULL, 0,
-                                          gimp_standard_help_func, NULL,
+	if (!dialog)
+	{
+		dialog = gimp_message_dialog_new (_("Reset all Filters"),
+		                                  GIMP_ICON_DIALOG_QUESTION,
+		                                  NULL, 0,
+		                                  gimp_standard_help_func, NULL,
 
-                                          _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                          _("_Reset"),  GTK_RESPONSE_OK,
+		                                  _("_Cancel"), GTK_RESPONSE_CANCEL,
+		                                  _("_Reset"),  GTK_RESPONSE_OK,
 
-                                          NULL);
+		                                  NULL);
 
-        gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                GTK_RESPONSE_OK,
-                GTK_RESPONSE_CANCEL,
-                -1);
+		gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+		                                          GTK_RESPONSE_OK,
+		                                          GTK_RESPONSE_CANCEL,
+		                                          -1);
 
-        g_signal_connect (dialog, "response",
-                          G_CALLBACK (plug_in_reset_all_response),
-                          gimp);
+		g_signal_connect (dialog, "response",
+		                  G_CALLBACK (plug_in_reset_all_response),
+		                  gimp);
 
-        gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                           _("Do you really want to reset all "
-                                             "filters to default values?"));
+		gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+		                                   _("Do you really want to reset all "
+		                                     "filters to default values?"));
 
-        dialogs_attach_dialog (G_OBJECT (gimp), RESET_FILTERS_DIALOG_KEY, dialog);
-    }
+		dialogs_attach_dialog (G_OBJECT (gimp), RESET_FILTERS_DIALOG_KEY, dialog);
+	}
 
-    gtk_window_present (GTK_WINDOW (dialog));
+	gtk_window_present (GTK_WINDOW (dialog));
 }
 
 
@@ -211,11 +211,11 @@ plug_in_reset_all_cmd_callback (GimpAction *action,
 
 static void
 plug_in_reset_all_response (GtkWidget *dialog,
-                            gint       response_id,
+                            gint response_id,
                             Gimp      *gimp)
 {
-    gtk_widget_destroy (dialog);
+	gtk_widget_destroy (dialog);
 
-    if (response_id == GTK_RESPONSE_OK)
-        gimp_plug_in_manager_data_free (gimp->plug_in_manager);
+	if (response_id == GTK_RESPONSE_OK)
+		gimp_plug_in_manager_data_free (gimp->plug_in_manager);
 }

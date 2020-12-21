@@ -39,38 +39,38 @@
 /*  local function prototypes  */
 
 static void   gimp_layer_new_convert_buffer (GimpLayer         *layer,
-        GeglBuffer        *src_buffer,
-        GimpColorProfile  *src_profile,
-        GError           **error);
+                                             GeglBuffer        *src_buffer,
+                                             GimpColorProfile  *src_profile,
+                                             GError           **error);
 
 
 /*  public functions  */
 
 GimpLayer *
 gimp_layer_new (GimpImage     *image,
-                gint           width,
-                gint           height,
+                gint width,
+                gint height,
                 const Babl    *format,
                 const gchar   *name,
-                gdouble        opacity,
-                GimpLayerMode  mode)
+                gdouble opacity,
+                GimpLayerMode mode)
 {
-    GimpLayer *layer;
+	GimpLayer *layer;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (width > 0, NULL);
-    g_return_val_if_fail (height > 0, NULL);
-    g_return_val_if_fail (format != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (width > 0, NULL);
+	g_return_val_if_fail (height > 0, NULL);
+	g_return_val_if_fail (format != NULL, NULL);
 
-    layer = GIMP_LAYER (gimp_drawable_new (GIMP_TYPE_LAYER,
-                                           image, name,
-                                           0, 0, width, height,
-                                           format));
+	layer = GIMP_LAYER (gimp_drawable_new (GIMP_TYPE_LAYER,
+	                                       image, name,
+	                                       0, 0, width, height,
+	                                       format));
 
-    gimp_layer_set_opacity (layer, opacity, FALSE);
-    gimp_layer_set_mode (layer, mode, FALSE);
+	gimp_layer_set_opacity (layer, opacity, FALSE);
+	gimp_layer_set_mode (layer, mode, FALSE);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -93,17 +93,17 @@ gimp_layer_new_from_buffer (GimpBuffer    *buffer,
                             GimpImage     *dest_image,
                             const Babl    *format,
                             const gchar   *name,
-                            gdouble        opacity,
-                            GimpLayerMode  mode)
+                            gdouble opacity,
+                            GimpLayerMode mode)
 {
-    g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
-    g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
-    g_return_val_if_fail (format != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
+	g_return_val_if_fail (format != NULL, NULL);
 
-    return gimp_layer_new_from_gegl_buffer (gimp_buffer_get_buffer (buffer),
-                                            dest_image, format,
-                                            name, opacity, mode,
-                                            gimp_buffer_get_color_profile (buffer));
+	return gimp_layer_new_from_gegl_buffer (gimp_buffer_get_buffer (buffer),
+	                                        dest_image, format,
+	                                        name, opacity, mode,
+	                                        gimp_buffer_get_color_profile (buffer));
 }
 
 /**
@@ -126,35 +126,35 @@ gimp_layer_new_from_gegl_buffer (GeglBuffer       *buffer,
                                  GimpImage        *dest_image,
                                  const Babl       *format,
                                  const gchar      *name,
-                                 gdouble           opacity,
-                                 GimpLayerMode     mode,
+                                 gdouble opacity,
+                                 GimpLayerMode mode,
                                  GimpColorProfile *buffer_profile)
 {
-    GimpLayer           *layer;
-    const GeglRectangle *extent;
+	GimpLayer           *layer;
+	const GeglRectangle *extent;
 
-    g_return_val_if_fail (GEGL_IS_BUFFER (buffer), NULL);
-    g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
-    g_return_val_if_fail (format != NULL, NULL);
-    g_return_val_if_fail (buffer_profile == NULL ||
-                          GIMP_IS_COLOR_PROFILE (buffer_profile), NULL);
+	g_return_val_if_fail (GEGL_IS_BUFFER (buffer), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
+	g_return_val_if_fail (format != NULL, NULL);
+	g_return_val_if_fail (buffer_profile == NULL ||
+	                      GIMP_IS_COLOR_PROFILE (buffer_profile), NULL);
 
-    extent = gegl_buffer_get_extent (buffer);
+	extent = gegl_buffer_get_extent (buffer);
 
-    /*  do *not* use the buffer's format because this function gets
-     *  buffers of any format passed, and converts them
-     */
-    layer = gimp_layer_new (dest_image,
-                            extent->width, extent->height,
-                            format,
-                            name, opacity, mode);
+	/*  do *not* use the buffer's format because this function gets
+	 *  buffers of any format passed, and converts them
+	 */
+	layer = gimp_layer_new (dest_image,
+	                        extent->width, extent->height,
+	                        format,
+	                        name, opacity, mode);
 
-    if (extent->x != 0 || extent->y != 0)
-        gimp_item_translate (GIMP_ITEM (layer), extent->x, extent->y, FALSE);
+	if (extent->x != 0 || extent->y != 0)
+		gimp_item_translate (GIMP_ITEM (layer), extent->x, extent->y, FALSE);
 
-    gimp_layer_new_convert_buffer (layer, buffer, buffer_profile, NULL);
+	gimp_layer_new_convert_buffer (layer, buffer, buffer_profile, NULL);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -177,42 +177,42 @@ gimp_layer_new_from_pixbuf (GdkPixbuf     *pixbuf,
                             GimpImage     *dest_image,
                             const Babl    *format,
                             const gchar   *name,
-                            gdouble        opacity,
-                            GimpLayerMode  mode)
+                            gdouble opacity,
+                            GimpLayerMode mode)
 {
-    GimpLayer        *layer;
-    GeglBuffer       *buffer;
-    guint8           *icc_data;
-    gsize             icc_len;
-    GimpColorProfile *profile = NULL;
+	GimpLayer        *layer;
+	GeglBuffer       *buffer;
+	guint8           *icc_data;
+	gsize icc_len;
+	GimpColorProfile *profile = NULL;
 
-    g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-    g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
-    g_return_val_if_fail (format != NULL, NULL);
+	g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
+	g_return_val_if_fail (format != NULL, NULL);
 
-    layer = gimp_layer_new (dest_image,
-                            gdk_pixbuf_get_width  (pixbuf),
-                            gdk_pixbuf_get_height (pixbuf),
-                            format, name, opacity, mode);
+	layer = gimp_layer_new (dest_image,
+	                        gdk_pixbuf_get_width  (pixbuf),
+	                        gdk_pixbuf_get_height (pixbuf),
+	                        format, name, opacity, mode);
 
-    buffer = gimp_pixbuf_create_buffer (pixbuf);
+	buffer = gimp_pixbuf_create_buffer (pixbuf);
 
-    icc_data = gimp_pixbuf_get_icc_profile (pixbuf, &icc_len);
-    if (icc_data)
-    {
-        profile = gimp_color_profile_new_from_icc_profile (icc_data, icc_len,
-                  NULL);
-        g_free (icc_data);
-    }
+	icc_data = gimp_pixbuf_get_icc_profile (pixbuf, &icc_len);
+	if (icc_data)
+	{
+		profile = gimp_color_profile_new_from_icc_profile (icc_data, icc_len,
+		                                                   NULL);
+		g_free (icc_data);
+	}
 
-    gimp_layer_new_convert_buffer (layer, buffer, profile, NULL);
+	gimp_layer_new_convert_buffer (layer, buffer, profile, NULL);
 
-    if (profile)
-        g_object_unref (profile);
+	if (profile)
+		g_object_unref (profile);
 
-    g_object_unref (buffer);
+	g_object_unref (buffer);
 
-    return layer;
+	return layer;
 }
 
 
@@ -224,28 +224,28 @@ gimp_layer_new_convert_buffer (GimpLayer         *layer,
                                GimpColorProfile  *src_profile,
                                GError           **error)
 {
-    GimpDrawable     *drawable    = GIMP_DRAWABLE (layer);
-    GeglBuffer       *dest_buffer = gimp_drawable_get_buffer (drawable);
-    GimpColorProfile *dest_profile;
+	GimpDrawable     *drawable    = GIMP_DRAWABLE (layer);
+	GeglBuffer       *dest_buffer = gimp_drawable_get_buffer (drawable);
+	GimpColorProfile *dest_profile;
 
-    if (! src_profile)
-    {
-        const Babl *src_format = gegl_buffer_get_format (src_buffer);
+	if (!src_profile)
+	{
+		const Babl *src_format = gegl_buffer_get_format (src_buffer);
 
-        src_profile = gimp_babl_format_get_color_profile (src_format);
-    }
-    else
-    {
-        g_object_ref (src_profile);
-    }
+		src_profile = gimp_babl_format_get_color_profile (src_format);
+	}
+	else
+	{
+		g_object_ref (src_profile);
+	}
 
-    dest_profile =
-        gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (layer));
+	dest_profile =
+		gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (layer));
 
-    gimp_gegl_convert_color_profile (src_buffer,  NULL, src_profile,
-                                     dest_buffer, NULL, dest_profile,
-                                     GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
-                                     TRUE, NULL);
+	gimp_gegl_convert_color_profile (src_buffer,  NULL, src_profile,
+	                                 dest_buffer, NULL, dest_profile,
+	                                 GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+	                                 TRUE, NULL);
 
-    g_object_unref (src_profile);
+	g_object_unref (src_profile);
 }

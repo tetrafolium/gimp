@@ -21,7 +21,7 @@
 
 void   file_actions_setup  (GimpActionGroup *group);
 void   file_actions_update (GimpActionGroup *group,
-                            gpointer         data);
+                            gpointer data);
 
 
 #endif /* __FILE_ACTIONS_H__ */

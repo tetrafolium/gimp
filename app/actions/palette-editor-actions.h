@@ -21,7 +21,7 @@
 
 void   palette_editor_actions_setup  (GimpActionGroup *group);
 void   palette_editor_actions_update (GimpActionGroup *group,
-                                      gpointer         data);
+                                      gpointer data);
 
 
 #endif /* __PALETTE_EDITOR_ACTIONS_H__ */

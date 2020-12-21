@@ -33,27 +33,27 @@
 #define GIMP_GRID_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GRID, GimpGridClass))
 
 
-typedef struct _GimpGridClass  GimpGridClass;
+typedef struct _GimpGridClass GimpGridClass;
 
 struct _GimpGrid
 {
-    GimpObject     parent_instance;
+	GimpObject parent_instance;
 
-    GimpGridStyle  style;
-    GimpRGB        fgcolor;
-    GimpRGB        bgcolor;
-    gdouble        xspacing;
-    gdouble        yspacing;
-    GimpUnit       spacing_unit;
-    gdouble        xoffset;
-    gdouble        yoffset;
-    GimpUnit       offset_unit;
+	GimpGridStyle style;
+	GimpRGB fgcolor;
+	GimpRGB bgcolor;
+	gdouble xspacing;
+	gdouble yspacing;
+	GimpUnit spacing_unit;
+	gdouble xoffset;
+	gdouble yoffset;
+	GimpUnit offset_unit;
 };
 
 
 struct _GimpGridClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
@@ -62,16 +62,16 @@ GType          gimp_grid_get_type               (void) G_GNUC_CONST;
 GimpGridStyle  gimp_grid_get_style              (GimpGrid           *grid);
 
 void           gimp_grid_get_fgcolor            (GimpGrid           *grid,
-        GimpRGB            *fgcolor);
+                                                 GimpRGB            *fgcolor);
 void           gimp_grid_get_bgcolor            (GimpGrid           *grid,
-        GimpRGB            *bgcolor);
+                                                 GimpRGB            *bgcolor);
 
 void           gimp_grid_get_spacing            (GimpGrid           *grid,
-        gdouble            *xspacing,
-        gdouble            *yspacing);
+                                                 gdouble            *xspacing,
+                                                 gdouble            *yspacing);
 void           gimp_grid_get_offset             (GimpGrid           *grid,
-        gdouble            *xoffset,
-        gdouble            *yoffset);
+                                                 gdouble            *xoffset,
+                                                 gdouble            *yoffset);
 
 const gchar  * gimp_grid_parasite_name          (void) G_GNUC_CONST;
 GimpParasite * gimp_grid_to_parasite            (GimpGrid           *grid);

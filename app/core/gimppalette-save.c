@@ -37,41 +37,41 @@ gimp_palette_save (GimpData       *data,
                    GOutputStream  *output,
                    GError        **error)
 {
-    GimpPalette *palette = GIMP_PALETTE (data);
-    GString     *string;
-    GList       *list;
+	GimpPalette *palette = GIMP_PALETTE (data);
+	GString     *string;
+	GList       *list;
 
-    string = g_string_new ("GIMP Palette\n");
+	string = g_string_new ("GIMP Palette\n");
 
-    g_string_append_printf (string,
-                            "Name: %s\n"
-                            "Columns: %d\n"
-                            "#\n",
-                            gimp_object_get_name (palette),
-                            CLAMP (gimp_palette_get_columns (palette), 0, 256));
+	g_string_append_printf (string,
+	                        "Name: %s\n"
+	                        "Columns: %d\n"
+	                        "#\n",
+	                        gimp_object_get_name (palette),
+	                        CLAMP (gimp_palette_get_columns (palette), 0, 256));
 
-    for (list = gimp_palette_get_colors (palette);
-            list;
-            list = g_list_next (list))
-    {
-        GimpPaletteEntry *entry = list->data;
-        guchar            r, g, b;
+	for (list = gimp_palette_get_colors (palette);
+	     list;
+	     list = g_list_next (list))
+	{
+		GimpPaletteEntry *entry = list->data;
+		guchar r, g, b;
 
-        gimp_rgb_get_uchar (&entry->color, &r, &g, &b);
+		gimp_rgb_get_uchar (&entry->color, &r, &g, &b);
 
-        g_string_append_printf (string, "%3d %3d %3d\t%s\n",
-                                r, g, b, entry->name);
-    }
+		g_string_append_printf (string, "%3d %3d %3d\t%s\n",
+		                        r, g, b, entry->name);
+	}
 
-    if (! g_output_stream_write_all (output, string->str, string->len,
-                                     NULL, NULL, error))
-    {
-        g_string_free (string, TRUE);
+	if (!g_output_stream_write_all (output, string->str, string->len,
+	                                NULL, NULL, error))
+	{
+		g_string_free (string, TRUE);
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 
-    g_string_free (string, TRUE);
+	g_string_free (string, TRUE);
 
-    return TRUE;
+	return TRUE;
 }

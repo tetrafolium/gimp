@@ -21,7 +21,7 @@
 
 void   brushes_actions_setup  (GimpActionGroup *group);
 void   brushes_actions_update (GimpActionGroup *group,
-                               gpointer         data);
+                               gpointer data);
 
 
 #endif /* __BRUSHES_ACTIONS_H__ */

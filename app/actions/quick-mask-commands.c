@@ -48,18 +48,18 @@
 /*  local function prototypes  */
 
 static void   quick_mask_configure_callback (GtkWidget     *dialog,
-        GimpImage     *image,
-        GimpChannel   *channel,
-        GimpContext   *context,
-        const gchar   *channel_name,
-        const GimpRGB *channel_color,
-        gboolean       save_selection,
-        gboolean       channel_visible,
-        gboolean       channel_linked,
-        GimpColorTag   channel_color_tag,
-        gboolean       channel_lock_content,
-        gboolean       channel_lock_position,
-        gpointer       user_data);
+                                             GimpImage     *image,
+                                             GimpChannel   *channel,
+                                             GimpContext   *context,
+                                             const gchar   *channel_name,
+                                             const GimpRGB *channel_color,
+                                             gboolean save_selection,
+                                             gboolean channel_visible,
+                                             gboolean channel_linked,
+                                             GimpColorTag channel_color_tag,
+                                             gboolean channel_lock_content,
+                                             gboolean channel_lock_position,
+                                             gpointer user_data);
 
 
 /*  public functions */
@@ -67,87 +67,87 @@ static void   quick_mask_configure_callback (GtkWidget     *dialog,
 void
 quick_mask_toggle_cmd_callback (GimpAction *action,
                                 GVariant   *value,
-                                gpointer    data)
+                                gpointer data)
 {
-    GimpImage *image;
-    gboolean   active;
-    return_if_no_image (image, data);
+	GimpImage *image;
+	gboolean active;
+	return_if_no_image (image, data);
 
-    active = g_variant_get_boolean (value);
+	active = g_variant_get_boolean (value);
 
-    if (active != gimp_image_get_quick_mask_state (image))
-    {
-        gimp_image_set_quick_mask_state (image, active);
-        gimp_image_flush (image);
-    }
+	if (active != gimp_image_get_quick_mask_state (image))
+	{
+		gimp_image_set_quick_mask_state (image, active);
+		gimp_image_flush (image);
+	}
 }
 
 void
 quick_mask_invert_cmd_callback (GimpAction *action,
                                 GVariant   *value,
-                                gpointer    data)
+                                gpointer data)
 {
-    GimpImage *image;
-    gboolean   inverted;
-    return_if_no_image (image, data);
+	GimpImage *image;
+	gboolean inverted;
+	return_if_no_image (image, data);
 
-    inverted = (gboolean) g_variant_get_int32 (value);
+	inverted = (gboolean) g_variant_get_int32 (value);
 
-    if (inverted != gimp_image_get_quick_mask_inverted (image))
-    {
-        gimp_image_quick_mask_invert (image);
-        gimp_image_flush (image);
-    }
+	if (inverted != gimp_image_get_quick_mask_inverted (image))
+	{
+		gimp_image_quick_mask_invert (image);
+		gimp_image_flush (image);
+	}
 }
 
 void
 quick_mask_configure_cmd_callback (GimpAction *action,
                                    GVariant   *value,
-                                   gpointer    data)
+                                   gpointer data)
 {
-    GimpImage *image;
-    GtkWidget *widget;
-    GtkWidget *dialog;
-    return_if_no_image (image, data);
-    return_if_no_widget (widget, data);
+	GimpImage *image;
+	GtkWidget *widget;
+	GtkWidget *dialog;
+	return_if_no_image (image, data);
+	return_if_no_widget (widget, data);
 
 #define CONFIGURE_DIALOG_KEY "gimp-image-quick-mask-configure-dialog"
 
-    dialog = dialogs_get_dialog (G_OBJECT (image), CONFIGURE_DIALOG_KEY);
+	dialog = dialogs_get_dialog (G_OBJECT (image), CONFIGURE_DIALOG_KEY);
 
-    if (! dialog)
-    {
-        GimpRGB color;
+	if (!dialog)
+	{
+		GimpRGB color;
 
-        gimp_image_get_quick_mask_color (image, &color);
+		gimp_image_get_quick_mask_color (image, &color);
 
-        dialog = channel_options_dialog_new (image, NULL,
-                                             action_data_get_context (data),
-                                             widget,
-                                             _("Quick Mask Attributes"),
-                                             "gimp-quick-mask-edit",
-                                             GIMP_ICON_QUICK_MASK_ON,
-                                             _("Edit Quick Mask Attributes"),
-                                             GIMP_HELP_QUICK_MASK_EDIT,
-                                             _("Edit Quick Mask Color"),
-                                             _("_Mask opacity:"),
-                                             FALSE,
-                                             NULL,
-                                             &color,
-                                             FALSE,
-                                             FALSE,
-                                             GIMP_COLOR_TAG_NONE,
-                                             FALSE,
-                                             FALSE,
-                                             quick_mask_configure_callback,
-                                             NULL);
+		dialog = channel_options_dialog_new (image, NULL,
+		                                     action_data_get_context (data),
+		                                     widget,
+		                                     _("Quick Mask Attributes"),
+		                                     "gimp-quick-mask-edit",
+		                                     GIMP_ICON_QUICK_MASK_ON,
+		                                     _("Edit Quick Mask Attributes"),
+		                                     GIMP_HELP_QUICK_MASK_EDIT,
+		                                     _("Edit Quick Mask Color"),
+		                                     _("_Mask opacity:"),
+		                                     FALSE,
+		                                     NULL,
+		                                     &color,
+		                                     FALSE,
+		                                     FALSE,
+		                                     GIMP_COLOR_TAG_NONE,
+		                                     FALSE,
+		                                     FALSE,
+		                                     quick_mask_configure_callback,
+		                                     NULL);
 
-        item_options_dialog_set_switches_visible (dialog, FALSE);
+		item_options_dialog_set_switches_visible (dialog, FALSE);
 
-        dialogs_attach_dialog (G_OBJECT (image), CONFIGURE_DIALOG_KEY, dialog);
-    }
+		dialogs_attach_dialog (G_OBJECT (image), CONFIGURE_DIALOG_KEY, dialog);
+	}
 
-    gtk_window_present (GTK_WINDOW (dialog));
+	gtk_window_present (GTK_WINDOW (dialog));
 }
 
 
@@ -160,23 +160,23 @@ quick_mask_configure_callback (GtkWidget     *dialog,
                                GimpContext   *context,
                                const gchar   *channel_name,
                                const GimpRGB *channel_color,
-                               gboolean       save_selection,
-                               gboolean       channel_visible,
-                               gboolean       channel_linked,
-                               GimpColorTag   channel_color_tag,
-                               gboolean       channel_lock_content,
-                               gboolean       channel_lock_position,
-                               gpointer       user_data)
+                               gboolean save_selection,
+                               gboolean channel_visible,
+                               gboolean channel_linked,
+                               GimpColorTag channel_color_tag,
+                               gboolean channel_lock_content,
+                               gboolean channel_lock_position,
+                               gpointer user_data)
 {
-    GimpRGB old_color;
+	GimpRGB old_color;
 
-    gimp_image_get_quick_mask_color (image, &old_color);
+	gimp_image_get_quick_mask_color (image, &old_color);
 
-    if (gimp_rgba_distance (&old_color, channel_color) > RGBA_EPSILON)
-    {
-        gimp_image_set_quick_mask_color (image, channel_color);
-        gimp_image_flush (image);
-    }
+	if (gimp_rgba_distance (&old_color, channel_color) > RGBA_EPSILON)
+	{
+		gimp_image_set_quick_mask_color (image, channel_color);
+		gimp_image_flush (image);
+	}
 
-    gtk_widget_destroy (dialog);
+	gtk_widget_destroy (dialog);
 }

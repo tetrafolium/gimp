@@ -44,8 +44,8 @@
 /*  local function prototype  */
 
 static void   gimp_image_colormap_set_palette_entry (GimpImage     *image,
-        const GimpRGB *color,
-        gint           index);
+                                                     const GimpRGB *color,
+                                                     gint index);
 
 
 /*  public functions  */
@@ -53,311 +53,311 @@ static void   gimp_image_colormap_set_palette_entry (GimpImage     *image,
 void
 gimp_image_colormap_init (GimpImage *image)
 {
-    GimpImagePrivate *private;
-    GimpContainer    *palettes;
-    gchar            *palette_name;
-    gchar            *palette_id;
+	GimpImagePrivate *private;
+	GimpContainer    *palettes;
+	gchar            *palette_name;
+	gchar            *palette_id;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    g_return_if_fail (private->colormap == NULL);
-    g_return_if_fail (private->palette == NULL);
+	g_return_if_fail (private->colormap == NULL);
+	g_return_if_fail (private->palette == NULL);
 
-    palette_name = g_strdup_printf (_("Colormap of Image #%d (%s)"),
-                                    gimp_image_get_id (image),
-                                    gimp_image_get_display_name (image));
-    palette_id = g_strdup_printf ("gimp-indexed-image-palette-%d",
-                                  gimp_image_get_id (image));
+	palette_name = g_strdup_printf (_("Colormap of Image #%d (%s)"),
+	                                gimp_image_get_id (image),
+	                                gimp_image_get_display_name (image));
+	palette_id = g_strdup_printf ("gimp-indexed-image-palette-%d",
+	                              gimp_image_get_id (image));
 
-    private->n_colors = 0;
-    private->colormap = g_new0 (guchar, GIMP_IMAGE_COLORMAP_SIZE);
-    private->palette  = GIMP_PALETTE (gimp_palette_new (NULL, palette_name));
+	private->n_colors = 0;
+	private->colormap = g_new0 (guchar, GIMP_IMAGE_COLORMAP_SIZE);
+	private->palette  = GIMP_PALETTE (gimp_palette_new (NULL, palette_name));
 
-    gimp_image_colormap_update_formats (image);
+	gimp_image_colormap_update_formats (image);
 
-    gimp_palette_set_columns (private->palette, 16);
+	gimp_palette_set_columns (private->palette, 16);
 
-    gimp_data_make_internal (GIMP_DATA (private->palette), palette_id);
+	gimp_data_make_internal (GIMP_DATA (private->palette), palette_id);
 
-    palettes = gimp_data_factory_get_container (image->gimp->palette_factory);
+	palettes = gimp_data_factory_get_container (image->gimp->palette_factory);
 
-    gimp_container_add (palettes, GIMP_OBJECT (private->palette));
+	gimp_container_add (palettes, GIMP_OBJECT (private->palette));
 
-    g_free (palette_name);
-    g_free (palette_id);
+	g_free (palette_name);
+	g_free (palette_id);
 }
 
 void
 gimp_image_colormap_dispose (GimpImage *image)
 {
-    GimpImagePrivate *private;
-    GimpContainer    *palettes;
+	GimpImagePrivate *private;
+	GimpContainer    *palettes;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    g_return_if_fail (private->colormap != NULL);
-    g_return_if_fail (GIMP_IS_PALETTE (private->palette));
+	g_return_if_fail (private->colormap != NULL);
+	g_return_if_fail (GIMP_IS_PALETTE (private->palette));
 
-    palettes = gimp_data_factory_get_container (image->gimp->palette_factory);
+	palettes = gimp_data_factory_get_container (image->gimp->palette_factory);
 
-    gimp_container_remove (palettes, GIMP_OBJECT (private->palette));
+	gimp_container_remove (palettes, GIMP_OBJECT (private->palette));
 }
 
 void
 gimp_image_colormap_free (GimpImage *image)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    g_return_if_fail (private->colormap != NULL);
-    g_return_if_fail (GIMP_IS_PALETTE (private->palette));
+	g_return_if_fail (private->colormap != NULL);
+	g_return_if_fail (GIMP_IS_PALETTE (private->palette));
 
-    g_clear_pointer (&private->colormap, g_free);
-    g_clear_object (&private->palette);
+	g_clear_pointer (&private->colormap, g_free);
+	g_clear_object (&private->palette);
 
-    /* don't touch the image's babl_palettes because we might still have
-     * buffers with that palette on the undo stack, and on undoing the
-     * image back to indexed, we must have exactly these palettes around
-     */
+	/* don't touch the image's babl_palettes because we might still have
+	 * buffers with that palette on the undo stack, and on undoing the
+	 * image back to indexed, we must have exactly these palettes around
+	 */
 }
 
 void
 gimp_image_colormap_update_formats (GimpImage *image)
 {
-    GimpImagePrivate *private;
-    const Babl       *space;
-    gchar            *format_name;
+	GimpImagePrivate *private;
+	const Babl       *space;
+	gchar            *format_name;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    space = gimp_image_get_layer_space (image);
+	space = gimp_image_get_layer_space (image);
 
-    format_name = g_strdup_printf ("-gimp-indexed-format-%d",
-                                   gimp_image_get_id (image));
+	format_name = g_strdup_printf ("-gimp-indexed-format-%d",
+	                               gimp_image_get_id (image));
 
-    babl_new_palette_with_space (format_name, space,
-                                 &private->babl_palette_rgb,
-                                 &private->babl_palette_rgba);
+	babl_new_palette_with_space (format_name, space,
+	                             &private->babl_palette_rgb,
+	                             &private->babl_palette_rgba);
 
-    g_free (format_name);
+	g_free (format_name);
 
-    if (private->colormap && private->n_colors > 0)
-    {
-        babl_palette_set_palette (private->babl_palette_rgb,
-                                  gimp_babl_format (GIMP_RGB,
-                                          private->precision, FALSE,
-                                          space),
-                                  private->colormap,
-                                  private->n_colors);
-        babl_palette_set_palette (private->babl_palette_rgba,
-                                  gimp_babl_format (GIMP_RGB,
-                                          private->precision, FALSE,
-                                          space),
-                                  private->colormap,
-                                  private->n_colors);
-    }
+	if (private->colormap && private->n_colors > 0)
+	{
+		babl_palette_set_palette (private->babl_palette_rgb,
+		                          gimp_babl_format (GIMP_RGB,
+		                                            private->precision, FALSE,
+		                                            space),
+		                          private->colormap,
+		                          private->n_colors);
+		babl_palette_set_palette (private->babl_palette_rgba,
+		                          gimp_babl_format (GIMP_RGB,
+		                                            private->precision, FALSE,
+		                                            space),
+		                          private->colormap,
+		                          private->n_colors);
+	}
 }
 
 const Babl *
 gimp_image_colormap_get_rgb_format (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    return GIMP_IMAGE_GET_PRIVATE (image)->babl_palette_rgb;
+	return GIMP_IMAGE_GET_PRIVATE (image)->babl_palette_rgb;
 }
 
 const Babl *
 gimp_image_colormap_get_rgba_format (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    return GIMP_IMAGE_GET_PRIVATE (image)->babl_palette_rgba;
+	return GIMP_IMAGE_GET_PRIVATE (image)->babl_palette_rgba;
 }
 
 GimpPalette *
 gimp_image_get_colormap_palette (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    return GIMP_IMAGE_GET_PRIVATE (image)->palette;
+	return GIMP_IMAGE_GET_PRIVATE (image)->palette;
 }
 
 const guchar *
 gimp_image_get_colormap (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    return GIMP_IMAGE_GET_PRIVATE (image)->colormap;
+	return GIMP_IMAGE_GET_PRIVATE (image)->colormap;
 }
 
 gint
 gimp_image_get_colormap_size (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), 0);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), 0);
 
-    return GIMP_IMAGE_GET_PRIVATE (image)->n_colors;
+	return GIMP_IMAGE_GET_PRIVATE (image)->n_colors;
 }
 
 void
 gimp_image_set_colormap (GimpImage    *image,
                          const guchar *colormap,
-                         gint          n_colors,
-                         gboolean      push_undo)
+                         gint n_colors,
+                         gboolean push_undo)
 {
-    GimpImagePrivate *private;
-    GimpPaletteEntry *entry;
-    gint              i;
+	GimpImagePrivate *private;
+	GimpPaletteEntry *entry;
+	gint i;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (colormap != NULL || n_colors == 0);
-    g_return_if_fail (n_colors >= 0 && n_colors <= 256);
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (colormap != NULL || n_colors == 0);
+	g_return_if_fail (n_colors >= 0 && n_colors <= 256);
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    if (push_undo)
-        gimp_image_undo_push_image_colormap (image, C_("undo-type", "Set Colormap"));
+	if (push_undo)
+		gimp_image_undo_push_image_colormap (image, C_("undo-type", "Set Colormap"));
 
-    if (private->colormap)
-        memset (private->colormap, 0, GIMP_IMAGE_COLORMAP_SIZE);
-    else
-        gimp_image_colormap_init (image);
+	if (private->colormap)
+		memset (private->colormap, 0, GIMP_IMAGE_COLORMAP_SIZE);
+	else
+		gimp_image_colormap_init (image);
 
-    if (colormap)
-        memcpy (private->colormap, colormap, n_colors * 3);
+	if (colormap)
+		memcpy (private->colormap, colormap, n_colors * 3);
 
-    /* make sure the image's colormap always has at least one color.  when
-     * n_colors == 0, use black.
-     */
-    private->n_colors = MAX (n_colors, 1);
+	/* make sure the image's colormap always has at least one color.  when
+	 * n_colors == 0, use black.
+	 */
+	private->n_colors = MAX (n_colors, 1);
 
-    gimp_data_freeze (GIMP_DATA (private->palette));
+	gimp_data_freeze (GIMP_DATA (private->palette));
 
-    while ((entry = gimp_palette_get_entry (private->palette, 0)))
-        gimp_palette_delete_entry (private->palette, entry);
+	while ((entry = gimp_palette_get_entry (private->palette, 0)))
+		gimp_palette_delete_entry (private->palette, entry);
 
-    for (i = 0; i < private->n_colors; i++)
-        gimp_image_colormap_set_palette_entry (image, NULL, i);
+	for (i = 0; i < private->n_colors; i++)
+		gimp_image_colormap_set_palette_entry (image, NULL, i);
 
-    gimp_data_thaw (GIMP_DATA (private->palette));
+	gimp_data_thaw (GIMP_DATA (private->palette));
 
-    gimp_image_colormap_changed (image, -1);
+	gimp_image_colormap_changed (image, -1);
 }
 
 void
 gimp_image_unset_colormap (GimpImage *image,
-                           gboolean   push_undo)
+                           gboolean push_undo)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    if (push_undo)
-        gimp_image_undo_push_image_colormap (image,
-                                             C_("undo-type", "Unset Colormap"));
+	if (push_undo)
+		gimp_image_undo_push_image_colormap (image,
+		                                     C_("undo-type", "Unset Colormap"));
 
-    if (private->colormap)
-    {
-        gimp_image_colormap_dispose (image);
-        gimp_image_colormap_free (image);
-    }
+	if (private->colormap)
+	{
+		gimp_image_colormap_dispose (image);
+		gimp_image_colormap_free (image);
+	}
 
-    private->n_colors = 0;
+	private->n_colors = 0;
 
-    gimp_image_colormap_changed (image, -1);
+	gimp_image_colormap_changed (image, -1);
 }
 
 void
 gimp_image_get_colormap_entry (GimpImage *image,
-                               gint       color_index,
+                               gint color_index,
                                GimpRGB   *color)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    g_return_if_fail (private->colormap != NULL);
-    g_return_if_fail (color_index >= 0 && color_index < private->n_colors);
-    g_return_if_fail (color != NULL);
+	g_return_if_fail (private->colormap != NULL);
+	g_return_if_fail (color_index >= 0 && color_index < private->n_colors);
+	g_return_if_fail (color != NULL);
 
-    gimp_rgba_set_uchar (color,
-                         private->colormap[color_index * 3],
-                         private->colormap[color_index * 3 + 1],
-                         private->colormap[color_index * 3 + 2],
-                         255);
+	gimp_rgba_set_uchar (color,
+	                     private->colormap[color_index * 3],
+	                     private->colormap[color_index * 3 + 1],
+	                     private->colormap[color_index * 3 + 2],
+	                     255);
 }
 
 void
 gimp_image_set_colormap_entry (GimpImage     *image,
-                               gint           color_index,
+                               gint color_index,
                                const GimpRGB *color,
-                               gboolean       push_undo)
+                               gboolean push_undo)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    g_return_if_fail (private->colormap != NULL);
-    g_return_if_fail (color_index >= 0 && color_index < private->n_colors);
-    g_return_if_fail (color != NULL);
+	g_return_if_fail (private->colormap != NULL);
+	g_return_if_fail (color_index >= 0 && color_index < private->n_colors);
+	g_return_if_fail (color != NULL);
 
-    if (push_undo)
-        gimp_image_undo_push_image_colormap (image,
-                                             C_("undo-type", "Change Colormap entry"));
+	if (push_undo)
+		gimp_image_undo_push_image_colormap (image,
+		                                     C_("undo-type", "Change Colormap entry"));
 
-    gimp_rgb_get_uchar (color,
-                        &private->colormap[color_index * 3],
-                        &private->colormap[color_index * 3 + 1],
-                        &private->colormap[color_index * 3 + 2]);
+	gimp_rgb_get_uchar (color,
+	                    &private->colormap[color_index * 3],
+	                    &private->colormap[color_index * 3 + 1],
+	                    &private->colormap[color_index * 3 + 2]);
 
-    if (private->palette)
-        gimp_image_colormap_set_palette_entry (image, color, color_index);
+	if (private->palette)
+		gimp_image_colormap_set_palette_entry (image, color, color_index);
 
-    gimp_image_colormap_changed (image, color_index);
+	gimp_image_colormap_changed (image, color_index);
 }
 
 void
 gimp_image_add_colormap_entry (GimpImage     *image,
                                const GimpRGB *color)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    g_return_if_fail (private->colormap != NULL);
-    g_return_if_fail (private->n_colors < 256);
-    g_return_if_fail (color != NULL);
+	g_return_if_fail (private->colormap != NULL);
+	g_return_if_fail (private->n_colors < 256);
+	g_return_if_fail (color != NULL);
 
-    gimp_image_undo_push_image_colormap (image,
-                                         C_("undo-type", "Add Color to Colormap"));
+	gimp_image_undo_push_image_colormap (image,
+	                                     C_("undo-type", "Add Color to Colormap"));
 
-    gimp_rgb_get_uchar (color,
-                        &private->colormap[private->n_colors * 3],
-                        &private->colormap[private->n_colors * 3 + 1],
-                        &private->colormap[private->n_colors * 3 + 2]);
+	gimp_rgb_get_uchar (color,
+	                    &private->colormap[private->n_colors * 3],
+	                    &private->colormap[private->n_colors * 3 + 1],
+	                    &private->colormap[private->n_colors * 3 + 2]);
 
-    private->n_colors++;
+	private->n_colors++;
 
-    if (private->palette)
-        gimp_image_colormap_set_palette_entry (image, color, private->n_colors - 1);
+	if (private->palette)
+		gimp_image_colormap_set_palette_entry (image, color, private->n_colors - 1);
 
-    gimp_image_colormap_changed (image, -1);
+	gimp_image_colormap_changed (image, -1);
 }
 
 
@@ -366,28 +366,28 @@ gimp_image_add_colormap_entry (GimpImage     *image,
 static void
 gimp_image_colormap_set_palette_entry (GimpImage     *image,
                                        const GimpRGB *c,
-                                       gint           index)
+                                       gint index)
 {
-    GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
-    GimpRGB           color;
-    gchar             name[64];
+	GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
+	GimpRGB color;
+	gchar name[64];
 
-    /* Avoid converting to char then back to double if we have the
-     * original GimpRGB color.
-     */
-    if (c)
-        color = *c;
-    else
-        gimp_rgba_set_uchar (&color,
-                             private->colormap[3 * index + 0],
-                             private->colormap[3 * index + 1],
-                             private->colormap[3 * index + 2],
-                             255);
+	/* Avoid converting to char then back to double if we have the
+	 * original GimpRGB color.
+	 */
+	if (c)
+		color = *c;
+	else
+		gimp_rgba_set_uchar (&color,
+		                     private->colormap[3 * index + 0],
+		                     private->colormap[3 * index + 1],
+		                     private->colormap[3 * index + 2],
+		                     255);
 
-    g_snprintf (name, sizeof (name), "#%d", index);
+	g_snprintf (name, sizeof (name), "#%d", index);
 
-    if (gimp_palette_get_n_colors (private->palette) < private->n_colors)
-        gimp_palette_add_entry (private->palette, index, name, &color);
-    else
-        gimp_palette_set_entry (private->palette, index, name, &color);
+	if (gimp_palette_get_n_colors (private->palette) < private->n_colors)
+		gimp_palette_add_entry (private->palette, index, name, &color);
+	else
+		gimp_palette_set_entry (private->palette, index, name, &color);
 }

@@ -35,23 +35,23 @@
 void
 help_help_cmd_callback (GimpAction *action,
                         GVariant   *value,
-                        gpointer    data)
+                        gpointer data)
 {
-    Gimp        *gimp;
-    GimpDisplay *display;
-    return_if_no_gimp (gimp, data);
-    return_if_no_display (display, data);
+	Gimp        *gimp;
+	GimpDisplay *display;
+	return_if_no_gimp (gimp, data);
+	return_if_no_display (display, data);
 
-    gimp_help_show (gimp, GIMP_PROGRESS (display), NULL, NULL);
+	gimp_help_show (gimp, GIMP_PROGRESS (display), NULL, NULL);
 }
 
 void
 help_context_help_cmd_callback (GimpAction *action,
                                 GVariant   *value,
-                                gpointer    data)
+                                gpointer data)
 {
-    GtkWidget *widget;
-    return_if_no_widget (widget, data);
+	GtkWidget *widget;
+	return_if_no_widget (widget, data);
 
-    gimp_context_help (widget);
+	gimp_context_help (widget);
 }

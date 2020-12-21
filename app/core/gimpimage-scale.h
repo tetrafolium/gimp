@@ -20,16 +20,16 @@
 
 
 void   gimp_image_scale         (GimpImage             *image,
-                                 gint                   new_width,
-                                 gint                   new_height,
-                                 GimpInterpolationType  interpolation_type,
+                                 gint new_width,
+                                 gint new_height,
+                                 GimpInterpolationType interpolation_type,
                                  GimpProgress          *progress);
 
 GimpImageScaleCheckType
 gimp_image_scale_check   (GimpImage             *image,
-                          gint                   new_width,
-                          gint                   new_height,
-                          gint64                 max_memsize,
+                          gint new_width,
+                          gint new_height,
+                          gint64 max_memsize,
                           gint64                *new_memsize);
 
 

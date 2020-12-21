@@ -21,7 +21,7 @@
 
 void   brush_editor_actions_setup  (GimpActionGroup *group);
 void   brush_editor_actions_update (GimpActionGroup *group,
-                                    gpointer         data);
+                                    gpointer data);
 
 
 #endif /* __BRUSH_EDITOR_ACTIONS_H__ */

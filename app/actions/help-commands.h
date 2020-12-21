@@ -21,10 +21,10 @@
 
 void   help_help_cmd_callback         (GimpAction *action,
                                        GVariant   *value,
-                                       gpointer    data);
+                                       gpointer data);
 void   help_context_help_cmd_callback (GimpAction *action,
                                        GVariant   *value,
-                                       gpointer    data);
+                                       gpointer data);
 
 
 #endif /* __HELP_COMMANDS_H__ */

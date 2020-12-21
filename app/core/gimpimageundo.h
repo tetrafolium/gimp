@@ -30,36 +30,36 @@
 #define GIMP_IMAGE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE_UNDO, GimpImageUndoClass))
 
 
-typedef struct _GimpImageUndo      GimpImageUndo;
+typedef struct _GimpImageUndo GimpImageUndo;
 typedef struct _GimpImageUndoClass GimpImageUndoClass;
 
 struct _GimpImageUndo
 {
-    GimpUndo           parent_instance;
+	GimpUndo parent_instance;
 
-    GimpImageBaseType  base_type;
-    GimpPrecision      precision;
-    gint               width;
-    gint               height;
-    gint               previous_origin_x;
-    gint               previous_origin_y;
-    gint               previous_width;
-    gint               previous_height;
-    gdouble            xresolution;
-    gdouble            yresolution;
-    GimpUnit           resolution_unit;
-    GimpGrid          *grid;
-    gint               num_colors;
-    guchar            *colormap;
-    GimpColorProfile  *hidden_profile;
-    GimpMetadata      *metadata;
-    gchar             *parasite_name;
-    GimpParasite      *parasite;
+	GimpImageBaseType base_type;
+	GimpPrecision precision;
+	gint width;
+	gint height;
+	gint previous_origin_x;
+	gint previous_origin_y;
+	gint previous_width;
+	gint previous_height;
+	gdouble xresolution;
+	gdouble yresolution;
+	GimpUnit resolution_unit;
+	GimpGrid          *grid;
+	gint num_colors;
+	guchar            *colormap;
+	GimpColorProfile  *hidden_profile;
+	GimpMetadata      *metadata;
+	gchar             *parasite_name;
+	GimpParasite      *parasite;
 };
 
 struct _GimpImageUndoClass
 {
-    GimpUndoClass  parent_class;
+	GimpUndoClass parent_class;
 };
 
 

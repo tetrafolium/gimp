@@ -33,21 +33,21 @@
 #define GIMP_TAG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TAG, GimpTagClass))
 
 
-typedef struct _GimpTagClass    GimpTagClass;
+typedef struct _GimpTagClass GimpTagClass;
 
 struct _GimpTag
 {
-    GObject parent_instance;
+	GObject parent_instance;
 
-    GQuark  tag;
-    GQuark  collate_key;
+	GQuark tag;
+	GQuark collate_key;
 
-    gboolean internal; /* Tags that are not serialized to disk */
+	gboolean internal; /* Tags that are not serialized to disk */
 };
 
 struct _GimpTagClass
 {
-    GObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType         gimp_tag_get_type            (void) G_GNUC_CONST;
@@ -60,18 +60,18 @@ guint         gimp_tag_get_hash            (GimpTag     *tag);
 
 gboolean      gimp_tag_get_internal        (GimpTag     *tag);
 void          gimp_tag_set_internal        (GimpTag     *tag,
-        gboolean     internal);
+                                            gboolean internal);
 
 gboolean      gimp_tag_equals              (GimpTag     *tag,
-        GimpTag     *other);
+                                            GimpTag     *other);
 gint          gimp_tag_compare_func        (const void  *p1,
-        const void  *p2);
+                                            const void  *p2);
 gint          gimp_tag_compare_with_string (GimpTag     *tag,
-        const gchar *tag_string);
+                                            const gchar *tag_string);
 gboolean      gimp_tag_has_prefix          (GimpTag     *tag,
-        const gchar *prefix_string);
+                                            const gchar *prefix_string);
 gchar       * gimp_tag_string_make_valid   (const gchar *tag_string);
-gboolean      gimp_tag_is_tag_separator    (gunichar     c);
+gboolean      gimp_tag_is_tag_separator    (gunichar c);
 
 void          gimp_tag_or_null_ref         (GimpTag     *tag_or_null);
 void          gimp_tag_or_null_unref       (GimpTag     *tag_or_null);

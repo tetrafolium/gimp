@@ -30,19 +30,19 @@
 #define GIMP_DRAWABLE_PROP_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DRAWABLE_PROP_UNDO, GimpDrawablePropUndoClass))
 
 
-typedef struct _GimpDrawablePropUndo      GimpDrawablePropUndo;
+typedef struct _GimpDrawablePropUndo GimpDrawablePropUndo;
 typedef struct _GimpDrawablePropUndoClass GimpDrawablePropUndoClass;
 
 struct _GimpDrawablePropUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    const Babl   *format;
+	const Babl   *format;
 };
 
 struct _GimpDrawablePropUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

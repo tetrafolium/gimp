@@ -30,19 +30,19 @@
 #define GIMP_FLOATING_SELECTION_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FLOATING_SELECTION_UNDO, GimpFloatingSelectionUndoClass))
 
 
-typedef struct _GimpFloatingSelectionUndo      GimpFloatingSelectionUndo;
+typedef struct _GimpFloatingSelectionUndo GimpFloatingSelectionUndo;
 typedef struct _GimpFloatingSelectionUndoClass GimpFloatingSelectionUndoClass;
 
 struct _GimpFloatingSelectionUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    GimpDrawable *drawable;
+	GimpDrawable *drawable;
 };
 
 struct _GimpFloatingSelectionUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

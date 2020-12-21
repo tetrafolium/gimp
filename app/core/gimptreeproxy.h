@@ -34,32 +34,32 @@
 
 
 typedef struct _GimpTreeProxyPrivate GimpTreeProxyPrivate;
-typedef struct _GimpTreeProxyClass   GimpTreeProxyClass;
+typedef struct _GimpTreeProxyClass GimpTreeProxyClass;
 
 struct _GimpTreeProxy
 {
-    GimpList              parent_instance;
+	GimpList parent_instance;
 
-    GimpTreeProxyPrivate *priv;
+	GimpTreeProxyPrivate *priv;
 };
 
 struct _GimpTreeProxyClass
 {
-    GimpListClass  parent_class;
+	GimpListClass parent_class;
 };
 
 
 GType           gimp_tree_proxy_get_type (void) G_GNUC_CONST;
 
-GimpContainer * gimp_tree_proxy_new               (GType          children_type);
+GimpContainer * gimp_tree_proxy_new               (GType children_type);
 GimpContainer * gimp_tree_proxy_new_for_container (GimpContainer *container);
 
 void            gimp_tree_proxy_set_container     (GimpTreeProxy *tree_proxy,
-        GimpContainer *container);
+                                                   GimpContainer *container);
 GimpContainer * gimp_tree_proxy_get_container     (GimpTreeProxy *tree_proxy);
 
 void            gimp_tree_proxy_set_flat          (GimpTreeProxy *tree_proxy,
-        gboolean       flat);
+                                                   gboolean flat);
 gboolean        gimp_tree_proxy_get_flat          (GimpTreeProxy *tree_proxy);
 
 

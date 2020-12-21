@@ -21,7 +21,7 @@
 
 void   images_actions_setup  (GimpActionGroup *group);
 void   images_actions_update (GimpActionGroup *group,
-                              gpointer         data);
+                              gpointer data);
 
 
 #endif /* __IMAGES_ACTIONS_H__ */

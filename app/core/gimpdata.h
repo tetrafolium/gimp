@@ -27,10 +27,10 @@
 
 typedef enum
 {
-    GIMP_DATA_ERROR_OPEN,   /*  opening data file failed   */
-    GIMP_DATA_ERROR_READ,   /*  reading data file failed   */
-    GIMP_DATA_ERROR_WRITE,  /*  writing data file failed   */
-    GIMP_DATA_ERROR_DELETE  /*  deleting data file failed  */
+	GIMP_DATA_ERROR_OPEN, /*  opening data file failed   */
+	GIMP_DATA_ERROR_READ, /*  reading data file failed   */
+	GIMP_DATA_ERROR_WRITE, /*  writing data file failed   */
+	GIMP_DATA_ERROR_DELETE /*  deleting data file failed  */
 } GimpDataError;
 
 
@@ -43,39 +43,39 @@ typedef enum
 
 
 typedef struct _GimpDataPrivate GimpDataPrivate;
-typedef struct _GimpDataClass   GimpDataClass;
+typedef struct _GimpDataClass GimpDataClass;
 
 struct _GimpData
 {
-    GimpViewable     parent_instance;
+	GimpViewable parent_instance;
 
-    GimpDataPrivate *priv;
+	GimpDataPrivate *priv;
 };
 
 struct _GimpDataClass
 {
-    GimpViewableClass  parent_class;
+	GimpViewableClass parent_class;
 
-    /*  signals  */
-    void          (* dirty)         (GimpData  *data);
+	/*  signals  */
+	void (* dirty)         (GimpData  *data);
 
-    /*  virtual functions  */
-    gboolean      (* save)          (GimpData       *data,
-                                     GOutputStream  *output,
-                                     GError        **error);
-    const gchar * (* get_extension) (GimpData       *data);
-    void          (* copy)          (GimpData       *data,
-                                     GimpData       *src_data);
-    GimpData    * (* duplicate)     (GimpData       *data);
-    gint          (* compare)       (GimpData       *data1,
-                                     GimpData       *data2);
+	/*  virtual functions  */
+	gboolean (* save)          (GimpData       *data,
+	                            GOutputStream  *output,
+	                            GError        **error);
+	const gchar * (* get_extension) (GimpData       *data);
+	void (* copy)          (GimpData       *data,
+	                        GimpData       *src_data);
+	GimpData    * (* duplicate)     (GimpData       *data);
+	gint (* compare)       (GimpData       *data1,
+	                        GimpData       *data2);
 };
 
 
 GType         gimp_data_get_type         (void) G_GNUC_CONST;
 
 gboolean      gimp_data_save             (GimpData     *data,
-        GError      **error);
+                                          GError      **error);
 
 void          gimp_data_dirty            (GimpData     *data);
 void          gimp_data_clean            (GimpData     *data);
@@ -86,21 +86,21 @@ void          gimp_data_thaw             (GimpData     *data);
 gboolean      gimp_data_is_frozen        (GimpData     *data);
 
 gboolean      gimp_data_delete_from_disk (GimpData     *data,
-        GError      **error);
+                                          GError      **error);
 
 const gchar * gimp_data_get_extension    (GimpData     *data);
 
 void          gimp_data_set_file         (GimpData     *data,
-        GFile        *file,
-        gboolean      writable,
-        gboolean      deletable);
+                                          GFile        *file,
+                                          gboolean writable,
+                                          gboolean deletable);
 GFile       * gimp_data_get_file         (GimpData     *data);
 
 void          gimp_data_create_filename  (GimpData     *data,
-        GFile        *dest_dir);
+                                          GFile        *dest_dir);
 
 void          gimp_data_set_folder_tags  (GimpData     *data,
-        GFile        *top_directory);
+                                          GFile        *top_directory);
 
 const gchar * gimp_data_get_mime_type    (GimpData     *data);
 
@@ -108,22 +108,22 @@ gboolean      gimp_data_is_writable      (GimpData     *data);
 gboolean      gimp_data_is_deletable     (GimpData     *data);
 
 void          gimp_data_set_mtime        (GimpData     *data,
-        gint64        mtime);
+                                          gint64 mtime);
 gint64        gimp_data_get_mtime        (GimpData     *data);
 
 gboolean      gimp_data_is_copyable      (GimpData     *data);
 void          gimp_data_copy             (GimpData     *data,
-        GimpData     *src_data);
+                                          GimpData     *src_data);
 
 gboolean      gimp_data_is_duplicatable  (GimpData     *data);
 GimpData    * gimp_data_duplicate        (GimpData     *data);
 
 void          gimp_data_make_internal    (GimpData     *data,
-        const gchar  *identifier);
+                                          const gchar  *identifier);
 gboolean      gimp_data_is_internal      (GimpData     *data);
 
 gint          gimp_data_compare          (GimpData     *data1,
-        GimpData     *data2);
+                                          GimpData     *data2);
 
 #define GIMP_DATA_ERROR (gimp_data_error_quark ())
 

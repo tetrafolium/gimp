@@ -34,32 +34,32 @@ typedef struct _GimpToolPresetClass GimpToolPresetClass;
 
 struct _GimpToolPreset
 {
-    GimpData         parent_instance;
+	GimpData parent_instance;
 
-    Gimp            *gimp;
-    GimpToolOptions *tool_options;
+	Gimp            *gimp;
+	GimpToolOptions *tool_options;
 
-    gboolean         use_fg_bg;
-    gboolean         use_opacity_paint_mode;
-    gboolean         use_brush;
-    gboolean         use_dynamics;
-    gboolean         use_mybrush;
-    gboolean         use_gradient;
-    gboolean         use_pattern;
-    gboolean         use_palette;
-    gboolean         use_font;
+	gboolean use_fg_bg;
+	gboolean use_opacity_paint_mode;
+	gboolean use_brush;
+	gboolean use_dynamics;
+	gboolean use_mybrush;
+	gboolean use_gradient;
+	gboolean use_pattern;
+	gboolean use_palette;
+	gboolean use_font;
 };
 
 struct _GimpToolPresetClass
 {
-    GimpDataClass  parent_class;
+	GimpDataClass parent_class;
 };
 
 
 GType                 gimp_tool_preset_get_type      (void) G_GNUC_CONST;
 
 GimpData            * gimp_tool_preset_new           (GimpContext    *context,
-        const gchar    *unused);
+                                                      const gchar    *unused);
 
 GimpContextPropMask   gimp_tool_preset_get_prop_mask (GimpToolPreset *preset);
 

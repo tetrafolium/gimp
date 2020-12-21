@@ -30,21 +30,21 @@
 #define GIMP_DRAWABLE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DRAWABLE_UNDO, GimpDrawableUndoClass))
 
 
-typedef struct _GimpDrawableUndo      GimpDrawableUndo;
+typedef struct _GimpDrawableUndo GimpDrawableUndo;
 typedef struct _GimpDrawableUndoClass GimpDrawableUndoClass;
 
 struct _GimpDrawableUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    GeglBuffer   *buffer;
-    gint          x;
-    gint          y;
+	GeglBuffer   *buffer;
+	gint x;
+	gint y;
 };
 
 struct _GimpDrawableUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

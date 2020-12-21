@@ -34,21 +34,21 @@
 
 
 typedef struct _GimpToolGroupPrivate GimpToolGroupPrivate;
-typedef struct _GimpToolGroupClass   GimpToolGroupClass;
+typedef struct _GimpToolGroupClass GimpToolGroupClass;
 
 struct _GimpToolGroup
 {
-    GimpToolItem          parent_instance;
+	GimpToolItem parent_instance;
 
-    GimpToolGroupPrivate *priv;
+	GimpToolGroupPrivate *priv;
 };
 
 struct _GimpToolGroupClass
 {
-    GimpToolItemClass  parent_class;
+	GimpToolItemClass parent_class;
 
-    /*  signals  */
-    void (* active_tool_changed) (GimpToolGroup *tool_group);
+	/*  signals  */
+	void (* active_tool_changed) (GimpToolGroup *tool_group);
 };
 
 
@@ -57,11 +57,11 @@ GType           gimp_tool_group_get_type             (void) G_GNUC_CONST;
 GimpToolGroup * gimp_tool_group_new                  (void);
 
 void            gimp_tool_group_set_active_tool      (GimpToolGroup *tool_group,
-        const gchar   *tool_name);
+                                                      const gchar   *tool_name);
 const gchar   * gimp_tool_group_get_active_tool      (GimpToolGroup *tool_group);
 
 void            gimp_tool_group_set_active_tool_info (GimpToolGroup *tool_group,
-        GimpToolInfo  *tool_info);
+                                                      GimpToolInfo  *tool_info);
 GimpToolInfo  * gimp_tool_group_get_active_tool_info (GimpToolGroup *tool_group);
 
 

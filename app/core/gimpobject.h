@@ -27,48 +27,48 @@
 #define GIMP_OBJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OBJECT, GimpObjectClass))
 
 
-typedef struct _GimpObjectPrivate  GimpObjectPrivate;
-typedef struct _GimpObjectClass    GimpObjectClass;
+typedef struct _GimpObjectPrivate GimpObjectPrivate;
+typedef struct _GimpObjectClass GimpObjectClass;
 
 struct _GimpObject
 {
-    GObject            parent_instance;
+	GObject parent_instance;
 
-    GimpObjectPrivate *p;
+	GimpObjectPrivate *p;
 };
 
 struct _GimpObjectClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    /*  signals  */
-    void    (* disconnect)   (GimpObject *object);
-    void    (* name_changed) (GimpObject *object);
+	/*  signals  */
+	void (* disconnect)   (GimpObject *object);
+	void (* name_changed) (GimpObject *object);
 
-    /*  virtual functions  */
-    gint64  (* get_memsize)  (GimpObject *object,
-                              gint64     *gui_size);
+	/*  virtual functions  */
+	gint64 (* get_memsize)  (GimpObject *object,
+	                         gint64     *gui_size);
 };
 
 
 GType         gimp_object_get_type        (void) G_GNUC_CONST;
 
 void          gimp_object_set_name        (GimpObject       *object,
-        const gchar      *name);
+                                           const gchar      *name);
 void          gimp_object_set_name_safe   (GimpObject       *object,
-        const gchar      *name);
+                                           const gchar      *name);
 void          gimp_object_set_static_name (GimpObject       *object,
-        const gchar      *name);
+                                           const gchar      *name);
 void          gimp_object_take_name       (GimpObject       *object,
-        gchar            *name);
-const gchar * gimp_object_get_name        (gconstpointer     object);
+                                           gchar            *name);
+const gchar * gimp_object_get_name        (gconstpointer object);
 void          gimp_object_name_changed    (GimpObject       *object);
 void          gimp_object_name_free       (GimpObject       *object);
 
 gint          gimp_object_name_collate    (GimpObject       *object1,
-        GimpObject       *object2);
+                                           GimpObject       *object2);
 gint64        gimp_object_get_memsize     (GimpObject       *object,
-        gint64           *gui_size);
+                                           gint64           *gui_size);
 
 
 #endif  /* __GIMP_OBJECT_H__ */

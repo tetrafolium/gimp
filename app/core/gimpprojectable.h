@@ -28,52 +28,52 @@ G_DECLARE_INTERFACE (GimpProjectable, gimp_projectable, GIMP, PROJECTABLE, GObje
 
 struct _GimpProjectableInterface
 {
-    GTypeInterface base_iface;
+	GTypeInterface base_iface;
 
-    /*  signals  */
-    void         (* invalidate)         (GimpProjectable *projectable,
-                                         gint             x,
-                                         gint             y,
-                                         gint             width,
-                                         gint             height);
-    void         (* flush)              (GimpProjectable *projectable,
-                                         gboolean         invalidate_preview);
-    void         (* structure_changed)  (GimpProjectable *projectable);
-    void         (* bounds_changed)     (GimpProjectable *projectable,
-                                         gint             old_x,
-                                         gint             old_y);
+	/*  signals  */
+	void (* invalidate)         (GimpProjectable *projectable,
+	                             gint x,
+	                             gint y,
+	                             gint width,
+	                             gint height);
+	void (* flush)              (GimpProjectable *projectable,
+	                             gboolean invalidate_preview);
+	void (* structure_changed)  (GimpProjectable *projectable);
+	void (* bounds_changed)     (GimpProjectable *projectable,
+	                             gint old_x,
+	                             gint old_y);
 
-    /*  virtual functions  */
-    GimpImage  * (* get_image)          (GimpProjectable *projectable);
-    const Babl * (* get_format)         (GimpProjectable *projectable);
-    void         (* get_offset)         (GimpProjectable *projectable,
-                                         gint            *x,
-                                         gint            *y);
-    GeglRectangle (* get_bounding_box)  (GimpProjectable *projectable);
-    GeglNode   * (* get_graph)          (GimpProjectable *projectable);
-    void         (* begin_render)       (GimpProjectable *projectable);
-    void         (* end_render)         (GimpProjectable *projectable);
-    void         (* invalidate_preview) (GimpProjectable *projectable);
+	/*  virtual functions  */
+	GimpImage  * (* get_image)          (GimpProjectable *projectable);
+	const Babl * (* get_format)         (GimpProjectable *projectable);
+	void (* get_offset)         (GimpProjectable *projectable,
+	                             gint            *x,
+	                             gint            *y);
+	GeglRectangle (* get_bounding_box)  (GimpProjectable *projectable);
+	GeglNode   * (* get_graph)          (GimpProjectable *projectable);
+	void (* begin_render)       (GimpProjectable *projectable);
+	void (* end_render)         (GimpProjectable *projectable);
+	void (* invalidate_preview) (GimpProjectable *projectable);
 };
 
 
 void         gimp_projectable_invalidate         (GimpProjectable *projectable,
-        gint             x,
-        gint             y,
-        gint             width,
-        gint             height);
+                                                  gint x,
+                                                  gint y,
+                                                  gint width,
+                                                  gint height);
 void         gimp_projectable_flush              (GimpProjectable *projectable,
-        gboolean         preview_invalidated);
+                                                  gboolean preview_invalidated);
 void         gimp_projectable_structure_changed  (GimpProjectable *projectable);
 void         gimp_projectable_bounds_changed     (GimpProjectable *projectable,
-        gint             old_x,
-        gint             old_y);
+                                                  gint old_x,
+                                                  gint old_y);
 
 GimpImage  * gimp_projectable_get_image          (GimpProjectable *projectable);
 const Babl * gimp_projectable_get_format         (GimpProjectable *projectable);
 void         gimp_projectable_get_offset         (GimpProjectable *projectable,
-        gint            *x,
-        gint            *y);
+                                                  gint            *x,
+                                                  gint            *y);
 GeglRectangle gimp_projectable_get_bounding_box  (GimpProjectable *projectable);
 GeglNode   * gimp_projectable_get_graph          (GimpProjectable *projectable);
 void         gimp_projectable_begin_render       (GimpProjectable *projectable);

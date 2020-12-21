@@ -21,7 +21,7 @@
 
 void   templates_actions_setup  (GimpActionGroup *group);
 void   templates_actions_update (GimpActionGroup *group,
-                                 gpointer         data);
+                                 gpointer data);
 
 
 #endif /* __TEMPLATES_COMMANDS_H__ */

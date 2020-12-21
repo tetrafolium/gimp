@@ -31,11 +31,11 @@
 
 void
 sample_points_sample_merged_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data)
+                                          GVariant   *value,
+                                          gpointer data)
 {
-    GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (data);
-    gboolean               active = g_variant_get_boolean (value);
+	GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (data);
+	gboolean active = g_variant_get_boolean (value);
 
-    gimp_sample_point_editor_set_sample_merged (editor, active);
+	gimp_sample_point_editor_set_sample_merged (editor, active);
 }

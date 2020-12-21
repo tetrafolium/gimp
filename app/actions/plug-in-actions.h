@@ -21,7 +21,7 @@
 
 void   plug_in_actions_setup  (GimpActionGroup *group);
 void   plug_in_actions_update (GimpActionGroup *group,
-                               gpointer         data);
+                               gpointer data);
 
 
 #endif /* __PLUG_IN_ACTIONS_H__ */

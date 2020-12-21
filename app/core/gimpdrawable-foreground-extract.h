@@ -20,12 +20,12 @@
 
 
 GeglBuffer * gimp_drawable_foreground_extract (GimpDrawable       *drawable,
-        GimpMattingEngine   engine,
-        gint                global_iterations,
-        gint                levin_levels,
-        gint                levin_active_levels,
-        GeglBuffer         *trimap,
-        GimpProgress       *progress);
+                                               GimpMattingEngine engine,
+                                               gint global_iterations,
+                                               gint levin_levels,
+                                               gint levin_active_levels,
+                                               GeglBuffer         *trimap,
+                                               GimpProgress       *progress);
 
 
 #endif  /*  __GIMP_DRAWABLE_FOREGROUND_EXTRACT_H__  */

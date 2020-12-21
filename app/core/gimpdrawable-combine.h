@@ -24,16 +24,16 @@
 void   gimp_drawable_real_apply_buffer (GimpDrawable           *drawable,
                                         GeglBuffer             *buffer,
                                         const GeglRectangle    *buffer_region,
-                                        gboolean                push_undo,
+                                        gboolean push_undo,
                                         const gchar            *undo_desc,
-                                        gdouble                 opacity,
-                                        GimpLayerMode           mode,
-                                        GimpLayerColorSpace     blend_space,
-                                        GimpLayerColorSpace     composite_space,
-                                        GimpLayerCompositeMode  composite_mode,
+                                        gdouble opacity,
+                                        GimpLayerMode mode,
+                                        GimpLayerColorSpace blend_space,
+                                        GimpLayerColorSpace composite_space,
+                                        GimpLayerCompositeMode composite_mode,
                                         GeglBuffer             *base_buffer,
-                                        gint                    base_x,
-                                        gint                    base_y);
+                                        gint base_x,
+                                        gint base_y);
 
 
 #endif /* __GIMP_DRAWABLE_COMBINE_H__ */

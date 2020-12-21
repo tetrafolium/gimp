@@ -37,14 +37,14 @@ typedef struct _GimpSettingsClass GimpSettingsClass;
 
 struct _GimpSettings
 {
-    GimpViewable  parent_instance;
+	GimpViewable parent_instance;
 
-    gint64        time;
+	gint64 time;
 };
 
 struct _GimpSettingsClass
 {
-    GimpViewableClass  parent_class;
+	GimpViewableClass parent_class;
 };
 
 

@@ -26,21 +26,21 @@ GimpContainer * gimp_drawable_get_filters   (GimpDrawable *drawable);
 gboolean        gimp_drawable_has_filters   (GimpDrawable *drawable);
 
 void            gimp_drawable_add_filter    (GimpDrawable *drawable,
-        GimpFilter   *filter);
+                                             GimpFilter   *filter);
 void            gimp_drawable_remove_filter (GimpDrawable *drawable,
-        GimpFilter   *filter);
+                                             GimpFilter   *filter);
 
 gboolean        gimp_drawable_has_filter    (GimpDrawable *drawable,
-        GimpFilter   *filter);
+                                             GimpFilter   *filter);
 
 gboolean        gimp_drawable_merge_filter  (GimpDrawable *drawable,
-        GimpFilter   *filter,
-        GimpProgress *progress,
-        const gchar  *undo_desc,
-        const Babl   *format,
-        gboolean      clip,
-        gboolean      cancellable,
-        gboolean      update);
+                                             GimpFilter   *filter,
+                                             GimpProgress *progress,
+                                             const gchar  *undo_desc,
+                                             const Babl   *format,
+                                             gboolean clip,
+                                             gboolean cancellable,
+                                             gboolean update);
 
 
 #endif /* __GIMP_DRAWABLE_FILTERS_H__ */

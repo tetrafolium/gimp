@@ -37,47 +37,47 @@
 void
 gimp_drawable_offset (GimpDrawable   *drawable,
                       GimpContext    *context,
-                      gboolean        wrap_around,
-                      GimpOffsetType  fill_type,
-                      gint            offset_x,
-                      gint            offset_y)
+                      gboolean wrap_around,
+                      GimpOffsetType fill_type,
+                      gint offset_x,
+                      gint offset_y)
 {
-    GeglNode *node;
-    gint      width;
-    gint      height;
+	GeglNode *node;
+	gint width;
+	gint height;
 
-    g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-    g_return_if_fail (GIMP_IS_CONTEXT (context));
+	g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+	g_return_if_fail (GIMP_IS_CONTEXT (context));
 
-    if (! gimp_item_mask_intersect (GIMP_ITEM (drawable),
-                                    NULL, NULL, &width, &height))
-    {
-        return;
-    }
+	if (!gimp_item_mask_intersect (GIMP_ITEM (drawable),
+	                               NULL, NULL, &width, &height))
+	{
+		return;
+	}
 
-    if (wrap_around)
-        fill_type = GIMP_OFFSET_WRAP_AROUND;
+	if (wrap_around)
+		fill_type = GIMP_OFFSET_WRAP_AROUND;
 
-    if (fill_type == GIMP_OFFSET_WRAP_AROUND)
-    {
-        offset_x %= width;
-        offset_y %= height;
-    }
+	if (fill_type == GIMP_OFFSET_WRAP_AROUND)
+	{
+		offset_x %= width;
+		offset_y %= height;
+	}
 
-    if (offset_x == 0 && offset_y == 0)
-        return;
+	if (offset_x == 0 && offset_y == 0)
+		return;
 
-    node = gegl_node_new_child (NULL,
-                                "operation", "gimp:offset",
-                                "context", context,
-                                "type",    fill_type,
-                                "x",       offset_x,
-                                "y",       offset_y,
-                                NULL);
+	node = gegl_node_new_child (NULL,
+	                            "operation", "gimp:offset",
+	                            "context", context,
+	                            "type",    fill_type,
+	                            "x",       offset_x,
+	                            "y",       offset_y,
+	                            NULL);
 
-    gimp_drawable_apply_operation (drawable, NULL,
-                                   C_("undo-type", "Offset Drawable"),
-                                   node);
+	gimp_drawable_apply_operation (drawable, NULL,
+	                               C_("undo-type", "Offset Drawable"),
+	                               node);
 
-    g_object_unref (node);
+	g_object_unref (node);
 }

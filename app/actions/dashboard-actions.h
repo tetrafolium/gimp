@@ -21,7 +21,7 @@
 
 void   dashboard_actions_setup  (GimpActionGroup *group);
 void   dashboard_actions_update (GimpActionGroup *group,
-                                 gpointer         data);
+                                 gpointer data);
 
 
 #endif /* __DASHBOARD_ACTIONS_H__ */

@@ -30,22 +30,22 @@
 #define GIMP_DISPLAY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DISPLAY, GimpDisplayClass))
 
 
-typedef struct _GimpDisplayClass   GimpDisplayClass;
+typedef struct _GimpDisplayClass GimpDisplayClass;
 typedef struct _GimpDisplayPrivate GimpDisplayPrivate;
 
 struct _GimpDisplay
 {
-    GimpObject          parent_instance;
+	GimpObject parent_instance;
 
-    Gimp               *gimp;
-    GimpDisplayConfig  *config;
+	Gimp               *gimp;
+	GimpDisplayConfig  *config;
 
-    GimpDisplayPrivate *priv;
+	GimpDisplayPrivate *priv;
 };
 
 struct _GimpDisplayClass
 {
-    GimpObjectClass     parent_class;
+	GimpObjectClass parent_class;
 };
 
 
@@ -53,7 +53,7 @@ GType         gimp_display_get_type  (void) G_GNUC_CONST;
 
 gint          gimp_display_get_id    (GimpDisplay *display);
 GimpDisplay * gimp_display_get_by_id (Gimp        *gimp,
-                                      gint         id);
+                                      gint id);
 
 Gimp        * gimp_display_get_gimp  (GimpDisplay *display);
 

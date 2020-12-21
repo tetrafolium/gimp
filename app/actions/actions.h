@@ -25,108 +25,108 @@ extern GimpActionFactory *global_action_factory;
 void               actions_init            (Gimp                 *gimp);
 void               actions_exit            (Gimp                 *gimp);
 
-Gimp             * action_data_get_gimp    (gpointer              data);
-GimpContext      * action_data_get_context (gpointer              data);
-GimpImage        * action_data_get_image   (gpointer              data);
-GimpDisplay      * action_data_get_display (gpointer              data);
-GimpDisplayShell * action_data_get_shell   (gpointer              data);
-GtkWidget        * action_data_get_widget  (gpointer              data);
-gint               action_data_sel_count   (gpointer              data);
+Gimp             * action_data_get_gimp    (gpointer data);
+GimpContext      * action_data_get_context (gpointer data);
+GimpImage        * action_data_get_image   (gpointer data);
+GimpDisplay      * action_data_get_display (gpointer data);
+GimpDisplayShell * action_data_get_shell   (gpointer data);
+GtkWidget        * action_data_get_widget  (gpointer data);
+gint               action_data_sel_count   (gpointer data);
 
-gdouble            action_select_value     (GimpActionSelectType  select_type,
-        gdouble               value,
-        gdouble               min,
-        gdouble               max,
-        gdouble               def,
-        gdouble               small_inc,
-        gdouble               inc,
-        gdouble               skip_inc,
-        gdouble               delta_factor,
-        gboolean              wrap);
-void               action_select_property  (GimpActionSelectType  select_type,
-        GimpDisplay          *display,
-        GObject              *object,
-        const gchar          *property_name,
-        gdouble               small_inc,
-        gdouble               inc,
-        gdouble               skip_inc,
-        gdouble               delta_factor,
-        gboolean              wrap);
-GimpObject       * action_select_object    (GimpActionSelectType  select_type,
-        GimpContainer        *container,
-        GimpObject           *current);
+gdouble            action_select_value     (GimpActionSelectType select_type,
+                                            gdouble value,
+                                            gdouble min,
+                                            gdouble max,
+                                            gdouble def,
+                                            gdouble small_inc,
+                                            gdouble inc,
+                                            gdouble skip_inc,
+                                            gdouble delta_factor,
+                                            gboolean wrap);
+void               action_select_property  (GimpActionSelectType select_type,
+                                            GimpDisplay          *display,
+                                            GObject              *object,
+                                            const gchar          *property_name,
+                                            gdouble small_inc,
+                                            gdouble inc,
+                                            gdouble skip_inc,
+                                            gdouble delta_factor,
+                                            gboolean wrap);
+GimpObject       * action_select_object    (GimpActionSelectType select_type,
+                                            GimpContainer        *container,
+                                            GimpObject           *current);
 void               action_message          (GimpDisplay          *display,
-        GObject              *object,
-        const gchar          *format,
-        ...) G_GNUC_PRINTF(3,4);
+                                            GObject              *object,
+                                            const gchar          *format,
+                                            ...) G_GNUC_PRINTF(3,4);
 
 
 #define return_if_no_gimp(gimp,data) \
-  gimp = action_data_get_gimp (data); \
-  if (! gimp) \
-    return
+	gimp = action_data_get_gimp (data); \
+	if (!gimp) \
+	return
 
 #define return_if_no_context(context,data) \
-  context = action_data_get_context (data); \
-  if (! context) \
-    return
+	context = action_data_get_context (data); \
+	if (!context) \
+	return
 
 #define return_if_no_image(image,data) \
-  image = action_data_get_image (data); \
-  if (! image) \
-    return
+	image = action_data_get_image (data); \
+	if (!image) \
+	return
 
 #define return_if_no_display(display,data) \
-  display = action_data_get_display (data); \
-  if (! display) \
-    return
+	display = action_data_get_display (data); \
+	if (!display) \
+	return
 
 #define return_if_no_shell(shell,data) \
-  shell = action_data_get_shell (data); \
-  if (! shell) \
-    return
+	shell = action_data_get_shell (data); \
+	if (!shell) \
+	return
 
 #define return_if_no_widget(widget,data) \
-  widget = action_data_get_widget (data); \
-  if (! widget) \
-    return
+	widget = action_data_get_widget (data); \
+	if (!widget) \
+	return
 
 
 #define return_if_no_drawable(image,drawable,data) \
-  return_if_no_image (image,data); \
-  drawable = gimp_image_get_active_drawable (image); \
-  if (! drawable) \
-    return
+	return_if_no_image (image,data); \
+	drawable = gimp_image_get_active_drawable (image); \
+	if (!drawable) \
+	return
 
 #define return_if_no_drawables(image,drawables,data) \
-  return_if_no_image (image,data); \
-  drawables = gimp_image_get_selected_drawables (image); \
-  if (! drawables) \
-    return
+	return_if_no_image (image,data); \
+	drawables = gimp_image_get_selected_drawables (image); \
+	if (!drawables) \
+	return
 
 #define return_if_no_layer(image,layer,data) \
-  return_if_no_image (image,data); \
-  layer = gimp_image_get_active_layer (image); \
-  if (! layer) \
-    return
+	return_if_no_image (image,data); \
+	layer = gimp_image_get_active_layer (image); \
+	if (!layer) \
+	return
 
 #define return_if_no_layers(image,layers,data) \
-  return_if_no_image (image,data); \
-  layers = gimp_image_get_selected_layers (image); \
-  if (! layers) \
-    return
+	return_if_no_image (image,data); \
+	layers = gimp_image_get_selected_layers (image); \
+	if (!layers) \
+	return
 
 #define return_if_no_channel(image,channel,data) \
-  return_if_no_image (image,data); \
-  channel = gimp_image_get_active_channel (image); \
-  if (! channel) \
-    return
+	return_if_no_image (image,data); \
+	channel = gimp_image_get_active_channel (image); \
+	if (!channel) \
+	return
 
 #define return_if_no_vectors(image,vectors,data) \
-  return_if_no_image (image,data); \
-  vectors = gimp_image_get_active_vectors (image); \
-  if (! vectors) \
-    return
+	return_if_no_image (image,data); \
+	vectors = gimp_image_get_active_vectors (image); \
+	if (!vectors) \
+	return
 
 
 #endif /* __ACTIONS_H__ */

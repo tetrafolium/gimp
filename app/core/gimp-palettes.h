@@ -29,7 +29,7 @@ void          gimp_palettes_save              (Gimp          *gimp);
 
 GimpPalette * gimp_palettes_get_color_history (Gimp          *gimp);
 void          gimp_palettes_add_color_history (Gimp          *gimp,
-        const GimpRGB *color);
+                                               const GimpRGB *color);
 
 
 #endif /* __GIMP_PALETTES__ */

@@ -42,48 +42,48 @@ typedef struct _GimpImagefileClass GimpImagefileClass;
 
 struct _GimpImagefile
 {
-    GimpViewable  parent_instance;
+	GimpViewable parent_instance;
 };
 
 struct _GimpImagefileClass
 {
-    GimpViewableClass   parent_class;
+	GimpViewableClass parent_class;
 
-    void (* info_changed) (GimpImagefile *imagefile);
+	void (* info_changed) (GimpImagefile *imagefile);
 };
 
 
 GType           gimp_imagefile_get_type              (void) G_GNUC_CONST;
 
 GimpImagefile * gimp_imagefile_new                   (Gimp           *gimp,
-        GFile          *file);
+                                                      GFile          *file);
 
 GFile         * gimp_imagefile_get_file              (GimpImagefile  *imagefile);
 void            gimp_imagefile_set_file              (GimpImagefile  *imagefile,
-        GFile          *file);
+                                                      GFile          *file);
 
 GimpThumbnail * gimp_imagefile_get_thumbnail         (GimpImagefile  *imagefile);
 GIcon         * gimp_imagefile_get_gicon             (GimpImagefile  *imagefile);
 
 void            gimp_imagefile_set_mime_type         (GimpImagefile  *imagefile,
-        const gchar    *mime_type);
+                                                      const gchar    *mime_type);
 void            gimp_imagefile_update                (GimpImagefile  *imagefile);
 gboolean        gimp_imagefile_create_thumbnail      (GimpImagefile  *imagefile,
-        GimpContext    *context,
-        GimpProgress   *progress,
-        gint            size,
-        gboolean        replace,
-        GError        **error);
+                                                      GimpContext    *context,
+                                                      GimpProgress   *progress,
+                                                      gint size,
+                                                      gboolean replace,
+                                                      GError        **error);
 void            gimp_imagefile_create_thumbnail_weak (GimpImagefile  *imagefile,
-        GimpContext    *context,
-        GimpProgress   *progress,
-        gint            size,
-        gboolean        replace);
+                                                      GimpContext    *context,
+                                                      GimpProgress   *progress,
+                                                      gint size,
+                                                      gboolean replace);
 gboolean        gimp_imagefile_check_thumbnail       (GimpImagefile  *imagefile);
 gboolean        gimp_imagefile_save_thumbnail        (GimpImagefile  *imagefile,
-        const gchar    *mime_type,
-        GimpImage      *image,
-        GError        **error);
+                                                      const gchar    *mime_type,
+                                                      GimpImage      *image,
+                                                      GError        **error);
 const gchar   * gimp_imagefile_get_desc_string       (GimpImagefile  *imagefile);
 
 

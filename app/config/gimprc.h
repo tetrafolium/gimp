@@ -35,18 +35,18 @@ typedef struct _GimpRcClass GimpRcClass;
 
 struct _GimpRc
 {
-    GimpPluginConfig  parent_instance;
+	GimpPluginConfig parent_instance;
 
-    GFile            *user_gimprc;
-    GFile            *system_gimprc;
-    gboolean          verbose;
-    gboolean          autosave;
-    guint             save_idle_id;
+	GFile            *user_gimprc;
+	GFile            *system_gimprc;
+	gboolean verbose;
+	gboolean autosave;
+	guint save_idle_id;
 };
 
 struct _GimpRcClass
 {
-    GimpPluginConfigClass  parent_class;
+	GimpPluginConfigClass parent_class;
 };
 
 
@@ -55,13 +55,13 @@ GType     gimp_rc_get_type          (void) G_GNUC_CONST;
 GimpRc  * gimp_rc_new               (GObject     *gimp,
                                      GFile       *system_gimprc,
                                      GFile       *user_gimprc,
-                                     gboolean     verbose);
+                                     gboolean verbose);
 
 void      gimp_rc_load_system       (GimpRc      *rc);
 void      gimp_rc_load_user         (GimpRc      *rc);
 
 void      gimp_rc_set_autosave      (GimpRc      *rc,
-                                     gboolean     autosave);
+                                     gboolean autosave);
 void      gimp_rc_save              (GimpRc      *rc);
 
 gchar   * gimp_rc_query             (GimpRc      *rc,

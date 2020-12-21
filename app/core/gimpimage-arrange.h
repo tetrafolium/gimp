@@ -21,9 +21,9 @@
 
 void gimp_image_arrange_objects (GimpImage         *image,
                                  GList             *list,
-                                 GimpAlignmentType  alignment,
+                                 GimpAlignmentType alignment,
                                  GObject           *reference,
-                                 GimpAlignmentType  reference_alignment,
-                                 gint               offset);
+                                 GimpAlignmentType reference_alignment,
+                                 gint offset);
 
 #endif  /*  __GIMP_IMAGE_ARRANGE_H__  */

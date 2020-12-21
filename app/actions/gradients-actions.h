@@ -21,7 +21,7 @@
 
 void   gradients_actions_setup  (GimpActionGroup *group);
 void   gradients_actions_update (GimpActionGroup *group,
-                                 gpointer         user_data);
+                                 gpointer user_data);
 
 
 #endif /* __GRADIENT_ACTIONS_H__ */

@@ -57,12 +57,12 @@ typedef struct _GimpTemplateClass GimpTemplateClass;
 
 struct _GimpTemplate
 {
-    GimpViewable  parent_instance;
+	GimpViewable parent_instance;
 };
 
 struct _GimpTemplateClass
 {
-    GimpViewableClass  parent_instance;
+	GimpViewableClass parent_instance;
 };
 
 
@@ -70,27 +70,27 @@ GType               gimp_template_get_type            (void) G_GNUC_CONST;
 
 GimpTemplate      * gimp_template_new                 (const gchar  *name);
 
-void                gimp_template_set_from_image      (GimpTemplate *template,
-        GimpImage    *image);
+void gimp_template_set_from_image      (GimpTemplate *template,
+                                        GimpImage    *image);
 
-gint                gimp_template_get_width           (GimpTemplate *template);
-gint                gimp_template_get_height          (GimpTemplate *template);
-GimpUnit            gimp_template_get_unit            (GimpTemplate *template);
+gint gimp_template_get_width           (GimpTemplate *template);
+gint gimp_template_get_height          (GimpTemplate *template);
+GimpUnit gimp_template_get_unit            (GimpTemplate *template);
 
-gdouble             gimp_template_get_resolution_x    (GimpTemplate *template);
-gdouble             gimp_template_get_resolution_y    (GimpTemplate *template);
-GimpUnit            gimp_template_get_resolution_unit (GimpTemplate *template);
+gdouble gimp_template_get_resolution_x    (GimpTemplate *template);
+gdouble gimp_template_get_resolution_y    (GimpTemplate *template);
+GimpUnit gimp_template_get_resolution_unit (GimpTemplate *template);
 
-GimpImageBaseType   gimp_template_get_base_type       (GimpTemplate *template);
-GimpPrecision       gimp_template_get_precision       (GimpTemplate *template);
+GimpImageBaseType gimp_template_get_base_type       (GimpTemplate *template);
+GimpPrecision gimp_template_get_precision       (GimpTemplate *template);
 
 GimpColorProfile  * gimp_template_get_color_profile   (GimpTemplate *template);
 
-GimpFillType        gimp_template_get_fill_type       (GimpTemplate *template);
+GimpFillType gimp_template_get_fill_type       (GimpTemplate *template);
 
 const gchar       * gimp_template_get_comment         (GimpTemplate *template);
 
-guint64             gimp_template_get_initial_size    (GimpTemplate *template);
+guint64 gimp_template_get_initial_size    (GimpTemplate *template);
 
 
 #endif /* __GIMP_TEMPLATE__ */

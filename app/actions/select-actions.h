@@ -21,7 +21,7 @@
 
 void   select_actions_setup  (GimpActionGroup *group);
 void   select_actions_update (GimpActionGroup *group,
-                              gpointer         data);
+                              gpointer data);
 
 
 #endif /* __SELECT_ACTIONS_H__ */

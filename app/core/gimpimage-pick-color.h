@@ -21,14 +21,14 @@
 
 gboolean   gimp_image_pick_color (GimpImage     *image,
                                   GList         *drawables,
-                                  gint           x,
-                                  gint           y,
-                                  gboolean       show_all,
-                                  gboolean       sample_merged,
-                                  gboolean       sample_average,
-                                  gdouble        average_radius,
+                                  gint x,
+                                  gint y,
+                                  gboolean show_all,
+                                  gboolean sample_merged,
+                                  gboolean sample_average,
+                                  gdouble average_radius,
                                   const Babl   **sample_format,
-                                  gpointer       pixel,
+                                  gpointer pixel,
                                   GimpRGB       *color);
 
 

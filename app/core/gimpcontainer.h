@@ -34,51 +34,51 @@
 
 
 typedef gboolean (* GimpContainerSearchFunc) (GimpObject *object,
-        gpointer    user_data);
+                                              gpointer user_data);
 
 
-typedef struct _GimpContainerClass   GimpContainerClass;
+typedef struct _GimpContainerClass GimpContainerClass;
 typedef struct _GimpContainerPrivate GimpContainerPrivate;
 
 struct _GimpContainer
 {
-    GimpObject            parent_instance;
+	GimpObject parent_instance;
 
-    GimpContainerPrivate *priv;
+	GimpContainerPrivate *priv;
 };
 
 struct _GimpContainerClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 
-    /*  signals  */
-    void         (* add)                (GimpContainer           *container,
-                                         GimpObject              *object);
-    void         (* remove)             (GimpContainer           *container,
-                                         GimpObject              *object);
-    void         (* reorder)            (GimpContainer           *container,
-                                         GimpObject              *object,
-                                         gint                     new_index);
-    void         (* freeze)             (GimpContainer           *container);
-    void         (* thaw)               (GimpContainer           *container);
+	/*  signals  */
+	void (* add)                (GimpContainer           *container,
+	                             GimpObject              *object);
+	void (* remove)             (GimpContainer           *container,
+	                             GimpObject              *object);
+	void (* reorder)            (GimpContainer           *container,
+	                             GimpObject              *object,
+	                             gint new_index);
+	void (* freeze)             (GimpContainer           *container);
+	void (* thaw)               (GimpContainer           *container);
 
-    /*  virtual functions  */
-    void         (* clear)              (GimpContainer           *container);
-    gboolean     (* have)               (GimpContainer           *container,
-                                         GimpObject              *object);
-    void         (* foreach)            (GimpContainer           *container,
-                                         GFunc                    func,
-                                         gpointer                 user_data);
-    GimpObject * (* search)             (GimpContainer           *container,
-                                         GimpContainerSearchFunc  func,
-                                         gpointer                 user_data);
-    gboolean     (* get_unique_names)   (GimpContainer           *container);
-    GimpObject * (* get_child_by_name)  (GimpContainer           *container,
-                                         const gchar             *name);
-    GimpObject * (* get_child_by_index) (GimpContainer           *container,
-                                         gint                     index);
-    gint         (* get_child_index)    (GimpContainer           *container,
-                                         GimpObject              *object);
+	/*  virtual functions  */
+	void (* clear)              (GimpContainer           *container);
+	gboolean (* have)               (GimpContainer           *container,
+	                                 GimpObject              *object);
+	void (* foreach)            (GimpContainer           *container,
+	                             GFunc func,
+	                             gpointer user_data);
+	GimpObject * (* search)             (GimpContainer           *container,
+	                                     GimpContainerSearchFunc func,
+	                                     gpointer user_data);
+	gboolean (* get_unique_names)   (GimpContainer           *container);
+	GimpObject * (* get_child_by_name)  (GimpContainer           *container,
+	                                     const gchar             *name);
+	GimpObject * (* get_child_by_index) (GimpContainer           *container,
+	                                     gint index);
+	gint (* get_child_index)    (GimpContainer           *container,
+	                             GimpObject              *object);
 };
 
 
@@ -89,15 +89,15 @@ GimpContainerPolicy gimp_container_get_policy  (GimpContainer           *contain
 gint         gimp_container_get_n_children     (GimpContainer           *container);
 
 gboolean     gimp_container_add                (GimpContainer           *container,
-        GimpObject              *object);
+                                                GimpObject              *object);
 gboolean     gimp_container_remove             (GimpContainer           *container,
-        GimpObject              *object);
+                                                GimpObject              *object);
 gboolean     gimp_container_insert             (GimpContainer           *container,
-        GimpObject              *object,
-        gint                     new_index);
+                                                GimpObject              *object,
+                                                gint new_index);
 gboolean     gimp_container_reorder            (GimpContainer           *container,
-        GimpObject              *object,
-        gint                     new_index);
+                                                GimpObject              *object,
+                                                gint new_index);
 
 void         gimp_container_freeze             (GimpContainer           *container);
 void         gimp_container_thaw               (GimpContainer           *container);
@@ -107,44 +107,44 @@ gint         gimp_container_freeze_count       (GimpContainer           *contain
 void         gimp_container_clear              (GimpContainer           *container);
 gboolean     gimp_container_is_empty           (GimpContainer           *container);
 gboolean     gimp_container_have               (GimpContainer           *container,
-        GimpObject              *object);
+                                                GimpObject              *object);
 void         gimp_container_foreach            (GimpContainer           *container,
-        GFunc                    func,
-        gpointer                 user_data);
+                                                GFunc func,
+                                                gpointer user_data);
 GimpObject * gimp_container_search             (GimpContainer           *container,
-        GimpContainerSearchFunc  func,
-        gpointer                 user_data);
+                                                GimpContainerSearchFunc func,
+                                                gpointer user_data);
 
 gboolean     gimp_container_get_unique_names   (GimpContainer           *container);
 
 GimpObject * gimp_container_get_child_by_name  (GimpContainer           *container,
-        const gchar             *name);
+                                                const gchar             *name);
 GimpObject * gimp_container_get_child_by_index (GimpContainer           *container,
-        gint                     index);
+                                                gint index);
 GimpObject * gimp_container_get_first_child    (GimpContainer           *container);
 GimpObject * gimp_container_get_last_child     (GimpContainer           *container);
 gint         gimp_container_get_child_index    (GimpContainer           *container,
-        GimpObject              *object);
+                                                GimpObject              *object);
 
 GimpObject * gimp_container_get_neighbor_of    (GimpContainer           *container,
-        GimpObject              *object);
+                                                GimpObject              *object);
 
 gchar     ** gimp_container_get_name_array     (GimpContainer           *container,
-        gint                    *length);
+                                                gint                    *length);
 
 GQuark       gimp_container_add_handler        (GimpContainer           *container,
-        const gchar             *signame,
-        GCallback                callback,
-        gpointer                 callback_data);
+                                                const gchar             *signame,
+                                                GCallback callback,
+                                                gpointer callback_data);
 void         gimp_container_remove_handler     (GimpContainer           *container,
-        GQuark                   id);
+                                                GQuark id);
 void         gimp_container_remove_handlers_by_func
-(GimpContainer           *container,
- GCallback                callback,
- gpointer                 callback_data);
+        (GimpContainer           *container,
+        GCallback callback,
+        gpointer callback_data);
 void         gimp_container_remove_handlers_by_data
-(GimpContainer           *container,
- gpointer                 callback_data);
+        (GimpContainer           *container,
+        gpointer callback_data);
 
 
 #endif  /* __GIMP_CONTAINER_H__ */

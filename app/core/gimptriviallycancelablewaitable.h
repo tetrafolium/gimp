@@ -34,18 +34,18 @@
 
 
 typedef struct _GimpTriviallyCancelableWaitablePrivate GimpTriviallyCancelableWaitablePrivate;
-typedef struct _GimpTriviallyCancelableWaitableClass   GimpTriviallyCancelableWaitableClass;
+typedef struct _GimpTriviallyCancelableWaitableClass GimpTriviallyCancelableWaitableClass;
 
 struct _GimpTriviallyCancelableWaitable
 {
-    GimpUncancelableWaitable                parent_instance;
+	GimpUncancelableWaitable parent_instance;
 
-    GimpTriviallyCancelableWaitablePrivate *priv;
+	GimpTriviallyCancelableWaitablePrivate *priv;
 };
 
 struct _GimpTriviallyCancelableWaitableClass
 {
-    GimpUncancelableWaitableClass  parent_class;
+	GimpUncancelableWaitableClass parent_class;
 };
 
 

@@ -56,12 +56,12 @@
 
 
 static GimpLayer * gimp_image_merge_layers (GimpImage     *image,
-        GimpContainer *container,
-        GSList        *merge_list,
-        GimpContext   *context,
-        GimpMergeType  merge_type,
-        const gchar   *undo_desc,
-        GimpProgress  *progress);
+                                            GimpContainer *container,
+                                            GSList        *merge_list,
+                                            GimpContext   *context,
+                                            GimpMergeType merge_type,
+                                            const gchar   *undo_desc,
+                                            GimpProgress  *progress);
 
 
 /*  public functions  */
@@ -69,136 +69,136 @@ static GimpLayer * gimp_image_merge_layers (GimpImage     *image,
 GList *
 gimp_image_merge_visible_layers (GimpImage     *image,
                                  GimpContext   *context,
-                                 GimpMergeType  merge_type,
-                                 gboolean       merge_active_group,
-                                 gboolean       discard_invisible,
+                                 GimpMergeType merge_type,
+                                 gboolean merge_active_group,
+                                 gboolean discard_invisible,
                                  GimpProgress  *progress)
 {
-    const gchar *undo_desc  = C_("undo-type", "Merge Visible Layers");
-    GList       *containers = NULL;
-    GList       *new_layers = NULL;
-    GList       *iter;
-    GList       *iter2;
+	const gchar *undo_desc  = C_("undo-type", "Merge Visible Layers");
+	GList       *containers = NULL;
+	GList       *new_layers = NULL;
+	GList       *iter;
+	GList       *iter2;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
 
-    if (merge_active_group)
-    {
-        GList *selected_layers = gimp_image_get_selected_layers (image);
+	if (merge_active_group)
+	{
+		GList *selected_layers = gimp_image_get_selected_layers (image);
 
-        /*  if the active layer is the floating selection, get the
-         *  underlying drawable, but only if it is a layer
-         */
-        if (g_list_length (selected_layers) == 1 && gimp_layer_is_floating_sel (selected_layers->data))
-        {
-            GimpDrawable *fs_drawable;
+		/*  if the active layer is the floating selection, get the
+		 *  underlying drawable, but only if it is a layer
+		 */
+		if (g_list_length (selected_layers) == 1 && gimp_layer_is_floating_sel (selected_layers->data))
+		{
+			GimpDrawable *fs_drawable;
 
-            fs_drawable = gimp_layer_get_floating_sel_drawable (selected_layers->data);
+			fs_drawable = gimp_layer_get_floating_sel_drawable (selected_layers->data);
 
-            if (GIMP_IS_LAYER (fs_drawable))
-                containers = g_list_prepend (containers,
-                                             gimp_item_get_container (GIMP_ITEM (fs_drawable)));
-        }
-        else
-        {
-            for (iter = selected_layers; iter; iter = iter->next)
-                if (! gimp_item_get_parent (iter->data))
-                    break;
+			if (GIMP_IS_LAYER (fs_drawable))
+				containers = g_list_prepend (containers,
+				                             gimp_item_get_container (GIMP_ITEM (fs_drawable)));
+		}
+		else
+		{
+			for (iter = selected_layers; iter; iter = iter->next)
+				if (!gimp_item_get_parent (iter->data))
+					break;
 
-            /* No need to list selected groups if any selected layer is
-             * top-level.
-             */
-            if (iter == NULL)
-            {
-                for (iter = selected_layers; iter; iter = iter->next)
-                {
-                    for (iter2 = selected_layers; iter2; iter2 = iter2->next)
-                    {
-                        /* Only retain a selected layer's container if no
-                         * other selected layers are its parents.
-                         */
-                        if (iter->data != iter2->data &&
-                                gimp_viewable_is_ancestor (iter2->data, iter->data))
-                            break;
-                    }
-                    if (iter2 == NULL &&
-                            ! g_list_find (containers, gimp_item_get_container (GIMP_ITEM (iter->data))))
-                        containers = g_list_prepend (containers,
-                                                     gimp_item_get_container (GIMP_ITEM (iter->data)));
-                }
-            }
-        }
-    }
-    if (! containers)
-        containers = g_list_prepend (NULL, gimp_image_get_layers (image));
+			/* No need to list selected groups if any selected layer is
+			 * top-level.
+			 */
+			if (iter == NULL)
+			{
+				for (iter = selected_layers; iter; iter = iter->next)
+				{
+					for (iter2 = selected_layers; iter2; iter2 = iter2->next)
+					{
+						/* Only retain a selected layer's container if no
+						 * other selected layers are its parents.
+						 */
+						if (iter->data != iter2->data &&
+						    gimp_viewable_is_ancestor (iter2->data, iter->data))
+							break;
+					}
+					if (iter2 == NULL &&
+					    !g_list_find (containers, gimp_item_get_container (GIMP_ITEM (iter->data))))
+						containers = g_list_prepend (containers,
+						                             gimp_item_get_container (GIMP_ITEM (iter->data)));
+				}
+			}
+		}
+	}
+	if (!containers)
+		containers = g_list_prepend (NULL, gimp_image_get_layers (image));
 
-    gimp_set_busy (image->gimp);
-    gimp_image_undo_group_start (image,
-                                 GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
-                                 undo_desc);
+	gimp_set_busy (image->gimp);
+	gimp_image_undo_group_start (image,
+	                             GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
+	                             undo_desc);
 
-    for (iter = containers; iter; iter = iter->next)
-    {
-        GimpContainer *container      = iter->data;
-        GSList        *merge_list     = NULL;
-        GSList        *invisible_list = NULL;
+	for (iter = containers; iter; iter = iter->next)
+	{
+		GimpContainer *container      = iter->data;
+		GSList        *merge_list     = NULL;
+		GSList        *invisible_list = NULL;
 
-        for (iter2 = gimp_item_stack_get_item_iter (GIMP_ITEM_STACK (container));
-                iter2;
-                iter2 = g_list_next (iter2))
-        {
-            GimpLayer *layer = iter2->data;
+		for (iter2 = gimp_item_stack_get_item_iter (GIMP_ITEM_STACK (container));
+		     iter2;
+		     iter2 = g_list_next (iter2))
+		{
+			GimpLayer *layer = iter2->data;
 
-            if (gimp_layer_is_floating_sel (layer))
-                continue;
+			if (gimp_layer_is_floating_sel (layer))
+				continue;
 
-            if (gimp_item_get_visible (GIMP_ITEM (layer)))
-            {
-                merge_list = g_slist_append (merge_list, layer);
-            }
-            else if (discard_invisible)
-            {
-                invisible_list = g_slist_append (invisible_list, layer);
-            }
-        }
+			if (gimp_item_get_visible (GIMP_ITEM (layer)))
+			{
+				merge_list = g_slist_append (merge_list, layer);
+			}
+			else if (discard_invisible)
+			{
+				invisible_list = g_slist_append (invisible_list, layer);
+			}
+		}
 
-        if (merge_list)
-        {
-            GimpLayer   *layer;
-            /* if there's a floating selection, anchor it */
-            if (gimp_image_get_floating_selection (image))
-                floating_sel_anchor (gimp_image_get_floating_selection (image));
+		if (merge_list)
+		{
+			GimpLayer   *layer;
+			/* if there's a floating selection, anchor it */
+			if (gimp_image_get_floating_selection (image))
+				floating_sel_anchor (gimp_image_get_floating_selection (image));
 
-            layer = gimp_image_merge_layers (image,
-                                             container,
-                                             merge_list, context, merge_type,
-                                             undo_desc, progress);
-            g_slist_free (merge_list);
+			layer = gimp_image_merge_layers (image,
+			                                 container,
+			                                 merge_list, context, merge_type,
+			                                 undo_desc, progress);
+			g_slist_free (merge_list);
 
-            if (invisible_list)
-            {
-                GSList *list;
+			if (invisible_list)
+			{
+				GSList *list;
 
-                for (list = invisible_list; list; list = g_slist_next (list))
-                    gimp_image_remove_layer (image, list->data, TRUE, NULL);
+				for (list = invisible_list; list; list = g_slist_next (list))
+					gimp_image_remove_layer (image, list->data, TRUE, NULL);
 
-                g_slist_free (invisible_list);
-            }
+				g_slist_free (invisible_list);
+			}
 
-            new_layers = g_list_prepend (new_layers, layer);
-        }
-    }
+			new_layers = g_list_prepend (new_layers, layer);
+		}
+	}
 
-    gimp_image_set_selected_layers (image, new_layers);
-    gimp_image_undo_group_end (image);
-    gimp_unset_busy (image->gimp);
+	gimp_image_set_selected_layers (image, new_layers);
+	gimp_image_undo_group_end (image);
+	gimp_unset_busy (image->gimp);
 
-    g_list_free (new_layers);
-    g_list_free (containers);
+	g_list_free (new_layers);
+	g_list_free (containers);
 
-    return gimp_image_get_selected_layers (image);
+	return gimp_image_get_selected_layers (image);
 }
 
 GimpLayer *
@@ -207,258 +207,258 @@ gimp_image_flatten (GimpImage     *image,
                     GimpProgress  *progress,
                     GError       **error)
 {
-    GList     *list;
-    GSList    *merge_list = NULL;
-    GimpLayer *layer;
+	GList     *list;
+	GSList    *merge_list = NULL;
+	GimpLayer *layer;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-    for (list = gimp_image_get_layer_iter (image);
-            list;
-            list = g_list_next (list))
-    {
-        layer = list->data;
+	for (list = gimp_image_get_layer_iter (image);
+	     list;
+	     list = g_list_next (list))
+	{
+		layer = list->data;
 
-        if (gimp_layer_is_floating_sel (layer))
-            continue;
+		if (gimp_layer_is_floating_sel (layer))
+			continue;
 
-        if (gimp_item_get_visible (GIMP_ITEM (layer)))
-            merge_list = g_slist_append (merge_list, layer);
-    }
+		if (gimp_item_get_visible (GIMP_ITEM (layer)))
+			merge_list = g_slist_append (merge_list, layer);
+	}
 
-    if (merge_list)
-    {
-        const gchar *undo_desc = C_("undo-type", "Flatten Image");
+	if (merge_list)
+	{
+		const gchar *undo_desc = C_("undo-type", "Flatten Image");
 
-        gimp_set_busy (image->gimp);
+		gimp_set_busy (image->gimp);
 
-        gimp_image_undo_group_start (image,
-                                     GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
-                                     undo_desc);
+		gimp_image_undo_group_start (image,
+		                             GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
+		                             undo_desc);
 
-        /* if there's a floating selection, anchor it */
-        if (gimp_image_get_floating_selection (image))
-            floating_sel_anchor (gimp_image_get_floating_selection (image));
+		/* if there's a floating selection, anchor it */
+		if (gimp_image_get_floating_selection (image))
+			floating_sel_anchor (gimp_image_get_floating_selection (image));
 
-        layer = gimp_image_merge_layers (image,
-                                         gimp_image_get_layers (image),
-                                         merge_list, context,
-                                         GIMP_FLATTEN_IMAGE,
-                                         undo_desc, progress);
-        g_slist_free (merge_list);
+		layer = gimp_image_merge_layers (image,
+		                                 gimp_image_get_layers (image),
+		                                 merge_list, context,
+		                                 GIMP_FLATTEN_IMAGE,
+		                                 undo_desc, progress);
+		g_slist_free (merge_list);
 
-        gimp_image_alpha_changed (image);
+		gimp_image_alpha_changed (image);
 
-        gimp_image_undo_group_end (image);
+		gimp_image_undo_group_end (image);
 
-        gimp_unset_busy (image->gimp);
+		gimp_unset_busy (image->gimp);
 
-        return layer;
-    }
+		return layer;
+	}
 
-    g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                         _("Cannot flatten an image without any visible layer."));
-    return NULL;
+	g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+	                     _("Cannot flatten an image without any visible layer."));
+	return NULL;
 }
 
 GList *
 gimp_image_merge_down (GimpImage      *image,
                        GList          *layers,
                        GimpContext    *context,
-                       GimpMergeType   merge_type,
+                       GimpMergeType merge_type,
                        GimpProgress   *progress,
                        GError        **error)
 {
-    GList       *merged_layers = NULL;
-    GList       *merge_lists   = NULL;
-    GSList      *merge_list    = NULL;
-    GimpLayer   *layer;
-    GList       *list;
-    const gchar *undo_desc;
+	GList       *merged_layers = NULL;
+	GList       *merge_lists   = NULL;
+	GSList      *merge_list    = NULL;
+	GimpLayer   *layer;
+	GList       *list;
+	const gchar *undo_desc;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-    layers = g_list_copy (layers);
-    while ((list = layers))
-    {
-        GList *list2;
+	layers = g_list_copy (layers);
+	while ((list = layers))
+	{
+		GList *list2;
 
-        g_return_val_if_fail (GIMP_IS_LAYER (list->data), NULL);
-        g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (list->data)), NULL);
+		g_return_val_if_fail (GIMP_IS_LAYER (list->data), NULL);
+		g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (list->data)), NULL);
 
-        if (gimp_layer_is_floating_sel (list->data))
-        {
-            g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                                 _("Cannot merge down a floating selection."));
-            g_list_free (layers);
-            g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
-            return NULL;
-        }
+		if (gimp_layer_is_floating_sel (list->data))
+		{
+			g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			                     _("Cannot merge down a floating selection."));
+			g_list_free (layers);
+			g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
+			return NULL;
+		}
 
-        if (! gimp_item_get_visible (GIMP_ITEM (list->data)))
-        {
-            g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                                 _("Cannot merge down an invisible layer."));
-            g_list_free (layers);
-            g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
-            return NULL;
-        }
+		if (!gimp_item_get_visible (GIMP_ITEM (list->data)))
+		{
+			g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			                     _("Cannot merge down an invisible layer."));
+			g_list_free (layers);
+			g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
+			return NULL;
+		}
 
-        for (list2 = gimp_item_get_container_iter (GIMP_ITEM (list->data));
-                list2;
-                list2 = g_list_next (list2))
-        {
-            if (list2->data == list->data)
-                break;
-        }
+		for (list2 = gimp_item_get_container_iter (GIMP_ITEM (list->data));
+		     list2;
+		     list2 = g_list_next (list2))
+		{
+			if (list2->data == list->data)
+				break;
+		}
 
-        layer = NULL;
-        for (list2 = g_list_next (list2);
-                list2;
-                list2 = g_list_next (list2))
-        {
-            layer = list2->data;
+		layer = NULL;
+		for (list2 = g_list_next (list2);
+		     list2;
+		     list2 = g_list_next (list2))
+		{
+			layer = list2->data;
 
-            if (gimp_item_get_visible (GIMP_ITEM (layer)))
-            {
-                if (gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
-                {
-                    g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                                         _("Cannot merge down to a layer group."));
-                    g_list_free (layers);
-                    g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
-                    return NULL;
-                }
+			if (gimp_item_get_visible (GIMP_ITEM (layer)))
+			{
+				if (gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
+				{
+					g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+					                     _("Cannot merge down to a layer group."));
+					g_list_free (layers);
+					g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
+					return NULL;
+				}
 
-                if (gimp_item_is_content_locked (GIMP_ITEM (layer)))
-                {
-                    g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                                         _("The layer to merge down to is locked."));
-                    g_list_free (layers);
-                    g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
-                    return NULL;
-                }
+				if (gimp_item_is_content_locked (GIMP_ITEM (layer)))
+				{
+					g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+					                     _("The layer to merge down to is locked."));
+					g_list_free (layers);
+					g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
+					return NULL;
+				}
 
-                break;
-            }
+				break;
+			}
 
-            layer = NULL;
-        }
+			layer = NULL;
+		}
 
-        if (! layer)
-        {
-            g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                                 _("There is no visible layer to merge down to."));
-            g_list_free (layers);
-            g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
-            return NULL;
-        }
+		if (!layer)
+		{
+			g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			                     _("There is no visible layer to merge down to."));
+			g_list_free (layers);
+			g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
+			return NULL;
+		}
 
-        merge_list = g_slist_append (merge_list, list->data);
-        layers     = g_list_delete_link (layers, layers);
+		merge_list = g_slist_append (merge_list, list->data);
+		layers     = g_list_delete_link (layers, layers);
 
-        if ((list = g_list_find (layers, layer)))
-        {
-            /* The next item is itself in the merge down list. Continue
-             * filling the same merge list instead of starting a new one.
-             */
-            layers = g_list_delete_link (layers, list);
-            layers = g_list_prepend (layers, layer);
+		if ((list = g_list_find (layers, layer)))
+		{
+			/* The next item is itself in the merge down list. Continue
+			 * filling the same merge list instead of starting a new one.
+			 */
+			layers = g_list_delete_link (layers, list);
+			layers = g_list_prepend (layers, layer);
 
-            continue;
-        }
+			continue;
+		}
 
-        merge_list  = g_slist_append (merge_list, layer);
-        merge_lists = g_list_prepend (merge_lists, merge_list);
-        merge_list  = NULL;
-    }
+		merge_list  = g_slist_append (merge_list, layer);
+		merge_lists = g_list_prepend (merge_lists, merge_list);
+		merge_list  = NULL;
+	}
 
-    undo_desc = C_("undo-type", "Merge Down");
+	undo_desc = C_("undo-type", "Merge Down");
 
-    gimp_set_busy (image->gimp);
+	gimp_set_busy (image->gimp);
 
-    gimp_image_undo_group_start (image,
-                                 GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
-                                 undo_desc);
+	gimp_image_undo_group_start (image,
+	                             GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
+	                             undo_desc);
 
-    for (list = merge_lists; list; list = list->next)
-    {
-        merge_list = list->data;
-        layer = gimp_image_merge_layers (image,
-                                         gimp_item_get_container (merge_list->data),
-                                         merge_list, context, merge_type,
-                                         undo_desc, progress);
-        merged_layers = g_list_prepend (merged_layers, layer);
-    }
+	for (list = merge_lists; list; list = list->next)
+	{
+		merge_list = list->data;
+		layer = gimp_image_merge_layers (image,
+		                                 gimp_item_get_container (merge_list->data),
+		                                 merge_list, context, merge_type,
+		                                 undo_desc, progress);
+		merged_layers = g_list_prepend (merged_layers, layer);
+	}
 
-    g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
+	g_list_free_full (merge_lists, (GDestroyNotify) g_slist_free);
 
-    gimp_image_undo_group_end (image);
+	gimp_image_undo_group_end (image);
 
-    gimp_unset_busy (image->gimp);
+	gimp_unset_busy (image->gimp);
 
-    return merged_layers;
+	return merged_layers;
 }
 
 GimpLayer *
 gimp_image_merge_group_layer (GimpImage      *image,
                               GimpGroupLayer *group)
 {
-    GimpLayer *parent;
-    GimpLayer *layer;
-    gint       index;
+	GimpLayer *parent;
+	GimpLayer *layer;
+	gint index;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (GIMP_IS_GROUP_LAYER (group), NULL);
-    g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (group)), NULL);
-    g_return_val_if_fail (gimp_item_get_image (GIMP_ITEM (group)) == image, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_GROUP_LAYER (group), NULL);
+	g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (group)), NULL);
+	g_return_val_if_fail (gimp_item_get_image (GIMP_ITEM (group)) == image, NULL);
 
-    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
-                                 C_("undo-type", "Merge Layer Group"));
+	gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_LAYERS_MERGE,
+	                             C_("undo-type", "Merge Layer Group"));
 
-    parent = gimp_layer_get_parent (GIMP_LAYER (group));
-    index  = gimp_item_get_index (GIMP_ITEM (group));
+	parent = gimp_layer_get_parent (GIMP_LAYER (group));
+	index  = gimp_item_get_index (GIMP_ITEM (group));
 
-    /* if this is a pass-through group, change its mode to NORMAL *before*
-     * duplicating it, since PASS_THROUGH mode is invalid for regular layers.
-     * see bug #793714.
-     */
-    if (gimp_layer_get_mode (GIMP_LAYER (group)) == GIMP_LAYER_MODE_PASS_THROUGH)
-    {
-        GimpLayerColorSpace    blend_space;
-        GimpLayerColorSpace    composite_space;
-        GimpLayerCompositeMode composite_mode;
+	/* if this is a pass-through group, change its mode to NORMAL *before*
+	 * duplicating it, since PASS_THROUGH mode is invalid for regular layers.
+	 * see bug #793714.
+	 */
+	if (gimp_layer_get_mode (GIMP_LAYER (group)) == GIMP_LAYER_MODE_PASS_THROUGH)
+	{
+		GimpLayerColorSpace blend_space;
+		GimpLayerColorSpace composite_space;
+		GimpLayerCompositeMode composite_mode;
 
-        /* keep the group's current blend space, composite space, and composite
-         * mode.
-         */
-        blend_space     = gimp_layer_get_blend_space     (GIMP_LAYER (group));
-        composite_space = gimp_layer_get_composite_space (GIMP_LAYER (group));
-        composite_mode  = gimp_layer_get_composite_mode  (GIMP_LAYER (group));
+		/* keep the group's current blend space, composite space, and composite
+		 * mode.
+		 */
+		blend_space     = gimp_layer_get_blend_space     (GIMP_LAYER (group));
+		composite_space = gimp_layer_get_composite_space (GIMP_LAYER (group));
+		composite_mode  = gimp_layer_get_composite_mode  (GIMP_LAYER (group));
 
-        gimp_layer_set_mode            (GIMP_LAYER (group), GIMP_LAYER_MODE_NORMAL, TRUE);
-        gimp_layer_set_blend_space     (GIMP_LAYER (group), blend_space,            TRUE);
-        gimp_layer_set_composite_space (GIMP_LAYER (group), composite_space,        TRUE);
-        gimp_layer_set_composite_mode  (GIMP_LAYER (group), composite_mode,         TRUE);
-    }
+		gimp_layer_set_mode            (GIMP_LAYER (group), GIMP_LAYER_MODE_NORMAL, TRUE);
+		gimp_layer_set_blend_space     (GIMP_LAYER (group), blend_space,            TRUE);
+		gimp_layer_set_composite_space (GIMP_LAYER (group), composite_space,        TRUE);
+		gimp_layer_set_composite_mode  (GIMP_LAYER (group), composite_mode,         TRUE);
+	}
 
-    layer = GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (group),
-                        GIMP_TYPE_LAYER));
+	layer = GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (group),
+	                                         GIMP_TYPE_LAYER));
 
-    gimp_object_set_name (GIMP_OBJECT (layer), gimp_object_get_name (group));
+	gimp_object_set_name (GIMP_OBJECT (layer), gimp_object_get_name (group));
 
-    gimp_image_remove_layer (image, GIMP_LAYER (group), TRUE, NULL);
-    gimp_image_add_layer (image, layer, parent, index, TRUE);
+	gimp_image_remove_layer (image, GIMP_LAYER (group), TRUE, NULL);
+	gimp_image_add_layer (image, layer, parent, index, TRUE);
 
-    gimp_image_undo_group_end (image);
+	gimp_image_undo_group_end (image);
 
-    return layer;
+	return layer;
 }
 
 
@@ -468,74 +468,74 @@ GimpVectors *
 gimp_image_merge_visible_vectors (GimpImage  *image,
                                   GError    **error)
 {
-    GList       *list;
-    GList       *merge_list = NULL;
-    GimpVectors *vectors;
+	GList       *list;
+	GList       *merge_list = NULL;
+	GimpVectors *vectors;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-    for (list = gimp_image_get_vectors_iter (image);
-            list;
-            list = g_list_next (list))
-    {
-        vectors = list->data;
+	for (list = gimp_image_get_vectors_iter (image);
+	     list;
+	     list = g_list_next (list))
+	{
+		vectors = list->data;
 
-        if (gimp_item_get_visible (GIMP_ITEM (vectors)))
-            merge_list = g_list_prepend (merge_list, vectors);
-    }
+		if (gimp_item_get_visible (GIMP_ITEM (vectors)))
+			merge_list = g_list_prepend (merge_list, vectors);
+	}
 
-    merge_list = g_list_reverse (merge_list);
+	merge_list = g_list_reverse (merge_list);
 
-    if (merge_list && merge_list->next)
-    {
-        GimpVectors *target_vectors;
-        gchar       *name;
-        gint         pos;
+	if (merge_list && merge_list->next)
+	{
+		GimpVectors *target_vectors;
+		gchar       *name;
+		gint pos;
 
-        gimp_set_busy (image->gimp);
+		gimp_set_busy (image->gimp);
 
-        gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_VECTORS_MERGE,
-                                     C_("undo-type", "Merge Visible Paths"));
+		gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_VECTORS_MERGE,
+		                             C_("undo-type", "Merge Visible Paths"));
 
-        vectors = GIMP_VECTORS (merge_list->data);
+		vectors = GIMP_VECTORS (merge_list->data);
 
-        name = g_strdup (gimp_object_get_name (vectors));
-        pos = gimp_item_get_index (GIMP_ITEM (vectors));
+		name = g_strdup (gimp_object_get_name (vectors));
+		pos = gimp_item_get_index (GIMP_ITEM (vectors));
 
-        target_vectors = GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
-                                       GIMP_TYPE_VECTORS));
-        gimp_image_remove_vectors (image, vectors, TRUE, NULL);
+		target_vectors = GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
+		                                                    GIMP_TYPE_VECTORS));
+		gimp_image_remove_vectors (image, vectors, TRUE, NULL);
 
-        for (list = g_list_next (merge_list);
-                list;
-                list = g_list_next (list))
-        {
-            vectors = list->data;
+		for (list = g_list_next (merge_list);
+		     list;
+		     list = g_list_next (list))
+		{
+			vectors = list->data;
 
-            gimp_vectors_add_strokes (vectors, target_vectors);
-            gimp_image_remove_vectors (image, vectors, TRUE, NULL);
-        }
+			gimp_vectors_add_strokes (vectors, target_vectors);
+			gimp_image_remove_vectors (image, vectors, TRUE, NULL);
+		}
 
-        gimp_object_take_name (GIMP_OBJECT (target_vectors), name);
+		gimp_object_take_name (GIMP_OBJECT (target_vectors), name);
 
-        g_list_free (merge_list);
+		g_list_free (merge_list);
 
-        /* FIXME tree */
-        gimp_image_add_vectors (image, target_vectors, NULL, pos, TRUE);
-        gimp_unset_busy (image->gimp);
+		/* FIXME tree */
+		gimp_image_add_vectors (image, target_vectors, NULL, pos, TRUE);
+		gimp_unset_busy (image->gimp);
 
-        gimp_image_undo_group_end (image);
+		gimp_image_undo_group_end (image);
 
-        return target_vectors;
-    }
-    else
-    {
-        g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                             _("Not enough visible paths for a merge. "
-                               "There must be at least two."));
-        return NULL;
-    }
+		return target_vectors;
+	}
+	else
+	{
+		g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+		                     _("Not enough visible paths for a merge. "
+		                       "There must be at least two."));
+		return NULL;
+	}
 }
 
 
@@ -546,268 +546,268 @@ gimp_image_merge_layers (GimpImage     *image,
                          GimpContainer *container,
                          GSList        *merge_list,
                          GimpContext   *context,
-                         GimpMergeType  merge_type,
+                         GimpMergeType merge_type,
                          const gchar   *undo_desc,
                          GimpProgress  *progress)
 {
-    GimpLayer        *parent;
-    gint              x1, y1;
-    gint              x2, y2;
-    GSList           *layers;
-    GimpLayer        *layer;
-    GimpLayer        *top_layer;
-    GimpLayer        *bottom_layer;
-    GimpLayer        *merge_layer;
-    gint              position;
-    GeglNode         *node;
-    GeglNode         *source_node;
-    GeglNode         *flatten_node;
-    GeglNode         *offset_node;
-    GeglNode         *last_node;
-    GeglNode         *last_node_source;
-    GimpParasiteList *parasites;
+	GimpLayer        *parent;
+	gint x1, y1;
+	gint x2, y2;
+	GSList           *layers;
+	GimpLayer        *layer;
+	GimpLayer        *top_layer;
+	GimpLayer        *bottom_layer;
+	GimpLayer        *merge_layer;
+	gint position;
+	GeglNode         *node;
+	GeglNode         *source_node;
+	GeglNode         *flatten_node;
+	GeglNode         *offset_node;
+	GeglNode         *last_node;
+	GeglNode         *last_node_source;
+	GimpParasiteList *parasites;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
 
-    top_layer = merge_list->data;
-    parent    = gimp_layer_get_parent (top_layer);
+	top_layer = merge_list->data;
+	parent    = gimp_layer_get_parent (top_layer);
 
-    /*  Make sure the image's graph is constructed, so that top-level layers have
-     *  a parent node.
-     */
-    (void) gimp_projectable_get_graph (GIMP_PROJECTABLE (image));
+	/*  Make sure the image's graph is constructed, so that top-level layers have
+	 *  a parent node.
+	 */
+	(void) gimp_projectable_get_graph (GIMP_PROJECTABLE (image));
 
-    /*  Make sure the parent's graph is constructed, so that the top layer has a
-     *  parent node, even if it is the child of a group layer (in particular, of
-     *  an invisible group layer, whose graph may not have been constructed as a
-     *  result of the above call.  see issue #2095.)
-     */
-    if (parent)
-        (void) gimp_filter_get_node (GIMP_FILTER (parent));
+	/*  Make sure the parent's graph is constructed, so that the top layer has a
+	 *  parent node, even if it is the child of a group layer (in particular, of
+	 *  an invisible group layer, whose graph may not have been constructed as a
+	 *  result of the above call.  see issue #2095.)
+	 */
+	if (parent)
+		(void) gimp_filter_get_node (GIMP_FILTER (parent));
 
-    /*  Build our graph inside the top-layer's parent node  */
-    source_node = gimp_filter_get_node (GIMP_FILTER (top_layer));
-    node = gegl_node_get_parent (source_node);
+	/*  Build our graph inside the top-layer's parent node  */
+	source_node = gimp_filter_get_node (GIMP_FILTER (top_layer));
+	node = gegl_node_get_parent (source_node);
 
-    g_return_val_if_fail (node, NULL);
+	g_return_val_if_fail (node, NULL);
 
-    /*  Get the layer extents  */
-    x1 = y1 = 0;
-    x2 = y2 = 0;
-    for (layers = merge_list; layers; layers = g_slist_next (layers))
-    {
-        gint off_x, off_y;
+	/*  Get the layer extents  */
+	x1 = y1 = 0;
+	x2 = y2 = 0;
+	for (layers = merge_list; layers; layers = g_slist_next (layers))
+	{
+		gint off_x, off_y;
 
-        layer = layers->data;
+		layer = layers->data;
 
-        gimp_item_get_offset (GIMP_ITEM (layer), &off_x, &off_y);
+		gimp_item_get_offset (GIMP_ITEM (layer), &off_x, &off_y);
 
-        switch (merge_type)
-        {
-        case GIMP_EXPAND_AS_NECESSARY:
-        case GIMP_CLIP_TO_IMAGE:
-            if (layers == merge_list)
-            {
-                x1 = off_x;
-                y1 = off_y;
-                x2 = off_x + gimp_item_get_width  (GIMP_ITEM (layer));
-                y2 = off_y + gimp_item_get_height (GIMP_ITEM (layer));
-            }
-            else
-            {
-                if (off_x < x1)
-                    x1 = off_x;
-                if (off_y < y1)
-                    y1 = off_y;
-                if ((off_x + gimp_item_get_width (GIMP_ITEM (layer))) > x2)
-                    x2 = (off_x + gimp_item_get_width (GIMP_ITEM (layer)));
-                if ((off_y + gimp_item_get_height (GIMP_ITEM (layer))) > y2)
-                    y2 = (off_y + gimp_item_get_height (GIMP_ITEM (layer)));
-            }
+		switch (merge_type)
+		{
+		case GIMP_EXPAND_AS_NECESSARY:
+		case GIMP_CLIP_TO_IMAGE:
+			if (layers == merge_list)
+			{
+				x1 = off_x;
+				y1 = off_y;
+				x2 = off_x + gimp_item_get_width  (GIMP_ITEM (layer));
+				y2 = off_y + gimp_item_get_height (GIMP_ITEM (layer));
+			}
+			else
+			{
+				if (off_x < x1)
+					x1 = off_x;
+				if (off_y < y1)
+					y1 = off_y;
+				if ((off_x + gimp_item_get_width (GIMP_ITEM (layer))) > x2)
+					x2 = (off_x + gimp_item_get_width (GIMP_ITEM (layer)));
+				if ((off_y + gimp_item_get_height (GIMP_ITEM (layer))) > y2)
+					y2 = (off_y + gimp_item_get_height (GIMP_ITEM (layer)));
+			}
 
-            if (merge_type == GIMP_CLIP_TO_IMAGE)
-            {
-                x1 = CLAMP (x1, 0, gimp_image_get_width  (image));
-                y1 = CLAMP (y1, 0, gimp_image_get_height (image));
-                x2 = CLAMP (x2, 0, gimp_image_get_width  (image));
-                y2 = CLAMP (y2, 0, gimp_image_get_height (image));
-            }
-            break;
+			if (merge_type == GIMP_CLIP_TO_IMAGE)
+			{
+				x1 = CLAMP (x1, 0, gimp_image_get_width  (image));
+				y1 = CLAMP (y1, 0, gimp_image_get_height (image));
+				x2 = CLAMP (x2, 0, gimp_image_get_width  (image));
+				y2 = CLAMP (y2, 0, gimp_image_get_height (image));
+			}
+			break;
 
-        case GIMP_CLIP_TO_BOTTOM_LAYER:
-            if (layers->next == NULL)
-            {
-                x1 = off_x;
-                y1 = off_y;
-                x2 = off_x + gimp_item_get_width  (GIMP_ITEM (layer));
-                y2 = off_y + gimp_item_get_height (GIMP_ITEM (layer));
-            }
-            break;
+		case GIMP_CLIP_TO_BOTTOM_LAYER:
+			if (layers->next == NULL)
+			{
+				x1 = off_x;
+				y1 = off_y;
+				x2 = off_x + gimp_item_get_width  (GIMP_ITEM (layer));
+				y2 = off_y + gimp_item_get_height (GIMP_ITEM (layer));
+			}
+			break;
 
-        case GIMP_FLATTEN_IMAGE:
-            if (layers->next == NULL)
-            {
-                x1 = 0;
-                y1 = 0;
-                x2 = gimp_image_get_width  (image);
-                y2 = gimp_image_get_height (image);
-            }
-            break;
-        }
-    }
+		case GIMP_FLATTEN_IMAGE:
+			if (layers->next == NULL)
+			{
+				x1 = 0;
+				y1 = 0;
+				x2 = gimp_image_get_width  (image);
+				y2 = gimp_image_get_height (image);
+			}
+			break;
+		}
+	}
 
-    if ((x2 - x1) == 0 || (y2 - y1) == 0)
-        return NULL;
+	if ((x2 - x1) == 0 || (y2 - y1) == 0)
+		return NULL;
 
-    bottom_layer = layer;
+	bottom_layer = layer;
 
-    flatten_node = NULL;
+	flatten_node = NULL;
 
-    if (merge_type == GIMP_FLATTEN_IMAGE ||
-            (gimp_drawable_is_indexed (GIMP_DRAWABLE (layer)) &&
-             ! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer))))
-    {
-        GimpRGB bg;
+	if (merge_type == GIMP_FLATTEN_IMAGE ||
+	    (gimp_drawable_is_indexed (GIMP_DRAWABLE (layer)) &&
+	     !gimp_drawable_has_alpha (GIMP_DRAWABLE (layer))))
+	{
+		GimpRGB bg;
 
-        merge_layer = gimp_layer_new (image, (x2 - x1), (y2 - y1),
-                                      gimp_image_get_layer_format (image, FALSE),
-                                      gimp_object_get_name (bottom_layer),
-                                      GIMP_OPACITY_OPAQUE,
-                                      gimp_image_get_default_new_layer_mode (image));
+		merge_layer = gimp_layer_new (image, (x2 - x1), (y2 - y1),
+		                              gimp_image_get_layer_format (image, FALSE),
+		                              gimp_object_get_name (bottom_layer),
+		                              GIMP_OPACITY_OPAQUE,
+		                              gimp_image_get_default_new_layer_mode (image));
 
-        if (! merge_layer)
-        {
-            g_warning ("%s: could not allocate merge layer", G_STRFUNC);
+		if (!merge_layer)
+		{
+			g_warning ("%s: could not allocate merge layer", G_STRFUNC);
 
-            return NULL;
-        }
+			return NULL;
+		}
 
-        /*  get the background for compositing  */
-        gimp_context_get_background (context, &bg);
-        gimp_pickable_srgb_to_image_color (GIMP_PICKABLE (layer),
-                                           &bg, &bg);
+		/*  get the background for compositing  */
+		gimp_context_get_background (context, &bg);
+		gimp_pickable_srgb_to_image_color (GIMP_PICKABLE (layer),
+		                                   &bg, &bg);
 
-        flatten_node = gimp_gegl_create_flatten_node
-                       (&bg,
-                        gimp_drawable_get_space (GIMP_DRAWABLE (layer)),
-                        gimp_layer_get_real_composite_space (bottom_layer));
+		flatten_node = gimp_gegl_create_flatten_node
+		                       (&bg,
+		                       gimp_drawable_get_space (GIMP_DRAWABLE (layer)),
+		                       gimp_layer_get_real_composite_space (bottom_layer));
 
-        position = 0;
-    }
-    else
-    {
-        /*  The final merged layer inherits the name of the bottom most layer
-         *  and the resulting layer has an alpha channel whether or not the
-         *  original did. Opacity is set to 100% and the MODE is set to normal.
-         */
+		position = 0;
+	}
+	else
+	{
+		/*  The final merged layer inherits the name of the bottom most layer
+		 *  and the resulting layer has an alpha channel whether or not the
+		 *  original did. Opacity is set to 100% and the MODE is set to normal.
+		 */
 
-        merge_layer =
-            gimp_layer_new (image, (x2 - x1), (y2 - y1),
-                            gimp_drawable_get_format_with_alpha (GIMP_DRAWABLE (bottom_layer)),
-                            gimp_object_get_name (bottom_layer),
-                            GIMP_OPACITY_OPAQUE,
-                            gimp_image_get_default_new_layer_mode (image));
+		merge_layer =
+			gimp_layer_new (image, (x2 - x1), (y2 - y1),
+			                gimp_drawable_get_format_with_alpha (GIMP_DRAWABLE (bottom_layer)),
+			                gimp_object_get_name (bottom_layer),
+			                GIMP_OPACITY_OPAQUE,
+			                gimp_image_get_default_new_layer_mode (image));
 
-        if (! merge_layer)
-        {
-            g_warning ("%s: could not allocate merge layer", G_STRFUNC);
+		if (!merge_layer)
+		{
+			g_warning ("%s: could not allocate merge layer", G_STRFUNC);
 
-            return NULL;
-        }
+			return NULL;
+		}
 
-        /*  Find the index in the layer list of the bottom layer--we need this
-         *  in order to add the final, merged layer to the layer list correctly
-         */
-        position =
-            gimp_container_get_n_children (container) -
-            gimp_container_get_child_index (container, GIMP_OBJECT (bottom_layer));
-    }
+		/*  Find the index in the layer list of the bottom layer--we need this
+		 *  in order to add the final, merged layer to the layer list correctly
+		 */
+		position =
+			gimp_container_get_n_children (container) -
+			gimp_container_get_child_index (container, GIMP_OBJECT (bottom_layer));
+	}
 
-    gimp_item_set_offset (GIMP_ITEM (merge_layer), x1, y1);
+	gimp_item_set_offset (GIMP_ITEM (merge_layer), x1, y1);
 
-    offset_node = gegl_node_new_child (node,
-                                       "operation", "gegl:translate",
-                                       "x",         (gdouble) -x1,
-                                       "y",         (gdouble) -y1,
-                                       NULL);
+	offset_node = gegl_node_new_child (node,
+	                                   "operation", "gegl:translate",
+	                                   "x",         (gdouble) -x1,
+	                                   "y",         (gdouble) -y1,
+	                                   NULL);
 
-    if (flatten_node)
-    {
-        gegl_node_add_child (node, flatten_node);
-        g_object_unref (flatten_node);
+	if (flatten_node)
+	{
+		gegl_node_add_child (node, flatten_node);
+		g_object_unref (flatten_node);
 
-        gegl_node_link_many (source_node, flatten_node, offset_node, NULL);
-    }
-    else
-    {
-        gegl_node_link_many (source_node, offset_node, NULL);
-    }
+		gegl_node_link_many (source_node, flatten_node, offset_node, NULL);
+	}
+	else
+	{
+		gegl_node_link_many (source_node, offset_node, NULL);
+	}
 
-    /*  Disconnect the bottom-layer node's input  */
-    last_node        = gimp_filter_get_node (GIMP_FILTER (bottom_layer));
-    last_node_source = gegl_node_get_producer (last_node, "input", NULL);
+	/*  Disconnect the bottom-layer node's input  */
+	last_node        = gimp_filter_get_node (GIMP_FILTER (bottom_layer));
+	last_node_source = gegl_node_get_producer (last_node, "input", NULL);
 
-    gegl_node_disconnect (last_node, "input");
+	gegl_node_disconnect (last_node, "input");
 
-    /*  Render the graph into the merge layer  */
-    gimp_gegl_apply_operation (NULL, progress, undo_desc, offset_node,
-                               gimp_drawable_get_buffer (
-                                   GIMP_DRAWABLE (merge_layer)),
-                               NULL, FALSE);
+	/*  Render the graph into the merge layer  */
+	gimp_gegl_apply_operation (NULL, progress, undo_desc, offset_node,
+	                           gimp_drawable_get_buffer (
+					   GIMP_DRAWABLE (merge_layer)),
+	                           NULL, FALSE);
 
-    /*  Reconnect the bottom-layer node's input  */
-    if (last_node_source)
-        gegl_node_link (last_node_source, last_node);
+	/*  Reconnect the bottom-layer node's input  */
+	if (last_node_source)
+		gegl_node_link (last_node_source, last_node);
 
-    /*  Clean up the graph  */
-    gegl_node_remove_child (node, offset_node);
+	/*  Clean up the graph  */
+	gegl_node_remove_child (node, offset_node);
 
-    if (flatten_node)
-        gegl_node_remove_child (node, flatten_node);
+	if (flatten_node)
+		gegl_node_remove_child (node, flatten_node);
 
-    /* Copy the tattoo and parasites of the bottom layer to the new layer */
-    gimp_item_set_tattoo (GIMP_ITEM (merge_layer),
-                          gimp_item_get_tattoo (GIMP_ITEM (bottom_layer)));
+	/* Copy the tattoo and parasites of the bottom layer to the new layer */
+	gimp_item_set_tattoo (GIMP_ITEM (merge_layer),
+	                      gimp_item_get_tattoo (GIMP_ITEM (bottom_layer)));
 
-    parasites = gimp_item_get_parasites (GIMP_ITEM (bottom_layer));
-    parasites = gimp_parasite_list_copy (parasites);
-    gimp_item_set_parasites (GIMP_ITEM (merge_layer), parasites);
-    g_object_unref (parasites);
+	parasites = gimp_item_get_parasites (GIMP_ITEM (bottom_layer));
+	parasites = gimp_parasite_list_copy (parasites);
+	gimp_item_set_parasites (GIMP_ITEM (merge_layer), parasites);
+	g_object_unref (parasites);
 
-    /*  Remove the merged layers from the image  */
-    for (layers = merge_list; layers; layers = g_slist_next (layers))
-        gimp_image_remove_layer (image, layers->data, TRUE, NULL);
+	/*  Remove the merged layers from the image  */
+	for (layers = merge_list; layers; layers = g_slist_next (layers))
+		gimp_image_remove_layer (image, layers->data, TRUE, NULL);
 
-    gimp_item_set_visible (GIMP_ITEM (merge_layer), TRUE, FALSE);
+	gimp_item_set_visible (GIMP_ITEM (merge_layer), TRUE, FALSE);
 
-    /*  if the type is flatten, remove all the remaining layers  */
-    if (merge_type == GIMP_FLATTEN_IMAGE)
-    {
-        GList *list = gimp_image_get_layer_iter (image);
+	/*  if the type is flatten, remove all the remaining layers  */
+	if (merge_type == GIMP_FLATTEN_IMAGE)
+	{
+		GList *list = gimp_image_get_layer_iter (image);
 
-        while (list)
-        {
-            layer = list->data;
+		while (list)
+		{
+			layer = list->data;
 
-            list = g_list_next (list);
-            gimp_image_remove_layer (image, layer, TRUE, NULL);
-        }
+			list = g_list_next (list);
+			gimp_image_remove_layer (image, layer, TRUE, NULL);
+		}
 
-        gimp_image_add_layer (image, merge_layer, parent,
-                              position, TRUE);
-    }
-    else
-    {
-        /*  Add the layer to the image  */
-        gimp_image_add_layer (image, merge_layer, parent,
-                              gimp_container_get_n_children (container) -
-                              position + 1,
-                              TRUE);
-    }
+		gimp_image_add_layer (image, merge_layer, parent,
+		                      position, TRUE);
+	}
+	else
+	{
+		/*  Add the layer to the image  */
+		gimp_image_add_layer (image, merge_layer, parent,
+		                      gimp_container_get_n_children (container) -
+		                      position + 1,
+		                      TRUE);
+	}
 
-    gimp_drawable_update (GIMP_DRAWABLE (merge_layer), 0, 0, -1, -1);
+	gimp_drawable_update (GIMP_DRAWABLE (merge_layer), 0, 0, -1, -1);
 
-    return merge_layer;
+	return merge_layer;
 }

@@ -32,45 +32,45 @@ gimp_pattern_save (GimpData       *data,
                    GOutputStream  *output,
                    GError        **error)
 {
-    GimpPattern       *pattern = GIMP_PATTERN (data);
-    GimpTempBuf       *mask    = gimp_pattern_get_mask (pattern);
-    const Babl        *format  = gimp_temp_buf_get_format (mask);
-    GimpPatternHeader  header;
-    const gchar       *name;
-    gint               width;
-    gint               height;
+	GimpPattern       *pattern = GIMP_PATTERN (data);
+	GimpTempBuf       *mask    = gimp_pattern_get_mask (pattern);
+	const Babl        *format  = gimp_temp_buf_get_format (mask);
+	GimpPatternHeader header;
+	const gchar       *name;
+	gint width;
+	gint height;
 
-    name   = gimp_object_get_name (pattern);
-    width  = gimp_temp_buf_get_width  (mask);
-    height = gimp_temp_buf_get_height (mask);
+	name   = gimp_object_get_name (pattern);
+	width  = gimp_temp_buf_get_width  (mask);
+	height = gimp_temp_buf_get_height (mask);
 
-    header.header_size  = g_htonl (sizeof (GimpPatternHeader) +
-                                   strlen (name) + 1);
-    header.version      = g_htonl (1);
-    header.width        = g_htonl (width);
-    header.height       = g_htonl (height);
-    header.bytes        = g_htonl (babl_format_get_bytes_per_pixel (format));
-    header.magic_number = g_htonl (GIMP_PATTERN_MAGIC);
+	header.header_size  = g_htonl (sizeof (GimpPatternHeader) +
+	                               strlen (name) + 1);
+	header.version      = g_htonl (1);
+	header.width        = g_htonl (width);
+	header.height       = g_htonl (height);
+	header.bytes        = g_htonl (babl_format_get_bytes_per_pixel (format));
+	header.magic_number = g_htonl (GIMP_PATTERN_MAGIC);
 
-    if (! g_output_stream_write_all (output, &header, sizeof (header),
-                                     NULL, NULL, error))
-    {
-        return FALSE;
-    }
+	if (!g_output_stream_write_all (output, &header, sizeof (header),
+	                                NULL, NULL, error))
+	{
+		return FALSE;
+	}
 
-    if (! g_output_stream_write_all (output, name, strlen (name) + 1,
-                                     NULL, NULL, error))
-    {
-        return FALSE;
-    }
+	if (!g_output_stream_write_all (output, name, strlen (name) + 1,
+	                                NULL, NULL, error))
+	{
+		return FALSE;
+	}
 
-    if (! g_output_stream_write_all (output,
-                                     gimp_temp_buf_get_data (mask),
-                                     gimp_temp_buf_get_data_size (mask),
-                                     NULL, NULL, error))
-    {
-        return FALSE;
-    }
+	if (!g_output_stream_write_all (output,
+	                                gimp_temp_buf_get_data (mask),
+	                                gimp_temp_buf_get_data_size (mask),
+	                                NULL, NULL, error))
+	{
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }

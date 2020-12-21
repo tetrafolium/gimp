@@ -34,22 +34,22 @@ typedef struct _GimpSelectionClass GimpSelectionClass;
 
 struct _GimpSelection
 {
-    GimpChannel parent_instance;
+	GimpChannel parent_instance;
 
-    gint        suspend_count;
+	gint suspend_count;
 };
 
 struct _GimpSelectionClass
 {
-    GimpChannelClass parent_class;
+	GimpChannelClass parent_class;
 };
 
 
 GType         gimp_selection_get_type (void) G_GNUC_CONST;
 
 GimpChannel * gimp_selection_new      (GimpImage     *image,
-                                       gint           width,
-                                       gint           height);
+                                       gint width,
+                                       gint height);
 
 gint          gimp_selection_suspend  (GimpSelection *selection);
 gint          gimp_selection_resume   (GimpSelection *selection);
@@ -57,9 +57,9 @@ gint          gimp_selection_resume   (GimpSelection *selection);
 GeglBuffer  * gimp_selection_extract  (GimpSelection *selection,
                                        GList         *pickables,
                                        GimpContext   *context,
-                                       gboolean       cut_image,
-                                       gboolean       keep_indexed,
-                                       gboolean       add_alpha,
+                                       gboolean cut_image,
+                                       gboolean keep_indexed,
+                                       gboolean add_alpha,
                                        gint          *offset_x,
                                        gint          *offset_y,
                                        GError       **error);
@@ -67,9 +67,9 @@ GeglBuffer  * gimp_selection_extract  (GimpSelection *selection,
 GimpLayer   * gimp_selection_float    (GimpSelection *selection,
                                        GList         *drawables,
                                        GimpContext   *context,
-                                       gboolean       cut_image,
-                                       gint           off_x,
-                                       gint           off_y,
+                                       gboolean cut_image,
+                                       gint off_x,
+                                       gint off_y,
                                        GError       **error);
 
 

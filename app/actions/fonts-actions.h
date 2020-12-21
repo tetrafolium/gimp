@@ -21,7 +21,7 @@
 
 void   fonts_actions_setup  (GimpActionGroup *group);
 void   fonts_actions_update (GimpActionGroup *group,
-                             gpointer         data);
+                             gpointer data);
 
 
 #endif /* __FONTS_ACTIONS_H__ */

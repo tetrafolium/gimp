@@ -31,22 +31,22 @@ typedef struct _GimpParamSpecString GimpParamSpecString;
 
 struct _GimpParamSpecString
 {
-    GParamSpecString parent_instance;
+	GParamSpecString parent_instance;
 
-    guint            allow_non_utf8 : 1;
-    guint            non_empty      : 1;
+	guint allow_non_utf8 : 1;
+	guint non_empty      : 1;
 };
 
 GType        gimp_param_string_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_string     (const gchar *name,
-        const gchar *nick,
-        const gchar *blurb,
-        gboolean     allow_non_utf8,
-        gboolean     null_ok,
-        gboolean     non_empty,
-        const gchar *default_value,
-        GParamFlags  flags);
+                                         const gchar *nick,
+                                         const gchar *blurb,
+                                         gboolean allow_non_utf8,
+                                         gboolean null_ok,
+                                         gboolean non_empty,
+                                         const gchar *default_value,
+                                         GParamFlags flags);
 
 
 /*
@@ -62,22 +62,22 @@ typedef struct _GimpParamSpecEnum GimpParamSpecEnum;
 
 struct _GimpParamSpecEnum
 {
-    GParamSpecEnum  parent_instance;
+	GParamSpecEnum parent_instance;
 
-    GSList         *excluded_values;
+	GSList         *excluded_values;
 };
 
 GType        gimp_param_enum_get_type     (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_enum         (const gchar       *name,
-        const gchar       *nick,
-        const gchar       *blurb,
-        GType              enum_type,
-        gint               default_value,
-        GParamFlags        flags);
+                                           const gchar       *nick,
+                                           const gchar       *blurb,
+                                           GType enum_type,
+                                           gint default_value,
+                                           GParamFlags flags);
 
 void   gimp_param_spec_enum_exclude_value (GimpParamSpecEnum *espec,
-        gint               value);
+                                           gint value);
 
 
 /*  include the declaration of the remaining paramspecs, they are

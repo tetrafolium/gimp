@@ -21,7 +21,7 @@
 
 void   view_actions_setup  (GimpActionGroup *group);
 void   view_actions_update (GimpActionGroup *group,
-                            gpointer         data);
+                            gpointer data);
 
 
 #endif /* __VIEW_ACTIONS_H__ */

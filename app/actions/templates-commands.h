@@ -20,20 +20,20 @@
 
 
 void   templates_create_image_cmd_callback (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                            GVariant   *value,
+                                            gpointer data);
 void   templates_new_cmd_callback          (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                            GVariant   *value,
+                                            gpointer data);
 void   templates_duplicate_cmd_callback    (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                            GVariant   *value,
+                                            gpointer data);
 void   templates_edit_cmd_callback         (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                            GVariant   *value,
+                                            gpointer data);
 void   templates_delete_cmd_callback       (GimpAction *action,
-        GVariant   *value,
-        gpointer    data);
+                                            GVariant   *value,
+                                            gpointer data);
 
 
 #endif /* __TEMPLATES_COMMANDS_H__ */

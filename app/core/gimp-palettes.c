@@ -43,8 +43,8 @@
 /*  local function prototypes  */
 
 static GimpPalette * gimp_palettes_add_palette (Gimp        *gimp,
-        const gchar *name,
-        const gchar *id);
+                                                const gchar *name,
+                                                const gchar *id);
 
 
 /*  public functions  */
@@ -52,72 +52,72 @@ static GimpPalette * gimp_palettes_add_palette (Gimp        *gimp,
 void
 gimp_palettes_init (Gimp *gimp)
 {
-    GimpPalette *palette;
+	GimpPalette *palette;
 
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    palette = gimp_palettes_add_palette (gimp,
-                                         _("Color History"),
-                                         COLOR_HISTORY_KEY);
-    gimp_context_set_palette (gimp->user_context, palette);
+	palette = gimp_palettes_add_palette (gimp,
+	                                     _("Color History"),
+	                                     COLOR_HISTORY_KEY);
+	gimp_context_set_palette (gimp->user_context, palette);
 }
 
 void
 gimp_palettes_load (Gimp *gimp)
 {
-    GimpPalette *palette;
-    GFile       *file;
+	GimpPalette *palette;
+	GFile       *file;
 
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    palette = gimp_palettes_get_color_history (gimp);
+	palette = gimp_palettes_get_color_history (gimp);
 
-    file = gimp_directory_file ("colorrc", NULL);
+	file = gimp_directory_file ("colorrc", NULL);
 
-    if (gimp->be_verbose)
-        g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
+	if (gimp->be_verbose)
+		g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
 
-    gimp_palette_mru_load (GIMP_PALETTE_MRU (palette), file);
+	gimp_palette_mru_load (GIMP_PALETTE_MRU (palette), file);
 
-    g_object_unref (file);
+	g_object_unref (file);
 }
 
 void
 gimp_palettes_save (Gimp *gimp)
 {
-    GimpPalette *palette;
-    GFile       *file;
+	GimpPalette *palette;
+	GFile       *file;
 
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    palette = gimp_palettes_get_color_history (gimp);
+	palette = gimp_palettes_get_color_history (gimp);
 
-    file = gimp_directory_file ("colorrc", NULL);
+	file = gimp_directory_file ("colorrc", NULL);
 
-    if (gimp->be_verbose)
-        g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
+	if (gimp->be_verbose)
+		g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
 
-    gimp_palette_mru_save (GIMP_PALETTE_MRU (palette), file);
+	gimp_palette_mru_save (GIMP_PALETTE_MRU (palette), file);
 
-    g_object_unref (file);
+	g_object_unref (file);
 }
 
 GimpPalette *
 gimp_palettes_get_color_history (Gimp *gimp)
 {
-    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-    return g_object_get_data (G_OBJECT (gimp), COLOR_HISTORY_KEY);
+	return g_object_get_data (G_OBJECT (gimp), COLOR_HISTORY_KEY);
 }
 
 void
 gimp_palettes_add_color_history (Gimp          *gimp,
                                  const GimpRGB *color)
 {
-    GimpPalette *history;
+	GimpPalette *history;
 
-    history = gimp_palettes_get_color_history (gimp);
-    gimp_palette_mru_add (GIMP_PALETTE_MRU (history), color);
+	history = gimp_palettes_get_color_history (gimp);
+	gimp_palette_mru_add (GIMP_PALETTE_MRU (history), color);
 }
 
 /*  private functions  */
@@ -127,17 +127,17 @@ gimp_palettes_add_palette (Gimp        *gimp,
                            const gchar *name,
                            const gchar *id)
 {
-    GimpData *palette;
+	GimpData *palette;
 
-    palette = gimp_palette_mru_new (name);
+	palette = gimp_palette_mru_new (name);
 
-    gimp_data_make_internal (palette, id);
+	gimp_data_make_internal (palette, id);
 
-    gimp_container_add (gimp_data_factory_get_container (gimp->palette_factory),
-                        GIMP_OBJECT (palette));
-    g_object_unref (palette);
+	gimp_container_add (gimp_data_factory_get_container (gimp->palette_factory),
+	                    GIMP_OBJECT (palette));
+	g_object_unref (palette);
 
-    g_object_set_data (G_OBJECT (gimp), id, palette);
+	g_object_set_data (G_OBJECT (gimp), id, palette);
 
-    return GIMP_PALETTE (palette);
+	return GIMP_PALETTE (palette);
 }

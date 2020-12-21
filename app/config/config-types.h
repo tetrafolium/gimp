@@ -31,22 +31,22 @@
 #define GIMP_OPACITY_OPAQUE           1.0
 
 
-typedef struct _GimpGeglConfig       GimpGeglConfig;
-typedef struct _GimpCoreConfig       GimpCoreConfig;
-typedef struct _GimpDisplayConfig    GimpDisplayConfig;
-typedef struct _GimpGuiConfig        GimpGuiConfig;
-typedef struct _GimpDialogConfig     GimpDialogConfig;
-typedef struct _GimpLangRc           GimpLangRc;
-typedef struct _GimpPluginConfig     GimpPluginConfig;
-typedef struct _GimpRc               GimpRc;
+typedef struct _GimpGeglConfig GimpGeglConfig;
+typedef struct _GimpCoreConfig GimpCoreConfig;
+typedef struct _GimpDisplayConfig GimpDisplayConfig;
+typedef struct _GimpGuiConfig GimpGuiConfig;
+typedef struct _GimpDialogConfig GimpDialogConfig;
+typedef struct _GimpLangRc GimpLangRc;
+typedef struct _GimpPluginConfig GimpPluginConfig;
+typedef struct _GimpRc GimpRc;
 
-typedef struct _GimpXmlParser        GimpXmlParser;
+typedef struct _GimpXmlParser GimpXmlParser;
 
-typedef struct _GimpDisplayOptions   GimpDisplayOptions;
+typedef struct _GimpDisplayOptions GimpDisplayOptions;
 
 /* should be in core/core-types.h */
-typedef struct _GimpGrid             GimpGrid;
-typedef struct _GimpTemplate         GimpTemplate;
+typedef struct _GimpGrid GimpGrid;
+typedef struct _GimpTemplate GimpTemplate;
 
 
 /* for now these are defines, but can be turned into something

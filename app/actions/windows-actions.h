@@ -21,7 +21,7 @@
 
 void    windows_actions_setup                      (GimpActionGroup *group);
 void    windows_actions_update                     (GimpActionGroup *group,
-        gpointer         data);
+                                                    gpointer data);
 gchar * windows_actions_dock_window_to_action_name (GimpDockWindow  *dock_window);
 
 

@@ -37,47 +37,47 @@ typedef struct _GimpBrushCacheClass GimpBrushCacheClass;
 
 struct _GimpBrushCache
 {
-    GimpObject      parent_instance;
+	GimpObject parent_instance;
 
-    GDestroyNotify  data_destroy;
+	GDestroyNotify data_destroy;
 
-    GList          *cached_units;
+	GList          *cached_units;
 
-    gchar           debug_hit;
-    gchar           debug_miss;
+	gchar debug_hit;
+	gchar debug_miss;
 };
 
 struct _GimpBrushCacheClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
 GType            gimp_brush_cache_get_type (void) G_GNUC_CONST;
 
-GimpBrushCache * gimp_brush_cache_new      (GDestroyNotify  data_destory,
-        gchar           debug_hit,
-        gchar           debug_miss);
+GimpBrushCache * gimp_brush_cache_new      (GDestroyNotify data_destory,
+                                            gchar debug_hit,
+                                            gchar debug_miss);
 
 void             gimp_brush_cache_clear    (GimpBrushCache *cache);
 
 gconstpointer    gimp_brush_cache_get      (GimpBrushCache *cache,
-        gint            width,
-        gint            height,
-        gdouble         scale,
-        gdouble         aspect_ratio,
-        gdouble         angle,
-        gboolean        reflect,
-        gdouble         hardness);
+                                            gint width,
+                                            gint height,
+                                            gdouble scale,
+                                            gdouble aspect_ratio,
+                                            gdouble angle,
+                                            gboolean reflect,
+                                            gdouble hardness);
 void             gimp_brush_cache_add      (GimpBrushCache *cache,
-        gpointer        data,
-        gint            width,
-        gint            height,
-        gdouble         scale,
-        gdouble         aspect_ratio,
-        gdouble         angle,
-        gboolean        reflect,
-        gdouble         hardness);
+                                            gpointer data,
+                                            gint width,
+                                            gint height,
+                                            gdouble scale,
+                                            gdouble aspect_ratio,
+                                            gdouble angle,
+                                            gboolean reflect,
+                                            gdouble hardness);
 
 
 #endif  /*  __GIMP_BRUSH_CACHE_H__  */

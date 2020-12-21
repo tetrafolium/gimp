@@ -43,74 +43,74 @@
 void
 images_raise_views_cmd_callback (GimpAction *action,
                                  GVariant   *value,
-                                 gpointer    data)
+                                 gpointer data)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-    GimpContainer       *container;
-    GimpContext         *context;
-    GimpImage           *image;
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+	GimpContainer       *container;
+	GimpContext         *context;
+	GimpImage           *image;
 
-    container = gimp_container_view_get_container (editor->view);
-    context   = gimp_container_view_get_context (editor->view);
+	container = gimp_container_view_get_container (editor->view);
+	context   = gimp_container_view_get_context (editor->view);
 
-    image = gimp_context_get_image (context);
+	image = gimp_context_get_image (context);
 
-    if (image && gimp_container_have (container, GIMP_OBJECT (image)))
-    {
-        GList *list;
+	if (image && gimp_container_have (container, GIMP_OBJECT (image)))
+	{
+		GList *list;
 
-        for (list = gimp_get_display_iter (image->gimp);
-                list;
-                list = g_list_next (list))
-        {
-            GimpDisplay *display = list->data;
+		for (list = gimp_get_display_iter (image->gimp);
+		     list;
+		     list = g_list_next (list))
+		{
+			GimpDisplay *display = list->data;
 
-            if (gimp_display_get_image (display) == image)
-                gimp_display_shell_present (gimp_display_get_shell (display));
-        }
-    }
+			if (gimp_display_get_image (display) == image)
+				gimp_display_shell_present (gimp_display_get_shell (display));
+		}
+	}
 }
 
 void
 images_new_view_cmd_callback (GimpAction *action,
                               GVariant   *value,
-                              gpointer    data)
+                              gpointer data)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-    GimpContainer       *container;
-    GimpContext         *context;
-    GimpImage           *image;
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+	GimpContainer       *container;
+	GimpContext         *context;
+	GimpImage           *image;
 
-    container = gimp_container_view_get_container (editor->view);
-    context   = gimp_container_view_get_context (editor->view);
+	container = gimp_container_view_get_container (editor->view);
+	context   = gimp_container_view_get_context (editor->view);
 
-    image = gimp_context_get_image (context);
+	image = gimp_context_get_image (context);
 
-    if (image && gimp_container_have (container, GIMP_OBJECT (image)))
-    {
-        gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0,
-                             G_OBJECT (gimp_widget_get_monitor (GTK_WIDGET (editor))));
-    }
+	if (image && gimp_container_have (container, GIMP_OBJECT (image)))
+	{
+		gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0,
+		                     G_OBJECT (gimp_widget_get_monitor (GTK_WIDGET (editor))));
+	}
 }
 
 void
 images_delete_image_cmd_callback (GimpAction *action,
                                   GVariant   *value,
-                                  gpointer    data)
+                                  gpointer data)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-    GimpContainer       *container;
-    GimpContext         *context;
-    GimpImage           *image;
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+	GimpContainer       *container;
+	GimpContext         *context;
+	GimpImage           *image;
 
-    container = gimp_container_view_get_container (editor->view);
-    context   = gimp_container_view_get_context (editor->view);
+	container = gimp_container_view_get_container (editor->view);
+	context   = gimp_container_view_get_context (editor->view);
 
-    image = gimp_context_get_image (context);
+	image = gimp_context_get_image (context);
 
-    if (image && gimp_container_have (container, GIMP_OBJECT (image)))
-    {
-        if (gimp_image_get_display_count (image) == 0)
-            g_object_unref (image);
-    }
+	if (image && gimp_container_have (container, GIMP_OBJECT (image)))
+	{
+		if (gimp_image_get_display_count (image) == 0)
+			g_object_unref (image);
+	}
 }

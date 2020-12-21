@@ -21,7 +21,7 @@
 
 void   context_actions_setup  (GimpActionGroup *group);
 void   context_actions_update (GimpActionGroup *group,
-                               gpointer         data);
+                               gpointer data);
 
 
 #endif /* __CONTEXT_ACTIONS_H__ */

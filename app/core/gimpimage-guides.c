@@ -36,181 +36,181 @@
 
 GimpGuide *
 gimp_image_add_hguide (GimpImage *image,
-                       gint       position,
-                       gboolean   push_undo)
+                       gint position,
+                       gboolean push_undo)
 {
-    GimpGuide *guide;
+	GimpGuide *guide;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (position >= 0 &&
-                          position <= gimp_image_get_height (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (position >= 0 &&
+	                      position <= gimp_image_get_height (image), NULL);
 
-    guide = gimp_guide_new (GIMP_ORIENTATION_HORIZONTAL,
-                            image->gimp->next_guide_id++);
+	guide = gimp_guide_new (GIMP_ORIENTATION_HORIZONTAL,
+	                        image->gimp->next_guide_id++);
 
-    if (push_undo)
-        gimp_image_undo_push_guide (image,
-                                    C_("undo-type", "Add Horizontal Guide"), guide);
+	if (push_undo)
+		gimp_image_undo_push_guide (image,
+		                            C_("undo-type", "Add Horizontal Guide"), guide);
 
-    gimp_image_add_guide (image, guide, position);
-    g_object_unref (G_OBJECT (guide));
+	gimp_image_add_guide (image, guide, position);
+	g_object_unref (G_OBJECT (guide));
 
-    return guide;
+	return guide;
 }
 
 GimpGuide *
 gimp_image_add_vguide (GimpImage *image,
-                       gint       position,
-                       gboolean   push_undo)
+                       gint position,
+                       gboolean push_undo)
 {
-    GimpGuide *guide;
+	GimpGuide *guide;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (position >= 0 &&
-                          position <= gimp_image_get_width (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (position >= 0 &&
+	                      position <= gimp_image_get_width (image), NULL);
 
-    guide = gimp_guide_new (GIMP_ORIENTATION_VERTICAL,
-                            image->gimp->next_guide_id++);
+	guide = gimp_guide_new (GIMP_ORIENTATION_VERTICAL,
+	                        image->gimp->next_guide_id++);
 
-    if (push_undo)
-        gimp_image_undo_push_guide (image,
-                                    C_("undo-type", "Add Vertical Guide"), guide);
+	if (push_undo)
+		gimp_image_undo_push_guide (image,
+		                            C_("undo-type", "Add Vertical Guide"), guide);
 
-    gimp_image_add_guide (image, guide, position);
-    g_object_unref (guide);
+	gimp_image_add_guide (image, guide, position);
+	g_object_unref (guide);
 
-    return guide;
+	return guide;
 }
 
 void
 gimp_image_add_guide (GimpImage *image,
                       GimpGuide *guide,
-                      gint       position)
+                      gint position)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_GUIDE (guide));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_GUIDE (guide));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    private->guides = g_list_prepend (private->guides, guide);
+	private->guides = g_list_prepend (private->guides, guide);
 
-    gimp_guide_set_position (guide, position);
-    g_object_ref (guide);
+	gimp_guide_set_position (guide, position);
+	g_object_ref (guide);
 
-    gimp_image_guide_added (image, guide);
+	gimp_image_guide_added (image, guide);
 }
 
 void
 gimp_image_remove_guide (GimpImage *image,
                          GimpGuide *guide,
-                         gboolean   push_undo)
+                         gboolean push_undo)
 {
-    GimpImagePrivate *private;
+	GimpImagePrivate *private;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_GUIDE (guide));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_GUIDE (guide));
 
-    private = GIMP_IMAGE_GET_PRIVATE (image);
+	private = GIMP_IMAGE_GET_PRIVATE (image);
 
-    if (gimp_guide_is_custom (guide))
-        push_undo = FALSE;
+	if (gimp_guide_is_custom (guide))
+		push_undo = FALSE;
 
-    if (push_undo)
-        gimp_image_undo_push_guide (image, C_("undo-type", "Remove Guide"), guide);
+	if (push_undo)
+		gimp_image_undo_push_guide (image, C_("undo-type", "Remove Guide"), guide);
 
-    private->guides = g_list_remove (private->guides, guide);
-    gimp_aux_item_removed (GIMP_AUX_ITEM (guide));
+	private->guides = g_list_remove (private->guides, guide);
+	gimp_aux_item_removed (GIMP_AUX_ITEM (guide));
 
-    gimp_image_guide_removed (image, guide);
+	gimp_image_guide_removed (image, guide);
 
-    gimp_guide_set_position (guide, GIMP_GUIDE_POSITION_UNDEFINED);
-    g_object_unref (guide);
+	gimp_guide_set_position (guide, GIMP_GUIDE_POSITION_UNDEFINED);
+	g_object_unref (guide);
 }
 
 void
 gimp_image_move_guide (GimpImage *image,
                        GimpGuide *guide,
-                       gint       position,
-                       gboolean   push_undo)
+                       gint position,
+                       gboolean push_undo)
 {
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_GUIDE (guide));
-    g_return_if_fail (position >= 0);
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_GUIDE (guide));
+	g_return_if_fail (position >= 0);
 
-    if (gimp_guide_get_orientation (guide) == GIMP_ORIENTATION_HORIZONTAL)
-        g_return_if_fail (position <= gimp_image_get_height (image));
-    else
-        g_return_if_fail (position <= gimp_image_get_width (image));
+	if (gimp_guide_get_orientation (guide) == GIMP_ORIENTATION_HORIZONTAL)
+		g_return_if_fail (position <= gimp_image_get_height (image));
+	else
+		g_return_if_fail (position <= gimp_image_get_width (image));
 
-    if (gimp_guide_is_custom (guide))
-        push_undo = FALSE;
+	if (gimp_guide_is_custom (guide))
+		push_undo = FALSE;
 
-    if (push_undo)
-        gimp_image_undo_push_guide (image, C_("undo-type", "Move Guide"), guide);
+	if (push_undo)
+		gimp_image_undo_push_guide (image, C_("undo-type", "Move Guide"), guide);
 
-    gimp_guide_set_position (guide, position);
+	gimp_guide_set_position (guide, position);
 
-    gimp_image_guide_moved (image, guide);
+	gimp_image_guide_moved (image, guide);
 }
 
 GList *
 gimp_image_get_guides (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    return GIMP_IMAGE_GET_PRIVATE (image)->guides;
+	return GIMP_IMAGE_GET_PRIVATE (image)->guides;
 }
 
 GimpGuide *
 gimp_image_get_guide (GimpImage *image,
-                      guint32    id)
+                      guint32 id)
 {
-    GList *guides;
+	GList *guides;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    for (guides = GIMP_IMAGE_GET_PRIVATE (image)->guides;
-            guides;
-            guides = g_list_next (guides))
-    {
-        GimpGuide *guide = guides->data;
+	for (guides = GIMP_IMAGE_GET_PRIVATE (image)->guides;
+	     guides;
+	     guides = g_list_next (guides))
+	{
+		GimpGuide *guide = guides->data;
 
-        if (gimp_aux_item_get_id (GIMP_AUX_ITEM (guide)) == id)
-            return guide;
-    }
+		if (gimp_aux_item_get_id (GIMP_AUX_ITEM (guide)) == id)
+			return guide;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 GimpGuide *
 gimp_image_get_next_guide (GimpImage *image,
-                           guint32    id,
+                           guint32 id,
                            gboolean  *guide_found)
 {
-    GList *guides;
+	GList *guides;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (guide_found != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (guide_found != NULL, NULL);
 
-    if (id == 0)
-        *guide_found = TRUE;
-    else
-        *guide_found = FALSE;
+	if (id == 0)
+		*guide_found = TRUE;
+	else
+		*guide_found = FALSE;
 
-    for (guides = GIMP_IMAGE_GET_PRIVATE (image)->guides;
-            guides;
-            guides = g_list_next (guides))
-    {
-        GimpGuide *guide = guides->data;
+	for (guides = GIMP_IMAGE_GET_PRIVATE (image)->guides;
+	     guides;
+	     guides = g_list_next (guides))
+	{
+		GimpGuide *guide = guides->data;
 
-        if (*guide_found) /* this is the first guide after the found one */
-            return guide;
+		if (*guide_found) /* this is the first guide after the found one */
+			return guide;
 
-        if (gimp_aux_item_get_id (GIMP_AUX_ITEM (guide)) == id) /* found it, next one will be returned */
-            *guide_found = TRUE;
-    }
+		if (gimp_aux_item_get_id (GIMP_AUX_ITEM (guide)) == id) /* found it, next one will be returned */
+			*guide_found = TRUE;
+	}
 
-    return NULL;
+	return NULL;
 }

@@ -43,68 +43,68 @@ typedef struct _GimpViewableClass GimpViewableClass;
 
 struct _GimpViewable
 {
-    GimpObject  parent_instance;
+	GimpObject parent_instance;
 };
 
 struct _GimpViewableClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 
-    const gchar     *default_icon_name;
-    const gchar     *name_changed_signal;
-    gboolean         name_editable;
+	const gchar     *default_icon_name;
+	const gchar     *name_changed_signal;
+	gboolean name_editable;
 
-    /*  signals  */
-    void            (* invalidate_preview) (GimpViewable  *viewable);
-    void            (* size_changed)       (GimpViewable  *viewable);
-    void            (* expanded_changed)   (GimpViewable  *viewable);
-    void            (* ancestry_changed)   (GimpViewable  *viewable);
+	/*  signals  */
+	void (* invalidate_preview) (GimpViewable  *viewable);
+	void (* size_changed)       (GimpViewable  *viewable);
+	void (* expanded_changed)   (GimpViewable  *viewable);
+	void (* ancestry_changed)   (GimpViewable  *viewable);
 
-    /*  virtual functions  */
-    gboolean        (* get_size)           (GimpViewable  *viewable,
-                                            gint          *width,
-                                            gint          *height);
-    void            (* get_preview_size)   (GimpViewable  *viewable,
-                                            gint           size,
-                                            gboolean       is_popup,
-                                            gboolean       dot_for_dot,
-                                            gint          *width,
-                                            gint          *height);
-    gboolean        (* get_popup_size)     (GimpViewable  *viewable,
-                                            gint           width,
-                                            gint           height,
-                                            gboolean       dot_for_dot,
-                                            gint          *popup_width,
-                                            gint          *popup_height);
-    GimpTempBuf   * (* get_preview)        (GimpViewable  *viewable,
-                                            GimpContext   *context,
-                                            gint           width,
-                                            gint           height);
-    GimpTempBuf   * (* get_new_preview)    (GimpViewable  *viewable,
-                                            GimpContext   *context,
-                                            gint           width,
-                                            gint           height);
-    GdkPixbuf     * (* get_pixbuf)         (GimpViewable  *viewable,
-                                            GimpContext   *context,
-                                            gint           width,
-                                            gint           height);
-    GdkPixbuf     * (* get_new_pixbuf)     (GimpViewable  *viewable,
-                                            GimpContext   *context,
-                                            gint           width,
-                                            gint           height);
-    gchar         * (* get_description)    (GimpViewable  *viewable,
-                                            gchar        **tooltip);
+	/*  virtual functions  */
+	gboolean (* get_size)           (GimpViewable  *viewable,
+	                                 gint          *width,
+	                                 gint          *height);
+	void (* get_preview_size)   (GimpViewable  *viewable,
+	                             gint size,
+	                             gboolean is_popup,
+	                             gboolean dot_for_dot,
+	                             gint          *width,
+	                             gint          *height);
+	gboolean (* get_popup_size)     (GimpViewable  *viewable,
+	                                 gint width,
+	                                 gint height,
+	                                 gboolean dot_for_dot,
+	                                 gint          *popup_width,
+	                                 gint          *popup_height);
+	GimpTempBuf   * (* get_preview)        (GimpViewable  *viewable,
+	                                        GimpContext   *context,
+	                                        gint width,
+	                                        gint height);
+	GimpTempBuf   * (* get_new_preview)    (GimpViewable  *viewable,
+	                                        GimpContext   *context,
+	                                        gint width,
+	                                        gint height);
+	GdkPixbuf     * (* get_pixbuf)         (GimpViewable  *viewable,
+	                                        GimpContext   *context,
+	                                        gint width,
+	                                        gint height);
+	GdkPixbuf     * (* get_new_pixbuf)     (GimpViewable  *viewable,
+	                                        GimpContext   *context,
+	                                        gint width,
+	                                        gint height);
+	gchar         * (* get_description)    (GimpViewable  *viewable,
+	                                        gchar        **tooltip);
 
-    gboolean        (* is_name_editable)   (GimpViewable  *viewable);
+	gboolean (* is_name_editable)   (GimpViewable  *viewable);
 
-    void            (* preview_freeze)     (GimpViewable  *viewable);
-    void            (* preview_thaw)       (GimpViewable  *viewable);
+	void (* preview_freeze)     (GimpViewable  *viewable);
+	void (* preview_thaw)       (GimpViewable  *viewable);
 
-    GimpContainer * (* get_children)       (GimpViewable  *viewable);
+	GimpContainer * (* get_children)       (GimpViewable  *viewable);
 
-    void            (* set_expanded)       (GimpViewable  *viewable,
-                                            gboolean       expand);
-    gboolean        (* get_expanded)       (GimpViewable  *viewable);
+	void (* set_expanded)       (GimpViewable  *viewable,
+	                             gboolean expand);
+	gboolean (* get_expanded)       (GimpViewable  *viewable);
 };
 
 
@@ -114,69 +114,69 @@ void            gimp_viewable_invalidate_preview (GimpViewable  *viewable);
 void            gimp_viewable_size_changed       (GimpViewable  *viewable);
 void            gimp_viewable_expanded_changed   (GimpViewable  *viewable);
 
-void            gimp_viewable_calc_preview_size  (gint           aspect_width,
-        gint           aspect_height,
-        gint           width,
-        gint           height,
-        gboolean       dot_for_dot,
-        gdouble        xresolution,
-        gdouble        yresolution,
-        gint          *return_width,
-        gint          *return_height,
-        gboolean      *scaling_up);
+void            gimp_viewable_calc_preview_size  (gint aspect_width,
+                                                  gint aspect_height,
+                                                  gint width,
+                                                  gint height,
+                                                  gboolean dot_for_dot,
+                                                  gdouble xresolution,
+                                                  gdouble yresolution,
+                                                  gint          *return_width,
+                                                  gint          *return_height,
+                                                  gboolean      *scaling_up);
 
 gboolean        gimp_viewable_get_size           (GimpViewable  *viewable,
-        gint          *width,
-        gint          *height);
+                                                  gint          *width,
+                                                  gint          *height);
 void            gimp_viewable_get_preview_size   (GimpViewable  *viewable,
-        gint           size,
-        gboolean       popup,
-        gboolean       dot_for_dot,
-        gint          *width,
-        gint          *height);
+                                                  gint size,
+                                                  gboolean popup,
+                                                  gboolean dot_for_dot,
+                                                  gint          *width,
+                                                  gint          *height);
 gboolean        gimp_viewable_get_popup_size     (GimpViewable  *viewable,
-        gint           width,
-        gint           height,
-        gboolean       dot_for_dot,
-        gint          *popup_width,
-        gint          *popup_height);
+                                                  gint width,
+                                                  gint height,
+                                                  gboolean dot_for_dot,
+                                                  gint          *popup_width,
+                                                  gint          *popup_height);
 
 GimpTempBuf   * gimp_viewable_get_preview        (GimpViewable  *viewable,
-        GimpContext   *context,
-        gint           width,
-        gint           height);
+                                                  GimpContext   *context,
+                                                  gint width,
+                                                  gint height);
 GimpTempBuf   * gimp_viewable_get_new_preview    (GimpViewable  *viewable,
-        GimpContext   *context,
-        gint           width,
-        gint           height);
+                                                  GimpContext   *context,
+                                                  gint width,
+                                                  gint height);
 
 GimpTempBuf   * gimp_viewable_get_dummy_preview  (GimpViewable  *viewable,
-        gint           width,
-        gint           height,
-        const Babl    *format);
+                                                  gint width,
+                                                  gint height,
+                                                  const Babl    *format);
 
 GdkPixbuf     * gimp_viewable_get_pixbuf         (GimpViewable  *viewable,
-        GimpContext   *context,
-        gint           width,
-        gint           height);
+                                                  GimpContext   *context,
+                                                  gint width,
+                                                  gint height);
 GdkPixbuf     * gimp_viewable_get_new_pixbuf     (GimpViewable  *viewable,
-        GimpContext   *context,
-        gint           width,
-        gint           height);
+                                                  GimpContext   *context,
+                                                  gint width,
+                                                  gint height);
 
 GdkPixbuf     * gimp_viewable_get_dummy_pixbuf   (GimpViewable  *viewable,
-        gint           width,
-        gint           height,
-        gboolean       with_alpha);
+                                                  gint width,
+                                                  gint height,
+                                                  gboolean with_alpha);
 
 gchar         * gimp_viewable_get_description    (GimpViewable  *viewable,
-        gchar        **tooltip);
+                                                  gchar        **tooltip);
 
 gboolean        gimp_viewable_is_name_editable   (GimpViewable  *viewable);
 
 const gchar   * gimp_viewable_get_icon_name      (GimpViewable  *viewable);
 void            gimp_viewable_set_icon_name      (GimpViewable  *viewable,
-        const gchar   *icon_name);
+                                                  const gchar   *icon_name);
 
 void            gimp_viewable_preview_freeze     (GimpViewable  *viewable);
 void            gimp_viewable_preview_thaw       (GimpViewable  *viewable);
@@ -184,7 +184,7 @@ gboolean        gimp_viewable_preview_is_frozen  (GimpViewable  *viewable);
 
 GimpViewable  * gimp_viewable_get_parent         (GimpViewable  *viewable);
 void            gimp_viewable_set_parent         (GimpViewable  *viewable,
-        GimpViewable  *parent);
+                                                  GimpViewable  *parent);
 
 gint            gimp_viewable_get_depth          (GimpViewable  *viewable);
 
@@ -192,10 +192,10 @@ GimpContainer * gimp_viewable_get_children       (GimpViewable  *viewable);
 
 gboolean        gimp_viewable_get_expanded       (GimpViewable  *viewable);
 void            gimp_viewable_set_expanded       (GimpViewable  *viewable,
-        gboolean       expanded);
+                                                  gboolean expanded);
 
 gboolean        gimp_viewable_is_ancestor        (GimpViewable  *ancestor,
-        GimpViewable  *descendant);
+                                                  GimpViewable  *descendant);
 
 
 #endif  /* __GIMP_VIEWABLE_H__ */

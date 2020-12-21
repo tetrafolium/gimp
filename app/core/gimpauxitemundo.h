@@ -30,19 +30,19 @@
 #define GIMP_AUX_ITEM_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_AUX_ITEM_UNDO, GimpAuxItemUndoClass))
 
 
-typedef struct _GimpAuxItemUndo      GimpAuxItemUndo;
+typedef struct _GimpAuxItemUndo GimpAuxItemUndo;
 typedef struct _GimpAuxItemUndoClass GimpAuxItemUndoClass;
 
 struct _GimpAuxItemUndo
 {
-    GimpUndo     parent_instance;
+	GimpUndo parent_instance;
 
-    GimpAuxItem *aux_item;
+	GimpAuxItem *aux_item;
 };
 
 struct _GimpAuxItemUndoClass
 {
-    GimpUndoClass  parent_class;
+	GimpUndoClass parent_class;
 };
 
 

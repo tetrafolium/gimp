@@ -30,21 +30,21 @@
 #define GIMP_CHANNEL_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CHANNEL_UNDO, GimpChannelUndoClass))
 
 
-typedef struct _GimpChannelUndo      GimpChannelUndo;
+typedef struct _GimpChannelUndo GimpChannelUndo;
 typedef struct _GimpChannelUndoClass GimpChannelUndoClass;
 
 struct _GimpChannelUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    GimpChannel  *prev_parent;
-    gint          prev_position;   /*  former position in list     */
-    GList        *prev_channels;   /*  previous selected channels  */
+	GimpChannel  *prev_parent;
+	gint prev_position;        /*  former position in list     */
+	GList        *prev_channels;/*  previous selected channels  */
 };
 
 struct _GimpChannelUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

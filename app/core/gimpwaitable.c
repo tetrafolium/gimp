@@ -47,72 +47,72 @@ gimp_waitable_default_init (GimpWaitableInterface *iface)
 void
 gimp_waitable_wait (GimpWaitable *waitable)
 {
-    GimpWaitableInterface *iface;
+	GimpWaitableInterface *iface;
 
-    g_return_if_fail (GIMP_IS_WAITABLE (waitable));
+	g_return_if_fail (GIMP_IS_WAITABLE (waitable));
 
-    iface = GIMP_WAITABLE_GET_IFACE (waitable);
+	iface = GIMP_WAITABLE_GET_IFACE (waitable);
 
-    if (iface->wait)
-        iface->wait (waitable);
+	if (iface->wait)
+		iface->wait (waitable);
 }
 
 gboolean
 gimp_waitable_try_wait (GimpWaitable *waitable)
 {
-    GimpWaitableInterface *iface;
+	GimpWaitableInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), FALSE);
+	g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), FALSE);
 
-    iface = GIMP_WAITABLE_GET_IFACE (waitable);
+	iface = GIMP_WAITABLE_GET_IFACE (waitable);
 
-    if (iface->try_wait)
-    {
-        return iface->try_wait (waitable);
-    }
-    else
-    {
-        gimp_waitable_wait (waitable);
+	if (iface->try_wait)
+	{
+		return iface->try_wait (waitable);
+	}
+	else
+	{
+		gimp_waitable_wait (waitable);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 }
 
 gboolean
 gimp_waitable_wait_until (GimpWaitable *waitable,
-                          gint64        end_time)
+                          gint64 end_time)
 {
-    GimpWaitableInterface *iface;
+	GimpWaitableInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), FALSE);
+	g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), FALSE);
 
-    iface = GIMP_WAITABLE_GET_IFACE (waitable);
+	iface = GIMP_WAITABLE_GET_IFACE (waitable);
 
-    if (iface->wait_until)
-    {
-        return iface->wait_until (waitable, end_time);
-    }
-    else
-    {
-        gimp_waitable_wait (waitable);
+	if (iface->wait_until)
+	{
+		return iface->wait_until (waitable, end_time);
+	}
+	else
+	{
+		gimp_waitable_wait (waitable);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 }
 
 gboolean
 gimp_waitable_wait_for (GimpWaitable *waitable,
-                        gint64        wait_duration)
+                        gint64 wait_duration)
 {
-    g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), FALSE);
+	g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), FALSE);
 
-    if (wait_duration <= 0)
-    {
-        return gimp_waitable_try_wait (waitable);
-    }
-    else
-    {
-        return gimp_waitable_wait_until (waitable,
-                                         g_get_monotonic_time () + wait_duration);
-    }
+	if (wait_duration <= 0)
+	{
+		return gimp_waitable_try_wait (waitable);
+	}
+	else
+	{
+		return gimp_waitable_wait_until (waitable,
+		                                 g_get_monotonic_time () + wait_duration);
+	}
 }

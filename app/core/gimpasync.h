@@ -31,25 +31,25 @@
 
 
 typedef void (* GimpAsyncCallback) (GimpAsync *async,
-                                    gpointer   data);
+                                    gpointer data);
 
 
 typedef struct _GimpAsyncPrivate GimpAsyncPrivate;
-typedef struct _GimpAsyncClass   GimpAsyncClass;
+typedef struct _GimpAsyncClass GimpAsyncClass;
 
 struct _GimpAsync
 {
-    GObject           parent_instance;
+	GObject parent_instance;
 
-    GimpAsyncPrivate *priv;
+	GimpAsyncPrivate *priv;
 };
 
 struct _GimpAsyncClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    /*  signals  */
-    void   (* waiting) (GimpAsync *async);
+	/*  signals  */
+	void (* waiting) (GimpAsync *async);
 };
 
 
@@ -60,23 +60,23 @@ GimpAsync * gimp_async_new                     (void);
 gboolean    gimp_async_is_synced               (GimpAsync         *async);
 
 void        gimp_async_add_callback            (GimpAsync         *async,
-        GimpAsyncCallback  callback,
-        gpointer           data);
+                                                GimpAsyncCallback callback,
+                                                gpointer data);
 void        gimp_async_add_callback_for_object (GimpAsync         *async,
-        GimpAsyncCallback  callback,
-        gpointer           data,
-        gpointer           gobject);
+                                                GimpAsyncCallback callback,
+                                                gpointer data,
+                                                gpointer gobject);
 void        gimp_async_remove_callback         (GimpAsync         *async,
-        GimpAsyncCallback  callback,
-        gpointer           data);
+                                                GimpAsyncCallback callback,
+                                                gpointer data);
 
 gboolean    gimp_async_is_stopped              (GimpAsync         *async);
 
 void        gimp_async_finish                  (GimpAsync         *async,
-        gpointer           result);
+                                                gpointer result);
 void        gimp_async_finish_full             (GimpAsync         *async,
-        gpointer           result,
-        GDestroyNotify     result_destroy_func);
+                                                gpointer result,
+                                                GDestroyNotify result_destroy_func);
 gboolean    gimp_async_is_finished             (GimpAsync         *async);
 gpointer    gimp_async_get_result              (GimpAsync         *async);
 

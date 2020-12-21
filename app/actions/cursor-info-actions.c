@@ -37,47 +37,45 @@
 
 static const GimpActionEntry cursor_info_actions[] =
 {
-    {   "cursor-info-popup", GIMP_ICON_CURSOR,
-        NC_("cursor-info-action", "Pointer Information Menu"), NULL, NULL, NULL,
-        GIMP_HELP_POINTER_INFO_DIALOG
-    }
+	{   "cursor-info-popup", GIMP_ICON_CURSOR,
+	    NC_("cursor-info-action", "Pointer Information Menu"), NULL, NULL, NULL,
+	    GIMP_HELP_POINTER_INFO_DIALOG}
 };
 
 static const GimpToggleActionEntry cursor_info_toggle_actions[] =
 {
-    {   "cursor-info-sample-merged", NULL,
-        NC_("cursor-info-action", "_Sample Merged"), "",
-        NC_("cursor-info-action", "Use the composite color of all visible layers"),
-        cursor_info_sample_merged_cmd_callback,
-        TRUE,
-        GIMP_HELP_POINTER_INFO_SAMPLE_MERGED
-    }
+	{   "cursor-info-sample-merged", NULL,
+	    NC_("cursor-info-action", "_Sample Merged"), "",
+	    NC_("cursor-info-action", "Use the composite color of all visible layers"),
+	    cursor_info_sample_merged_cmd_callback,
+	    TRUE,
+	    GIMP_HELP_POINTER_INFO_SAMPLE_MERGED}
 };
 
 
 void
 cursor_info_actions_setup (GimpActionGroup *group)
 {
-    gimp_action_group_add_actions (group, "cursor-info-action",
-                                   cursor_info_actions,
-                                   G_N_ELEMENTS (cursor_info_actions));
+	gimp_action_group_add_actions (group, "cursor-info-action",
+	                               cursor_info_actions,
+	                               G_N_ELEMENTS (cursor_info_actions));
 
-    gimp_action_group_add_toggle_actions (group, "cursor-info-action",
-                                          cursor_info_toggle_actions,
-                                          G_N_ELEMENTS (cursor_info_toggle_actions));
+	gimp_action_group_add_toggle_actions (group, "cursor-info-action",
+	                                      cursor_info_toggle_actions,
+	                                      G_N_ELEMENTS (cursor_info_toggle_actions));
 }
 
 void
 cursor_info_actions_update (GimpActionGroup *group,
-                            gpointer         data)
+                            gpointer data)
 {
-    GimpCursorView *view = GIMP_CURSOR_VIEW (data);
+	GimpCursorView *view = GIMP_CURSOR_VIEW (data);
 
 #define SET_ACTIVE(action,condition) \
-        gimp_action_group_set_action_active (group, action, (condition) != 0)
+	gimp_action_group_set_action_active (group, action, (condition) != 0)
 
-    SET_ACTIVE ("cursor-info-sample-merged",
-                gimp_cursor_view_get_sample_merged (view));
+	SET_ACTIVE ("cursor-info-sample-merged",
+	            gimp_cursor_view_get_sample_merged (view));
 
 #undef SET_ACTIVE
 }

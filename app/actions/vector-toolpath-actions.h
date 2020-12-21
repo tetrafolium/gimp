@@ -21,7 +21,7 @@
 
 void   vector_toolpath_actions_setup  (GimpActionGroup *group);
 void   vector_toolpath_actions_update (GimpActionGroup *group,
-                                       gpointer         data);
+                                       gpointer data);
 
 
 #endif /* __VECTOR_TOOLPATH_ACTIONS_H__ */

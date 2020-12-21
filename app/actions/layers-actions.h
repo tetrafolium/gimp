@@ -21,7 +21,7 @@
 
 void   layers_actions_setup  (GimpActionGroup *group);
 void   layers_actions_update (GimpActionGroup *group,
-                              gpointer         data);
+                              gpointer data);
 
 
 #endif /* __LAYERS_ACTIONS_H__ */

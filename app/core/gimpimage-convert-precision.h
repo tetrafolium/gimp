@@ -23,10 +23,10 @@
 
 
 void   gimp_image_convert_precision (GimpImage        *image,
-                                     GimpPrecision     precision,
-                                     GeglDitherMethod  layer_dither_type,
-                                     GeglDitherMethod  text_layer_dither_type,
-                                     GeglDitherMethod  mask_dither_type,
+                                     GimpPrecision precision,
+                                     GeglDitherMethod layer_dither_type,
+                                     GeglDitherMethod text_layer_dither_type,
+                                     GeglDitherMethod mask_dither_type,
                                      GimpProgress     *progress);
 
 void   gimp_image_convert_dither_u8 (GimpImage        *image,

@@ -35,32 +35,32 @@ typedef struct _GimpDrawableStackClass GimpDrawableStackClass;
 
 struct _GimpDrawableStack
 {
-    GimpItemStack  parent_instance;
+	GimpItemStack parent_instance;
 };
 
 struct _GimpDrawableStackClass
 {
-    GimpItemStackClass  parent_class;
+	GimpItemStackClass parent_class;
 
-    void (* update) (GimpDrawableStack *stack,
-                     gint               x,
-                     gint               y,
-                     gint               width,
-                     gint               height);
+	void (* update) (GimpDrawableStack *stack,
+	                 gint x,
+	                 gint y,
+	                 gint width,
+	                 gint height);
 };
 
 
 GType           gimp_drawable_stack_get_type  (void) G_GNUC_CONST;
-GimpContainer * gimp_drawable_stack_new       (GType              drawable_type);
+GimpContainer * gimp_drawable_stack_new       (GType drawable_type);
 
 
 /*  protected  */
 
 void            gimp_drawable_stack_update    (GimpDrawableStack *stack,
-        gint               x,
-        gint               y,
-        gint               width,
-        gint               height);
+                                               gint x,
+                                               gint y,
+                                               gint width,
+                                               gint height);
 
 
 #endif  /*  __GIMP_DRAWABLE_STACK_H__  */

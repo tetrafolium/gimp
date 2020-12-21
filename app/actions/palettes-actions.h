@@ -21,7 +21,7 @@
 
 void   palettes_actions_setup  (GimpActionGroup *group);
 void   palettes_actions_update (GimpActionGroup *group,
-                                gpointer         user_data);
+                                gpointer user_data);
 
 
 #endif /* __PALETTES_ACTIONS_H__ */

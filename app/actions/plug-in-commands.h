@@ -21,11 +21,11 @@
 
 void   plug_in_run_cmd_callback       (GimpAction *action,
                                        GVariant   *value,
-                                       gpointer    data);
+                                       gpointer data);
 
 void   plug_in_reset_all_cmd_callback (GimpAction *action,
                                        GVariant   *value,
-                                       gpointer    data);
+                                       gpointer data);
 
 
 #endif /* __PLUG_IN_COMMANDS_H__ */

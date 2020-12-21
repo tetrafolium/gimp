@@ -23,15 +23,15 @@
 
 typedef enum
 {
-    GIMP_CONFIG_DUMP_NONE,
-    GIMP_CONFIG_DUMP_GIMPRC,
-    GIMP_CONFIG_DUMP_GIMPRC_SYSTEM,
-    GIMP_CONFIG_DUMP_GIMPRC_MANPAGE
+	GIMP_CONFIG_DUMP_NONE,
+	GIMP_CONFIG_DUMP_GIMPRC,
+	GIMP_CONFIG_DUMP_GIMPRC_SYSTEM,
+	GIMP_CONFIG_DUMP_GIMPRC_MANPAGE
 } GimpConfigDumpFormat;
 
 
 gboolean  gimp_config_dump (GObject              *gimp,
-                            GimpConfigDumpFormat  format);
+                            GimpConfigDumpFormat format);
 
 
 #endif  /* __GIMP_CONFIG_DUMP_H__ */

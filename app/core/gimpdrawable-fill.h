@@ -24,37 +24,37 @@
  */
 
 void       gimp_drawable_fill              (GimpDrawable        *drawable,
-        GimpContext         *context,
-        GimpFillType         fill_type);
+                                            GimpContext         *context,
+                                            GimpFillType fill_type);
 void       gimp_drawable_fill_buffer       (GimpDrawable        *drawable,
-        GeglBuffer          *buffer,
-        const GimpRGB       *color,
-        GimpPattern         *pattern,
-        gint                 pattern_offset_x,
-        gint                 pattern_offset_y);
+                                            GeglBuffer          *buffer,
+                                            const GimpRGB       *color,
+                                            GimpPattern         *pattern,
+                                            gint pattern_offset_x,
+                                            gint pattern_offset_y);
 
 
 /*  Proper API that is used for actual editing (not just initializing)
  */
 
 void       gimp_drawable_fill_boundary     (GimpDrawable        *drawable,
-        GimpFillOptions     *options,
-        const GimpBoundSeg  *bound_segs,
-        gint                 n_bound_segs,
-        gint                 offset_x,
-        gint                 offset_y,
-        gboolean             push_undo);
+                                            GimpFillOptions     *options,
+                                            const GimpBoundSeg  *bound_segs,
+                                            gint n_bound_segs,
+                                            gint offset_x,
+                                            gint offset_y,
+                                            gboolean push_undo);
 
 gboolean   gimp_drawable_fill_vectors      (GimpDrawable        *drawable,
-        GimpFillOptions     *options,
-        GimpVectors         *vectors,
-        gboolean             push_undo,
-        GError             **error);
+                                            GimpFillOptions     *options,
+                                            GimpVectors         *vectors,
+                                            gboolean push_undo,
+                                            GError             **error);
 
 void       gimp_drawable_fill_scan_convert (GimpDrawable        *drawable,
-        GimpFillOptions     *options,
-        GimpScanConvert     *scan_convert,
-        gboolean             push_undo);
+                                            GimpFillOptions     *options,
+                                            GimpScanConvert     *scan_convert,
+                                            gboolean push_undo);
 
 
 #endif /* __GIMP_DRAWABLE_FILL_H__ */

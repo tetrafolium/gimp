@@ -21,7 +21,7 @@
 
 void   text_editor_actions_setup  (GimpActionGroup *group);
 void   text_editor_actions_update (GimpActionGroup *group,
-                                   gpointer         data);
+                                   gpointer data);
 
 
 #endif /* __TEXT_EDITOR_ACTIONS_H__ */

@@ -38,12 +38,12 @@ static void       gimp_uncancelable_waitable_finalize            (GObject       
 static void       gimp_uncancelable_waitable_wait                (GimpWaitable            *waitable);
 static gboolean   gimp_uncancelable_waitable_try_wait            (GimpWaitable            *waitable);
 static gboolean   gimp_uncancelable_waitable_wait_until          (GimpWaitable            *waitable,
-        gint64                   end_time);
+                                                                  gint64 end_time);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpUncancelableWaitable, gimp_uncancelable_waitable, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_WAITABLE,
-                                 gimp_uncancelable_waitable_waitable_iface_init))
+                                                gimp_uncancelable_waitable_waitable_iface_init))
 
 #define parent_class gimp_uncancelable_waitable_parent_class
 
@@ -54,17 +54,17 @@ G_DEFINE_TYPE_WITH_CODE (GimpUncancelableWaitable, gimp_uncancelable_waitable, G
 static void
 gimp_uncancelable_waitable_class_init (GimpUncancelableWaitableClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->finalize = gimp_uncancelable_waitable_finalize;
+	object_class->finalize = gimp_uncancelable_waitable_finalize;
 }
 
 static void
 gimp_uncancelable_waitable_waitable_iface_init (GimpWaitableInterface *iface)
 {
-    iface->wait       = gimp_uncancelable_waitable_wait;
-    iface->try_wait   = gimp_uncancelable_waitable_try_wait;
-    iface->wait_until = gimp_uncancelable_waitable_wait_until;
+	iface->wait       = gimp_uncancelable_waitable_wait;
+	iface->try_wait   = gimp_uncancelable_waitable_try_wait;
+	iface->wait_until = gimp_uncancelable_waitable_wait_until;
 }
 
 static void
@@ -75,47 +75,47 @@ gimp_uncancelable_waitable_init (GimpUncancelableWaitable *uncancelable_waitable
 static void
 gimp_uncancelable_waitable_finalize (GObject *object)
 {
-    GimpUncancelableWaitable *uncancelable_waitable =
-        GIMP_UNCANCELABLE_WAITABLE (object);
+	GimpUncancelableWaitable *uncancelable_waitable =
+		GIMP_UNCANCELABLE_WAITABLE (object);
 
-    g_clear_object (&uncancelable_waitable->waitable);
+	g_clear_object (&uncancelable_waitable->waitable);
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gimp_uncancelable_waitable_wait (GimpWaitable *waitable)
 {
-    GimpUncancelableWaitable *uncancelable_waitable =
-        GIMP_UNCANCELABLE_WAITABLE (waitable);
+	GimpUncancelableWaitable *uncancelable_waitable =
+		GIMP_UNCANCELABLE_WAITABLE (waitable);
 
-    if (uncancelable_waitable->waitable)
-        gimp_waitable_wait (uncancelable_waitable->waitable);
+	if (uncancelable_waitable->waitable)
+		gimp_waitable_wait (uncancelable_waitable->waitable);
 }
 
 static gboolean
 gimp_uncancelable_waitable_try_wait (GimpWaitable *waitable)
 {
-    GimpUncancelableWaitable *uncancelable_waitable =
-        GIMP_UNCANCELABLE_WAITABLE (waitable);
+	GimpUncancelableWaitable *uncancelable_waitable =
+		GIMP_UNCANCELABLE_WAITABLE (waitable);
 
-    if (uncancelable_waitable->waitable)
-        return gimp_waitable_try_wait (uncancelable_waitable->waitable);
-    else
-        return TRUE;
+	if (uncancelable_waitable->waitable)
+		return gimp_waitable_try_wait (uncancelable_waitable->waitable);
+	else
+		return TRUE;
 }
 
 static gboolean
 gimp_uncancelable_waitable_wait_until (GimpWaitable *waitable,
-                                       gint64        end_time)
+                                       gint64 end_time)
 {
-    GimpUncancelableWaitable *uncancelable_waitable =
-        GIMP_UNCANCELABLE_WAITABLE (waitable);
+	GimpUncancelableWaitable *uncancelable_waitable =
+		GIMP_UNCANCELABLE_WAITABLE (waitable);
 
-    if (uncancelable_waitable->waitable)
-        return gimp_waitable_wait_until (uncancelable_waitable->waitable, end_time);
-    else
-        return TRUE;
+	if (uncancelable_waitable->waitable)
+		return gimp_waitable_wait_until (uncancelable_waitable->waitable, end_time);
+	else
+		return TRUE;
 }
 
 
@@ -125,13 +125,13 @@ gimp_uncancelable_waitable_wait_until (GimpWaitable *waitable,
 GimpWaitable *
 gimp_uncancelable_waitable_new (GimpWaitable *waitable)
 {
-    GimpUncancelableWaitable *uncancelable_waitable;
+	GimpUncancelableWaitable *uncancelable_waitable;
 
-    g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), NULL);
+	g_return_val_if_fail (GIMP_IS_WAITABLE (waitable), NULL);
 
-    uncancelable_waitable = g_object_new (GIMP_TYPE_UNCANCELABLE_WAITABLE, NULL);
+	uncancelable_waitable = g_object_new (GIMP_TYPE_UNCANCELABLE_WAITABLE, NULL);
 
-    uncancelable_waitable->waitable = g_object_ref (waitable);
+	uncancelable_waitable->waitable = g_object_ref (waitable);
 
-    return GIMP_WAITABLE (uncancelable_waitable);
+	return GIMP_WAITABLE (uncancelable_waitable);
 }

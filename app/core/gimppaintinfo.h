@@ -34,35 +34,35 @@ typedef struct _GimpPaintInfoClass GimpPaintInfoClass;
 
 struct _GimpPaintInfo
 {
-    GimpViewable      parent_instance;
+	GimpViewable parent_instance;
 
-    Gimp             *gimp;
+	Gimp             *gimp;
 
-    GType             paint_type;
-    GType             paint_options_type;
+	GType paint_type;
+	GType paint_options_type;
 
-    gchar            *blurb;
+	gchar            *blurb;
 
-    GimpPaintOptions *paint_options;
+	GimpPaintOptions *paint_options;
 };
 
 struct _GimpPaintInfoClass
 {
-    GimpViewableClass  parent_class;
+	GimpViewableClass parent_class;
 };
 
 
 GType           gimp_paint_info_get_type     (void) G_GNUC_CONST;
 
 GimpPaintInfo * gimp_paint_info_new          (Gimp          *gimp,
-        GType          paint_type,
-        GType          paint_options_type,
-        const gchar   *identifier,
-        const gchar   *blurb,
-        const gchar   *icon_name);
+                                              GType paint_type,
+                                              GType paint_options_type,
+                                              const gchar   *identifier,
+                                              const gchar   *blurb,
+                                              const gchar   *icon_name);
 
 void            gimp_paint_info_set_standard (Gimp          *gimp,
-        GimpPaintInfo *paint_info);
+                                              GimpPaintInfo *paint_info);
 GimpPaintInfo * gimp_paint_info_get_standard (Gimp          *gimp);
 
 

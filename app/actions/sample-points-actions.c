@@ -36,48 +36,46 @@
 
 static const GimpActionEntry sample_points_actions[] =
 {
-    {   "sample-points-popup", GIMP_ICON_SAMPLE_POINT,
-        NC_("sample-points-action", "Sample Point Menu"), NULL, NULL, NULL,
-        GIMP_HELP_SAMPLE_POINT_DIALOG
-    }
+	{   "sample-points-popup", GIMP_ICON_SAMPLE_POINT,
+	    NC_("sample-points-action", "Sample Point Menu"), NULL, NULL, NULL,
+	    GIMP_HELP_SAMPLE_POINT_DIALOG}
 };
 
 static const GimpToggleActionEntry sample_points_toggle_actions[] =
 {
-    {   "sample-points-sample-merged", NULL,
-        NC_("sample-points-action", "_Sample Merged"), "",
-        NC_("sample-points-action",
-            "Use the composite color of all visible layers"),
-        sample_points_sample_merged_cmd_callback,
-        TRUE,
-        GIMP_HELP_SAMPLE_POINT_SAMPLE_MERGED
-    }
+	{   "sample-points-sample-merged", NULL,
+	    NC_("sample-points-action", "_Sample Merged"), "",
+	    NC_("sample-points-action",
+		"Use the composite color of all visible layers"),
+	    sample_points_sample_merged_cmd_callback,
+	    TRUE,
+	    GIMP_HELP_SAMPLE_POINT_SAMPLE_MERGED}
 };
 
 
 void
 sample_points_actions_setup (GimpActionGroup *group)
 {
-    gimp_action_group_add_actions (group, "sample-points-action",
-                                   sample_points_actions,
-                                   G_N_ELEMENTS (sample_points_actions));
+	gimp_action_group_add_actions (group, "sample-points-action",
+	                               sample_points_actions,
+	                               G_N_ELEMENTS (sample_points_actions));
 
-    gimp_action_group_add_toggle_actions (group, "sample-points-action",
-                                          sample_points_toggle_actions,
-                                          G_N_ELEMENTS (sample_points_toggle_actions));
+	gimp_action_group_add_toggle_actions (group, "sample-points-action",
+	                                      sample_points_toggle_actions,
+	                                      G_N_ELEMENTS (sample_points_toggle_actions));
 }
 
 void
 sample_points_actions_update (GimpActionGroup *group,
-                              gpointer         data)
+                              gpointer data)
 {
-    GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (data);
+	GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (data);
 
 #define SET_ACTIVE(action,condition) \
-        gimp_action_group_set_action_active (group, action, (condition) != 0)
+	gimp_action_group_set_action_active (group, action, (condition) != 0)
 
-    SET_ACTIVE ("sample-points-sample-merged",
-                gimp_sample_point_editor_get_sample_merged (editor));
+	SET_ACTIVE ("sample-points-sample-merged",
+	            gimp_sample_point_editor_get_sample_merged (editor));
 
 #undef SET_ACTIVE
 }

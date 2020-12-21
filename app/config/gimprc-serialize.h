@@ -24,7 +24,7 @@
 
 gboolean  gimp_rc_serialize (GimpConfig       *config,
                              GimpConfigWriter *writer,
-                             gpointer          data);
+                             gpointer data);
 
 
 #endif /* __GIMP_RC_SERIALIZE_H__ */

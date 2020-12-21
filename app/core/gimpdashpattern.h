@@ -29,22 +29,22 @@
 
 GType            gimp_dash_pattern_get_type          (void) G_GNUC_CONST;
 
-GArray         * gimp_dash_pattern_new_from_preset   (GimpDashPreset  preset);
+GArray         * gimp_dash_pattern_new_from_preset   (GimpDashPreset preset);
 GArray         * gimp_dash_pattern_new_from_segments (const gboolean *segments,
-        gint            n_segments,
-        gdouble         dash_length);
+                                                      gint n_segments,
+                                                      gdouble dash_length);
 
 void             gimp_dash_pattern_fill_segments     (GArray         *pattern,
-        gboolean       *segments,
-        gint            n_segments);
+                                                      gboolean       *segments,
+                                                      gint n_segments);
 
 GArray         * gimp_dash_pattern_from_value_array  (GimpValueArray *value_array);
 GimpValueArray * gimp_dash_pattern_to_value_array    (GArray         *pattern);
 
-GArray         * gimp_dash_pattern_from_double_array (gint            n_dashes,
-        const gdouble  *dashes);
+GArray         * gimp_dash_pattern_from_double_array (gint n_dashes,
+                                                      const gdouble  *dashes);
 gdouble        * gimp_dash_pattern_to_double_array   (GArray         *pattern,
-        gint           *n_dashes);
+                                                      gint           *n_dashes);
 
 GArray         * gimp_dash_pattern_copy              (GArray         *pattern);
 void             gimp_dash_pattern_free              (GArray         *pattern);

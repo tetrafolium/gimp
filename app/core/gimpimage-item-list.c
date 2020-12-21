@@ -49,182 +49,182 @@ gimp_image_item_list_bounds (GimpImage *image,
                              gint      *width,
                              gint      *height)
 {
-    GList    *l;
-    gboolean  bounds = FALSE;
+	GList    *l;
+	gboolean bounds = FALSE;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-    g_return_val_if_fail (x != 0, FALSE);
-    g_return_val_if_fail (y != 0, FALSE);
-    g_return_val_if_fail (width != 0, FALSE);
-    g_return_val_if_fail (height != 0, FALSE);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+	g_return_val_if_fail (x != 0, FALSE);
+	g_return_val_if_fail (y != 0, FALSE);
+	g_return_val_if_fail (width != 0, FALSE);
+	g_return_val_if_fail (height != 0, FALSE);
 
-    for (l = list; l; l = g_list_next (l))
-    {
-        GimpItem *item = l->data;
-        gint      tmp_x, tmp_y;
-        gint      tmp_w, tmp_h;
+	for (l = list; l; l = g_list_next (l))
+	{
+		GimpItem *item = l->data;
+		gint tmp_x, tmp_y;
+		gint tmp_w, tmp_h;
 
-        if (gimp_item_bounds (item, &tmp_x, &tmp_y, &tmp_w, &tmp_h))
-        {
-            gint off_x, off_y;
+		if (gimp_item_bounds (item, &tmp_x, &tmp_y, &tmp_w, &tmp_h))
+		{
+			gint off_x, off_y;
 
-            gimp_item_get_offset (item, &off_x, &off_y);
+			gimp_item_get_offset (item, &off_x, &off_y);
 
-            if (bounds)
-            {
-                gimp_rectangle_union (*x, *y, *width, *height,
-                                      tmp_x + off_x, tmp_y + off_y,
-                                      tmp_w, tmp_h,
-                                      x, y, width, height);
-            }
-            else
-            {
-                *x      = tmp_x + off_x;
-                *y      = tmp_y + off_y;
-                *width  = tmp_w;
-                *height = tmp_h;
+			if (bounds)
+			{
+				gimp_rectangle_union (*x, *y, *width, *height,
+				                      tmp_x + off_x, tmp_y + off_y,
+				                      tmp_w, tmp_h,
+				                      x, y, width, height);
+			}
+			else
+			{
+				*x      = tmp_x + off_x;
+				*y      = tmp_y + off_y;
+				*width  = tmp_w;
+				*height = tmp_h;
 
-                bounds = TRUE;
-            }
-        }
-    }
+				bounds = TRUE;
+			}
+		}
+	}
 
-    if (! bounds)
-    {
-        *x      = 0;
-        *y      = 0;
-        *width  = gimp_image_get_width  (image);
-        *height = gimp_image_get_height (image);
-    }
+	if (!bounds)
+	{
+		*x      = 0;
+		*y      = 0;
+		*width  = gimp_image_get_width  (image);
+		*height = gimp_image_get_height (image);
+	}
 
-    return bounds;
+	return bounds;
 }
 
 void
 gimp_image_item_list_translate (GimpImage *image,
                                 GList     *list,
-                                gint       offset_x,
-                                gint       offset_y,
-                                gboolean   push_undo)
+                                gint offset_x,
+                                gint offset_y,
+                                gboolean push_undo)
 {
-    g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
 
-    if (list)
-    {
-        GList *l;
+	if (list)
+	{
+		GList *l;
 
-        if (list->next)
-        {
-            if (push_undo)
-            {
-                gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_DISPLACE,
-                                             C_("undo-type", "Translate Items"));
-            }
+		if (list->next)
+		{
+			if (push_undo)
+			{
+				gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_DISPLACE,
+				                             C_("undo-type", "Translate Items"));
+			}
 
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_start_transform (GIMP_ITEM (l->data), push_undo);
-        }
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_start_transform (GIMP_ITEM (l->data), push_undo);
+		}
 
-        for (l = list; l; l = g_list_next (l))
-            gimp_item_translate (GIMP_ITEM (l->data),
-                                 offset_x, offset_y, push_undo);
+		for (l = list; l; l = g_list_next (l))
+			gimp_item_translate (GIMP_ITEM (l->data),
+			                     offset_x, offset_y, push_undo);
 
-        if (list->next)
-        {
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_end_transform (GIMP_ITEM (l->data), push_undo);
+		if (list->next)
+		{
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_end_transform (GIMP_ITEM (l->data), push_undo);
 
-            if (push_undo)
-                gimp_image_undo_group_end (image);
-        }
-    }
+			if (push_undo)
+				gimp_image_undo_group_end (image);
+		}
+	}
 }
 
 void
 gimp_image_item_list_flip (GimpImage           *image,
                            GList               *list,
                            GimpContext         *context,
-                           GimpOrientationType  flip_type,
-                           gdouble              axis,
-                           gboolean             clip_result)
+                           GimpOrientationType flip_type,
+                           gdouble axis,
+                           gboolean clip_result)
 {
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_CONTEXT (context));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_CONTEXT (context));
 
-    if (list)
-    {
-        GList *l;
+	if (list)
+	{
+		GList *l;
 
-        if (list->next)
-        {
-            gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
-                                         C_("undo-type", "Flip Items"));
+		if (list->next)
+		{
+			gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
+			                             C_("undo-type", "Flip Items"));
 
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_start_transform (GIMP_ITEM (l->data), TRUE);
-        }
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_start_transform (GIMP_ITEM (l->data), TRUE);
+		}
 
-        for (l = list; l; l = g_list_next (l))
-        {
-            GimpItem *item = l->data;
+		for (l = list; l; l = g_list_next (l))
+		{
+			GimpItem *item = l->data;
 
-            gimp_item_flip (item, context,
-                            flip_type, axis,
-                            gimp_item_get_clip (item, clip_result));
-        }
+			gimp_item_flip (item, context,
+			                flip_type, axis,
+			                gimp_item_get_clip (item, clip_result));
+		}
 
-        if (list->next)
-        {
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_end_transform (GIMP_ITEM (l->data), TRUE);
+		if (list->next)
+		{
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_end_transform (GIMP_ITEM (l->data), TRUE);
 
-            gimp_image_undo_group_end (image);
-        }
-    }
+			gimp_image_undo_group_end (image);
+		}
+	}
 }
 
 void
 gimp_image_item_list_rotate (GimpImage        *image,
                              GList            *list,
                              GimpContext      *context,
-                             GimpRotationType  rotate_type,
-                             gdouble           center_x,
-                             gdouble           center_y,
-                             gboolean          clip_result)
+                             GimpRotationType rotate_type,
+                             gdouble center_x,
+                             gdouble center_y,
+                             gboolean clip_result)
 {
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_CONTEXT (context));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_CONTEXT (context));
 
-    if (list)
-    {
-        GList *l;
+	if (list)
+	{
+		GList *l;
 
-        if (list->next)
-        {
-            gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
-                                         C_("undo-type", "Rotate Items"));
+		if (list->next)
+		{
+			gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
+			                             C_("undo-type", "Rotate Items"));
 
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_start_transform (GIMP_ITEM (l->data), TRUE);
-        }
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_start_transform (GIMP_ITEM (l->data), TRUE);
+		}
 
-        for (l = list; l; l = g_list_next (l))
-        {
-            GimpItem *item = l->data;
+		for (l = list; l; l = g_list_next (l))
+		{
+			GimpItem *item = l->data;
 
-            gimp_item_rotate (item, context,
-                              rotate_type, center_x, center_y,
-                              gimp_item_get_clip (item, clip_result));
-        }
+			gimp_item_rotate (item, context,
+			                  rotate_type, center_x, center_y,
+			                  gimp_item_get_clip (item, clip_result));
+		}
 
-        if (list->next)
-        {
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_end_transform (GIMP_ITEM (l->data), TRUE);
+		if (list->next)
+		{
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_end_transform (GIMP_ITEM (l->data), TRUE);
 
-            gimp_image_undo_group_end (image);
-        }
-    }
+			gimp_image_undo_group_end (image);
+		}
+	}
 }
 
 void
@@ -232,61 +232,61 @@ gimp_image_item_list_transform (GimpImage              *image,
                                 GList                  *list,
                                 GimpContext            *context,
                                 const GimpMatrix3      *matrix,
-                                GimpTransformDirection  direction,
-                                GimpInterpolationType   interpolation_type,
-                                GimpTransformResize     clip_result,
+                                GimpTransformDirection direction,
+                                GimpInterpolationType interpolation_type,
+                                GimpTransformResize clip_result,
                                 GimpProgress           *progress)
 {
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_CONTEXT (context));
-    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_CONTEXT (context));
+	g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
-    if (list)
-    {
-        GimpObjectQueue *queue = NULL;
-        GList           *l;
+	if (list)
+	{
+		GimpObjectQueue *queue = NULL;
+		GList           *l;
 
-        if (progress)
-        {
-            queue    = gimp_object_queue_new (progress);
-            progress = GIMP_PROGRESS (queue);
+		if (progress)
+		{
+			queue    = gimp_object_queue_new (progress);
+			progress = GIMP_PROGRESS (queue);
 
-            gimp_object_queue_push_list (queue, list);
-        }
+			gimp_object_queue_push_list (queue, list);
+		}
 
-        if (list->next)
-        {
-            gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
-                                         C_("undo-type", "Transform Items"));
+		if (list->next)
+		{
+			gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
+			                             C_("undo-type", "Transform Items"));
 
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_start_transform (GIMP_ITEM (l->data), TRUE);
-        }
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_start_transform (GIMP_ITEM (l->data), TRUE);
+		}
 
-        for (l = list; l; l = g_list_next (l))
-        {
-            GimpItem *item = l->data;
+		for (l = list; l; l = g_list_next (l))
+		{
+			GimpItem *item = l->data;
 
-            if (queue)
-                gimp_object_queue_pop (queue);
+			if (queue)
+				gimp_object_queue_pop (queue);
 
-            gimp_item_transform (item, context,
-                                 matrix, direction,
-                                 interpolation_type,
-                                 gimp_item_get_clip (item, clip_result),
-                                 progress);
-        }
+			gimp_item_transform (item, context,
+			                     matrix, direction,
+			                     interpolation_type,
+			                     gimp_item_get_clip (item, clip_result),
+			                     progress);
+		}
 
-        if (list->next)
-        {
-            for (l = list; l; l = g_list_next (l))
-                gimp_item_end_transform (GIMP_ITEM (l->data), TRUE);
+		if (list->next)
+		{
+			for (l = list; l; l = g_list_next (l))
+				gimp_item_end_transform (GIMP_ITEM (l->data), TRUE);
 
-            gimp_image_undo_group_end (image);
-        }
+			gimp_image_undo_group_end (image);
+		}
 
-        g_clear_object (&queue);
-    }
+		g_clear_object (&queue);
+	}
 }
 
 /**
@@ -302,61 +302,61 @@ gimp_image_item_list_transform (GimpImage              *image,
  **/
 GList *
 gimp_image_item_list_get_list (GimpImage        *image,
-                               GimpItemTypeMask  type,
-                               GimpItemSet       set)
+                               GimpItemTypeMask type,
+                               GimpItemSet set)
 {
-    GList *all_items;
-    GList *list;
-    GList *return_list = NULL;
+	GList *all_items;
+	GList *list;
+	GList *return_list = NULL;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    if (type & GIMP_ITEM_TYPE_LAYERS)
-    {
-        all_items = gimp_image_get_layer_list (image);
+	if (type & GIMP_ITEM_TYPE_LAYERS)
+	{
+		all_items = gimp_image_get_layer_list (image);
 
-        for (list = all_items; list; list = g_list_next (list))
-        {
-            GimpItem *item = list->data;
+		for (list = all_items; list; list = g_list_next (list))
+		{
+			GimpItem *item = list->data;
 
-            if (gimp_item_is_in_set (item, set))
-                return_list = g_list_prepend (return_list, item);
-        }
+			if (gimp_item_is_in_set (item, set))
+				return_list = g_list_prepend (return_list, item);
+		}
 
-        g_list_free (all_items);
-    }
+		g_list_free (all_items);
+	}
 
-    if (type & GIMP_ITEM_TYPE_CHANNELS)
-    {
-        all_items = gimp_image_get_channel_list (image);
+	if (type & GIMP_ITEM_TYPE_CHANNELS)
+	{
+		all_items = gimp_image_get_channel_list (image);
 
-        for (list = all_items; list; list = g_list_next (list))
-        {
-            GimpItem *item = list->data;
+		for (list = all_items; list; list = g_list_next (list))
+		{
+			GimpItem *item = list->data;
 
-            if (gimp_item_is_in_set (item, set))
-                return_list = g_list_prepend (return_list, item);
-        }
+			if (gimp_item_is_in_set (item, set))
+				return_list = g_list_prepend (return_list, item);
+		}
 
-        g_list_free (all_items);
-    }
+		g_list_free (all_items);
+	}
 
-    if (type & GIMP_ITEM_TYPE_VECTORS)
-    {
-        all_items = gimp_image_get_vectors_list (image);
+	if (type & GIMP_ITEM_TYPE_VECTORS)
+	{
+		all_items = gimp_image_get_vectors_list (image);
 
-        for (list = all_items; list; list = g_list_next (list))
-        {
-            GimpItem *item = list->data;
+		for (list = all_items; list; list = g_list_next (list))
+		{
+			GimpItem *item = list->data;
 
-            if (gimp_item_is_in_set (item, set))
-                return_list = g_list_prepend (return_list, item);
-        }
+			if (gimp_item_is_in_set (item, set))
+				return_list = g_list_prepend (return_list, item);
+		}
 
-        g_list_free (all_items);
-    }
+		g_list_free (all_items);
+	}
 
-    return g_list_reverse (return_list);
+	return g_list_reverse (return_list);
 }
 
 /**
@@ -375,93 +375,93 @@ GList *
 gimp_image_item_list_linked (GimpImage *image,
                              GList     *items)
 {
-    GList            *new_items = NULL;
-    GList            *iter;
-    GimpItemTypeMask  type   = 0;
-    gboolean          linked = FALSE;
+	GList            *new_items = NULL;
+	GList            *iter;
+	GimpItemTypeMask type   = 0;
+	gboolean linked = FALSE;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (g_list_length (items) > 0, NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (g_list_length (items) > 0, NULL);
 
-    for (iter = items; iter; iter = iter->next)
-    {
-        GimpItem *item;
+	for (iter = items; iter; iter = iter->next)
+	{
+		GimpItem *item;
 
-        g_return_val_if_fail (GIMP_IS_ITEM (iter->data), NULL);
-        g_return_val_if_fail (image == gimp_item_get_image (iter->data), NULL);
+		g_return_val_if_fail (GIMP_IS_ITEM (iter->data), NULL);
+		g_return_val_if_fail (image == gimp_item_get_image (iter->data), NULL);
 
-        item = iter->data;
+		item = iter->data;
 
-        if (gimp_item_get_linked (item))
-            linked = TRUE;
+		if (gimp_item_get_linked (item))
+			linked = TRUE;
 
-        if (GIMP_IS_LAYER (item))
-            type |= GIMP_ITEM_TYPE_LAYERS;
-        else if (GIMP_IS_VECTORS (item))
-            type |= GIMP_ITEM_TYPE_VECTORS;
-        else if (GIMP_IS_CHANNEL (item))
-            type |= GIMP_ITEM_TYPE_CHANNELS;
-    }
+		if (GIMP_IS_LAYER (item))
+			type |= GIMP_ITEM_TYPE_LAYERS;
+		else if (GIMP_IS_VECTORS (item))
+			type |= GIMP_ITEM_TYPE_VECTORS;
+		else if (GIMP_IS_CHANNEL (item))
+			type |= GIMP_ITEM_TYPE_CHANNELS;
+	}
 
-    if (linked)
-    {
-        new_items = gimp_image_item_list_get_list (image, type, GIMP_ITEM_SET_LINKED);
+	if (linked)
+	{
+		new_items = gimp_image_item_list_get_list (image, type, GIMP_ITEM_SET_LINKED);
 
-        for (iter = items; iter; iter = iter->next)
-            if (! g_list_find (new_items, iter->data))
-                new_items = g_list_prepend (new_items, iter->data);
-    }
-    else
-    {
-        new_items = g_list_copy (items);
-    }
+		for (iter = items; iter; iter = iter->next)
+			if (!g_list_find (new_items, iter->data))
+				new_items = g_list_prepend (new_items, iter->data);
+	}
+	else
+	{
+		new_items = g_list_copy (items);
+	}
 
-    new_items = gimp_image_item_list_filter (new_items);
+	new_items = gimp_image_item_list_filter (new_items);
 
-    return new_items;
+	return new_items;
 }
 
 static GList *
 gimp_image_item_list_remove_children (GList          *list,
                                       const GimpItem *parent)
 {
-    GList *l = list;
+	GList *l = list;
 
-    while (l)
-    {
-        GimpItem *item = l->data;
+	while (l)
+	{
+		GimpItem *item = l->data;
 
-        l = g_list_next (l);
+		l = g_list_next (l);
 
-        if (gimp_viewable_is_ancestor (GIMP_VIEWABLE (parent),
-                                       GIMP_VIEWABLE (item)))
-        {
-            list = g_list_remove (list, item);
-        }
-    }
+		if (gimp_viewable_is_ancestor (GIMP_VIEWABLE (parent),
+		                               GIMP_VIEWABLE (item)))
+		{
+			list = g_list_remove (list, item);
+		}
+	}
 
-    return list;
+	return list;
 }
 
 GList *
 gimp_image_item_list_filter (GList *list)
 {
-    GList *l;
+	GList *l;
 
-    if (! list)
-        return NULL;
+	if (!list)
+		return NULL;
 
-    for (l = list; l; l = g_list_next (l))
-    {
-        GimpItem *item = l->data;
-        GList    *next;
+	for (l = list; l; l = g_list_next (l))
+	{
+		GimpItem *item = l->data;
+		GList    *next;
 
-        next = gimp_image_item_list_remove_children (g_list_next (l), item);
+		next = gimp_image_item_list_remove_children (g_list_next (l), item);
 
-        l->next = next;
-        if (next)
-            next->prev = l;
-    }
+		l->next = next;
+		if (next)
+			next->prev = l;
+	}
 
-    return list;
+	return list;
 }

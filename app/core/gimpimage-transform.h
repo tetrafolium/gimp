@@ -25,9 +25,9 @@
 void   gimp_image_transform (GimpImage              *image,
                              GimpContext            *context,
                              const GimpMatrix3      *matrix,
-                             GimpTransformDirection  direction,
-                             GimpInterpolationType   interpolation_type,
-                             GimpTransformResize     clip_result,
+                             GimpTransformDirection direction,
+                             GimpInterpolationType interpolation_type,
+                             GimpTransformResize clip_result,
                              GimpProgress           *progress);
 
 

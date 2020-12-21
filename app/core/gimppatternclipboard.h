@@ -37,14 +37,14 @@ typedef struct _GimpPatternClipboardClass GimpPatternClipboardClass;
 
 struct _GimpPatternClipboard
 {
-    GimpPattern  parent_instance;
+	GimpPattern parent_instance;
 
-    Gimp        *gimp;
+	Gimp        *gimp;
 };
 
 struct _GimpPatternClipboardClass
 {
-    GimpPatternClass  parent_class;
+	GimpPatternClass parent_class;
 };
 
 

@@ -24,11 +24,11 @@
 
 gboolean   gimp_spawn_async       (gchar       **argv,
                                    gchar       **envp,
-                                   GSpawnFlags   flags,
+                                   GSpawnFlags flags,
                                    GPid         *child_pid,
                                    GError      **error);
 
-void       gimp_spawn_set_cloexec (gint          fd);
+void       gimp_spawn_set_cloexec (gint fd);
 
 
 #endif /* __GIMP_SPAWN_H__ */

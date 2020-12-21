@@ -21,7 +21,7 @@
 
 void   dock_actions_setup  (GimpActionGroup *group);
 void   dock_actions_update (GimpActionGroup *group,
-                            gpointer         data);
+                            gpointer data);
 
 
 #endif /* __DOCK_ACTIONS_H__ */

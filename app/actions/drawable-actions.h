@@ -21,7 +21,7 @@
 
 void   drawable_actions_setup  (GimpActionGroup *group);
 void   drawable_actions_update (GimpActionGroup *group,
-                                gpointer         data);
+                                gpointer data);
 
 
 #endif /* __DRAWABLE_ACTIONS_H__ */

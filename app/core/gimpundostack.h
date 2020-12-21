@@ -34,14 +34,14 @@ typedef struct _GimpUndoStackClass GimpUndoStackClass;
 
 struct _GimpUndoStack
 {
-    GimpUndo       parent_instance;
+	GimpUndo parent_instance;
 
-    GimpContainer *undos;
+	GimpContainer *undos;
 };
 
 struct _GimpUndoStackClass
 {
-    GimpUndoClass  parent_class;
+	GimpUndoClass parent_class;
 };
 
 
@@ -50,13 +50,13 @@ GType           gimp_undo_stack_get_type    (void) G_GNUC_CONST;
 GimpUndoStack * gimp_undo_stack_new         (GimpImage           *image);
 
 void            gimp_undo_stack_push_undo   (GimpUndoStack       *stack,
-        GimpUndo            *undo);
+                                             GimpUndo            *undo);
 GimpUndo      * gimp_undo_stack_pop_undo    (GimpUndoStack       *stack,
-        GimpUndoMode         undo_mode,
-        GimpUndoAccumulator *accum);
+                                             GimpUndoMode undo_mode,
+                                             GimpUndoAccumulator *accum);
 
 GimpUndo      * gimp_undo_stack_free_bottom (GimpUndoStack       *stack,
-        GimpUndoMode         undo_mode);
+                                             GimpUndoMode undo_mode);
 GimpUndo      * gimp_undo_stack_peek        (GimpUndoStack       *stack);
 gint            gimp_undo_stack_get_depth   (GimpUndoStack       *stack);
 

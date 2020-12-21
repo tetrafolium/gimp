@@ -33,26 +33,26 @@ typedef struct _GimpLangRcClass GimpLangRcClass;
 
 struct _GimpLangRc
 {
-    GObject        parent_instance;
+	GObject parent_instance;
 
-    GFile         *user_gimprc;
-    GFile         *system_gimprc;
-    gboolean       verbose;
+	GFile         *user_gimprc;
+	GFile         *system_gimprc;
+	gboolean verbose;
 
-    gchar         *language;
+	gchar         *language;
 };
 
 struct _GimpLangRcClass
 {
-    GObjectClass   parent_class;
+	GObjectClass parent_class;
 };
 
 
 GType         gimp_lang_rc_get_type     (void) G_GNUC_CONST;
 
 GimpLangRc  * gimp_lang_rc_new          (GFile      *system_gimprc,
-        GFile      *user_gimprc,
-        gboolean    verbose);
+                                         GFile      *user_gimprc,
+                                         gboolean verbose);
 gchar       * gimp_lang_rc_get_language (GimpLangRc *rc);
 
 

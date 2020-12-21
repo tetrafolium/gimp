@@ -21,7 +21,7 @@
 
 void   debug_actions_setup  (GimpActionGroup *group);
 void   debug_actions_update (GimpActionGroup *group,
-                             gpointer         data);
+                             gpointer data);
 
 
 #endif /* __DEBUG_ACTIONS_H__ */

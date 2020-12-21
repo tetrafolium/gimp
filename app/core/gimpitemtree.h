@@ -36,58 +36,58 @@ typedef struct _GimpItemTreeClass GimpItemTreeClass;
 
 struct _GimpItemTree
 {
-    GimpObject     parent_instance;
+	GimpObject parent_instance;
 
-    GimpContainer *container;
+	GimpContainer *container;
 };
 
 struct _GimpItemTreeClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
 GType          gimp_item_tree_get_type         (void) G_GNUC_CONST;
 GimpItemTree * gimp_item_tree_new              (GimpImage     *image,
-        GType          container_type,
-        GType          item_type);
+                                                GType container_type,
+                                                GType item_type);
 
 GimpItem     * gimp_item_tree_get_active_item  (GimpItemTree  *tree);
 void           gimp_item_tree_set_active_item  (GimpItemTree  *tree,
-        GimpItem      *item);
+                                                GimpItem      *item);
 
 GList        * gimp_item_tree_get_selected_items (GimpItemTree  *tree);
 void           gimp_item_tree_set_selected_items (GimpItemTree  *tree,
-        GList         *items);
+                                                  GList         *items);
 
 GimpItem     * gimp_item_tree_get_item_by_name (GimpItemTree  *tree,
-        const gchar   *name);
+                                                const gchar   *name);
 
 gboolean       gimp_item_tree_get_insert_pos   (GimpItemTree  *tree,
-        GimpItem      *item,
-        GimpItem     **parent,
-        gint          *position);
+                                                GimpItem      *item,
+                                                GimpItem     **parent,
+                                                gint          *position);
 
 void           gimp_item_tree_add_item         (GimpItemTree  *tree,
-        GimpItem      *item,
-        GimpItem      *parent,
-        gint           position);
+                                                GimpItem      *item,
+                                                GimpItem      *parent,
+                                                gint position);
 GList        * gimp_item_tree_remove_item      (GimpItemTree  *tree,
-        GimpItem      *item,
-        GList         *new_selected);
+                                                GimpItem      *item,
+                                                GList         *new_selected);
 
 gboolean       gimp_item_tree_reorder_item     (GimpItemTree  *tree,
-        GimpItem      *item,
-        GimpItem      *new_parent,
-        gint           new_index,
-        gboolean       push_undo,
-        const gchar   *undo_desc);
+                                                GimpItem      *item,
+                                                GimpItem      *new_parent,
+                                                gint new_index,
+                                                gboolean push_undo,
+                                                const gchar   *undo_desc);
 
 void           gimp_item_tree_rename_item      (GimpItemTree  *tree,
-        GimpItem      *item,
-        const gchar   *new_name,
-        gboolean       push_undo,
-        const gchar   *undo_desc);
+                                                GimpItem      *item,
+                                                const gchar   *new_name,
+                                                gboolean push_undo,
+                                                const gchar   *undo_desc);
 
 
 #endif  /*  __GIMP_ITEM_TREE_H__  */

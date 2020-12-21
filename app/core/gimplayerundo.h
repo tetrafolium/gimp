@@ -30,21 +30,21 @@
 #define GIMP_LAYER_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LAYER_UNDO, GimpLayerUndoClass))
 
 
-typedef struct _GimpLayerUndo      GimpLayerUndo;
+typedef struct _GimpLayerUndo GimpLayerUndo;
 typedef struct _GimpLayerUndoClass GimpLayerUndoClass;
 
 struct _GimpLayerUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    GimpLayer    *prev_parent;
-    gint          prev_position;   /*  former position in list  */
-    GList        *prev_layers;     /*  previous selected layers */
+	GimpLayer    *prev_parent;
+	gint prev_position;        /*  former position in list  */
+	GList        *prev_layers; /*  previous selected layers */
 };
 
 struct _GimpLayerUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

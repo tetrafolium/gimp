@@ -37,12 +37,12 @@ typedef struct _GimpGroupLayerClass GimpGroupLayerClass;
 
 struct _GimpGroupLayer
 {
-    GimpLayer  parent_instance;
+	GimpLayer parent_instance;
 };
 
 struct _GimpGroupLayerClass
 {
-    GimpLayerClass  parent_class;
+	GimpLayerClass parent_class;
 };
 
 
@@ -53,26 +53,26 @@ GimpLayer      * gimp_group_layer_new                 (GimpImage           *imag
 GimpProjection * gimp_group_layer_get_projection      (GimpGroupLayer      *group);
 
 void             gimp_group_layer_suspend_resize      (GimpGroupLayer      *group,
-        gboolean             push_undo);
+                                                       gboolean push_undo);
 void             gimp_group_layer_resume_resize       (GimpGroupLayer      *group,
-        gboolean             push_undo);
+                                                       gboolean push_undo);
 
 void             gimp_group_layer_suspend_mask        (GimpGroupLayer      *group,
-        gboolean             push_undo);
+                                                       gboolean push_undo);
 void             gimp_group_layer_resume_mask         (GimpGroupLayer      *group,
-        gboolean             push_undo);
+                                                       gboolean push_undo);
 
 
 void             _gimp_group_layer_set_suspended_mask (GimpGroupLayer      *group,
-        GeglBuffer          *buffer,
-        const GeglRectangle *bounds);
+                                                       GeglBuffer          *buffer,
+                                                       const GeglRectangle *bounds);
 GeglBuffer     * _gimp_group_layer_get_suspended_mask (GimpGroupLayer      *group,
-        GeglRectangle       *bounds);
+                                                       GeglRectangle       *bounds);
 
 void             _gimp_group_layer_start_transform    (GimpGroupLayer      *group,
-        gboolean             push_undo);
+                                                       gboolean push_undo);
 void             _gimp_group_layer_end_transform      (GimpGroupLayer      *group,
-        gboolean             push_undo);
+                                                       gboolean push_undo);
 
 
 #endif /* __GIMP_GROUP_LAYER_H__ */

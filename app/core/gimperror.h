@@ -21,7 +21,7 @@
 
 typedef enum
 {
-    GIMP_FAILED,  /* generic error condition */
+	GIMP_FAILED, /* generic error condition */
 } GimpErrorCode;
 
 

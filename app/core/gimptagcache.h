@@ -33,19 +33,19 @@
 #define GIMP_TAG_CACHE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TAG_CACHE, GimpTagCacheClass))
 
 
-typedef struct _GimpTagCacheClass   GimpTagCacheClass;
+typedef struct _GimpTagCacheClass GimpTagCacheClass;
 typedef struct _GimpTagCachePrivate GimpTagCachePrivate;
 
 struct _GimpTagCache
 {
-    GimpObject           parent_instance;
+	GimpObject parent_instance;
 
-    GimpTagCachePrivate *priv;
+	GimpTagCachePrivate *priv;
 };
 
 struct _GimpTagCacheClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
@@ -57,7 +57,7 @@ void            gimp_tag_cache_save          (GimpTagCache  *cache);
 void            gimp_tag_cache_load          (GimpTagCache  *cache);
 
 void            gimp_tag_cache_add_container (GimpTagCache  *cache,
-        GimpContainer *container);
+                                              GimpContainer *container);
 
 
 #endif  /*  __GIMP_TAG_CACHE_H__  */

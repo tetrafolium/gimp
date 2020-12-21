@@ -33,25 +33,25 @@
 
 
 typedef struct _GimpMybrushPrivate GimpMybrushPrivate;
-typedef struct _GimpMybrushClass   GimpMybrushClass;
+typedef struct _GimpMybrushClass GimpMybrushClass;
 
 struct _GimpMybrush
 {
-    GimpData            parent_instance;
+	GimpData parent_instance;
 
-    GimpMybrushPrivate *priv;
+	GimpMybrushPrivate *priv;
 };
 
 struct _GimpMybrushClass
 {
-    GimpDataClass  parent_class;
+	GimpDataClass parent_class;
 };
 
 
 GType         gimp_mybrush_get_type             (void) G_GNUC_CONST;
 
 GimpData    * gimp_mybrush_new                  (GimpContext *context,
-        const gchar *name);
+                                                 const gchar *name);
 GimpData    * gimp_mybrush_get_standard         (GimpContext *context);
 
 const gchar * gimp_mybrush_get_brush_json       (GimpMybrush *brush);

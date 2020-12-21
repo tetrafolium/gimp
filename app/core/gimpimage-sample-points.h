@@ -22,39 +22,39 @@
 /*  public sample point adding API
  */
 GimpSamplePoint * gimp_image_add_sample_point_at_pos (GimpImage        *image,
-        gint              x,
-        gint              y,
-        gboolean          push_undo);
+                                                      gint x,
+                                                      gint y,
+                                                      gboolean push_undo);
 
 /*  internal sample point adding API, does not check the sample
  *  point's position and is publicly declared only to be used from
  *  undo
  */
 void              gimp_image_add_sample_point        (GimpImage       *image,
-        GimpSamplePoint *sample_point,
-        gint             x,
-        gint             y);
+                                                      GimpSamplePoint *sample_point,
+                                                      gint x,
+                                                      gint y);
 
 void              gimp_image_remove_sample_point     (GimpImage       *image,
-        GimpSamplePoint *sample_point,
-        gboolean         push_undo);
+                                                      GimpSamplePoint *sample_point,
+                                                      gboolean push_undo);
 void              gimp_image_move_sample_point       (GimpImage       *image,
-        GimpSamplePoint *sample_point,
-        gint             x,
-        gint             y,
-        gboolean         push_undo);
+                                                      GimpSamplePoint *sample_point,
+                                                      gint x,
+                                                      gint y,
+                                                      gboolean push_undo);
 void              gimp_image_set_sample_point_pick_mode
-(GimpImage       *image,
- GimpSamplePoint *sample_point,
- GimpColorPickMode pick_mode,
- gboolean         push_undo);
+        (GimpImage       *image,
+        GimpSamplePoint *sample_point,
+        GimpColorPickMode pick_mode,
+        gboolean push_undo);
 
 GList           * gimp_image_get_sample_points       (GimpImage       *image);
 GimpSamplePoint * gimp_image_get_sample_point        (GimpImage       *image,
-        guint32          id);
+                                                      guint32 id);
 GimpSamplePoint * gimp_image_get_next_sample_point   (GimpImage       *image,
-        guint32          id,
-        gboolean        *sample_point_found);
+                                                      guint32 id,
+                                                      gboolean        *sample_point_found);
 
 
 #endif /* __GIMP_IMAGE_SAMPLE_POINTS_H__ */

@@ -21,7 +21,7 @@
 
 void   sample_points_actions_setup  (GimpActionGroup *group);
 void   sample_points_actions_update (GimpActionGroup *group,
-                                     gpointer         data);
+                                     gpointer data);
 
 
 #endif /* __SAMPLE_POINTS_ACTIONS_H__ */

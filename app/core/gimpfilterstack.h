@@ -35,19 +35,19 @@ typedef struct _GimpFilterStackClass GimpFilterStackClass;
 
 struct _GimpFilterStack
 {
-    GimpList  parent_instance;
+	GimpList parent_instance;
 
-    GeglNode *graph;
+	GeglNode *graph;
 };
 
 struct _GimpFilterStackClass
 {
-    GimpListClass  parent_class;
+	GimpListClass parent_class;
 };
 
 
 GType           gimp_filter_stack_get_type  (void) G_GNUC_CONST;
-GimpContainer * gimp_filter_stack_new       (GType            filter_type);
+GimpContainer * gimp_filter_stack_new       (GType filter_type);
 
 GeglNode *      gimp_filter_stack_get_graph (GimpFilterStack *stack);
 

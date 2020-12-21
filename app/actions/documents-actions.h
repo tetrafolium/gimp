@@ -21,7 +21,7 @@
 
 void   documents_actions_setup  (GimpActionGroup *group);
 void   documents_actions_update (GimpActionGroup *group,
-                                 gpointer         data);
+                                 gpointer data);
 
 
 #endif /* __DOCUMENTS_ACTIONS_H__ */

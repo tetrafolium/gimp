@@ -24,8 +24,8 @@
 
 gboolean  gimp_rc_deserialize (GimpConfig *config,
                                GScanner   *scanner,
-                               gint        nest_level,
-                               gpointer    data);
+                               gint nest_level,
+                               gpointer data);
 
 
 #endif /* __GIMP_RC_DESERIALIZE_H__ */

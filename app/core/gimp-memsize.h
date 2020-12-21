@@ -23,28 +23,28 @@ gint64   gimp_g_type_instance_get_memsize      (GTypeInstance   *instance);
 gint64   gimp_g_object_get_memsize             (GObject         *object);
 
 gint64   gimp_g_hash_table_get_memsize         (GHashTable      *hash,
-        gint64           data_size);
+                                                gint64 data_size);
 gint64   gimp_g_hash_table_get_memsize_foreach (GHashTable      *hash,
-        GimpMemsizeFunc  func,
-        gint64          *gui_size);
+                                                GimpMemsizeFunc func,
+                                                gint64          *gui_size);
 
 gint64   gimp_g_slist_get_memsize              (GSList          *slist,
-        gint64           data_size);
+                                                gint64 data_size);
 gint64   gimp_g_slist_get_memsize_foreach      (GSList          *slist,
-        GimpMemsizeFunc  func,
-        gint64          *gui_size);
+                                                GimpMemsizeFunc func,
+                                                gint64          *gui_size);
 
 gint64   gimp_g_list_get_memsize               (GList           *list,
-        gint64           data_size);
+                                                gint64 data_size);
 gint64   gimp_g_list_get_memsize_foreach       (GList           *list,
-        GimpMemsizeFunc  func,
-        gint64          *gui_size);
+                                                GimpMemsizeFunc func,
+                                                gint64          *gui_size);
 
 gint64   gimp_g_queue_get_memsize              (GQueue          *queue,
-        gint64           data_size);
+                                                gint64 data_size);
 gint64   gimp_g_queue_get_memsize_foreach      (GQueue          *queue,
-        GimpMemsizeFunc  func,
-        gint64          *gui_size);
+                                                GimpMemsizeFunc func,
+                                                gint64          *gui_size);
 
 gint64   gimp_g_value_get_memsize              (GValue          *value);
 gint64   gimp_g_param_spec_get_memsize         (GParamSpec      *pspec);
@@ -54,7 +54,7 @@ gint64   gimp_gegl_pyramid_get_memsize         (GeglBuffer      *buffer);
 
 gint64   gimp_string_get_memsize               (const gchar     *string);
 gint64   gimp_parasite_get_memsize             (GimpParasite    *parasite,
-        gint64          *gui_size);
+                                                gint64          *gui_size);
 
 
 #endif /* __APP_GIMP_MEMSIZE_H__ */

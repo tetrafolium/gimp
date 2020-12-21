@@ -20,32 +20,32 @@
 
 
 GimpLayer * gimp_layer_new                  (GimpImage        *image,
-        gint              width,
-        gint              height,
-        const Babl       *format,
-        const gchar      *name,
-        gdouble           opacity,
-        GimpLayerMode     mode);
+                                             gint width,
+                                             gint height,
+                                             const Babl       *format,
+                                             const gchar      *name,
+                                             gdouble opacity,
+                                             GimpLayerMode mode);
 
 GimpLayer * gimp_layer_new_from_buffer      (GimpBuffer       *buffer,
-        GimpImage        *dest_image,
-        const Babl       *format,
-        const gchar      *name,
-        gdouble           opacity,
-        GimpLayerMode     mode);
+                                             GimpImage        *dest_image,
+                                             const Babl       *format,
+                                             const gchar      *name,
+                                             gdouble opacity,
+                                             GimpLayerMode mode);
 GimpLayer * gimp_layer_new_from_gegl_buffer (GeglBuffer       *buffer,
-        GimpImage        *dest_image,
-        const Babl       *format,
-        const gchar      *name,
-        gdouble           opacity,
-        GimpLayerMode     mode,
-        GimpColorProfile *buffer_profile);
+                                             GimpImage        *dest_image,
+                                             const Babl       *format,
+                                             const gchar      *name,
+                                             gdouble opacity,
+                                             GimpLayerMode mode,
+                                             GimpColorProfile *buffer_profile);
 GimpLayer * gimp_layer_new_from_pixbuf      (GdkPixbuf        *pixbuf,
-        GimpImage        *dest_image,
-        const Babl       *format,
-        const gchar      *name,
-        gdouble           opacity,
-        GimpLayerMode     mode);
+                                             GimpImage        *dest_image,
+                                             const Babl       *format,
+                                             const gchar      *name,
+                                             gdouble opacity,
+                                             GimpLayerMode mode);
 
 
 #endif /* __GIMP_LAYER_NEW_H__ */

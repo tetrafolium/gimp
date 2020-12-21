@@ -32,24 +32,24 @@
 #define GIMP_LINE_ART_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LINE_ART, GimpLineArtClass))
 
 
-typedef struct _GimpLineArtClass   GimpLineArtClass;
+typedef struct _GimpLineArtClass GimpLineArtClass;
 typedef struct _GimpLineArtPrivate GimpLineArtPrivate;
 
 struct _GimpLineArt
 {
-    GimpObject          parent_instance;
+	GimpObject parent_instance;
 
-    GimpLineArtPrivate *priv;
+	GimpLineArtPrivate *priv;
 };
 
 struct _GimpLineArtClass
 {
-    GimpObjectClass     parent_class;
+	GimpObjectClass parent_class;
 
-    /* Signals */
+	/* Signals */
 
-    void (* computing_start) (GimpLineArt *line_art);
-    void (* computing_end)   (GimpLineArt *line_art);
+	void (* computing_start) (GimpLineArt *line_art);
+	void (* computing_end)   (GimpLineArt *line_art);
 };
 
 
@@ -58,16 +58,16 @@ GType                gimp_line_art_get_type         (void) G_GNUC_CONST;
 GimpLineArt        * gimp_line_art_new              (void);
 
 void                 gimp_line_art_bind_gap_length  (GimpLineArt  *line_art,
-        gboolean      bound);
+                                                     gboolean bound);
 
 void                 gimp_line_art_set_input        (GimpLineArt  *line_art,
-        GimpPickable *pickable);
+                                                     GimpPickable *pickable);
 GimpPickable       * gimp_line_art_get_input        (GimpLineArt  *line_art);
 void                 gimp_line_art_freeze           (GimpLineArt  *line_art);
 void                 gimp_line_art_thaw             (GimpLineArt  *line_art);
 gboolean             gimp_line_art_is_frozen        (GimpLineArt  *line_art);
 
 GeglBuffer         * gimp_line_art_get              (GimpLineArt  *line_art,
-        gfloat      **distmap);
+                                                     gfloat      **distmap);
 
 #endif /* __GIMP_LINEART__ */

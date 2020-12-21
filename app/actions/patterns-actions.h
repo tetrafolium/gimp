@@ -21,7 +21,7 @@
 
 void   patterns_actions_setup  (GimpActionGroup *group);
 void   patterns_actions_update (GimpActionGroup *group,
-                                gpointer         user_data);
+                                gpointer user_data);
 
 
 #endif /* __PATTERNS_ACTIONS_H__ */

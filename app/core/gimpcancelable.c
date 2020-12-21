@@ -32,8 +32,8 @@
 
 enum
 {
-    CANCEL,
-    LAST_SIGNAL
+	CANCEL,
+	LAST_SIGNAL
 };
 
 
@@ -49,13 +49,13 @@ static guint cancelable_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_cancelable_default_init (GimpCancelableInterface *iface)
 {
-    cancelable_signals[CANCEL] =
-        g_signal_new ("cancel",
-                      G_TYPE_FROM_CLASS (iface),
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (GimpCancelableInterface, cancel),
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 0);
+	cancelable_signals[CANCEL] =
+		g_signal_new ("cancel",
+		              G_TYPE_FROM_CLASS (iface),
+		              G_SIGNAL_RUN_FIRST,
+		              G_STRUCT_OFFSET (GimpCancelableInterface, cancel),
+		              NULL, NULL, NULL,
+		              G_TYPE_NONE, 0);
 }
 
 
@@ -65,7 +65,7 @@ gimp_cancelable_default_init (GimpCancelableInterface *iface)
 void
 gimp_cancelable_cancel (GimpCancelable *cancelable)
 {
-    g_return_if_fail (GIMP_IS_CANCELABLE (cancelable));
+	g_return_if_fail (GIMP_IS_CANCELABLE (cancelable));
 
-    g_signal_emit (cancelable, cancelable_signals[CANCEL], 0);
+	g_signal_emit (cancelable, cancelable_signals[CANCEL], 0);
 }

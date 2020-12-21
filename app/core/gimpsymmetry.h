@@ -37,70 +37,70 @@
 #define GIMP_SYMMETRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SYMMETRY, GimpSymmetryClass))
 
 
-typedef struct _GimpSymmetryClass   GimpSymmetryClass;
+typedef struct _GimpSymmetryClass GimpSymmetryClass;
 
 struct _GimpSymmetry
 {
-    GimpObject    parent_instance;
+	GimpObject parent_instance;
 
-    GimpImage    *image;
-    GimpDrawable *drawable;
-    GimpCoords   *origin;
-    gboolean      active;
-    gint          version;
+	GimpImage    *image;
+	GimpDrawable *drawable;
+	GimpCoords   *origin;
+	gboolean active;
+	gint version;
 
-    GList        *strokes;
-    gboolean      stateful;
+	GList        *strokes;
+	gboolean stateful;
 };
 
 struct _GimpSymmetryClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 
-    const gchar * label;
+	const gchar * label;
 
-    /* Virtual functions */
-    void       (* update_strokes)             (GimpSymmetry       *symmetry,
-            GimpDrawable       *drawable,
-            GimpCoords         *origin);
-    void       (* get_transform)              (GimpSymmetry       *symmetry,
-            gint                stroke,
-            gdouble            *angle,
-            gboolean           *reflect);
-    void       (* active_changed)             (GimpSymmetry       *symmetry);
+	/* Virtual functions */
+	void (* update_strokes)             (GimpSymmetry       *symmetry,
+	                                     GimpDrawable       *drawable,
+	                                     GimpCoords         *origin);
+	void (* get_transform)              (GimpSymmetry       *symmetry,
+	                                     gint stroke,
+	                                     gdouble            *angle,
+	                                     gboolean           *reflect);
+	void (* active_changed)             (GimpSymmetry       *symmetry);
 
-    gboolean   (* update_version)             (GimpSymmetry       *symmetry);
+	gboolean (* update_version)             (GimpSymmetry       *symmetry);
 };
 
 
 GType          gimp_symmetry_get_type       (void) G_GNUC_CONST;
 
 void           gimp_symmetry_set_stateful   (GimpSymmetry       *symmetry,
-        gboolean            stateful);
+                                             gboolean stateful);
 void           gimp_symmetry_set_origin     (GimpSymmetry       *symmetry,
-        GimpDrawable       *drawable,
-        GimpCoords         *origin);
+                                             GimpDrawable       *drawable,
+                                             GimpCoords         *origin);
 void           gimp_symmetry_clear_origin   (GimpSymmetry       *symmetry);
 
 GimpCoords   * gimp_symmetry_get_origin     (GimpSymmetry       *symmetry);
 gint           gimp_symmetry_get_size       (GimpSymmetry       *symmetry);
 GimpCoords   * gimp_symmetry_get_coords     (GimpSymmetry       *symmetry,
-        gint                stroke);
+                                             gint stroke);
 void           gimp_symmetry_get_transform  (GimpSymmetry       *symmetry,
-        gint                stroke,
-        gdouble            *angle,
-        gboolean           *reflect);
+                                             gint stroke,
+                                             gdouble            *angle,
+                                             gboolean           *reflect);
 void           gimp_symmetry_get_matrix     (GimpSymmetry       *symmetry,
-        gint                stroke,
-        GimpMatrix3        *matrix);
+                                             gint stroke,
+                                             GimpMatrix3        *matrix);
 GeglNode     * gimp_symmetry_get_operation  (GimpSymmetry       *symmetry,
-        gint                stroke);
+                                             gint stroke);
 
-gchar        * gimp_symmetry_parasite_name  (GType               type);
+gchar        * gimp_symmetry_parasite_name  (GType type);
 GimpParasite * gimp_symmetry_to_parasite    (const GimpSymmetry *symmetry);
 GimpSymmetry * gimp_symmetry_from_parasite  (const GimpParasite *parasite,
-        GimpImage          *image,
-        GType               type);
+                                             GimpImage          *image,
+                                             GType type);
 
 
 #endif  /*  __GIMP_SYMMETRY_H__  */

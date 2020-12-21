@@ -26,90 +26,90 @@
 
 
 gboolean             gimp_image_get_use_srgb_profile   (GimpImage           *image,
-        gboolean            *hidden_profile);
+                                                        gboolean            *hidden_profile);
 void                 gimp_image_set_use_srgb_profile   (GimpImage           *image,
-        gboolean             use_srgb);
+                                                        gboolean use_srgb);
 
 GimpColorProfile   * _gimp_image_get_hidden_profile    (GimpImage           *image);
 void                 _gimp_image_set_hidden_profile    (GimpImage           *image,
-        GimpColorProfile    *profile,
-        gboolean             push_undo);
+                                                        GimpColorProfile    *profile,
+                                                        gboolean push_undo);
 
 gboolean             gimp_image_validate_icc_parasite  (GimpImage           *image,
-        const GimpParasite  *icc_parasite,
-        gboolean            *is_builtin,
-        GError             **error);
+                                                        const GimpParasite  *icc_parasite,
+                                                        gboolean            *is_builtin,
+                                                        GError             **error);
 const GimpParasite * gimp_image_get_icc_parasite       (GimpImage           *image);
 void                 gimp_image_set_icc_parasite       (GimpImage           *image,
-        const GimpParasite  *icc_parasite);
+                                                        const GimpParasite  *icc_parasite);
 
 gboolean             gimp_image_validate_icc_profile   (GimpImage           *image,
-        const guint8        *data,
-        gsize                length,
-        gboolean            *is_builtin,
-        GError             **error);
+                                                        const guint8        *data,
+                                                        gsize length,
+                                                        gboolean            *is_builtin,
+                                                        GError             **error);
 const guint8       * gimp_image_get_icc_profile        (GimpImage           *image,
-        gsize               *length);
+                                                        gsize               *length);
 gboolean             gimp_image_set_icc_profile        (GimpImage           *image,
-        const guint8        *data,
-        gsize                length,
-        GError             **error);
+                                                        const guint8        *data,
+                                                        gsize length,
+                                                        GError             **error);
 
 gboolean             gimp_image_validate_color_profile (GimpImage           *image,
+                                                        GimpColorProfile    *profile,
+                                                        gboolean            *is_builtin,
+                                                        GError             **error);
+GimpColorProfile   * gimp_image_get_color_profile      (GimpImage           *image);
+gboolean             gimp_image_set_color_profile      (GimpImage           *image,
+                                                        GimpColorProfile    *profile,
+                                                        GError             **error);
+
+gboolean             gimp_image_validate_color_profile_by_format
+        (const Babl          *format,
         GimpColorProfile    *profile,
         gboolean            *is_builtin,
         GError             **error);
-GimpColorProfile   * gimp_image_get_color_profile      (GimpImage           *image);
-gboolean             gimp_image_set_color_profile      (GimpImage           *image,
-        GimpColorProfile    *profile,
-        GError             **error);
-
-gboolean             gimp_image_validate_color_profile_by_format
-(const Babl          *format,
- GimpColorProfile    *profile,
- gboolean            *is_builtin,
- GError             **error);
 
 GimpColorProfile   * gimp_image_get_builtin_color_profile
-(GimpImage           *image);
+        (GimpImage           *image);
 
 gboolean             gimp_image_assign_color_profile   (GimpImage           *image,
-        GimpColorProfile    *dest_profile,
-        GimpProgress        *progress,
-        GError             **error);
+                                                        GimpColorProfile    *dest_profile,
+                                                        GimpProgress        *progress,
+                                                        GError             **error);
 
 gboolean             gimp_image_convert_color_profile  (GimpImage           *image,
-        GimpColorProfile    *dest_profile,
-        GimpColorRenderingIntent  intent,
-        gboolean             bpc,
-        GimpProgress        *progress,
-        GError             **error);
+                                                        GimpColorProfile    *dest_profile,
+                                                        GimpColorRenderingIntent intent,
+                                                        gboolean bpc,
+                                                        GimpProgress        *progress,
+                                                        GError             **error);
 
 void                 gimp_image_import_color_profile   (GimpImage           *image,
-        GimpContext         *context,
-        GimpProgress        *progress,
-        gboolean             interactive);
+                                                        GimpContext         *context,
+                                                        GimpProgress        *progress,
+                                                        gboolean interactive);
 
 GimpColorTransform * gimp_image_get_color_transform_to_srgb_u8
-(GimpImage           *image);
+        (GimpImage           *image);
 GimpColorTransform * gimp_image_get_color_transform_from_srgb_u8
-(GimpImage           *image);
+        (GimpImage           *image);
 
 GimpColorTransform * gimp_image_get_color_transform_to_srgb_double
-(GimpImage           *image);
+        (GimpImage           *image);
 GimpColorTransform * gimp_image_get_color_transform_from_srgb_double
-(GimpImage           *image);
+        (GimpImage           *image);
 
 void                 gimp_image_color_profile_pixel_to_srgb
-(GimpImage           *image,
- const Babl          *pixel_format,
- gpointer             pixel,
- GimpRGB             *color);
+        (GimpImage           *image,
+        const Babl          *pixel_format,
+        gpointer pixel,
+        GimpRGB             *color);
 void                 gimp_image_color_profile_srgb_to_pixel
-(GimpImage           *image,
- const GimpRGB       *color,
- const Babl          *pixel_format,
- gpointer             pixel);
+        (GimpImage           *image,
+        const GimpRGB       *color,
+        const Babl          *pixel_format,
+        gpointer pixel);
 
 
 /*  internal API, to be called only from gimpimage.c  */
@@ -117,7 +117,7 @@ void                 gimp_image_color_profile_srgb_to_pixel
 void                 _gimp_image_free_color_profile    (GimpImage           *image);
 void                 _gimp_image_free_color_transforms (GimpImage           *image);
 void                 _gimp_image_update_color_profile  (GimpImage           *image,
-        const GimpParasite  *icc_parasite);
+                                                        const GimpParasite  *icc_parasite);
 
 
 #endif /* __GIMP_IMAGE_COLOR_PROFILE_H__ */
