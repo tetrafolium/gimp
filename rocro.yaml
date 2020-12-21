@@ -6,53 +6,91 @@ inspecode:
   tools:
 
     astyle:
+    # - auto-fix: true
+    #   thresholds: {num-issues: 999}   # too many issues detected: 2827 > 1000 (when not split)
+    - ignore: app/*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[a-m]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[o-z]*/
       auto-fix: true
       thresholds: {num-issues: 999}
 
     clang-format:
+    # - auto-fix: true
+    #   thresholds: {num-issues: 999}   # too many issues detected: 3233 > 1000 (when not split)
+    - ignore: app/*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[a-c]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[d-m]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[n-r]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[st]*/
+      auto-fix: true
+      thresholds: {num-issues: 999}
+    - input:  app/[u-z]*/
       auto-fix: true
       thresholds: {num-issues: 999}
 
     cpd:
-      # options: [--skip-lexical-errors]
+    # - options: [--skip-lexical-errors]
+    #   thresholds: {num-issues: 999}   # the console log exceeds the maximum size
+    - ignore: app/
+      options: [--skip-lexical-errors]
+      thresholds: {num-issues: 999}
+    - input:  app/
+      ignore: app/dialogs/lebl-dialog.h
+      options: [--skip-lexical-errors]
       thresholds: {num-issues: 999}
 
     cppcheck:
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 150}
 
-    cpplint:
-      thresholds: {num-issues: 999}
+    ### Timed-out
+    ### the console log exceeds the maximum size
+    # cpplint:
+    #   thresholds: {num-issues: 999}
 
     # fortify:
     #   thresholds: {num-issues: 999}
 
     fossology:
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 586}
 
     grep:
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 217}
 
     ### Infer was aborted unexpectedly.
     # infer:
     #   thresholds: {num-issues: 999}
 
     jscpd:
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 536}
 
     misspell:
       auto-fix: true
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 99}
 
+    #### scan-build finished with errors.
     scan-build:
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 999}   # no project detected
 
     uncrustify:
       auto-fix: true
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 999}   # too many issues detected: 2985 > 1000
 
     # understand:
     #   thresholds: {num-issues: 999}
 
-    unused:
-      options: [--single-occurrence, --all-likelihoods]
-      thresholds: {num-issues: 999}
+    ### Unused timed out.
+    # unused:
+    #   options: [--single-occurrence, --all-likelihoods]
+    #   thresholds: {num-issues: 999}
