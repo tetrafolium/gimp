@@ -20,8 +20,8 @@
 
 
 void          gimp_gradient_tool_editor_options_notify   (GimpGradientTool *gradient_tool,
-        GimpToolOptions  *options,
-        const GParamSpec *pspec);
+                                                          GimpToolOptions  *options,
+                                                          const GParamSpec *pspec);
 
 void          gimp_gradient_tool_editor_start            (GimpGradientTool *gradient_tool);
 void          gimp_gradient_tool_editor_halt             (GimpGradientTool *gradient_tool);
@@ -42,7 +42,7 @@ gboolean      gimp_gradient_tool_editor_redo             (GimpGradientTool *grad
 
 void          gimp_gradient_tool_editor_start_edit       (GimpGradientTool *gradient_tool);
 void          gimp_gradient_tool_editor_end_edit         (GimpGradientTool *gradient_tool,
-        gboolean          cancel);
+                                                          gboolean cancel);
 
 
 #endif  /*  __GIMP_GRADIENT_TOOL_EDITOR_H__  */

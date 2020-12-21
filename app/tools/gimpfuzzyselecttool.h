@@ -32,22 +32,22 @@
 #define GIMP_FUZZY_SELECT_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FUZZY_SELECT_TOOL, GimpFuzzySelectToolClass))
 
 
-typedef struct _GimpFuzzySelectTool      GimpFuzzySelectTool;
+typedef struct _GimpFuzzySelectTool GimpFuzzySelectTool;
 typedef struct _GimpFuzzySelectToolClass GimpFuzzySelectToolClass;
 
 struct _GimpFuzzySelectTool
 {
-    GimpRegionSelectTool  parent_instance;
+	GimpRegionSelectTool parent_instance;
 };
 
 struct _GimpFuzzySelectToolClass
 {
-    GimpRegionSelectToolClass  parent_class;
+	GimpRegionSelectToolClass parent_class;
 };
 
 
-void    gimp_fuzzy_select_tool_register (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_fuzzy_select_tool_register (GimpToolRegisterCallback callback,
+                                         gpointer data);
 
 GType   gimp_fuzzy_select_tool_get_type (void) G_GNUC_CONST;
 

@@ -31,25 +31,25 @@
 #define GIMP_COMBO_TAG_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COMBO_TAG_ENTRY, GimpComboTagEntryClass))
 
 
-typedef struct _GimpComboTagEntryClass  GimpComboTagEntryClass;
+typedef struct _GimpComboTagEntryClass GimpComboTagEntryClass;
 
 struct _GimpComboTagEntry
 {
-    GimpTagEntry  parent_instance;
+	GimpTagEntry parent_instance;
 
-    GtkWidget    *popup;
+	GtkWidget    *popup;
 };
 
 struct _GimpComboTagEntryClass
 {
-    GimpTagEntryClass  parent_class;
+	GimpTagEntryClass parent_class;
 };
 
 
 GType       gimp_combo_tag_entry_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_combo_tag_entry_new      (GimpTaggedContainer *container,
-        GimpTagEntryMode     mode);
+                                           GimpTagEntryMode mode);
 
 
 #endif  /*  __GIMP_COMBO_TAG_ENTRY_H__  */

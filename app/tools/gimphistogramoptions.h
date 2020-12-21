@@ -30,19 +30,19 @@
 #define GIMP_HISTOGRAM_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_HISTOGRAM_OPTIONS, GimpHistogramOptionsClass))
 
 
-typedef struct _GimpHistogramOptions      GimpHistogramOptions;
+typedef struct _GimpHistogramOptions GimpHistogramOptions;
 typedef struct _GimpHistogramOptionsClass GimpHistogramOptionsClass;
 
 struct _GimpHistogramOptions
 {
-    GimpFilterOptions    parent_instance;
+	GimpFilterOptions parent_instance;
 
-    GimpHistogramScale  scale;
+	GimpHistogramScale scale;
 };
 
 struct _GimpHistogramOptionsClass
 {
-    GimpFilterOptionsClass  parent_class;
+	GimpFilterOptionsClass parent_class;
 };
 
 

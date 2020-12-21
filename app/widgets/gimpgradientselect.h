@@ -34,18 +34,18 @@ G_BEGIN_DECLS
 #define GIMP_GRADIENT_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GRADIENT_SELECT, GimpGradientSelectClass))
 
 
-typedef struct _GimpGradientSelectClass  GimpGradientSelectClass;
+typedef struct _GimpGradientSelectClass GimpGradientSelectClass;
 
 struct _GimpGradientSelect
 {
-    GimpPdbDialog  parent_instance;
+	GimpPdbDialog parent_instance;
 
-    gint           sample_size;
+	gint sample_size;
 };
 
 struct _GimpGradientSelectClass
 {
-    GimpPdbDialogClass  parent_class;
+	GimpPdbDialogClass parent_class;
 };
 
 

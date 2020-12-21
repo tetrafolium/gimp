@@ -34,22 +34,22 @@ typedef struct _GimpFillEditorClass GimpFillEditorClass;
 
 struct _GimpFillEditor
 {
-    GtkBox           parent_instance;
+	GtkBox parent_instance;
 
-    GimpFillOptions *options;
-    gboolean         edit_context;
+	GimpFillOptions *options;
+	gboolean edit_context;
 };
 
 struct _GimpFillEditorClass
 {
-    GtkBoxClass      parent_class;
+	GtkBoxClass parent_class;
 };
 
 
 GType       gimp_fill_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_fill_editor_new      (GimpFillOptions *options,
-                                       gboolean         edit_context);
+                                       gboolean edit_context);
 
 
 #endif /* __GIMP_FILL_EDITOR_H__ */

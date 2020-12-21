@@ -31,48 +31,48 @@
 
 
 typedef struct _GimpPivotSelectorPrivate GimpPivotSelectorPrivate;
-typedef struct _GimpPivotSelectorClass   GimpPivotSelectorClass;
+typedef struct _GimpPivotSelectorClass GimpPivotSelectorClass;
 
 struct _GimpPivotSelector
 {
-    GtkGrid                   parent_instance;
+	GtkGrid parent_instance;
 
-    GimpPivotSelectorPrivate *priv;
+	GimpPivotSelectorPrivate *priv;
 };
 
 struct _GimpPivotSelectorClass
 {
-    GtkGridClass  parent_class;
+	GtkGridClass parent_class;
 
-    /*  signals  */
-    void (* changed) (GimpPivotSelector *selector);
+	/*  signals  */
+	void (* changed) (GimpPivotSelector *selector);
 };
 
 
 GType       gimp_pivot_selector_get_type     (void) G_GNUC_CONST;
 
-GtkWidget * gimp_pivot_selector_new          (gdouble            left,
-        gdouble            top,
-        gdouble            right,
-        gdouble            bottom);
+GtkWidget * gimp_pivot_selector_new          (gdouble left,
+                                              gdouble top,
+                                              gdouble right,
+                                              gdouble bottom);
 
 void        gimp_pivot_selector_set_position (GimpPivotSelector *selector,
-        gdouble            x,
-        gdouble            y);
+                                              gdouble x,
+                                              gdouble y);
 void        gimp_pivot_selector_get_position (GimpPivotSelector *selector,
-        gdouble           *x,
-        gdouble           *y);
+                                              gdouble           *x,
+                                              gdouble           *y);
 
 void        gimp_pivot_selector_set_bounds   (GimpPivotSelector *selector,
-        gdouble            left,
-        gdouble            top,
-        gdouble            right,
-        gdouble            bottom);
+                                              gdouble left,
+                                              gdouble top,
+                                              gdouble right,
+                                              gdouble bottom);
 void        gimp_pivot_selector_get_bounds   (GimpPivotSelector *selector,
-        gdouble           *left,
-        gdouble           *top,
-        gdouble           *right,
-        gdouble           *bottom);
+                                              gdouble           *left,
+                                              gdouble           *top,
+                                              gdouble           *right,
+                                              gdouble           *bottom);
 
 
 #endif /* __GIMP_PIVOT_SELECTOR_H__ */

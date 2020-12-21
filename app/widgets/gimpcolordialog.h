@@ -39,48 +39,48 @@ typedef struct _GimpColorDialogClass GimpColorDialogClass;
 
 struct _GimpColorDialog
 {
-    GimpViewableDialog   parent_instance;
+	GimpViewableDialog parent_instance;
 
-    gboolean             wants_updates;
-    gboolean             user_context_aware;
+	gboolean wants_updates;
+	gboolean user_context_aware;
 
-    GtkWidget           *stack;
-    GtkWidget           *selection;
-    GtkWidget           *colormap_selection;
+	GtkWidget           *stack;
+	GtkWidget           *selection;
+	GtkWidget           *colormap_selection;
 
-    GimpImage           *active_image;
-    gboolean             colormap_editing;
+	GimpImage           *active_image;
+	gboolean colormap_editing;
 };
 
 struct _GimpColorDialogClass
 {
-    GimpViewableDialogClass  parent_class;
+	GimpViewableDialogClass parent_class;
 
-    void (* update) (GimpColorDialog      *dialog,
-                     const GimpRGB        *color,
-                     GimpColorDialogState  state);
+	void (* update) (GimpColorDialog      *dialog,
+	                 const GimpRGB        *color,
+	                 GimpColorDialogState state);
 };
 
 
 GType       gimp_color_dialog_get_type  (void) G_GNUC_CONST;
 
 GtkWidget * gimp_color_dialog_new       (GimpViewable      *viewable,
-        GimpContext       *context,
-        gboolean           context_aware,
-        const gchar       *title,
-        const gchar       *icon_name,
-        const gchar       *desc,
-        GtkWidget         *parent,
-        GimpDialogFactory *dialog_factory,
-        const gchar       *dialog_identifier,
-        const GimpRGB     *color,
-        gboolean           wants_update,
-        gboolean           show_alpha);
+                                         GimpContext       *context,
+                                         gboolean context_aware,
+                                         const gchar       *title,
+                                         const gchar       *icon_name,
+                                         const gchar       *desc,
+                                         GtkWidget         *parent,
+                                         GimpDialogFactory *dialog_factory,
+                                         const gchar       *dialog_identifier,
+                                         const GimpRGB     *color,
+                                         gboolean wants_update,
+                                         gboolean show_alpha);
 
 void        gimp_color_dialog_set_color (GimpColorDialog   *dialog,
-        const GimpRGB     *color);
+                                         const GimpRGB     *color);
 void        gimp_color_dialog_get_color (GimpColorDialog   *dialog,
-        GimpRGB           *color);
+                                         GimpRGB           *color);
 
 
 #endif /* __GIMP_COLOR_DIALOG_H__ */

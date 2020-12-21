@@ -32,27 +32,27 @@
 #define GIMP_DYNAMICS_FACTORY_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DYNAMICS_FACTORY_VIEW, GimpDynamicsFactoryViewClass))
 
 
-typedef struct _GimpDynamicsFactoryViewClass  GimpDynamicsFactoryViewClass;
+typedef struct _GimpDynamicsFactoryViewClass GimpDynamicsFactoryViewClass;
 
 struct _GimpDynamicsFactoryView
 {
-    GimpDataFactoryView  parent_instance;
+	GimpDataFactoryView parent_instance;
 };
 
 struct _GimpDynamicsFactoryViewClass
 {
-    GimpDataFactoryViewClass  parent_class;
+	GimpDataFactoryViewClass parent_class;
 };
 
 
 GType       gimp_dynamics_factory_view_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gimp_dynamics_factory_view_new     (GimpViewType     view_type,
-        GimpDataFactory *factory,
-        GimpContext     *context,
-        gint             view_size,
-        gint             view_border_width,
-        GimpMenuFactory *menu_factory);
+GtkWidget * gimp_dynamics_factory_view_new     (GimpViewType view_type,
+                                                GimpDataFactory *factory,
+                                                GimpContext     *context,
+                                                gint view_size,
+                                                gint view_border_width,
+                                                GimpMenuFactory *menu_factory);
 
 
 #endif  /*  __GIMP_DYNAMICS_FACTORY_VIEW_H__  */

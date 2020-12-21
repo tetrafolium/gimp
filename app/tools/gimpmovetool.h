@@ -32,30 +32,30 @@
 #define GIMP_MOVE_TOOL_GET_OPTIONS(t)  (GIMP_MOVE_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpMoveTool      GimpMoveTool;
+typedef struct _GimpMoveTool GimpMoveTool;
 typedef struct _GimpMoveToolClass GimpMoveToolClass;
 
 struct _GimpMoveTool
 {
-    GimpDrawTool         parent_instance;
+	GimpDrawTool parent_instance;
 
-    GimpLayer           *floating_layer;
-    GList               *guides;
+	GimpLayer           *floating_layer;
+	GList               *guides;
 
-    GimpTransformType    saved_type;
+	GimpTransformType saved_type;
 
-    GList               *old_selected_layers;
-    GList               *old_selected_vectors;
+	GList               *old_selected_layers;
+	GList               *old_selected_vectors;
 };
 
 struct _GimpMoveToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_move_tool_register (GimpToolRegisterCallback  callback,
-                                 gpointer                  data);
+void    gimp_move_tool_register (GimpToolRegisterCallback callback,
+                                 gpointer data);
 
 GType   gimp_move_tool_get_type (void) G_GNUC_CONST;
 

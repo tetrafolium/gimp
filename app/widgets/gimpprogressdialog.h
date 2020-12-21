@@ -30,18 +30,18 @@
 #define GIMP_PROGRESS_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PROGRESS_DIALOG, GimpProgressDialogClass))
 
 
-typedef struct _GimpProgressDialogClass  GimpProgressDialogClass;
+typedef struct _GimpProgressDialogClass GimpProgressDialogClass;
 
 struct _GimpProgressDialog
 {
-    GimpDialog  parent_instance;
+	GimpDialog parent_instance;
 
-    GtkWidget  *box;
+	GtkWidget  *box;
 };
 
 struct _GimpProgressDialogClass
 {
-    GimpDialogClass  parent_class;
+	GimpDialogClass parent_class;
 };
 
 

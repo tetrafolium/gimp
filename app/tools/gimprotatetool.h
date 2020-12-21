@@ -30,27 +30,27 @@
 #define GIMP_ROTATE_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ROTATE_TOOL, GimpRotateToolClass))
 
 
-typedef struct _GimpRotateTool      GimpRotateTool;
+typedef struct _GimpRotateTool GimpRotateTool;
 typedef struct _GimpRotateToolClass GimpRotateToolClass;
 
 struct _GimpRotateTool
 {
-    GimpTransformGridTool  parent_instance;
+	GimpTransformGridTool parent_instance;
 
-    GtkAdjustment         *angle_adj;
-    GtkWidget             *angle_spin_button;
-    GtkWidget             *sizeentry;
-    GtkWidget             *pivot_selector;
+	GtkAdjustment         *angle_adj;
+	GtkWidget             *angle_spin_button;
+	GtkWidget             *sizeentry;
+	GtkWidget             *pivot_selector;
 };
 
 struct _GimpRotateToolClass
 {
-    GimpTransformGridToolClass  parent_class;
+	GimpTransformGridToolClass parent_class;
 };
 
 
-void    gimp_rotate_tool_register (GimpToolRegisterCallback  callback,
-                                   gpointer                  data);
+void    gimp_rotate_tool_register (GimpToolRegisterCallback callback,
+                                   gpointer data);
 
 GType   gimp_rotate_tool_get_type (void) G_GNUC_CONST;
 

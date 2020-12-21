@@ -29,24 +29,24 @@
 #define GIMP_SCALE_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SCALE_TOOL, GimpScaleToolClass))
 
 
-typedef struct _GimpScaleTool      GimpScaleTool;
+typedef struct _GimpScaleTool GimpScaleTool;
 typedef struct _GimpScaleToolClass GimpScaleToolClass;
 
 struct _GimpScaleTool
 {
-    GimpTransformGridTool  parent_instance;
+	GimpTransformGridTool parent_instance;
 
-    GtkWidget             *box;
+	GtkWidget             *box;
 };
 
 struct _GimpScaleToolClass
 {
-    GimpTransformGridToolClass parent_class;
+	GimpTransformGridToolClass parent_class;
 };
 
 
-void    gimp_scale_tool_register (GimpToolRegisterCallback  callback,
-                                  gpointer                  data);
+void    gimp_scale_tool_register (GimpToolRegisterCallback callback,
+                                  gpointer data);
 
 GType   gimp_scale_tool_get_type (void) G_GNUC_CONST;
 

@@ -31,24 +31,24 @@ typedef struct _GimpHistogramBoxClass GimpHistogramBoxClass;
 
 struct _GimpHistogramBox
 {
-    GtkBox             parent_instance;
+	GtkBox parent_instance;
 
-    GimpHistogramView *view;
-    GtkWidget         *color_bar;
-    GtkWidget         *slider_bar;
+	GimpHistogramView *view;
+	GtkWidget         *color_bar;
+	GtkWidget         *slider_bar;
 
-    gint               n_bins;
+	gint n_bins;
 
-    GtkAdjustment     *low_adj;
-    GtkAdjustment     *high_adj;
+	GtkAdjustment     *low_adj;
+	GtkAdjustment     *high_adj;
 
-    GtkWidget         *low_spinbutton;
-    GtkWidget         *high_spinbutton;
+	GtkWidget         *low_spinbutton;
+	GtkWidget         *high_spinbutton;
 };
 
 struct _GimpHistogramBoxClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 };
 
 
@@ -56,7 +56,7 @@ GType       gimp_histogram_box_get_type    (void) G_GNUC_CONST;
 
 GtkWidget * gimp_histogram_box_new         (void);
 void        gimp_histogram_box_set_channel (GimpHistogramBox     *box,
-        GimpHistogramChannel  channel);
+                                            GimpHistogramChannel channel);
 
 
 #endif  /*  __GIMP_HISTOGRAM_BOX_H__  */

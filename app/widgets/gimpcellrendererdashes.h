@@ -34,14 +34,14 @@ typedef struct _GimpCellRendererDashesClass GimpCellRendererDashesClass;
 
 struct _GimpCellRendererDashes
 {
-    GtkCellRenderer   parent_instance;
+	GtkCellRenderer parent_instance;
 
-    gboolean         *segments;
+	gboolean         *segments;
 };
 
 struct _GimpCellRendererDashesClass
 {
-    GtkCellRendererClass  parent_class;
+	GtkCellRendererClass parent_class;
 };
 
 

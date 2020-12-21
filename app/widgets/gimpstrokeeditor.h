@@ -37,22 +37,22 @@ typedef struct _GimpStrokeEditorClass GimpStrokeEditorClass;
 
 struct _GimpStrokeEditor
 {
-    GimpFillEditor  parent_instance;
+	GimpFillEditor parent_instance;
 
-    gdouble         resolution;
+	gdouble resolution;
 };
 
 struct _GimpStrokeEditorClass
 {
-    GimpFillEditorClass  parent_class;
+	GimpFillEditorClass parent_class;
 };
 
 
 GType       gimp_stroke_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_stroke_editor_new      (GimpStrokeOptions *options,
-        gdouble            resolution,
-        gboolean           edit_context);
+                                         gdouble resolution,
+                                         gboolean edit_context);
 
 
 #endif /* __GIMP_STROKE_EDITOR_H__ */

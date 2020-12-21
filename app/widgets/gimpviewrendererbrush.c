@@ -34,14 +34,14 @@
 
 static void   gimp_view_renderer_brush_finalize (GObject          *object);
 static void   gimp_view_renderer_brush_render   (GimpViewRenderer *renderer,
-        GtkWidget        *widget);
+                                                 GtkWidget        *widget);
 static void   gimp_view_renderer_brush_draw     (GimpViewRenderer *renderer,
-        GtkWidget        *widget,
-        cairo_t          *cr,
-        gint              available_width,
-        gint              available_height);
+                                                 GtkWidget        *widget,
+                                                 cairo_t          *cr,
+                                                 gint available_width,
+                                                 gint available_height);
 
-static gboolean gimp_view_renderer_brush_render_timeout (gpointer    data);
+static gboolean gimp_view_renderer_brush_render_timeout (gpointer data);
 
 
 G_DEFINE_TYPE (GimpViewRendererBrush, gimp_view_renderer_brush,
@@ -53,212 +53,212 @@ G_DEFINE_TYPE (GimpViewRendererBrush, gimp_view_renderer_brush,
 static void
 gimp_view_renderer_brush_class_init (GimpViewRendererBrushClass *klass)
 {
-    GObjectClass          *object_class   = G_OBJECT_CLASS (klass);
-    GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
+	GObjectClass          *object_class   = G_OBJECT_CLASS (klass);
+	GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
 
-    object_class->finalize = gimp_view_renderer_brush_finalize;
+	object_class->finalize = gimp_view_renderer_brush_finalize;
 
-    renderer_class->render = gimp_view_renderer_brush_render;
-    renderer_class->draw   = gimp_view_renderer_brush_draw;
+	renderer_class->render = gimp_view_renderer_brush_render;
+	renderer_class->draw   = gimp_view_renderer_brush_draw;
 }
 
 static void
 gimp_view_renderer_brush_init (GimpViewRendererBrush *renderer)
 {
-    renderer->pipe_timeout_id      = 0;
-    renderer->pipe_animation_index = 0;
+	renderer->pipe_timeout_id      = 0;
+	renderer->pipe_animation_index = 0;
 }
 
 static void
 gimp_view_renderer_brush_finalize (GObject *object)
 {
-    GimpViewRendererBrush *renderer = GIMP_VIEW_RENDERER_BRUSH (object);
+	GimpViewRendererBrush *renderer = GIMP_VIEW_RENDERER_BRUSH (object);
 
-    if (renderer->pipe_timeout_id)
-    {
-        g_source_remove (renderer->pipe_timeout_id);
-        renderer->pipe_timeout_id = 0;
-    }
+	if (renderer->pipe_timeout_id)
+	{
+		g_source_remove (renderer->pipe_timeout_id);
+		renderer->pipe_timeout_id = 0;
+	}
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gimp_view_renderer_brush_render (GimpViewRenderer *renderer,
                                  GtkWidget        *widget)
 {
-    GimpViewRendererBrush *renderbrush = GIMP_VIEW_RENDERER_BRUSH (renderer);
-    GimpTempBuf           *temp_buf;
-    gint                   temp_buf_x = 0;
-    gint                   temp_buf_y = 0;
-    gint                   temp_buf_width;
-    gint                   temp_buf_height;
+	GimpViewRendererBrush *renderbrush = GIMP_VIEW_RENDERER_BRUSH (renderer);
+	GimpTempBuf           *temp_buf;
+	gint temp_buf_x = 0;
+	gint temp_buf_y = 0;
+	gint temp_buf_width;
+	gint temp_buf_height;
 
-    if (renderbrush->pipe_timeout_id)
-    {
-        g_source_remove (renderbrush->pipe_timeout_id);
-        renderbrush->pipe_timeout_id = 0;
-    }
+	if (renderbrush->pipe_timeout_id)
+	{
+		g_source_remove (renderbrush->pipe_timeout_id);
+		renderbrush->pipe_timeout_id = 0;
+	}
 
-    temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
-               renderer->context,
-               renderer->width,
-               renderer->height);
+	temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
+	                                          renderer->context,
+	                                          renderer->width,
+	                                          renderer->height);
 
-    temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
-    temp_buf_height = gimp_temp_buf_get_height (temp_buf);
+	temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
+	temp_buf_height = gimp_temp_buf_get_height (temp_buf);
 
-    if (temp_buf_width < renderer->width)
-        temp_buf_x = (renderer->width - temp_buf_width) / 2;
+	if (temp_buf_width < renderer->width)
+		temp_buf_x = (renderer->width - temp_buf_width) / 2;
 
-    if (temp_buf_height < renderer->height)
-        temp_buf_y = (renderer->height - temp_buf_height) / 2;
+	if (temp_buf_height < renderer->height)
+		temp_buf_y = (renderer->height - temp_buf_height) / 2;
 
-    if (renderer->is_popup)
-    {
-        gimp_view_renderer_render_temp_buf (renderer, widget, temp_buf,
-                                            temp_buf_x, temp_buf_y,
-                                            -1,
-                                            GIMP_VIEW_BG_WHITE,
-                                            GIMP_VIEW_BG_WHITE);
+	if (renderer->is_popup)
+	{
+		gimp_view_renderer_render_temp_buf (renderer, widget, temp_buf,
+		                                    temp_buf_x, temp_buf_y,
+		                                    -1,
+		                                    GIMP_VIEW_BG_WHITE,
+		                                    GIMP_VIEW_BG_WHITE);
 
-        gimp_temp_buf_unref (temp_buf);
+		gimp_temp_buf_unref (temp_buf);
 
-        if (GIMP_IS_BRUSH_PIPE (renderer->viewable))
-        {
-            renderbrush->widget = widget;
-            renderbrush->pipe_animation_index = 0;
-            renderbrush->pipe_timeout_id =
-                g_timeout_add (300, gimp_view_renderer_brush_render_timeout,
-                               renderbrush);
-        }
+		if (GIMP_IS_BRUSH_PIPE (renderer->viewable))
+		{
+			renderbrush->widget = widget;
+			renderbrush->pipe_animation_index = 0;
+			renderbrush->pipe_timeout_id =
+				g_timeout_add (300, gimp_view_renderer_brush_render_timeout,
+				               renderbrush);
+		}
 
-        return;
-    }
+		return;
+	}
 
-    gimp_view_renderer_render_temp_buf (renderer, widget, temp_buf,
-                                        temp_buf_x, temp_buf_y,
-                                        -1,
-                                        GIMP_VIEW_BG_WHITE,
-                                        GIMP_VIEW_BG_WHITE);
+	gimp_view_renderer_render_temp_buf (renderer, widget, temp_buf,
+	                                    temp_buf_x, temp_buf_y,
+	                                    -1,
+	                                    GIMP_VIEW_BG_WHITE,
+	                                    GIMP_VIEW_BG_WHITE);
 
-    gimp_temp_buf_unref (temp_buf);
+	gimp_temp_buf_unref (temp_buf);
 }
 
 static gboolean
 gimp_view_renderer_brush_render_timeout (gpointer data)
 {
-    GimpViewRendererBrush *renderbrush = GIMP_VIEW_RENDERER_BRUSH (data);
-    GimpViewRenderer      *renderer    = GIMP_VIEW_RENDERER (data);
-    GimpBrushPipe         *brush_pipe;
-    GimpBrush             *brush;
-    GimpTempBuf           *temp_buf;
-    gint                   temp_buf_x = 0;
-    gint                   temp_buf_y = 0;
-    gint                   temp_buf_width;
-    gint                   temp_buf_height;
+	GimpViewRendererBrush *renderbrush = GIMP_VIEW_RENDERER_BRUSH (data);
+	GimpViewRenderer      *renderer    = GIMP_VIEW_RENDERER (data);
+	GimpBrushPipe         *brush_pipe;
+	GimpBrush             *brush;
+	GimpTempBuf           *temp_buf;
+	gint temp_buf_x = 0;
+	gint temp_buf_y = 0;
+	gint temp_buf_width;
+	gint temp_buf_height;
 
-    if (! renderer->viewable)
-    {
-        renderbrush->pipe_timeout_id      = 0;
-        renderbrush->pipe_animation_index = 0;
+	if (!renderer->viewable)
+	{
+		renderbrush->pipe_timeout_id      = 0;
+		renderbrush->pipe_animation_index = 0;
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 
-    brush_pipe = GIMP_BRUSH_PIPE (renderer->viewable);
+	brush_pipe = GIMP_BRUSH_PIPE (renderer->viewable);
 
-    renderbrush->pipe_animation_index++;
+	renderbrush->pipe_animation_index++;
 
-    if (renderbrush->pipe_animation_index >= brush_pipe->n_brushes)
-        renderbrush->pipe_animation_index = 0;
+	if (renderbrush->pipe_animation_index >= brush_pipe->n_brushes)
+		renderbrush->pipe_animation_index = 0;
 
-    brush =
-        GIMP_BRUSH (brush_pipe->brushes[renderbrush->pipe_animation_index]);
+	brush =
+		GIMP_BRUSH (brush_pipe->brushes[renderbrush->pipe_animation_index]);
 
-    temp_buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (brush),
-               renderer->context,
-               renderer->width,
-               renderer->height);
+	temp_buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (brush),
+	                                          renderer->context,
+	                                          renderer->width,
+	                                          renderer->height);
 
-    temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
-    temp_buf_height = gimp_temp_buf_get_height (temp_buf);
+	temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
+	temp_buf_height = gimp_temp_buf_get_height (temp_buf);
 
-    if (temp_buf_width < renderer->width)
-        temp_buf_x = (renderer->width - temp_buf_width) / 2;
+	if (temp_buf_width < renderer->width)
+		temp_buf_x = (renderer->width - temp_buf_width) / 2;
 
-    if (temp_buf_height < renderer->height)
-        temp_buf_y = (renderer->height - temp_buf_height) / 2;
+	if (temp_buf_height < renderer->height)
+		temp_buf_y = (renderer->height - temp_buf_height) / 2;
 
-    gimp_view_renderer_render_temp_buf (renderer, renderbrush->widget, temp_buf,
-                                        temp_buf_x, temp_buf_y,
-                                        -1,
-                                        GIMP_VIEW_BG_WHITE,
-                                        GIMP_VIEW_BG_WHITE);
+	gimp_view_renderer_render_temp_buf (renderer, renderbrush->widget, temp_buf,
+	                                    temp_buf_x, temp_buf_y,
+	                                    -1,
+	                                    GIMP_VIEW_BG_WHITE,
+	                                    GIMP_VIEW_BG_WHITE);
 
-    gimp_temp_buf_unref (temp_buf);
+	gimp_temp_buf_unref (temp_buf);
 
-    gimp_view_renderer_update (renderer);
+	gimp_view_renderer_update (renderer);
 
-    return TRUE;
+	return TRUE;
 }
 
 static void
 gimp_view_renderer_brush_draw (GimpViewRenderer *renderer,
                                GtkWidget        *widget,
                                cairo_t          *cr,
-                               gint              available_width,
-                               gint              available_height)
+                               gint available_width,
+                               gint available_height)
 {
-    GIMP_VIEW_RENDERER_CLASS (parent_class)->draw (renderer, widget, cr,
-            available_width,
-            available_height);
+	GIMP_VIEW_RENDERER_CLASS (parent_class)->draw (renderer, widget, cr,
+	                                               available_width,
+	                                               available_height);
 
 #define INDICATOR_WIDTH  7
 #define INDICATOR_HEIGHT 7
 
-    if (renderer->width  > 2 * INDICATOR_WIDTH &&
-            renderer->height > 2 * INDICATOR_HEIGHT)
-    {
-        gboolean  pipe      = GIMP_IS_BRUSH_PIPE (renderer->viewable);
-        gboolean  generated = GIMP_IS_BRUSH_GENERATED (renderer->viewable);
-        gint      brush_width;
-        gint      brush_height;
+	if (renderer->width  > 2 * INDICATOR_WIDTH &&
+	    renderer->height > 2 * INDICATOR_HEIGHT)
+	{
+		gboolean pipe      = GIMP_IS_BRUSH_PIPE (renderer->viewable);
+		gboolean generated = GIMP_IS_BRUSH_GENERATED (renderer->viewable);
+		gint brush_width;
+		gint brush_height;
 
-        if (generated || pipe)
-        {
-            cairo_move_to (cr, available_width, available_height);
-            cairo_rel_line_to (cr, - INDICATOR_WIDTH, 0);
-            cairo_rel_line_to (cr, INDICATOR_WIDTH, - INDICATOR_HEIGHT);
-            cairo_rel_line_to (cr, 0, INDICATOR_HEIGHT);
+		if (generated || pipe)
+		{
+			cairo_move_to (cr, available_width, available_height);
+			cairo_rel_line_to (cr, -INDICATOR_WIDTH, 0);
+			cairo_rel_line_to (cr, INDICATOR_WIDTH, -INDICATOR_HEIGHT);
+			cairo_rel_line_to (cr, 0, INDICATOR_HEIGHT);
 
-            if (pipe)
-                cairo_set_source_rgb (cr, 1.0, 0.5, 0.5);
-            else
-                cairo_set_source_rgb (cr, 0.5, 0.6, 1.0);
+			if (pipe)
+				cairo_set_source_rgb (cr, 1.0, 0.5, 0.5);
+			else
+				cairo_set_source_rgb (cr, 0.5, 0.6, 1.0);
 
-            cairo_fill (cr);
-        }
+			cairo_fill (cr);
+		}
 
-        gimp_viewable_get_size (renderer->viewable, &brush_width, &brush_height);
+		gimp_viewable_get_size (renderer->viewable, &brush_width, &brush_height);
 
-        if (renderer->width < brush_width || renderer->height < brush_height)
-        {
-            cairo_move_to (cr,
-                           available_width  - INDICATOR_WIDTH + 1,
-                           available_height - INDICATOR_HEIGHT / 2.0);
-            cairo_rel_line_to (cr, INDICATOR_WIDTH - 2, 0);
+		if (renderer->width < brush_width || renderer->height < brush_height)
+		{
+			cairo_move_to (cr,
+			               available_width  - INDICATOR_WIDTH + 1,
+			               available_height - INDICATOR_HEIGHT / 2.0);
+			cairo_rel_line_to (cr, INDICATOR_WIDTH - 2, 0);
 
-            cairo_move_to (cr,
-                           available_width  - INDICATOR_WIDTH / 2.0,
-                           available_height - INDICATOR_HEIGHT + 1);
-            cairo_rel_line_to (cr, 0, INDICATOR_WIDTH - 2);
+			cairo_move_to (cr,
+			               available_width  - INDICATOR_WIDTH / 2.0,
+			               available_height - INDICATOR_HEIGHT + 1);
+			cairo_rel_line_to (cr, 0, INDICATOR_WIDTH - 2);
 
-            cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
-            cairo_set_line_width (cr, 1);
-            cairo_stroke (cr);
-        }
-    }
+			cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+			cairo_set_line_width (cr, 1);
+			cairo_stroke (cr);
+		}
+	}
 
 #undef INDICATOR_WIDTH
 #undef INDICATOR_HEIGHT

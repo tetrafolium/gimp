@@ -39,71 +39,71 @@ typedef struct _GimpPaintToolClass GimpPaintToolClass;
 
 struct _GimpPaintTool
 {
-    GimpColorTool  parent_instance;
+	GimpColorTool parent_instance;
 
-    gboolean       active;
-    gboolean       pick_colors;  /*  pick color if ctrl is pressed   */
-    gboolean       draw_line;
+	gboolean active;
+	gboolean pick_colors;    /*  pick color if ctrl is pressed   */
+	gboolean draw_line;
 
-    gboolean       show_cursor;
-    gboolean       draw_brush;
-    gboolean       snap_brush;
-    gboolean       draw_fallback;
-    gint           fallback_size;
-    gboolean       draw_circle;
-    gint           circle_size;
+	gboolean show_cursor;
+	gboolean draw_brush;
+	gboolean snap_brush;
+	gboolean draw_fallback;
+	gint fallback_size;
+	gboolean draw_circle;
+	gint circle_size;
 
-    const gchar   *status;       /* status message */
-    const gchar   *status_line;  /* status message when drawing a line */
-    const gchar   *status_ctrl;  /* additional message for the ctrl modifier */
+	const gchar   *status;   /* status message */
+	const gchar   *status_line;/* status message when drawing a line */
+	const gchar   *status_ctrl;/* additional message for the ctrl modifier */
 
-    GimpPaintCore *core;
+	GimpPaintCore *core;
 
-    GimpDisplay   *display;
-    GimpDrawable  *drawable;
+	GimpDisplay   *display;
+	GimpDrawable  *drawable;
 
-    gdouble        cursor_x;
-    gdouble        cursor_y;
+	gdouble cursor_x;
+	gdouble cursor_y;
 
-    gdouble        paint_x;
-    gdouble        paint_y;
+	gdouble paint_x;
+	gdouble paint_y;
 };
 
 struct _GimpPaintToolClass
 {
-    GimpColorToolClass  parent_class;
+	GimpColorToolClass parent_class;
 
-    void             (* paint_prepare) (GimpPaintTool *paint_tool,
-                                        GimpDisplay   *display);
-    void             (* paint_start)   (GimpPaintTool *paint_tool);
-    void             (* paint_end)     (GimpPaintTool *paint_tool);
-    void             (* paint_flush)   (GimpPaintTool *paint_tool);
+	void (* paint_prepare) (GimpPaintTool *paint_tool,
+	                        GimpDisplay   *display);
+	void (* paint_start)   (GimpPaintTool *paint_tool);
+	void (* paint_end)     (GimpPaintTool *paint_tool);
+	void (* paint_flush)   (GimpPaintTool *paint_tool);
 
-    GimpCanvasItem * (* get_outline)   (GimpPaintTool *paint_tool,
-                                        GimpDisplay   *display,
-                                        gdouble        x,
-                                        gdouble        y);
+	GimpCanvasItem * (* get_outline)   (GimpPaintTool *paint_tool,
+	                                    GimpDisplay   *display,
+	                                    gdouble x,
+	                                    gdouble y);
 
-    gboolean         (* is_alpha_only) (GimpPaintTool *paint_tool,
-                                        GimpDrawable  *drawable);
+	gboolean (* is_alpha_only) (GimpPaintTool *paint_tool,
+	                            GimpDrawable  *drawable);
 };
 
 
 GType   gimp_paint_tool_get_type            (void) G_GNUC_CONST;
 
 void    gimp_paint_tool_set_active          (GimpPaintTool       *tool,
-        gboolean             active);
+                                             gboolean active);
 
 void    gimp_paint_tool_enable_color_picker (GimpPaintTool       *tool,
-        GimpColorPickTarget  target);
+                                             GimpColorPickTarget target);
 
 void    gimp_paint_tool_set_draw_fallback   (GimpPaintTool       *tool,
-        gboolean             draw_fallback,
-        gint                 fallback_size);
+                                             gboolean draw_fallback,
+                                             gint fallback_size);
 
 void    gimp_paint_tool_set_draw_circle     (GimpPaintTool       *tool,
-        gboolean             draw_circle,
-        gint                 circle_size);
+                                             gboolean draw_circle,
+                                             gint circle_size);
 
 
 #endif  /*  __GIMP_PAINT_TOOL_H__  */

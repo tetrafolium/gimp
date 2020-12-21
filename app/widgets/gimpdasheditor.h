@@ -30,32 +30,32 @@
 #define GIMP_DASH_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DASH_EDITOR, GimpDashEditorClass))
 
 
-typedef struct _GimpDashEditorClass  GimpDashEditorClass;
+typedef struct _GimpDashEditorClass GimpDashEditorClass;
 
 struct _GimpDashEditor
 {
-    GtkDrawingArea     parent_instance;
+	GtkDrawingArea parent_instance;
 
-    GimpStrokeOptions *stroke_options;
-    gdouble            dash_length;
+	GimpStrokeOptions *stroke_options;
+	gdouble dash_length;
 
-    /* GUI stuff */
-    gint               n_segments;
-    gboolean          *segments;
+	/* GUI stuff */
+	gint n_segments;
+	gboolean          *segments;
 
-    /* coordinates of the first block main dash pattern */
-    gint               x0;
-    gint               y0;
-    gint               block_width;
-    gint               block_height;
+	/* coordinates of the first block main dash pattern */
+	gint x0;
+	gint y0;
+	gint block_width;
+	gint block_height;
 
-    gboolean           edit_mode;
-    gint               edit_button_x0;
+	gboolean edit_mode;
+	gint edit_button_x0;
 };
 
 struct _GimpDashEditorClass
 {
-    GtkDrawingAreaClass  parent_class;
+	GtkDrawingAreaClass parent_class;
 };
 
 

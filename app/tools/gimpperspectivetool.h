@@ -30,22 +30,22 @@
 #define GIMP_PERSPECTIVE_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PERSPECTIVE_TOOL, GimpPerspectiveToolClass))
 
 
-typedef struct _GimpPerspectiveTool      GimpPerspectiveTool;
+typedef struct _GimpPerspectiveTool GimpPerspectiveTool;
 typedef struct _GimpPerspectiveToolClass GimpPerspectiveToolClass;
 
 struct _GimpPerspectiveTool
 {
-    GimpGenericTransformTool  parent_instance;
+	GimpGenericTransformTool parent_instance;
 };
 
 struct _GimpPerspectiveToolClass
 {
-    GimpGenericTransformToolClass  parent_class;
+	GimpGenericTransformToolClass parent_class;
 };
 
 
-void    gimp_perspective_tool_register (GimpToolRegisterCallback  callback,
-                                        gpointer                  data);
+void    gimp_perspective_tool_register (GimpToolRegisterCallback callback,
+                                        gpointer data);
 
 GType   gimp_perspective_tool_get_type (void) G_GNUC_CONST;
 

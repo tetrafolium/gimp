@@ -34,25 +34,25 @@ typedef struct _GimpImageParasiteViewClass GimpImageParasiteViewClass;
 
 struct _GimpImageParasiteView
 {
-    GtkBox     parent_instance;
+	GtkBox parent_instance;
 
-    GimpImage *image;
-    gchar     *parasite;
+	GimpImage *image;
+	gchar     *parasite;
 };
 
 struct _GimpImageParasiteViewClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 
-    /*  signals  */
-    void (* update) (GimpImageParasiteView *view);
+	/*  signals  */
+	void (* update) (GimpImageParasiteView *view);
 };
 
 
 GType                gimp_image_parasite_view_get_type     (void) G_GNUC_CONST;
 
 GtkWidget          * gimp_image_parasite_view_new          (GimpImage   *image,
-        const gchar *parasite);
+                                                            const gchar *parasite);
 GimpImage          * gimp_image_parasite_view_get_image    (GimpImageParasiteView *view);
 const GimpParasite * gimp_image_parasite_view_get_parasite (GimpImageParasiteView *view);
 

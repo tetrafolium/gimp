@@ -31,25 +31,25 @@ typedef struct _GimpThumbBoxClass GimpThumbBoxClass;
 
 struct _GimpThumbBox
 {
-    GtkFrame       parent_instance;
+	GtkFrame parent_instance;
 
-    GimpContext   *context;
-    GimpImagefile *imagefile;
-    GSList        *files;
+	GimpContext   *context;
+	GimpImagefile *imagefile;
+	GSList        *files;
 
-    GtkWidget     *preview;
-    GtkWidget     *filename;
-    GtkWidget     *info;
+	GtkWidget     *preview;
+	GtkWidget     *filename;
+	GtkWidget     *info;
 
-    gboolean       progress_active;
-    GtkWidget     *progress;
+	gboolean progress_active;
+	GtkWidget     *progress;
 
-    guint          idle_id;
+	guint idle_id;
 };
 
 struct _GimpThumbBoxClass
 {
-    GtkFrameClass  parent_class;
+	GtkFrameClass parent_class;
 };
 
 

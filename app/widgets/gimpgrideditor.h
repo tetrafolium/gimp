@@ -34,17 +34,17 @@ typedef struct _GimpGridEditorClass GimpGridEditorClass;
 
 struct _GimpGridEditor
 {
-    GtkBox       parent_instance;
+	GtkBox parent_instance;
 
-    GimpGrid    *grid;
-    GimpContext *context;
-    gdouble      xresolution;
-    gdouble      yresolution;
+	GimpGrid    *grid;
+	GimpContext *context;
+	gdouble xresolution;
+	gdouble yresolution;
 };
 
 struct _GimpGridEditorClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 };
 
 
@@ -52,8 +52,8 @@ GType       gimp_grid_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_grid_editor_new      (GimpGrid    *grid,
                                        GimpContext *context,
-                                       gdouble      xresolution,
-                                       gdouble      yresolution);
+                                       gdouble xresolution,
+                                       gdouble yresolution);
 
 
 #endif /*  __GIMP_GRID_EDITOR_H__  */

@@ -30,19 +30,19 @@
 #define GIMP_POPUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_POPUP, GimpPopupClass))
 
 
-typedef struct _GimpPopupClass  GimpPopupClass;
+typedef struct _GimpPopupClass GimpPopupClass;
 
 struct _GimpPopup
 {
-    GtkWindow  parent_instance;
+	GtkWindow parent_instance;
 };
 
 struct _GimpPopupClass
 {
-    GtkWindowClass  parent_instance;
+	GtkWindowClass parent_instance;
 
-    void (* cancel)  (GimpPopup *popup);
-    void (* confirm) (GimpPopup *popup);
+	void (* cancel)  (GimpPopup *popup);
+	void (* confirm) (GimpPopup *popup);
 };
 
 

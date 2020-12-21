@@ -66,62 +66,62 @@
 GtkWidget *
 gimp_menu_item_get_image (GtkMenuItem *item)
 {
-    g_return_val_if_fail (GTK_IS_MENU_ITEM (item), NULL);
+	g_return_val_if_fail (GTK_IS_MENU_ITEM (item), NULL);
 
-    return g_object_get_data (G_OBJECT (item), "gimp-menu-item-image");
+	return g_object_get_data (G_OBJECT (item), "gimp-menu-item-image");
 }
 
 void
 gimp_menu_item_set_image (GtkMenuItem *item,
                           GtkWidget   *image)
 {
-    GtkWidget *hbox;
-    GtkWidget *label;
-    GtkWidget *old_image;
+	GtkWidget *hbox;
+	GtkWidget *label;
+	GtkWidget *old_image;
 
-    g_return_if_fail (GTK_IS_MENU_ITEM (item));
-    g_return_if_fail (image == NULL || GTK_IS_WIDGET (image));
+	g_return_if_fail (GTK_IS_MENU_ITEM (item));
+	g_return_if_fail (image == NULL || GTK_IS_WIDGET (image));
 
-    hbox = g_object_get_data (G_OBJECT (item), "gimp-menu-item-hbox");
+	hbox = g_object_get_data (G_OBJECT (item), "gimp-menu-item-hbox");
 
-    if (! hbox)
-    {
-        if (! image)
-            return;
+	if (!hbox)
+	{
+		if (!image)
+			return;
 
-        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-        g_object_set_data (G_OBJECT (item), "gimp-menu-item-hbox", hbox);
+		hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+		g_object_set_data (G_OBJECT (item), "gimp-menu-item-hbox", hbox);
 
-        label = gtk_bin_get_child (GTK_BIN (item));
-        g_object_set_data (G_OBJECT (item), "gimp-menu-item-label", label);
+		label = gtk_bin_get_child (GTK_BIN (item));
+		g_object_set_data (G_OBJECT (item), "gimp-menu-item-label", label);
 
-        g_object_ref (label);
-        gtk_container_remove (GTK_CONTAINER (item), label);
-        gtk_container_add (GTK_CONTAINER (hbox), label);
-        g_object_unref (label);
+		g_object_ref (label);
+		gtk_container_remove (GTK_CONTAINER (item), label);
+		gtk_container_add (GTK_CONTAINER (hbox), label);
+		g_object_unref (label);
 
-        gtk_container_add (GTK_CONTAINER (item), hbox);
-        gtk_widget_show (hbox);
-    }
+		gtk_container_add (GTK_CONTAINER (item), hbox);
+		gtk_widget_show (hbox);
+	}
 
-    old_image = g_object_get_data (G_OBJECT (item), "gimp-menu-item-image");
+	old_image = g_object_get_data (G_OBJECT (item), "gimp-menu-item-image");
 
-    if (old_image != image)
-    {
-        if (old_image)
-        {
-            gtk_widget_destroy (old_image);
-            g_object_set_data (G_OBJECT (item), "gimp-menu-item-image", NULL);
-        }
+	if (old_image != image)
+	{
+		if (old_image)
+		{
+			gtk_widget_destroy (old_image);
+			g_object_set_data (G_OBJECT (item), "gimp-menu-item-image", NULL);
+		}
 
-        if (image)
-        {
-            gtk_container_add (GTK_CONTAINER (hbox), image);
-            gtk_box_reorder_child (GTK_BOX (hbox), image, 0);
-            g_object_set_data (G_OBJECT (item), "gimp-menu-item-image", image);
-            gtk_widget_show (image);
-        }
-    }
+		if (image)
+		{
+			gtk_container_add (GTK_CONTAINER (hbox), image);
+			gtk_box_reorder_child (GTK_BOX (hbox), image, 0);
+			g_object_set_data (G_OBJECT (item), "gimp-menu-item-image", image);
+			gtk_widget_show (image);
+		}
+	}
 }
 
 /**
@@ -145,184 +145,184 @@ gimp_menu_position (GtkMenu *menu,
                     gint    *x,
                     gint    *y)
 {
-    GtkWidget      *widget;
-    GtkRequisition  requisition;
-    GdkRectangle    workarea;
+	GtkWidget      *widget;
+	GtkRequisition requisition;
+	GdkRectangle workarea;
 
-    g_return_if_fail (GTK_IS_MENU (menu));
-    g_return_if_fail (x != NULL);
-    g_return_if_fail (y != NULL);
+	g_return_if_fail (GTK_IS_MENU (menu));
+	g_return_if_fail (x != NULL);
+	g_return_if_fail (y != NULL);
 
-    widget = GTK_WIDGET (menu);
+	widget = GTK_WIDGET (menu);
 
-    gdk_monitor_get_workarea (gimp_widget_get_monitor (widget), &workarea);
+	gdk_monitor_get_workarea (gimp_widget_get_monitor (widget), &workarea);
 
-    gtk_menu_set_screen (menu, gtk_widget_get_screen (widget));
+	gtk_menu_set_screen (menu, gtk_widget_get_screen (widget));
 
-    gtk_widget_get_preferred_size (widget, &requisition, NULL);
+	gtk_widget_get_preferred_size (widget, &requisition, NULL);
 
-    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
-    {
-        *x -= requisition.width;
-        if (*x < workarea.x)
-            *x += requisition.width;
-    }
-    else
-    {
-        if (*x + requisition.width > workarea.x + workarea.width)
-            *x -= requisition.width;
-    }
+	if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+	{
+		*x -= requisition.width;
+		if (*x < workarea.x)
+			*x += requisition.width;
+	}
+	else
+	{
+		if (*x + requisition.width > workarea.x + workarea.width)
+			*x -= requisition.width;
+	}
 
-    if (*x < workarea.x)
-        *x = workarea.x;
+	if (*x < workarea.x)
+		*x = workarea.x;
 
-    if (*y + requisition.height > workarea.y + workarea.height)
-        *y -= requisition.height;
+	if (*y + requisition.height > workarea.y + workarea.height)
+		*y -= requisition.height;
 
-    if (*y < workarea.y)
-        *y = workarea.y;
+	if (*y < workarea.y)
+		*y = workarea.y;
 }
 
 void
 gimp_grid_attach_icon (GtkGrid     *grid,
-                       gint         row,
+                       gint row,
                        const gchar *icon_name,
                        GtkWidget   *widget,
-                       gint         columns)
+                       gint columns)
 {
-    GtkWidget *image;
+	GtkWidget *image;
 
-    g_return_if_fail (GTK_IS_GRID (grid));
-    g_return_if_fail (icon_name != NULL);
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_GRID (grid));
+	g_return_if_fail (icon_name != NULL);
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_BUTTON);
-    gtk_widget_set_halign (image, GTK_ALIGN_END);
-    gtk_grid_attach (grid, image, 0, row, 1, 1);
-    gtk_widget_show (image);
+	image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_BUTTON);
+	gtk_widget_set_halign (image, GTK_ALIGN_END);
+	gtk_grid_attach (grid, image, 0, row, 1, 1);
+	gtk_widget_show (image);
 
-    gtk_grid_attach (grid, widget, 1, row, columns, 1);
-    gtk_widget_show (widget);
+	gtk_grid_attach (grid, widget, 1, row, columns, 1);
+	gtk_widget_show (widget);
 }
 
 void
 gimp_enum_radio_box_add (GtkBox    *box,
                          GtkWidget *widget,
-                         gint       enum_value,
-                         gboolean   below)
+                         gint enum_value,
+                         gboolean below)
 {
-    GList *children;
-    GList *list;
-    gint   pos;
+	GList *children;
+	GList *list;
+	gint pos;
 
-    g_return_if_fail (GTK_IS_BOX (box));
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_BOX (box));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    children = gtk_container_get_children (GTK_CONTAINER (box));
+	children = gtk_container_get_children (GTK_CONTAINER (box));
 
-    for (list = children, pos = 1;
-            list;
-            list = g_list_next (list), pos++)
-    {
-        if (GTK_IS_RADIO_BUTTON (list->data) &&
-                GPOINTER_TO_INT (g_object_get_data (list->data, "gimp-item-data")) ==
-                enum_value)
-        {
-            GtkWidget *radio = list->data;
-            GtkWidget *hbox;
+	for (list = children, pos = 1;
+	     list;
+	     list = g_list_next (list), pos++)
+	{
+		if (GTK_IS_RADIO_BUTTON (list->data) &&
+		    GPOINTER_TO_INT (g_object_get_data (list->data, "gimp-item-data")) ==
+		    enum_value)
+		{
+			GtkWidget *radio = list->data;
+			GtkWidget *hbox;
 
-            hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-            gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
-            gtk_box_reorder_child (GTK_BOX (box), hbox, pos);
+			hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+			gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
+			gtk_box_reorder_child (GTK_BOX (box), hbox, pos);
 
-            if (below)
-            {
-                GtkWidget *spacer;
-                gint       indicator_size;
-                gint       indicator_spacing;
-                gint       focus_width;
-                gint       focus_padding;
-                gint       border_width;
+			if (below)
+			{
+				GtkWidget *spacer;
+				gint indicator_size;
+				gint indicator_spacing;
+				gint focus_width;
+				gint focus_padding;
+				gint border_width;
 
-                gtk_widget_style_get (radio,
-                                      "indicator-size",    &indicator_size,
-                                      "indicator-spacing", &indicator_spacing,
-                                      "focus-line-width",  &focus_width,
-                                      "focus-padding",     &focus_padding,
-                                      NULL);
+				gtk_widget_style_get (radio,
+				                      "indicator-size",    &indicator_size,
+				                      "indicator-spacing", &indicator_spacing,
+				                      "focus-line-width",  &focus_width,
+				                      "focus-padding",     &focus_padding,
+				                      NULL);
 
-                border_width = gtk_container_get_border_width (GTK_CONTAINER (radio));
+				border_width = gtk_container_get_border_width (GTK_CONTAINER (radio));
 
-                spacer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-                gtk_widget_set_size_request (spacer,
-                                             indicator_size +
-                                             3 * indicator_spacing +
-                                             focus_width +
-                                             focus_padding +
-                                             border_width,
-                                             -1);
-                gtk_box_pack_start (GTK_BOX (hbox), spacer, FALSE, FALSE, 0);
-                gtk_widget_show (spacer);
-            }
-            else
-            {
-                GtkSizeGroup *size_group;
+				spacer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+				gtk_widget_set_size_request (spacer,
+				                             indicator_size +
+				                             3 * indicator_spacing +
+				                             focus_width +
+				                             focus_padding +
+				                             border_width,
+				                             -1);
+				gtk_box_pack_start (GTK_BOX (hbox), spacer, FALSE, FALSE, 0);
+				gtk_widget_show (spacer);
+			}
+			else
+			{
+				GtkSizeGroup *size_group;
 
-                size_group = g_object_get_data (G_OBJECT (box), "size-group");
+				size_group = g_object_get_data (G_OBJECT (box), "size-group");
 
-                if (! size_group)
-                {
-                    size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-                    g_object_set_data (G_OBJECT (box), "size-group", size_group);
+				if (!size_group)
+				{
+					size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+					g_object_set_data (G_OBJECT (box), "size-group", size_group);
 
-                    gtk_size_group_add_widget (size_group, radio);
-                    g_object_unref (size_group);
-                }
-                else
-                {
-                    gtk_size_group_add_widget (size_group, radio);
-                }
+					gtk_size_group_add_widget (size_group, radio);
+					g_object_unref (size_group);
+				}
+				else
+				{
+					gtk_size_group_add_widget (size_group, radio);
+				}
 
-                gtk_box_set_spacing (GTK_BOX (hbox), 4);
+				gtk_box_set_spacing (GTK_BOX (hbox), 4);
 
-                g_object_ref (radio);
-                gtk_container_remove (GTK_CONTAINER (box), radio);
-                gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-                g_object_unref (radio);
-            }
+				g_object_ref (radio);
+				gtk_container_remove (GTK_CONTAINER (box), radio);
+				gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
+				g_object_unref (radio);
+			}
 
-            gtk_box_pack_start (GTK_BOX (hbox), widget, TRUE, TRUE, 0);
-            gtk_widget_show (widget);
+			gtk_box_pack_start (GTK_BOX (hbox), widget, TRUE, TRUE, 0);
+			gtk_widget_show (widget);
 
-            g_object_bind_property (radio,  "active",
-                                    widget, "sensitive",
-                                    G_BINDING_SYNC_CREATE);
+			g_object_bind_property (radio,  "active",
+			                        widget, "sensitive",
+			                        G_BINDING_SYNC_CREATE);
 
-            gtk_widget_show (hbox);
+			gtk_widget_show (hbox);
 
-            break;
-        }
-    }
+			break;
+		}
+	}
 
-    g_list_free (children);
+	g_list_free (children);
 }
 
 void
 gimp_enum_radio_frame_add (GtkFrame  *frame,
                            GtkWidget *widget,
-                           gint       enum_value,
-                           gboolean   below)
+                           gint enum_value,
+                           gboolean below)
 {
-    GtkWidget *box;
+	GtkWidget *box;
 
-    g_return_if_fail (GTK_IS_FRAME (frame));
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_FRAME (frame));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    box = gtk_bin_get_child (GTK_BIN (frame));
+	box = gtk_bin_get_child (GTK_BIN (frame));
 
-    g_return_if_fail (GTK_IS_BOX (box));
+	g_return_if_fail (GTK_IS_BOX (box));
 
-    gimp_enum_radio_box_add (GTK_BOX (box), widget, enum_value, below);
+	gimp_enum_radio_box_add (GTK_BOX (box), widget, enum_value, below);
 }
 
 /**
@@ -345,171 +345,171 @@ gimp_enum_radio_frame_add (GtkFrame  *frame,
 GdkPixbuf *
 gimp_widget_load_icon (GtkWidget   *widget,
                        const gchar *icon_name,
-                       gint         size)
+                       gint size)
 {
-    GdkPixbuf    *pixbuf = NULL;
-    GtkIconTheme *icon_theme;
-    GtkIconInfo  *icon_info;
-    gchar        *name;
-    gint          scale_factor;
+	GdkPixbuf    *pixbuf = NULL;
+	GtkIconTheme *icon_theme;
+	GtkIconInfo  *icon_info;
+	gchar        *name;
+	gint scale_factor;
 
-    g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-    g_return_val_if_fail (icon_name != NULL, NULL);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (icon_name != NULL, NULL);
 
-    icon_theme = gtk_icon_theme_get_for_screen (gtk_widget_get_screen (widget));
-    scale_factor = gtk_widget_get_scale_factor (widget);
-    name = g_strdup_printf ("%s-symbolic", icon_name);
-    /* This will find the symbolic icon and fallback to non-symbolic
-     * depending on icon theme.
-     */
-    icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, name,
-                size, scale_factor,
-                GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-    g_free (name);
+	icon_theme = gtk_icon_theme_get_for_screen (gtk_widget_get_screen (widget));
+	scale_factor = gtk_widget_get_scale_factor (widget);
+	name = g_strdup_printf ("%s-symbolic", icon_name);
+	/* This will find the symbolic icon and fallback to non-symbolic
+	 * depending on icon theme.
+	 */
+	icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, name,
+	                                                  size, scale_factor,
+	                                                  GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+	g_free (name);
 
-    if (icon_info)
-    {
-        pixbuf = gtk_icon_info_load_symbolic_for_context (icon_info,
-                 gtk_widget_get_style_context (widget),
-                 NULL, NULL);
-        g_object_unref (icon_info);
-        if (! pixbuf)
-            /* The icon was seemingly present in the current icon theme, yet
-             * it failed to load. Maybe the file is broken?
-             * As last resort, try to load "gimp-wilber-eek" as fallback.
-             * Note that we are not making more checks, so if the fallback
-             * icon fails to load as well, the function may still return NULL.
-             */
-            g_printerr ("WARNING: icon '%s' failed to load. Check the files "
-                        "in your icon theme.\n", icon_name);
-    }
-    else
-        g_printerr ("WARNING: icon theme has no icon '%s'.\n", icon_name);
+	if (icon_info)
+	{
+		pixbuf = gtk_icon_info_load_symbolic_for_context (icon_info,
+		                                                  gtk_widget_get_style_context (widget),
+		                                                  NULL, NULL);
+		g_object_unref (icon_info);
+		if (!pixbuf)
+			/* The icon was seemingly present in the current icon theme, yet
+			 * it failed to load. Maybe the file is broken?
+			 * As last resort, try to load "gimp-wilber-eek" as fallback.
+			 * Note that we are not making more checks, so if the fallback
+			 * icon fails to load as well, the function may still return NULL.
+			 */
+			g_printerr ("WARNING: icon '%s' failed to load. Check the files "
+			            "in your icon theme.\n", icon_name);
+	}
+	else
+		g_printerr ("WARNING: icon theme has no icon '%s'.\n", icon_name);
 
-    /* First fallback: gimp-wilber-eek */
-    if (! pixbuf)
-    {
-        icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme,
-                    GIMP_ICON_WILBER_EEK "-symbolic",
-                    size, scale_factor,
-                    GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-        if (icon_info)
-        {
-            pixbuf = gtk_icon_info_load_symbolic_for_context (icon_info,
-                     gtk_widget_get_style_context (widget),
-                     NULL, NULL);
-            g_object_unref (icon_info);
-            if (! pixbuf)
-                g_printerr ("WARNING: icon '%s' failed to load. Check the files "
-                            "in your icon theme.\n", GIMP_ICON_WILBER_EEK);
-        }
-        else
-        {
-            g_printerr ("WARNING: icon theme has no icon '%s'.\n",
-                        GIMP_ICON_WILBER_EEK);
-        }
-    }
+	/* First fallback: gimp-wilber-eek */
+	if (!pixbuf)
+	{
+		icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme,
+		                                                  GIMP_ICON_WILBER_EEK "-symbolic",
+		                                                  size, scale_factor,
+		                                                  GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+		if (icon_info)
+		{
+			pixbuf = gtk_icon_info_load_symbolic_for_context (icon_info,
+			                                                  gtk_widget_get_style_context (widget),
+			                                                  NULL, NULL);
+			g_object_unref (icon_info);
+			if (!pixbuf)
+				g_printerr ("WARNING: icon '%s' failed to load. Check the files "
+				            "in your icon theme.\n", GIMP_ICON_WILBER_EEK);
+		}
+		else
+		{
+			g_printerr ("WARNING: icon theme has no icon '%s'.\n",
+			            GIMP_ICON_WILBER_EEK);
+		}
+	}
 
-    /* Last fallback: just a magenta square. */
-    if (! pixbuf)
-    {
-        /* As last resort, just draw an ugly magenta square. */
-        guchar *data;
-        gint    rowstride = 3 * size * scale_factor;
-        gint    i, j;
+	/* Last fallback: just a magenta square. */
+	if (!pixbuf)
+	{
+		/* As last resort, just draw an ugly magenta square. */
+		guchar *data;
+		gint rowstride = 3 * size * scale_factor;
+		gint i, j;
 
-        data = g_new (guchar, rowstride * size);
-        for (i = 0; i < size; i++)
-        {
-            for (j = 0; j < size * scale_factor; j++)
-            {
-                data[i * rowstride + j * 3] = 255;
-                data[i * rowstride + j * 3 + 1] = 0;
-                data[i * rowstride + j * 3 + 2] = 255;
-            }
-        }
-        pixbuf = gdk_pixbuf_new_from_data (data, GDK_COLORSPACE_RGB, FALSE,
-                                           8,
-                                           size * scale_factor,
-                                           size * scale_factor, rowstride,
-                                           (GdkPixbufDestroyNotify) g_free,
-                                           NULL);
-    }
+		data = g_new (guchar, rowstride * size);
+		for (i = 0; i < size; i++)
+		{
+			for (j = 0; j < size * scale_factor; j++)
+			{
+				data[i * rowstride + j * 3] = 255;
+				data[i * rowstride + j * 3 + 1] = 0;
+				data[i * rowstride + j * 3 + 2] = 255;
+			}
+		}
+		pixbuf = gdk_pixbuf_new_from_data (data, GDK_COLORSPACE_RGB, FALSE,
+		                                   8,
+		                                   size * scale_factor,
+		                                   size * scale_factor, rowstride,
+		                                   (GdkPixbufDestroyNotify) g_free,
+		                                   NULL);
+	}
 
-    /* Small assertion test to get a warning if we ever get NULL return
-     * value, as this is never supposed to happen.
-     */
-    g_return_val_if_fail (pixbuf != NULL, NULL);
+	/* Small assertion test to get a warning if we ever get NULL return
+	 * value, as this is never supposed to happen.
+	 */
+	g_return_val_if_fail (pixbuf != NULL, NULL);
 
-    return pixbuf;
+	return pixbuf;
 }
 
 GimpTabStyle
 gimp_preview_tab_style_to_icon (GimpTabStyle tab_style)
 {
-    switch (tab_style)
-    {
-    case GIMP_TAB_STYLE_PREVIEW:
-        tab_style = GIMP_TAB_STYLE_ICON;
-        break;
+	switch (tab_style)
+	{
+	case GIMP_TAB_STYLE_PREVIEW:
+		tab_style = GIMP_TAB_STYLE_ICON;
+		break;
 
-    case GIMP_TAB_STYLE_PREVIEW_NAME:
-        tab_style = GIMP_TAB_STYLE_ICON_NAME;
-        break;
+	case GIMP_TAB_STYLE_PREVIEW_NAME:
+		tab_style = GIMP_TAB_STYLE_ICON_NAME;
+		break;
 
-    case GIMP_TAB_STYLE_PREVIEW_BLURB:
-        tab_style = GIMP_TAB_STYLE_ICON_BLURB;
-        break;
+	case GIMP_TAB_STYLE_PREVIEW_BLURB:
+		tab_style = GIMP_TAB_STYLE_ICON_BLURB;
+		break;
 
-    default:
-        break;
-    }
+	default:
+		break;
+	}
 
-    return tab_style;
+	return tab_style;
 }
 
 const gchar *
 gimp_get_mod_string (GdkModifierType modifiers)
 {
-    static GHashTable *mod_labels;
-    gchar             *label;
+	static GHashTable *mod_labels;
+	gchar             *label;
 
-    if (! modifiers)
-        return NULL;
+	if (!modifiers)
+		return NULL;
 
-    if (G_UNLIKELY (! mod_labels))
-        mod_labels = g_hash_table_new (g_int_hash, g_int_equal);
+	if (G_UNLIKELY (!mod_labels))
+		mod_labels = g_hash_table_new (g_int_hash, g_int_equal);
 
-    modifiers = gimp_replace_virtual_modifiers (modifiers);
+	modifiers = gimp_replace_virtual_modifiers (modifiers);
 
-    label = g_hash_table_lookup (mod_labels, &modifiers);
+	label = g_hash_table_lookup (mod_labels, &modifiers);
 
-    if (! label)
-    {
-        GtkAccelLabelClass *accel_label_class;
+	if (!label)
+	{
+		GtkAccelLabelClass *accel_label_class;
 
-        label = gtk_accelerator_get_label (0, modifiers);
+		label = gtk_accelerator_get_label (0, modifiers);
 
-        accel_label_class = g_type_class_ref (GTK_TYPE_ACCEL_LABEL);
+		accel_label_class = g_type_class_ref (GTK_TYPE_ACCEL_LABEL);
 
-        if (accel_label_class->mod_separator &&
-                *accel_label_class->mod_separator)
-        {
-            gchar *sep = g_strrstr (label, accel_label_class->mod_separator);
+		if (accel_label_class->mod_separator &&
+		    *accel_label_class->mod_separator)
+		{
+			gchar *sep = g_strrstr (label, accel_label_class->mod_separator);
 
-            if (sep - label ==
-                    strlen (label) - strlen (accel_label_class->mod_separator))
-                *sep = '\0';
-        }
+			if (sep - label ==
+			    strlen (label) - strlen (accel_label_class->mod_separator))
+				*sep = '\0';
+		}
 
-        g_type_class_unref (accel_label_class);
+		g_type_class_unref (accel_label_class);
 
-        g_hash_table_insert (mod_labels,
-                             g_memdup (&modifiers, sizeof (GdkModifierType)),
-                             label);
-    }
+		g_hash_table_insert (mod_labels,
+		                     g_memdup (&modifiers, sizeof (GdkModifierType)),
+		                     label);
+	}
 
-    return label;
+	return label;
 }
 
 #define BUF_SIZE 100
@@ -537,203 +537,203 @@ gimp_get_mod_string (GdkModifierType modifiers)
  **/
 gchar *
 gimp_suggest_modifiers (const gchar     *message,
-                        GdkModifierType  modifiers,
+                        GdkModifierType modifiers,
                         const gchar     *extend_selection_format,
                         const gchar     *toggle_behavior_format,
                         const gchar     *alt_format)
 {
-    GdkModifierType  extend_mask = gimp_get_extend_selection_mask ();
-    GdkModifierType  toggle_mask = gimp_get_toggle_behavior_mask ();
-    gchar            msg_buf[3][BUF_SIZE];
-    gint             num_msgs = 0;
-    gboolean         try      = FALSE;
+	GdkModifierType extend_mask = gimp_get_extend_selection_mask ();
+	GdkModifierType toggle_mask = gimp_get_toggle_behavior_mask ();
+	gchar msg_buf[3][BUF_SIZE];
+	gint num_msgs = 0;
+	gboolean try      = FALSE;
 
-    if (modifiers & extend_mask)
-    {
-        if (extend_selection_format && *extend_selection_format)
-        {
-            g_snprintf (msg_buf[num_msgs], BUF_SIZE, extend_selection_format,
-                        gimp_get_mod_string (extend_mask));
-        }
-        else
-        {
-            g_strlcpy (msg_buf[num_msgs],
-                       gimp_get_mod_string (extend_mask), BUF_SIZE);
-            try = TRUE;
-        }
+	if (modifiers & extend_mask)
+	{
+		if (extend_selection_format && *extend_selection_format)
+		{
+			g_snprintf (msg_buf[num_msgs], BUF_SIZE, extend_selection_format,
+			            gimp_get_mod_string (extend_mask));
+		}
+		else
+		{
+			g_strlcpy (msg_buf[num_msgs],
+			           gimp_get_mod_string (extend_mask), BUF_SIZE);
+			try = TRUE;
+		}
 
-        num_msgs++;
-    }
+		num_msgs++;
+	}
 
-    if (modifiers & toggle_mask)
-    {
-        if (toggle_behavior_format && *toggle_behavior_format)
-        {
-            g_snprintf (msg_buf[num_msgs], BUF_SIZE, toggle_behavior_format,
-                        gimp_get_mod_string (toggle_mask));
-        }
-        else
-        {
-            g_strlcpy (msg_buf[num_msgs],
-                       gimp_get_mod_string (toggle_mask), BUF_SIZE);
-            try = TRUE;
-        }
+	if (modifiers & toggle_mask)
+	{
+		if (toggle_behavior_format && *toggle_behavior_format)
+		{
+			g_snprintf (msg_buf[num_msgs], BUF_SIZE, toggle_behavior_format,
+			            gimp_get_mod_string (toggle_mask));
+		}
+		else
+		{
+			g_strlcpy (msg_buf[num_msgs],
+			           gimp_get_mod_string (toggle_mask), BUF_SIZE);
+			try = TRUE;
+		}
 
-        num_msgs++;
-    }
+		num_msgs++;
+	}
 
-    if (modifiers & GDK_MOD1_MASK)
-    {
-        if (alt_format && *alt_format)
-        {
-            g_snprintf (msg_buf[num_msgs], BUF_SIZE, alt_format,
-                        gimp_get_mod_string (GDK_MOD1_MASK));
-        }
-        else
-        {
-            g_strlcpy (msg_buf[num_msgs],
-                       gimp_get_mod_string (GDK_MOD1_MASK), BUF_SIZE);
-            try = TRUE;
-        }
+	if (modifiers & GDK_MOD1_MASK)
+	{
+		if (alt_format && *alt_format)
+		{
+			g_snprintf (msg_buf[num_msgs], BUF_SIZE, alt_format,
+			            gimp_get_mod_string (GDK_MOD1_MASK));
+		}
+		else
+		{
+			g_strlcpy (msg_buf[num_msgs],
+			           gimp_get_mod_string (GDK_MOD1_MASK), BUF_SIZE);
+			try = TRUE;
+		}
 
-        num_msgs++;
-    }
+		num_msgs++;
+	}
 
-    /* This convoluted way to build the message using multiple format strings
-     * tries to make the messages easier to translate to other languages.
-     */
+	/* This convoluted way to build the message using multiple format strings
+	 * tries to make the messages easier to translate to other languages.
+	 */
 
-    switch (num_msgs)
-    {
-    case 1:
-        return g_strdup_printf (try ? _("%s (try %s)") : _("%s (%s)"),
-                                    message, msg_buf[0]);
+	switch (num_msgs)
+	{
+	case 1:
+		return g_strdup_printf (try ? _("%s (try %s)") : _("%s (%s)"),
+		                        message, msg_buf[0]);
 
-    case 2:
-        return g_strdup_printf (_("%s (try %s, %s)"),
-                                message, msg_buf[0], msg_buf[1]);
+	case 2:
+		return g_strdup_printf (_("%s (try %s, %s)"),
+		                        message, msg_buf[0], msg_buf[1]);
 
-    case 3:
-        return g_strdup_printf (_("%s (try %s, %s, %s)"),
-                                message, msg_buf[0], msg_buf[1], msg_buf[2]);
-    }
+	case 3:
+		return g_strdup_printf (_("%s (try %s, %s, %s)"),
+		                        message, msg_buf[0], msg_buf[1], msg_buf[2]);
+	}
 
-    return g_strdup (message);
+	return g_strdup (message);
 }
 #undef BUF_SIZE
 
 GimpChannelOps
-gimp_modifiers_to_channel_op (GdkModifierType  modifiers)
+gimp_modifiers_to_channel_op (GdkModifierType modifiers)
 {
-    GdkModifierType extend_mask = gimp_get_extend_selection_mask ();
-    GdkModifierType modify_mask = gimp_get_modify_selection_mask ();
+	GdkModifierType extend_mask = gimp_get_extend_selection_mask ();
+	GdkModifierType modify_mask = gimp_get_modify_selection_mask ();
 
-    if (modifiers & extend_mask)
-    {
-        if (modifiers & modify_mask)
-        {
-            return GIMP_CHANNEL_OP_INTERSECT;
-        }
-        else
-        {
-            return GIMP_CHANNEL_OP_ADD;
-        }
-    }
-    else if (modifiers & modify_mask)
-    {
-        return GIMP_CHANNEL_OP_SUBTRACT;
-    }
+	if (modifiers & extend_mask)
+	{
+		if (modifiers & modify_mask)
+		{
+			return GIMP_CHANNEL_OP_INTERSECT;
+		}
+		else
+		{
+			return GIMP_CHANNEL_OP_ADD;
+		}
+	}
+	else if (modifiers & modify_mask)
+	{
+		return GIMP_CHANNEL_OP_SUBTRACT;
+	}
 
-    return GIMP_CHANNEL_OP_REPLACE;
+	return GIMP_CHANNEL_OP_REPLACE;
 }
 
 GdkModifierType
 gimp_replace_virtual_modifiers (GdkModifierType modifiers)
 {
-    GdkDisplay      *display = gdk_display_get_default ();
-    GdkModifierType  result  = 0;
-    gint             i;
+	GdkDisplay      *display = gdk_display_get_default ();
+	GdkModifierType result  = 0;
+	gint i;
 
-    for (i = 0; i < 8; i++)
-    {
-        GdkModifierType real = 1 << i;
+	for (i = 0; i < 8; i++)
+	{
+		GdkModifierType real = 1 << i;
 
-        if (modifiers & real)
-        {
-            GdkModifierType virtual = real;
+		if (modifiers & real)
+		{
+			GdkModifierType virtual = real;
 
-            gdk_keymap_add_virtual_modifiers (gdk_keymap_get_for_display (display),
-                                              &virtual);
+			gdk_keymap_add_virtual_modifiers (gdk_keymap_get_for_display (display),
+			                                  &virtual);
 
-            if (virtual == real)
-                result |= virtual;
-            else
-                result |= virtual & ~real;
-        }
-    }
+			if (virtual == real)
+				result |= virtual;
+			else
+				result |= virtual & ~real;
+		}
+	}
 
-    return result;
+	return result;
 }
 
 GdkModifierType
 gimp_get_primary_accelerator_mask (void)
 {
-    GdkDisplay *display = gdk_display_get_default ();
+	GdkDisplay *display = gdk_display_get_default ();
 
-    return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                         GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR);
+	return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                     GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR);
 }
 
 GdkModifierType
 gimp_get_extend_selection_mask (void)
 {
-    GdkDisplay *display = gdk_display_get_default ();
+	GdkDisplay *display = gdk_display_get_default ();
 
-    return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                         GDK_MODIFIER_INTENT_EXTEND_SELECTION);
+	return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                     GDK_MODIFIER_INTENT_EXTEND_SELECTION);
 }
 
 GdkModifierType
 gimp_get_modify_selection_mask (void)
 {
-    GdkDisplay *display = gdk_display_get_default ();
+	GdkDisplay *display = gdk_display_get_default ();
 
-    return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                         GDK_MODIFIER_INTENT_MODIFY_SELECTION);
+	return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                     GDK_MODIFIER_INTENT_MODIFY_SELECTION);
 }
 
 GdkModifierType
 gimp_get_toggle_behavior_mask (void)
 {
-    GdkDisplay *display = gdk_display_get_default ();
+	GdkDisplay *display = gdk_display_get_default ();
 
-    /* use the modify selection modifier */
-    return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                         GDK_MODIFIER_INTENT_MODIFY_SELECTION);
+	/* use the modify selection modifier */
+	return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                     GDK_MODIFIER_INTENT_MODIFY_SELECTION);
 }
 
 GdkModifierType
 gimp_get_constrain_behavior_mask (void)
 {
-    GdkDisplay *display = gdk_display_get_default ();
+	GdkDisplay *display = gdk_display_get_default ();
 
-    /* use the modify selection modifier */
-    return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                         GDK_MODIFIER_INTENT_MODIFY_SELECTION);
+	/* use the modify selection modifier */
+	return gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                     GDK_MODIFIER_INTENT_MODIFY_SELECTION);
 }
 
 GdkModifierType
 gimp_get_all_modifiers_mask (void)
 {
-    GdkDisplay *display = gdk_display_get_default ();
+	GdkDisplay *display = gdk_display_get_default ();
 
-    return (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK |
-            gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                          GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR) |
-            gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                          GDK_MODIFIER_INTENT_EXTEND_SELECTION) |
-            gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
-                                          GDK_MODIFIER_INTENT_MODIFY_SELECTION));
+	return (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK |
+	        gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                      GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR) |
+	        gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                      GDK_MODIFIER_INTENT_EXTEND_SELECTION) |
+	        gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
+	                                      GDK_MODIFIER_INTENT_MODIFY_SELECTION));
 }
 
 /**
@@ -750,64 +750,64 @@ gimp_get_monitor_resolution (GdkMonitor *monitor,
                              gdouble    *xres,
                              gdouble    *yres)
 {
-    GdkRectangle size_pixels;
-    gint         width_mm, height_mm;
-    gdouble      x = 0.0;
-    gdouble      y = 0.0;
+	GdkRectangle size_pixels;
+	gint width_mm, height_mm;
+	gdouble x = 0.0;
+	gdouble y = 0.0;
 #ifdef PLATFORM_OSX
-    CGSize       size;
+	CGSize size;
 #endif
 
-    g_return_if_fail (GDK_IS_MONITOR (monitor));
-    g_return_if_fail (xres != NULL);
-    g_return_if_fail (yres != NULL);
+	g_return_if_fail (GDK_IS_MONITOR (monitor));
+	g_return_if_fail (xres != NULL);
+	g_return_if_fail (yres != NULL);
 
 #ifndef PLATFORM_OSX
-    gdk_monitor_get_geometry (monitor, &size_pixels);
+	gdk_monitor_get_geometry (monitor, &size_pixels);
 
-    width_mm  = gdk_monitor_get_width_mm  (monitor);
-    height_mm = gdk_monitor_get_height_mm (monitor);
+	width_mm  = gdk_monitor_get_width_mm  (monitor);
+	height_mm = gdk_monitor_get_height_mm (monitor);
 #else
-    width_mm  = 0;
-    height_mm = 0;
-    size = CGDisplayScreenSize (kCGDirectMainDisplay);
-    if (!CGSizeEqualToSize (size, CGSizeZero))
-    {
-        width_mm  = size.width;
-        height_mm = size.height;
-    }
-    size_pixels.width  = CGDisplayPixelsWide (kCGDirectMainDisplay);
-    size_pixels.height = CGDisplayPixelsHigh (kCGDirectMainDisplay);
+	width_mm  = 0;
+	height_mm = 0;
+	size = CGDisplayScreenSize (kCGDirectMainDisplay);
+	if (!CGSizeEqualToSize (size, CGSizeZero))
+	{
+		width_mm  = size.width;
+		height_mm = size.height;
+	}
+	size_pixels.width  = CGDisplayPixelsWide (kCGDirectMainDisplay);
+	size_pixels.height = CGDisplayPixelsHigh (kCGDirectMainDisplay);
 #endif
-    /*
-     * From xdpyinfo.c:
-     *
-     * there are 2.54 centimeters to an inch; so there are 25.4 millimeters.
-     *
-     *     dpi = N pixels / (M millimeters / (25.4 millimeters / 1 inch))
-     *         = N pixels / (M inch / 25.4)
-     *         = N * 25.4 pixels / M inch
-     */
+	/*
+	 * From xdpyinfo.c:
+	 *
+	 * there are 2.54 centimeters to an inch; so there are 25.4 millimeters.
+	 *
+	 *     dpi = N pixels / (M millimeters / (25.4 millimeters / 1 inch))
+	 *         = N pixels / (M inch / 25.4)
+	 *         = N * 25.4 pixels / M inch
+	 */
 
-    if (width_mm > 0 && height_mm > 0)
-    {
-        x = (size_pixels.width  * 25.4) / (gdouble) width_mm;
-        y = (size_pixels.height * 25.4) / (gdouble) height_mm;
-    }
+	if (width_mm > 0 && height_mm > 0)
+	{
+		x = (size_pixels.width  * 25.4) / (gdouble) width_mm;
+		y = (size_pixels.height * 25.4) / (gdouble) height_mm;
+	}
 
-    if (x < GIMP_MIN_RESOLUTION || x > GIMP_MAX_RESOLUTION ||
-            y < GIMP_MIN_RESOLUTION || y > GIMP_MAX_RESOLUTION)
-    {
-        g_printerr ("gimp_get_monitor_resolution(): GDK returned bogus "
-                    "values for the monitor resolution, using 96 dpi instead.\n");
+	if (x < GIMP_MIN_RESOLUTION || x > GIMP_MAX_RESOLUTION ||
+	    y < GIMP_MIN_RESOLUTION || y > GIMP_MAX_RESOLUTION)
+	{
+		g_printerr ("gimp_get_monitor_resolution(): GDK returned bogus "
+		            "values for the monitor resolution, using 96 dpi instead.\n");
 
-        x = 96.0;
-        y = 96.0;
-    }
+		x = 96.0;
+		y = 96.0;
+	}
 
-    /*  round the value to full integers to give more pleasant results  */
-    *xres = ROUND (x);
-    *yres = ROUND (y);
+	/*  round the value to full integers to give more pleasant results  */
+	*xres = ROUND (x);
+	*yres = ROUND (y);
 }
 
 gboolean
@@ -815,53 +815,53 @@ gimp_get_style_color (GtkWidget   *widget,
                       const gchar *property_name,
                       GdkRGBA     *color)
 {
-    GdkRGBA *c = NULL;
+	GdkRGBA *c = NULL;
 
-    g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-    g_return_val_if_fail (property_name != NULL, FALSE);
-    g_return_val_if_fail (color != NULL, FALSE);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (property_name != NULL, FALSE);
+	g_return_val_if_fail (color != NULL, FALSE);
 
-    gtk_widget_style_get (widget,
-                          property_name, &c,
-                          NULL);
+	gtk_widget_style_get (widget,
+	                      property_name, &c,
+	                      NULL);
 
-    if (c)
-    {
-        *color = *c;
-        gdk_rgba_free (c);
+	if (c)
+	{
+		*color = *c;
+		gdk_rgba_free (c);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /* return ugly magenta to indicate that something is wrong */
-    color->red   = 1.0;
-    color->green = 1.0;
-    color->blue  = 0.0;
-    color->alpha = 1.0;
+	/* return ugly magenta to indicate that something is wrong */
+	color->red   = 1.0;
+	color->green = 1.0;
+	color->blue  = 0.0;
+	color->alpha = 1.0;
 
-    return FALSE;
+	return FALSE;
 }
 
 void
 gimp_window_set_hint (GtkWindow      *window,
-                      GimpWindowHint  hint)
+                      GimpWindowHint hint)
 {
-    g_return_if_fail (GTK_IS_WINDOW (window));
+	g_return_if_fail (GTK_IS_WINDOW (window));
 
-    switch (hint)
-    {
-    case GIMP_WINDOW_HINT_NORMAL:
-        gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_NORMAL);
-        break;
+	switch (hint)
+	{
+	case GIMP_WINDOW_HINT_NORMAL:
+		gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_NORMAL);
+		break;
 
-    case GIMP_WINDOW_HINT_UTILITY:
-        gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_UTILITY);
-        break;
+	case GIMP_WINDOW_HINT_UTILITY:
+		gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_UTILITY);
+		break;
 
-    case GIMP_WINDOW_HINT_KEEP_ABOVE:
-        gtk_window_set_keep_above (window, TRUE);
-        break;
-    }
+	case GIMP_WINDOW_HINT_KEEP_ABOVE:
+		gtk_window_set_keep_above (window, TRUE);
+		break;
+	}
 }
 
 /**
@@ -877,26 +877,26 @@ gimp_window_set_hint (GtkWindow      *window,
 guint32
 gimp_window_get_native_id (GtkWindow *window)
 {
-    g_return_val_if_fail (GTK_IS_WINDOW (window), 0);
+	g_return_val_if_fail (GTK_IS_WINDOW (window), 0);
 
 #ifdef GDK_NATIVE_WINDOW_POINTER
 #ifdef __GNUC__
 #warning gimp_window_get_native() unimplementable for the target windowing system
 #endif
-    return 0;
+	return 0;
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
-    if (window && gtk_widget_get_realized (GTK_WIDGET (window)))
-        return GDK_WINDOW_HWND (gtk_widget_get_window (GTK_WIDGET (window)));
+	if (window && gtk_widget_get_realized (GTK_WIDGET (window)))
+		return GDK_WINDOW_HWND (gtk_widget_get_window (GTK_WIDGET (window)));
 #endif
 
 #ifdef GDK_WINDOWING_X11
-    if (window && gtk_widget_get_realized (GTK_WIDGET (window)))
-        return GDK_WINDOW_XID (gtk_widget_get_window (GTK_WIDGET (window)));
+	if (window && gtk_widget_get_realized (GTK_WIDGET (window)))
+		return GDK_WINDOW_XID (gtk_widget_get_window (GTK_WIDGET (window)));
 #endif
 
-    return 0;
+	return 0;
 }
 
 #ifndef GDK_WINDOWING_WIN32
@@ -904,8 +904,8 @@ static void
 gimp_window_transient_realized (GtkWidget *window,
                                 GdkWindow *parent)
 {
-    if (gtk_widget_get_realized (window))
-        gdk_window_set_transient_for (gtk_widget_get_window (window), parent);
+	if (gtk_widget_get_realized (window))
+		gdk_window_set_transient_for (gtk_widget_get_window (window), parent);
 }
 
 /* similar to what we have in libgimp/gimpui.c */
@@ -913,343 +913,343 @@ static GdkWindow *
 gimp_get_foreign_window (guint32 window)
 {
 #ifdef GDK_WINDOWING_X11
-    if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
-        return gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
-                window);
+	if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
+		return gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
+		                                               window);
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
-    return gdk_win32_window_foreign_new_for_display (gdk_display_get_default (),
-            window);
+	return gdk_win32_window_foreign_new_for_display (gdk_display_get_default (),
+	                                                 window);
 #endif
 
-    return NULL;
+	return NULL;
 }
 #endif
 
 void
 gimp_window_set_transient_for (GtkWindow *window,
-                               guint32    parent_ID)
+                               guint32 parent_ID)
 {
-    /* Cross-process transient-for is broken in gdk/win32 <= 2.10.6. It
-     * causes hangs, at least when used as by the gimp and script-fu
-     * processes. In some newer GTK+ version it will be fixed to be a
-     * no-op. If it eventually is fixed to actually work, change this to
-     * a run-time check of GTK+ version. Remember to change also the
-     * function with the same name in libgimp/gimpui.c
-     *
-     * Note: this hanging bug is still happening with GTK+3 as of 2019-10,
-     * with steps described in comment 4 in:
-     * https://bugzilla.gnome.org/show_bug.cgi?id=359538
-     */
+	/* Cross-process transient-for is broken in gdk/win32 <= 2.10.6. It
+	 * causes hangs, at least when used as by the gimp and script-fu
+	 * processes. In some newer GTK+ version it will be fixed to be a
+	 * no-op. If it eventually is fixed to actually work, change this to
+	 * a run-time check of GTK+ version. Remember to change also the
+	 * function with the same name in libgimp/gimpui.c
+	 *
+	 * Note: this hanging bug is still happening with GTK+3 as of 2019-10,
+	 * with steps described in comment 4 in:
+	 * https://bugzilla.gnome.org/show_bug.cgi?id=359538
+	 */
 #ifndef GDK_WINDOWING_WIN32
-    GdkWindow *parent;
+	GdkWindow *parent;
 
-    parent = gimp_get_foreign_window (parent_ID);
-    if (! parent)
-        return;
+	parent = gimp_get_foreign_window (parent_ID);
+	if (!parent)
+		return;
 
-    if (gtk_widget_get_realized (GTK_WIDGET (window)))
-        gdk_window_set_transient_for (gtk_widget_get_window (GTK_WIDGET (window)),
-                                      parent);
+	if (gtk_widget_get_realized (GTK_WIDGET (window)))
+		gdk_window_set_transient_for (gtk_widget_get_window (GTK_WIDGET (window)),
+		                              parent);
 
-    g_signal_connect_object (window, "realize",
-                             G_CALLBACK (gimp_window_transient_realized),
-                             parent, 0);
+	g_signal_connect_object (window, "realize",
+	                         G_CALLBACK (gimp_window_transient_realized),
+	                         parent, 0);
 
-    g_object_unref (parent);
+	g_object_unref (parent);
 #endif
 }
 
 static gboolean
 gimp_widget_accel_find_func (GtkAccelKey *key,
                              GClosure    *closure,
-                             gpointer     data)
+                             gpointer data)
 {
-    return (GClosure *) data == closure;
+	return (GClosure *) data == closure;
 }
 
 static void
 gimp_widget_accel_changed (GtkAccelGroup   *accel_group,
-                           guint            unused1,
-                           GdkModifierType  unused2,
+                           guint unused1,
+                           GdkModifierType unused2,
                            GClosure        *accel_closure,
                            GtkWidget       *widget)
 {
-    GClosure *widget_closure;
+	GClosure *widget_closure;
 
-    widget_closure = g_object_get_data (G_OBJECT (widget), "gimp-accel-closure");
+	widget_closure = g_object_get_data (G_OBJECT (widget), "gimp-accel-closure");
 
-    if (accel_closure == widget_closure)
-    {
-        GimpAction  *action;
-        GtkAccelKey *accel_key;
-        const gchar *tooltip;
-        const gchar *help_id;
+	if (accel_closure == widget_closure)
+	{
+		GimpAction  *action;
+		GtkAccelKey *accel_key;
+		const gchar *tooltip;
+		const gchar *help_id;
 
-        action = g_object_get_data (G_OBJECT (widget), "gimp-accel-action");
+		action = g_object_get_data (G_OBJECT (widget), "gimp-accel-action");
 
-        tooltip = gimp_action_get_tooltip (action);
-        help_id = gimp_action_get_help_id (action);
+		tooltip = gimp_action_get_tooltip (action);
+		help_id = gimp_action_get_help_id (action);
 
-        accel_key = gtk_accel_group_find (accel_group,
-                                          gimp_widget_accel_find_func,
-                                          accel_closure);
+		accel_key = gtk_accel_group_find (accel_group,
+		                                  gimp_widget_accel_find_func,
+		                                  accel_closure);
 
-        if (accel_key            &&
-                accel_key->accel_key &&
-                (accel_key->accel_flags & GTK_ACCEL_VISIBLE))
-        {
-            gchar *escaped = g_markup_escape_text (tooltip, -1);
-            gchar *accel   = gtk_accelerator_get_label (accel_key->accel_key,
-                             accel_key->accel_mods);
-            gchar *tmp     = g_strdup_printf ("%s  <b>%s</b>", escaped, accel);
+		if (accel_key            &&
+		    accel_key->accel_key &&
+		    (accel_key->accel_flags & GTK_ACCEL_VISIBLE))
+		{
+			gchar *escaped = g_markup_escape_text (tooltip, -1);
+			gchar *accel   = gtk_accelerator_get_label (accel_key->accel_key,
+			                                            accel_key->accel_mods);
+			gchar *tmp     = g_strdup_printf ("%s  <b>%s</b>", escaped, accel);
 
-            g_free (accel);
-            g_free (escaped);
+			g_free (accel);
+			g_free (escaped);
 
-            gimp_help_set_help_data_with_markup (widget, tmp, help_id);
-            g_free (tmp);
-        }
-        else
-        {
-            gimp_help_set_help_data (widget, tooltip, help_id);
-        }
-    }
+			gimp_help_set_help_data_with_markup (widget, tmp, help_id);
+			g_free (tmp);
+		}
+		else
+		{
+			gimp_help_set_help_data (widget, tooltip, help_id);
+		}
+	}
 }
 
-static void   gimp_accel_help_widget_weak_notify (gpointer  accel_group,
-        GObject  *where_widget_was);
+static void   gimp_accel_help_widget_weak_notify (gpointer accel_group,
+                                                  GObject  *where_widget_was);
 
 static void
-gimp_accel_help_accel_group_weak_notify (gpointer  widget,
-        GObject  *where_accel_group_was)
+gimp_accel_help_accel_group_weak_notify (gpointer widget,
+                                         GObject  *where_accel_group_was)
 {
-    g_object_weak_unref (widget,
-                         gimp_accel_help_widget_weak_notify,
-                         where_accel_group_was);
+	g_object_weak_unref (widget,
+	                     gimp_accel_help_widget_weak_notify,
+	                     where_accel_group_was);
 
-    g_object_set_data (widget, "gimp-accel-group", NULL);
+	g_object_set_data (widget, "gimp-accel-group", NULL);
 }
 
 static void
-gimp_accel_help_widget_weak_notify (gpointer  accel_group,
+gimp_accel_help_widget_weak_notify (gpointer accel_group,
                                     GObject  *where_widget_was)
 {
-    g_object_weak_unref (accel_group,
-                         gimp_accel_help_accel_group_weak_notify,
-                         where_widget_was);
+	g_object_weak_unref (accel_group,
+	                     gimp_accel_help_accel_group_weak_notify,
+	                     where_widget_was);
 }
 
 void
 gimp_widget_set_accel_help (GtkWidget  *widget,
                             GimpAction *action)
 {
-    GtkAccelGroup *accel_group;
-    GClosure      *accel_closure;
+	GtkAccelGroup *accel_group;
+	GClosure      *accel_closure;
 
-    accel_group = g_object_get_data (G_OBJECT (widget), "gimp-accel-group");
+	accel_group = g_object_get_data (G_OBJECT (widget), "gimp-accel-group");
 
-    if (accel_group)
-    {
-        g_signal_handlers_disconnect_by_func (accel_group,
-                                              gimp_widget_accel_changed,
-                                              widget);
-        g_object_weak_unref (G_OBJECT (accel_group),
-                             gimp_accel_help_accel_group_weak_notify,
-                             widget);
-        g_object_weak_unref (G_OBJECT (widget),
-                             gimp_accel_help_widget_weak_notify,
-                             accel_group);
-        g_object_set_data (G_OBJECT (widget), "gimp-accel-group", NULL);
-    }
+	if (accel_group)
+	{
+		g_signal_handlers_disconnect_by_func (accel_group,
+		                                      gimp_widget_accel_changed,
+		                                      widget);
+		g_object_weak_unref (G_OBJECT (accel_group),
+		                     gimp_accel_help_accel_group_weak_notify,
+		                     widget);
+		g_object_weak_unref (G_OBJECT (widget),
+		                     gimp_accel_help_widget_weak_notify,
+		                     accel_group);
+		g_object_set_data (G_OBJECT (widget), "gimp-accel-group", NULL);
+	}
 
-    accel_closure = gimp_action_get_accel_closure (action);
+	accel_closure = gimp_action_get_accel_closure (action);
 
-    if (accel_closure)
-    {
-        accel_group = gtk_accel_group_from_accel_closure (accel_closure);
+	if (accel_closure)
+	{
+		accel_group = gtk_accel_group_from_accel_closure (accel_closure);
 
-        g_object_set_data (G_OBJECT (widget), "gimp-accel-group",
-                           accel_group);
-        g_object_weak_ref (G_OBJECT (accel_group),
-                           gimp_accel_help_accel_group_weak_notify,
-                           widget);
-        g_object_weak_ref (G_OBJECT (widget),
-                           gimp_accel_help_widget_weak_notify,
-                           accel_group);
+		g_object_set_data (G_OBJECT (widget), "gimp-accel-group",
+		                   accel_group);
+		g_object_weak_ref (G_OBJECT (accel_group),
+		                   gimp_accel_help_accel_group_weak_notify,
+		                   widget);
+		g_object_weak_ref (G_OBJECT (widget),
+		                   gimp_accel_help_widget_weak_notify,
+		                   accel_group);
 
-        g_object_set_data (G_OBJECT (widget), "gimp-accel-closure",
-                           accel_closure);
-        g_object_set_data (G_OBJECT (widget), "gimp-accel-action",
-                           action);
+		g_object_set_data (G_OBJECT (widget), "gimp-accel-closure",
+		                   accel_closure);
+		g_object_set_data (G_OBJECT (widget), "gimp-accel-action",
+		                   action);
 
-        g_signal_connect_object (accel_group, "accel-changed",
-                                 G_CALLBACK (gimp_widget_accel_changed),
-                                 widget, 0);
+		g_signal_connect_object (accel_group, "accel-changed",
+		                         G_CALLBACK (gimp_widget_accel_changed),
+		                         widget, 0);
 
-        gimp_widget_accel_changed (accel_group,
-                                   0, 0,
-                                   accel_closure,
-                                   widget);
-    }
-    else
-    {
-        gimp_help_set_help_data (widget,
-                                 gimp_action_get_tooltip (action),
-                                 gimp_action_get_help_id (action));
+		gimp_widget_accel_changed (accel_group,
+		                           0, 0,
+		                           accel_closure,
+		                           widget);
+	}
+	else
+	{
+		gimp_help_set_help_data (widget,
+		                         gimp_action_get_tooltip (action),
+		                         gimp_action_get_help_id (action));
 
-    }
+	}
 }
 
 const gchar *
 gimp_get_message_icon_name (GimpMessageSeverity severity)
 {
-    switch (severity)
-    {
-    case GIMP_MESSAGE_INFO:
-        return GIMP_ICON_DIALOG_INFORMATION;
+	switch (severity)
+	{
+	case GIMP_MESSAGE_INFO:
+		return GIMP_ICON_DIALOG_INFORMATION;
 
-    case GIMP_MESSAGE_WARNING:
-        return GIMP_ICON_DIALOG_WARNING;
+	case GIMP_MESSAGE_WARNING:
+		return GIMP_ICON_DIALOG_WARNING;
 
-    case GIMP_MESSAGE_ERROR:
-        return GIMP_ICON_DIALOG_ERROR;
+	case GIMP_MESSAGE_ERROR:
+		return GIMP_ICON_DIALOG_ERROR;
 
-    case GIMP_MESSAGE_BUG_WARNING:
-    case GIMP_MESSAGE_BUG_CRITICAL:
-        return GIMP_ICON_WILBER_EEK;
-    }
+	case GIMP_MESSAGE_BUG_WARNING:
+	case GIMP_MESSAGE_BUG_CRITICAL:
+		return GIMP_ICON_WILBER_EEK;
+	}
 
-    g_return_val_if_reached (GIMP_ICON_DIALOG_WARNING);
+	g_return_val_if_reached (GIMP_ICON_DIALOG_WARNING);
 }
 
 gboolean
-gimp_get_color_tag_color (GimpColorTag  color_tag,
+gimp_get_color_tag_color (GimpColorTag color_tag,
                           GimpRGB      *color,
-                          gboolean      inherited)
+                          gboolean inherited)
 {
-    static const struct
-    {
-        guchar r;
-        guchar g;
-        guchar b;
-    }
-    colors[] =
-    {
-        {    0,   0,   0  }, /* none   */
-        {   84, 102, 159  }, /* blue   */
-        {  111, 143,  48  }, /* green  */
-        {  210, 182,  45  }, /* yellow */
-        {  217, 122,  38  }, /* orange */
-        {   87,  53,  25  }, /* brown  */
-        {  170,  42,  47  }, /* red    */
-        {   99,  66, 174  }, /* violet */
-        {   87,  87,  87  }  /* gray   */
-    };
+	static const struct
+	{
+		guchar r;
+		guchar g;
+		guchar b;
+	}
+	colors[] =
+	{
+		{    0,   0,   0  },/* none   */
+		{   84, 102, 159  },/* blue   */
+		{  111, 143,  48  },/* green  */
+		{  210, 182,  45  },/* yellow */
+		{  217, 122,  38  },/* orange */
+		{   87,  53,  25  },/* brown  */
+		{  170,  42,  47  },/* red    */
+		{   99,  66, 174  },/* violet */
+		{   87,  87,  87  }/* gray   */
+	};
 
-    g_return_val_if_fail (color != NULL, FALSE);
-    g_return_val_if_fail (color_tag < G_N_ELEMENTS (colors), FALSE);
+	g_return_val_if_fail (color != NULL, FALSE);
+	g_return_val_if_fail (color_tag < G_N_ELEMENTS (colors), FALSE);
 
-    if (color_tag > GIMP_COLOR_TAG_NONE)
-    {
-        gimp_rgba_set_uchar (color,
-                             colors[color_tag].r,
-                             colors[color_tag].g,
-                             colors[color_tag].b,
-                             255);
+	if (color_tag > GIMP_COLOR_TAG_NONE)
+	{
+		gimp_rgba_set_uchar (color,
+		                     colors[color_tag].r,
+		                     colors[color_tag].g,
+		                     colors[color_tag].b,
+		                     255);
 
-        if (inherited)
-        {
-            gimp_rgb_composite (color, &(GimpRGB) {
-                1.0, 1.0, 1.0, 0.2
-            },
-            GIMP_RGB_COMPOSITE_NORMAL);
-        }
+		if (inherited)
+		{
+			gimp_rgb_composite (color, &(GimpRGB) {
+				1.0, 1.0, 1.0, 0.2
+			},
+			                    GIMP_RGB_COMPOSITE_NORMAL);
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 void
 gimp_pango_layout_set_scale (PangoLayout *layout,
-                             gdouble      scale)
+                             gdouble scale)
 {
-    PangoAttrList  *attrs;
-    PangoAttribute *attr;
+	PangoAttrList  *attrs;
+	PangoAttribute *attr;
 
-    g_return_if_fail (PANGO_IS_LAYOUT (layout));
+	g_return_if_fail (PANGO_IS_LAYOUT (layout));
 
-    attrs = pango_attr_list_new ();
+	attrs = pango_attr_list_new ();
 
-    attr = pango_attr_scale_new (scale);
-    attr->start_index = 0;
-    attr->end_index   = -1;
-    pango_attr_list_insert (attrs, attr);
+	attr = pango_attr_scale_new (scale);
+	attr->start_index = 0;
+	attr->end_index   = -1;
+	pango_attr_list_insert (attrs, attr);
 
-    pango_layout_set_attributes (layout, attrs);
-    pango_attr_list_unref (attrs);
+	pango_layout_set_attributes (layout, attrs);
+	pango_attr_list_unref (attrs);
 }
 
 void
 gimp_pango_layout_set_weight (PangoLayout *layout,
-                              PangoWeight  weight)
+                              PangoWeight weight)
 {
-    PangoAttrList  *attrs;
-    PangoAttribute *attr;
+	PangoAttrList  *attrs;
+	PangoAttribute *attr;
 
-    g_return_if_fail (PANGO_IS_LAYOUT (layout));
+	g_return_if_fail (PANGO_IS_LAYOUT (layout));
 
-    attrs = pango_attr_list_new ();
+	attrs = pango_attr_list_new ();
 
-    attr = pango_attr_weight_new (weight);
-    attr->start_index = 0;
-    attr->end_index   = -1;
-    pango_attr_list_insert (attrs, attr);
+	attr = pango_attr_weight_new (weight);
+	attr->start_index = 0;
+	attr->end_index   = -1;
+	pango_attr_list_insert (attrs, attr);
 
-    pango_layout_set_attributes (layout, attrs);
-    pango_attr_list_unref (attrs);
+	pango_layout_set_attributes (layout, attrs);
+	pango_attr_list_unref (attrs);
 }
 
 static gboolean
 gimp_highlight_widget_draw (GtkWidget *widget,
                             cairo_t   *cr,
-                            gpointer   data)
+                            gpointer data)
 {
-    /* this code is a straight copy of draw_flash() from gtk-inspector's
-     * inspect-button.c
-     */
+	/* this code is a straight copy of draw_flash() from gtk-inspector's
+	 * inspect-button.c
+	 */
 
-    GtkAllocation alloc;
+	GtkAllocation alloc;
 
-    if (GTK_IS_WINDOW (widget))
-    {
-        GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
-        /* We don't want to draw the drag highlight around the
-         * CSD window decorations
-         */
-        if (child == NULL)
-            return FALSE;
+	if (GTK_IS_WINDOW (widget))
+	{
+		GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
+		/* We don't want to draw the drag highlight around the
+		 * CSD window decorations
+		 */
+		if (child == NULL)
+			return FALSE;
 
-        gtk_widget_get_allocation (child, &alloc);
-    }
-    else
-    {
-        alloc.x = 0;
-        alloc.y = 0;
-        alloc.width = gtk_widget_get_allocated_width (widget);
-        alloc.height = gtk_widget_get_allocated_height (widget);
-    }
+		gtk_widget_get_allocation (child, &alloc);
+	}
+	else
+	{
+		alloc.x = 0;
+		alloc.y = 0;
+		alloc.width = gtk_widget_get_allocated_width (widget);
+		alloc.height = gtk_widget_get_allocated_height (widget);
+	}
 
-    cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 0.2);
-    cairo_rectangle (cr,
-                     alloc.x + 0.5, alloc.y + 0.5,
-                     alloc.width - 1, alloc.height - 1);
-    cairo_fill (cr);
+	cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 0.2);
+	cairo_rectangle (cr,
+	                 alloc.x + 0.5, alloc.y + 0.5,
+	                 alloc.width - 1, alloc.height - 1);
+	cairo_fill (cr);
 
-    return FALSE;
+	return FALSE;
 }
 
 /**
@@ -1263,128 +1263,128 @@ gimp_highlight_widget_draw (GtkWidget *widget,
  **/
 void
 gimp_highlight_widget (GtkWidget *widget,
-                       gboolean   highlight)
+                       gboolean highlight)
 {
-    gboolean old_highlight;
+	gboolean old_highlight;
 
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    highlight = highlight ? TRUE : FALSE;
+	highlight = highlight ? TRUE : FALSE;
 
-    old_highlight = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
-                                     "gimp-widget-highlight"));
+	old_highlight = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
+	                                                    "gimp-widget-highlight"));
 
-    if (highlight != old_highlight)
-    {
-        if (highlight)
-        {
-            g_signal_connect_after (widget, "draw",
-                                    G_CALLBACK (gimp_highlight_widget_draw),
-                                    NULL);
-        }
-        else
-        {
-            g_signal_handlers_disconnect_by_func (widget,
-                                                  gimp_highlight_widget_draw,
-                                                  NULL);
-        }
+	if (highlight != old_highlight)
+	{
+		if (highlight)
+		{
+			g_signal_connect_after (widget, "draw",
+			                        G_CALLBACK (gimp_highlight_widget_draw),
+			                        NULL);
+		}
+		else
+		{
+			g_signal_handlers_disconnect_by_func (widget,
+			                                      gimp_highlight_widget_draw,
+			                                      NULL);
+		}
 
-        g_object_set_data (G_OBJECT (widget),
-                           "gimp-widget-highlight",
-                           GINT_TO_POINTER (highlight));
+		g_object_set_data (G_OBJECT (widget),
+		                   "gimp-widget-highlight",
+		                   GINT_TO_POINTER (highlight));
 
-        gtk_widget_queue_draw (widget);
-    }
+		gtk_widget_queue_draw (widget);
+	}
 }
 
 typedef struct
 {
-    gint timeout_id;
-    gint counter;
+	gint timeout_id;
+	gint counter;
 } WidgetBlink;
 
 static WidgetBlink *
 widget_blink_new (void)
 {
-    WidgetBlink *blink;
+	WidgetBlink *blink;
 
-    blink = g_slice_new (WidgetBlink);
+	blink = g_slice_new (WidgetBlink);
 
-    blink->timeout_id = 0;
-    blink->counter    = 0;
+	blink->timeout_id = 0;
+	blink->counter    = 0;
 
-    return blink;
+	return blink;
 }
 
 static void
 widget_blink_free (WidgetBlink *blink)
 {
-    if (blink->timeout_id)
-    {
-        g_source_remove (blink->timeout_id);
-        blink->timeout_id = 0;
-    }
+	if (blink->timeout_id)
+	{
+		g_source_remove (blink->timeout_id);
+		blink->timeout_id = 0;
+	}
 
-    g_slice_free (WidgetBlink, blink);
+	g_slice_free (WidgetBlink, blink);
 }
 
 static gboolean
 gimp_widget_blink_timeout (GtkWidget *widget)
 {
-    WidgetBlink *blink;
+	WidgetBlink *blink;
 
-    blink = g_object_get_data (G_OBJECT (widget), "gimp-widget-blink");
+	blink = g_object_get_data (G_OBJECT (widget), "gimp-widget-blink");
 
-    gimp_highlight_widget (widget, blink->counter % 2 == 1);
-    blink->counter++;
+	gimp_highlight_widget (widget, blink->counter % 2 == 1);
+	blink->counter++;
 
-    if (blink->counter == 3)
-    {
-        blink->timeout_id = 0;
+	if (blink->counter == 3)
+	{
+		blink->timeout_id = 0;
 
-        g_object_set_data (G_OBJECT (widget), "gimp-widget-blink", NULL);
+		g_object_set_data (G_OBJECT (widget), "gimp-widget-blink", NULL);
 
-        return G_SOURCE_REMOVE;
-    }
+		return G_SOURCE_REMOVE;
+	}
 
-    return G_SOURCE_CONTINUE;
+	return G_SOURCE_CONTINUE;
 }
 
 void
 gimp_widget_blink (GtkWidget *widget)
 {
-    WidgetBlink *blink;
+	WidgetBlink *blink;
 
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    gimp_widget_blink_cancel (widget);
+	gimp_widget_blink_cancel (widget);
 
-    blink = widget_blink_new ();
+	blink = widget_blink_new ();
 
-    g_object_set_data_full (G_OBJECT (widget), "gimp-widget-blink", blink,
-                            (GDestroyNotify) widget_blink_free);
+	g_object_set_data_full (G_OBJECT (widget), "gimp-widget-blink", blink,
+	                        (GDestroyNotify) widget_blink_free);
 
-    blink->timeout_id = g_timeout_add (150,
-                                       (GSourceFunc) gimp_widget_blink_timeout,
-                                       widget);
+	blink->timeout_id = g_timeout_add (150,
+	                                   (GSourceFunc) gimp_widget_blink_timeout,
+	                                   widget);
 
-    gimp_highlight_widget (widget, TRUE);
+	gimp_highlight_widget (widget, TRUE);
 
-    while ((widget = gtk_widget_get_parent (widget)))
-        gimp_widget_blink_cancel (widget);
+	while ((widget = gtk_widget_get_parent (widget)))
+		gimp_widget_blink_cancel (widget);
 }
 
 void
 gimp_widget_blink_cancel (GtkWidget *widget)
 {
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    if (g_object_get_data (G_OBJECT (widget), "gimp-widget-blink"))
-    {
-        gimp_highlight_widget (widget, FALSE);
+	if (g_object_get_data (G_OBJECT (widget), "gimp-widget-blink"))
+	{
+		gimp_highlight_widget (widget, FALSE);
 
-        g_object_set_data (G_OBJECT (widget), "gimp-widget-blink", NULL);
-    }
+		g_object_set_data (G_OBJECT (widget), "gimp-widget-blink", NULL);
+	}
 }
 
 /**
@@ -1400,497 +1400,497 @@ gimp_widget_blink_cancel (GtkWidget *widget)
 GtkWidget *
 gimp_dock_with_window_new (GimpDialogFactory *factory,
                            GdkMonitor        *monitor,
-                           gboolean           toolbox)
+                           gboolean toolbox)
 {
-    GtkWidget         *dock_window;
-    GimpDockContainer *dock_container;
-    GtkWidget         *dock;
-    GimpUIManager     *ui_manager;
+	GtkWidget         *dock_window;
+	GimpDockContainer *dock_container;
+	GtkWidget         *dock;
+	GimpUIManager     *ui_manager;
 
-    g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), NULL);
-    g_return_val_if_fail (GDK_IS_MONITOR (monitor), NULL);
+	g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), NULL);
+	g_return_val_if_fail (GDK_IS_MONITOR (monitor), NULL);
 
-    /* Create a dock window to put the dock in. We need to create the
-     * dock window before the dock because the dock has a dependency to
-     * the ui manager in the dock window
-     */
-    dock_window = gimp_dialog_factory_dialog_new (factory, monitor,
-                  NULL /*ui_manager*/,
-                  NULL,
-                  (toolbox ?
-                   "gimp-toolbox-window" :
-                   "gimp-dock-window"),
-                  -1 /*view_size*/,
-                  FALSE /*present*/);
+	/* Create a dock window to put the dock in. We need to create the
+	 * dock window before the dock because the dock has a dependency to
+	 * the ui manager in the dock window
+	 */
+	dock_window = gimp_dialog_factory_dialog_new (factory, monitor,
+	                                              NULL /*ui_manager*/,
+	                                              NULL,
+	                                              (toolbox ?
+	                                               "gimp-toolbox-window" :
+	                                               "gimp-dock-window"),
+	                                              -1 /*view_size*/,
+	                                              FALSE /*present*/);
 
-    dock_container = GIMP_DOCK_CONTAINER (dock_window);
-    ui_manager     = gimp_dock_container_get_ui_manager (dock_container);
-    dock           = gimp_dialog_factory_dialog_new (factory, monitor,
-                     ui_manager,
-                     dock_window,
-                     (toolbox ?
-                      "gimp-toolbox" :
-                      "gimp-dock"),
-                     -1 /*view_size*/,
-                     FALSE /*present*/);
+	dock_container = GIMP_DOCK_CONTAINER (dock_window);
+	ui_manager     = gimp_dock_container_get_ui_manager (dock_container);
+	dock           = gimp_dialog_factory_dialog_new (factory, monitor,
+	                                                 ui_manager,
+	                                                 dock_window,
+	                                                 (toolbox ?
+	                                                  "gimp-toolbox" :
+	                                                  "gimp-dock"),
+	                                                 -1 /*view_size*/,
+	                                                 FALSE /*present*/);
 
-    if (dock)
-        gimp_dock_window_add_dock (GIMP_DOCK_WINDOW (dock_window),
-                                   GIMP_DOCK (dock),
-                                   -1);
+	if (dock)
+		gimp_dock_window_add_dock (GIMP_DOCK_WINDOW (dock_window),
+		                           GIMP_DOCK (dock),
+		                           -1);
 
-    return dock;
+	return dock;
 }
 
 GtkWidget *
 gimp_tools_get_tool_options_gui (GimpToolOptions *tool_options)
 {
-    GtkWidget *widget;
+	GtkWidget *widget;
 
-    widget = g_object_get_data (G_OBJECT (tool_options),
-                                GIMP_TOOL_OPTIONS_GUI_KEY);
+	widget = g_object_get_data (G_OBJECT (tool_options),
+	                            GIMP_TOOL_OPTIONS_GUI_KEY);
 
-    if (! widget)
-    {
-        GimpToolOptionsGUIFunc func;
+	if (!widget)
+	{
+		GimpToolOptionsGUIFunc func;
 
-        func = g_object_get_data (G_OBJECT (tool_options),
-                                  GIMP_TOOL_OPTIONS_GUI_FUNC_KEY);
+		func = g_object_get_data (G_OBJECT (tool_options),
+		                          GIMP_TOOL_OPTIONS_GUI_FUNC_KEY);
 
-        if (func)
-        {
-            widget = func (tool_options);
+		if (func)
+		{
+			widget = func (tool_options);
 
-            gimp_tools_set_tool_options_gui (tool_options, widget);
-        }
-    }
+			gimp_tools_set_tool_options_gui (tool_options, widget);
+		}
+	}
 
-    return widget;
+	return widget;
 }
 
 void
 gimp_tools_set_tool_options_gui (GimpToolOptions *tool_options,
                                  GtkWidget       *widget)
 {
-    GtkWidget *prev_widget;
+	GtkWidget *prev_widget;
 
-    prev_widget = g_object_get_data (G_OBJECT (tool_options),
-                                     GIMP_TOOL_OPTIONS_GUI_KEY);
+	prev_widget = g_object_get_data (G_OBJECT (tool_options),
+	                                 GIMP_TOOL_OPTIONS_GUI_KEY);
 
-    if (widget == prev_widget)
-        return;
+	if (widget == prev_widget)
+		return;
 
-    if (prev_widget)
-        gtk_widget_destroy (prev_widget);
+	if (prev_widget)
+		gtk_widget_destroy (prev_widget);
 
-    g_object_set_data_full (G_OBJECT (tool_options),
-                            GIMP_TOOL_OPTIONS_GUI_KEY,
-                            widget ? g_object_ref_sink (widget)      : NULL,
-                            widget ? (GDestroyNotify) g_object_unref : NULL);
+	g_object_set_data_full (G_OBJECT (tool_options),
+	                        GIMP_TOOL_OPTIONS_GUI_KEY,
+	                        widget ? g_object_ref_sink (widget)      : NULL,
+	                        widget ? (GDestroyNotify) g_object_unref : NULL);
 }
 
 void
 gimp_tools_set_tool_options_gui_func (GimpToolOptions        *tool_options,
-                                      GimpToolOptionsGUIFunc  func)
+                                      GimpToolOptionsGUIFunc func)
 {
-    g_object_set_data (G_OBJECT (tool_options),
-                       GIMP_TOOL_OPTIONS_GUI_FUNC_KEY,
-                       func);
+	g_object_set_data (G_OBJECT (tool_options),
+	                   GIMP_TOOL_OPTIONS_GUI_FUNC_KEY,
+	                   func);
 }
 
 gboolean
 gimp_widget_get_fully_opaque (GtkWidget *widget)
 {
-    g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
 
-    return g_object_get_data (G_OBJECT (widget),
-                              "gimp-widget-fully-opaque") != NULL;
+	return g_object_get_data (G_OBJECT (widget),
+	                          "gimp-widget-fully-opaque") != NULL;
 }
 
 void
 gimp_widget_set_fully_opaque (GtkWidget *widget,
-                              gboolean   fully_opaque)
+                              gboolean fully_opaque)
 {
-    g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    return g_object_set_data (G_OBJECT (widget),
-                              "gimp-widget-fully-opaque",
-                              GINT_TO_POINTER (fully_opaque));
+	return g_object_set_data (G_OBJECT (widget),
+	                          "gimp-widget-fully-opaque",
+	                          GINT_TO_POINTER (fully_opaque));
 }
 
 static void
 gimp_gtk_container_clear_callback (GtkWidget    *widget,
                                    GtkContainer *container)
 {
-    gtk_container_remove (container, widget);
+	gtk_container_remove (container, widget);
 }
 
 void
 gimp_gtk_container_clear (GtkContainer *container)
 {
-    gtk_container_foreach (container,
-                           (GtkCallback) gimp_gtk_container_clear_callback,
-                           container);
+	gtk_container_foreach (container,
+	                       (GtkCallback) gimp_gtk_container_clear_callback,
+	                       container);
 }
 
 void
 gimp_button_set_suggested (GtkWidget      *button,
-                           gboolean        suggested,
-                           GtkReliefStyle  default_relief)
+                           gboolean suggested,
+                           GtkReliefStyle default_relief)
 {
-    GtkStyleContext *style;
+	GtkStyleContext *style;
 
-    g_return_if_fail (GTK_IS_BUTTON (button));
+	g_return_if_fail (GTK_IS_BUTTON (button));
 
-    style = gtk_widget_get_style_context (button);
+	style = gtk_widget_get_style_context (button);
 
-    if (suggested)
-    {
-        gtk_style_context_add_class (style, "suggested-action");
-        gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
-    }
-    else
-    {
-        gtk_style_context_remove_class (style, "suggested-action");
-        gtk_button_set_relief (GTK_BUTTON (button), default_relief);
-    }
+	if (suggested)
+	{
+		gtk_style_context_add_class (style, "suggested-action");
+		gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
+	}
+	else
+	{
+		gtk_style_context_remove_class (style, "suggested-action");
+		gtk_button_set_relief (GTK_BUTTON (button), default_relief);
+	}
 }
 
 void
 gimp_button_set_destructive (GtkWidget      *button,
-                             gboolean        destructive,
-                             GtkReliefStyle  default_relief)
+                             gboolean destructive,
+                             GtkReliefStyle default_relief)
 {
-    GtkStyleContext *style;
+	GtkStyleContext *style;
 
-    g_return_if_fail (GTK_IS_BUTTON (button));
+	g_return_if_fail (GTK_IS_BUTTON (button));
 
-    style = gtk_widget_get_style_context (button);
+	style = gtk_widget_get_style_context (button);
 
-    if (destructive)
-    {
-        gtk_style_context_add_class (style, "destructive-action");
-        gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
-    }
-    else
-    {
-        gtk_style_context_remove_class (style, "destructive-action");
-        gtk_button_set_relief (GTK_BUTTON (button), default_relief);
-    }
+	if (destructive)
+	{
+		gtk_style_context_add_class (style, "destructive-action");
+		gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
+	}
+	else
+	{
+		gtk_style_context_remove_class (style, "destructive-action");
+		gtk_button_set_relief (GTK_BUTTON (button), default_relief);
+	}
 }
 
 void
 gimp_gtk_adjustment_chain (GtkAdjustment *adjustment1,
                            GtkAdjustment *adjustment2)
 {
-    g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment1));
-    g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment2));
+	g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment1));
+	g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment2));
 
-    g_object_bind_property (adjustment1, "value",
-                            adjustment2, "lower",
-                            G_BINDING_SYNC_CREATE);
-    g_object_bind_property (adjustment2, "value",
-                            adjustment1, "upper",
-                            G_BINDING_SYNC_CREATE);
+	g_object_bind_property (adjustment1, "value",
+	                        adjustment2, "lower",
+	                        G_BINDING_SYNC_CREATE);
+	g_object_bind_property (adjustment2, "value",
+	                        adjustment1, "upper",
+	                        G_BINDING_SYNC_CREATE);
 }
 
 static gboolean
 gimp_print_event_free (gpointer data)
 {
-    g_free (data);
+	g_free (data);
 
-    return FALSE;
+	return FALSE;
 }
 
 const gchar *
 gimp_print_event (const GdkEvent *event)
 {
-    gchar *str;
-    gchar *tmp;
+	gchar *str;
+	gchar *tmp;
 
-    switch (event->type)
-    {
-    case GDK_ENTER_NOTIFY:
-        str = g_strdup_printf ("ENTER_NOTIFY (mode %d)",
-                               event->crossing.mode);
-        break;
+	switch (event->type)
+	{
+	case GDK_ENTER_NOTIFY:
+		str = g_strdup_printf ("ENTER_NOTIFY (mode %d)",
+		                       event->crossing.mode);
+		break;
 
-    case GDK_LEAVE_NOTIFY:
-        str = g_strdup_printf ("LEAVE_NOTIFY (mode %d)",
-                               event->crossing.mode);
-        break;
+	case GDK_LEAVE_NOTIFY:
+		str = g_strdup_printf ("LEAVE_NOTIFY (mode %d)",
+		                       event->crossing.mode);
+		break;
 
-    case GDK_PROXIMITY_IN:
-        str = g_strdup ("PROXIMITY_IN");
-        break;
+	case GDK_PROXIMITY_IN:
+		str = g_strdup ("PROXIMITY_IN");
+		break;
 
-    case GDK_PROXIMITY_OUT:
-        str = g_strdup ("PROXIMITY_OUT");
-        break;
+	case GDK_PROXIMITY_OUT:
+		str = g_strdup ("PROXIMITY_OUT");
+		break;
 
-    case GDK_FOCUS_CHANGE:
-        if (event->focus_change.in)
-            str = g_strdup ("FOCUS_IN");
-        else
-            str = g_strdup ("FOCUS_OUT");
-        break;
+	case GDK_FOCUS_CHANGE:
+		if (event->focus_change.in)
+			str = g_strdup ("FOCUS_IN");
+		else
+			str = g_strdup ("FOCUS_OUT");
+		break;
 
-    case GDK_BUTTON_PRESS:
-        str = g_strdup_printf ("BUTTON_PRESS (%d @ %0.0f:%0.0f)",
-                               event->button.button,
-                               event->button.x,
-                               event->button.y);
-        break;
+	case GDK_BUTTON_PRESS:
+		str = g_strdup_printf ("BUTTON_PRESS (%d @ %0.0f:%0.0f)",
+		                       event->button.button,
+		                       event->button.x,
+		                       event->button.y);
+		break;
 
-    case GDK_2BUTTON_PRESS:
-        str = g_strdup_printf ("2BUTTON_PRESS (%d @ %0.0f:%0.0f)",
-                               event->button.button,
-                               event->button.x,
-                               event->button.y);
-        break;
+	case GDK_2BUTTON_PRESS:
+		str = g_strdup_printf ("2BUTTON_PRESS (%d @ %0.0f:%0.0f)",
+		                       event->button.button,
+		                       event->button.x,
+		                       event->button.y);
+		break;
 
-    case GDK_3BUTTON_PRESS:
-        str = g_strdup_printf ("3BUTTON_PRESS (%d @ %0.0f:%0.0f)",
-                               event->button.button,
-                               event->button.x,
-                               event->button.y);
-        break;
+	case GDK_3BUTTON_PRESS:
+		str = g_strdup_printf ("3BUTTON_PRESS (%d @ %0.0f:%0.0f)",
+		                       event->button.button,
+		                       event->button.x,
+		                       event->button.y);
+		break;
 
-    case GDK_BUTTON_RELEASE:
-        str = g_strdup_printf ("BUTTON_RELEASE (%d @ %0.0f:%0.0f)",
-                               event->button.button,
-                               event->button.x,
-                               event->button.y);
-        break;
+	case GDK_BUTTON_RELEASE:
+		str = g_strdup_printf ("BUTTON_RELEASE (%d @ %0.0f:%0.0f)",
+		                       event->button.button,
+		                       event->button.x,
+		                       event->button.y);
+		break;
 
-    case GDK_SCROLL:
-        str = g_strdup_printf ("SCROLL (%d)",
-                               event->scroll.direction);
-        break;
+	case GDK_SCROLL:
+		str = g_strdup_printf ("SCROLL (%d)",
+		                       event->scroll.direction);
+		break;
 
-    case GDK_MOTION_NOTIFY:
-        str = g_strdup_printf ("MOTION_NOTIFY (%0.0f:%0.0f %d)",
-                               event->motion.x,
-                               event->motion.y,
-                               event->motion.time);
-        break;
+	case GDK_MOTION_NOTIFY:
+		str = g_strdup_printf ("MOTION_NOTIFY (%0.0f:%0.0f %d)",
+		                       event->motion.x,
+		                       event->motion.y,
+		                       event->motion.time);
+		break;
 
-    case GDK_KEY_PRESS:
-        str = g_strdup_printf ("KEY_PRESS (%d, %s)",
-                               event->key.keyval,
-                               gdk_keyval_name (event->key.keyval) ?
-                               gdk_keyval_name (event->key.keyval) : "<none>");
-        break;
+	case GDK_KEY_PRESS:
+		str = g_strdup_printf ("KEY_PRESS (%d, %s)",
+		                       event->key.keyval,
+		                       gdk_keyval_name (event->key.keyval) ?
+		                       gdk_keyval_name (event->key.keyval) : "<none>");
+		break;
 
-    case GDK_KEY_RELEASE:
-        str = g_strdup_printf ("KEY_RELEASE (%d, %s)",
-                               event->key.keyval,
-                               gdk_keyval_name (event->key.keyval) ?
-                               gdk_keyval_name (event->key.keyval) : "<none>");
-        break;
+	case GDK_KEY_RELEASE:
+		str = g_strdup_printf ("KEY_RELEASE (%d, %s)",
+		                       event->key.keyval,
+		                       gdk_keyval_name (event->key.keyval) ?
+		                       gdk_keyval_name (event->key.keyval) : "<none>");
+		break;
 
-    default:
-        str = g_strdup_printf ("UNHANDLED (type %d)",
-                               event->type);
-        break;
-    }
+	default:
+		str = g_strdup_printf ("UNHANDLED (type %d)",
+		                       event->type);
+		break;
+	}
 
-    tmp = g_strdup_printf ("%s (device '%s', source device '%s')",
-                           str,
-                           gdk_device_get_name (gdk_event_get_device (event)),
-                           gdk_device_get_name (gdk_event_get_source_device (event)));
-    g_free (str);
-    str = tmp;
+	tmp = g_strdup_printf ("%s (device '%s', source device '%s')",
+	                       str,
+	                       gdk_device_get_name (gdk_event_get_device (event)),
+	                       gdk_device_get_name (gdk_event_get_source_device (event)));
+	g_free (str);
+	str = tmp;
 
-    g_idle_add (gimp_print_event_free, str);
+	g_idle_add (gimp_print_event_free, str);
 
-    return str;
+	return str;
 }
 
 gboolean
 gimp_color_profile_store_add_defaults (GimpColorProfileStore  *store,
                                        GimpColorConfig        *config,
-                                       GimpImageBaseType       base_type,
-                                       GimpPrecision           precision,
+                                       GimpImageBaseType base_type,
+                                       GimpPrecision precision,
                                        GError                **error)
 {
-    GimpColorProfile *profile;
-    gchar            *label;
-    GError           *my_error = NULL;
+	GimpColorProfile *profile;
+	gchar            *label;
+	GError           *my_error = NULL;
 
-    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE_STORE (store), FALSE);
-    g_return_val_if_fail (GIMP_IS_COLOR_CONFIG (config), FALSE);
-    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (GIMP_IS_COLOR_PROFILE_STORE (store), FALSE);
+	g_return_val_if_fail (GIMP_IS_COLOR_CONFIG (config), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-    profile = gimp_babl_get_builtin_color_profile (base_type,
-              gimp_babl_trc (precision));
+	profile = gimp_babl_get_builtin_color_profile (base_type,
+	                                               gimp_babl_trc (precision));
 
-    if (base_type == GIMP_GRAY)
-    {
-        label = g_strdup_printf (_("Built-in grayscale (%s)"),
-                                 gimp_color_profile_get_label (profile));
+	if (base_type == GIMP_GRAY)
+	{
+		label = g_strdup_printf (_("Built-in grayscale (%s)"),
+		                         gimp_color_profile_get_label (profile));
 
-        profile = gimp_color_config_get_gray_color_profile (config, &my_error);
-    }
-    else
-    {
-        label = g_strdup_printf (_("Built-in RGB (%s)"),
-                                 gimp_color_profile_get_label (profile));
+		profile = gimp_color_config_get_gray_color_profile (config, &my_error);
+	}
+	else
+	{
+		label = g_strdup_printf (_("Built-in RGB (%s)"),
+		                         gimp_color_profile_get_label (profile));
 
-        profile = gimp_color_config_get_rgb_color_profile (config, &my_error);
-    }
+		profile = gimp_color_config_get_rgb_color_profile (config, &my_error);
+	}
 
-    gimp_color_profile_store_add_file (store, NULL, label);
-    g_free (label);
+	gimp_color_profile_store_add_file (store, NULL, label);
+	g_free (label);
 
-    if (profile)
-    {
-        gchar *path;
-        GFile *file;
+	if (profile)
+	{
+		gchar *path;
+		GFile *file;
 
-        if (base_type == GIMP_GRAY)
-        {
-            g_object_get (config, "gray-profile", &path, NULL);
-            file = gimp_file_new_for_config_path (path, NULL);
-            g_free (path);
+		if (base_type == GIMP_GRAY)
+		{
+			g_object_get (config, "gray-profile", &path, NULL);
+			file = gimp_file_new_for_config_path (path, NULL);
+			g_free (path);
 
-            label = g_strdup_printf (_("Preferred grayscale (%s)"),
-                                     gimp_color_profile_get_label (profile));
-        }
-        else
-        {
-            g_object_get (config, "rgb-profile", &path, NULL);
-            file = gimp_file_new_for_config_path (path, NULL);
-            g_free (path);
+			label = g_strdup_printf (_("Preferred grayscale (%s)"),
+			                         gimp_color_profile_get_label (profile));
+		}
+		else
+		{
+			g_object_get (config, "rgb-profile", &path, NULL);
+			file = gimp_file_new_for_config_path (path, NULL);
+			g_free (path);
 
-            label = g_strdup_printf (_("Preferred RGB (%s)"),
-                                     gimp_color_profile_get_label (profile));
-        }
+			label = g_strdup_printf (_("Preferred RGB (%s)"),
+			                         gimp_color_profile_get_label (profile));
+		}
 
-        g_object_unref (profile);
+		g_object_unref (profile);
 
-        gimp_color_profile_store_add_file (store, file, label);
+		gimp_color_profile_store_add_file (store, file, label);
 
-        g_object_unref (file);
-        g_free (label);
+		g_object_unref (file);
+		g_free (label);
 
-        return TRUE;
-    }
-    else if (my_error)
-    {
-        g_propagate_error (error, my_error);
+		return TRUE;
+	}
+	else if (my_error)
+	{
+		g_propagate_error (error, my_error);
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 static void
 connect_path_show (GimpColorProfileChooserDialog *dialog)
 {
-    GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-    GFile          *file    = gtk_file_chooser_get_file (chooser);
+	GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+	GFile          *file    = gtk_file_chooser_get_file (chooser);
 
-    if (file)
-    {
-        /*  if something is already selected in this dialog,
-         *  leave it alone
-         */
-        g_object_unref (file);
-    }
-    else
-    {
-        GObject     *config;
-        const gchar *property;
-        gchar       *path = NULL;
+	if (file)
+	{
+		/*  if something is already selected in this dialog,
+		 *  leave it alone
+		 */
+		g_object_unref (file);
+	}
+	else
+	{
+		GObject     *config;
+		const gchar *property;
+		gchar       *path = NULL;
 
-        config   = g_object_get_data (G_OBJECT (dialog), "profile-path-config");
-        property = g_object_get_data (G_OBJECT (dialog), "profile-path-property");
+		config   = g_object_get_data (G_OBJECT (dialog), "profile-path-config");
+		property = g_object_get_data (G_OBJECT (dialog), "profile-path-property");
 
-        g_object_get (config, property, &path, NULL);
+		g_object_get (config, property, &path, NULL);
 
-        if (path)
-        {
-            GFile *folder = gimp_file_new_for_config_path (path, NULL);
+		if (path)
+		{
+			GFile *folder = gimp_file_new_for_config_path (path, NULL);
 
-            if (folder)
-            {
-                gtk_file_chooser_set_current_folder_file (chooser, folder, NULL);
-                g_object_unref (folder);
-            }
+			if (folder)
+			{
+				gtk_file_chooser_set_current_folder_file (chooser, folder, NULL);
+				g_object_unref (folder);
+			}
 
-            g_free (path);
-        }
-    }
+			g_free (path);
+		}
+	}
 }
 
 static void
 connect_path_response (GimpColorProfileChooserDialog *dialog,
-                       gint                           response)
+                       gint response)
 {
-    if (response == GTK_RESPONSE_ACCEPT)
-    {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        GFile          *file    = gtk_file_chooser_get_file (chooser);
+	if (response == GTK_RESPONSE_ACCEPT)
+	{
+		GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+		GFile          *file    = gtk_file_chooser_get_file (chooser);
 
-        if (file)
-        {
-            GFile *folder = gtk_file_chooser_get_current_folder_file (chooser);
+		if (file)
+		{
+			GFile *folder = gtk_file_chooser_get_current_folder_file (chooser);
 
-            if (folder)
-            {
-                GObject     *config;
-                const gchar *property;
-                gchar       *path = NULL;
+			if (folder)
+			{
+				GObject     *config;
+				const gchar *property;
+				gchar       *path = NULL;
 
-                config   = g_object_get_data (G_OBJECT (dialog),
-                                              "profile-path-config");
-                property = g_object_get_data (G_OBJECT (dialog),
-                                              "profile-path-property");
+				config   = g_object_get_data (G_OBJECT (dialog),
+				                              "profile-path-config");
+				property = g_object_get_data (G_OBJECT (dialog),
+				                              "profile-path-property");
 
-                path = gimp_file_get_config_path (folder, NULL);
+				path = gimp_file_get_config_path (folder, NULL);
 
-                g_object_set (config, property, path, NULL);
+				g_object_set (config, property, path, NULL);
 
-                if (path)
-                    g_free (path);
+				if (path)
+					g_free (path);
 
-                g_object_unref (folder);
-            }
+				g_object_unref (folder);
+			}
 
-            g_object_unref (file);
-        }
-    }
+			g_object_unref (file);
+		}
+	}
 }
 
 void
 gimp_color_profile_chooser_dialog_connect_path (GtkWidget   *dialog,
-        GObject     *config,
-        const gchar *property_name)
+                                                GObject     *config,
+                                                const gchar *property_name)
 {
-    g_return_if_fail (GIMP_IS_COLOR_PROFILE_CHOOSER_DIALOG (dialog));
-    g_return_if_fail (G_IS_OBJECT (config));
-    g_return_if_fail (property_name != NULL);
+	g_return_if_fail (GIMP_IS_COLOR_PROFILE_CHOOSER_DIALOG (dialog));
+	g_return_if_fail (G_IS_OBJECT (config));
+	g_return_if_fail (property_name != NULL);
 
-    g_object_set_data_full (G_OBJECT (dialog), "profile-path-config",
-                            g_object_ref (config),
-                            (GDestroyNotify) g_object_unref);
-    g_object_set_data_full (G_OBJECT (dialog), "profile-path-property",
-                            g_strdup (property_name),
-                            (GDestroyNotify) g_free);
+	g_object_set_data_full (G_OBJECT (dialog), "profile-path-config",
+	                        g_object_ref (config),
+	                        (GDestroyNotify) g_object_unref);
+	g_object_set_data_full (G_OBJECT (dialog), "profile-path-property",
+	                        g_strdup (property_name),
+	                        (GDestroyNotify) g_free);
 
-    g_signal_connect (dialog, "show",
-                      G_CALLBACK (connect_path_show),
-                      NULL);
-    g_signal_connect (dialog, "response",
-                      G_CALLBACK (connect_path_response),
-                      NULL);
+	g_signal_connect (dialog, "show",
+	                  G_CALLBACK (connect_path_show),
+	                  NULL);
+	g_signal_connect (dialog, "response",
+	                  G_CALLBACK (connect_path_response),
+	                  NULL);
 }
 
 void
 gimp_widget_flush_expose (void)
 {
-    while (g_main_context_pending (NULL))
-        g_main_context_iteration (NULL, FALSE);
+	while (g_main_context_pending (NULL))
+		g_main_context_iteration (NULL, FALSE);
 }

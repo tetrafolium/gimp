@@ -31,21 +31,21 @@
 #define GIMP_PAINT_SELECT_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS, GimpPaintSelectOptionsClass))
 
 
-typedef struct _GimpPaintSelectOptions      GimpPaintSelectOptions;
+typedef struct _GimpPaintSelectOptions GimpPaintSelectOptions;
 typedef struct _GimpPaintSelectOptionsClass GimpPaintSelectOptionsClass;
 
 struct _GimpPaintSelectOptions
 {
-    GimpToolOptions        parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpPaintSelectMode    mode;
-    gint                   stroke_width;
-    gboolean               show_scribbles;
+	GimpPaintSelectMode mode;
+	gint stroke_width;
+	gboolean show_scribbles;
 };
 
 struct _GimpPaintSelectOptionsClass
 {
-    GimpToolOptionsClass  parent_class;
+	GimpToolOptionsClass parent_class;
 };
 
 

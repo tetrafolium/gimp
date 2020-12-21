@@ -41,22 +41,22 @@
 
 enum
 {
-    PROP_0,
-    PROP_OPTIONS,
-    PROP_EDIT_CONTEXT
+	PROP_0,
+	PROP_OPTIONS,
+	PROP_EDIT_CONTEXT
 };
 
 
 static void   gimp_fill_editor_constructed  (GObject      *object);
 static void   gimp_fill_editor_finalize     (GObject      *object);
 static void   gimp_fill_editor_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec);
+                                             guint property_id,
+                                             const GValue *value,
+                                             GParamSpec   *pspec);
 static void   gimp_fill_editor_get_property (GObject      *object,
-        guint         property_id,
-        GValue       *value,
-        GParamSpec   *pspec);
+                                             guint property_id,
+                                             GValue       *value,
+                                             GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpFillEditor, gimp_fill_editor, GTK_TYPE_BOX)
@@ -67,150 +67,150 @@ G_DEFINE_TYPE (GimpFillEditor, gimp_fill_editor, GTK_TYPE_BOX)
 static void
 gimp_fill_editor_class_init (GimpFillEditorClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->constructed  = gimp_fill_editor_constructed;
-    object_class->finalize     = gimp_fill_editor_finalize;
-    object_class->set_property = gimp_fill_editor_set_property;
-    object_class->get_property = gimp_fill_editor_get_property;
+	object_class->constructed  = gimp_fill_editor_constructed;
+	object_class->finalize     = gimp_fill_editor_finalize;
+	object_class->set_property = gimp_fill_editor_set_property;
+	object_class->get_property = gimp_fill_editor_get_property;
 
-    g_object_class_install_property (object_class, PROP_OPTIONS,
-                                     g_param_spec_object ("options",
-                                             NULL, NULL,
-                                             GIMP_TYPE_FILL_OPTIONS,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_OPTIONS,
+	                                 g_param_spec_object ("options",
+	                                                      NULL, NULL,
+	                                                      GIMP_TYPE_FILL_OPTIONS,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 
-    g_object_class_install_property (object_class, PROP_EDIT_CONTEXT,
-                                     g_param_spec_boolean ("edit-context",
-                                             NULL, NULL,
-                                             FALSE,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_EDIT_CONTEXT,
+	                                 g_param_spec_boolean ("edit-context",
+	                                                       NULL, NULL,
+	                                                       FALSE,
+	                                                       GIMP_PARAM_READWRITE |
+	                                                       G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
 gimp_fill_editor_init (GimpFillEditor *editor)
 {
-    gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
-                                    GTK_ORIENTATION_VERTICAL);
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+	                                GTK_ORIENTATION_VERTICAL);
 
-    gtk_box_set_spacing (GTK_BOX (editor), 6);
+	gtk_box_set_spacing (GTK_BOX (editor), 6);
 }
 
 static void
 gimp_fill_editor_constructed (GObject *object)
 {
-    GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
-    GtkWidget      *box;
-    GtkWidget      *button;
+	GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
+	GtkWidget      *box;
+	GtkWidget      *button;
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    gimp_assert (GIMP_IS_FILL_OPTIONS (editor->options));
+	gimp_assert (GIMP_IS_FILL_OPTIONS (editor->options));
 
-    box = gimp_prop_enum_radio_box_new (G_OBJECT (editor->options), "style",
-                                        0, 0);
-    gtk_box_pack_start (GTK_BOX (editor), box, FALSE, FALSE, 0);
+	box = gimp_prop_enum_radio_box_new (G_OBJECT (editor->options), "style",
+	                                    0, 0);
+	gtk_box_pack_start (GTK_BOX (editor), box, FALSE, FALSE, 0);
 
-    if (editor->edit_context)
-    {
-        GtkWidget *color_button;
-        GtkWidget *pattern_box;
+	if (editor->edit_context)
+	{
+		GtkWidget *color_button;
+		GtkWidget *pattern_box;
 
-        color_button = gimp_prop_color_button_new (G_OBJECT (editor->options),
-                       "foreground",
-                       _("Fill Color"),
-                       -1, 24,
-                       GIMP_COLOR_AREA_SMALL_CHECKS);
-        gimp_color_panel_set_context (GIMP_COLOR_PANEL (color_button),
-                                      GIMP_CONTEXT (editor->options));
-        gimp_enum_radio_box_add (GTK_BOX (box), color_button,
-                                 GIMP_FILL_STYLE_SOLID, FALSE);
+		color_button = gimp_prop_color_button_new (G_OBJECT (editor->options),
+		                                           "foreground",
+		                                           _("Fill Color"),
+		                                           -1, 24,
+		                                           GIMP_COLOR_AREA_SMALL_CHECKS);
+		gimp_color_panel_set_context (GIMP_COLOR_PANEL (color_button),
+		                              GIMP_CONTEXT (editor->options));
+		gimp_enum_radio_box_add (GTK_BOX (box), color_button,
+		                         GIMP_FILL_STYLE_SOLID, FALSE);
 
-        pattern_box = gimp_prop_pattern_box_new (NULL,
-                      GIMP_CONTEXT (editor->options),
-                      NULL, 2,
-                      "pattern-view-type",
-                      "pattern-view-size");
-        gimp_enum_radio_box_add (GTK_BOX (box), pattern_box,
-                                 GIMP_FILL_STYLE_PATTERN, FALSE);
-    }
+		pattern_box = gimp_prop_pattern_box_new (NULL,
+		                                         GIMP_CONTEXT (editor->options),
+		                                         NULL, 2,
+		                                         "pattern-view-type",
+		                                         "pattern-view-size");
+		gimp_enum_radio_box_add (GTK_BOX (box), pattern_box,
+		                         GIMP_FILL_STYLE_PATTERN, FALSE);
+	}
 
-    button = gimp_prop_check_button_new (G_OBJECT (editor->options),
-                                         "antialias",
-                                         _("_Antialiasing"));
-    gtk_box_pack_start (GTK_BOX (editor), button, FALSE, FALSE, 0);
+	button = gimp_prop_check_button_new (G_OBJECT (editor->options),
+	                                     "antialias",
+	                                     _("_Antialiasing"));
+	gtk_box_pack_start (GTK_BOX (editor), button, FALSE, FALSE, 0);
 }
 
 static void
 gimp_fill_editor_finalize (GObject *object)
 {
-    GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
+	GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
 
-    g_clear_object (&editor->options);
+	g_clear_object (&editor->options);
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gimp_fill_editor_set_property (GObject      *object,
-                               guint         property_id,
+                               guint property_id,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-    GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
+	GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
 
-    switch (property_id)
-    {
-    case PROP_OPTIONS:
-        if (editor->options)
-            g_object_unref (editor->options);
-        editor->options = g_value_dup_object (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_OPTIONS:
+		if (editor->options)
+			g_object_unref (editor->options);
+		editor->options = g_value_dup_object (value);
+		break;
 
-    case PROP_EDIT_CONTEXT:
-        editor->edit_context = g_value_get_boolean (value);
-        break;
+	case PROP_EDIT_CONTEXT:
+		editor->edit_context = g_value_get_boolean (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_fill_editor_get_property (GObject    *object,
-                               guint       property_id,
+                               guint property_id,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-    GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
+	GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
 
-    switch (property_id)
-    {
-    case PROP_OPTIONS:
-        g_value_set_object (value, editor->options);
-        break;
+	switch (property_id)
+	{
+	case PROP_OPTIONS:
+		g_value_set_object (value, editor->options);
+		break;
 
-    case PROP_EDIT_CONTEXT:
-        g_value_set_boolean (value, editor->edit_context);
-        break;
+	case PROP_EDIT_CONTEXT:
+		g_value_set_boolean (value, editor->edit_context);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 GtkWidget *
 gimp_fill_editor_new (GimpFillOptions *options,
-                      gboolean         edit_context)
+                      gboolean edit_context)
 {
-    g_return_val_if_fail (GIMP_IS_FILL_OPTIONS (options), NULL);
+	g_return_val_if_fail (GIMP_IS_FILL_OPTIONS (options), NULL);
 
-    return g_object_new (GIMP_TYPE_FILL_EDITOR,
-                         "options",      options,
-                         "edit-context", edit_context ? TRUE : FALSE,
-                         NULL);
+	return g_object_new (GIMP_TYPE_FILL_EDITOR,
+	                     "options",      options,
+	                     "edit-context", edit_context ? TRUE : FALSE,
+	                     NULL);
 }

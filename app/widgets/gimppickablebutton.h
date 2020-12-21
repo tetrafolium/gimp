@@ -31,30 +31,30 @@
 
 
 typedef struct _GimpPickableButtonPrivate GimpPickableButtonPrivate;
-typedef struct _GimpPickableButtonClass   GimpPickableButtonClass;
+typedef struct _GimpPickableButtonClass GimpPickableButtonClass;
 
 struct _GimpPickableButton
 {
-    GimpButton                 parent_instance;
+	GimpButton parent_instance;
 
-    GimpPickableButtonPrivate *private;
+	GimpPickableButtonPrivate *private;
 };
 
 struct _GimpPickableButtonClass
 {
-    GimpButtonClass  parent_class;
+	GimpButtonClass parent_class;
 };
 
 
 GType          gimp_pickable_button_get_type     (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_pickable_button_new          (GimpContext        *context,
-        gint                view_size,
-        gint                view_border_width);
+                                                  gint view_size,
+                                                  gint view_border_width);
 
 GimpPickable * gimp_pickable_button_get_pickable (GimpPickableButton *button);
 void           gimp_pickable_button_set_pickable (GimpPickableButton *button,
-        GimpPickable       *pickable);
+                                                  GimpPickable       *pickable);
 
 
 #endif /* __GIMP_PICKABLE_BUTTON_H__ */

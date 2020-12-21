@@ -20,7 +20,7 @@
 
 
 gboolean   xcf_data_is_zero (const void *data,
-                             gint        size);
+                             gint size);
 
 
 #endif  /* __XCF_UTILS_H__ */

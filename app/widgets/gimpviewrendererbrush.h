@@ -31,22 +31,22 @@
 #define GIMP_VIEW_RENDERER_BRUSH_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_BRUSH, GimpViewRendererBrushClass))
 
 
-typedef struct _GimpViewRendererBrushClass  GimpViewRendererBrushClass;
+typedef struct _GimpViewRendererBrushClass GimpViewRendererBrushClass;
 
 struct _GimpViewRendererBrush
 {
-    GimpViewRenderer parent_instance;
+	GimpViewRenderer parent_instance;
 
-    guint            pipe_timeout_id;
-    gint             pipe_animation_index;
+	guint pipe_timeout_id;
+	gint pipe_animation_index;
 
-    /* for the pipe render animation timeout */
-    GtkWidget       *widget;
+	/* for the pipe render animation timeout */
+	GtkWidget       *widget;
 };
 
 struct _GimpViewRendererBrushClass
 {
-    GimpViewRendererClass  parent_class;
+	GimpViewRendererClass parent_class;
 };
 
 

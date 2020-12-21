@@ -52,32 +52,32 @@ G_DEFINE_TYPE (GimpImageProfileView,
 static void
 gimp_image_profile_view_class_init (GimpImageProfileViewClass *klass)
 {
-    GimpImageParasiteViewClass *view_class;
+	GimpImageParasiteViewClass *view_class;
 
-    view_class = GIMP_IMAGE_PARASITE_VIEW_CLASS (klass);
+	view_class = GIMP_IMAGE_PARASITE_VIEW_CLASS (klass);
 
-    view_class->update = gimp_image_profile_view_update;
+	view_class->update = gimp_image_profile_view_update;
 }
 
 static void
 gimp_image_profile_view_init (GimpImageProfileView *view)
 {
-    GtkWidget *scrolled_window;
-    GtkWidget *profile_view;
+	GtkWidget *scrolled_window;
+	GtkWidget *profile_view;
 
-    scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-                                    GTK_POLICY_AUTOMATIC,
-                                    GTK_POLICY_AUTOMATIC);
-    gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 2);
-    gtk_box_pack_start (GTK_BOX (view), scrolled_window, TRUE, TRUE, 0);
-    gtk_widget_show (scrolled_window);
+	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+	                                GTK_POLICY_AUTOMATIC,
+	                                GTK_POLICY_AUTOMATIC);
+	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 2);
+	gtk_box_pack_start (GTK_BOX (view), scrolled_window, TRUE, TRUE, 0);
+	gtk_widget_show (scrolled_window);
 
-    profile_view = gimp_color_profile_view_new ();
-    gtk_container_add (GTK_CONTAINER (scrolled_window), profile_view);
-    gtk_widget_show (profile_view);
+	profile_view = gimp_color_profile_view_new ();
+	gtk_container_add (GTK_CONTAINER (scrolled_window), profile_view);
+	gtk_widget_show (profile_view);
 
-    view->profile_view = GIMP_COLOR_PROFILE_VIEW (profile_view);
+	view->profile_view = GIMP_COLOR_PROFILE_VIEW (profile_view);
 }
 
 
@@ -86,12 +86,12 @@ gimp_image_profile_view_init (GimpImageProfileView *view)
 GtkWidget *
 gimp_image_profile_view_new (GimpImage *image)
 {
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-    return g_object_new (GIMP_TYPE_IMAGE_PROFILE_VIEW,
-                         "image",    image,
-                         "parasite", GIMP_ICC_PROFILE_PARASITE_NAME,
-                         NULL);
+	return g_object_new (GIMP_TYPE_IMAGE_PROFILE_VIEW,
+	                     "image",    image,
+	                     "parasite", GIMP_ICC_PROFILE_PARASITE_NAME,
+	                     NULL);
 }
 
 
@@ -100,15 +100,15 @@ gimp_image_profile_view_new (GimpImage *image)
 static void
 gimp_image_profile_view_update (GimpImageParasiteView *view)
 {
-    GimpImageProfileView *profile_view = GIMP_IMAGE_PROFILE_VIEW (view);
-    GimpImage            *image;
-    GimpColorManaged     *managed;
-    GimpColorProfile     *profile;
+	GimpImageProfileView *profile_view = GIMP_IMAGE_PROFILE_VIEW (view);
+	GimpImage            *image;
+	GimpColorManaged     *managed;
+	GimpColorProfile     *profile;
 
-    image   = gimp_image_parasite_view_get_image (view);
-    managed = GIMP_COLOR_MANAGED (image);
+	image   = gimp_image_parasite_view_get_image (view);
+	managed = GIMP_COLOR_MANAGED (image);
 
-    profile = gimp_color_managed_get_color_profile (managed);
+	profile = gimp_color_managed_get_color_profile (managed);
 
-    gimp_color_profile_view_set_profile (profile_view->profile_view, profile);
+	gimp_color_profile_view_set_profile (profile_view->profile_view, profile);
 }

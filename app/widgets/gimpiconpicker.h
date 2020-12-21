@@ -35,12 +35,12 @@ typedef struct _GimpIconPickerClass GimpIconPickerClass;
 
 struct _GimpIconPicker
 {
-    GtkBox  parent_instance;
+	GtkBox parent_instance;
 };
 
 struct _GimpIconPickerClass
 {
-    GtkBoxClass   parent_class;
+	GtkBoxClass parent_class;
 };
 
 
@@ -50,11 +50,11 @@ GtkWidget   * gimp_icon_picker_new             (Gimp           *gimp);
 
 const gchar * gimp_icon_picker_get_icon_name   (GimpIconPicker *picker);
 void          gimp_icon_picker_set_icon_name   (GimpIconPicker *picker,
-        const gchar    *icon_name);
+                                                const gchar    *icon_name);
 
 GdkPixbuf   * gimp_icon_picker_get_icon_pixbuf (GimpIconPicker *picker);
 void          gimp_icon_picker_set_icon_pixbuf (GimpIconPicker *picker,
-        GdkPixbuf      *value);
+                                                GdkPixbuf      *value);
 
 
 #endif  /*  __GIMP_ICON_PICKER_H__  */

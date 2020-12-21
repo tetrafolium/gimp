@@ -33,33 +33,33 @@
 #define GIMP_TEMPLATE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TEMPLATE_VIEW, GimpTemplateViewClass))
 
 
-typedef struct _GimpTemplateViewClass  GimpTemplateViewClass;
+typedef struct _GimpTemplateViewClass GimpTemplateViewClass;
 
 struct _GimpTemplateView
 {
-    GimpContainerEditor  parent_instance;
+	GimpContainerEditor parent_instance;
 
-    GtkWidget           *create_button;
-    GtkWidget           *new_button;
-    GtkWidget           *duplicate_button;
-    GtkWidget           *edit_button;
-    GtkWidget           *delete_button;
+	GtkWidget           *create_button;
+	GtkWidget           *new_button;
+	GtkWidget           *duplicate_button;
+	GtkWidget           *edit_button;
+	GtkWidget           *delete_button;
 };
 
 struct _GimpTemplateViewClass
 {
-    GimpContainerEditorClass  parent_class;
+	GimpContainerEditorClass parent_class;
 };
 
 
 GType       gimp_template_view_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gimp_template_view_new      (GimpViewType     view_type,
-        GimpContainer   *container,
-        GimpContext     *context,
-        gint             view_size,
-        gint             view_border_width,
-        GimpMenuFactory *menu_factory);
+GtkWidget * gimp_template_view_new      (GimpViewType view_type,
+                                         GimpContainer   *container,
+                                         GimpContext     *context,
+                                         gint view_size,
+                                         gint view_border_width,
+                                         GimpMenuFactory *menu_factory);
 
 
 #endif  /*  __GIMP_TEMPLATE_VIEW_H__  */

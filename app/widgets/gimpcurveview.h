@@ -30,64 +30,64 @@
 #define GIMP_CURVE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CURVE_VIEW, GimpCurveViewClass))
 
 
-typedef struct _GimpCurveViewClass  GimpCurveViewClass;
+typedef struct _GimpCurveViewClass GimpCurveViewClass;
 
 struct _GimpCurveView
 {
-    GimpHistogramView  parent_instance;
+	GimpHistogramView parent_instance;
 
-    Gimp              *gimp; /* only needed for copy & paste */
+	Gimp              *gimp;/* only needed for copy & paste */
 
-    GimpCurve         *curve;
-    GimpRGB           *curve_color;
+	GimpCurve         *curve;
+	GimpRGB           *curve_color;
 
-    GList             *bg_curves;
+	GList             *bg_curves;
 
-    gboolean           draw_base_line;
-    gint               grid_rows;
-    gint               grid_columns;
+	gboolean draw_base_line;
+	gint grid_rows;
+	gint grid_columns;
 
-    gint               selected;
-    gdouble            offset_x;
-    gdouble            offset_y;
-    GimpCurvePointType point_type;
-    gdouble            last_x;
-    gdouble            last_y;
-    gdouble            leftmost;
-    gdouble            rightmost;
-    gboolean           grabbed;
-    GimpCurve         *orig_curve;
+	gint selected;
+	gdouble offset_x;
+	gdouble offset_y;
+	GimpCurvePointType point_type;
+	gdouble last_x;
+	gdouble last_y;
+	gdouble leftmost;
+	gdouble rightmost;
+	gboolean grabbed;
+	GimpCurve         *orig_curve;
 
-    GdkCursorType      cursor_type;
+	GdkCursorType cursor_type;
 
-    gdouble            xpos;
+	gdouble xpos;
 
-    PangoLayout       *layout;
+	PangoLayout       *layout;
 
-    gdouble            range_x_min;
-    gdouble            range_x_max;
-    gdouble            range_y_min;
-    gdouble            range_y_max;
+	gdouble range_x_min;
+	gdouble range_x_max;
+	gdouble range_y_min;
+	gdouble range_y_max;
 
-    gdouble            cursor_x;
-    gdouble            cursor_y;
-    PangoLayout       *cursor_layout;
-    PangoRectangle     cursor_rect;
+	gdouble cursor_x;
+	gdouble cursor_y;
+	PangoLayout       *cursor_layout;
+	PangoRectangle cursor_rect;
 
-    gchar             *x_axis_label;
-    gchar             *y_axis_label;
+	gchar             *x_axis_label;
+	gchar             *y_axis_label;
 };
 
 struct _GimpCurveViewClass
 {
-    GimpHistogramViewClass  parent_class;
+	GimpHistogramViewClass parent_class;
 
-    /* signals */
-    void (* selection_changed) (GimpCurveView *view);
+	/* signals */
+	void (* selection_changed) (GimpCurveView *view);
 
-    void (* cut_clipboard)     (GimpCurveView *view);
-    void (* copy_clipboard)    (GimpCurveView *view);
-    void (* paste_clipboard)   (GimpCurveView *view);
+	void (* cut_clipboard)     (GimpCurveView *view);
+	void (* copy_clipboard)    (GimpCurveView *view);
+	void (* paste_clipboard)   (GimpCurveView *view);
 };
 
 
@@ -96,35 +96,35 @@ GType       gimp_curve_view_get_type          (void) G_GNUC_CONST;
 GtkWidget * gimp_curve_view_new               (void);
 
 void        gimp_curve_view_set_curve         (GimpCurveView *view,
-        GimpCurve     *curve,
-        const GimpRGB *color);
+                                               GimpCurve     *curve,
+                                               const GimpRGB *color);
 GimpCurve * gimp_curve_view_get_curve         (GimpCurveView *view);
 
 void        gimp_curve_view_add_background    (GimpCurveView *view,
-        GimpCurve     *curve,
-        const GimpRGB *color);
+                                               GimpCurve     *curve,
+                                               const GimpRGB *color);
 void        gimp_curve_view_remove_background (GimpCurveView *view,
-        GimpCurve     *curve);
+                                               GimpCurve     *curve);
 
 void   gimp_curve_view_remove_all_backgrounds (GimpCurveView *view);
 
 void        gimp_curve_view_set_selected      (GimpCurveView *view,
-        gint           selected);
+                                               gint selected);
 gint        gimp_curve_view_get_selected      (GimpCurveView *view);
 
 void        gimp_curve_view_set_range_x       (GimpCurveView *view,
-        gdouble        min,
-        gdouble        max);
+                                               gdouble min,
+                                               gdouble max);
 void        gimp_curve_view_set_range_y       (GimpCurveView *view,
-        gdouble        min,
-        gdouble        max);
+                                               gdouble min,
+                                               gdouble max);
 void        gimp_curve_view_set_xpos          (GimpCurveView *view,
-        gdouble        x);
+                                               gdouble x);
 
 void        gimp_curve_view_set_x_axis_label  (GimpCurveView *view,
-        const gchar   *label);
+                                               const gchar   *label);
 void        gimp_curve_view_set_y_axis_label  (GimpCurveView *view,
-        const gchar   *label);
+                                               const gchar   *label);
 
 
 #endif /* __GIMP_CURVE_VIEW_H__ */

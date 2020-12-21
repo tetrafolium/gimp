@@ -34,26 +34,26 @@ typedef struct _GimpImageEditorClass GimpImageEditorClass;
 
 struct _GimpImageEditor
 {
-    GimpEditor   parent_instance;
+	GimpEditor parent_instance;
 
-    GimpContext *context;
-    GimpImage   *image;
+	GimpContext *context;
+	GimpImage   *image;
 };
 
 struct _GimpImageEditorClass
 {
-    GimpEditorClass  parent_class;
+	GimpEditorClass parent_class;
 
-    /*  virtual function  */
-    void (* set_image) (GimpImageEditor *editor,
-                        GimpImage       *image);
+	/*  virtual function  */
+	void (* set_image) (GimpImageEditor *editor,
+	                    GimpImage       *image);
 };
 
 
 GType       gimp_image_editor_get_type  (void) G_GNUC_CONST;
 
 void        gimp_image_editor_set_image (GimpImageEditor *editor,
-        GimpImage       *image);
+                                         GimpImage       *image);
 GimpImage * gimp_image_editor_get_image (GimpImageEditor *editor);
 
 

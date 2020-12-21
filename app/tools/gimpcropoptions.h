@@ -30,26 +30,26 @@
 #define GIMP_CROP_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CROP_OPTIONS, GimpCropOptionsClass))
 
 
-typedef struct _GimpCropOptions      GimpCropOptions;
+typedef struct _GimpCropOptions GimpCropOptions;
 typedef struct _GimpToolOptionsClass GimpCropOptionsClass;
 
 struct _GimpCropOptions
 {
-    GimpToolOptions  parent_instance;
+	GimpToolOptions parent_instance;
 
-    /* Work on the current layer rather than the image. */
-    gboolean         layer_only;
+	/* Work on the current layer rather than the image. */
+	gboolean layer_only;
 
-    /* Allow the crop rectangle to be larger than the image/layer. This
-     * will resize the image/layer.
-     */
-    gboolean         allow_growing;
+	/* Allow the crop rectangle to be larger than the image/layer. This
+	 * will resize the image/layer.
+	 */
+	gboolean allow_growing;
 
-    /* How to fill new areas created by 'allow_growing. */
-    GimpFillType     fill_type;
+	/* How to fill new areas created by 'allow_growing. */
+	GimpFillType fill_type;
 
-    /* Whether to discard layer data that falls out of the crop region */
-    gboolean         delete_pixels;
+	/* Whether to discard layer data that falls out of the crop region */
+	gboolean delete_pixels;
 };
 
 

@@ -32,22 +32,22 @@
 #define GIMP_BY_COLOR_SELECT_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL, GimpByColorSelectToolClass))
 
 
-typedef struct _GimpByColorSelectTool      GimpByColorSelectTool;
+typedef struct _GimpByColorSelectTool GimpByColorSelectTool;
 typedef struct _GimpByColorSelectToolClass GimpByColorSelectToolClass;
 
 struct _GimpByColorSelectTool
 {
-    GimpRegionSelectTool  parent_instance;
+	GimpRegionSelectTool parent_instance;
 };
 
 struct _GimpByColorSelectToolClass
 {
-    GimpRegionSelectToolClass  parent_class;
+	GimpRegionSelectToolClass parent_class;
 };
 
 
-void    gimp_by_color_select_tool_register (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_by_color_select_tool_register (GimpToolRegisterCallback callback,
+                                            gpointer data);
 
 GType   gimp_by_color_select_tool_get_type (void) G_GNUC_CONST;
 

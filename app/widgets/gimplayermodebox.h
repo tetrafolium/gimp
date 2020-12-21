@@ -31,37 +31,37 @@
 
 
 typedef struct _GimpLayerModeBoxPrivate GimpLayerModeBoxPrivate;
-typedef struct _GimpLayerModeBoxClass   GimpLayerModeBoxClass;
+typedef struct _GimpLayerModeBoxClass GimpLayerModeBoxClass;
 
 struct _GimpLayerModeBox
 {
-    GtkBox                   parent_instance;
+	GtkBox parent_instance;
 
-    GimpLayerModeBoxPrivate *priv;
+	GimpLayerModeBoxPrivate *priv;
 };
 
 struct _GimpLayerModeBoxClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 };
 
 
 GType                  gimp_layer_mode_box_get_type      (void) G_GNUC_CONST;
 
-GtkWidget            * gimp_layer_mode_box_new           (GimpLayerModeContext  context);
+GtkWidget            * gimp_layer_mode_box_new           (GimpLayerModeContext context);
 
 void                   gimp_layer_mode_box_set_context   (GimpLayerModeBox     *box,
-        GimpLayerModeContext  context);
+                                                          GimpLayerModeContext context);
 GimpLayerModeContext   gimp_layer_mode_box_get_context   (GimpLayerModeBox     *box);
 
 void                   gimp_layer_mode_box_set_mode      (GimpLayerModeBox     *box,
-        GimpLayerMode         mode);
+                                                          GimpLayerMode mode);
 GimpLayerMode          gimp_layer_mode_box_get_mode      (GimpLayerModeBox     *box);
 
 void                   gimp_layer_mode_box_set_label     (GimpLayerModeBox     *box,
-        const gchar          *label);
+                                                          const gchar          *label);
 void                   gimp_layer_mode_box_set_ellipsize (GimpLayerModeBox     *box,
-        PangoEllipsizeMode    mode);
+                                                          PangoEllipsizeMode mode);
 
 
 #endif  /* __GIMP_LAYER_MODE_BOX_H__ */

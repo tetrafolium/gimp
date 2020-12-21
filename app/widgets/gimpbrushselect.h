@@ -34,23 +34,23 @@ G_BEGIN_DECLS
 #define GIMP_BRUSH_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_SELECT, GimpBrushSelectClass))
 
 
-typedef struct _GimpBrushSelectClass  GimpBrushSelectClass;
+typedef struct _GimpBrushSelectClass GimpBrushSelectClass;
 
 struct _GimpBrushSelect
 {
-    GimpPdbDialog  parent_instance;
+	GimpPdbDialog parent_instance;
 
-    gdouble        initial_opacity;
-    GimpLayerMode  initial_mode;
+	gdouble initial_opacity;
+	GimpLayerMode initial_mode;
 
-    gint           spacing;
-    GtkAdjustment *opacity_data;
-    GtkWidget     *layer_mode_box;
+	gint spacing;
+	GtkAdjustment *opacity_data;
+	GtkWidget     *layer_mode_box;
 };
 
 struct _GimpBrushSelectClass
 {
-    GimpPdbDialogClass  parent_class;
+	GimpPdbDialogClass parent_class;
 };
 
 

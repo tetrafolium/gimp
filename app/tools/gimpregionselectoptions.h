@@ -31,18 +31,18 @@
 
 
 typedef struct _GimpRegionSelectOptions GimpRegionSelectOptions;
-typedef struct _GimpToolOptionsClass    GimpRegionSelectOptionsClass;
+typedef struct _GimpToolOptionsClass GimpRegionSelectOptionsClass;
 
 struct _GimpRegionSelectOptions
 {
-    GimpSelectionOptions  parent_instance;
+	GimpSelectionOptions parent_instance;
 
-    gboolean              select_transparent;
-    gboolean              sample_merged;
-    gboolean              diagonal_neighbors;
-    gdouble               threshold;
-    GimpSelectCriterion   select_criterion;
-    gboolean              draw_mask;
+	gboolean select_transparent;
+	gboolean sample_merged;
+	gboolean diagonal_neighbors;
+	gdouble threshold;
+	GimpSelectCriterion select_criterion;
+	gboolean draw_mask;
 };
 
 

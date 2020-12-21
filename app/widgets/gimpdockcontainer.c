@@ -52,16 +52,16 @@ gimp_dock_container_default_init (GimpDockContainerInterface *iface)
 GList *
 gimp_dock_container_get_docks (GimpDockContainer *container)
 {
-    GimpDockContainerInterface *iface;
+	GimpDockContainerInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), NULL);
+	g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), NULL);
 
-    iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
+	iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
 
-    if (iface->get_docks)
-        return iface->get_docks (container);
+	if (iface->get_docks)
+		return iface->get_docks (container);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -73,16 +73,16 @@ gimp_dock_container_get_docks (GimpDockContainer *container)
 GimpDialogFactory *
 gimp_dock_container_get_dialog_factory (GimpDockContainer *container)
 {
-    GimpDockContainerInterface *iface;
+	GimpDockContainerInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), NULL);
+	g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), NULL);
 
-    iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
+	iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
 
-    if (iface->get_dialog_factory)
-        return iface->get_dialog_factory (container);
+	if (iface->get_dialog_factory)
+		return iface->get_dialog_factory (container);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -94,16 +94,16 @@ gimp_dock_container_get_dialog_factory (GimpDockContainer *container)
 GimpUIManager *
 gimp_dock_container_get_ui_manager (GimpDockContainer *container)
 {
-    GimpDockContainerInterface *iface;
+	GimpDockContainerInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), NULL);
+	g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), NULL);
 
-    iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
+	iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
 
-    if (iface->get_ui_manager)
-        return iface->get_ui_manager (container);
+	if (iface->get_ui_manager)
+		return iface->get_ui_manager (container);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -119,16 +119,16 @@ gimp_dock_container_add_dock (GimpDockContainer   *container,
                               GimpDock            *dock,
                               GimpSessionInfoDock *dock_info)
 {
-    GimpDockContainerInterface *iface;
+	GimpDockContainerInterface *iface;
 
-    g_return_if_fail (GIMP_IS_DOCK_CONTAINER (container));
+	g_return_if_fail (GIMP_IS_DOCK_CONTAINER (container));
 
-    iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
+	iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
 
-    if (iface->add_dock)
-        iface->add_dock (container,
-                         dock,
-                         dock_info);
+	if (iface->add_dock)
+		iface->add_dock (container,
+		                 dock,
+		                 dock_info);
 }
 
 /**
@@ -144,14 +144,14 @@ GimpAlignmentType
 gimp_dock_container_get_dock_side (GimpDockContainer   *container,
                                    GimpDock            *dock)
 {
-    GimpDockContainerInterface *iface;
+	GimpDockContainerInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), -1);
+	g_return_val_if_fail (GIMP_IS_DOCK_CONTAINER (container), -1);
 
-    iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
+	iface = GIMP_DOCK_CONTAINER_GET_IFACE (container);
 
-    if (iface->get_dock_side)
-        return iface->get_dock_side (container, dock);
+	if (iface->get_dock_side)
+		return iface->get_dock_side (container, dock);
 
-    return -1;
+	return -1;
 }

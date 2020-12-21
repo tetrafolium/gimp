@@ -30,29 +30,29 @@
 #define GIMP_TOOLBOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOLBOX, GimpToolboxClass))
 
 
-typedef struct _GimpToolboxClass   GimpToolboxClass;
+typedef struct _GimpToolboxClass GimpToolboxClass;
 typedef struct _GimpToolboxPrivate GimpToolboxPrivate;
 
 struct _GimpToolbox
 {
-    GimpDock parent_instance;
+	GimpDock parent_instance;
 
-    GimpToolboxPrivate *p;
+	GimpToolboxPrivate *p;
 };
 
 struct _GimpToolboxClass
 {
-    GimpDockClass parent_class;
+	GimpDockClass parent_class;
 };
 
 
 GType               gimp_toolbox_get_type           (void) G_GNUC_CONST;
 GtkWidget         * gimp_toolbox_new                (GimpDialogFactory *factory,
-        GimpContext       *context,
-        GimpUIManager     *ui_manager);
+                                                     GimpContext       *context,
+                                                     GimpUIManager     *ui_manager);
 GimpContext       * gimp_toolbox_get_context        (GimpToolbox       *toolbox);
 void                gimp_toolbox_set_drag_handler   (GimpToolbox       *toolbox,
-        GimpPanedBox      *drag_handler);
+                                                     GimpPanedBox      *drag_handler);
 
 
 

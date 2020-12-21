@@ -34,56 +34,56 @@ typedef struct _GimpTextStyleEditorClass GimpTextStyleEditorClass;
 
 struct _GimpTextStyleEditor
 {
-    GtkBox          parent_instance;
+	GtkBox parent_instance;
 
-    Gimp           *gimp;
-    GimpContext    *context;
+	Gimp           *gimp;
+	GimpContext    *context;
 
-    GimpText       *text; /* read-only for default values */
-    GimpTextBuffer *buffer;
+	GimpText       *text;/* read-only for default values */
+	GimpTextBuffer *buffer;
 
-    GimpContainer  *fonts;
-    gdouble         resolution_x;
-    gdouble         resolution_y;
+	GimpContainer  *fonts;
+	gdouble resolution_x;
+	gdouble resolution_y;
 
-    GtkWidget      *upper_hbox;
-    GtkWidget      *lower_hbox;
+	GtkWidget      *upper_hbox;
+	GtkWidget      *lower_hbox;
 
-    GtkWidget      *font_entry;
-    GtkWidget      *size_entry;
+	GtkWidget      *font_entry;
+	GtkWidget      *size_entry;
 
-    GtkWidget      *color_button;
+	GtkWidget      *color_button;
 
-    GtkWidget      *clear_button;
+	GtkWidget      *clear_button;
 
-    GtkWidget      *baseline_spinbutton;
-    GtkAdjustment  *baseline_adjustment;
+	GtkWidget      *baseline_spinbutton;
+	GtkAdjustment  *baseline_adjustment;
 
-    GtkWidget      *kerning_spinbutton;
-    GtkAdjustment  *kerning_adjustment;
+	GtkWidget      *kerning_spinbutton;
+	GtkAdjustment  *kerning_adjustment;
 
-    GList          *toggles;
+	GList          *toggles;
 
-    guint           update_idle_id;
+	guint update_idle_id;
 };
 
 struct _GimpTextStyleEditorClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 };
 
 
 GType       gimp_text_style_editor_get_type  (void) G_GNUC_CONST;
 
 GtkWidget * gimp_text_style_editor_new       (Gimp                 *gimp,
-        GimpText             *text,
-        GimpTextBuffer       *buffer,
-        GimpContainer        *fonts,
-        gdouble               resolution_x,
-        gdouble               resolution_y);
+                                              GimpText             *text,
+                                              GimpTextBuffer       *buffer,
+                                              GimpContainer        *fonts,
+                                              gdouble resolution_x,
+                                              gdouble resolution_y);
 
 GList     * gimp_text_style_editor_list_tags (GimpTextStyleEditor  *editor,
-        GList               **remove_tags);
+                                              GList               **remove_tags);
 
 
 #endif /*  __GIMP_TEXT_STYLE_EDITOR_H__  */

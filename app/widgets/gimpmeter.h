@@ -31,96 +31,96 @@
 
 
 typedef struct _GimpMeterPrivate GimpMeterPrivate;
-typedef struct _GimpMeterClass   GimpMeterClass;
+typedef struct _GimpMeterClass GimpMeterClass;
 
 struct _GimpMeter
 {
-    GtkWidget         parent_instance;
+	GtkWidget parent_instance;
 
-    GimpMeterPrivate *priv;
+	GimpMeterPrivate *priv;
 };
 
 struct _GimpMeterClass
 {
-    GtkWidgetClass  parent_class;
+	GtkWidgetClass parent_class;
 };
 
 
 GType                   gimp_meter_get_type                  (void) G_GNUC_CONST;
 
-GtkWidget             * gimp_meter_new                       (gint                   n_values);
+GtkWidget             * gimp_meter_new                       (gint n_values);
 
 void                    gimp_meter_set_size                  (GimpMeter             *meter,
-        gint                   size);
+                                                              gint size);
 gint                    gimp_meter_get_size                  (GimpMeter             *meter);
 
 void                    gimp_meter_set_refresh_rate          (GimpMeter             *meter,
-        gdouble                rate);
+                                                              gdouble rate);
 gdouble                 gimp_meter_get_refresh_rate          (GimpMeter             *meter);
 
 void                    gimp_meter_set_range                 (GimpMeter             *meter,
-        gdouble                min,
-        gdouble                max);
+                                                              gdouble min,
+                                                              gdouble max);
 gdouble                 gimp_meter_get_range_min             (GimpMeter             *meter);
 gdouble                 gimp_meter_get_range_max             (GimpMeter             *meter);
 
 void                    gimp_meter_set_n_values              (GimpMeter             *meter,
-        gint                   n_values);
+                                                              gint n_values);
 gint                    gimp_meter_get_n_values              (GimpMeter             *meter);
 
 void                    gimp_meter_set_value_active          (GimpMeter             *meter,
-        gint                   value,
-        gboolean               active);
+                                                              gint value,
+                                                              gboolean active);
 gboolean                gimp_meter_get_value_active          (GimpMeter             *meter,
-        gint                   value);
+                                                              gint value);
 
 void                    gimp_meter_set_value_show_in_gauge    (GimpMeter            *meter,
-        gint                  value,
-        gboolean              show);
+                                                               gint value,
+                                                               gboolean show);
 gboolean                gimp_meter_get_value_show_in_gauge    (GimpMeter            *meter,
-        gint                  value);
+                                                               gint value);
 
 void                    gimp_meter_set_value_show_in_history (GimpMeter             *meter,
-        gint                   value,
-        gboolean               show);
+                                                              gint value,
+                                                              gboolean show);
 gboolean                gimp_meter_get_value_show_in_history (GimpMeter             *meter,
-        gint                   value);
+                                                              gint value);
 
 void                    gimp_meter_set_value_color           (GimpMeter             *meter,
-        gint                   value,
-        const GimpRGB         *color);
+                                                              gint value,
+                                                              const GimpRGB         *color);
 const GimpRGB         * gimp_meter_get_value_color           (GimpMeter             *meter,
-        gint                   value);
+                                                              gint value);
 
 void                    gimp_meter_set_value_interpolation   (GimpMeter             *meter,
-        gint                   value,
-        GimpInterpolationType  interpolation);
+                                                              gint value,
+                                                              GimpInterpolationType interpolation);
 GimpInterpolationType   gimp_meter_get_value_interpolation   (GimpMeter             *meter,
-        gint                   value);
+                                                              gint value);
 
 void                    gimp_meter_set_history_visible       (GimpMeter             *meter,
-        gboolean               visible);
+                                                              gboolean visible);
 gboolean                gimp_meter_get_history_visible       (GimpMeter             *meter);
 
 void                    gimp_meter_set_history_duration      (GimpMeter             *meter,
-        gdouble                duration);
+                                                              gdouble duration);
 gdouble                 gimp_meter_get_history_duration      (GimpMeter             *meter);
 
 void                    gimp_meter_set_history_resolution    (GimpMeter             *meter,
-        gdouble                resolution);
+                                                              gdouble resolution);
 gdouble                 gimp_meter_get_history_resolution    (GimpMeter             *meter);
 
 void                    gimp_meter_clear_history             (GimpMeter             *meter);
 
 void                    gimp_meter_add_sample                (GimpMeter             *meter,
-        const gdouble         *sample);
+                                                              const gdouble         *sample);
 
 void                    gimp_meter_set_led_active            (GimpMeter             *meter,
-        gboolean               active);
+                                                              gboolean active);
 gboolean                gimp_meter_get_led_active            (GimpMeter             *meter);
 
 void                    gimp_meter_set_led_color             (GimpMeter             *meter,
-        const GimpRGB         *color);
+                                                              const GimpRGB         *color);
 const GimpRGB         * gimp_meter_get_led_color             (GimpMeter             *meter);
 
 

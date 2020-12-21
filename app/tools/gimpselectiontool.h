@@ -32,32 +32,32 @@
 #define GIMP_SELECTION_TOOL_GET_OPTIONS(t)  (GIMP_SELECTION_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpSelectionTool      GimpSelectionTool;
+typedef struct _GimpSelectionTool GimpSelectionTool;
 typedef struct _GimpSelectionToolClass GimpSelectionToolClass;
 
 struct _GimpSelectionTool
 {
-    GimpDrawTool    parent_instance;
+	GimpDrawTool parent_instance;
 
-    SelectFunction  function;         /*  selection function        */
-    GimpChannelOps  saved_operation;  /*  saved tool options state  */
+	SelectFunction function;      /*  selection function        */
+	GimpChannelOps saved_operation; /*  saved tool options state  */
 
-    gint            change_count;
-    gboolean        saved_show_selection;
-    GimpUndo       *undo;
-    GimpUndo       *redo;
-    gint            idle_id;
+	gint change_count;
+	gboolean saved_show_selection;
+	GimpUndo       *undo;
+	GimpUndo       *redo;
+	gint idle_id;
 
-    gboolean        allow_move;
+	gboolean allow_move;
 };
 
 struct _GimpSelectionToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 
-    /*  virtual functions  */
-    gboolean (* have_selection) (GimpSelectionTool *sel_tool,
-                                 GimpDisplay       *display);
+	/*  virtual functions  */
+	gboolean (* have_selection) (GimpSelectionTool *sel_tool,
+	                             GimpDisplay       *display);
 };
 
 
@@ -65,14 +65,14 @@ GType      gimp_selection_tool_get_type     (void) G_GNUC_CONST;
 
 /*  protected function  */
 gboolean   gimp_selection_tool_start_edit   (GimpSelectionTool *sel_tool,
-        GimpDisplay       *display,
-        const GimpCoords  *coords);
+                                             GimpDisplay       *display,
+                                             const GimpCoords  *coords);
 
 void       gimp_selection_tool_start_change (GimpSelectionTool *sel_tool,
-        gboolean           create,
-        GimpChannelOps     operation);
+                                             gboolean create,
+                                             GimpChannelOps operation);
 void       gimp_selection_tool_end_change   (GimpSelectionTool *sel_tool,
-        gboolean           cancel);
+                                             gboolean cancel);
 
 
 #endif  /* __GIMP_SELECTION_TOOL_H__ */

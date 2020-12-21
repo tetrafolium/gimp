@@ -32,44 +32,44 @@ G_BEGIN_DECLS
 #define GIMP_VIEWABLE_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEWABLE_DIALOG, GimpViewableDialogClass))
 
 
-typedef struct _GimpViewableDialogClass  GimpViewableDialogClass;
+typedef struct _GimpViewableDialogClass GimpViewableDialogClass;
 
 struct _GimpViewableDialog
 {
-    GimpDialog   parent_instance;
+	GimpDialog parent_instance;
 
-    GimpContext *context;
+	GimpContext *context;
 
-    GList       *viewables;
+	GList       *viewables;
 
-    GtkWidget   *icon;
-    GtkWidget   *view;
-    GtkWidget   *desc_label;
-    GtkWidget   *viewable_label;
+	GtkWidget   *icon;
+	GtkWidget   *view;
+	GtkWidget   *desc_label;
+	GtkWidget   *viewable_label;
 };
 
 struct _GimpViewableDialogClass
 {
-    GimpDialogClass  parent_class;
+	GimpDialogClass parent_class;
 };
 
 
 GType       gimp_viewable_dialog_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_viewable_dialog_new      (GList              *viewables,
-        GimpContext        *context,
-        const gchar        *title,
-        const gchar        *role,
-        const gchar        *icon_name,
-        const gchar        *desc,
-        GtkWidget          *parent,
-        GimpHelpFunc        help_func,
-        const gchar        *help_id,
-        ...) G_GNUC_NULL_TERMINATED;
+                                           GimpContext        *context,
+                                           const gchar        *title,
+                                           const gchar        *role,
+                                           const gchar        *icon_name,
+                                           const gchar        *desc,
+                                           GtkWidget          *parent,
+                                           GimpHelpFunc help_func,
+                                           const gchar        *help_id,
+                                           ...) G_GNUC_NULL_TERMINATED;
 
 void    gimp_viewable_dialog_set_viewables (GimpViewableDialog *dialog,
-        GList              *viewables,
-        GimpContext        *context);
+                                            GList              *viewables,
+                                            GimpContext        *context);
 
 
 G_END_DECLS

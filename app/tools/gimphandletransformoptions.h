@@ -30,19 +30,19 @@
 #define GIMP_HANDLE_TRANSFORM_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS, GimpHandleTransformOptionsClass))
 
 
-typedef struct _GimpHandleTransformOptions      GimpHandleTransformOptions;
+typedef struct _GimpHandleTransformOptions GimpHandleTransformOptions;
 typedef struct _GimpHandleTransformOptionsClass GimpHandleTransformOptionsClass;
 
 struct _GimpHandleTransformOptions
 {
-    GimpTransformGridOptions  parent_instance;
+	GimpTransformGridOptions parent_instance;
 
-    GimpTransformHandleMode   handle_mode;
+	GimpTransformHandleMode handle_mode;
 };
 
 struct _GimpHandleTransformOptionsClass
 {
-    GimpTransformGridOptionsClass  parent_class;
+	GimpTransformGridOptionsClass parent_class;
 };
 
 

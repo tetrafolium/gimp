@@ -33,18 +33,18 @@
 #define GIMP_MENU_DOCK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MENU_DOCK, GimpMenuDockClass))
 
 typedef struct _GimpMenuDockPrivate GimpMenuDockPrivate;
-typedef struct _GimpMenuDockClass   GimpMenuDockClass;
+typedef struct _GimpMenuDockClass GimpMenuDockClass;
 
 struct _GimpMenuDock
 {
-    GimpDock             parent_instance;
+	GimpDock parent_instance;
 
-    GimpMenuDockPrivate *p;
+	GimpMenuDockPrivate *p;
 };
 
 struct _GimpMenuDockClass
 {
-    GimpDockClass  parent_class;
+	GimpDockClass parent_class;
 };
 
 

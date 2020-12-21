@@ -30,50 +30,50 @@
 #define GIMP_COLOR_DISPLAY_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_DISPLAY_EDITOR, GimpColorDisplayEditorClass))
 
 
-typedef struct _GimpColorDisplayEditorClass  GimpColorDisplayEditorClass;
+typedef struct _GimpColorDisplayEditorClass GimpColorDisplayEditorClass;
 
 struct _GimpColorDisplayEditor
 {
-    GtkBox                 parent_instance;
+	GtkBox parent_instance;
 
-    Gimp                  *gimp;
-    GimpColorDisplayStack *stack;
-    GimpColorConfig       *config;
-    GimpColorManaged      *managed;
+	Gimp                  *gimp;
+	GimpColorDisplayStack *stack;
+	GimpColorConfig       *config;
+	GimpColorManaged      *managed;
 
-    GtkListStore          *src;
-    GtkListStore          *dest;
+	GtkListStore          *src;
+	GtkListStore          *dest;
 
-    GtkTreeSelection      *src_sel;
-    GtkTreeSelection      *dest_sel;
+	GtkTreeSelection      *src_sel;
+	GtkTreeSelection      *dest_sel;
 
-    GimpColorDisplay      *selected;
+	GimpColorDisplay      *selected;
 
-    GtkWidget             *add_button;
+	GtkWidget             *add_button;
 
-    GtkWidget             *remove_button;
-    GtkWidget             *up_button;
-    GtkWidget             *down_button;
+	GtkWidget             *remove_button;
+	GtkWidget             *up_button;
+	GtkWidget             *down_button;
 
-    GtkWidget             *config_frame;
-    GtkWidget             *config_box;
-    GtkWidget             *config_widget;
+	GtkWidget             *config_frame;
+	GtkWidget             *config_box;
+	GtkWidget             *config_widget;
 
-    GtkWidget             *reset_button;
+	GtkWidget             *reset_button;
 };
 
 struct _GimpColorDisplayEditorClass
 {
-    GtkBoxClass parent_class;
+	GtkBoxClass parent_class;
 };
 
 
 GType       gimp_color_display_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_color_display_editor_new      (Gimp                  *gimp,
-        GimpColorDisplayStack *stack,
-        GimpColorConfig       *config,
-        GimpColorManaged      *managed);
+                                                GimpColorDisplayStack *stack,
+                                                GimpColorConfig       *config,
+                                                GimpColorManaged      *managed);
 
 
 #endif  /*  __GIMP_COLOR_DISPLAY_EDITOR_H__  */

@@ -34,29 +34,29 @@ typedef struct _GimpHistogramEditorClass GimpHistogramEditorClass;
 
 struct _GimpHistogramEditor
 {
-    GimpImageEditor       parent_instance;
+	GimpImageEditor parent_instance;
 
-    GimpTRCType           trc;
+	GimpTRCType trc;
 
-    GimpDrawable         *drawable;
-    GimpHistogram        *histogram;
-    GimpHistogram        *bg_histogram;
+	GimpDrawable         *drawable;
+	GimpHistogram        *histogram;
+	GimpHistogram        *bg_histogram;
 
-    guint                 idle_id;
-    gboolean              recompute;
+	guint idle_id;
+	gboolean recompute;
 
-    GimpAsync            *calculate_async;
-    gboolean              bg_pending;
-    gboolean              update_pending;
+	GimpAsync            *calculate_async;
+	gboolean bg_pending;
+	gboolean update_pending;
 
-    GtkWidget            *menu;
-    GtkWidget            *box;
-    GtkWidget            *labels[6];
+	GtkWidget            *menu;
+	GtkWidget            *box;
+	GtkWidget            *labels[6];
 };
 
 struct _GimpHistogramEditorClass
 {
-    GimpImageEditorClass  parent_class;
+	GimpImageEditorClass parent_class;
 };
 
 

@@ -34,16 +34,16 @@ G_BEGIN_DECLS
 #define GIMP_PALETTE_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PALETTE_SELECT, GimpPaletteSelectClass))
 
 
-typedef struct _GimpPaletteSelectClass  GimpPaletteSelectClass;
+typedef struct _GimpPaletteSelectClass GimpPaletteSelectClass;
 
 struct _GimpPaletteSelect
 {
-    GimpPdbDialog  parent_instance;
+	GimpPdbDialog parent_instance;
 };
 
 struct _GimpPaletteSelectClass
 {
-    GimpPdbDialogClass  parent_class;
+	GimpPdbDialogClass parent_class;
 };
 
 

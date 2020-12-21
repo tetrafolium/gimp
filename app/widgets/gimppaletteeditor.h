@@ -34,47 +34,47 @@ typedef struct _GimpPaletteEditorClass GimpPaletteEditorClass;
 
 struct _GimpPaletteEditor
 {
-    GimpDataEditor    parent_instance;
+	GimpDataEditor parent_instance;
 
-    GtkWidget        *view;
+	GtkWidget        *view;
 
-    GtkWidget        *index_label;
-    GtkWidget        *color_name;
-    GtkAdjustment    *columns_adj;
+	GtkWidget        *index_label;
+	GtkWidget        *color_name;
+	GtkAdjustment    *columns_adj;
 
-    GtkWidget        *color_dialog;
+	GtkWidget        *color_dialog;
 
-    GimpPaletteEntry *color;
+	GimpPaletteEntry *color;
 
-    gdouble           zoom_factor;  /* range from 0.1 to 4.0 */
-    gint              col_width;
-    gint              last_width;
-    gint              columns;
+	gdouble zoom_factor;        /* range from 0.1 to 4.0 */
+	gint col_width;
+	gint last_width;
+	gint columns;
 };
 
 struct _GimpPaletteEditorClass
 {
-    GimpDataEditorClass  parent_class;
+	GimpDataEditorClass parent_class;
 };
 
 
 GType       gimp_palette_editor_get_type   (void) G_GNUC_CONST;
 
 GtkWidget * gimp_palette_editor_new        (GimpContext        *context,
-        GimpMenuFactory    *menu_factory);
+                                            GimpMenuFactory    *menu_factory);
 
 void        gimp_palette_editor_edit_color (GimpPaletteEditor  *editor);
 void        gimp_palette_editor_pick_color (GimpPaletteEditor  *editor,
-        const GimpRGB      *color,
-        GimpColorPickState  pick_state);
+                                            const GimpRGB      *color,
+                                            GimpColorPickState pick_state);
 void        gimp_palette_editor_zoom       (GimpPaletteEditor  *editor,
-        GimpZoomType        zoom_type);
+                                            GimpZoomType zoom_type);
 
 gint        gimp_palette_editor_get_index  (GimpPaletteEditor *editor,
-        const GimpRGB     *search);
+                                            const GimpRGB     *search);
 gboolean    gimp_palette_editor_set_index  (GimpPaletteEditor *editor,
-        gint               index,
-        GimpRGB           *color);
+                                            gint index,
+                                            GimpRGB           *color);
 
 gint        gimp_palette_editor_max_index  (GimpPaletteEditor *editor);
 

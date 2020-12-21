@@ -35,19 +35,19 @@
 #define GIMP_TILE_HANDLER_ISCISSORS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_TILE_HANDLER_ISCISSORS, GimpTileHandlerIscissorsClass))
 
 
-typedef struct _GimpTileHandlerIscissors      GimpTileHandlerIscissors;
+typedef struct _GimpTileHandlerIscissors GimpTileHandlerIscissors;
 typedef struct _GimpTileHandlerIscissorsClass GimpTileHandlerIscissorsClass;
 
 struct _GimpTileHandlerIscissors
 {
-    GimpTileHandlerValidate  parent_instance;
+	GimpTileHandlerValidate parent_instance;
 
-    GimpPickable            *pickable;
+	GimpPickable            *pickable;
 };
 
 struct _GimpTileHandlerIscissorsClass
 {
-    GimpTileHandlerValidateClass  parent_class;
+	GimpTileHandlerValidateClass parent_class;
 };
 
 

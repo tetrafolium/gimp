@@ -32,20 +32,20 @@
 #define GIMP_CAGE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CAGE_OPTIONS, GimpCageOptionsClass))
 
 
-typedef struct _GimpCageOptions      GimpCageOptions;
+typedef struct _GimpCageOptions GimpCageOptions;
 typedef struct _GimpCageOptionsClass GimpCageOptionsClass;
 
 struct _GimpCageOptions
 {
-    GimpToolOptions  parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpCageMode     cage_mode;
-    gboolean         fill_plain_color;
+	GimpCageMode cage_mode;
+	gboolean fill_plain_color;
 };
 
 struct _GimpCageOptionsClass
 {
-    GimpToolOptionsClass  parent_class;
+	GimpToolOptionsClass parent_class;
 };
 
 

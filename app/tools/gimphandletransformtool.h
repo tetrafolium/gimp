@@ -32,24 +32,24 @@
 #define GIMP_HANDLE_TRANSFORM_TOOL_GET_OPTIONS(t)  (GIMP_HANDLE_TRANSFORM_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpHandleTransformTool      GimpHandleTransformTool;
+typedef struct _GimpHandleTransformTool GimpHandleTransformTool;
 typedef struct _GimpHandleTransformToolClass GimpHandleTransformToolClass;
 
 struct _GimpHandleTransformTool
 {
-    GimpGenericTransformTool  parent_instance;
+	GimpGenericTransformTool parent_instance;
 
-    GimpTransformHandleMode   saved_handle_mode;
+	GimpTransformHandleMode saved_handle_mode;
 };
 
 struct _GimpHandleTransformToolClass
 {
-    GimpGenericTransformToolClass  parent_class;
+	GimpGenericTransformToolClass parent_class;
 };
 
 
-void    gimp_handle_transform_tool_register (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_handle_transform_tool_register (GimpToolRegisterCallback callback,
+                                             gpointer data);
 
 GType   gimp_handle_transform_tool_get_type (void) G_GNUC_CONST;
 

@@ -45,30 +45,30 @@
 
 enum
 {
-    PROP_0,
-    PROP_VIEW_TYPE,
-    PROP_CONTAINER,
-    PROP_CONTEXT,
-    PROP_VIEW_SIZE,
-    PROP_VIEW_BORDER_WIDTH,
-    PROP_MENU_FACTORY,
-    PROP_MENU_IDENTIFIER,
-    PROP_UI_PATH
+	PROP_0,
+	PROP_VIEW_TYPE,
+	PROP_CONTAINER,
+	PROP_CONTEXT,
+	PROP_VIEW_SIZE,
+	PROP_VIEW_BORDER_WIDTH,
+	PROP_MENU_FACTORY,
+	PROP_MENU_IDENTIFIER,
+	PROP_UI_PATH
 };
 
 
 struct _GimpContainerEditorPrivate
 {
-    GimpViewType     view_type;
-    GimpContainer   *container;
-    GimpContext     *context;
-    gint             view_size;
-    gint             view_border_width;
-    GimpMenuFactory *menu_factory;
-    gchar           *menu_identifier;
-    gchar           *ui_path;
-    GtkWidget       *busy_box;
-    GBinding        *async_set_binding;
+	GimpViewType view_type;
+	GimpContainer   *container;
+	GimpContext     *context;
+	gint view_size;
+	gint view_border_width;
+	GimpMenuFactory *menu_factory;
+	gchar           *menu_identifier;
+	gchar           *ui_path;
+	GtkWidget       *busy_box;
+	GBinding        *async_set_binding;
 };
 
 
@@ -77,41 +77,41 @@ static void  gimp_container_editor_docked_iface_init (GimpDockedInterface *iface
 static void   gimp_container_editor_constructed      (GObject             *object);
 static void   gimp_container_editor_dispose          (GObject             *object);
 static void   gimp_container_editor_set_property     (GObject             *object,
-        guint                property_id,
-        const GValue        *value,
-        GParamSpec          *pspec);
+                                                      guint property_id,
+                                                      const GValue        *value,
+                                                      GParamSpec          *pspec);
 static void   gimp_container_editor_get_property     (GObject             *object,
-        guint                property_id,
-        GValue              *value,
-        GParamSpec          *pspec);
+                                                      guint property_id,
+                                                      GValue              *value,
+                                                      GParamSpec          *pspec);
 
 static gboolean gimp_container_editor_select_item    (GtkWidget           *widget,
-        GimpViewable        *viewable,
-        gpointer             insert_data,
-        GimpContainerEditor *editor);
+                                                      GimpViewable        *viewable,
+                                                      gpointer insert_data,
+                                                      GimpContainerEditor *editor);
 static void   gimp_container_editor_activate_item    (GtkWidget           *widget,
-        GimpViewable        *viewable,
-        gpointer             insert_data,
-        GimpContainerEditor *editor);
+                                                      GimpViewable        *viewable,
+                                                      gpointer insert_data,
+                                                      GimpContainerEditor *editor);
 static void   gimp_container_editor_context_item     (GtkWidget           *widget,
-        GimpViewable        *viewable,
-        gpointer             insert_data,
-        GimpContainerEditor *editor);
+                                                      GimpViewable        *viewable,
+                                                      gpointer insert_data,
+                                                      GimpContainerEditor *editor);
 static void   gimp_container_editor_real_context_item(GimpContainerEditor *editor,
-        GimpViewable        *viewable);
+                                                      GimpViewable        *viewable);
 
 static GtkWidget * gimp_container_editor_get_preview (GimpDocked       *docked,
-        GimpContext      *context,
-        GtkIconSize       size);
+                                                      GimpContext      *context,
+                                                      GtkIconSize size);
 static void        gimp_container_editor_set_context (GimpDocked       *docked,
-        GimpContext      *context);
+                                                      GimpContext      *context);
 static GimpUIManager * gimp_container_editor_get_menu(GimpDocked       *docked,
-        const gchar     **ui_path,
-        gpointer         *popup_data);
+                                                      const gchar     **ui_path,
+                                                      gpointer         *popup_data);
 
 static gboolean  gimp_container_editor_has_button_bar      (GimpDocked *docked);
 static void      gimp_container_editor_set_show_button_bar (GimpDocked *docked,
-        gboolean    show);
+                                                            gboolean show);
 static gboolean  gimp_container_editor_get_show_button_bar (GimpDocked *docked);
 
 
@@ -119,7 +119,7 @@ G_DEFINE_TYPE_WITH_CODE (GimpContainerEditor, gimp_container_editor,
                          GTK_TYPE_BOX,
                          G_ADD_PRIVATE (GimpContainerEditor)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
-                                 gimp_container_editor_docked_iface_init))
+                                                gimp_container_editor_docked_iface_init))
 
 #define parent_class gimp_container_editor_parent_class
 
@@ -127,306 +127,306 @@ G_DEFINE_TYPE_WITH_CODE (GimpContainerEditor, gimp_container_editor,
 static void
 gimp_container_editor_class_init (GimpContainerEditorClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->constructed   = gimp_container_editor_constructed;
-    object_class->dispose       = gimp_container_editor_dispose;
-    object_class->set_property  = gimp_container_editor_set_property;
-    object_class->get_property  = gimp_container_editor_get_property;
+	object_class->constructed   = gimp_container_editor_constructed;
+	object_class->dispose       = gimp_container_editor_dispose;
+	object_class->set_property  = gimp_container_editor_set_property;
+	object_class->get_property  = gimp_container_editor_get_property;
 
-    klass->select_item     = NULL;
-    klass->activate_item   = NULL;
-    klass->context_item    = gimp_container_editor_real_context_item;
+	klass->select_item     = NULL;
+	klass->activate_item   = NULL;
+	klass->context_item    = gimp_container_editor_real_context_item;
 
-    g_object_class_install_property (object_class, PROP_VIEW_TYPE,
-                                     g_param_spec_enum ("view-type",
-                                             NULL, NULL,
-                                             GIMP_TYPE_VIEW_TYPE,
-                                             GIMP_VIEW_TYPE_LIST,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_VIEW_TYPE,
+	                                 g_param_spec_enum ("view-type",
+	                                                    NULL, NULL,
+	                                                    GIMP_TYPE_VIEW_TYPE,
+	                                                    GIMP_VIEW_TYPE_LIST,
+	                                                    GIMP_PARAM_READWRITE |
+	                                                    G_PARAM_CONSTRUCT_ONLY));
 
-    g_object_class_install_property (object_class, PROP_CONTAINER,
-                                     g_param_spec_object ("container",
-                                             NULL, NULL,
-                                             GIMP_TYPE_CONTAINER,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_CONTAINER,
+	                                 g_param_spec_object ("container",
+	                                                      NULL, NULL,
+	                                                      GIMP_TYPE_CONTAINER,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 
-    g_object_class_install_property (object_class, PROP_CONTEXT,
-                                     g_param_spec_object ("context",
-                                             NULL, NULL,
-                                             GIMP_TYPE_CONTEXT,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_CONTEXT,
+	                                 g_param_spec_object ("context",
+	                                                      NULL, NULL,
+	                                                      GIMP_TYPE_CONTEXT,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 
-    g_object_class_install_property (object_class, PROP_VIEW_SIZE,
-                                     g_param_spec_int ("view-size",
-                                             NULL, NULL,
-                                             1, GIMP_VIEWABLE_MAX_PREVIEW_SIZE,
-                                             GIMP_VIEW_SIZE_MEDIUM,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class, PROP_VIEW_SIZE,
+	                                 g_param_spec_int ("view-size",
+	                                                   NULL, NULL,
+	                                                   1, GIMP_VIEWABLE_MAX_PREVIEW_SIZE,
+	                                                   GIMP_VIEW_SIZE_MEDIUM,
+	                                                   GIMP_PARAM_READWRITE |
+	                                                   G_PARAM_CONSTRUCT));
 
-    g_object_class_install_property (object_class, PROP_VIEW_BORDER_WIDTH,
-                                     g_param_spec_int ("view-border-width",
-                                             NULL, NULL,
-                                             0,
-                                             GIMP_VIEW_MAX_BORDER_WIDTH,
-                                             1,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class, PROP_VIEW_BORDER_WIDTH,
+	                                 g_param_spec_int ("view-border-width",
+	                                                   NULL, NULL,
+	                                                   0,
+	                                                   GIMP_VIEW_MAX_BORDER_WIDTH,
+	                                                   1,
+	                                                   GIMP_PARAM_READWRITE |
+	                                                   G_PARAM_CONSTRUCT));
 
-    g_object_class_install_property (object_class, PROP_MENU_FACTORY,
-                                     g_param_spec_object ("menu-factory",
-                                             NULL, NULL,
-                                             GIMP_TYPE_MENU_FACTORY,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_MENU_FACTORY,
+	                                 g_param_spec_object ("menu-factory",
+	                                                      NULL, NULL,
+	                                                      GIMP_TYPE_MENU_FACTORY,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 
-    g_object_class_install_property (object_class, PROP_MENU_IDENTIFIER,
-                                     g_param_spec_string ("menu-identifier",
-                                             NULL, NULL,
-                                             NULL,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_MENU_IDENTIFIER,
+	                                 g_param_spec_string ("menu-identifier",
+	                                                      NULL, NULL,
+	                                                      NULL,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 
-    g_object_class_install_property (object_class, PROP_UI_PATH,
-                                     g_param_spec_string ("ui-path",
-                                             NULL, NULL,
-                                             NULL,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_UI_PATH,
+	                                 g_param_spec_string ("ui-path",
+	                                                      NULL, NULL,
+	                                                      NULL,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
 gimp_container_editor_docked_iface_init (GimpDockedInterface *iface)
 {
-    iface->get_preview         = gimp_container_editor_get_preview;
-    iface->set_context         = gimp_container_editor_set_context;
-    iface->get_menu            = gimp_container_editor_get_menu;
-    iface->has_button_bar      = gimp_container_editor_has_button_bar;
-    iface->set_show_button_bar = gimp_container_editor_set_show_button_bar;
-    iface->get_show_button_bar = gimp_container_editor_get_show_button_bar;
+	iface->get_preview         = gimp_container_editor_get_preview;
+	iface->set_context         = gimp_container_editor_set_context;
+	iface->get_menu            = gimp_container_editor_get_menu;
+	iface->has_button_bar      = gimp_container_editor_has_button_bar;
+	iface->set_show_button_bar = gimp_container_editor_set_show_button_bar;
+	iface->get_show_button_bar = gimp_container_editor_get_show_button_bar;
 }
 
 static void
 gimp_container_editor_init (GimpContainerEditor *editor)
 {
-    gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
-                                    GTK_ORIENTATION_VERTICAL);
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+	                                GTK_ORIENTATION_VERTICAL);
 
-    editor->priv = gimp_container_editor_get_instance_private (editor);
+	editor->priv = gimp_container_editor_get_instance_private (editor);
 }
 
 static void
 gimp_container_editor_constructed (GObject *object)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    gimp_assert (GIMP_IS_CONTAINER (editor->priv->container));
-    gimp_assert (GIMP_IS_CONTEXT (editor->priv->context));
+	gimp_assert (GIMP_IS_CONTAINER (editor->priv->container));
+	gimp_assert (GIMP_IS_CONTEXT (editor->priv->context));
 
-    switch (editor->priv->view_type)
-    {
-    case GIMP_VIEW_TYPE_GRID:
-        editor->view =
-            GIMP_CONTAINER_VIEW (gimp_container_icon_view_new (editor->priv->container,
-                                 editor->priv->context,
-                                 editor->priv->view_size,
-                                 editor->priv->view_border_width));
-        break;
+	switch (editor->priv->view_type)
+	{
+	case GIMP_VIEW_TYPE_GRID:
+		editor->view =
+			GIMP_CONTAINER_VIEW (gimp_container_icon_view_new (editor->priv->container,
+			                                                   editor->priv->context,
+			                                                   editor->priv->view_size,
+			                                                   editor->priv->view_border_width));
+		break;
 
-    case GIMP_VIEW_TYPE_LIST:
-        editor->view =
-            GIMP_CONTAINER_VIEW (gimp_container_tree_view_new (editor->priv->container,
-                                 editor->priv->context,
-                                 editor->priv->view_size,
-                                 editor->priv->view_border_width));
-        break;
+	case GIMP_VIEW_TYPE_LIST:
+		editor->view =
+			GIMP_CONTAINER_VIEW (gimp_container_tree_view_new (editor->priv->container,
+			                                                   editor->priv->context,
+			                                                   editor->priv->view_size,
+			                                                   editor->priv->view_border_width));
+		break;
 
-    default:
-        gimp_assert_not_reached ();
-    }
+	default:
+		gimp_assert_not_reached ();
+	}
 
-    if (GIMP_IS_LIST (editor->priv->container))
-        gimp_container_view_set_reorderable (GIMP_CONTAINER_VIEW (editor->view),
-                                             ! gimp_list_get_sort_func (GIMP_LIST (editor->priv->container)));
+	if (GIMP_IS_LIST (editor->priv->container))
+		gimp_container_view_set_reorderable (GIMP_CONTAINER_VIEW (editor->view),
+		                                     !gimp_list_get_sort_func (GIMP_LIST (editor->priv->container)));
 
-    if (editor->priv->menu_factory    &&
-            editor->priv->menu_identifier &&
-            editor->priv->ui_path)
-    {
-        gimp_editor_create_menu (GIMP_EDITOR (editor->view),
-                                 editor->priv->menu_factory,
-                                 editor->priv->menu_identifier,
-                                 editor->priv->ui_path,
-                                 editor);
-    }
+	if (editor->priv->menu_factory    &&
+	    editor->priv->menu_identifier &&
+	    editor->priv->ui_path)
+	{
+		gimp_editor_create_menu (GIMP_EDITOR (editor->view),
+		                         editor->priv->menu_factory,
+		                         editor->priv->menu_identifier,
+		                         editor->priv->ui_path,
+		                         editor);
+	}
 
-    gtk_box_pack_start (GTK_BOX (editor), GTK_WIDGET (editor->view),
-                        TRUE, TRUE, 0);
-    gtk_widget_show (GTK_WIDGET (editor->view));
+	gtk_box_pack_start (GTK_BOX (editor), GTK_WIDGET (editor->view),
+	                    TRUE, TRUE, 0);
+	gtk_widget_show (GTK_WIDGET (editor->view));
 
-    editor->priv->busy_box = gimp_busy_box_new (NULL);
-    gtk_box_pack_start (GTK_BOX (editor), editor->priv->busy_box, TRUE, TRUE, 0);
+	editor->priv->busy_box = gimp_busy_box_new (NULL);
+	gtk_box_pack_start (GTK_BOX (editor), editor->priv->busy_box, TRUE, TRUE, 0);
 
-    g_object_bind_property (editor->priv->busy_box, "visible",
-                            editor->view,           "visible",
-                            G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+	g_object_bind_property (editor->priv->busy_box, "visible",
+	                        editor->view,           "visible",
+	                        G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
 
-    /*  Connect "select-item" with G_CONNECT_AFTER because it's a
-     *  RUN_LAST signal and the default handler selecting the row must
-     *  run before signal connections. See bug #784176.
-     */
-    g_signal_connect_object (editor->view, "select-item",
-                             G_CALLBACK (gimp_container_editor_select_item),
-                             editor, G_CONNECT_AFTER);
+	/*  Connect "select-item" with G_CONNECT_AFTER because it's a
+	 *  RUN_LAST signal and the default handler selecting the row must
+	 *  run before signal connections. See bug #784176.
+	 */
+	g_signal_connect_object (editor->view, "select-item",
+	                         G_CALLBACK (gimp_container_editor_select_item),
+	                         editor, G_CONNECT_AFTER);
 
-    g_signal_connect_object (editor->view, "activate-item",
-                             G_CALLBACK (gimp_container_editor_activate_item),
-                             editor, 0);
-    g_signal_connect_object (editor->view, "context-item",
-                             G_CALLBACK (gimp_container_editor_context_item),
-                             editor, 0);
+	g_signal_connect_object (editor->view, "activate-item",
+	                         G_CALLBACK (gimp_container_editor_activate_item),
+	                         editor, 0);
+	g_signal_connect_object (editor->view, "context-item",
+	                         G_CALLBACK (gimp_container_editor_context_item),
+	                         editor, 0);
 
-    {
-        GimpObject *object = gimp_context_get_by_type (editor->priv->context,
-                             gimp_container_get_children_type (editor->priv->container));
+	{
+		GimpObject *object = gimp_context_get_by_type (editor->priv->context,
+		                                               gimp_container_get_children_type (editor->priv->container));
 
-        gimp_container_editor_select_item (GTK_WIDGET (editor->view),
-                                           (GimpViewable *) object, NULL,
-                                           editor);
-    }
+		gimp_container_editor_select_item (GTK_WIDGET (editor->view),
+		                                   (GimpViewable *) object, NULL,
+		                                   editor);
+	}
 }
 
 static void
 gimp_container_editor_dispose (GObject *object)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
 
-    gimp_container_editor_bind_to_async_set (editor, NULL, NULL);
+	gimp_container_editor_bind_to_async_set (editor, NULL, NULL);
 
-    g_clear_object (&editor->priv->container);
-    g_clear_object (&editor->priv->context);
-    g_clear_object (&editor->priv->menu_factory);
+	g_clear_object (&editor->priv->container);
+	g_clear_object (&editor->priv->context);
+	g_clear_object (&editor->priv->menu_factory);
 
-    g_clear_pointer (&editor->priv->menu_identifier, g_free);
-    g_clear_pointer (&editor->priv->ui_path,         g_free);
+	g_clear_pointer (&editor->priv->menu_identifier, g_free);
+	g_clear_pointer (&editor->priv->ui_path,         g_free);
 
-    G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
 gimp_container_editor_set_property (GObject      *object,
-                                    guint         property_id,
+                                    guint property_id,
                                     const GValue *value,
                                     GParamSpec   *pspec)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
 
-    switch (property_id)
-    {
-    case PROP_VIEW_TYPE:
-        editor->priv->view_type = g_value_get_enum (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_VIEW_TYPE:
+		editor->priv->view_type = g_value_get_enum (value);
+		break;
 
-    case PROP_CONTAINER:
-        editor->priv->container = g_value_dup_object (value);
-        break;
+	case PROP_CONTAINER:
+		editor->priv->container = g_value_dup_object (value);
+		break;
 
-    case PROP_CONTEXT:
-        editor->priv->context = g_value_dup_object (value);
-        break;
+	case PROP_CONTEXT:
+		editor->priv->context = g_value_dup_object (value);
+		break;
 
-    case PROP_VIEW_SIZE:
-        editor->priv->view_size = g_value_get_int (value);
-        break;
+	case PROP_VIEW_SIZE:
+		editor->priv->view_size = g_value_get_int (value);
+		break;
 
-    case PROP_VIEW_BORDER_WIDTH:
-        editor->priv->view_border_width = g_value_get_int (value);
-        break;
+	case PROP_VIEW_BORDER_WIDTH:
+		editor->priv->view_border_width = g_value_get_int (value);
+		break;
 
-    case PROP_MENU_FACTORY:
-        editor->priv->menu_factory = g_value_dup_object (value);
-        break;
+	case PROP_MENU_FACTORY:
+		editor->priv->menu_factory = g_value_dup_object (value);
+		break;
 
-    case PROP_MENU_IDENTIFIER:
-        editor->priv->menu_identifier = g_value_dup_string (value);
-        break;
+	case PROP_MENU_IDENTIFIER:
+		editor->priv->menu_identifier = g_value_dup_string (value);
+		break;
 
-    case PROP_UI_PATH:
-        editor->priv->ui_path = g_value_dup_string (value);
-        break;
+	case PROP_UI_PATH:
+		editor->priv->ui_path = g_value_dup_string (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_container_editor_get_property (GObject    *object,
-                                    guint       property_id,
+                                    guint property_id,
                                     GValue     *value,
                                     GParamSpec *pspec)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
 
-    switch (property_id)
-    {
-    case PROP_VIEW_TYPE:
-        g_value_set_enum (value, editor->priv->view_type);
-        break;
+	switch (property_id)
+	{
+	case PROP_VIEW_TYPE:
+		g_value_set_enum (value, editor->priv->view_type);
+		break;
 
-    case PROP_CONTAINER:
-        g_value_set_object (value, editor->priv->container);
-        break;
+	case PROP_CONTAINER:
+		g_value_set_object (value, editor->priv->container);
+		break;
 
-    case PROP_CONTEXT:
-        g_value_set_object (value, editor->priv->context);
-        break;
+	case PROP_CONTEXT:
+		g_value_set_object (value, editor->priv->context);
+		break;
 
-    case PROP_VIEW_SIZE:
-        g_value_set_int (value, editor->priv->view_size);
-        break;
+	case PROP_VIEW_SIZE:
+		g_value_set_int (value, editor->priv->view_size);
+		break;
 
-    case PROP_VIEW_BORDER_WIDTH:
-        g_value_set_int (value, editor->priv->view_border_width);
-        break;
+	case PROP_VIEW_BORDER_WIDTH:
+		g_value_set_int (value, editor->priv->view_border_width);
+		break;
 
-    case PROP_MENU_FACTORY:
-        g_value_set_object (value, editor->priv->menu_factory);
-        break;
+	case PROP_MENU_FACTORY:
+		g_value_set_object (value, editor->priv->menu_factory);
+		break;
 
-    case PROP_MENU_IDENTIFIER:
-        g_value_set_string (value, editor->priv->menu_identifier);
-        break;
+	case PROP_MENU_IDENTIFIER:
+		g_value_set_string (value, editor->priv->menu_identifier);
+		break;
 
-    case PROP_UI_PATH:
-        g_value_set_string (value, editor->priv->ui_path);
-        break;
+	case PROP_UI_PATH:
+		g_value_set_string (value, editor->priv->ui_path);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 GtkSelectionMode
 gimp_container_editor_get_selection_mode (GimpContainerEditor *editor)
 {
-    return gimp_container_view_get_selection_mode (GIMP_CONTAINER_VIEW (editor->view));
+	return gimp_container_view_get_selection_mode (GIMP_CONTAINER_VIEW (editor->view));
 }
 
 void
 gimp_container_editor_set_selection_mode (GimpContainerEditor *editor,
-        GtkSelectionMode     mode)
+                                          GtkSelectionMode mode)
 {
-    gimp_container_view_set_selection_mode (GIMP_CONTAINER_VIEW (editor->view),
-                                            mode);
+	gimp_container_view_set_selection_mode (GIMP_CONTAINER_VIEW (editor->view),
+	                                        mode);
 }
 
 /*  private functions  */
@@ -434,75 +434,75 @@ gimp_container_editor_set_selection_mode (GimpContainerEditor *editor,
 static gboolean
 gimp_container_editor_select_item (GtkWidget           *widget,
                                    GimpViewable        *viewable,
-                                   gpointer             insert_data,
+                                   gpointer insert_data,
                                    GimpContainerEditor *editor)
 {
-    GimpContainerEditorClass *klass = GIMP_CONTAINER_EDITOR_GET_CLASS (editor);
+	GimpContainerEditorClass *klass = GIMP_CONTAINER_EDITOR_GET_CLASS (editor);
 
-    if (klass->select_item)
-        klass->select_item (editor, viewable);
+	if (klass->select_item)
+		klass->select_item (editor, viewable);
 
-    if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)))
-        gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)),
-                                gimp_editor_get_popup_data (GIMP_EDITOR (editor->view)));
+	if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)))
+		gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)),
+		                        gimp_editor_get_popup_data (GIMP_EDITOR (editor->view)));
 
-    return TRUE;
+	return TRUE;
 }
 
 static void
 gimp_container_editor_activate_item (GtkWidget           *widget,
                                      GimpViewable        *viewable,
-                                     gpointer             insert_data,
+                                     gpointer insert_data,
                                      GimpContainerEditor *editor)
 {
-    GimpContainerEditorClass *klass = GIMP_CONTAINER_EDITOR_GET_CLASS (editor);
+	GimpContainerEditorClass *klass = GIMP_CONTAINER_EDITOR_GET_CLASS (editor);
 
-    if (klass->activate_item)
-        klass->activate_item (editor, viewable);
+	if (klass->activate_item)
+		klass->activate_item (editor, viewable);
 }
 
 static void
 gimp_container_editor_context_item (GtkWidget           *widget,
                                     GimpViewable        *viewable,
-                                    gpointer             insert_data,
+                                    gpointer insert_data,
                                     GimpContainerEditor *editor)
 {
-    GimpContainerEditorClass *klass = GIMP_CONTAINER_EDITOR_GET_CLASS (editor);
+	GimpContainerEditorClass *klass = GIMP_CONTAINER_EDITOR_GET_CLASS (editor);
 
-    if (klass->context_item)
-        klass->context_item (editor, viewable);
+	if (klass->context_item)
+		klass->context_item (editor, viewable);
 }
 
 static void
 gimp_container_editor_real_context_item (GimpContainerEditor *editor,
-        GimpViewable        *viewable)
+                                         GimpViewable        *viewable)
 {
-    GimpContainer *container = gimp_container_view_get_container (editor->view);
+	GimpContainer *container = gimp_container_view_get_container (editor->view);
 
-    if (viewable && gimp_container_have (container, GIMP_OBJECT (viewable)))
-    {
-        gimp_editor_popup_menu (GIMP_EDITOR (editor->view), NULL, NULL);
-    }
+	if (viewable && gimp_container_have (container, GIMP_OBJECT (viewable)))
+	{
+		gimp_editor_popup_menu (GIMP_EDITOR (editor->view), NULL, NULL);
+	}
 }
 
 static GtkWidget *
 gimp_container_editor_get_preview (GimpDocked   *docked,
                                    GimpContext  *context,
-                                   GtkIconSize   size)
+                                   GtkIconSize size)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
 
-    return gimp_docked_get_preview (GIMP_DOCKED (editor->view),
-                                    context, size);
+	return gimp_docked_get_preview (GIMP_DOCKED (editor->view),
+	                                context, size);
 }
 
 static void
 gimp_container_editor_set_context (GimpDocked  *docked,
                                    GimpContext *context)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
 
-    gimp_docked_set_context (GIMP_DOCKED (editor->view), context);
+	gimp_docked_set_context (GIMP_DOCKED (editor->view), context);
 }
 
 static GimpUIManager *
@@ -510,62 +510,62 @@ gimp_container_editor_get_menu (GimpDocked   *docked,
                                 const gchar **ui_path,
                                 gpointer     *popup_data)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
 
-    return gimp_docked_get_menu (GIMP_DOCKED (editor->view), ui_path, popup_data);
+	return gimp_docked_get_menu (GIMP_DOCKED (editor->view), ui_path, popup_data);
 }
 
 static gboolean
 gimp_container_editor_has_button_bar (GimpDocked *docked)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
 
-    return gimp_docked_has_button_bar (GIMP_DOCKED (editor->view));
+	return gimp_docked_has_button_bar (GIMP_DOCKED (editor->view));
 }
 
 static void
 gimp_container_editor_set_show_button_bar (GimpDocked *docked,
-        gboolean    show)
+                                           gboolean show)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
 
-    gimp_docked_set_show_button_bar (GIMP_DOCKED (editor->view), show);
+	gimp_docked_set_show_button_bar (GIMP_DOCKED (editor->view), show);
 }
 
 static gboolean
 gimp_container_editor_get_show_button_bar (GimpDocked *docked)
 {
-    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
+	GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (docked);
 
-    return gimp_docked_get_show_button_bar (GIMP_DOCKED (editor->view));
+	return gimp_docked_get_show_button_bar (GIMP_DOCKED (editor->view));
 }
 
 void
 gimp_container_editor_bind_to_async_set (GimpContainerEditor *editor,
-        GimpAsyncSet        *async_set,
-        const gchar         *message)
+                                         GimpAsyncSet        *async_set,
+                                         const gchar         *message)
 {
-    g_return_if_fail (GIMP_IS_CONTAINER_EDITOR (editor));
-    g_return_if_fail (async_set == NULL || GIMP_IS_ASYNC_SET (async_set));
-    g_return_if_fail (async_set == NULL || message != NULL);
+	g_return_if_fail (GIMP_IS_CONTAINER_EDITOR (editor));
+	g_return_if_fail (async_set == NULL || GIMP_IS_ASYNC_SET (async_set));
+	g_return_if_fail (async_set == NULL || message != NULL);
 
-    if (! async_set && ! editor->priv->async_set_binding)
-        return;
+	if (!async_set && !editor->priv->async_set_binding)
+		return;
 
-    g_clear_object (&editor->priv->async_set_binding);
+	g_clear_object (&editor->priv->async_set_binding);
 
-    if (async_set)
-    {
-        gimp_busy_box_set_message (GIMP_BUSY_BOX (editor->priv->busy_box),
-                                   message);
+	if (async_set)
+	{
+		gimp_busy_box_set_message (GIMP_BUSY_BOX (editor->priv->busy_box),
+		                           message);
 
-        editor->priv->async_set_binding = g_object_bind_property (
-                                              async_set,              "empty",
-                                              editor->priv->busy_box, "visible",
-                                              G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
-    }
-    else
-    {
-        gtk_widget_hide (editor->priv->busy_box);
-    }
+		editor->priv->async_set_binding = g_object_bind_property (
+			async_set,              "empty",
+			editor->priv->busy_box, "visible",
+			G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+	}
+	else
+	{
+		gtk_widget_hide (editor->priv->busy_box);
+	}
 }

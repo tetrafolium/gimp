@@ -38,18 +38,18 @@
 
 
 typedef struct _GimpPolarPrivate GimpPolarPrivate;
-typedef struct _GimpPolarClass   GimpPolarClass;
+typedef struct _GimpPolarClass GimpPolarClass;
 
 struct _GimpPolar
 {
-    GimpCircle       parent_instance;
+	GimpCircle parent_instance;
 
-    GimpPolarPrivate *priv;
+	GimpPolarPrivate *priv;
 };
 
 struct _GimpPolarClass
 {
-    GimpCircleClass  parent_class;
+	GimpCircleClass parent_class;
 };
 
 

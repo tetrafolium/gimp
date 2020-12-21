@@ -31,16 +31,16 @@
 
 
 typedef struct _GimpColorPickerOptions GimpColorPickerOptions;
-typedef struct _GimpToolOptionsClass   GimpColorPickerOptionsClass;
+typedef struct _GimpToolOptionsClass GimpColorPickerOptionsClass;
 
 struct _GimpColorPickerOptions
 {
-    GimpColorOptions     parent_instance;
+	GimpColorOptions parent_instance;
 
-    GimpColorPickTarget  pick_target;
-    gboolean             use_info_window;
-    GimpColorPickMode    frame1_mode;
-    GimpColorPickMode    frame2_mode;
+	GimpColorPickTarget pick_target;
+	gboolean use_info_window;
+	GimpColorPickMode frame1_mode;
+	GimpColorPickMode frame2_mode;
 };
 
 

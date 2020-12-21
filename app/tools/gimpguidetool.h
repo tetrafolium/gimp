@@ -31,44 +31,44 @@
 
 
 typedef struct _GimpGuideToolGuide GimpGuideToolGuide;
-typedef struct _GimpGuideTool      GimpGuideTool;
+typedef struct _GimpGuideTool GimpGuideTool;
 typedef struct _GimpGuideToolClass GimpGuideToolClass;
 
 struct _GimpGuideToolGuide
 {
-    GimpGuide           *guide;
+	GimpGuide           *guide;
 
-    gint                 old_position;
-    gint                 position;
-    GimpOrientationType  orientation;
-    gboolean             custom;
+	gint old_position;
+	gint position;
+	GimpOrientationType orientation;
+	gboolean custom;
 };
 
 struct _GimpGuideTool
 {
-    GimpDrawTool        parent_instance;
+	GimpDrawTool parent_instance;
 
-    GimpGuideToolGuide *guides;
-    gint                n_guides;
+	GimpGuideToolGuide *guides;
+	gint n_guides;
 };
 
 struct _GimpGuideToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
 GType   gimp_guide_tool_get_type        (void) G_GNUC_CONST;
 
 void    gimp_guide_tool_start_new       (GimpTool            *parent_tool,
-        GimpDisplay         *display,
-        GimpOrientationType  orientation);
+                                         GimpDisplay         *display,
+                                         GimpOrientationType orientation);
 void    gimp_guide_tool_start_edit      (GimpTool            *parent_tool,
-        GimpDisplay         *display,
-        GimpGuide           *guide);
+                                         GimpDisplay         *display,
+                                         GimpGuide           *guide);
 void    gimp_guide_tool_start_edit_many (GimpTool            *parent_tool,
-        GimpDisplay         *display,
-        GList               *guides);
+                                         GimpDisplay         *display,
+                                         GList               *guides);
 
 
 #endif  /*  __GIMP_GUIDE_TOOL_H__  */

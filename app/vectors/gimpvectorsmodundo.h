@@ -30,19 +30,19 @@
 #define GIMP_VECTORS_MOD_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VECTORS_MOD_UNDO, GimpVectorsModUndoClass))
 
 
-typedef struct _GimpVectorsModUndo      GimpVectorsModUndo;
+typedef struct _GimpVectorsModUndo GimpVectorsModUndo;
 typedef struct _GimpVectorsModUndoClass GimpVectorsModUndoClass;
 
 struct _GimpVectorsModUndo
 {
-    GimpItemUndo  parent_instance;
+	GimpItemUndo parent_instance;
 
-    GimpVectors  *vectors;
+	GimpVectors  *vectors;
 };
 
 struct _GimpVectorsModUndoClass
 {
-    GimpItemUndoClass  parent_class;
+	GimpItemUndoClass parent_class;
 };
 
 

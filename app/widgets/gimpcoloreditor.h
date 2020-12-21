@@ -37,20 +37,20 @@ typedef struct _GimpColorEditorClass GimpColorEditorClass;
 
 struct _GimpColorEditor
 {
-    GimpEditor   parent_instance;
+	GimpEditor parent_instance;
 
-    GimpContext *context;
-    gboolean     edit_bg;
+	GimpContext *context;
+	gboolean edit_bg;
 
-    GtkWidget   *hbox;
-    GtkWidget   *notebook;
-    GtkWidget   *fg_bg;
-    GtkWidget   *hex_entry;
+	GtkWidget   *hbox;
+	GtkWidget   *notebook;
+	GtkWidget   *fg_bg;
+	GtkWidget   *hex_entry;
 };
 
 struct _GimpColorEditorClass
 {
-    GimpEditorClass  parent_class;
+	GimpEditorClass parent_class;
 };
 
 

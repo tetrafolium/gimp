@@ -32,24 +32,24 @@
 #define GIMP_FLIP_TOOL_GET_OPTIONS(t)  (GIMP_FLIP_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpFlipTool      GimpFlipTool;
+typedef struct _GimpFlipTool GimpFlipTool;
 typedef struct _GimpFlipToolClass GimpFlipToolClass;
 
 struct _GimpFlipTool
 {
-    GimpTransformTool  parent_instance;
+	GimpTransformTool parent_instance;
 
-    GimpGuide         *guide;
+	GimpGuide         *guide;
 };
 
 struct _GimpFlipToolClass
 {
-    GimpTransformToolClass  parent_class;
+	GimpTransformToolClass parent_class;
 };
 
 
-void    gimp_flip_tool_register (GimpToolRegisterCallback  callback,
-                                 gpointer                  data);
+void    gimp_flip_tool_register (GimpToolRegisterCallback callback,
+                                 gpointer data);
 
 GType   gimp_flip_tool_get_type (void) G_GNUC_CONST;
 

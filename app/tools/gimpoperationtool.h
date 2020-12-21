@@ -30,42 +30,42 @@
 #define GIMP_OPERATION_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OPERATION_TOOL, GimpOperationToolClass))
 
 
-typedef struct _GimpOperationTool      GimpOperationTool;
+typedef struct _GimpOperationTool GimpOperationTool;
 typedef struct _GimpOperationToolClass GimpOperationToolClass;
 
 struct _GimpOperationTool
 {
-    GimpFilterTool  parent_instance;
+	GimpFilterTool parent_instance;
 
-    gchar          *operation;
-    gchar          *description;
+	gchar          *operation;
+	gchar          *description;
 
-    GList          *aux_inputs;
+	GList          *aux_inputs;
 
-    /* dialog */
-    GWeakRef        options_sw_ref;
-    GWeakRef        options_box_ref;
-    GWeakRef        options_gui_ref;
+	/* dialog */
+	GWeakRef options_sw_ref;
+	GWeakRef options_box_ref;
+	GWeakRef options_gui_ref;
 };
 
 struct _GimpOperationToolClass
 {
-    GimpFilterToolClass  parent_class;
+	GimpFilterToolClass parent_class;
 };
 
 
-void    gimp_operation_tool_register      (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_operation_tool_register      (GimpToolRegisterCallback callback,
+                                           gpointer data);
 
 GType   gimp_operation_tool_get_type      (void) G_GNUC_CONST;
 
 void    gimp_operation_tool_set_operation (GimpOperationTool        *op_tool,
-        const gchar              *operation,
-        const gchar              *title,
-        const gchar              *description,
-        const gchar              *undo_desc,
-        const gchar              *icon_name,
-        const gchar              *help_id);
+                                           const gchar              *operation,
+                                           const gchar              *title,
+                                           const gchar              *description,
+                                           const gchar              *undo_desc,
+                                           const gchar              *icon_name,
+                                           const gchar              *help_id);
 
 
 #endif  /*  __GIMP_OPERATION_TOOL_H__  */

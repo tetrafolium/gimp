@@ -34,31 +34,31 @@ typedef struct _GimpColorHistoryClass GimpColorHistoryClass;
 
 struct _GimpColorHistory
 {
-    GtkGrid       parent_instance;
+	GtkGrid parent_instance;
 
-    GimpContext  *context;
-    GimpImage    *active_image;
+	GimpContext  *context;
+	GimpImage    *active_image;
 
-    GtkWidget   **color_areas;
-    GtkWidget   **buttons;
-    gint          history_size;
-    gint          n_rows;
+	GtkWidget   **color_areas;
+	GtkWidget   **buttons;
+	gint history_size;
+	gint n_rows;
 };
 
 struct _GimpColorHistoryClass
 {
-    GtkGridClass  parent_class;
+	GtkGridClass parent_class;
 
-    /*  signals  */
-    void   (* color_selected) (GimpColorHistory *history,
-                               const GimpRGB    *rgb);
+	/*  signals  */
+	void (* color_selected) (GimpColorHistory *history,
+	                         const GimpRGB    *rgb);
 };
 
 
 GType       gimp_color_history_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_color_history_new      (GimpContext     *context,
-        gint             history_size);
+                                         gint history_size);
 
 #endif /* __GIMP_COLOR_HISTORY_H__ */
 

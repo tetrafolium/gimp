@@ -32,20 +32,20 @@
 #define GIMP_SEAMLESS_CLONE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS, GimpSeamlessCloneOptionsClass))
 
 
-typedef struct _GimpSeamlessCloneOptions      GimpSeamlessCloneOptions;
+typedef struct _GimpSeamlessCloneOptions GimpSeamlessCloneOptions;
 typedef struct _GimpSeamlessCloneOptionsClass GimpSeamlessCloneOptionsClass;
 
 struct _GimpSeamlessCloneOptions
 {
-    GimpToolOptions parent_instance;
+	GimpToolOptions parent_instance;
 
-    gint            max_refine_scale;
-    gboolean        temp;
+	gint max_refine_scale;
+	gboolean temp;
 };
 
 struct _GimpSeamlessCloneOptionsClass
 {
-    GimpToolOptionsClass  parent_class;
+	GimpToolOptionsClass parent_class;
 };
 
 

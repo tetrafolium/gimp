@@ -32,23 +32,23 @@ G_BEGIN_DECLS
 #define GIMP_PROGRESS_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PROGRESS_BOX, GimpProgressBoxClass))
 
 
-typedef struct _GimpProgressBoxClass  GimpProgressBoxClass;
+typedef struct _GimpProgressBoxClass GimpProgressBoxClass;
 
 struct _GimpProgressBox
 {
-    GtkBox     parent_instance;
+	GtkBox parent_instance;
 
-    gboolean   active;
-    gboolean   cancellable;
-    gdouble    value;
+	gboolean active;
+	gboolean cancellable;
+	gdouble value;
 
-    GtkWidget *label;
-    GtkWidget *progress;
+	GtkWidget *label;
+	GtkWidget *progress;
 };
 
 struct _GimpProgressBoxClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 };
 
 

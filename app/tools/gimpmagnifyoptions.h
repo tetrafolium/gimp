@@ -30,15 +30,15 @@
 #define GIMP_MAGNIFY_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MAGNIFY_OPTIONS, GimpMagnifyOptionsClass))
 
 
-typedef struct _GimpMagnifyOptions   GimpMagnifyOptions;
+typedef struct _GimpMagnifyOptions GimpMagnifyOptions;
 typedef struct _GimpToolOptionsClass GimpMagnifyOptionsClass;
 
 struct _GimpMagnifyOptions
 {
-    GimpToolOptions   parent_instance;
+	GimpToolOptions parent_instance;
 
-    gboolean          auto_resize;
-    GimpZoomType      zoom_type;
+	gboolean auto_resize;
+	GimpZoomType zoom_type;
 };
 
 

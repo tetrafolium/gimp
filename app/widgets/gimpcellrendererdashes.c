@@ -40,33 +40,33 @@
 
 enum
 {
-    PROP_0,
-    PROP_PATTERN
+	PROP_0,
+	PROP_PATTERN
 };
 
 
 static void gimp_cell_renderer_dashes_finalize     (GObject            *object);
 static void gimp_cell_renderer_dashes_get_property (GObject            *object,
-        guint               param_id,
-        GValue             *value,
-        GParamSpec         *pspec);
+                                                    guint param_id,
+                                                    GValue             *value,
+                                                    GParamSpec         *pspec);
 static void gimp_cell_renderer_dashes_set_property (GObject            *object,
-        guint               param_id,
-        const GValue       *value,
-        GParamSpec         *pspec);
+                                                    guint param_id,
+                                                    const GValue       *value,
+                                                    GParamSpec         *pspec);
 static void gimp_cell_renderer_dashes_get_size     (GtkCellRenderer    *cell,
-        GtkWidget          *widget,
-        const GdkRectangle *rectangle,
-        gint               *x_offset,
-        gint               *y_offset,
-        gint               *width,
-        gint               *height);
+                                                    GtkWidget          *widget,
+                                                    const GdkRectangle *rectangle,
+                                                    gint               *x_offset,
+                                                    gint               *y_offset,
+                                                    gint               *width,
+                                                    gint               *height);
 static void gimp_cell_renderer_dashes_render       (GtkCellRenderer    *cell,
-        cairo_t            *cr,
-        GtkWidget          *widget,
-        const GdkRectangle *background_area,
-        const GdkRectangle *cell_area,
-        GtkCellRendererState flags);
+                                                    cairo_t            *cr,
+                                                    GtkWidget          *widget,
+                                                    const GdkRectangle *background_area,
+                                                    const GdkRectangle *cell_area,
+                                                    GtkCellRendererState flags);
 
 
 G_DEFINE_TYPE (GimpCellRendererDashes, gimp_cell_renderer_dashes,
@@ -78,66 +78,66 @@ G_DEFINE_TYPE (GimpCellRendererDashes, gimp_cell_renderer_dashes,
 static void
 gimp_cell_renderer_dashes_class_init (GimpCellRendererDashesClass *klass)
 {
-    GObjectClass         *object_class = G_OBJECT_CLASS (klass);
-    GtkCellRendererClass *cell_class   = GTK_CELL_RENDERER_CLASS (klass);
+	GObjectClass         *object_class = G_OBJECT_CLASS (klass);
+	GtkCellRendererClass *cell_class   = GTK_CELL_RENDERER_CLASS (klass);
 
-    object_class->finalize     = gimp_cell_renderer_dashes_finalize;
-    object_class->get_property = gimp_cell_renderer_dashes_get_property;
-    object_class->set_property = gimp_cell_renderer_dashes_set_property;
+	object_class->finalize     = gimp_cell_renderer_dashes_finalize;
+	object_class->get_property = gimp_cell_renderer_dashes_get_property;
+	object_class->set_property = gimp_cell_renderer_dashes_set_property;
 
-    cell_class->get_size       = gimp_cell_renderer_dashes_get_size;
-    cell_class->render         = gimp_cell_renderer_dashes_render;
+	cell_class->get_size       = gimp_cell_renderer_dashes_get_size;
+	cell_class->render         = gimp_cell_renderer_dashes_render;
 
-    g_object_class_install_property (object_class, PROP_PATTERN,
-                                     g_param_spec_boxed ("pattern", NULL, NULL,
-                                             GIMP_TYPE_DASH_PATTERN,
-                                             GIMP_PARAM_WRITABLE));
+	g_object_class_install_property (object_class, PROP_PATTERN,
+	                                 g_param_spec_boxed ("pattern", NULL, NULL,
+	                                                     GIMP_TYPE_DASH_PATTERN,
+	                                                     GIMP_PARAM_WRITABLE));
 }
 
 static void
 gimp_cell_renderer_dashes_init (GimpCellRendererDashes *dashes)
 {
-    dashes->segments = g_new0 (gboolean, N_SEGMENTS);
+	dashes->segments = g_new0 (gboolean, N_SEGMENTS);
 }
 
 static void
 gimp_cell_renderer_dashes_finalize (GObject *object)
 {
-    GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (object);
+	GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (object);
 
-    g_free (dashes->segments);
+	g_free (dashes->segments);
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gimp_cell_renderer_dashes_get_property (GObject    *object,
-                                        guint       param_id,
+                                        guint param_id,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
 }
 
 static void
 gimp_cell_renderer_dashes_set_property (GObject      *object,
-                                        guint         param_id,
+                                        guint param_id,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-    GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (object);
+	GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (object);
 
-    switch (param_id)
-    {
-    case PROP_PATTERN:
-        gimp_dash_pattern_fill_segments (g_value_get_boxed (value),
-                                         dashes->segments, N_SEGMENTS);
-        break;
+	switch (param_id)
+	{
+	case PROP_PATTERN:
+		gimp_dash_pattern_fill_segments (g_value_get_boxed (value),
+		                                 dashes->segments, N_SEGMENTS);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+		break;
+	}
 }
 
 static void
@@ -149,42 +149,42 @@ gimp_cell_renderer_dashes_get_size (GtkCellRenderer    *cell,
                                     gint               *width,
                                     gint               *height)
 {
-    gfloat xalign, yalign;
-    gint   xpad, ypad;
+	gfloat xalign, yalign;
+	gint xpad, ypad;
 
-    gtk_cell_renderer_get_alignment (cell, &xalign, &yalign);
-    gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+	gtk_cell_renderer_get_alignment (cell, &xalign, &yalign);
+	gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
 
-    if (cell_area)
-    {
-        if (x_offset)
-        {
-            gdouble align;
+	if (cell_area)
+	{
+		if (x_offset)
+		{
+			gdouble align;
 
-            align = ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
-                     1.0 - xalign : xalign);
+			align = ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
+			         1.0 - xalign : xalign);
 
-            *x_offset = align * (cell_area->width - DASHES_WIDTH);
-            *x_offset = MAX (*x_offset, 0) + xpad;
-        }
+			*x_offset = align * (cell_area->width - DASHES_WIDTH);
+			*x_offset = MAX (*x_offset, 0) + xpad;
+		}
 
-        if (y_offset)
-        {
-            *y_offset = yalign * (cell_area->height - DASHES_HEIGHT);
-            *y_offset = MAX (*y_offset, 0) + ypad;
-        }
-    }
-    else
-    {
-        if (x_offset)
-            *x_offset = 0;
+		if (y_offset)
+		{
+			*y_offset = yalign * (cell_area->height - DASHES_HEIGHT);
+			*y_offset = MAX (*y_offset, 0) + ypad;
+		}
+	}
+	else
+	{
+		if (x_offset)
+			*x_offset = 0;
 
-        if (y_offset)
-            *y_offset = 0;
-    }
+		if (y_offset)
+			*y_offset = 0;
+	}
 
-    *width  = DASHES_WIDTH  + 2 * xpad;
-    *height = DASHES_HEIGHT + 2 * ypad;
+	*width  = DASHES_WIDTH  + 2 * xpad;
+	*height = DASHES_HEIGHT + 2 * ypad;
 }
 
 static void
@@ -193,43 +193,43 @@ gimp_cell_renderer_dashes_render (GtkCellRenderer      *cell,
                                   GtkWidget            *widget,
                                   const GdkRectangle   *background_area,
                                   const GdkRectangle   *cell_area,
-                                  GtkCellRendererState  flags)
+                                  GtkCellRendererState flags)
 {
-    GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (cell);
-    GtkStyleContext        *style  = gtk_widget_get_style_context (widget);
-    GtkStateType            state;
-    GdkRGBA                 color;
-    gint                    xpad, ypad;
-    gint                    width;
-    gint                    x, y;
+	GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (cell);
+	GtkStyleContext        *style  = gtk_widget_get_style_context (widget);
+	GtkStateType state;
+	GdkRGBA color;
+	gint xpad, ypad;
+	gint width;
+	gint x, y;
 
-    gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+	gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
 
-    state = gtk_cell_renderer_get_state (cell, widget, flags);
+	state = gtk_cell_renderer_get_state (cell, widget, flags);
 
-    y = cell_area->y + (cell_area->height - DASHES_HEIGHT) / 2;
-    width = cell_area->width - 2 * xpad;
+	y = cell_area->y + (cell_area->height - DASHES_HEIGHT) / 2;
+	width = cell_area->width - 2 * xpad;
 
-    for (x = 0; x < width + BLOCK_WIDTH; x += BLOCK_WIDTH)
-    {
-        guint index = ((guint) x / BLOCK_WIDTH) % N_SEGMENTS;
+	for (x = 0; x < width + BLOCK_WIDTH; x += BLOCK_WIDTH)
+	{
+		guint index = ((guint) x / BLOCK_WIDTH) % N_SEGMENTS;
 
-        if (dashes->segments[index])
-        {
-            cairo_rectangle (cr,
-                             cell_area->x + xpad + x, y,
-                             MIN (BLOCK_WIDTH, width - x), DASHES_HEIGHT);
-        }
-    }
+		if (dashes->segments[index])
+		{
+			cairo_rectangle (cr,
+			                 cell_area->x + xpad + x, y,
+			                 MIN (BLOCK_WIDTH, width - x), DASHES_HEIGHT);
+		}
+	}
 
-    gtk_style_context_get_color (style, state, &color);
-    gdk_cairo_set_source_rgba (cr, &color);
+	gtk_style_context_get_color (style, state, &color);
+	gdk_cairo_set_source_rgba (cr, &color);
 
-    cairo_fill (cr);
+	cairo_fill (cr);
 }
 
 GtkCellRenderer *
 gimp_cell_renderer_dashes_new (void)
 {
-    return g_object_new (GIMP_TYPE_CELL_RENDERER_DASHES, NULL);
+	return g_object_new (GIMP_TYPE_CELL_RENDERER_DASHES, NULL);
 }

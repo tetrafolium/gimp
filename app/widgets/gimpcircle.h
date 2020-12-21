@@ -35,20 +35,20 @@
 
 
 typedef struct _GimpCirclePrivate GimpCirclePrivate;
-typedef struct _GimpCircleClass   GimpCircleClass;
+typedef struct _GimpCircleClass GimpCircleClass;
 
 struct _GimpCircle
 {
-    GtkWidget          parent_instance;
+	GtkWidget parent_instance;
 
-    GimpCirclePrivate *priv;
+	GimpCirclePrivate *priv;
 };
 
 struct _GimpCircleClass
 {
-    GtkWidgetClass  parent_class;
+	GtkWidgetClass parent_class;
 
-    void (* reset_target) (GimpCircle *circle);
+	void (* reset_target) (GimpCircle *circle);
 };
 
 
@@ -58,9 +58,9 @@ GtkWidget    * gimp_circle_new                     (void);
 
 gboolean       _gimp_circle_has_grab               (GimpCircle *circle);
 gdouble        _gimp_circle_get_angle_and_distance (GimpCircle *circle,
-        gdouble     event_x,
-        gdouble     event_y,
-        gdouble    *distance);
+                                                    gdouble event_x,
+                                                    gdouble event_y,
+                                                    gdouble    *distance);
 
 
 #endif /* __GIMP_CIRCLE_H__ */

@@ -24,8 +24,8 @@ void       gimp_tools_exit        (Gimp              *gimp);
 
 void       gimp_tools_restore     (Gimp              *gimp);
 void       gimp_tools_save        (Gimp              *gimp,
-                                   gboolean           save_tool_options,
-                                   gboolean           always_save);
+                                   gboolean save_tool_options,
+                                   gboolean always_save);
 
 gboolean   gimp_tools_clear       (Gimp              *gimp,
                                    GError           **error);
@@ -39,7 +39,7 @@ gboolean   gimp_tools_deserialize (Gimp              *gimp,
 
 void       gimp_tools_reset       (Gimp              *gimp,
                                    GimpContainer     *container,
-                                   gboolean           user_toolrc);
+                                   gboolean user_toolrc);
 
 
 #endif  /* __GIMP_TOOLS_H__ */

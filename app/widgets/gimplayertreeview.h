@@ -33,19 +33,19 @@
 #define GIMP_LAYER_TREE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LAYER_TREE_VIEW, GimpLayerTreeViewClass))
 
 
-typedef struct _GimpLayerTreeViewClass   GimpLayerTreeViewClass;
+typedef struct _GimpLayerTreeViewClass GimpLayerTreeViewClass;
 typedef struct _GimpLayerTreeViewPrivate GimpLayerTreeViewPrivate;
 
 struct _GimpLayerTreeView
 {
-    GimpDrawableTreeView      parent_instance;
+	GimpDrawableTreeView parent_instance;
 
-    GimpLayerTreeViewPrivate *priv;
+	GimpLayerTreeViewPrivate *priv;
 };
 
 struct _GimpLayerTreeViewClass
 {
-    GimpDrawableTreeViewClass  parent_class;
+	GimpDrawableTreeViewClass parent_class;
 };
 
 

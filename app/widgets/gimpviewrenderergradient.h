@@ -31,35 +31,35 @@
 #define GIMP_VIEW_RENDERER_GRADIENT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_GRADIENT, GimpViewRendererGradientClass))
 
 
-typedef struct _GimpViewRendererGradientClass  GimpViewRendererGradientClass;
+typedef struct _GimpViewRendererGradientClass GimpViewRendererGradientClass;
 
 struct _GimpViewRendererGradient
 {
-    GimpViewRenderer            parent_instance;
+	GimpViewRenderer parent_instance;
 
-    gdouble                     left;
-    gdouble                     right;
-    gboolean                    reverse;
-    GimpGradientBlendColorSpace blend_color_space;
-    gboolean                    has_fg_bg_segments;
+	gdouble left;
+	gdouble right;
+	gboolean reverse;
+	GimpGradientBlendColorSpace blend_color_space;
+	gboolean has_fg_bg_segments;
 };
 
 struct _GimpViewRendererGradientClass
 {
-    GimpViewRendererClass  parent_class;
+	GimpViewRendererClass parent_class;
 };
 
 
 GType   gimp_view_renderer_gradient_get_type    (void) G_GNUC_CONST;
 
 void    gimp_view_renderer_gradient_set_offsets (GimpViewRendererGradient    *renderer,
-        gdouble                      left,
-        gdouble                      right);
+                                                 gdouble left,
+                                                 gdouble right);
 void    gimp_view_renderer_gradient_set_reverse (GimpViewRendererGradient    *renderer,
-        gboolean                     reverse);
+                                                 gboolean reverse);
 void    gimp_view_renderer_gradient_set_blend_color_space
-(GimpViewRendererGradient    *renderer,
- GimpGradientBlendColorSpace  blend_color_space);
+        (GimpViewRendererGradient    *renderer,
+        GimpGradientBlendColorSpace blend_color_space);
 
 
 #endif /* __GIMP_VIEW_RENDERER_GRADIENT_H__ */

@@ -24,16 +24,16 @@
 
 enum
 {
-    GIMP_ACTION_VIEW_COLUMN_VISIBLE,
-    GIMP_ACTION_VIEW_COLUMN_ACTION,
-    GIMP_ACTION_VIEW_COLUMN_ICON_NAME,
-    GIMP_ACTION_VIEW_COLUMN_LABEL,
-    GIMP_ACTION_VIEW_COLUMN_LABEL_CASEFOLD,
-    GIMP_ACTION_VIEW_COLUMN_NAME,
-    GIMP_ACTION_VIEW_COLUMN_ACCEL_KEY,
-    GIMP_ACTION_VIEW_COLUMN_ACCEL_MASK,
-    GIMP_ACTION_VIEW_COLUMN_ACCEL_CLOSURE,
-    GIMP_ACTION_VIEW_N_COLUMNS
+	GIMP_ACTION_VIEW_COLUMN_VISIBLE,
+	GIMP_ACTION_VIEW_COLUMN_ACTION,
+	GIMP_ACTION_VIEW_COLUMN_ICON_NAME,
+	GIMP_ACTION_VIEW_COLUMN_LABEL,
+	GIMP_ACTION_VIEW_COLUMN_LABEL_CASEFOLD,
+	GIMP_ACTION_VIEW_COLUMN_NAME,
+	GIMP_ACTION_VIEW_COLUMN_ACCEL_KEY,
+	GIMP_ACTION_VIEW_COLUMN_ACCEL_MASK,
+	GIMP_ACTION_VIEW_COLUMN_ACCEL_CLOSURE,
+	GIMP_ACTION_VIEW_N_COLUMNS
 };
 
 
@@ -49,28 +49,28 @@ typedef struct _GimpActionViewClass GimpActionViewClass;
 
 struct _GimpActionView
 {
-    GtkTreeView    parent_instance;
+	GtkTreeView parent_instance;
 
-    GimpUIManager *manager;
-    gboolean       show_shortcuts;
+	GimpUIManager *manager;
+	gboolean show_shortcuts;
 
-    gchar         *filter;
+	gchar         *filter;
 };
 
 struct _GimpActionViewClass
 {
-    GtkTreeViewClass  parent_class;
+	GtkTreeViewClass parent_class;
 };
 
 
 GType       gimp_action_view_get_type   (void) G_GNUC_CONST;
 
 GtkWidget * gimp_action_view_new        (GimpUIManager  *manager,
-        const gchar    *select_action,
-        gboolean        show_shortcuts);
+                                         const gchar    *select_action,
+                                         gboolean show_shortcuts);
 
 void        gimp_action_view_set_filter (GimpActionView *view,
-        const gchar    *filter);
+                                         const gchar    *filter);
 
 
 #endif  /*  __GIMP_ACTION_VIEW_H__  */

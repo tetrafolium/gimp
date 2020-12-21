@@ -32,7 +32,7 @@
 /*  local function prototypes  */
 
 static gint   gimp_pixbuf_format_compare (GdkPixbufFormat *a,
-        GdkPixbufFormat *b);
+                                          GdkPixbufFormat *b);
 
 
 /*  public functions  */
@@ -40,78 +40,78 @@ static gint   gimp_pixbuf_format_compare (GdkPixbufFormat *a,
 GSList *
 gimp_pixbuf_get_formats (void)
 {
-    return g_slist_sort (gdk_pixbuf_get_formats (),
-                         (GCompareFunc) gimp_pixbuf_format_compare);
+	return g_slist_sort (gdk_pixbuf_get_formats (),
+	                     (GCompareFunc) gimp_pixbuf_format_compare);
 }
 
 void
 gimp_pixbuf_targets_add (GtkTargetList *target_list,
-                         guint          info,
-                         gboolean       writable)
+                         guint info,
+                         gboolean writable)
 {
-    GSList *formats;
-    GSList *list;
+	GSList *formats;
+	GSList *list;
 
-    g_return_if_fail (target_list != NULL);
+	g_return_if_fail (target_list != NULL);
 
-    formats = gimp_pixbuf_get_formats ();
+	formats = gimp_pixbuf_get_formats ();
 
-    for (list = formats; list; list = g_slist_next (list))
-    {
-        GdkPixbufFormat  *format = list->data;
-        gchar           **mime_types;
-        gchar           **type;
+	for (list = formats; list; list = g_slist_next (list))
+	{
+		GdkPixbufFormat  *format = list->data;
+		gchar           **mime_types;
+		gchar           **type;
 
-        if (writable && ! gdk_pixbuf_format_is_writable (format))
-            continue;
+		if (writable && !gdk_pixbuf_format_is_writable (format))
+			continue;
 
-        mime_types = gdk_pixbuf_format_get_mime_types (format);
+		mime_types = gdk_pixbuf_format_get_mime_types (format);
 
-        for (type = mime_types; *type; type++)
-        {
-            /*  skip Windows ICO as writable format  */
-            if (writable && strcmp (*type, "image/x-icon") == 0)
-                continue;
+		for (type = mime_types; *type; type++)
+		{
+			/*  skip Windows ICO as writable format  */
+			if (writable && strcmp (*type, "image/x-icon") == 0)
+				continue;
 
-            gtk_target_list_add (target_list,
-                                 gdk_atom_intern (*type, FALSE), 0, info);
+			gtk_target_list_add (target_list,
+			                     gdk_atom_intern (*type, FALSE), 0, info);
 
-        }
+		}
 
-        g_strfreev (mime_types);
-    }
+		g_strfreev (mime_types);
+	}
 
-    g_slist_free (formats);
+	g_slist_free (formats);
 }
 
 void
 gimp_pixbuf_targets_remove (GtkTargetList *target_list)
 {
-    GSList *formats;
-    GSList *list;
+	GSList *formats;
+	GSList *list;
 
-    g_return_if_fail (target_list != NULL);
+	g_return_if_fail (target_list != NULL);
 
-    formats = gimp_pixbuf_get_formats ();
+	formats = gimp_pixbuf_get_formats ();
 
-    for (list = formats; list; list = g_slist_next (list))
-    {
-        GdkPixbufFormat  *format = list->data;
-        gchar           **mime_types;
-        gchar           **type;
+	for (list = formats; list; list = g_slist_next (list))
+	{
+		GdkPixbufFormat  *format = list->data;
+		gchar           **mime_types;
+		gchar           **type;
 
-        mime_types = gdk_pixbuf_format_get_mime_types (format);
+		mime_types = gdk_pixbuf_format_get_mime_types (format);
 
-        for (type = mime_types; *type; type++)
-        {
-            gtk_target_list_remove (target_list,
-                                    gdk_atom_intern (*type, FALSE));
-        }
+		for (type = mime_types; *type; type++)
+		{
+			gtk_target_list_remove (target_list,
+			                        gdk_atom_intern (*type, FALSE));
+		}
 
-        g_strfreev (mime_types);
-    }
+		g_strfreev (mime_types);
+	}
 
-    g_slist_free (formats);
+	g_slist_free (formats);
 }
 
 
@@ -121,30 +121,30 @@ static gint
 gimp_pixbuf_format_compare (GdkPixbufFormat *a,
                             GdkPixbufFormat *b)
 {
-    gchar *a_name = gdk_pixbuf_format_get_name (a);
-    gchar *b_name = gdk_pixbuf_format_get_name (b);
-    gint   retval = 0;
+	gchar *a_name = gdk_pixbuf_format_get_name (a);
+	gchar *b_name = gdk_pixbuf_format_get_name (b);
+	gint retval = 0;
 
-    /*  move PNG to the front of the list  */
-    if (strcmp (a_name, "png") == 0)
-        retval = -1;
-    else if (strcmp (b_name, "png") == 0)
-        retval = 1;
+	/*  move PNG to the front of the list  */
+	if (strcmp (a_name, "png") == 0)
+		retval = -1;
+	else if (strcmp (b_name, "png") == 0)
+		retval = 1;
 
-    /*  move JPEG to the end of the list  */
-    else if (strcmp (a_name, "jpeg") == 0)
-        retval = 1;
-    else if (strcmp (b_name, "jpeg") == 0)
-        retval = -1;
+	/*  move JPEG to the end of the list  */
+	else if (strcmp (a_name, "jpeg") == 0)
+		retval = 1;
+	else if (strcmp (b_name, "jpeg") == 0)
+		retval = -1;
 
-    /*  move GIF to the end of the list  */
-    else if (strcmp (a_name, "gif") == 0)
-        retval = 1;
-    else if (strcmp (b_name, "gif") == 0)
-        retval = -1;
+	/*  move GIF to the end of the list  */
+	else if (strcmp (a_name, "gif") == 0)
+		retval = 1;
+	else if (strcmp (b_name, "gif") == 0)
+		retval = -1;
 
-    g_free (a_name);
-    g_free (b_name);
+	g_free (a_name);
+	g_free (b_name);
 
-    return retval;
+	return retval;
 }

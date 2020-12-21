@@ -32,36 +32,36 @@
 #define GIMP_PAINT_SELECT_TOOL_GET_OPTIONS(t)  (GIMP_PAINT_SELECT_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpPaintSelectTool      GimpPaintSelectTool;
+typedef struct _GimpPaintSelectTool GimpPaintSelectTool;
 typedef struct _GimpPaintSelectToolClass GimpPaintSelectToolClass;
 
 struct _GimpPaintSelectTool
 {
-    GimpDrawTool           parent_instance;
+	GimpDrawTool parent_instance;
 
-    GeglBuffer            *trimap;
-    GeglBuffer            *image_mask;
-    GeglBuffer            *drawable;
-    GeglBuffer            *scribble;
+	GeglBuffer            *trimap;
+	GeglBuffer            *image_mask;
+	GeglBuffer            *drawable;
+	GeglBuffer            *scribble;
 
-    gint                   drawable_off_x;
-    gint                   drawable_off_y;
+	gint drawable_off_x;
+	gint drawable_off_y;
 
-    GeglNode              *graph;
-    GeglNode              *ps_node;
-    GeglNode              *render_node;
+	GeglNode              *graph;
+	GeglNode              *ps_node;
+	GeglNode              *render_node;
 
-    GimpVector2            last_pos;
+	GimpVector2 last_pos;
 };
 
 struct _GimpPaintSelectToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_paint_select_tool_register (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_paint_select_tool_register (GimpToolRegisterCallback callback,
+                                         gpointer data);
 
 GType   gimp_paint_select_tool_get_type (void) G_GNUC_CONST;
 

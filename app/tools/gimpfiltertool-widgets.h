@@ -22,15 +22,15 @@
 
 
 GimpToolWidget * gimp_filter_tool_create_widget (GimpFilterTool     *filter_tool,
-        GimpControllerType  controller_type,
-        const gchar        *status_title,
-        GCallback           callback,
-        gpointer            callback_data,
-        GCallback          *set_func,
-        gpointer           *set_func_data);
+                                                 GimpControllerType controller_type,
+                                                 const gchar        *status_title,
+                                                 GCallback callback,
+                                                 gpointer callback_data,
+                                                 GCallback          *set_func,
+                                                 gpointer           *set_func_data);
 
 void             gimp_filter_tool_reset_widget  (GimpFilterTool     *filter_tool,
-        GimpToolWidget     *widget);
+                                                 GimpToolWidget     *widget);
 
 
 #endif /* __GIMP_FILTER_TOOL_WIDGETS_H__ */

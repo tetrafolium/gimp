@@ -30,28 +30,28 @@
 #define GIMP_THRESHOLD_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_THRESHOLD_TOOL, GimpThresholdToolClass))
 
 
-typedef struct _GimpThresholdTool      GimpThresholdTool;
+typedef struct _GimpThresholdTool GimpThresholdTool;
 typedef struct _GimpThresholdToolClass GimpThresholdToolClass;
 
 struct _GimpThresholdTool
 {
-    GimpFilterTool    parent_instance;
+	GimpFilterTool parent_instance;
 
-    /*  dialog  */
-    GimpHistogram    *histogram;
-    GimpAsync        *histogram_async;
-    GtkWidget        *channel_menu;
-    GimpHistogramBox *histogram_box;
+	/*  dialog  */
+	GimpHistogram    *histogram;
+	GimpAsync        *histogram_async;
+	GtkWidget        *channel_menu;
+	GimpHistogramBox *histogram_box;
 };
 
 struct _GimpThresholdToolClass
 {
-    GimpFilterToolClass  parent_class;
+	GimpFilterToolClass parent_class;
 };
 
 
-void    gimp_threshold_tool_register (GimpToolRegisterCallback  callback,
-                                      gpointer                  data);
+void    gimp_threshold_tool_register (GimpToolRegisterCallback callback,
+                                      gpointer data);
 
 GType   gimp_threshold_tool_get_type (void) G_GNUC_CONST;
 

@@ -20,24 +20,24 @@
 
 
 gboolean gimp_device_info_get_event_coords   (GimpDeviceInfo  *info,
-        GdkWindow       *window,
-        const GdkEvent  *event,
-        GimpCoords      *coords);
+                                              GdkWindow       *window,
+                                              const GdkEvent  *event,
+                                              GimpCoords      *coords);
 void     gimp_device_info_get_device_coords  (GimpDeviceInfo  *info,
-        GdkWindow       *window,
-        GimpCoords      *coords);
+                                              GdkWindow       *window,
+                                              GimpCoords      *coords);
 
 void     gimp_device_info_get_time_coords    (GimpDeviceInfo  *info,
-        GdkTimeCoord    *event,
-        GimpCoords      *coords);
+                                              GdkTimeCoord    *event,
+                                              GimpCoords      *coords);
 
 gboolean gimp_device_info_get_event_state    (GimpDeviceInfo  *info,
-        GdkWindow       *window,
-        const GdkEvent  *event,
-        GdkModifierType *state);
+                                              GdkWindow       *window,
+                                              const GdkEvent  *event,
+                                              GdkModifierType *state);
 void     gimp_device_info_get_device_state   (GimpDeviceInfo  *info,
-        GdkWindow       *window,
-        GdkModifierType *state);
+                                              GdkWindow       *window,
+                                              GdkModifierType *state);
 
 
 #endif /* __GIMP_DEVICE_INFO_COORDS_H__ */

@@ -31,30 +31,30 @@
 
 
 typedef struct _GimpToolButtonPrivate GimpToolButtonPrivate;
-typedef struct _GimpToolButtonClass   GimpToolButtonClass;
+typedef struct _GimpToolButtonClass GimpToolButtonClass;
 
 struct _GimpToolButton
 {
-    GtkToggleToolButton    parent_instance;
+	GtkToggleToolButton parent_instance;
 
-    GimpToolButtonPrivate *priv;
+	GimpToolButtonPrivate *priv;
 };
 
 struct _GimpToolButtonClass
 {
-    GtkToggleToolButtonClass  parent_class;
+	GtkToggleToolButtonClass parent_class;
 };
 
 
 GType          gimp_tool_button_get_type      (void) G_GNUC_CONST;
 
 GtkToolItem  * gimp_tool_button_new           (GimpToolbox    *toolbox,
-        GimpToolItem   *tool_item);
+                                               GimpToolItem   *tool_item);
 
 GimpToolbox  * gimp_tool_button_get_toolbox   (GimpToolButton *tool_button);
 
 void           gimp_tool_button_set_tool_item (GimpToolButton *tool_button,
-        GimpToolItem   *tool_item);
+                                               GimpToolItem   *tool_item);
 GimpToolItem * gimp_tool_button_get_tool_item (GimpToolButton *tool_button);
 
 GimpToolInfo * gimp_tool_button_get_tool_info (GimpToolButton *tool_button);

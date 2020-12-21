@@ -32,16 +32,16 @@
 #define GIMP_VIEW_RENDERER_VECTORS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_VECTORS, GimpViewRendererVectorsClass))
 
 
-typedef struct _GimpViewRendererVectorsClass  GimpViewRendererVectorsClass;
+typedef struct _GimpViewRendererVectorsClass GimpViewRendererVectorsClass;
 
 struct _GimpViewRendererVectors
 {
-    GimpViewRenderer  parent_instance;
+	GimpViewRenderer parent_instance;
 };
 
 struct _GimpViewRendererVectorsClass
 {
-    GimpViewRendererClass  parent_class;
+	GimpViewRendererClass parent_class;
 };
 
 

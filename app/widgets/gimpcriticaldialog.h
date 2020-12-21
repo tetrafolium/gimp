@@ -32,43 +32,43 @@ G_BEGIN_DECLS
 #define GIMP_CRITICAL_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CRITICAL_DIALOG, GimpCriticalDialogClass))
 
 
-typedef struct _GimpCriticalDialog       GimpCriticalDialog;
-typedef struct _GimpCriticalDialogClass  GimpCriticalDialogClass;
+typedef struct _GimpCriticalDialog GimpCriticalDialog;
+typedef struct _GimpCriticalDialogClass GimpCriticalDialogClass;
 
 struct _GimpCriticalDialog
 {
-    GtkDialog        parent_instance;
+	GtkDialog parent_instance;
 
-    GtkWidget       *main_vbox;
-    GtkWidget       *top_label;
-    GtkWidget       *center_label;
-    GtkWidget       *bottom_label;
-    GtkWidget       *details;
+	GtkWidget       *main_vbox;
+	GtkWidget       *top_label;
+	GtkWidget       *center_label;
+	GtkWidget       *bottom_label;
+	GtkWidget       *details;
 
-    gchar           *program;
-    gint             pid;
+	gchar           *program;
+	gint pid;
 
-    gchar           *last_version;
-    gchar           *release_date;
+	gchar           *last_version;
+	gchar           *release_date;
 };
 
 struct _GimpCriticalDialogClass
 {
-    GtkDialogClass   parent_class;
+	GtkDialogClass parent_class;
 };
 
 
 GType       gimp_critical_dialog_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_critical_dialog_new      (const gchar        *title,
-        const gchar        *last_version,
-        gint64              release_timestamp);
+                                           const gchar        *last_version,
+                                           gint64 release_timestamp);
 void        gimp_critical_dialog_add      (GtkWidget          *dialog,
-        const gchar        *message,
-        const gchar        *trace,
-        gboolean            is_fatal,
-        const gchar        *program,
-        gint                pid);
+                                           const gchar        *message,
+                                           const gchar        *trace,
+                                           gboolean is_fatal,
+                                           const gchar        *program,
+                                           gint pid);
 
 
 G_END_DECLS

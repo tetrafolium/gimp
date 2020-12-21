@@ -37,14 +37,14 @@ typedef struct _GimpImageProfileViewClass GimpImageProfileViewClass;
 
 struct _GimpImageProfileView
 {
-    GimpImageParasiteView  parent_instance;
+	GimpImageParasiteView parent_instance;
 
-    GimpColorProfileView  *profile_view;
+	GimpColorProfileView  *profile_view;
 };
 
 struct _GimpImageProfileViewClass
 {
-    GimpImageParasiteViewClass  parent_class;
+	GimpImageParasiteViewClass parent_class;
 };
 
 

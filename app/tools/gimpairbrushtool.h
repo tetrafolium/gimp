@@ -30,22 +30,22 @@
 #define GIMP_AIRBRUSH_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_AIRBRUSH_TOOL, GimpAirbrushToolClass))
 
 
-typedef struct _GimpAirbrushTool      GimpAirbrushTool;
+typedef struct _GimpAirbrushTool GimpAirbrushTool;
 typedef struct _GimpAirbrushToolClass GimpAirbrushToolClass;
 
 struct _GimpAirbrushTool
 {
-    GimpPaintbrushTool parent_instance;
+	GimpPaintbrushTool parent_instance;
 };
 
 struct _GimpAirbrushToolClass
 {
-    GimpPaintbrushToolClass parent_class;
+	GimpPaintbrushToolClass parent_class;
 };
 
 
-void       gimp_airbrush_tool_register (GimpToolRegisterCallback  callback,
-                                        gpointer                  data);
+void       gimp_airbrush_tool_register (GimpToolRegisterCallback callback,
+                                        gpointer data);
 
 GType      gimp_airbrush_tool_get_type (void) G_GNUC_CONST;
 

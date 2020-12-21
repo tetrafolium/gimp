@@ -25,8 +25,8 @@
 GSList * gimp_pixbuf_get_formats (void);
 
 void     gimp_pixbuf_targets_add    (GtkTargetList *target_list,
-                                     guint          info,
-                                     gboolean       writable);
+                                     guint info,
+                                     gboolean writable);
 void     gimp_pixbuf_targets_remove (GtkTargetList *target_list);
 
 

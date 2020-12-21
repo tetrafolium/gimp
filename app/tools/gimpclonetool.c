@@ -41,7 +41,7 @@
 
 
 static gboolean   gimp_clone_tool_is_alpha_only (GimpPaintTool *paint_tool,
-        GimpDrawable  *drawable);
+                                                 GimpDrawable  *drawable);
 
 
 G_DEFINE_TYPE (GimpCloneTool, gimp_clone_tool, GIMP_TYPE_SOURCE_TOOL)
@@ -50,59 +50,59 @@ G_DEFINE_TYPE (GimpCloneTool, gimp_clone_tool, GIMP_TYPE_SOURCE_TOOL)
 
 
 void
-gimp_clone_tool_register (GimpToolRegisterCallback  callback,
-                          gpointer                  data)
+gimp_clone_tool_register (GimpToolRegisterCallback callback,
+                          gpointer data)
 {
-    (* callback) (GIMP_TYPE_CLONE_TOOL,
-                  GIMP_TYPE_CLONE_OPTIONS,
-                  gimp_clone_options_gui,
-                  GIMP_PAINT_OPTIONS_CONTEXT_MASK |
-                  GIMP_CONTEXT_PROP_MASK_PATTERN,
-                  "gimp-clone-tool",
-                  _("Clone"),
-                  _("Clone Tool: Selectively copy from an image or pattern, using a brush"),
-                  N_("_Clone"), "C",
-                  NULL, GIMP_HELP_TOOL_CLONE,
-                  GIMP_ICON_TOOL_CLONE,
-                  data);
+	(*callback)(GIMP_TYPE_CLONE_TOOL,
+	            GIMP_TYPE_CLONE_OPTIONS,
+	            gimp_clone_options_gui,
+	            GIMP_PAINT_OPTIONS_CONTEXT_MASK |
+	            GIMP_CONTEXT_PROP_MASK_PATTERN,
+	            "gimp-clone-tool",
+	            _("Clone"),
+	            _("Clone Tool: Selectively copy from an image or pattern, using a brush"),
+	            N_("_Clone"), "C",
+	            NULL, GIMP_HELP_TOOL_CLONE,
+	            GIMP_ICON_TOOL_CLONE,
+	            data);
 }
 
 static void
 gimp_clone_tool_class_init (GimpCloneToolClass *klass)
 {
-    GimpPaintToolClass *paint_tool_class = GIMP_PAINT_TOOL_CLASS (klass);
+	GimpPaintToolClass *paint_tool_class = GIMP_PAINT_TOOL_CLASS (klass);
 
-    paint_tool_class->is_alpha_only = gimp_clone_tool_is_alpha_only;
+	paint_tool_class->is_alpha_only = gimp_clone_tool_is_alpha_only;
 }
 
 static void
 gimp_clone_tool_init (GimpCloneTool *clone)
 {
-    GimpTool       *tool        = GIMP_TOOL (clone);
-    GimpPaintTool  *paint_tool  = GIMP_PAINT_TOOL (tool);
-    GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
+	GimpTool       *tool        = GIMP_TOOL (clone);
+	GimpPaintTool  *paint_tool  = GIMP_PAINT_TOOL (tool);
+	GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
 
-    gimp_tool_control_set_tool_cursor     (tool->control,
-                                           GIMP_TOOL_CURSOR_CLONE);
-    gimp_tool_control_set_action_object_2 (tool->control,
-                                           "context/context-pattern-select-set");
+	gimp_tool_control_set_tool_cursor     (tool->control,
+	                                       GIMP_TOOL_CURSOR_CLONE);
+	gimp_tool_control_set_action_object_2 (tool->control,
+	                                       "context/context-pattern-select-set");
 
-    paint_tool->status      = _("Click to clone");
-    paint_tool->status_ctrl = _("%s to set a new clone source");
+	paint_tool->status      = _("Click to clone");
+	paint_tool->status_ctrl = _("%s to set a new clone source");
 
-    source_tool->status_paint           = _("Click to clone");
-    /* Translators: the translation of "Click" must be the first word */
-    source_tool->status_set_source      = _("Click to set a new clone source");
-    source_tool->status_set_source_ctrl = _("%s to set a new clone source");
+	source_tool->status_paint           = _("Click to clone");
+	/* Translators: the translation of "Click" must be the first word */
+	source_tool->status_set_source      = _("Click to set a new clone source");
+	source_tool->status_set_source_ctrl = _("%s to set a new clone source");
 }
 
 static gboolean
 gimp_clone_tool_is_alpha_only (GimpPaintTool *paint_tool,
                                GimpDrawable  *drawable)
 {
-    GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (paint_tool);
-    GimpContext      *context       = GIMP_CONTEXT (paint_options);
-    GimpLayerMode     paint_mode    = gimp_context_get_paint_mode (context);
+	GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (paint_tool);
+	GimpContext      *context       = GIMP_CONTEXT (paint_options);
+	GimpLayerMode paint_mode    = gimp_context_get_paint_mode (context);
 
-    return gimp_layer_mode_is_alpha_only (paint_mode);
+	return gimp_layer_mode_is_alpha_only (paint_mode);
 }

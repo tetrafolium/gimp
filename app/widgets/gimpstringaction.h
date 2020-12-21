@@ -37,25 +37,25 @@ typedef struct _GimpStringActionClass GimpStringActionClass;
 
 struct _GimpStringAction
 {
-    GimpActionImpl  parent_instance;
+	GimpActionImpl parent_instance;
 
-    gchar          *value;
+	gchar          *value;
 };
 
 struct _GimpStringActionClass
 {
-    GimpActionImplClass parent_class;
+	GimpActionImplClass parent_class;
 };
 
 
 GType              gimp_string_action_get_type (void) G_GNUC_CONST;
 
 GimpStringAction * gimp_string_action_new      (const gchar *name,
-        const gchar *label,
-        const gchar *tooltip,
-        const gchar *icon_name,
-        const gchar *help_id,
-        const gchar *value);
+                                                const gchar *label,
+                                                const gchar *tooltip,
+                                                const gchar *icon_name,
+                                                const gchar *help_id,
+                                                const gchar *value);
 
 
 #endif  /* __GIMP_STRING_ACTION_H__ */

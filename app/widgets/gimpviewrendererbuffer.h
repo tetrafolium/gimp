@@ -31,16 +31,16 @@
 #define GIMP_VIEW_RENDERER_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_BUFFER, GimpViewRendererBufferClass))
 
 
-typedef struct _GimpViewRendererBufferClass  GimpViewRendererBufferClass;
+typedef struct _GimpViewRendererBufferClass GimpViewRendererBufferClass;
 
 struct _GimpViewRendererBuffer
 {
-    GimpViewRenderer  parent_instance;
+	GimpViewRenderer parent_instance;
 };
 
 struct _GimpViewRendererBufferClass
 {
-    GimpViewRendererClass  parent_class;
+	GimpViewRendererClass parent_class;
 };
 
 

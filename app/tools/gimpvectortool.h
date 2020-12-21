@@ -35,28 +35,28 @@
 #define GIMP_VECTOR_TOOL_GET_OPTIONS(t)  (GIMP_VECTOR_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpVectorTool      GimpVectorTool;
+typedef struct _GimpVectorTool GimpVectorTool;
 typedef struct _GimpVectorToolClass GimpVectorToolClass;
 
 struct _GimpVectorTool
 {
-    GimpDrawTool    parent_instance;
+	GimpDrawTool parent_instance;
 
-    GimpVectors    *vectors;        /* the current Vector data           */
-    GimpVectorMode  saved_mode;     /* used by modifier_key()            */
+	GimpVectors    *vectors;    /* the current Vector data           */
+	GimpVectorMode saved_mode;  /* used by modifier_key()            */
 
-    GimpToolWidget *widget;
-    GimpToolWidget *grab_widget;
+	GimpToolWidget *widget;
+	GimpToolWidget *grab_widget;
 };
 
 struct _GimpVectorToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_vector_tool_register    (GimpToolRegisterCallback  callback,
-                                      gpointer                  data);
+void    gimp_vector_tool_register    (GimpToolRegisterCallback callback,
+                                      gpointer data);
 
 GType   gimp_vector_tool_get_type    (void) G_GNUC_CONST;
 

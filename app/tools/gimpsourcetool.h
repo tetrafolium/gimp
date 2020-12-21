@@ -32,31 +32,31 @@
 #define GIMP_SOURCE_TOOL_GET_OPTIONS(t)  (GIMP_SOURCE_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpSourceTool      GimpSourceTool;
+typedef struct _GimpSourceTool GimpSourceTool;
 typedef struct _GimpSourceToolClass GimpSourceToolClass;
 
 struct _GimpSourceTool
 {
-    GimpBrushTool        parent_instance;
+	GimpBrushTool parent_instance;
 
-    GimpDisplay         *src_display;
-    gint                 src_x;
-    gint                 src_y;
+	GimpDisplay         *src_display;
+	gint src_x;
+	gint src_y;
 
-    gboolean             show_source_outline;
-    GimpCursorPrecision  saved_precision;
+	gboolean show_source_outline;
+	GimpCursorPrecision saved_precision;
 
-    GimpCanvasItem      *src_handle;
-    GimpCanvasItem      *src_outline;
+	GimpCanvasItem      *src_handle;
+	GimpCanvasItem      *src_outline;
 
-    const gchar         *status_paint;
-    const gchar         *status_set_source;
-    const gchar         *status_set_source_ctrl;
+	const gchar         *status_paint;
+	const gchar         *status_set_source;
+	const gchar         *status_set_source_ctrl;
 };
 
 struct _GimpSourceToolClass
 {
-    GimpBrushToolClass  parent_class;
+	GimpBrushToolClass parent_class;
 };
 
 

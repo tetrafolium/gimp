@@ -27,40 +27,40 @@
 G_BEGIN_DECLS
 
 
-typedef struct _GimpTool                     GimpTool;
-typedef struct _GimpToolControl              GimpToolControl;
+typedef struct _GimpTool GimpTool;
+typedef struct _GimpToolControl GimpToolControl;
 
-typedef struct _GimpBrushTool                GimpBrushTool;
-typedef struct _GimpColorTool                GimpColorTool;
-typedef struct _GimpDrawTool                 GimpDrawTool;
-typedef struct _GimpFilterTool               GimpFilterTool;
-typedef struct _GimpGenericTransformTool     GimpGenericTransformTool;
-typedef struct _GimpPaintTool                GimpPaintTool;
-typedef struct _GimpTransformGridTool        GimpTransformGridTool;
-typedef struct _GimpTransformTool            GimpTransformTool;
+typedef struct _GimpBrushTool GimpBrushTool;
+typedef struct _GimpColorTool GimpColorTool;
+typedef struct _GimpDrawTool GimpDrawTool;
+typedef struct _GimpFilterTool GimpFilterTool;
+typedef struct _GimpGenericTransformTool GimpGenericTransformTool;
+typedef struct _GimpPaintTool GimpPaintTool;
+typedef struct _GimpTransformGridTool GimpTransformGridTool;
+typedef struct _GimpTransformTool GimpTransformTool;
 
-typedef struct _GimpColorOptions             GimpColorOptions;
-typedef struct _GimpFilterOptions            GimpFilterOptions;
+typedef struct _GimpColorOptions GimpColorOptions;
+typedef struct _GimpFilterOptions GimpFilterOptions;
 
 
 /*  functions  */
 
-typedef void (* GimpToolRegisterCallback) (GType                     tool_type,
-        GType                     tool_option_type,
-        GimpToolOptionsGUIFunc    options_gui_func,
-        GimpContextPropMask       context_props,
-        const gchar              *identifier,
-        const gchar              *label,
-        const gchar              *tooltip,
-        const gchar              *menu_path,
-        const gchar              *menu_accel,
-        const gchar              *help_domain,
-        const gchar              *help_data,
-        const gchar              *icon_name,
-        gpointer                  register_data);
+typedef void (* GimpToolRegisterCallback) (GType tool_type,
+                                           GType tool_option_type,
+                                           GimpToolOptionsGUIFunc options_gui_func,
+                                           GimpContextPropMask context_props,
+                                           const gchar              *identifier,
+                                           const gchar              *label,
+                                           const gchar              *tooltip,
+                                           const gchar              *menu_path,
+                                           const gchar              *menu_accel,
+                                           const gchar              *help_domain,
+                                           const gchar              *help_data,
+                                           const gchar              *icon_name,
+                                           gpointer register_data);
 
-typedef void (* GimpToolRegisterFunc)     (GimpToolRegisterCallback  callback,
-        gpointer                  register_data);
+typedef void (* GimpToolRegisterFunc)     (GimpToolRegisterCallback callback,
+                                           gpointer register_data);
 
 
 G_END_DECLS

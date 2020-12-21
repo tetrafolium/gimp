@@ -37,9 +37,9 @@ GType gimp_bucket_fill_area_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_BUCKET_FILL_SELECTION,       /*< desc="Fill whole selection" >*/
-    GIMP_BUCKET_FILL_SIMILAR_COLORS,  /*< desc="Fill similar colors" >*/
-    GIMP_BUCKET_FILL_LINE_ART         /*< desc="Fill by line art detection" >*/
+	GIMP_BUCKET_FILL_SELECTION,   /*< desc="Fill whole selection" >*/
+	GIMP_BUCKET_FILL_SIMILAR_COLORS, /*< desc="Fill similar colors" >*/
+	GIMP_BUCKET_FILL_LINE_ART     /*< desc="Fill by line art detection" >*/
 } GimpBucketFillArea;
 
 
@@ -58,10 +58,10 @@ GType gimp_line_art_source_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_LINE_ART_SOURCE_SAMPLE_MERGED, /*< desc="All visible layers" >*/
-    GIMP_LINE_ART_SOURCE_ACTIVE_LAYER,  /*< desc="Active layer" >*/
-    GIMP_LINE_ART_SOURCE_LOWER_LAYER,   /*< desc="Layer below the active one" >*/
-    GIMP_LINE_ART_SOURCE_UPPER_LAYER    /*< desc="Layer above the active one" >*/
+	GIMP_LINE_ART_SOURCE_SAMPLE_MERGED, /*< desc="All visible layers" >*/
+	GIMP_LINE_ART_SOURCE_ACTIVE_LAYER, /*< desc="Active layer" >*/
+	GIMP_LINE_ART_SOURCE_LOWER_LAYER, /*< desc="Layer below the active one" >*/
+	GIMP_LINE_ART_SOURCE_UPPER_LAYER /*< desc="Layer above the active one" >*/
 } GimpLineArtSource;
 
 
@@ -71,9 +71,9 @@ GType gimp_rect_select_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_RECT_SELECT_MODE_FREE,        /*< desc="Free select"        >*/
-    GIMP_RECT_SELECT_MODE_FIXED_SIZE,  /*< desc="Fixed size"         >*/
-    GIMP_RECT_SELECT_MODE_FIXED_RATIO  /*< desc="Fixed aspect ratio" >*/
+	GIMP_RECT_SELECT_MODE_FREE,    /*< desc="Free select"        >*/
+	GIMP_RECT_SELECT_MODE_FIXED_SIZE, /*< desc="Fixed size"         >*/
+	GIMP_RECT_SELECT_MODE_FIXED_RATIO /*< desc="Fixed aspect ratio" >*/
 } GimpRectSelectMode;
 
 
@@ -83,10 +83,10 @@ GType gimp_transform_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_TRANSFORM_TYPE_LAYER,     /*< desc="Layer"     >*/
-    GIMP_TRANSFORM_TYPE_SELECTION, /*< desc="Selection" >*/
-    GIMP_TRANSFORM_TYPE_PATH,      /*< desc="Path"      >*/
-    GIMP_TRANSFORM_TYPE_IMAGE      /*< desc="Image"     >*/
+	GIMP_TRANSFORM_TYPE_LAYER, /*< desc="Layer"     >*/
+	GIMP_TRANSFORM_TYPE_SELECTION, /*< desc="Selection" >*/
+	GIMP_TRANSFORM_TYPE_PATH,  /*< desc="Path"      >*/
+	GIMP_TRANSFORM_TYPE_IMAGE  /*< desc="Image"     >*/
 } GimpTransformType;
 
 
@@ -96,10 +96,10 @@ GType gimp_tool_action_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_TOOL_ACTION_PAUSE,
-    GIMP_TOOL_ACTION_RESUME,
-    GIMP_TOOL_ACTION_HALT,
-    GIMP_TOOL_ACTION_COMMIT
+	GIMP_TOOL_ACTION_PAUSE,
+	GIMP_TOOL_ACTION_RESUME,
+	GIMP_TOOL_ACTION_HALT,
+	GIMP_TOOL_ACTION_COMMIT
 } GimpToolAction;
 
 
@@ -109,9 +109,9 @@ GType gimp_tool_active_modifiers_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_TOOL_ACTIVE_MODIFIERS_OFF,
-    GIMP_TOOL_ACTIVE_MODIFIERS_SAME,
-    GIMP_TOOL_ACTIVE_MODIFIERS_SEPARATE,
+	GIMP_TOOL_ACTIVE_MODIFIERS_OFF,
+	GIMP_TOOL_ACTIVE_MODIFIERS_SAME,
+	GIMP_TOOL_ACTIVE_MODIFIERS_SEPARATE,
 } GimpToolActiveModifiers;
 
 
@@ -121,9 +121,9 @@ GType gimp_matting_draw_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_MATTING_DRAW_MODE_FOREGROUND,   /*< desc="Draw foreground" >*/
-    GIMP_MATTING_DRAW_MODE_BACKGROUND,   /*< desc="Draw background" >*/
-    GIMP_MATTING_DRAW_MODE_UNKNOWN,      /*< desc="Draw unknown" >*/
+	GIMP_MATTING_DRAW_MODE_FOREGROUND, /*< desc="Draw foreground" >*/
+	GIMP_MATTING_DRAW_MODE_BACKGROUND, /*< desc="Draw background" >*/
+	GIMP_MATTING_DRAW_MODE_UNKNOWN,  /*< desc="Draw unknown" >*/
 } GimpMattingDrawMode;
 
 
@@ -133,8 +133,8 @@ GType gimp_matting_preview_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_MATTING_PREVIEW_MODE_ON_COLOR,        /*< desc="Color" >*/
-    GIMP_MATTING_PREVIEW_MODE_GRAYSCALE,       /*< desc="Grayscale" >*/
+	GIMP_MATTING_PREVIEW_MODE_ON_COLOR,    /*< desc="Color" >*/
+	GIMP_MATTING_PREVIEW_MODE_GRAYSCALE,   /*< desc="Grayscale" >*/
 } GimpMattingPreviewMode;
 
 
@@ -144,9 +144,9 @@ GType gimp_transform_3d_lens_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum /*< lowercase_name=gimp_transform_3d_lens_mode >*/
 {
-    GIMP_TRANSFORM_3D_LENS_MODE_FOCAL_LENGTH, /*< desc="Focal length" >*/
-    GIMP_TRANSFORM_3D_LENS_MODE_FOV_IMAGE,    /*< desc="Field of view (relative to image)", abbrev="FOV (image)" >*/
-    GIMP_TRANSFORM_3D_LENS_MODE_FOV_ITEM,     /*< desc="Field of view (relative to item)", abbrev="FOV (item)" >*/
+	GIMP_TRANSFORM_3D_LENS_MODE_FOCAL_LENGTH, /*< desc="Focal length" >*/
+	GIMP_TRANSFORM_3D_LENS_MODE_FOV_IMAGE, /*< desc="Field of view (relative to image)", abbrev="FOV (image)" >*/
+	GIMP_TRANSFORM_3D_LENS_MODE_FOV_ITEM, /*< desc="Field of view (relative to item)", abbrev="FOV (item)" >*/
 } Gimp3DTrasnformLensMode;
 
 
@@ -156,13 +156,13 @@ GType gimp_warp_behavior_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_WARP_BEHAVIOR_MOVE,      /*< desc="Move pixels" >*/
-    GIMP_WARP_BEHAVIOR_GROW,      /*< desc="Grow area" >*/
-    GIMP_WARP_BEHAVIOR_SHRINK,    /*< desc="Shrink area" >*/
-    GIMP_WARP_BEHAVIOR_SWIRL_CW,  /*< desc="Swirl clockwise" >*/
-    GIMP_WARP_BEHAVIOR_SWIRL_CCW, /*< desc="Swirl counter-clockwise" >*/
-    GIMP_WARP_BEHAVIOR_ERASE,     /*< desc="Erase warping" >*/
-    GIMP_WARP_BEHAVIOR_SMOOTH     /*< desc="Smooth warping" >*/
+	GIMP_WARP_BEHAVIOR_MOVE,  /*< desc="Move pixels" >*/
+	GIMP_WARP_BEHAVIOR_GROW,  /*< desc="Grow area" >*/
+	GIMP_WARP_BEHAVIOR_SHRINK, /*< desc="Shrink area" >*/
+	GIMP_WARP_BEHAVIOR_SWIRL_CW, /*< desc="Swirl clockwise" >*/
+	GIMP_WARP_BEHAVIOR_SWIRL_CCW, /*< desc="Swirl counter-clockwise" >*/
+	GIMP_WARP_BEHAVIOR_ERASE, /*< desc="Erase warping" >*/
+	GIMP_WARP_BEHAVIOR_SMOOTH /*< desc="Smooth warping" >*/
 } GimpWarpBehavior;
 
 
@@ -172,8 +172,8 @@ GType gimp_paint_select_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_PAINT_SELECT_MODE_ADD,      /*< desc="Add to selection" >*/
-    GIMP_PAINT_SELECT_MODE_SUBTRACT, /*< desc="Subtract from selection" >*/
+	GIMP_PAINT_SELECT_MODE_ADD,  /*< desc="Add to selection" >*/
+	GIMP_PAINT_SELECT_MODE_SUBTRACT, /*< desc="Subtract from selection" >*/
 } GimpPaintSelectMode;
 
 /*
@@ -182,31 +182,31 @@ typedef enum
 
 typedef enum /*< skip >*/
 {
-    SELECTION_SELECT,
-    SELECTION_MOVE_MASK,
-    SELECTION_MOVE,
-    SELECTION_MOVE_COPY,
-    SELECTION_ANCHOR
+	SELECTION_SELECT,
+	SELECTION_MOVE_MASK,
+	SELECTION_MOVE,
+	SELECTION_MOVE_COPY,
+	SELECTION_ANCHOR
 } SelectFunction;
 
 /*  Modes of GimpEditSelectionTool  */
 typedef enum /*< skip >*/
 {
-    GIMP_TRANSLATE_MODE_VECTORS,
-    GIMP_TRANSLATE_MODE_CHANNEL,
-    GIMP_TRANSLATE_MODE_LAYER_MASK,
-    GIMP_TRANSLATE_MODE_MASK,
-    GIMP_TRANSLATE_MODE_MASK_TO_LAYER,
-    GIMP_TRANSLATE_MODE_MASK_COPY_TO_LAYER,
-    GIMP_TRANSLATE_MODE_LAYER,
-    GIMP_TRANSLATE_MODE_FLOATING_SEL
+	GIMP_TRANSLATE_MODE_VECTORS,
+	GIMP_TRANSLATE_MODE_CHANNEL,
+	GIMP_TRANSLATE_MODE_LAYER_MASK,
+	GIMP_TRANSLATE_MODE_MASK,
+	GIMP_TRANSLATE_MODE_MASK_TO_LAYER,
+	GIMP_TRANSLATE_MODE_MASK_COPY_TO_LAYER,
+	GIMP_TRANSLATE_MODE_LAYER,
+	GIMP_TRANSLATE_MODE_FLOATING_SEL
 } GimpTranslateMode;
 
 /*  Motion event report modes  */
 typedef enum /*< skip >*/
 {
-    GIMP_MOTION_MODE_EXACT,
-    GIMP_MOTION_MODE_COMPRESS
+	GIMP_MOTION_MODE_EXACT,
+	GIMP_MOTION_MODE_COMPRESS
 } GimpMotionMode;
 
 

@@ -38,19 +38,19 @@ typedef struct _GimpControllerWheelClass GimpControllerWheelClass;
 
 struct _GimpControllerWheel
 {
-    GimpController parent_instance;
+	GimpController parent_instance;
 };
 
 struct _GimpControllerWheelClass
 {
-    GimpControllerClass parent_class;
+	GimpControllerClass parent_class;
 };
 
 
 GType      gimp_controller_wheel_get_type (void) G_GNUC_CONST;
 
 gboolean   gimp_controller_wheel_scroll   (GimpControllerWheel  *wheel,
-        const GdkEventScroll *sevent);
+                                           const GdkEventScroll *sevent);
 
 
 #endif /* __GIMP_CONTROLLER_WHEEL_H__ */

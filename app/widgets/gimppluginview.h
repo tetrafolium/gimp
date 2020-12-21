@@ -35,16 +35,16 @@ typedef struct _GimpPlugInViewClass GimpPlugInViewClass;
 
 struct _GimpPlugInView
 {
-    GtkTreeView  parent_instance;
+	GtkTreeView parent_instance;
 
-    GHashTable  *plug_in_hash;
+	GHashTable  *plug_in_hash;
 };
 
 struct _GimpPlugInViewClass
 {
-    GtkTreeViewClass   parent_class;
+	GtkTreeViewClass parent_class;
 
-    void (* changed) (GimpPlugInView *view);
+	void (* changed) (GimpPlugInView *view);
 };
 
 
@@ -54,7 +54,7 @@ GtkWidget * gimp_plug_in_view_new         (GSList         *procedures);
 
 gchar     * gimp_plug_in_view_get_plug_in (GimpPlugInView *view);
 gboolean    gimp_plug_in_view_set_plug_in (GimpPlugInView *view,
-        const gchar    *path);
+                                           const gchar    *path);
 
 
 #endif  /*  __GIMP_PLUG_IN_VIEW_H__  */

@@ -34,16 +34,16 @@ typedef struct _GimpCellRendererButtonClass GimpCellRendererButtonClass;
 
 struct _GimpCellRendererButton
 {
-    GtkCellRendererPixbuf  parent_instance;
+	GtkCellRendererPixbuf parent_instance;
 };
 
 struct _GimpCellRendererButtonClass
 {
-    GtkCellRendererPixbufClass  parent_class;
+	GtkCellRendererPixbufClass parent_class;
 
-    void (* clicked) (GimpCellRendererButton *cell,
-                      const gchar            *path,
-                      GdkModifierType         state);
+	void (* clicked) (GimpCellRendererButton *cell,
+	                  const gchar            *path,
+	                  GdkModifierType state);
 };
 
 
@@ -52,8 +52,8 @@ GType             gimp_cell_renderer_button_get_type (void) G_GNUC_CONST;
 GtkCellRenderer * gimp_cell_renderer_button_new      (void);
 
 void              gimp_cell_renderer_button_clicked  (GimpCellRendererButton *cell,
-        const gchar            *path,
-        GdkModifierType         state);
+                                                      const gchar            *path,
+                                                      GdkModifierType state);
 
 
 #endif /* __GIMP_CELL_RENDERER_BUTTON_H__ */

@@ -34,97 +34,97 @@
 
 
 typedef struct _GimpViewRendererPrivate GimpViewRendererPrivate;
-typedef struct _GimpViewRendererClass   GimpViewRendererClass;
+typedef struct _GimpViewRendererClass GimpViewRendererClass;
 
 struct _GimpViewRenderer
 {
-    GObject             parent_instance;
+	GObject parent_instance;
 
-    GimpContext        *context;
+	GimpContext        *context;
 
-    GType               viewable_type;
-    GimpViewable       *viewable;
+	GType viewable_type;
+	GimpViewable       *viewable;
 
-    gint                width;
-    gint                height;
-    gint                border_width;
-    guint               dot_for_dot : 1;
-    guint               is_popup    : 1;
+	gint width;
+	gint height;
+	gint border_width;
+	guint dot_for_dot : 1;
+	guint is_popup    : 1;
 
-    GimpViewBorderType  border_type;
-    GimpRGB             border_color;
+	GimpViewBorderType border_type;
+	GimpRGB border_color;
 
-    /*< protected >*/
-    cairo_surface_t    *surface;
+	/*< protected >*/
+	cairo_surface_t    *surface;
 
-    gint                size;
+	gint size;
 
-    /*< private >*/
-    GimpViewRendererPrivate *priv;
+	/*< private >*/
+	GimpViewRendererPrivate *priv;
 };
 
 struct _GimpViewRendererClass
 {
-    GObjectClass   parent_class;
+	GObjectClass parent_class;
 
-    GdkPixbuf     *frame;
-    gint           frame_left;
-    gint           frame_right;
-    gint           frame_bottom;
-    gint           frame_top;
+	GdkPixbuf     *frame;
+	gint frame_left;
+	gint frame_right;
+	gint frame_bottom;
+	gint frame_top;
 
-    /*  signals  */
-    void (* update)      (GimpViewRenderer *renderer);
+	/*  signals  */
+	void (* update)      (GimpViewRenderer *renderer);
 
-    /*  virtual functions  */
-    void (* set_context) (GimpViewRenderer *renderer,
-                          GimpContext      *context);
-    void (* invalidate)  (GimpViewRenderer *renderer);
-    void (* draw)        (GimpViewRenderer *renderer,
-                          GtkWidget        *widget,
-                          cairo_t          *cr,
-                          gint              available_width,
-                          gint              available_height);
-    void (* render)      (GimpViewRenderer *renderer,
-                          GtkWidget        *widget);
+	/*  virtual functions  */
+	void (* set_context) (GimpViewRenderer *renderer,
+	                      GimpContext      *context);
+	void (* invalidate)  (GimpViewRenderer *renderer);
+	void (* draw)        (GimpViewRenderer *renderer,
+	                      GtkWidget        *widget,
+	                      cairo_t          *cr,
+	                      gint available_width,
+	                      gint available_height);
+	void (* render)      (GimpViewRenderer *renderer,
+	                      GtkWidget        *widget);
 };
 
 
 GType              gimp_view_renderer_get_type (void) G_GNUC_CONST;
 
 GimpViewRenderer * gimp_view_renderer_new      (GimpContext *context,
-        GType        viewable_type,
-        gint         size,
-        gint         border_width,
-        gboolean     is_popup);
+                                                GType viewable_type,
+                                                gint size,
+                                                gint border_width,
+                                                gboolean is_popup);
 GimpViewRenderer * gimp_view_renderer_new_full (GimpContext *context,
-        GType        viewable_type,
-        gint         width,
-        gint         height,
-        gint         border_width,
-        gboolean     is_popup);
+                                                GType viewable_type,
+                                                gint width,
+                                                gint height,
+                                                gint border_width,
+                                                gboolean is_popup);
 
 void   gimp_view_renderer_set_context      (GimpViewRenderer   *renderer,
-        GimpContext        *context);
+                                            GimpContext        *context);
 void   gimp_view_renderer_set_viewable     (GimpViewRenderer   *renderer,
-        GimpViewable       *viewable);
+                                            GimpViewable       *viewable);
 void   gimp_view_renderer_set_size         (GimpViewRenderer   *renderer,
-        gint                size,
-        gint                border_width);
+                                            gint size,
+                                            gint border_width);
 void   gimp_view_renderer_set_size_full    (GimpViewRenderer   *renderer,
-        gint                width,
-        gint                height,
-        gint                border_width);
+                                            gint width,
+                                            gint height,
+                                            gint border_width);
 void   gimp_view_renderer_set_dot_for_dot  (GimpViewRenderer   *renderer,
-        gboolean            dot_for_dot);
+                                            gboolean dot_for_dot);
 void   gimp_view_renderer_set_border_type  (GimpViewRenderer   *renderer,
-        GimpViewBorderType  border_type);
+                                            GimpViewBorderType border_type);
 void   gimp_view_renderer_set_border_color (GimpViewRenderer   *renderer,
-        const GimpRGB      *border_color);
+                                            const GimpRGB      *border_color);
 void   gimp_view_renderer_set_background   (GimpViewRenderer   *renderer,
-        const gchar        *icon_name);
+                                            const gchar        *icon_name);
 void   gimp_view_renderer_set_color_config (GimpViewRenderer   *renderer,
-        GimpColorConfig    *color_config);
+                                            GimpColorConfig    *color_config);
 
 void   gimp_view_renderer_invalidate       (GimpViewRenderer   *renderer);
 void   gimp_view_renderer_update           (GimpViewRenderer   *renderer);
@@ -132,35 +132,35 @@ void   gimp_view_renderer_update_idle      (GimpViewRenderer   *renderer);
 void   gimp_view_renderer_remove_idle      (GimpViewRenderer   *renderer);
 
 void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,
-        GtkWidget          *widget,
-        cairo_t            *cr,
-        gint                available_width,
-        gint                available_height);
+                                            GtkWidget          *widget,
+                                            cairo_t            *cr,
+                                            gint available_width,
+                                            gint available_height);
 
 /*  protected  */
 
 void   gimp_view_renderer_render_temp_buf_simple (GimpViewRenderer *renderer,
-        GtkWidget        *widget,
-        GimpTempBuf      *temp_buf);
+                                                  GtkWidget        *widget,
+                                                  GimpTempBuf      *temp_buf);
 void   gimp_view_renderer_render_temp_buf        (GimpViewRenderer *renderer,
-        GtkWidget        *widget,
-        GimpTempBuf      *temp_buf,
-        gint              temp_buf_x,
-        gint              temp_buf_y,
-        gint              channel,
-        GimpViewBG        inside_bg,
-        GimpViewBG        outside_bg);
+                                                  GtkWidget        *widget,
+                                                  GimpTempBuf      *temp_buf,
+                                                  gint temp_buf_x,
+                                                  gint temp_buf_y,
+                                                  gint channel,
+                                                  GimpViewBG inside_bg,
+                                                  GimpViewBG outside_bg);
 void   gimp_view_renderer_render_pixbuf          (GimpViewRenderer *renderer,
-        GtkWidget        *widget,
-        GdkPixbuf        *pixbuf);
+                                                  GtkWidget        *widget,
+                                                  GdkPixbuf        *pixbuf);
 void   gimp_view_renderer_render_icon            (GimpViewRenderer *renderer,
-        GtkWidget        *widget,
-        const gchar      *icon_name);
+                                                  GtkWidget        *widget,
+                                                  const gchar      *icon_name);
 GimpColorTransform *
 gimp_view_renderer_get_color_transform    (GimpViewRenderer *renderer,
-        GtkWidget        *widget,
-        const Babl       *src_format,
-        const Babl       *dest_format);
+                                           GtkWidget        *widget,
+                                           const Babl       *src_format,
+                                           const Babl       *dest_format);
 void   gimp_view_renderer_free_color_transform   (GimpViewRenderer *renderer);
 
 

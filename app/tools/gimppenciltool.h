@@ -30,22 +30,22 @@
 #define GIMP_PENCIL_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PENCIL_TOOL, GimpPencilToolClass))
 
 
-typedef struct _GimpPencilTool      GimpPencilTool;
+typedef struct _GimpPencilTool GimpPencilTool;
 typedef struct _GimpPencilToolClass GimpPencilToolClass;
 
 struct _GimpPencilTool
 {
-    GimpPaintbrushTool parent_instance;
+	GimpPaintbrushTool parent_instance;
 };
 
 struct _GimpPencilToolClass
 {
-    GimpPaintbrushToolClass parent_class;
+	GimpPaintbrushToolClass parent_class;
 };
 
 
-void    gimp_pencil_tool_register (GimpToolRegisterCallback  callback,
-                                   gpointer                  data);
+void    gimp_pencil_tool_register (GimpToolRegisterCallback callback,
+                                   gpointer data);
 
 GType   gimp_pencil_tool_get_type (void) G_GNUC_CONST;
 

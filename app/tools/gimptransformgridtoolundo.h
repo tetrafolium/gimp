@@ -30,23 +30,23 @@
 #define GIMP_TRANSFORM_GRID_TOOL_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSFORM_GRID_TOOL_UNDO, GimpTransformGridToolUndoClass))
 
 
-typedef struct _GimpTransformGridToolUndo      GimpTransformGridToolUndo;
+typedef struct _GimpTransformGridToolUndo GimpTransformGridToolUndo;
 typedef struct _GimpTransformGridToolUndoClass GimpTransformGridToolUndoClass;
 
 struct _GimpTransformGridToolUndo
 {
-    GimpUndo               parent_instance;
+	GimpUndo parent_instance;
 
-    GimpTransformGridTool *tg_tool;
-    TransInfo              trans_infos[2];
+	GimpTransformGridTool *tg_tool;
+	TransInfo trans_infos[2];
 #if 0
-    TileManager           *original;
+	TileManager           *original;
 #endif
 };
 
 struct _GimpTransformGridToolUndoClass
 {
-    GimpUndoClass  parent_class;
+	GimpUndoClass parent_class;
 };
 
 

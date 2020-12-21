@@ -32,30 +32,30 @@ G_BEGIN_DECLS
 #define GIMP_MESSAGE_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MESSAGE_DIALOG, GimpMessageDialogClass))
 
 
-typedef struct _GimpMessageDialogClass  GimpMessageDialogClass;
+typedef struct _GimpMessageDialogClass GimpMessageDialogClass;
 
 struct _GimpMessageDialog
 {
-    GimpDialog       parent_instance;
+	GimpDialog parent_instance;
 
-    GimpMessageBox  *box;
+	GimpMessageBox  *box;
 };
 
 struct _GimpMessageDialogClass
 {
-    GimpDialogClass  parent_class;
+	GimpDialogClass parent_class;
 };
 
 
 GType       gimp_message_dialog_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_message_dialog_new      (const gchar       *title,
-        const gchar       *icon_name,
-        GtkWidget         *parent,
-        GtkDialogFlags     flags,
-        GimpHelpFunc       help_func,
-        const gchar       *help_id,
-        ...) G_GNUC_NULL_TERMINATED;
+                                          const gchar       *icon_name,
+                                          GtkWidget         *parent,
+                                          GtkDialogFlags flags,
+                                          GimpHelpFunc help_func,
+                                          const gchar       *help_id,
+                                          ...) G_GNUC_NULL_TERMINATED;
 
 
 G_END_DECLS

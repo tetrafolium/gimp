@@ -29,19 +29,19 @@
 
 
 GimpStroke *
-gimp_stroke_new_from_coords (GimpVectorsStrokeType  type,
+gimp_stroke_new_from_coords (GimpVectorsStrokeType type,
                              const GimpCoords      *coords,
-                             gint                   n_coords,
-                             gboolean               closed)
+                             gint n_coords,
+                             gboolean closed)
 {
-    switch (type)
-    {
-    case GIMP_VECTORS_STROKE_TYPE_BEZIER:
-        return gimp_bezier_stroke_new_from_coords (coords, n_coords, closed);
-        break;
-    default:
-        g_warning ("unknown type in gimp_stroke_new_from_coords(): %d", type);
-        return NULL;
-    }
+	switch (type)
+	{
+	case GIMP_VECTORS_STROKE_TYPE_BEZIER:
+		return gimp_bezier_stroke_new_from_coords (coords, n_coords, closed);
+		break;
+	default:
+		g_warning ("unknown type in gimp_stroke_new_from_coords(): %d", type);
+		return NULL;
+	}
 }
 

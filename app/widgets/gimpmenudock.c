@@ -48,7 +48,7 @@
 
 struct _GimpMenuDockPrivate
 {
-    gint make_sizeof_greater_than_zero;
+	gint make_sizeof_greater_than_zero;
 };
 
 
@@ -63,17 +63,17 @@ G_DEFINE_TYPE_WITH_PRIVATE (GimpMenuDock, gimp_menu_dock, GIMP_TYPE_DOCK)
 static void
 gimp_menu_dock_class_init (GimpMenuDockClass *klass)
 {
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-    widget_class->style_updated = gimp_menu_dock_style_updated;
+	widget_class->style_updated = gimp_menu_dock_style_updated;
 
-    gtk_widget_class_install_style_property (widget_class,
-            g_param_spec_int ("minimal-width",
-                              NULL, NULL,
-                              0,
-                              G_MAXINT,
-                              DEFAULT_MINIMAL_WIDTH,
-                              GIMP_PARAM_READABLE));
+	gtk_widget_class_install_style_property (widget_class,
+	                                         g_param_spec_int ("minimal-width",
+	                                                           NULL, NULL,
+	                                                           0,
+	                                                           G_MAXINT,
+	                                                           DEFAULT_MINIMAL_WIDTH,
+	                                                           GIMP_PARAM_READABLE));
 }
 
 static void
@@ -84,19 +84,19 @@ gimp_menu_dock_init (GimpMenuDock *dock)
 static void
 gimp_menu_dock_style_updated (GtkWidget *widget)
 {
-    gint minimal_width = -1;
+	gint minimal_width = -1;
 
-    GTK_WIDGET_CLASS (parent_class)->style_updated (widget);
+	GTK_WIDGET_CLASS (parent_class)->style_updated (widget);
 
-    gtk_widget_style_get (widget,
-                          "minimal-width", &minimal_width,
-                          NULL);
+	gtk_widget_style_get (widget,
+	                      "minimal-width", &minimal_width,
+	                      NULL);
 
-    gtk_widget_set_size_request (widget, minimal_width, -1);
+	gtk_widget_set_size_request (widget, minimal_width, -1);
 }
 
 GtkWidget *
 gimp_menu_dock_new (void)
 {
-    return g_object_new (GIMP_TYPE_MENU_DOCK, NULL);
+	return g_object_new (GIMP_TYPE_MENU_DOCK, NULL);
 }

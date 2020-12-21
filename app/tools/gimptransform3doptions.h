@@ -30,24 +30,24 @@
 #define GIMP_TRANSFORM_3D_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS, GimpTransform3DOptionsClass))
 
 
-typedef struct _GimpTransform3DOptions      GimpTransform3DOptions;
+typedef struct _GimpTransform3DOptions GimpTransform3DOptions;
 typedef struct _GimpTransform3DOptionsClass GimpTransform3DOptionsClass;
 
 struct _GimpTransform3DOptions
 {
-    GimpTransformGridOptions  parent_instance;
+	GimpTransformGridOptions parent_instance;
 
-    GimpTransform3DMode       mode;
-    gboolean                  unified;
+	GimpTransform3DMode mode;
+	gboolean unified;
 
-    gboolean                  constrain_axis;
-    gboolean                  z_axis;
-    gboolean                  local_frame;
+	gboolean constrain_axis;
+	gboolean z_axis;
+	gboolean local_frame;
 };
 
 struct _GimpTransform3DOptionsClass
 {
-    GimpTransformGridOptionsClass  parent_class;
+	GimpTransformGridOptionsClass parent_class;
 };
 
 

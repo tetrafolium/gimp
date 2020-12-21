@@ -34,16 +34,16 @@ G_BEGIN_DECLS
 #define GIMP_PATTERN_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PATTERN_SELECT, GimpPatternSelectClass))
 
 
-typedef struct _GimpPatternSelectClass  GimpPatternSelectClass;
+typedef struct _GimpPatternSelectClass GimpPatternSelectClass;
 
 struct _GimpPatternSelect
 {
-    GimpPdbDialog  parent_instance;
+	GimpPdbDialog parent_instance;
 };
 
 struct _GimpPatternSelectClass
 {
-    GimpPdbDialogClass  parent_class;
+	GimpPdbDialogClass parent_class;
 };
 
 

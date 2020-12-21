@@ -30,22 +30,22 @@
 #define GIMP_LANGUAGE_COMBO_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX, GimpLanguageComboBoxClass))
 
 
-typedef struct _GimpLanguageComboBoxClass  GimpLanguageComboBoxClass;
+typedef struct _GimpLanguageComboBoxClass GimpLanguageComboBoxClass;
 
 struct _GimpLanguageComboBoxClass
 {
-    GtkComboBoxClass  parent_class;
+	GtkComboBoxClass parent_class;
 };
 
 
 GType       gimp_language_combo_box_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gimp_language_combo_box_new      (gboolean              manual_l18n,
-        const gchar          *empty_label);
+GtkWidget * gimp_language_combo_box_new      (gboolean manual_l18n,
+                                              const gchar          *empty_label);
 
 gchar     * gimp_language_combo_box_get_code (GimpLanguageComboBox *combo);
 gboolean    gimp_language_combo_box_set_code (GimpLanguageComboBox *combo,
-        const gchar          *code);
+                                              const gchar          *code);
 
 
 #endif  /* __GIMP_LANGUAGE_COMBO_BOX_H__ */

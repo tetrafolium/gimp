@@ -32,22 +32,22 @@
 #define GIMP_ERASER_TOOL_GET_OPTIONS(t)  (GIMP_ERASER_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpEraserTool      GimpEraserTool;
+typedef struct _GimpEraserTool GimpEraserTool;
 typedef struct _GimpEraserToolClass GimpEraserToolClass;
 
 struct _GimpEraserTool
 {
-    GimpBrushTool parent_instance;
+	GimpBrushTool parent_instance;
 };
 
 struct _GimpEraserToolClass
 {
-    GimpBrushToolClass parent_class;
+	GimpBrushToolClass parent_class;
 };
 
 
-void    gimp_eraser_tool_register (GimpToolRegisterCallback  callback,
-                                   gpointer                  data);
+void    gimp_eraser_tool_register (GimpToolRegisterCallback callback,
+                                   gpointer data);
 
 GType   gimp_eraser_tool_get_type (void) G_GNUC_CONST;
 

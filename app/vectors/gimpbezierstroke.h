@@ -36,12 +36,12 @@ typedef struct _GimpBezierStrokeClass GimpBezierStrokeClass;
 
 struct _GimpBezierStroke
 {
-    GimpStroke  parent_instance;
+	GimpStroke parent_instance;
 };
 
 struct _GimpBezierStrokeClass
 {
-    GimpStrokeClass  parent_class;
+	GimpStrokeClass parent_class;
 };
 
 
@@ -49,36 +49,36 @@ GType        gimp_bezier_stroke_get_type        (void) G_GNUC_CONST;
 
 GimpStroke * gimp_bezier_stroke_new             (void);
 GimpStroke * gimp_bezier_stroke_new_from_coords (const GimpCoords *coords,
-        gint              n_coords,
-        gboolean          closed);
+                                                 gint n_coords,
+                                                 gboolean closed);
 
 GimpStroke * gimp_bezier_stroke_new_moveto      (const GimpCoords *start);
 void         gimp_bezier_stroke_lineto          (GimpStroke       *bez_stroke,
-        const GimpCoords *end);
+                                                 const GimpCoords *end);
 void         gimp_bezier_stroke_conicto         (GimpStroke       *bez_stroke,
-        const GimpCoords *control,
-        const GimpCoords *end);
+                                                 const GimpCoords *control,
+                                                 const GimpCoords *end);
 void         gimp_bezier_stroke_cubicto         (GimpStroke       *bez_stroke,
-        const GimpCoords *control1,
-        const GimpCoords *control2,
-        const GimpCoords *end);
+                                                 const GimpCoords *control1,
+                                                 const GimpCoords *control2,
+                                                 const GimpCoords *end);
 void         gimp_bezier_stroke_arcto           (GimpStroke       *bez_stroke,
-        gdouble           radius_x,
-        gdouble           radius_y,
-        gdouble           angle_rad,
-        gboolean          large_arc,
-        gboolean          sweep,
-        const GimpCoords *end);
+                                                 gdouble radius_x,
+                                                 gdouble radius_y,
+                                                 gdouble angle_rad,
+                                                 gboolean large_arc,
+                                                 gboolean sweep,
+                                                 const GimpCoords *end);
 GimpStroke * gimp_bezier_stroke_new_ellipse     (const GimpCoords *center,
-        gdouble           radius_x,
-        gdouble           radius_y,
-        gdouble           angle);
+                                                 gdouble radius_x,
+                                                 gdouble radius_y,
+                                                 gdouble angle);
 
 
 GimpAnchor * gimp_bezier_stroke_extend      (GimpStroke           *stroke,
-        const GimpCoords     *coords,
-        GimpAnchor           *neighbor,
-        GimpVectorExtendMode  extend_mode);
+                                             const GimpCoords     *coords,
+                                             GimpAnchor           *neighbor,
+                                             GimpVectorExtendMode extend_mode);
 
 
 #endif /* __GIMP_BEZIER_STROKE_H__ */

@@ -33,26 +33,26 @@
 #define GIMP_CONTAINER_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONTAINER_BOX, GimpContainerBoxClass))
 
 
-typedef struct _GimpContainerBoxClass  GimpContainerBoxClass;
+typedef struct _GimpContainerBoxClass GimpContainerBoxClass;
 
 struct _GimpContainerBox
 {
-    GimpEditor  parent_instance;
+	GimpEditor parent_instance;
 
-    GtkWidget  *scrolled_win;
+	GtkWidget  *scrolled_win;
 };
 
 struct _GimpContainerBoxClass
 {
-    GimpEditorClass  parent_class;
+	GimpEditorClass parent_class;
 };
 
 
 GType     gimp_container_box_get_type         (void) G_GNUC_CONST;
 
 void      gimp_container_box_set_size_request (GimpContainerBox *box,
-        gint              width,
-        gint              height);
+                                               gint width,
+                                               gint height);
 
 
 #endif  /*  __GIMP_CONTAINER_BOX_H__  */

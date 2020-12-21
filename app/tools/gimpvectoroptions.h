@@ -30,20 +30,20 @@
 #define GIMP_VECTOR_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VECTOR_OPTIONS, GimpVectorOptionsClass))
 
 
-typedef struct _GimpVectorOptions    GimpVectorOptions;
+typedef struct _GimpVectorOptions GimpVectorOptions;
 typedef struct _GimpToolOptionsClass GimpVectorOptionsClass;
 
 struct _GimpVectorOptions
 {
-    GimpToolOptions  parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpVectorMode   edit_mode;
-    gboolean         polygonal;
+	GimpVectorMode edit_mode;
+	gboolean polygonal;
 
-    /*  options gui  */
-    GtkWidget       *to_selection_button;
-    GtkWidget       *fill_button;
-    GtkWidget       *stroke_button;
+	/*  options gui  */
+	GtkWidget       *to_selection_button;
+	GtkWidget       *fill_button;
+	GtkWidget       *stroke_button;
 };
 
 

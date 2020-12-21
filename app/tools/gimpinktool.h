@@ -32,22 +32,22 @@
 #define GIMP_INK_TOOL_GET_OPTIONS(t)  (GIMP_INK_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpInkTool      GimpInkTool;
+typedef struct _GimpInkTool GimpInkTool;
 typedef struct _GimpInkToolClass GimpInkToolClass;
 
 struct _GimpInkTool
 {
-    GimpPaintTool parent_instance;
+	GimpPaintTool parent_instance;
 };
 
 struct _GimpInkToolClass
 {
-    GimpPaintToolClass parent_class;
+	GimpPaintToolClass parent_class;
 };
 
 
-void    gimp_ink_tool_register (GimpToolRegisterCallback  callback,
-                                gpointer                  data);
+void    gimp_ink_tool_register (GimpToolRegisterCallback callback,
+                                gpointer data);
 
 GType   gimp_ink_tool_get_type (void) G_GNUC_CONST;
 

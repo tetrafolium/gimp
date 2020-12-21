@@ -29,9 +29,9 @@ typedef struct _GimpMenuFactoryEntry GimpMenuFactoryEntry;
 
 struct _GimpMenuFactoryEntry
 {
-    gchar *identifier;
-    GList *action_groups;
-    GList *managed_uis;
+	gchar *identifier;
+	GList *action_groups;
+	GList *managed_uis;
 };
 
 
@@ -43,33 +43,33 @@ struct _GimpMenuFactoryEntry
 #define GIMP_MENU_FACTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MENU_FACTORY, GimpMenuFactoryClass))
 
 
-typedef struct _GimpMenuFactoryPrivate  GimpMenuFactoryPrivate;
-typedef struct _GimpMenuFactoryClass    GimpMenuFactoryClass;
+typedef struct _GimpMenuFactoryPrivate GimpMenuFactoryPrivate;
+typedef struct _GimpMenuFactoryClass GimpMenuFactoryClass;
 
 struct _GimpMenuFactory
 {
-    GimpObject              parent_instance;
+	GimpObject parent_instance;
 
-    GimpMenuFactoryPrivate *p;
+	GimpMenuFactoryPrivate *p;
 };
 
 struct _GimpMenuFactoryClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 };
 
 
 GType             gimp_menu_factory_get_type             (void) G_GNUC_CONST;
 GimpMenuFactory * gimp_menu_factory_new                  (Gimp              *gimp,
-        GimpActionFactory *action_factory);
+                                                          GimpActionFactory *action_factory);
 void              gimp_menu_factory_manager_register     (GimpMenuFactory   *factory,
-        const gchar       *identifier,
-        const gchar       *first_group,
-        ...)  G_GNUC_NULL_TERMINATED;
+                                                          const gchar       *identifier,
+                                                          const gchar       *first_group,
+                                                          ...)  G_GNUC_NULL_TERMINATED;
 GList           * gimp_menu_factory_get_registered_menus (GimpMenuFactory   *factory);
 GimpUIManager   * gimp_menu_factory_manager_new          (GimpMenuFactory   *factory,
-        const gchar       *identifier,
-        gpointer           callback_data);
+                                                          const gchar       *identifier,
+                                                          gpointer callback_data);
 
 
 #endif  /*  __GIMP_MENU_FACTORY_H__  */

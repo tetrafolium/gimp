@@ -30,18 +30,18 @@
 #define GIMP_MOVE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MOVE_OPTIONS, GimpMoveOptionsClass))
 
 
-typedef struct _GimpMoveOptions      GimpMoveOptions;
+typedef struct _GimpMoveOptions GimpMoveOptions;
 typedef struct _GimpToolOptionsClass GimpMoveOptionsClass;
 
 struct _GimpMoveOptions
 {
-    GimpToolOptions    parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpTransformType  move_type;
-    gboolean           move_current;
+	GimpTransformType move_type;
+	gboolean move_current;
 
-    /*  options gui  */
-    GtkWidget         *type_box;
+	/*  options gui  */
+	GtkWidget         *type_box;
 };
 
 

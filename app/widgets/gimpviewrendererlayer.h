@@ -31,16 +31,16 @@
 #define GIMP_VIEW_RENDERER_LAYER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_LAYER, GimpViewRendererLayerClass))
 
 
-typedef struct _GimpViewRendererLayerClass  GimpViewRendererLayerClass;
+typedef struct _GimpViewRendererLayerClass GimpViewRendererLayerClass;
 
 struct _GimpViewRendererLayer
 {
-    GimpViewRendererDrawable  parent_instance;
+	GimpViewRendererDrawable parent_instance;
 };
 
 struct _GimpViewRendererLayerClass
 {
-    GimpViewRendererDrawableClass  parent_class;
+	GimpViewRendererDrawableClass parent_class;
 };
 
 

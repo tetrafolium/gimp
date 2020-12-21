@@ -22,11 +22,11 @@
 GtkWidget * gimp_brush_box_new         (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing);
+                                        gint spacing);
 GtkWidget * gimp_prop_brush_box_new    (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing,
+                                        gint spacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop,
                                         const gchar   *editor_id,
@@ -34,11 +34,11 @@ GtkWidget * gimp_prop_brush_box_new    (GimpContainer *container,
 GtkWidget * gimp_dynamics_box_new      (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing);
+                                        gint spacing);
 GtkWidget * gimp_prop_dynamics_box_new (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing,
+                                        gint spacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop,
                                         const gchar   *editor_id,
@@ -47,35 +47,35 @@ GtkWidget * gimp_prop_dynamics_box_new (GimpContainer *container,
 GtkWidget * gimp_mybrush_box_new       (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing);
+                                        gint spacing);
 GtkWidget * gimp_prop_mybrush_box_new  (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing,
+                                        gint spacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop);
 
 GtkWidget * gimp_pattern_box_new       (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing);
+                                        gint spacing);
 GtkWidget * gimp_prop_pattern_box_new  (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing,
+                                        gint spacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop);
 
 GtkWidget * gimp_gradient_box_new      (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           scacing,
+                                        gint scacing,
                                         const gchar   *reverse_prop,
                                         const gchar   *blend_color_space_prop);
 GtkWidget * gimp_prop_gradient_box_new (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           scacing,
+                                        gint scacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop,
                                         const gchar   *reverse_prop,
@@ -86,11 +86,11 @@ GtkWidget * gimp_prop_gradient_box_new (GimpContainer *container,
 GtkWidget * gimp_palette_box_new       (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing);
+                                        gint spacing);
 GtkWidget * gimp_prop_palette_box_new  (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing,
+                                        gint spacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop,
                                         const gchar   *editor_id,
@@ -99,11 +99,11 @@ GtkWidget * gimp_prop_palette_box_new  (GimpContainer *container,
 GtkWidget * gimp_font_box_new          (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing);
+                                        gint spacing);
 GtkWidget * gimp_prop_font_box_new     (GimpContainer *container,
                                         GimpContext   *context,
                                         const gchar   *label,
-                                        gint           spacing,
+                                        gint spacing,
                                         const gchar   *view_type_prop,
                                         const gchar   *view_size_prop);
 

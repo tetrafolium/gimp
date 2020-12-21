@@ -30,20 +30,20 @@
 #define GIMP_COLOR_SELECTOR_PALETTE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_SELECTOR_PALETTE, GimpColorSelectorPaletteClass))
 
 
-typedef struct _GimpColorSelectorPalette      GimpColorSelectorPalette;
+typedef struct _GimpColorSelectorPalette GimpColorSelectorPalette;
 typedef struct _GimpColorSelectorPaletteClass GimpColorSelectorPaletteClass;
 
 struct _GimpColorSelectorPalette
 {
-    GimpColorSelector  parent_instance;
+	GimpColorSelector parent_instance;
 
-    GimpContext       *context;
-    GtkWidget         *view;
+	GimpContext       *context;
+	GtkWidget         *view;
 };
 
 struct _GimpColorSelectorPaletteClass
 {
-    GimpColorSelectorClass  parent_class;
+	GimpColorSelectorClass parent_class;
 };
 
 

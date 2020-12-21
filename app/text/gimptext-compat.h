@@ -27,12 +27,12 @@
 GimpLayer * text_render      (GimpImage    *image,
                               GimpDrawable *drawable,
                               GimpContext  *context,
-                              gint          text_x,
-                              gint          text_y,
+                              gint text_x,
+                              gint text_y,
                               const gchar  *fontname,
                               const gchar  *text,
-                              gint          border,
-                              gboolean      antialias);
+                              gint border,
+                              gboolean antialias);
 gboolean    text_get_extents (Gimp         *gimp,
                               const gchar  *fontname,
                               const gchar  *text,

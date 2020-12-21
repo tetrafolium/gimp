@@ -32,25 +32,25 @@
 #define GIMP_BUCKET_FILL_TOOL_GET_OPTIONS(t)  (GIMP_BUCKET_FILL_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpBucketFillTool      GimpBucketFillTool;
+typedef struct _GimpBucketFillTool GimpBucketFillTool;
 typedef struct _GimpBucketFillToolClass GimpBucketFillToolClass;
 typedef struct _GimpBucketFillToolPrivate GimpBucketFillToolPrivate;
 
 struct _GimpBucketFillTool
 {
-    GimpColorTool              parent_instance;
+	GimpColorTool parent_instance;
 
-    GimpBucketFillToolPrivate *priv;
+	GimpBucketFillToolPrivate *priv;
 };
 
 struct _GimpBucketFillToolClass
 {
-    GimpColorToolClass  parent_class;
+	GimpColorToolClass parent_class;
 };
 
 
-void    gimp_bucket_fill_tool_register (GimpToolRegisterCallback  callback,
-                                        gpointer                  data);
+void    gimp_bucket_fill_tool_register (GimpToolRegisterCallback callback,
+                                        gpointer data);
 
 GType   gimp_bucket_fill_tool_get_type (void) G_GNUC_CONST;
 

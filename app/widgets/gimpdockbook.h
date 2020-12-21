@@ -31,12 +31,12 @@
 
 
 typedef void (* GimpDockbookDragCallback) (GdkDragContext *context,
-        gboolean        begin,
-        gpointer        data);
+                                           gboolean begin,
+                                           gpointer data);
 
 
-typedef struct _GimpDockbookClass    GimpDockbookClass;
-typedef struct _GimpDockbookPrivate  GimpDockbookPrivate;
+typedef struct _GimpDockbookClass GimpDockbookClass;
+typedef struct _GimpDockbookPrivate GimpDockbookPrivate;
 
 /**
  * GimpDockbook:
@@ -46,21 +46,21 @@ typedef struct _GimpDockbookPrivate  GimpDockbookPrivate;
  */
 struct _GimpDockbook
 {
-    GtkNotebook parent_instance;
+	GtkNotebook parent_instance;
 
-    GimpDockbookPrivate *p;
+	GimpDockbookPrivate *p;
 };
 
 struct _GimpDockbookClass
 {
-    GtkNotebookClass parent_class;
+	GtkNotebookClass parent_class;
 
-    void (* dockable_added)     (GimpDockbook *dockbook,
-                                 GimpDockable *dockable);
-    void (* dockable_removed)   (GimpDockbook *dockbook,
-                                 GimpDockable *dockable);
-    void (* dockable_reordered) (GimpDockbook *dockbook,
-                                 GimpDockable *dockable);
+	void (* dockable_added)     (GimpDockbook *dockbook,
+	                             GimpDockable *dockable);
+	void (* dockable_removed)   (GimpDockbook *dockbook,
+	                             GimpDockable *dockable);
+	void (* dockable_reordered) (GimpDockbook *dockbook,
+	                             GimpDockable *dockable);
 };
 
 
@@ -68,25 +68,25 @@ GType           gimp_dockbook_get_type                (void) G_GNUC_CONST;
 GtkWidget     * gimp_dockbook_new                     (GimpMenuFactory          *menu_factory);
 
 void            gimp_dockbook_set_dock                (GimpDockbook             *dockbook,
-        GimpDock                 *dock);
+                                                       GimpDock                 *dock);
 GimpDock      * gimp_dockbook_get_dock                (GimpDockbook             *dockbook);
 
 GimpUIManager * gimp_dockbook_get_ui_manager          (GimpDockbook             *dockbook);
 
 GtkWidget     * gimp_dockbook_add_from_dialog_factory (GimpDockbook             *dockbook,
-        const gchar              *identifiers);
+                                                       const gchar              *identifiers);
 
 void            gimp_dockbook_update_with_context     (GimpDockbook             *dockbook,
-        GimpContext              *context);
+                                                       GimpContext              *context);
 GtkWidget    *  gimp_dockbook_create_tab_widget       (GimpDockbook             *dockbook,
-        GimpDockable             *dockable);
+                                                       GimpDockable             *dockable);
 void            gimp_dockbook_set_drag_handler        (GimpDockbook             *dockbook,
-        GimpPanedBox             *drag_handler);
+                                                       GimpPanedBox             *drag_handler);
 
-void            gimp_dockbook_add_drag_callback       (GimpDockbookDragCallback  callback,
-        gpointer                  data);
-void            gimp_dockbook_remove_drag_callback    (GimpDockbookDragCallback  callback,
-        gpointer                  data);
+void            gimp_dockbook_add_drag_callback       (GimpDockbookDragCallback callback,
+                                                       gpointer data);
+void            gimp_dockbook_remove_drag_callback    (GimpDockbookDragCallback callback,
+                                                       gpointer data);
 
 
 #endif /* __GIMP_DOCKBOOK_H__ */

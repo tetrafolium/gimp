@@ -42,21 +42,21 @@
 
 enum
 {
-    PROP_0,
-    PROP_SAMPLE_SIZE
+	PROP_0,
+	PROP_SAMPLE_SIZE
 };
 
 
 static void             gimp_gradient_select_constructed  (GObject        *object);
 static void             gimp_gradient_select_set_property (GObject        *object,
-        guint           property_id,
-        const GValue   *value,
-        GParamSpec     *pspec);
+                                                           guint property_id,
+                                                           const GValue   *value,
+                                                           GParamSpec     *pspec);
 
 static GimpValueArray * gimp_gradient_select_run_callback (GimpPdbDialog  *dialog,
-        GimpObject     *object,
-        gboolean        closing,
-        GError        **error);
+                                                           GimpObject     *object,
+                                                           gboolean closing,
+                                                           GError        **error);
 
 
 G_DEFINE_TYPE (GimpGradientSelect, gimp_gradient_select,
@@ -68,19 +68,19 @@ G_DEFINE_TYPE (GimpGradientSelect, gimp_gradient_select,
 static void
 gimp_gradient_select_class_init (GimpGradientSelectClass *klass)
 {
-    GObjectClass       *object_class = G_OBJECT_CLASS (klass);
-    GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
+	GObjectClass       *object_class = G_OBJECT_CLASS (klass);
+	GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
 
-    object_class->constructed  = gimp_gradient_select_constructed;
-    object_class->set_property = gimp_gradient_select_set_property;
+	object_class->constructed  = gimp_gradient_select_constructed;
+	object_class->set_property = gimp_gradient_select_set_property;
 
-    pdb_class->run_callback    = gimp_gradient_select_run_callback;
+	pdb_class->run_callback    = gimp_gradient_select_run_callback;
 
-    g_object_class_install_property (object_class, PROP_SAMPLE_SIZE,
-                                     g_param_spec_int ("sample-size", NULL, NULL,
-                                             0, 10000, 84,
-                                             GIMP_PARAM_WRITABLE |
-                                             G_PARAM_CONSTRUCT_ONLY));
+	g_object_class_install_property (object_class, PROP_SAMPLE_SIZE,
+	                                 g_param_spec_int ("sample-size", NULL, NULL,
+	                                                   0, 10000, 84,
+	                                                   GIMP_PARAM_WRITABLE |
+	                                                   G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -91,105 +91,105 @@ gimp_gradient_select_init (GimpGradientSelect *select)
 static void
 gimp_gradient_select_constructed (GObject *object)
 {
-    GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
-    GtkWidget     *content_area;
+	GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
+	GtkWidget     *content_area;
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    dialog->view =
-        gimp_data_factory_view_new (GIMP_VIEW_TYPE_LIST,
-                                    dialog->context->gimp->gradient_factory,
-                                    dialog->context,
-                                    GIMP_VIEW_SIZE_MEDIUM, 1,
-                                    dialog->menu_factory, "<Gradients>",
-                                    "/gradients-popup",
-                                    "gradients");
+	dialog->view =
+		gimp_data_factory_view_new (GIMP_VIEW_TYPE_LIST,
+		                            dialog->context->gimp->gradient_factory,
+		                            dialog->context,
+		                            GIMP_VIEW_SIZE_MEDIUM, 1,
+		                            dialog->menu_factory, "<Gradients>",
+		                            "/gradients-popup",
+		                            "gradients");
 
-    gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),
-                                         6 * (GIMP_VIEW_SIZE_MEDIUM + 2),
-                                         6 * (GIMP_VIEW_SIZE_MEDIUM + 2));
+	gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),
+	                                     6 * (GIMP_VIEW_SIZE_MEDIUM + 2),
+	                                     6 * (GIMP_VIEW_SIZE_MEDIUM + 2));
 
-    gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
+	gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
 
-    content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-    gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
-    gtk_widget_show (dialog->view);
+	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
+	gtk_widget_show (dialog->view);
 }
 
 static void
 gimp_gradient_select_set_property (GObject      *object,
-                                   guint         property_id,
+                                   guint property_id,
                                    const GValue *value,
                                    GParamSpec   *pspec)
 {
-    GimpGradientSelect *select = GIMP_GRADIENT_SELECT (object);
+	GimpGradientSelect *select = GIMP_GRADIENT_SELECT (object);
 
-    switch (property_id)
-    {
-    case PROP_SAMPLE_SIZE:
-        select->sample_size = g_value_get_int (value);
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	switch (property_id)
+	{
+	case PROP_SAMPLE_SIZE:
+		select->sample_size = g_value_get_int (value);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static GimpValueArray *
 gimp_gradient_select_run_callback (GimpPdbDialog  *dialog,
                                    GimpObject     *object,
-                                   gboolean        closing,
+                                   gboolean closing,
                                    GError        **error)
 {
-    GimpGradient        *gradient = GIMP_GRADIENT (object);
-    GimpGradientSegment *seg      = NULL;
-    gdouble             *values, *pv;
-    gdouble              pos, delta;
-    GimpRGB              color;
-    gint                 i;
-    GimpArray           *array;
-    GimpValueArray      *return_vals;
+	GimpGradient        *gradient = GIMP_GRADIENT (object);
+	GimpGradientSegment *seg      = NULL;
+	gdouble             *values, *pv;
+	gdouble pos, delta;
+	GimpRGB color;
+	gint i;
+	GimpArray           *array;
+	GimpValueArray      *return_vals;
 
-    i      = GIMP_GRADIENT_SELECT (dialog)->sample_size;
-    pos    = 0.0;
-    delta  = 1.0 / (i - 1);
+	i      = GIMP_GRADIENT_SELECT (dialog)->sample_size;
+	pos    = 0.0;
+	delta  = 1.0 / (i - 1);
 
-    values = g_new (gdouble, 4 * i);
-    pv     = values;
+	values = g_new (gdouble, 4 * i);
+	pv     = values;
 
-    while (i--)
-    {
-        seg = gimp_gradient_get_color_at (gradient, dialog->caller_context,
-                                          seg, pos, FALSE,
-                                          GIMP_GRADIENT_BLEND_RGB_PERCEPTUAL,
-                                          &color);
+	while (i--)
+	{
+		seg = gimp_gradient_get_color_at (gradient, dialog->caller_context,
+		                                  seg, pos, FALSE,
+		                                  GIMP_GRADIENT_BLEND_RGB_PERCEPTUAL,
+		                                  &color);
 
-        *pv++ = color.r;
-        *pv++ = color.g;
-        *pv++ = color.b;
-        *pv++ = color.a;
+		*pv++ = color.r;
+		*pv++ = color.g;
+		*pv++ = color.b;
+		*pv++ = color.a;
 
-        pos += delta;
-    }
+		pos += delta;
+	}
 
-    array = gimp_array_new ((guint8 *) values,
-                            GIMP_GRADIENT_SELECT (dialog)->sample_size * 4 *
-                            sizeof (gdouble),
-                            TRUE);
-    array->static_data = FALSE;
+	array = gimp_array_new ((guint8 *) values,
+	                        GIMP_GRADIENT_SELECT (dialog)->sample_size * 4 *
+	                        sizeof (gdouble),
+	                        TRUE);
+	array->static_data = FALSE;
 
-    return_vals =
-        gimp_pdb_execute_procedure_by_name (dialog->pdb,
-                                            dialog->caller_context,
-                                            NULL, error,
-                                            dialog->callback_name,
-                                            G_TYPE_STRING,         gimp_object_get_name (object),
-                                            G_TYPE_INT,            array->length / sizeof (gdouble),
-                                            GIMP_TYPE_FLOAT_ARRAY, array,
-                                            G_TYPE_BOOLEAN,        closing,
-                                            G_TYPE_NONE);
+	return_vals =
+		gimp_pdb_execute_procedure_by_name (dialog->pdb,
+		                                    dialog->caller_context,
+		                                    NULL, error,
+		                                    dialog->callback_name,
+		                                    G_TYPE_STRING,         gimp_object_get_name (object),
+		                                    G_TYPE_INT,            array->length / sizeof (gdouble),
+		                                    GIMP_TYPE_FLOAT_ARRAY, array,
+		                                    G_TYPE_BOOLEAN,        closing,
+		                                    G_TYPE_NONE);
 
-    gimp_array_free (array);
+	gimp_array_free (array);
 
-    return return_vals;
+	return return_vals;
 }

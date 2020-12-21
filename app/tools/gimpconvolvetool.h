@@ -32,24 +32,24 @@
 #define GIMP_CONVOLVE_TOOL_GET_OPTIONS(t)  (GIMP_CONVOLVE_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpConvolveTool      GimpConvolveTool;
+typedef struct _GimpConvolveTool GimpConvolveTool;
 typedef struct _GimpConvolveToolClass GimpConvolveToolClass;
 
 struct _GimpConvolveTool
 {
-    GimpBrushTool parent_instance;
+	GimpBrushTool parent_instance;
 
-    gboolean      toggled;
+	gboolean toggled;
 };
 
 struct _GimpConvolveToolClass
 {
-    GimpBrushToolClass parent_class;
+	GimpBrushToolClass parent_class;
 };
 
 
-void    gimp_convolve_tool_register (GimpToolRegisterCallback  callback,
-                                     gpointer                  data);
+void    gimp_convolve_tool_register (GimpToolRegisterCallback callback,
+                                     gpointer data);
 
 GType   gimp_convolve_tool_get_type (void) G_GNUC_CONST;
 

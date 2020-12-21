@@ -34,51 +34,51 @@
 #define GIMP_SEAMLESS_CLONE_TOOL_GET_OPTIONS(t)  (GIMP_SEAMLESS_CLONE_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpSeamlessCloneTool      GimpSeamlessCloneTool;
+typedef struct _GimpSeamlessCloneTool GimpSeamlessCloneTool;
 typedef struct _GimpSeamlessCloneToolClass GimpSeamlessCloneToolClass;
 
 struct _GimpSeamlessCloneTool
 {
-    GimpDrawTool    parent_instance;
+	GimpDrawTool parent_instance;
 
-    GeglBuffer     *paste;         /* A buffer containing the original
-                                  * paste that will be used in the
-                                  * rendering process */
+	GeglBuffer     *paste;     /* A buffer containing the original
+	                            * paste that will be used in the
+	                            * rendering process */
 
-    GeglNode       *render_node;    /* The parent of the Gegl graph that
-                                   * renders the seamless cloning */
+	GeglNode       *render_node;/* The parent of the Gegl graph that
+	                             * renders the seamless cloning */
 
-    GeglNode       *sc_node;        /* A Gegl node to do the seamless
-                                   * cloning live with translation of
-                                   * the paste */
+	GeglNode       *sc_node;    /* A Gegl node to do the seamless
+	                             * cloning live with translation of
+	                             * the paste */
 
-    gint            tool_state;     /* The current state in the tool's
-                                   * state machine */
+	gint tool_state;            /* The current state in the tool's
+	                             * state machine */
 
-    GimpDrawableFilter *filter;     /* The filter object which renders
-                                   * the live preview, and commits it
-                                   * when at the end */
+	GimpDrawableFilter *filter; /* The filter object which renders
+	                             * the live preview, and commits it
+	                             * when at the end */
 
-    gint width, height;             /* The width and height of the paste.
-                                   * Needed for mouse hit detection */
+	gint width, height;         /* The width and height of the paste.
+	                             * Needed for mouse hit detection */
 
-    gint xoff, yoff;                /* The current offset of the paste */
-    gint xoff_p, yoff_p;            /* The previous offset of the paste */
+	gint xoff, yoff;            /* The current offset of the paste */
+	gint xoff_p, yoff_p;        /* The previous offset of the paste */
 
-    gdouble xclick, yclick;         /* The image location of the last
-                                   * mouse click. To be used when the
-                                   * mouse is in motion, to recalculate
-                                   * the xoff and yoff values */
+	gdouble xclick, yclick;     /* The image location of the last
+	                             * mouse click. To be used when the
+	                             * mouse is in motion, to recalculate
+	                             * the xoff and yoff values */
 };
 
 struct _GimpSeamlessCloneToolClass
 {
-    GimpDrawToolClass parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_seamless_clone_tool_register (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_seamless_clone_tool_register (GimpToolRegisterCallback callback,
+                                           gpointer data);
 
 GType   gimp_seamless_clone_tool_get_type (void) G_GNUC_CONST;
 

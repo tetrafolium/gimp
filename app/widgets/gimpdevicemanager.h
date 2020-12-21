@@ -37,18 +37,18 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpDeviceManagerPrivate GimpDeviceManagerPrivate;
-typedef struct _GimpDeviceManagerClass   GimpDeviceManagerClass;
+typedef struct _GimpDeviceManagerClass GimpDeviceManagerClass;
 
 struct _GimpDeviceManager
 {
-    GimpList                  parent_instance;
+	GimpList parent_instance;
 
-    GimpDeviceManagerPrivate *priv;
+	GimpDeviceManagerPrivate *priv;
 };
 
 struct _GimpDeviceManagerClass
 {
-    GimpListClass  parent_class;
+	GimpListClass parent_class;
 };
 
 
@@ -58,7 +58,7 @@ GimpDeviceManager * gimp_device_manager_new                (Gimp *gimp);
 
 GimpDeviceInfo    * gimp_device_manager_get_current_device (GimpDeviceManager *manager);
 void                gimp_device_manager_set_current_device (GimpDeviceManager *manager,
-        GimpDeviceInfo    *info);
+                                                            GimpDeviceInfo    *info);
 
 void                gimp_device_manager_reset              (GimpDeviceManager *manager);
 

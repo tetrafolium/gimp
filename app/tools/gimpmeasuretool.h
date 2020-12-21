@@ -32,38 +32,38 @@
 #define GIMP_MEASURE_TOOL_GET_OPTIONS(t)  (GIMP_MEASURE_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpMeasureTool      GimpMeasureTool;
+typedef struct _GimpMeasureTool GimpMeasureTool;
 typedef struct _GimpMeasureToolClass GimpMeasureToolClass;
 
 struct _GimpMeasureTool
 {
-    GimpTransformTool  parent_instance;
+	GimpTransformTool parent_instance;
 
-    GimpToolWidget    *widget;
-    GimpToolWidget    *grab_widget;
+	GimpToolWidget    *widget;
+	GimpToolWidget    *grab_widget;
 
-    gboolean           supress_guides;
+	gboolean supress_guides;
 
-    gint               n_points;
-    gint               x[3];
-    gint               y[3];
+	gint n_points;
+	gint x[3];
+	gint y[3];
 
-    GimpToolGui       *gui;
-    GtkWidget         *distance_label[2];
-    GtkWidget         *angle_label[2];
-    GtkWidget         *width_label[2];
-    GtkWidget         *height_label[2];
-    GtkWidget         *unit_label[4];
+	GimpToolGui       *gui;
+	GtkWidget         *distance_label[2];
+	GtkWidget         *angle_label[2];
+	GtkWidget         *width_label[2];
+	GtkWidget         *height_label[2];
+	GtkWidget         *unit_label[4];
 };
 
 struct _GimpMeasureToolClass
 {
-    GimpTransformToolClass  parent_class;
+	GimpTransformToolClass parent_class;
 };
 
 
-void    gimp_measure_tool_register (GimpToolRegisterCallback  callback,
-                                    gpointer                  data);
+void    gimp_measure_tool_register (GimpToolRegisterCallback callback,
+                                    gpointer data);
 
 GType   gimp_measure_tool_get_type (void) G_GNUC_CONST;
 

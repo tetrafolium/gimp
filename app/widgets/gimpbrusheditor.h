@@ -37,21 +37,21 @@ typedef struct _GimpBrushEditorClass GimpBrushEditorClass;
 
 struct _GimpBrushEditor
 {
-    GimpDataEditor  parent_instance;
+	GimpDataEditor parent_instance;
 
-    GtkWidget      *shape_group;
-    GtkWidget      *options_box;
-    GtkAdjustment  *radius_data;
-    GtkAdjustment  *spikes_data;
-    GtkAdjustment  *hardness_data;
-    GtkAdjustment  *angle_data;
-    GtkAdjustment  *aspect_ratio_data;
-    GtkAdjustment  *spacing_data;
+	GtkWidget      *shape_group;
+	GtkWidget      *options_box;
+	GtkAdjustment  *radius_data;
+	GtkAdjustment  *spikes_data;
+	GtkAdjustment  *hardness_data;
+	GtkAdjustment  *angle_data;
+	GtkAdjustment  *aspect_ratio_data;
+	GtkAdjustment  *spacing_data;
 };
 
 struct _GimpBrushEditorClass
 {
-    GimpDataEditorClass  parent_class;
+	GimpDataEditorClass parent_class;
 };
 
 

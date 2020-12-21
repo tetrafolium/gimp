@@ -30,35 +30,35 @@
 #define GIMP_TRANSFORM_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSFORM_OPTIONS, GimpTransformOptionsClass))
 
 
-typedef struct _GimpTransformOptions      GimpTransformOptions;
+typedef struct _GimpTransformOptions GimpTransformOptions;
 typedef struct _GimpTransformOptionsClass GimpTransformOptionsClass;
 
 struct _GimpTransformOptions
 {
-    GimpToolOptions         parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpTransformType       type;
-    GimpTransformDirection  direction;
-    GimpInterpolationType   interpolation;
-    GimpTransformResize     clip;
+	GimpTransformType type;
+	GimpTransformDirection direction;
+	GimpInterpolationType interpolation;
+	GimpTransformResize clip;
 
-    /*  options gui  */
-    GtkWidget              *type_box;
-    GtkWidget              *direction_frame;
+	/*  options gui  */
+	GtkWidget              *type_box;
+	GtkWidget              *direction_frame;
 };
 
 struct _GimpTransformOptionsClass
 {
-    GimpToolOptionsClass  parent_class;
+	GimpToolOptionsClass parent_class;
 };
 
 
 GType       gimp_transform_options_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_transform_options_gui      (GimpToolOptions *tool_options,
-        gboolean         direction,
-        gboolean         interpolation,
-        gboolean         clipping);
+                                             gboolean direction,
+                                             gboolean interpolation,
+                                             gboolean clipping);
 
 
 #endif /* __GIMP_TRANSFORM_OPTIONS_H__ */

@@ -20,7 +20,7 @@
 
 
 gboolean   xcf_seek_pos (XcfInfo  *info,
-                         goffset   pos,
+                         goffset pos,
                          GError  **error);
 
 

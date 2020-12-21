@@ -30,33 +30,33 @@
 #define GIMP_SAMPLE_POINT_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SAMPLE_POINT_TOOL, GimpSamplePointToolClass))
 
 
-typedef struct _GimpSamplePointTool      GimpSamplePointTool;
+typedef struct _GimpSamplePointTool GimpSamplePointTool;
 typedef struct _GimpSamplePointToolClass GimpSamplePointToolClass;
 
 struct _GimpSamplePointTool
 {
-    GimpDrawTool     parent_instance;
+	GimpDrawTool parent_instance;
 
-    GimpSamplePoint *sample_point;
-    gint             sample_point_old_x;
-    gint             sample_point_old_y;
-    gint             sample_point_x;
-    gint             sample_point_y;
+	GimpSamplePoint *sample_point;
+	gint sample_point_old_x;
+	gint sample_point_old_y;
+	gint sample_point_x;
+	gint sample_point_y;
 };
 
 struct _GimpSamplePointToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
 GType   gimp_sample_point_tool_get_type   (void) G_GNUC_CONST;
 
 void    gimp_sample_point_tool_start_new  (GimpTool        *parent_tool,
-        GimpDisplay     *display);
+                                           GimpDisplay     *display);
 void    gimp_sample_point_tool_start_edit (GimpTool        *parent_tool,
-        GimpDisplay     *display,
-        GimpSamplePoint *sample_point);
+                                           GimpDisplay     *display,
+                                           GimpSamplePoint *sample_point);
 
 
 #endif  /*  __GIMP_SAMPLE_POINT_TOOL_H__  */

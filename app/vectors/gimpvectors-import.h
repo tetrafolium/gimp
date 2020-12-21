@@ -24,19 +24,19 @@
 
 gboolean  gimp_vectors_import_file   (GimpImage    *image,
                                       GFile        *file,
-                                      gboolean      merge,
-                                      gboolean      scale,
+                                      gboolean merge,
+                                      gboolean scale,
                                       GimpVectors  *parent,
-                                      gint          position,
+                                      gint position,
                                       GList       **ret_vectors,
                                       GError      **error);
 gboolean  gimp_vectors_import_buffer (GimpImage    *image,
                                       const gchar  *buffer,
-                                      gsize         len,
-                                      gboolean      merge,
-                                      gboolean      scale,
+                                      gsize len,
+                                      gboolean merge,
+                                      gboolean scale,
                                       GimpVectors  *parent,
-                                      gint          position,
+                                      gint position,
                                       GList       **ret_vectors,
                                       GError      **error);
 

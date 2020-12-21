@@ -37,40 +37,40 @@ typedef struct _GimpDataEditorClass GimpDataEditorClass;
 
 struct _GimpDataEditor
 {
-    GimpEditor       parent_instance;
+	GimpEditor parent_instance;
 
-    GimpDataFactory *data_factory;
-    GimpContext     *context;
-    gboolean         edit_active;
+	GimpDataFactory *data_factory;
+	GimpContext     *context;
+	gboolean edit_active;
 
-    GimpData        *data;
-    gboolean         data_editable;
+	GimpData        *data;
+	gboolean data_editable;
 
-    GtkWidget       *name_entry;
+	GtkWidget       *name_entry;
 
-    GtkWidget       *view; /* filled by subclasses */
+	GtkWidget       *view;/* filled by subclasses */
 };
 
 struct _GimpDataEditorClass
 {
-    GimpEditorClass  parent_class;
+	GimpEditorClass parent_class;
 
-    /*  virtual functions  */
-    void (* set_data) (GimpDataEditor *editor,
-                       GimpData       *data);
+	/*  virtual functions  */
+	void (* set_data) (GimpDataEditor *editor,
+	                   GimpData       *data);
 
-    const gchar *title;
+	const gchar *title;
 };
 
 
 GType       gimp_data_editor_get_type        (void) G_GNUC_CONST;
 
 void        gimp_data_editor_set_data        (GimpDataEditor *editor,
-        GimpData       *data);
+                                              GimpData       *data);
 GimpData  * gimp_data_editor_get_data        (GimpDataEditor *editor);
 
 void        gimp_data_editor_set_edit_active (GimpDataEditor *editor,
-        gboolean        edit_active);
+                                              gboolean edit_active);
 gboolean    gimp_data_editor_get_edit_active (GimpDataEditor *editor);
 
 

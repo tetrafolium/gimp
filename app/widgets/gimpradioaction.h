@@ -31,28 +31,28 @@
 #define GIMP_RADIO_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_RADIO_ACTION, GimpRadioActionClass))
 
 
-typedef struct _GimpRadioAction      GimpRadioAction;
+typedef struct _GimpRadioAction GimpRadioAction;
 typedef struct _GimpRadioActionClass GimpRadioActionClass;
 
 struct _GimpRadioAction
 {
-    GtkRadioAction  parent_instance;
+	GtkRadioAction parent_instance;
 };
 
 struct _GimpRadioActionClass
 {
-    GtkRadioActionClass  parent_class;
+	GtkRadioActionClass parent_class;
 };
 
 
 GType            gimp_radio_action_get_type (void) G_GNUC_CONST;
 
 GtkRadioAction * gimp_radio_action_new      (const gchar *name,
-        const gchar *label,
-        const gchar *tooltip,
-        const gchar *icon_name,
-        const gchar *help_id,
-        gint         value);
+                                             const gchar *label,
+                                             const gchar *tooltip,
+                                             const gchar *icon_name,
+                                             const gchar *help_id,
+                                             gint value);
 
 
 #endif  /* __GIMP_RADIO_ACTION_H__ */

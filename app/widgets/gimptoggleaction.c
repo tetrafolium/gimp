@@ -33,7 +33,7 @@
 
 
 static void   gimp_toggle_action_connect_proxy (GtkAction       *action,
-        GtkWidget       *proxy);
+                                                GtkWidget       *proxy);
 
 static void   gimp_toggle_action_toggled       (GtkToggleAction *action);
 
@@ -48,36 +48,36 @@ G_DEFINE_TYPE_WITH_CODE (GimpToggleAction, gimp_toggle_action,
 static void
 gimp_toggle_action_class_init (GimpToggleActionClass *klass)
 {
-    GtkActionClass       *action_class = GTK_ACTION_CLASS (klass);
-    GtkToggleActionClass *toggle_class = GTK_TOGGLE_ACTION_CLASS (klass);
+	GtkActionClass       *action_class = GTK_ACTION_CLASS (klass);
+	GtkToggleActionClass *toggle_class = GTK_TOGGLE_ACTION_CLASS (klass);
 
-    action_class->connect_proxy = gimp_toggle_action_connect_proxy;
+	action_class->connect_proxy = gimp_toggle_action_connect_proxy;
 
-    toggle_class->toggled       = gimp_toggle_action_toggled;
+	toggle_class->toggled       = gimp_toggle_action_toggled;
 }
 
 static void
 gimp_toggle_action_init (GimpToggleAction *action)
 {
-    gimp_action_init (GIMP_ACTION (action));
+	gimp_action_init (GIMP_ACTION (action));
 }
 
 static void
 gimp_toggle_action_connect_proxy (GtkAction *action,
                                   GtkWidget *proxy)
 {
-    GTK_ACTION_CLASS (parent_class)->connect_proxy (action, proxy);
+	GTK_ACTION_CLASS (parent_class)->connect_proxy (action, proxy);
 
-    gimp_action_set_proxy (GIMP_ACTION (action), proxy);
+	gimp_action_set_proxy (GIMP_ACTION (action), proxy);
 }
 
 static void
 gimp_toggle_action_toggled (GtkToggleAction *action)
 {
-    gboolean value = gimp_toggle_action_get_active (GIMP_TOGGLE_ACTION (action));
+	gboolean value = gimp_toggle_action_get_active (GIMP_TOGGLE_ACTION (action));
 
-    gimp_action_emit_change_state (GIMP_ACTION (action),
-                                   g_variant_new_boolean (value));
+	gimp_action_emit_change_state (GIMP_ACTION (action),
+	                               g_variant_new_boolean (value));
 }
 
 
@@ -90,29 +90,29 @@ gimp_toggle_action_new (const gchar *name,
                         const gchar *icon_name,
                         const gchar *help_id)
 {
-    GtkToggleAction *action;
+	GtkToggleAction *action;
 
-    action = g_object_new (GIMP_TYPE_TOGGLE_ACTION,
-                           "name",      name,
-                           "label",     label,
-                           "tooltip",   tooltip,
-                           "icon-name", icon_name,
-                           NULL);
+	action = g_object_new (GIMP_TYPE_TOGGLE_ACTION,
+	                       "name",      name,
+	                       "label",     label,
+	                       "tooltip",   tooltip,
+	                       "icon-name", icon_name,
+	                       NULL);
 
-    gimp_action_set_help_id (GIMP_ACTION (action), help_id);
+	gimp_action_set_help_id (GIMP_ACTION (action), help_id);
 
-    return action;
+	return action;
 }
 
 void
 gimp_toggle_action_set_active (GimpToggleAction *action,
-                               gboolean          active)
+                               gboolean active)
 {
-    return gtk_toggle_action_set_active ((GtkToggleAction *) action, active);
+	return gtk_toggle_action_set_active ((GtkToggleAction *) action, active);
 }
 
 gboolean
 gimp_toggle_action_get_active (GimpToggleAction *action)
 {
-    return gtk_toggle_action_get_active ((GtkToggleAction *) action);
+	return gtk_toggle_action_get_active ((GtkToggleAction *) action);
 }

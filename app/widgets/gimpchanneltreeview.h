@@ -33,19 +33,19 @@
 #define GIMP_CHANNEL_TREE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CHANNEL_TREE_VIEW, GimpChannelTreeViewClass))
 
 
-typedef struct _GimpChannelTreeViewClass   GimpChannelTreeViewClass;
+typedef struct _GimpChannelTreeViewClass GimpChannelTreeViewClass;
 typedef struct _GimpChannelTreeViewPrivate GimpChannelTreeViewPrivate;
 
 struct _GimpChannelTreeView
 {
-    GimpDrawableTreeView        parent_instance;
+	GimpDrawableTreeView parent_instance;
 
-    GimpChannelTreeViewPrivate *priv;
+	GimpChannelTreeViewPrivate *priv;
 };
 
 struct _GimpChannelTreeViewClass
 {
-    GimpDrawableTreeViewClass  parent_class;
+	GimpDrawableTreeViewClass parent_class;
 };
 
 

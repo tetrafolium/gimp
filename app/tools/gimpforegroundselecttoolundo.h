@@ -32,19 +32,19 @@
 #define GIMP_FOREGROUND_SELECT_TOOL_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FOREGROUND_SELECT_TOOL_UNDO, GimpForegroundSelectToolUndoClass))
 
 
-typedef struct _GimpForegroundSelectToolUndo      GimpForegroundSelectToolUndo;
+typedef struct _GimpForegroundSelectToolUndo GimpForegroundSelectToolUndo;
 typedef struct _GimpForegroundSelectToolUndoClass GimpForegroundSelectToolUndoClass;
 
 struct _GimpForegroundSelectToolUndo
 {
-    GimpUndo                  parent_instance;
+	GimpUndo parent_instance;
 
-    GimpForegroundSelectTool *foreground_select_tool;
+	GimpForegroundSelectTool *foreground_select_tool;
 };
 
 struct _GimpForegroundSelectToolUndoClass
 {
-    GimpUndoClass  parent_class;
+	GimpUndoClass parent_class;
 };
 
 

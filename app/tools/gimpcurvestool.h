@@ -29,39 +29,39 @@
 #define GIMP_IS_CURVES_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CURVES_TOOL))
 
 
-typedef struct _GimpCurvesTool      GimpCurvesTool;
+typedef struct _GimpCurvesTool GimpCurvesTool;
 typedef struct _GimpCurvesToolClass GimpCurvesToolClass;
 
 struct _GimpCurvesTool
 {
-    GimpFilterTool  parent_instance;
+	GimpFilterTool parent_instance;
 
-    /* dialog */
-    gdouble           scale;
-    gdouble           picked_color[5];
+	/* dialog */
+	gdouble scale;
+	gdouble picked_color[5];
 
-    GtkWidget        *channel_menu;
-    GtkWidget        *xrange;
-    GtkWidget        *yrange;
-    GtkWidget        *graph;
-    GtkWidget        *point_box;
-    GtkWidget        *point_input;
-    GtkWidget        *point_output;
-    GtkWidget        *point_type;
-    GtkWidget        *curve_type;
+	GtkWidget        *channel_menu;
+	GtkWidget        *xrange;
+	GtkWidget        *yrange;
+	GtkWidget        *graph;
+	GtkWidget        *point_box;
+	GtkWidget        *point_input;
+	GtkWidget        *point_output;
+	GtkWidget        *point_type;
+	GtkWidget        *curve_type;
 
-    /* export dialog */
-    gboolean          export_old_format;
+	/* export dialog */
+	gboolean export_old_format;
 };
 
 struct _GimpCurvesToolClass
 {
-    GimpFilterToolClass  parent_class;
+	GimpFilterToolClass parent_class;
 };
 
 
-void    gimp_curves_tool_register (GimpToolRegisterCallback  callback,
-                                   gpointer                  data);
+void    gimp_curves_tool_register (GimpToolRegisterCallback callback,
+                                   gpointer data);
 
 GType   gimp_curves_tool_get_type (void) G_GNUC_CONST;
 

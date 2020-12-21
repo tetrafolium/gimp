@@ -32,21 +32,21 @@ G_BEGIN_DECLS
 #define GIMP_ERROR_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ERROR_DIALOG, GimpErrorDialogClass))
 
 
-typedef struct _GimpErrorDialogClass  GimpErrorDialogClass;
+typedef struct _GimpErrorDialogClass GimpErrorDialogClass;
 
 struct _GimpErrorDialog
 {
-    GimpDialog       parent_instance;
+	GimpDialog parent_instance;
 
-    GtkWidget       *vbox;
+	GtkWidget       *vbox;
 
-    GList           *messages;
-    gboolean         overflow;
+	GList           *messages;
+	gboolean overflow;
 };
 
 struct _GimpErrorDialogClass
 {
-    GimpDialogClass  parent_class;
+	GimpDialogClass parent_class;
 };
 
 

@@ -31,24 +31,24 @@
 #define GIMP_DODGE_BURN_TOOL_GET_OPTIONS(t)  (GIMP_DODGE_BURN_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpDodgeBurnTool      GimpDodgeBurnTool;
+typedef struct _GimpDodgeBurnTool GimpDodgeBurnTool;
 typedef struct _GimpDodgeBurnToolClass GimpDodgeBurnToolClass;
 
 struct _GimpDodgeBurnTool
 {
-    GimpBrushTool parent_instance;
+	GimpBrushTool parent_instance;
 
-    gboolean      toggled;
+	gboolean toggled;
 };
 
 struct _GimpDodgeBurnToolClass
 {
-    GimpBrushToolClass parent_class;
+	GimpBrushToolClass parent_class;
 };
 
 
-void    gimp_dodge_burn_tool_register (GimpToolRegisterCallback  callback,
-                                       gpointer                  data);
+void    gimp_dodge_burn_tool_register (GimpToolRegisterCallback callback,
+                                       gpointer data);
 
 GType   gimp_dodge_burn_tool_get_type (void) G_GNUC_CONST;
 

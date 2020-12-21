@@ -39,7 +39,7 @@
 
 
 static void   gimp_view_renderer_layer_render (GimpViewRenderer *renderer,
-        GtkWidget        *widget);
+                                               GtkWidget        *widget);
 
 
 G_DEFINE_TYPE (GimpViewRendererLayer, gimp_view_renderer_layer,
@@ -51,9 +51,9 @@ G_DEFINE_TYPE (GimpViewRendererLayer, gimp_view_renderer_layer,
 static void
 gimp_view_renderer_layer_class_init (GimpViewRendererLayerClass *klass)
 {
-    GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
+	GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
 
-    renderer_class->render = gimp_view_renderer_layer_render;
+	renderer_class->render = gimp_view_renderer_layer_render;
 }
 
 static void
@@ -65,34 +65,34 @@ static void
 gimp_view_renderer_layer_render (GimpViewRenderer *renderer,
                                  GtkWidget        *widget)
 {
-    const gchar *icon_name = NULL;
+	const gchar *icon_name = NULL;
 
-    if (gimp_layer_is_floating_sel (GIMP_LAYER (renderer->viewable)))
-    {
-        icon_name = GIMP_ICON_LAYER_FLOATING_SELECTION;
-    }
-    else if (gimp_item_is_text_layer (GIMP_ITEM (renderer->viewable)))
-    {
-        icon_name = gimp_viewable_get_icon_name (renderer->viewable);
-    }
-    else
-    {
-        GimpContainer *children = gimp_viewable_get_children (renderer->viewable);
+	if (gimp_layer_is_floating_sel (GIMP_LAYER (renderer->viewable)))
+	{
+		icon_name = GIMP_ICON_LAYER_FLOATING_SELECTION;
+	}
+	else if (gimp_item_is_text_layer (GIMP_ITEM (renderer->viewable)))
+	{
+		icon_name = gimp_viewable_get_icon_name (renderer->viewable);
+	}
+	else
+	{
+		GimpContainer *children = gimp_viewable_get_children (renderer->viewable);
 
-        if (children)
-        {
-            GimpItem  *item  = GIMP_ITEM (renderer->viewable);
-            GimpImage *image = gimp_item_get_image (item);
+		if (children)
+		{
+			GimpItem  *item  = GIMP_ITEM (renderer->viewable);
+			GimpImage *image = gimp_item_get_image (item);
 
-            if (gimp_container_get_n_children (children) == 0)
-                icon_name = "folder";
-            else if (image && ! image->gimp->config->group_layer_previews)
-                icon_name = gimp_viewable_get_icon_name (renderer->viewable);
-        }
-    }
+			if (gimp_container_get_n_children (children) == 0)
+				icon_name = "folder";
+			else if (image && !image->gimp->config->group_layer_previews)
+				icon_name = gimp_viewable_get_icon_name (renderer->viewable);
+		}
+	}
 
-    if (icon_name)
-        gimp_view_renderer_render_icon (renderer, widget, icon_name);
-    else
-        GIMP_VIEW_RENDERER_CLASS (parent_class)->render (renderer, widget);
+	if (icon_name)
+		gimp_view_renderer_render_icon (renderer, widget, icon_name);
+	else
+		GIMP_VIEW_RENDERER_CLASS (parent_class)->render (renderer, widget);
 }

@@ -32,29 +32,29 @@
 #define GIMP_CROP_TOOL_GET_OPTIONS(t)  (GIMP_CROP_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpCropTool      GimpCropTool;
+typedef struct _GimpCropTool GimpCropTool;
 typedef struct _GimpCropToolClass GimpCropToolClass;
 
 struct _GimpCropTool
 {
-    GimpDrawTool    parent_instance;
+	GimpDrawTool parent_instance;
 
-    GimpImage      *current_image;
-    GList          *current_layers;
+	GimpImage      *current_image;
+	GList          *current_layers;
 
-    GimpToolWidget *widget;
-    GimpToolWidget *grab_widget;
-    GList          *bindings;
+	GimpToolWidget *widget;
+	GimpToolWidget *grab_widget;
+	GList          *bindings;
 };
 
 struct _GimpCropToolClass
 {
-    GimpDrawToolClass parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_crop_tool_register (GimpToolRegisterCallback  callback,
-                                 gpointer                  data);
+void    gimp_crop_tool_register (GimpToolRegisterCallback callback,
+                                 gpointer data);
 
 GType   gimp_crop_tool_get_type (void) G_GNUC_CONST;
 

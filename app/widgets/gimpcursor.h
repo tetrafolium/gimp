@@ -20,18 +20,18 @@
 
 
 GdkCursor      * gimp_cursor_new    (GdkWindow          *window,
-                                     GimpHandedness      cursor_handedness,
-                                     GimpCursorType      cursor_type,
-                                     GimpToolCursorType  tool_cursor,
-                                     GimpCursorModifier  modifier);
+                                     GimpHandedness cursor_handedness,
+                                     GimpCursorType cursor_type,
+                                     GimpToolCursorType tool_cursor,
+                                     GimpCursorModifier modifier);
 void             gimp_cursor_set    (GtkWidget          *widget,
-                                     GimpHandedness      cursor_handedness,
-                                     GimpCursorType      cursor_type,
-                                     GimpToolCursorType  tool_cursor,
-                                     GimpCursorModifier  modifier);
+                                     GimpHandedness cursor_handedness,
+                                     GimpCursorType cursor_type,
+                                     GimpToolCursorType tool_cursor,
+                                     GimpCursorModifier modifier);
 
-GimpCursorType   gimp_cursor_rotate (GimpCursorType      cursor,
-                                     gdouble             angle);
+GimpCursorType   gimp_cursor_rotate (GimpCursorType cursor,
+                                     gdouble angle);
 
 
 #endif /*  __GIMP_CURSOR_H__  */

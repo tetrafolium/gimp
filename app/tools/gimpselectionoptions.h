@@ -35,16 +35,16 @@ typedef struct _GimpToolOptionsClass GimpSelectionOptionsClass;
 
 struct _GimpSelectionOptions
 {
-    GimpToolOptions  parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpChannelOps   operation;
-    gboolean         antialias;
-    gboolean         feather;
-    gdouble          feather_radius;
+	GimpChannelOps operation;
+	gboolean antialias;
+	gboolean feather;
+	gdouble feather_radius;
 
-    /*  options gui  */
-    GtkWidget       *mode_box;
-    GtkWidget       *antialias_toggle;
+	/*  options gui  */
+	GtkWidget       *mode_box;
+	GtkWidget       *antialias_toggle;
 };
 
 

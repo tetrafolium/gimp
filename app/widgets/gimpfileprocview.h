@@ -34,31 +34,31 @@ typedef struct _GimpFileProcViewClass GimpFileProcViewClass;
 
 struct _GimpFileProcView
 {
-    GtkTreeView        parent_instance;
+	GtkTreeView parent_instance;
 
-    GList             *meta_extensions;
+	GList             *meta_extensions;
 };
 
 struct _GimpFileProcViewClass
 {
-    GtkTreeViewClass   parent_class;
+	GtkTreeViewClass parent_class;
 
-    void (* changed) (GimpFileProcView *view);
+	void (* changed) (GimpFileProcView *view);
 };
 
 
 GType                 gimp_file_proc_view_get_type    (void) G_GNUC_CONST;
 
 GtkWidget           * gimp_file_proc_view_new         (Gimp                 *gimp,
-        GSList               *procedures,
-        const gchar          *automatic,
-        const gchar          *automatic_help_id);
+                                                       GSList               *procedures,
+                                                       const gchar          *automatic,
+                                                       const gchar          *automatic_help_id);
 
 GimpPlugInProcedure * gimp_file_proc_view_get_proc    (GimpFileProcView     *view,
-        gchar               **label,
-        GtkFileFilter       **filter);
+                                                       gchar               **label,
+                                                       GtkFileFilter       **filter);
 gboolean              gimp_file_proc_view_set_proc    (GimpFileProcView     *view,
-        GimpPlugInProcedure  *proc);
+                                                       GimpPlugInProcedure  *proc);
 
 gchar               * gimp_file_proc_view_get_help_id (GimpFileProcView     *view);
 

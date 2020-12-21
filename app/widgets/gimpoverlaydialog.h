@@ -36,58 +36,58 @@
 #define GIMP_OVERLAY_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OVERLAY_DIALOG, GimpOverlayDialogClass))
 
 
-typedef struct _GimpOverlayDialog      GimpOverlayDialog;
+typedef struct _GimpOverlayDialog GimpOverlayDialog;
 typedef struct _GimpOverlayDialogClass GimpOverlayDialogClass;
 
 struct _GimpOverlayDialog
 {
-    GimpOverlayFrame  parent_instance;
+	GimpOverlayFrame parent_instance;
 
-    gchar            *title;
-    gchar            *icon_name;
+	gchar            *title;
+	gchar            *icon_name;
 
-    GtkWidget        *header;
-    GtkWidget        *icon_image;
-    GtkWidget        *title_label;
-    GtkWidget        *detach_button;
-    GtkWidget        *close_button;
-    GtkWidget        *action_area;
+	GtkWidget        *header;
+	GtkWidget        *icon_image;
+	GtkWidget        *title_label;
+	GtkWidget        *detach_button;
+	GtkWidget        *close_button;
+	GtkWidget        *action_area;
 };
 
 struct _GimpOverlayDialogClass
 {
-    GimpOverlayFrameClass  parent_class;
+	GimpOverlayFrameClass parent_class;
 
-    void (* response) (GimpOverlayDialog *overlay,
-                       gint               response_id);
+	void (* response) (GimpOverlayDialog *overlay,
+	                   gint response_id);
 
-    void (* detach)   (GimpOverlayDialog *overlay);
-    void (* close)    (GimpOverlayDialog *overlay);
+	void (* detach)   (GimpOverlayDialog *overlay);
+	void (* close)    (GimpOverlayDialog *overlay);
 };
 
 
 GType       gimp_overlay_dialog_get_type               (void) G_GNUC_CONST;
 
 GtkWidget * gimp_overlay_dialog_new                    (GimpToolInfo      *tool_info,
-        const gchar       *desc,
-        ...) G_GNUC_NULL_TERMINATED;
+                                                        const gchar       *desc,
+                                                        ...) G_GNUC_NULL_TERMINATED;
 
 void        gimp_overlay_dialog_response               (GimpOverlayDialog *overlay,
-        gint               response_id);
+                                                        gint response_id);
 void        gimp_overlay_dialog_add_buttons_valist     (GimpOverlayDialog *overlay,
-        va_list            args);
+                                                        va_list args);
 GtkWidget * gimp_overlay_dialog_add_button             (GimpOverlayDialog *overlay,
-        const gchar       *button_text,
-        gint               response_id);
+                                                        const gchar       *button_text,
+                                                        gint response_id);
 void        gimp_overlay_dialog_set_alternative_button_order
-(GimpOverlayDialog *overlay,
- gint               n_ids,
- gint              *ids);
+        (GimpOverlayDialog *overlay,
+        gint n_ids,
+        gint              *ids);
 void        gimp_overlay_dialog_set_default_response   (GimpOverlayDialog *overlay,
-        gint               response_id);
+                                                        gint response_id);
 void        gimp_overlay_dialog_set_response_sensitive (GimpOverlayDialog *overlay,
-        gint               response_id,
-        gboolean           sensitive);
+                                                        gint response_id,
+                                                        gboolean sensitive);
 
 
 #endif /* __GIMP_OVERLAY_DIALOG_H__ */

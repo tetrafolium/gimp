@@ -37,26 +37,26 @@ typedef struct _GimpImageViewClass GimpImageViewClass;
 
 struct _GimpImageView
 {
-    GimpContainerEditor  parent_instance;
+	GimpContainerEditor parent_instance;
 
-    GtkWidget           *raise_button;
-    GtkWidget           *new_button;
-    GtkWidget           *delete_button;
+	GtkWidget           *raise_button;
+	GtkWidget           *new_button;
+	GtkWidget           *delete_button;
 };
 
 struct _GimpImageViewClass
 {
-    GimpContainerEditorClass  parent_class;
+	GimpContainerEditorClass parent_class;
 };
 
 
 GType       gimp_image_view_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gimp_image_view_new      (GimpViewType     view_type,
+GtkWidget * gimp_image_view_new      (GimpViewType view_type,
                                       GimpContainer   *container,
                                       GimpContext     *context,
-                                      gint             view_size,
-                                      gint             view_border_width,
+                                      gint view_size,
+                                      gint view_border_width,
                                       GimpMenuFactory *menu_factory);
 
 

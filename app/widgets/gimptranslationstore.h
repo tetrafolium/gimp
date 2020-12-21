@@ -33,13 +33,13 @@
 #define GIMP_TRANSLATION_STORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSLATION_STORE, GimpTranslationStoreClass))
 
 
-typedef struct _GimpTranslationStoreClass  GimpTranslationStoreClass;
+typedef struct _GimpTranslationStoreClass GimpTranslationStoreClass;
 
 
 GType          gimp_translation_store_get_type (void) G_GNUC_CONST;
 
-GtkListStore * gimp_translation_store_new      (gboolean     manual_l18n,
-        const gchar *empty_label);
+GtkListStore * gimp_translation_store_new      (gboolean manual_l18n,
+                                                const gchar *empty_label);
 
 
 #endif  /* __GIMP_TRANSLATION_STORE_H__ */

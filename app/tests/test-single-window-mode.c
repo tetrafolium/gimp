@@ -65,7 +65,7 @@
 
 
 #define ADD_TEST(function) \
-  g_test_add_data_func ("/gimp-single-window-mode/" #function, gimp, function);
+	g_test_add_data_func ("/gimp-single-window-mode/" #function, gimp, function);
 
 
 /* Put this in the code below when you want the test to pause so you
@@ -84,75 +84,75 @@
 static void
 new_dockable_not_in_new_window (gconstpointer data)
 {
-    Gimp              *gimp             = GIMP (data);
-    GimpDialogFactory *factory          = gimp_dialog_factory_get_singleton ();
-    gint               dialogs_before   = 0;
-    gint               toplevels_before = 0;
-    gint               dialogs_after    = 0;
-    gint               toplevels_after  = 0;
-    GList             *dialogs;
-    GList             *iter;
+	Gimp              *gimp             = GIMP (data);
+	GimpDialogFactory *factory          = gimp_dialog_factory_get_singleton ();
+	gint dialogs_before   = 0;
+	gint toplevels_before = 0;
+	gint dialogs_after    = 0;
+	gint toplevels_after  = 0;
+	GList             *dialogs;
+	GList             *iter;
 
-    gimp_test_run_mainloop_until_idle ();
+	gimp_test_run_mainloop_until_idle ();
 
-    /* Count dialogs before we create the dockable */
-    dialogs        = gimp_dialog_factory_get_open_dialogs (factory);
-    dialogs_before = g_list_length (dialogs);
-    for (iter = dialogs; iter; iter = g_list_next (iter))
-    {
-        if (gtk_widget_is_toplevel (iter->data))
-            toplevels_before++;
-    }
+	/* Count dialogs before we create the dockable */
+	dialogs        = gimp_dialog_factory_get_open_dialogs (factory);
+	dialogs_before = g_list_length (dialogs);
+	for (iter = dialogs; iter; iter = g_list_next (iter))
+	{
+		if (gtk_widget_is_toplevel (iter->data))
+			toplevels_before++;
+	}
 
-    /* Create a dockable */
-    gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
-                                     "dialogs",
-                                     "dialogs-undo-history");
-    gimp_test_run_mainloop_until_idle ();
+	/* Create a dockable */
+	gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+	                                 "dialogs",
+	                                 "dialogs-undo-history");
+	gimp_test_run_mainloop_until_idle ();
 
-    /* Count dialogs after we created the dockable */
-    dialogs       = gimp_dialog_factory_get_open_dialogs (factory);
-    dialogs_after = g_list_length (dialogs);
-    for (iter = dialogs; iter; iter = g_list_next (iter))
-    {
-        if (gtk_widget_is_toplevel (iter->data))
-            toplevels_after++;
-    }
+	/* Count dialogs after we created the dockable */
+	dialogs       = gimp_dialog_factory_get_open_dialogs (factory);
+	dialogs_after = g_list_length (dialogs);
+	for (iter = dialogs; iter; iter = g_list_next (iter))
+	{
+		if (gtk_widget_is_toplevel (iter->data))
+			toplevels_after++;
+	}
 
-    /* We got one more session managed dialog ... */
-    g_assert_cmpint (dialogs_before + 1, ==, dialogs_after);
-    /* ... but no new toplevels */
-    g_assert_cmpint (toplevels_before, ==, toplevels_after);
+	/* We got one more session managed dialog ... */
+	g_assert_cmpint (dialogs_before + 1, ==, dialogs_after);
+	/* ... but no new toplevels */
+	g_assert_cmpint (toplevels_before, ==, toplevels_after);
 }
 
 int main(int argc, char **argv)
 {
-    Gimp  *gimp   = NULL;
-    gint   result = -1;
+	Gimp  *gimp   = NULL;
+	gint result = -1;
 
-    gimp_test_bail_if_no_display ();
-    gtk_test_init (&argc, &argv, NULL);
+	gimp_test_bail_if_no_display ();
+	gtk_test_init (&argc, &argv, NULL);
 
-    gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
-                                         "app/tests/gimpdir");
-    gimp_test_utils_setup_menus_path ();
+	gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+	                                     "app/tests/gimpdir");
+	gimp_test_utils_setup_menus_path ();
 
-    /* Launch GIMP in single-window mode */
-    g_setenv ("GIMP_TESTING_SESSIONRC_NAME", "sessionrc-2-8-single-window", TRUE /*overwrite*/);
-    gimp = gimp_init_for_gui_testing (TRUE /*show_gui*/);
-    gimp_test_run_mainloop_until_idle ();
+	/* Launch GIMP in single-window mode */
+	g_setenv ("GIMP_TESTING_SESSIONRC_NAME", "sessionrc-2-8-single-window", TRUE /*overwrite*/);
+	gimp = gimp_init_for_gui_testing (TRUE /*show_gui*/);
+	gimp_test_run_mainloop_until_idle ();
 
-    ADD_TEST (new_dockable_not_in_new_window);
+	ADD_TEST (new_dockable_not_in_new_window);
 
-    /* Run the tests and return status */
-    result = g_test_run ();
+	/* Run the tests and return status */
+	result = g_test_run ();
 
-    /* Don't write files to the source dir */
-    gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
-                                         "app/tests/gimpdir-output");
+	/* Don't write files to the source dir */
+	gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+	                                     "app/tests/gimpdir-output");
 
-    /* Exit properly so we don't break script-fu plug-in wire */
-    gimp_exit (gimp, TRUE);
+	/* Exit properly so we don't break script-fu plug-in wire */
+	gimp_exit (gimp, TRUE);
 
-    return result;
+	return result;
 }

@@ -34,29 +34,29 @@ typedef struct _GimpControllerListClass GimpControllerListClass;
 
 struct _GimpControllerList
 {
-    GtkBox              parent_instance;
+	GtkBox parent_instance;
 
-    Gimp               *gimp;
+	Gimp               *gimp;
 
-    GtkWidget          *hbox;
+	GtkWidget          *hbox;
 
-    GtkListStore       *src;
-    GtkTreeSelection   *src_sel;
-    GType               src_gtype;
+	GtkListStore       *src;
+	GtkTreeSelection   *src_sel;
+	GType src_gtype;
 
-    GtkWidget          *dest;
-    GimpControllerInfo *dest_info;
+	GtkWidget          *dest;
+	GimpControllerInfo *dest_info;
 
-    GtkWidget          *add_button;
-    GtkWidget          *remove_button;
-    GtkWidget          *edit_button;
-    GtkWidget          *up_button;
-    GtkWidget          *down_button;
+	GtkWidget          *add_button;
+	GtkWidget          *remove_button;
+	GtkWidget          *edit_button;
+	GtkWidget          *up_button;
+	GtkWidget          *down_button;
 };
 
 struct _GimpControllerListClass
 {
-    GtkBoxClass   parent_class;
+	GtkBoxClass parent_class;
 };
 
 

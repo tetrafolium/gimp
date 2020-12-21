@@ -32,27 +32,27 @@ G_BEGIN_DECLS
 #define GIMP_SIZE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SIZE_BOX, GimpSizeBoxClass))
 
 
-typedef struct _GimpSizeBoxClass  GimpSizeBoxClass;
+typedef struct _GimpSizeBoxClass GimpSizeBoxClass;
 
 struct _GimpSizeBox
 {
-    GtkBox        parent_instance;
+	GtkBox parent_instance;
 
-    GtkSizeGroup *size_group;
+	GtkSizeGroup *size_group;
 
-    gint          width;
-    gint          height;
-    GimpUnit      unit;
-    gdouble       xresolution;
-    gdouble       yresolution;
-    GimpUnit      resolution_unit;
+	gint width;
+	gint height;
+	GimpUnit unit;
+	gdouble xresolution;
+	gdouble yresolution;
+	GimpUnit resolution_unit;
 
-    gboolean      edit_resolution;
+	gboolean edit_resolution;
 };
 
 struct _GimpSizeBoxClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 };
 
 

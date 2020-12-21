@@ -24,11 +24,11 @@
 
 typedef enum
 {
-    GIMP_FG_BG_TARGET_INVALID,
-    GIMP_FG_BG_TARGET_FOREGROUND,
-    GIMP_FG_BG_TARGET_BACKGROUND,
-    GIMP_FG_BG_TARGET_SWAP,
-    GIMP_FG_BG_TARGET_DEFAULT
+	GIMP_FG_BG_TARGET_INVALID,
+	GIMP_FG_BG_TARGET_FOREGROUND,
+	GIMP_FG_BG_TARGET_BACKGROUND,
+	GIMP_FG_BG_TARGET_SWAP,
+	GIMP_FG_BG_TARGET_DEFAULT
 } GimpFgBgTarget;
 
 
@@ -44,36 +44,36 @@ typedef struct _GimpFgBgEditorClass GimpFgBgEditorClass;
 
 struct _GimpFgBgEditor
 {
-    GtkEventBox         parent_instance;
+	GtkEventBox parent_instance;
 
-    GimpContext        *context;
-    GimpColorConfig    *color_config;
-    GimpColorTransform *transform;
+	GimpContext        *context;
+	GimpColorConfig    *color_config;
+	GimpColorTransform *transform;
 
-    GimpActiveColor     active_color;
+	GimpActiveColor active_color;
 
-    GimpImage          *active_image;
+	GimpImage          *active_image;
 
-    GdkPixbuf          *default_icon;
-    GdkPixbuf          *swap_icon;
+	GdkPixbuf          *default_icon;
+	GdkPixbuf          *swap_icon;
 
-    gint                rect_width;
-    gint                rect_height;
-    gint                click_target;
+	gint rect_width;
+	gint rect_height;
+	gint click_target;
 };
 
 struct _GimpFgBgEditorClass
 {
-    GtkEventBoxClass    parent_class;
+	GtkEventBoxClass parent_class;
 
-    /*  signals  */
+	/*  signals  */
 
-    void (* color_clicked) (GimpFgBgEditor  *editor,
-                            GimpActiveColor  color);
+	void (* color_clicked) (GimpFgBgEditor  *editor,
+	                        GimpActiveColor color);
 
-    void (* tooltip)       (GimpFgBgEditor *editor,
-                            GimpFgBgTarget  target,
-                            GtkTooltip      tooltip);
+	void (* tooltip)       (GimpFgBgEditor *editor,
+	                        GimpFgBgTarget target,
+	                        GtkTooltip tooltip);
 };
 
 
@@ -82,9 +82,9 @@ GType       gimp_fg_bg_editor_get_type    (void) G_GNUC_CONST;
 GtkWidget * gimp_fg_bg_editor_new         (GimpContext     *context);
 
 void        gimp_fg_bg_editor_set_context (GimpFgBgEditor  *editor,
-        GimpContext     *context);
+                                           GimpContext     *context);
 void        gimp_fg_bg_editor_set_active  (GimpFgBgEditor  *editor,
-        GimpActiveColor  active);
+                                           GimpActiveColor active);
 
 
 #endif  /*  __GIMP_FG_BG_EDITOR_H__  */

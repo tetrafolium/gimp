@@ -32,18 +32,18 @@
 
 
 typedef struct _GimpViewRendererDrawablePrivate GimpViewRendererDrawablePrivate;
-typedef struct _GimpViewRendererDrawableClass   GimpViewRendererDrawableClass;
+typedef struct _GimpViewRendererDrawableClass GimpViewRendererDrawableClass;
 
 struct _GimpViewRendererDrawable
 {
-    GimpViewRenderer                 parent_instance;
+	GimpViewRenderer parent_instance;
 
-    GimpViewRendererDrawablePrivate *priv;
+	GimpViewRendererDrawablePrivate *priv;
 };
 
 struct _GimpViewRendererDrawableClass
 {
-    GimpViewRendererClass  parent_class;
+	GimpViewRendererClass parent_class;
 };
 
 

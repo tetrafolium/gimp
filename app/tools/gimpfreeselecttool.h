@@ -30,25 +30,25 @@
 #define GIMP_FREE_SELECT_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FREE_SELECT_TOOL, GimpFreeSelectToolClass))
 
 
-typedef struct _GimpFreeSelectTool        GimpFreeSelectTool;
+typedef struct _GimpFreeSelectTool GimpFreeSelectTool;
 typedef struct _GimpFreeSelectToolPrivate GimpFreeSelectToolPrivate;
-typedef struct _GimpFreeSelectToolClass   GimpFreeSelectToolClass;
+typedef struct _GimpFreeSelectToolClass GimpFreeSelectToolClass;
 
 struct _GimpFreeSelectTool
 {
-    GimpPolygonSelectTool      parent_instance;
+	GimpPolygonSelectTool parent_instance;
 
-    GimpFreeSelectToolPrivate *priv;
+	GimpFreeSelectToolPrivate *priv;
 };
 
 struct _GimpFreeSelectToolClass
 {
-    GimpPolygonSelectToolClass  parent_class;
+	GimpPolygonSelectToolClass parent_class;
 };
 
 
-void    gimp_free_select_tool_register     (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_free_select_tool_register     (GimpToolRegisterCallback callback,
+                                            gpointer data);
 
 GType   gimp_free_select_tool_get_type     (void) G_GNUC_CONST;
 

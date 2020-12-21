@@ -32,72 +32,72 @@
 #define GIMP_GRADIENT_TOOL_GET_OPTIONS(t)  (GIMP_GRADIENT_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpGradientTool      GimpGradientTool;
+typedef struct _GimpGradientTool GimpGradientTool;
 typedef struct _GimpGradientToolClass GimpGradientToolClass;
 
 struct _GimpGradientTool
 {
-    GimpDrawTool        parent_instance;
+	GimpDrawTool parent_instance;
 
-    GimpGradient       *gradient;
-    GimpGradient       *tentative_gradient;
+	GimpGradient       *gradient;
+	GimpGradient       *tentative_gradient;
 
-    gdouble             start_x;    /*  starting x coord  */
-    gdouble             start_y;    /*  starting y coord  */
-    gdouble             end_x;      /*  ending x coord    */
-    gdouble             end_y;      /*  ending y coord    */
+	gdouble start_x;            /*  starting x coord  */
+	gdouble start_y;            /*  starting y coord  */
+	gdouble end_x;              /*  ending x coord    */
+	gdouble end_y;              /*  ending y coord    */
 
-    GimpToolWidget     *widget;
-    GimpToolWidget     *grab_widget;
+	GimpToolWidget     *widget;
+	GimpToolWidget     *grab_widget;
 
-    GeglNode           *graph;
-    GeglNode           *render_node;
+	GeglNode           *graph;
+	GeglNode           *render_node;
 #if 0
-    GeglNode           *subtract_node;
-    GeglNode           *divide_node;
+	GeglNode           *subtract_node;
+	GeglNode           *divide_node;
 #endif
-    GeglNode           *dist_node;
-    GeglBuffer         *dist_buffer;
-    GimpDrawableFilter *filter;
+	GeglNode           *dist_node;
+	GeglBuffer         *dist_buffer;
+	GimpDrawableFilter *filter;
 
-    /*  editor  */
+	/*  editor  */
 
-    gint                block_handlers_count;
+	gint block_handlers_count;
 
-    gint                edit_count;
-    GSList             *undo_stack;
-    GSList             *redo_stack;
+	gint edit_count;
+	GSList             *undo_stack;
+	GSList             *redo_stack;
 
-    guint               flush_idle_id;
+	guint flush_idle_id;
 
-    GimpToolGui        *gui;
-    GtkWidget          *endpoint_editor;
-    GtkWidget          *endpoint_se;
-    GtkWidget          *endpoint_color_panel;
-    GtkWidget          *endpoint_type_combo;
-    GtkWidget          *stop_editor;
-    GtkWidget          *stop_se;
-    GtkWidget          *stop_left_color_panel;
-    GtkWidget          *stop_left_type_combo;
-    GtkWidget          *stop_right_color_panel;
-    GtkWidget          *stop_right_type_combo;
-    GtkWidget          *stop_chain_button;
-    GtkWidget          *midpoint_editor;
-    GtkWidget          *midpoint_se;
-    GtkWidget          *midpoint_type_combo;
-    GtkWidget          *midpoint_color_combo;
-    GtkWidget          *midpoint_new_stop_button;
-    GtkWidget          *midpoint_center_button;
+	GimpToolGui        *gui;
+	GtkWidget          *endpoint_editor;
+	GtkWidget          *endpoint_se;
+	GtkWidget          *endpoint_color_panel;
+	GtkWidget          *endpoint_type_combo;
+	GtkWidget          *stop_editor;
+	GtkWidget          *stop_se;
+	GtkWidget          *stop_left_color_panel;
+	GtkWidget          *stop_left_type_combo;
+	GtkWidget          *stop_right_color_panel;
+	GtkWidget          *stop_right_type_combo;
+	GtkWidget          *stop_chain_button;
+	GtkWidget          *midpoint_editor;
+	GtkWidget          *midpoint_se;
+	GtkWidget          *midpoint_type_combo;
+	GtkWidget          *midpoint_color_combo;
+	GtkWidget          *midpoint_new_stop_button;
+	GtkWidget          *midpoint_center_button;
 };
 
 struct _GimpGradientToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_gradient_tool_register               (GimpToolRegisterCallback  callback,
-        gpointer                  data);
+void    gimp_gradient_tool_register               (GimpToolRegisterCallback callback,
+                                                   gpointer data);
 
 GType   gimp_gradient_tool_get_type               (void) G_GNUC_CONST;
 
@@ -105,7 +105,7 @@ GType   gimp_gradient_tool_get_type               (void) G_GNUC_CONST;
 /*  protected functions  */
 
 void    gimp_gradient_tool_set_tentative_gradient (GimpGradientTool         *gradient_tool,
-        GimpGradient             *gradient);
+                                                   GimpGradient             *gradient);
 
 
 #endif  /*  __GIMP_GRADIENT_TOOL_H__  */

@@ -31,26 +31,26 @@
 #define GIMP_FOREGROUND_SELECT_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FOREGROUND_SELECT_OPTIONS, GimpForegroundSelectOptionsClass))
 
 
-typedef struct _GimpForegroundSelectOptions      GimpForegroundSelectOptions;
+typedef struct _GimpForegroundSelectOptions GimpForegroundSelectOptions;
 typedef struct _GimpForegroundSelectOptionsClass GimpForegroundSelectOptionsClass;
 
 struct _GimpForegroundSelectOptions
 {
-    GimpSelectionOptions  parent_instance;
+	GimpSelectionOptions parent_instance;
 
-    GimpMattingDrawMode    draw_mode;
-    GimpMattingPreviewMode preview_mode;
-    gint                   stroke_width;
-    GimpRGB                mask_color;
-    GimpMattingEngine      engine;
-    gint                   levels;
-    gint                   active_levels;
-    gint                   iterations;
+	GimpMattingDrawMode draw_mode;
+	GimpMattingPreviewMode preview_mode;
+	gint stroke_width;
+	GimpRGB mask_color;
+	GimpMattingEngine engine;
+	gint levels;
+	gint active_levels;
+	gint iterations;
 };
 
 struct _GimpForegroundSelectOptionsClass
 {
-    GimpSelectionOptionsClass  parent_class;
+	GimpSelectionOptionsClass parent_class;
 };
 
 

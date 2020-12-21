@@ -46,9 +46,9 @@
 static void             gimp_pattern_select_constructed  (GObject        *object);
 
 static GimpValueArray * gimp_pattern_select_run_callback (GimpPdbDialog  *dialog,
-        GimpObject     *object,
-        gboolean        closing,
-        GError        **error);
+                                                          GimpObject     *object,
+                                                          gboolean closing,
+                                                          GError        **error);
 
 
 G_DEFINE_TYPE (GimpPatternSelect, gimp_pattern_select, GIMP_TYPE_PDB_DIALOG)
@@ -59,12 +59,12 @@ G_DEFINE_TYPE (GimpPatternSelect, gimp_pattern_select, GIMP_TYPE_PDB_DIALOG)
 static void
 gimp_pattern_select_class_init (GimpPatternSelectClass *klass)
 {
-    GObjectClass       *object_class = G_OBJECT_CLASS (klass);
-    GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
+	GObjectClass       *object_class = G_OBJECT_CLASS (klass);
+	GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
 
-    object_class->constructed = gimp_pattern_select_constructed;
+	object_class->constructed = gimp_pattern_select_constructed;
 
-    pdb_class->run_callback   = gimp_pattern_select_run_callback;
+	pdb_class->run_callback   = gimp_pattern_select_run_callback;
 }
 
 static void
@@ -75,68 +75,68 @@ gimp_pattern_select_init (GimpPatternSelect *select)
 static void
 gimp_pattern_select_constructed (GObject *object)
 {
-    GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
-    GtkWidget     *content_area;
+	GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
+	GtkWidget     *content_area;
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    dialog->view =
-        gimp_pattern_factory_view_new (GIMP_VIEW_TYPE_GRID,
-                                       dialog->context->gimp->pattern_factory,
-                                       dialog->context,
-                                       GIMP_VIEW_SIZE_MEDIUM, 1,
-                                       dialog->menu_factory);
+	dialog->view =
+		gimp_pattern_factory_view_new (GIMP_VIEW_TYPE_GRID,
+		                               dialog->context->gimp->pattern_factory,
+		                               dialog->context,
+		                               GIMP_VIEW_SIZE_MEDIUM, 1,
+		                               dialog->menu_factory);
 
-    gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),
-                                         6 * (GIMP_VIEW_SIZE_MEDIUM + 2),
-                                         6 * (GIMP_VIEW_SIZE_MEDIUM + 2));
+	gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),
+	                                     6 * (GIMP_VIEW_SIZE_MEDIUM + 2),
+	                                     6 * (GIMP_VIEW_SIZE_MEDIUM + 2));
 
-    gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
+	gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
 
-    content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-    gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
-    gtk_widget_show (dialog->view);
+	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
+	gtk_widget_show (dialog->view);
 }
 
 static GimpValueArray *
 gimp_pattern_select_run_callback (GimpPdbDialog  *dialog,
                                   GimpObject     *object,
-                                  gboolean        closing,
+                                  gboolean closing,
                                   GError        **error)
 {
-    GimpPattern    *pattern = GIMP_PATTERN (object);
-    const Babl     *format;
-    gpointer        data;
-    GimpArray      *array;
-    GimpValueArray *return_vals;
+	GimpPattern    *pattern = GIMP_PATTERN (object);
+	const Babl     *format;
+	gpointer data;
+	GimpArray      *array;
+	GimpValueArray *return_vals;
 
-    format = gimp_babl_compat_u8_format (
-                 gimp_temp_buf_get_format (pattern->mask));
-    data   = gimp_temp_buf_lock (pattern->mask, format, GEGL_ACCESS_READ);
+	format = gimp_babl_compat_u8_format (
+		gimp_temp_buf_get_format (pattern->mask));
+	data   = gimp_temp_buf_lock (pattern->mask, format, GEGL_ACCESS_READ);
 
-    array = gimp_array_new (data,
-                            gimp_temp_buf_get_width         (pattern->mask) *
-                            gimp_temp_buf_get_height        (pattern->mask) *
-                            babl_format_get_bytes_per_pixel (format),
-                            TRUE);
+	array = gimp_array_new (data,
+	                        gimp_temp_buf_get_width         (pattern->mask) *
+	                        gimp_temp_buf_get_height        (pattern->mask) *
+	                        babl_format_get_bytes_per_pixel (format),
+	                        TRUE);
 
-    return_vals =
-        gimp_pdb_execute_procedure_by_name (dialog->pdb,
-                                            dialog->caller_context,
-                                            NULL, error,
-                                            dialog->callback_name,
-                                            G_TYPE_STRING,         gimp_object_get_name (object),
-                                            G_TYPE_INT,            gimp_temp_buf_get_width  (pattern->mask),
-                                            G_TYPE_INT,            gimp_temp_buf_get_height (pattern->mask),
-                                            G_TYPE_INT,            babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (pattern->mask)),
-                                            G_TYPE_INT,            array->length,
-                                            GIMP_TYPE_UINT8_ARRAY, array,
-                                            G_TYPE_BOOLEAN,        closing,
-                                            G_TYPE_NONE);
+	return_vals =
+		gimp_pdb_execute_procedure_by_name (dialog->pdb,
+		                                    dialog->caller_context,
+		                                    NULL, error,
+		                                    dialog->callback_name,
+		                                    G_TYPE_STRING,         gimp_object_get_name (object),
+		                                    G_TYPE_INT,            gimp_temp_buf_get_width  (pattern->mask),
+		                                    G_TYPE_INT,            gimp_temp_buf_get_height (pattern->mask),
+		                                    G_TYPE_INT,            babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (pattern->mask)),
+		                                    G_TYPE_INT,            array->length,
+		                                    GIMP_TYPE_UINT8_ARRAY, array,
+		                                    G_TYPE_BOOLEAN,        closing,
+		                                    G_TYPE_NONE);
 
-    gimp_array_free (array);
+	gimp_array_free (array);
 
-    gimp_temp_buf_unlock (pattern->mask, data);
+	gimp_temp_buf_unlock (pattern->mask, data);
 
-    return return_vals;
+	return return_vals;
 }

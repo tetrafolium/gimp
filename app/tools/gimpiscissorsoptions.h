@@ -35,9 +35,9 @@ typedef struct _GimpToolOptionsClass GimpIscissorsOptionsClass;
 
 struct _GimpIscissorsOptions
 {
-    GimpSelectionOptions  parent_instance;
+	GimpSelectionOptions parent_instance;
 
-    gboolean              interactive;
+	gboolean interactive;
 };
 
 

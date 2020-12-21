@@ -30,25 +30,25 @@
 #define GIMP_SHEAR_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SHEAR_TOOL, GimpShearToolClass))
 
 
-typedef struct _GimpShearTool      GimpShearTool;
+typedef struct _GimpShearTool GimpShearTool;
 typedef struct _GimpShearToolClass GimpShearToolClass;
 
 struct _GimpShearTool
 {
-    GimpTransformGridTool  parent_instance;
+	GimpTransformGridTool parent_instance;
 
-    GtkAdjustment         *x_adj;
-    GtkAdjustment         *y_adj;
+	GtkAdjustment         *x_adj;
+	GtkAdjustment         *y_adj;
 };
 
 struct _GimpShearToolClass
 {
-    GimpTransformGridToolClass  parent_class;
+	GimpTransformGridToolClass parent_class;
 };
 
 
-void    gimp_shear_tool_register (GimpToolRegisterCallback  callback,
-                                  gpointer                  data);
+void    gimp_shear_tool_register (GimpToolRegisterCallback callback,
+                                  gpointer data);
 
 GType   gimp_shear_tool_get_type (void) G_GNUC_CONST;
 

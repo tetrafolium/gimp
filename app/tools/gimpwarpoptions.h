@@ -32,38 +32,38 @@
 #define GIMP_WARP_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_WARP_OPTIONS, GimpWarpOptionsClass))
 
 
-typedef struct _GimpWarpOptions      GimpWarpOptions;
+typedef struct _GimpWarpOptions GimpWarpOptions;
 typedef struct _GimpWarpOptionsClass GimpWarpOptionsClass;
 
 struct _GimpWarpOptions
 {
-    GimpToolOptions        parent_instance;
+	GimpToolOptions parent_instance;
 
-    GimpWarpBehavior       behavior;
-    gdouble                effect_size;
-    gdouble                effect_hardness;
-    gdouble                effect_strength;
-    gdouble                stroke_spacing;
-    GimpInterpolationType  interpolation;
-    GeglAbyssPolicy        abyss_policy;
-    gboolean               high_quality_preview;
-    gboolean               real_time_preview;
+	GimpWarpBehavior behavior;
+	gdouble effect_size;
+	gdouble effect_hardness;
+	gdouble effect_strength;
+	gdouble stroke_spacing;
+	GimpInterpolationType interpolation;
+	GeglAbyssPolicy abyss_policy;
+	gboolean high_quality_preview;
+	gboolean real_time_preview;
 
-    gboolean               stroke_during_motion;
-    gboolean               stroke_periodically;
-    gdouble                stroke_periodically_rate;
+	gboolean stroke_during_motion;
+	gboolean stroke_periodically;
+	gdouble stroke_periodically_rate;
 
-    gint                   n_animation_frames;
+	gint n_animation_frames;
 
-    /*  options gui  */
-    GtkWidget             *behavior_combo;
-    GtkWidget             *stroke_frame;
-    GtkWidget             *animate_button;
+	/*  options gui  */
+	GtkWidget             *behavior_combo;
+	GtkWidget             *stroke_frame;
+	GtkWidget             *animate_button;
 };
 
 struct _GimpWarpOptionsClass
 {
-    GimpToolOptionsClass  parent_class;
+	GimpToolOptionsClass parent_class;
 };
 
 

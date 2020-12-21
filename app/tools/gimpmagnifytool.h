@@ -32,27 +32,27 @@
 #define GIMP_MAGNIFY_TOOL_GET_OPTIONS(t)  (GIMP_MAGNIFY_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
 
 
-typedef struct _GimpMagnifyTool      GimpMagnifyTool;
+typedef struct _GimpMagnifyTool GimpMagnifyTool;
 typedef struct _GimpMagnifyToolClass GimpMagnifyToolClass;
 
 struct _GimpMagnifyTool
 {
-    GimpDrawTool    parent_instance;
+	GimpDrawTool parent_instance;
 
-    gdouble         x, y;  /*  upper left hand coordinate  */
-    gdouble         w, h;  /*  width and height            */
+	gdouble x, y;      /*  upper left hand coordinate  */
+	gdouble w, h;      /*  width and height            */
 
-    GimpCanvasItem *rectangle;
+	GimpCanvasItem *rectangle;
 };
 
 struct _GimpMagnifyToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 };
 
 
-void    gimp_magnify_tool_register (GimpToolRegisterCallback  callback,
-                                    gpointer                  data);
+void    gimp_magnify_tool_register (GimpToolRegisterCallback callback,
+                                    gpointer data);
 
 GType   gimp_magnify_tool_get_type (void) G_GNUC_CONST;
 

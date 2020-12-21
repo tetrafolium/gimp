@@ -31,18 +31,18 @@
 
 
 typedef struct _GimpAccelLabelPrivate GimpAccelLabelPrivate;
-typedef struct _GimpAccelLabelClass   GimpAccelLabelClass;
+typedef struct _GimpAccelLabelClass GimpAccelLabelClass;
 
 struct _GimpAccelLabel
 {
-    GtkLabel               parent_instance;
+	GtkLabel parent_instance;
 
-    GimpAccelLabelPrivate *priv;
+	GimpAccelLabelPrivate *priv;
 };
 
 struct _GimpAccelLabelClass
 {
-    GtkLabelClass  parent_class;
+	GtkLabelClass parent_class;
 };
 
 
@@ -51,7 +51,7 @@ GType        gimp_accel_label_get_type   (void) G_GNUC_CONST;
 GtkWidget  * gimp_accel_label_new        (GimpAction     *action);
 
 void         gimp_accel_label_set_action (GimpAccelLabel *accel_label,
-        GimpAction     *action);
+                                          GimpAction     *action);
 GimpAction * gimp_accel_label_get_action (GimpAccelLabel *accel_label);
 
 

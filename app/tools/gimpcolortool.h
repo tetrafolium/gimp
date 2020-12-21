@@ -36,43 +36,43 @@ typedef struct _GimpColorToolClass GimpColorToolClass;
 
 struct _GimpColorTool
 {
-    GimpDrawTool         parent_instance;
+	GimpDrawTool parent_instance;
 
-    gboolean             enabled;
-    GimpColorOptions    *options;
-    gboolean             saved_snap_to;
+	gboolean enabled;
+	GimpColorOptions    *options;
+	gboolean saved_snap_to;
 
-    GimpColorPickTarget  pick_target;
+	GimpColorPickTarget pick_target;
 
-    gboolean             can_pick;
-    gint                 center_x;
-    gint                 center_y;
-    GimpSamplePoint     *sample_point;
+	gboolean can_pick;
+	gint center_x;
+	gint center_y;
+	GimpSamplePoint     *sample_point;
 };
 
 struct _GimpColorToolClass
 {
-    GimpDrawToolClass  parent_class;
+	GimpDrawToolClass parent_class;
 
-    /*  virtual functions  */
-    gboolean (* can_pick) (GimpColorTool      *tool,
-                           const GimpCoords   *coords,
-                           GimpDisplay        *display);
-    gboolean (* pick)     (GimpColorTool      *tool,
-                           const GimpCoords   *coords,
-                           GimpDisplay        *display,
-                           const Babl        **sample_format,
-                           gpointer            pixel,
-                           GimpRGB            *color);
+	/*  virtual functions  */
+	gboolean (* can_pick) (GimpColorTool      *tool,
+	                       const GimpCoords   *coords,
+	                       GimpDisplay        *display);
+	gboolean (* pick)     (GimpColorTool      *tool,
+	                       const GimpCoords   *coords,
+	                       GimpDisplay        *display,
+	                       const Babl        **sample_format,
+	                       gpointer pixel,
+	                       GimpRGB            *color);
 
-    /*  signals  */
-    void     (* picked)   (GimpColorTool      *tool,
-                           const GimpCoords   *coords,
-                           GimpDisplay        *display,
-                           GimpColorPickState  pick_state,
-                           const Babl         *sample_format,
-                           gpointer            pixel,
-                           const GimpRGB      *color);
+	/*  signals  */
+	void (* picked)   (GimpColorTool      *tool,
+	                   const GimpCoords   *coords,
+	                   GimpDisplay        *display,
+	                   GimpColorPickState pick_state,
+	                   const Babl         *sample_format,
+	                   gpointer pixel,
+	                   const GimpRGB      *color);
 };
 
 

@@ -44,19 +44,19 @@
 static void     gimp_combo_tag_entry_constructed       (GObject              *object);
 
 static gboolean gimp_combo_tag_entry_draw              (GtkWidget            *widget,
-        cairo_t              *cr);
+                                                        cairo_t              *cr);
 
 static void     gimp_combo_tag_entry_icon_press        (GtkWidget            *widget,
-        GtkEntryIconPosition  icon_pos,
-        GdkEvent             *event,
-        gpointer              user_data);
+                                                        GtkEntryIconPosition icon_pos,
+                                                        GdkEvent             *event,
+                                                        gpointer user_data);
 
 static void     gimp_combo_tag_entry_popup_destroy     (GtkWidget            *widget,
-        GimpComboTagEntry    *entry);
+                                                        GimpComboTagEntry    *entry);
 
 static void     gimp_combo_tag_entry_tag_count_changed (GimpTaggedContainer  *container,
-        gint                  tag_count,
-        GimpComboTagEntry    *entry);
+                                                        gint tag_count,
+                                                        GimpComboTagEntry    *entry);
 
 
 G_DEFINE_TYPE (GimpComboTagEntry, gimp_combo_tag_entry, GIMP_TYPE_TAG_ENTRY);
@@ -67,66 +67,66 @@ G_DEFINE_TYPE (GimpComboTagEntry, gimp_combo_tag_entry, GIMP_TYPE_TAG_ENTRY);
 static void
 gimp_combo_tag_entry_class_init (GimpComboTagEntryClass *klass)
 {
-    GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+	GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-    object_class->constructed = gimp_combo_tag_entry_constructed;
+	object_class->constructed = gimp_combo_tag_entry_constructed;
 
-    widget_class->draw        = gimp_combo_tag_entry_draw;
+	widget_class->draw        = gimp_combo_tag_entry_draw;
 }
 
 static void
 gimp_combo_tag_entry_init (GimpComboTagEntry *entry)
 {
-    entry->popup = NULL;
+	entry->popup = NULL;
 
-    gtk_widget_add_events (GTK_WIDGET (entry),
-                           GDK_BUTTON_PRESS_MASK |
-                           GDK_POINTER_MOTION_MASK);
+	gtk_widget_add_events (GTK_WIDGET (entry),
+	                       GDK_BUTTON_PRESS_MASK |
+	                       GDK_POINTER_MOTION_MASK);
 
-    gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
-                                       GTK_ENTRY_ICON_SECONDARY,
-                                       GIMP_ICON_GO_DOWN);
+	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+	                                   GTK_ENTRY_ICON_SECONDARY,
+	                                   GIMP_ICON_GO_DOWN);
 
-    g_signal_connect (entry, "icon-press",
-                      G_CALLBACK (gimp_combo_tag_entry_icon_press),
-                      NULL);
+	g_signal_connect (entry, "icon-press",
+	                  G_CALLBACK (gimp_combo_tag_entry_icon_press),
+	                  NULL);
 }
 
 static void
 gimp_combo_tag_entry_constructed (GObject *object)
 {
-    GimpComboTagEntry *entry = GIMP_COMBO_TAG_ENTRY (object);
+	GimpComboTagEntry *entry = GIMP_COMBO_TAG_ENTRY (object);
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    g_signal_connect_object (GIMP_TAG_ENTRY (entry)->container,
-                             "tag-count-changed",
-                             G_CALLBACK (gimp_combo_tag_entry_tag_count_changed),
-                             entry, 0);
+	g_signal_connect_object (GIMP_TAG_ENTRY (entry)->container,
+	                         "tag-count-changed",
+	                         G_CALLBACK (gimp_combo_tag_entry_tag_count_changed),
+	                         entry, 0);
 }
 
 static gboolean
 gimp_combo_tag_entry_draw (GtkWidget *widget,
                            cairo_t   *cr)
 {
-    GtkStyleContext *style = gtk_widget_get_style_context (widget);
-    GdkRectangle     icon_area;
-    gint             x, y;
+	GtkStyleContext *style = gtk_widget_get_style_context (widget);
+	GdkRectangle icon_area;
+	gint x, y;
 
-    cairo_save (cr);
-    GTK_WIDGET_CLASS (parent_class)->draw (widget, cr);
-    cairo_restore (cr);
+	cairo_save (cr);
+	GTK_WIDGET_CLASS (parent_class)->draw (widget, cr);
+	cairo_restore (cr);
 
-    gtk_entry_get_icon_area (GTK_ENTRY (widget), GTK_ENTRY_ICON_SECONDARY,
-                             &icon_area);
+	gtk_entry_get_icon_area (GTK_ENTRY (widget), GTK_ENTRY_ICON_SECONDARY,
+	                         &icon_area);
 
-    x = icon_area.x + (icon_area.width  - 8) / 2;
-    y = icon_area.y + (icon_area.height - 8) / 2;
+	x = icon_area.x + (icon_area.width  - 8) / 2;
+	y = icon_area.y + (icon_area.height - 8) / 2;
 
-    gtk_render_arrow (style, cr, G_PI, x, y, 8);
+	gtk_render_arrow (style, cr, G_PI, x, y, 8);
 
-    return FALSE;
+	return FALSE;
 }
 
 /**
@@ -141,64 +141,64 @@ gimp_combo_tag_entry_draw (GtkWidget *widget,
  **/
 GtkWidget *
 gimp_combo_tag_entry_new (GimpTaggedContainer *container,
-                          GimpTagEntryMode     mode)
+                          GimpTagEntryMode mode)
 {
-    g_return_val_if_fail (GIMP_IS_TAGGED_CONTAINER (container), NULL);
+	g_return_val_if_fail (GIMP_IS_TAGGED_CONTAINER (container), NULL);
 
-    return g_object_new (GIMP_TYPE_COMBO_TAG_ENTRY,
-                         "container", container,
-                         "mode",      mode,
-                         NULL);
+	return g_object_new (GIMP_TYPE_COMBO_TAG_ENTRY,
+	                     "container", container,
+	                     "mode",      mode,
+	                     NULL);
 }
 
 static void
 gimp_combo_tag_entry_icon_press (GtkWidget            *widget,
-                                 GtkEntryIconPosition  icon_pos,
+                                 GtkEntryIconPosition icon_pos,
                                  GdkEvent             *event,
-                                 gpointer              user_data)
+                                 gpointer user_data)
 {
-    GimpComboTagEntry *entry = GIMP_COMBO_TAG_ENTRY (widget);
+	GimpComboTagEntry *entry = GIMP_COMBO_TAG_ENTRY (widget);
 
-    if (! entry->popup)
-    {
-        GimpTaggedContainer *container = GIMP_TAG_ENTRY (entry)->container;
-        gint                 tag_count;
+	if (!entry->popup)
+	{
+		GimpTaggedContainer *container = GIMP_TAG_ENTRY (entry)->container;
+		gint tag_count;
 
-        tag_count = gimp_tagged_container_get_tag_count (container);
+		tag_count = gimp_tagged_container_get_tag_count (container);
 
-        if (tag_count > 0 && ! GIMP_TAG_ENTRY (entry)->has_invalid_tags)
-        {
-            entry->popup = gimp_tag_popup_new (entry);
-            g_signal_connect (entry->popup, "destroy",
-                              G_CALLBACK (gimp_combo_tag_entry_popup_destroy),
-                              entry);
-            gimp_tag_popup_show (GIMP_TAG_POPUP (entry->popup), event);
-        }
-    }
-    else
-    {
-        gtk_widget_destroy (entry->popup);
-    }
+		if (tag_count > 0 && !GIMP_TAG_ENTRY (entry)->has_invalid_tags)
+		{
+			entry->popup = gimp_tag_popup_new (entry);
+			g_signal_connect (entry->popup, "destroy",
+			                  G_CALLBACK (gimp_combo_tag_entry_popup_destroy),
+			                  entry);
+			gimp_tag_popup_show (GIMP_TAG_POPUP (entry->popup), event);
+		}
+	}
+	else
+	{
+		gtk_widget_destroy (entry->popup);
+	}
 }
 
 static void
 gimp_combo_tag_entry_popup_destroy (GtkWidget         *widget,
                                     GimpComboTagEntry *entry)
 {
-    entry->popup = NULL;
-    gtk_widget_grab_focus (GTK_WIDGET (entry));
+	entry->popup = NULL;
+	gtk_widget_grab_focus (GTK_WIDGET (entry));
 }
 
 static void
 gimp_combo_tag_entry_tag_count_changed (GimpTaggedContainer *container,
-                                        gint                 tag_count,
+                                        gint tag_count,
                                         GimpComboTagEntry   *entry)
 {
-    gboolean sensitive;
+	gboolean sensitive;
 
-    sensitive = tag_count > 0 && ! GIMP_TAG_ENTRY (entry)->has_invalid_tags;
+	sensitive = tag_count > 0 && !GIMP_TAG_ENTRY (entry)->has_invalid_tags;
 
-    gtk_entry_set_icon_sensitive (GTK_ENTRY (entry),
-                                  GTK_ENTRY_ICON_SECONDARY,
-                                  sensitive);
+	gtk_entry_set_icon_sensitive (GTK_ENTRY (entry),
+	                              GTK_ENTRY_ICON_SECONDARY,
+	                              sensitive);
 }

@@ -45,74 +45,74 @@ typedef struct _GimpTransformGridToolClass GimpTransformGridToolClass;
 
 struct _GimpTransformGridTool
 {
-    GimpTransformTool   parent_instance;
+	GimpTransformTool parent_instance;
 
-    TransInfo           init_trans_info;  /*  initial transformation info           */
-    TransInfo           trans_infos[2];   /*  forward/backward transformation info  */
-    gdouble            *trans_info;       /*  current transformation info           */
-    GList              *undo_list;        /*  list of all states,
-                                            head is current == prev_trans_info,
-                                            tail is original == old_trans_info    */
-    GList              *redo_list;        /*  list of all undone states,
-                                            NULL when nothing undone */
+	TransInfo init_trans_info;        /*  initial transformation info           */
+	TransInfo trans_infos[2];         /*  forward/backward transformation info  */
+	gdouble            *trans_info;   /*  current transformation info           */
+	GList              *undo_list;    /*  list of all states,
+	                                     head is current == prev_trans_info,
+	                                     tail is original == old_trans_info    */
+	GList              *redo_list;    /*  list of all undone states,
+	                                     NULL when nothing undone */
 
-    GList              *hidden_objects;   /*  the objects that was hidden during
-                                            the transform                         */
+	GList              *hidden_objects;/*  the objects that was hidden during
+	                                     the transform                         */
 
-    GimpToolWidget     *widget;
-    GimpToolWidget     *grab_widget;
-    GimpCanvasItem     *preview;
-    GimpCanvasItem     *boundary_in;
-    GimpCanvasItem     *boundary_out;
-    GPtrArray          *strokes;
+	GimpToolWidget     *widget;
+	GimpToolWidget     *grab_widget;
+	GimpCanvasItem     *preview;
+	GimpCanvasItem     *boundary_in;
+	GimpCanvasItem     *boundary_out;
+	GPtrArray          *strokes;
 
-    GHashTable         *filters;
-    GList              *preview_drawables;
+	GHashTable         *filters;
+	GList              *preview_drawables;
 
-    GimpToolGui        *gui;
+	GimpToolGui        *gui;
 };
 
 struct _GimpTransformGridToolClass
 {
-    GimpTransformToolClass  parent_class;
+	GimpTransformToolClass parent_class;
 
-    /*  virtual functions  */
-    gboolean         (* info_to_matrix) (GimpTransformGridTool  *tg_tool,
-                                         GimpMatrix3            *transform);
-    void             (* matrix_to_info) (GimpTransformGridTool  *tg_tool,
-                                         const GimpMatrix3      *transform);
-    void             (* apply_info)     (GimpTransformGridTool  *tg_tool,
-                                         const TransInfo         info);
-    gchar          * (* get_undo_desc)  (GimpTransformGridTool  *tg_tool);
-    void             (* dialog)         (GimpTransformGridTool  *tg_tool);
-    void             (* dialog_update)  (GimpTransformGridTool  *tg_tool);
-    void             (* prepare)        (GimpTransformGridTool  *tg_tool);
-    void             (* readjust)       (GimpTransformGridTool  *tg_tool);
-    GimpToolWidget * (* get_widget)     (GimpTransformGridTool  *tg_tool);
-    void             (* update_widget)  (GimpTransformGridTool  *tg_tool);
-    void             (* widget_changed) (GimpTransformGridTool  *tg_tool);
-    GeglBuffer     * (* transform)      (GimpTransformGridTool  *tg_tool,
-                                         GList                  *objects,
-                                         GeglBuffer             *orig_buffer,
-                                         gint                    orig_offset_x,
-                                         gint                    orig_offset_y,
-                                         GimpColorProfile      **buffer_profile,
-                                         gint                   *new_offset_x,
-                                         gint                   *new_offset_y);
+	/*  virtual functions  */
+	gboolean (* info_to_matrix) (GimpTransformGridTool  *tg_tool,
+	                             GimpMatrix3            *transform);
+	void (* matrix_to_info) (GimpTransformGridTool  *tg_tool,
+	                         const GimpMatrix3      *transform);
+	void (* apply_info)     (GimpTransformGridTool  *tg_tool,
+	                         const TransInfo info);
+	gchar          * (* get_undo_desc)  (GimpTransformGridTool  *tg_tool);
+	void (* dialog)         (GimpTransformGridTool  *tg_tool);
+	void (* dialog_update)  (GimpTransformGridTool  *tg_tool);
+	void (* prepare)        (GimpTransformGridTool  *tg_tool);
+	void (* readjust)       (GimpTransformGridTool  *tg_tool);
+	GimpToolWidget * (* get_widget)     (GimpTransformGridTool  *tg_tool);
+	void (* update_widget)  (GimpTransformGridTool  *tg_tool);
+	void (* widget_changed) (GimpTransformGridTool  *tg_tool);
+	GeglBuffer     * (* transform)      (GimpTransformGridTool  *tg_tool,
+	                                     GList                  *objects,
+	                                     GeglBuffer             *orig_buffer,
+	                                     gint orig_offset_x,
+	                                     gint orig_offset_y,
+	                                     GimpColorProfile      **buffer_profile,
+	                                     gint                   *new_offset_x,
+	                                     gint                   *new_offset_y);
 
-    const gchar *ok_button_label;
+	const gchar *ok_button_label;
 };
 
 
 GType      gimp_transform_grid_tool_get_type           (void) G_GNUC_CONST;
 
 gboolean   gimp_transform_grid_tool_info_to_matrix     (GimpTransformGridTool *tg_tool,
-        GimpMatrix3           *transform);
+                                                        GimpMatrix3           *transform);
 void       gimp_transform_grid_tool_matrix_to_info     (GimpTransformGridTool *tg_tool,
-        const GimpMatrix3     *transform);
+                                                        const GimpMatrix3     *transform);
 
 void       gimp_transform_grid_tool_push_internal_undo (GimpTransformGridTool *tg_tool,
-        gboolean               compress);
+                                                        gboolean compress);
 
 
 #endif  /*  __GIMP_TRANSFORM_GRID_TOOL_H__  */

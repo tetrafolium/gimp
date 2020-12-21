@@ -30,26 +30,26 @@
 #define GIMP_GEGL_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GEGL_TOOL, GimpGeglToolClass))
 
 
-typedef struct _GimpGeglTool      GimpGeglTool;
+typedef struct _GimpGeglTool GimpGeglTool;
 typedef struct _GimpGeglToolClass GimpGeglToolClass;
 
 struct _GimpGeglTool
 {
-    GimpOperationTool  parent_instance;
+	GimpOperationTool parent_instance;
 
-    /* dialog */
-    GtkWidget         *operation_combo;
-    GtkWidget         *description_label;
+	/* dialog */
+	GtkWidget         *operation_combo;
+	GtkWidget         *description_label;
 };
 
 struct _GimpGeglToolClass
 {
-    GimpOperationToolClass  parent_class;
+	GimpOperationToolClass parent_class;
 };
 
 
-void    gimp_gegl_tool_register (GimpToolRegisterCallback  callback,
-                                 gpointer                  data);
+void    gimp_gegl_tool_register (GimpToolRegisterCallback callback,
+                                 gpointer data);
 
 GType   gimp_gegl_tool_get_type (void) G_GNUC_CONST;
 

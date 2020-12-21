@@ -34,41 +34,41 @@ typedef struct _GimpSettingsBoxClass GimpSettingsBoxClass;
 
 struct _GimpSettingsBox
 {
-    GtkBox  parent_instance;
+	GtkBox parent_instance;
 };
 
 struct _GimpSettingsBoxClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 
-    /*  signals  */
-    void (* file_dialog_setup) (GimpSettingsBox      *box,
-                                GtkFileChooserDialog *dialog,
-                                gboolean              export);
-    void (* import)            (GimpSettingsBox      *box,
-                                GFile                *file);
-    void (* export)            (GimpSettingsBox      *box,
-                                GFile                *file);
-    void (* selected)          (GimpSettingsBox      *box,
-                                GObject              *config);
+	/*  signals  */
+	void (* file_dialog_setup) (GimpSettingsBox      *box,
+	                            GtkFileChooserDialog *dialog,
+	                            gboolean export);
+	void (* import)            (GimpSettingsBox      *box,
+	                            GFile                *file);
+	void (*export)            (GimpSettingsBox      *box,
+	                           GFile                *file);
+	void (* selected)          (GimpSettingsBox      *box,
+	                            GObject              *config);
 };
 
 
 GType       gimp_settings_box_get_type    (void) G_GNUC_CONST;
 
 GtkWidget * gimp_settings_box_new         (Gimp            *gimp,
-        GObject         *config,
-        GimpContainer   *container,
-        const gchar     *import_dialog_title,
-        const gchar     *export_dialog_title,
-        const gchar     *file_dialog_help_id,
-        GFile           *default_folder,
-        GFile           *last_file);
+                                           GObject         *config,
+                                           GimpContainer   *container,
+                                           const gchar     *import_dialog_title,
+                                           const gchar     *export_dialog_title,
+                                           const gchar     *file_dialog_help_id,
+                                           GFile           *default_folder,
+                                           GFile           *last_file);
 
 GtkWidget * gimp_settings_box_get_combo   (GimpSettingsBox *box);
 
 void        gimp_settings_box_add_current (GimpSettingsBox *box,
-        gint             max_recent);
+                                           gint max_recent);
 
 void        gimp_settings_box_unset       (GimpSettingsBox *box);
 

@@ -33,7 +33,7 @@
 
 
 static gboolean   gimp_overlay_frame_draw (GtkWidget *widget,
-        cairo_t   *cr);
+                                           cairo_t   *cr);
 
 
 G_DEFINE_TYPE (GimpOverlayFrame, gimp_overlay_frame, GTK_TYPE_BIN)
@@ -44,75 +44,75 @@ G_DEFINE_TYPE (GimpOverlayFrame, gimp_overlay_frame, GTK_TYPE_BIN)
 static void
 gimp_overlay_frame_class_init (GimpOverlayFrameClass *klass)
 {
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-    widget_class->draw = gimp_overlay_frame_draw;
+	widget_class->draw = gimp_overlay_frame_draw;
 
-    gtk_widget_class_set_css_name (widget_class, "popover");
+	gtk_widget_class_set_css_name (widget_class, "popover");
 }
 
 static void
 gimp_overlay_frame_init (GimpOverlayFrame *frame)
 {
-    gtk_widget_set_app_paintable (GTK_WIDGET (frame), TRUE);
+	gtk_widget_set_app_paintable (GTK_WIDGET (frame), TRUE);
 
-    gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (frame)),
-                                 "background");
+	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (frame)),
+	                             "background");
 }
 
 static gboolean
 gimp_overlay_frame_draw (GtkWidget *widget,
                          cairo_t   *cr)
 {
-    GtkStyleContext *style = gtk_widget_get_style_context (widget);
-    GtkAllocation    allocation;
-    gboolean         rgba;
-    gint             border_radius;
+	GtkStyleContext *style = gtk_widget_get_style_context (widget);
+	GtkAllocation allocation;
+	gboolean rgba;
+	gint border_radius;
 
-    rgba = gdk_screen_get_rgba_visual (gtk_widget_get_screen (widget)) != NULL;
+	rgba = gdk_screen_get_rgba_visual (gtk_widget_get_screen (widget)) != NULL;
 
-    if (rgba)
-    {
-        cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-        cairo_paint (cr);
-        cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    }
+	if (rgba)
+	{
+		cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+		cairo_paint (cr);
+		cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+	}
 
-    gtk_widget_get_allocation (widget, &allocation);
+	gtk_widget_get_allocation (widget, &allocation);
 
-    gtk_style_context_get (style, gtk_style_context_get_state (style),
-                           "border-radius", &border_radius,
-                           NULL);
+	gtk_style_context_get (style, gtk_style_context_get_state (style),
+	                       "border-radius", &border_radius,
+	                       NULL);
 
-    if (rgba)
-    {
-        gimp_cairo_rounded_rectangle (cr,
-                                      0.0,              0.0,
-                                      allocation.width, allocation.height,
-                                      border_radius);
-    }
-    else
-    {
-        cairo_rectangle (cr, 0, 0, allocation.width, allocation.height);
-    }
+	if (rgba)
+	{
+		gimp_cairo_rounded_rectangle (cr,
+		                              0.0,              0.0,
+		                              allocation.width, allocation.height,
+		                              border_radius);
+	}
+	else
+	{
+		cairo_rectangle (cr, 0, 0, allocation.width, allocation.height);
+	}
 
-    cairo_clip (cr);
+	cairo_clip (cr);
 
-    gtk_render_background (style, cr,
-                           0, 0,
-                           allocation.width,
-                           allocation.height);
+	gtk_render_background (style, cr,
+	                       0, 0,
+	                       allocation.width,
+	                       allocation.height);
 
-    gtk_render_frame (style, cr,
-                      0, 0,
-                      allocation.width,
-                      allocation.height);
+	gtk_render_frame (style, cr,
+	                  0, 0,
+	                  allocation.width,
+	                  allocation.height);
 
-    return GTK_WIDGET_CLASS (parent_class)->draw (widget, cr);
+	return GTK_WIDGET_CLASS (parent_class)->draw (widget, cr);
 }
 
 GtkWidget *
 gimp_overlay_frame_new (void)
 {
-    return g_object_new (GIMP_TYPE_OVERLAY_FRAME, NULL);
+	return g_object_new (GIMP_TYPE_OVERLAY_FRAME, NULL);
 }

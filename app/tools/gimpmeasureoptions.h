@@ -30,23 +30,23 @@
 #define GIMP_MEASURE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MEASURE_OPTIONS, GimpMeasureOptionsClass))
 
 
-typedef struct _GimpMeasureOptions      GimpMeasureOptions;
+typedef struct _GimpMeasureOptions GimpMeasureOptions;
 typedef struct _GimpMeasureOptionsClass GimpMeasureOptionsClass;
 
 struct _GimpMeasureOptions
 {
-    GimpTransformOptions    parent_instance;
+	GimpTransformOptions parent_instance;
 
-    GimpCompassOrientation  orientation;
-    gboolean                use_info_window;
+	GimpCompassOrientation orientation;
+	gboolean use_info_window;
 
-    /*  options gui  */
-    GtkWidget              *straighten_button;
+	/*  options gui  */
+	GtkWidget              *straighten_button;
 };
 
 struct _GimpMeasureOptionsClass
 {
-    GimpTransformOptionsClass  parent_class;
+	GimpTransformOptionsClass parent_class;
 };
 
 

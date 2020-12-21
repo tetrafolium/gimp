@@ -30,8 +30,8 @@
  */
 struct _GimpSessionInfoAux
 {
-    gchar *name;
-    gchar *value;
+	gchar *name;
+	gchar *value;
 };
 
 
@@ -41,15 +41,15 @@ gimp_session_info_aux_new            (const gchar         *name,
 void         gimp_session_info_aux_free           (GimpSessionInfoAux  *aux);
 
 GList      * gimp_session_info_aux_new_from_props (GObject             *object,
-        ...) G_GNUC_NULL_TERMINATED;
+                                                   ...) G_GNUC_NULL_TERMINATED;
 void         gimp_session_info_aux_set_props      (GObject             *object,
-        GList               *aux,
-        ...) G_GNUC_NULL_TERMINATED;
+                                                   GList               *aux,
+                                                   ...) G_GNUC_NULL_TERMINATED;
 
 void         gimp_session_info_aux_serialize      (GimpConfigWriter    *writer,
-        GList               *aux_info);
+                                                   GList               *aux_info);
 GTokenType   gimp_session_info_aux_deserialize    (GScanner            *scanner,
-        GList              **aux_list);
+                                                   GList              **aux_list);
 
 
 #endif  /* __GIMP_SESSION_INFO_AUX_H__ */

@@ -26,9 +26,9 @@
 
 
 typedef gboolean (* GimpControllerEventSnooper) (GimpControllerInfo        *info,
-        GimpController            *controller,
-        const GimpControllerEvent *event,
-        gpointer                   user_data);
+                                                 GimpController            *controller,
+                                                 const GimpControllerEvent *event,
+                                                 gpointer user_data);
 
 
 #define GIMP_TYPE_CONTROLLER_INFO            (gimp_controller_info_get_type ())
@@ -43,40 +43,40 @@ typedef struct _GimpControllerInfoClass GimpControllerInfoClass;
 
 struct _GimpControllerInfo
 {
-    GimpViewable                parent_instance;
+	GimpViewable parent_instance;
 
-    gboolean                    enabled;
-    gboolean                    debug_events;
+	gboolean enabled;
+	gboolean debug_events;
 
-    GimpController             *controller;
-    GHashTable                 *mapping;
+	GimpController             *controller;
+	GHashTable                 *mapping;
 
-    GimpControllerEventSnooper  snooper;
-    gpointer                    snooper_data;
+	GimpControllerEventSnooper snooper;
+	gpointer snooper_data;
 };
 
 struct _GimpControllerInfoClass
 {
-    GimpViewableClass  parent_class;
+	GimpViewableClass parent_class;
 
-    gboolean (* event_mapped) (GimpControllerInfo        *info,
-                               GimpController            *controller,
-                               const GimpControllerEvent *event,
-                               const gchar               *action_name);
+	gboolean (* event_mapped) (GimpControllerInfo        *info,
+	                           GimpController            *controller,
+	                           const GimpControllerEvent *event,
+	                           const gchar               *action_name);
 };
 
 
 GType    gimp_controller_info_get_type          (void) G_GNUC_CONST;
 
-GimpControllerInfo * gimp_controller_info_new   (GType                       type);
+GimpControllerInfo * gimp_controller_info_new   (GType type);
 
 void     gimp_controller_info_set_enabled       (GimpControllerInfo         *info,
-        gboolean                    enabled);
+                                                 gboolean enabled);
 gboolean gimp_controller_info_get_enabled       (GimpControllerInfo         *info);
 
 void     gimp_controller_info_set_event_snooper (GimpControllerInfo         *info,
-        GimpControllerEventSnooper  snooper,
-        gpointer                    snooper_data);
+                                                 GimpControllerEventSnooper snooper,
+                                                 gpointer snooper_data);
 
 
 #endif /* __GIMP_CONTROLLER_INFO_H__ */

@@ -30,55 +30,55 @@
 #define GIMP_TAG_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TAG_ENTRY, GimpTagEntryClass))
 
 
-typedef struct _GimpTagEntryClass  GimpTagEntryClass;
+typedef struct _GimpTagEntryClass GimpTagEntryClass;
 
 struct _GimpTagEntry
 {
-    GtkEntry             parent_instance;
+	GtkEntry parent_instance;
 
-    GimpTaggedContainer *container;
+	GimpTaggedContainer *container;
 
-    /* mask describes the meaning of each char in GimpTagEntry.
-     * It is maintained automatically on insert-text and delete-text
-     * events. If manual mask modification is desired, then
-     * suppress_mask_update must be increased before calling any
-     * function changing entry contents.
-     * Meaning of mask chars:
-     * u - undefined / unknown (just typed unparsed text)
-     * t - tag
-     * s - separator
-     * w - whitespace.
-     */
-    GString             *mask;
-    GList               *selected_items;
-    GList               *common_tags;
-    GList               *recent_list;
-    gint                 tab_completion_index;
-    gint                 internal_operation;
-    gint                 suppress_mask_update;
-    gint                 suppress_tag_query;
-    GimpTagEntryMode     mode;
-    gboolean             description_shown;
-    gboolean             has_invalid_tags;
-    guint                tag_query_idle_id;
+	/* mask describes the meaning of each char in GimpTagEntry.
+	 * It is maintained automatically on insert-text and delete-text
+	 * events. If manual mask modification is desired, then
+	 * suppress_mask_update must be increased before calling any
+	 * function changing entry contents.
+	 * Meaning of mask chars:
+	 * u - undefined / unknown (just typed unparsed text)
+	 * t - tag
+	 * s - separator
+	 * w - whitespace.
+	 */
+	GString             *mask;
+	GList               *selected_items;
+	GList               *common_tags;
+	GList               *recent_list;
+	gint tab_completion_index;
+	gint internal_operation;
+	gint suppress_mask_update;
+	gint suppress_tag_query;
+	GimpTagEntryMode mode;
+	gboolean description_shown;
+	gboolean has_invalid_tags;
+	guint tag_query_idle_id;
 };
 
 struct _GimpTagEntryClass
 {
-    GtkEntryClass   parent_class;
+	GtkEntryClass parent_class;
 };
 
 
 GType          gimp_tag_entry_get_type           (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_tag_entry_new                (GimpTaggedContainer *container,
-        GimpTagEntryMode     mode);
+                                                  GimpTagEntryMode mode);
 
 void           gimp_tag_entry_set_selected_items (GimpTagEntry        *entry,
-        GList               *items);
+                                                  GList               *items);
 gchar       ** gimp_tag_entry_parse_tags         (GimpTagEntry        *entry);
 void           gimp_tag_entry_set_tag_string     (GimpTagEntry        *entry,
-        const gchar         *tag_string);
+                                                  const gchar         *tag_string);
 
 const gchar  * gimp_tag_entry_get_separator      (void);
 

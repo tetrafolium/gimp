@@ -24,12 +24,12 @@
 
 enum
 {
-    GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER,
-    GIMP_CONTAINER_TREE_STORE_COLUMN_NAME,
-    GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_ATTRIBUTES,
-    GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_SENSITIVE,
-    GIMP_CONTAINER_TREE_STORE_COLUMN_USER_DATA,
-    GIMP_CONTAINER_TREE_STORE_N_COLUMNS
+	GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER,
+	GIMP_CONTAINER_TREE_STORE_COLUMN_NAME,
+	GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_ATTRIBUTES,
+	GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_SENSITIVE,
+	GIMP_CONTAINER_TREE_STORE_COLUMN_USER_DATA,
+	GIMP_CONTAINER_TREE_STORE_N_COLUMNS
 };
 
 
@@ -45,49 +45,49 @@ typedef struct _GimpContainerTreeStoreClass GimpContainerTreeStoreClass;
 
 struct _GimpContainerTreeStore
 {
-    GtkTreeStore  parent_instance;
+	GtkTreeStore parent_instance;
 };
 
 struct _GimpContainerTreeStoreClass
 {
-    GtkTreeStoreClass  parent_class;
+	GtkTreeStoreClass parent_class;
 };
 
 
 GType          gimp_container_tree_store_get_type      (void) G_GNUC_CONST;
 
 void           gimp_container_tree_store_columns_init  (GType                  *types,
-        gint                   *n_types);
+                                                        gint                   *n_types);
 gint           gimp_container_tree_store_columns_add   (GType                  *types,
-        gint                   *n_types,
-        GType                   type);
+                                                        gint                   *n_types,
+                                                        GType type);
 
 GtkTreeModel * gimp_container_tree_store_new           (GimpContainerView      *container_view,
-        gint                    n_columns,
-        GType                  *types);
+                                                        gint n_columns,
+                                                        GType                  *types);
 
 void       gimp_container_tree_store_add_renderer_cell (GimpContainerTreeStore *store,
-        GtkCellRenderer        *cell);
+                                                        GtkCellRenderer        *cell);
 void           gimp_container_tree_store_set_use_name  (GimpContainerTreeStore *store,
-        gboolean                use_name);
+                                                        gboolean use_name);
 gboolean       gimp_container_tree_store_get_use_name  (GimpContainerTreeStore *store);
 
 void           gimp_container_tree_store_set_context   (GimpContainerTreeStore *store,
-        GimpContext            *context);
+                                                        GimpContext            *context);
 GtkTreeIter *  gimp_container_tree_store_insert_item   (GimpContainerTreeStore *store,
-        GimpViewable           *viewable,
-        GtkTreeIter            *parent,
-        gint                    index);
+                                                        GimpViewable           *viewable,
+                                                        GtkTreeIter            *parent,
+                                                        gint index);
 void           gimp_container_tree_store_remove_item   (GimpContainerTreeStore *store,
-        GimpViewable           *viewable,
-        GtkTreeIter            *iter);
+                                                        GimpViewable           *viewable,
+                                                        GtkTreeIter            *iter);
 void           gimp_container_tree_store_reorder_item  (GimpContainerTreeStore *store,
-        GimpViewable           *viewable,
-        gint                    new_index,
-        GtkTreeIter            *iter);
+                                                        GimpViewable           *viewable,
+                                                        gint new_index,
+                                                        GtkTreeIter            *iter);
 gboolean       gimp_container_tree_store_rename_item   (GimpContainerTreeStore *store,
-        GimpViewable           *viewable,
-        GtkTreeIter            *iter);
+                                                        GimpViewable           *viewable,
+                                                        GtkTreeIter            *iter);
 void           gimp_container_tree_store_clear_items   (GimpContainerTreeStore *store);
 void           gimp_container_tree_store_set_view_size (GimpContainerTreeStore *store);
 

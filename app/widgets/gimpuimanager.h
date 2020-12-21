@@ -26,11 +26,11 @@ typedef struct _GimpUIManagerUIEntry GimpUIManagerUIEntry;
 
 struct _GimpUIManagerUIEntry
 {
-    gchar                  *ui_path;
-    gchar                  *basename;
-    GimpUIManagerSetupFunc  setup_func;
-    guint                   merge_id;
-    GtkWidget              *widget;
+	gchar                  *ui_path;
+	gchar                  *basename;
+	GimpUIManagerSetupFunc setup_func;
+	guint merge_id;
+	GtkWidget              *widget;
 };
 
 
@@ -50,104 +50,104 @@ typedef struct _GimpUIManagerClass GimpUIManagerClass;
  */
 struct _GimpUIManager
 {
-    GtkUIManager  parent_instance;
+	GtkUIManager parent_instance;
 
-    gchar        *name;
-    Gimp         *gimp;
-    GList        *registered_uis;
+	gchar        *name;
+	Gimp         *gimp;
+	GList        *registered_uis;
 };
 
 struct _GimpUIManagerClass
 {
-    GtkUIManagerClass  parent_class;
+	GtkUIManagerClass parent_class;
 
-    GHashTable        *managers;
+	GHashTable        *managers;
 
-    void (* update)       (GimpUIManager *manager,
-                           gpointer       update_data);
-    void (* show_tooltip) (GimpUIManager *manager,
-                           const gchar   *tooltip);
-    void (* hide_tooltip) (GimpUIManager *manager);
+	void (* update)       (GimpUIManager *manager,
+	                       gpointer update_data);
+	void (* show_tooltip) (GimpUIManager *manager,
+	                       const gchar   *tooltip);
+	void (* hide_tooltip) (GimpUIManager *manager);
 };
 
 
 GType           gimp_ui_manager_get_type    (void) G_GNUC_CONST;
 
 GimpUIManager * gimp_ui_manager_new         (Gimp                   *gimp,
-        const gchar            *name);
+                                             const gchar            *name);
 
 GList         * gimp_ui_managers_from_name  (const gchar            *name);
 
 void            gimp_ui_manager_update      (GimpUIManager          *manager,
-        gpointer                update_data);
+                                             gpointer update_data);
 
 void            gimp_ui_manager_insert_action_group (GimpUIManager   *manager,
-        GimpActionGroup *group,
-        gint             pos);
+                                                     GimpActionGroup *group,
+                                                     gint pos);
 GimpActionGroup * gimp_ui_manager_get_action_group  (GimpUIManager   *manager,
-        const gchar     *name);
+                                                     const gchar     *name);
 GList         * gimp_ui_manager_get_action_groups   (GimpUIManager   *manager);
 
 GtkAccelGroup * gimp_ui_manager_get_accel_group (GimpUIManager      *manager);
 
 GtkWidget     * gimp_ui_manager_get_widget      (GimpUIManager      *manager,
-        const gchar        *path);
+                                                 const gchar        *path);
 
 gchar          * gimp_ui_manager_get_ui         (GimpUIManager      *manager);
 
 guint            gimp_ui_manager_new_merge_id   (GimpUIManager      *manager);
 void             gimp_ui_manager_add_ui         (GimpUIManager      *manager,
-        guint               merge_id,
-        const gchar        *path,
-        const gchar        *name,
-        const gchar        *action,
-        GtkUIManagerItemType type,
-        gboolean            top);
+                                                 guint merge_id,
+                                                 const gchar        *path,
+                                                 const gchar        *name,
+                                                 const gchar        *action,
+                                                 GtkUIManagerItemType type,
+                                                 gboolean top);
 void            gimp_ui_manager_remove_ui       (GimpUIManager      *manager,
-        guint               merge_id);
+                                                 guint merge_id);
 
 void            gimp_ui_manager_ensure_update   (GimpUIManager      *manager);
 
 GimpAction    * gimp_ui_manager_get_action      (GimpUIManager      *manager,
-        const gchar        *path);
+                                                 const gchar        *path);
 GimpAction    * gimp_ui_manager_find_action     (GimpUIManager      *manager,
-        const gchar        *group_name,
-        const gchar        *action_name);
+                                                 const gchar        *group_name,
+                                                 const gchar        *action_name);
 gboolean        gimp_ui_manager_activate_action (GimpUIManager      *manager,
-        const gchar        *group_name,
-        const gchar        *action_name);
+                                                 const gchar        *group_name,
+                                                 const gchar        *action_name);
 gboolean        gimp_ui_manager_toggle_action   (GimpUIManager      *manager,
-        const gchar        *group_name,
-        const gchar        *action_name,
-        gboolean            active);
+                                                 const gchar        *group_name,
+                                                 const gchar        *action_name,
+                                                 gboolean active);
 
 void            gimp_ui_manager_ui_register (GimpUIManager          *manager,
-        const gchar            *ui_path,
-        const gchar            *basename,
-        GimpUIManagerSetupFunc  setup_func);
+                                             const gchar            *ui_path,
+                                             const gchar            *basename,
+                                             GimpUIManagerSetupFunc setup_func);
 
 void            gimp_ui_manager_ui_popup    (GimpUIManager          *manager,
-        const gchar            *ui_path,
-        GtkWidget              *parent,
-        GimpMenuPositionFunc    position_func,
-        gpointer                position_data,
-        GDestroyNotify          popdown_func,
-        gpointer                popdown_data);
+                                             const gchar            *ui_path,
+                                             GtkWidget              *parent,
+                                             GimpMenuPositionFunc position_func,
+                                             gpointer position_data,
+                                             GDestroyNotify popdown_func,
+                                             gpointer popdown_data);
 void            gimp_ui_manager_ui_popup_at_widget
-(GimpUIManager          *manager,
- const gchar            *ui_path,
- GtkWidget              *widget,
- GdkGravity              widget_anchor,
- GdkGravity              menu_anchor,
- const GdkEvent         *trigger_event,
- GDestroyNotify          popdown_func,
- gpointer                popdown_data);
+        (GimpUIManager          *manager,
+        const gchar            *ui_path,
+        GtkWidget              *widget,
+        GdkGravity widget_anchor,
+        GdkGravity menu_anchor,
+        const GdkEvent         *trigger_event,
+        GDestroyNotify popdown_func,
+        gpointer popdown_data);
 void            gimp_ui_manager_ui_popup_at_pointer
-(GimpUIManager          *manager,
- const gchar            *ui_path,
- const GdkEvent         *trigger_event,
- GDestroyNotify          popdown_func,
- gpointer                popdown_data);
+        (GimpUIManager          *manager,
+        const gchar            *ui_path,
+        const GdkEvent         *trigger_event,
+        GDestroyNotify popdown_func,
+        gpointer popdown_data);
 
 
 #endif  /* __GIMP_UI_MANAGER_H__ */

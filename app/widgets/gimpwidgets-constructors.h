@@ -20,7 +20,7 @@
 
 
 GtkWidget * gimp_icon_button_new         (const gchar      *icon_name,
-        const gchar      *label);
+                                          const gchar      *label);
 
 GtkWidget * gimp_color_profile_label_new (GimpColorProfile *profile);
 

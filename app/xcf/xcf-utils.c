@@ -26,28 +26,28 @@
 
 gboolean
 xcf_data_is_zero (const void *data,
-                  gint        size)
+                  gint size)
 {
-    const guint8  *data8;
-    const guint64 *data64;
+	const guint8  *data8;
+	const guint64 *data64;
 
-    for (data8 = data; size > 0 && (guintptr) data8 % 8 != 0; data8++, size--)
-    {
-        if (*data8)
-            return FALSE;
-    }
+	for (data8 = data; size > 0 && (guintptr) data8 % 8 != 0; data8++, size--)
+	{
+		if (*data8)
+			return FALSE;
+	}
 
-    for (data64 = (gpointer) data8; size >= 8; data64++, size -= 8)
-    {
-        if (*data64)
-            return FALSE;
-    }
+	for (data64 = (gpointer) data8; size >= 8; data64++, size -= 8)
+	{
+		if (*data64)
+			return FALSE;
+	}
 
-    for (data8 = (gpointer) data64; size > 0; data8++, size--)
-    {
-        if (*data8)
-            return FALSE;
-    }
+	for (data8 = (gpointer) data64; size > 0; data8++, size--)
+	{
+		if (*data8)
+			return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }

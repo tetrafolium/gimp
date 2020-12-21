@@ -33,19 +33,19 @@
 #define GIMP_SYMMETRY_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SYMMETRY_EDITOR, GimpSymmetryEditorClass))
 
 
-typedef struct _GimpSymmetryEditorPrivate  GimpSymmetryEditorPrivate;
-typedef struct _GimpSymmetryEditorClass    GimpSymmetryEditorClass;
+typedef struct _GimpSymmetryEditorPrivate GimpSymmetryEditorPrivate;
+typedef struct _GimpSymmetryEditorClass GimpSymmetryEditorClass;
 
 struct _GimpSymmetryEditor
 {
-    GimpImageEditor            parent_instance;
+	GimpImageEditor parent_instance;
 
-    GimpSymmetryEditorPrivate *p;
+	GimpSymmetryEditorPrivate *p;
 };
 
 struct _GimpSymmetryEditorClass
 {
-    GimpImageEditorClass  parent_class;
+	GimpImageEditorClass parent_class;
 };
 
 

@@ -30,32 +30,32 @@
 #define GIMP_OFFSET_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OFFSET_TOOL, GimpOffsetToolClass))
 
 
-typedef struct _GimpOffsetTool      GimpOffsetTool;
+typedef struct _GimpOffsetTool GimpOffsetTool;
 typedef struct _GimpOffsetToolClass GimpOffsetToolClass;
 
 struct _GimpOffsetTool
 {
-    GimpFilterTool  parent_instance;
+	GimpFilterTool parent_instance;
 
-    gboolean        dragging;
-    gdouble         x;
-    gdouble         y;
-    gint            offset_x;
-    gint            offset_y;
+	gboolean dragging;
+	gdouble x;
+	gdouble y;
+	gint offset_x;
+	gint offset_y;
 
-    /* dialog */
-    GtkWidget      *offset_se;
-    GtkWidget      *transparent_radio;
+	/* dialog */
+	GtkWidget      *offset_se;
+	GtkWidget      *transparent_radio;
 };
 
 struct _GimpOffsetToolClass
 {
-    GimpFilterToolClass  parent_class;
+	GimpFilterToolClass parent_class;
 };
 
 
 void    gimp_offset_tool_register (GimpToolRegisterCallback callback,
-                                   gpointer                 data);
+                                   gpointer data);
 
 GType   gimp_offset_tool_get_type (void) G_GNUC_CONST;
 

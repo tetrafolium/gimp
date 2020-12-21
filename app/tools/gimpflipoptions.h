@@ -30,17 +30,17 @@
 #define GIMP_FLIP_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FLIP_OPTIONS, GimpFlipOptionsClass))
 
 
-typedef struct _GimpFlipOptions      GimpFlipOptions;
+typedef struct _GimpFlipOptions GimpFlipOptions;
 typedef struct _GimpToolOptionsClass GimpFlipOptionsClass;
 
 struct _GimpFlipOptions
 {
-    GimpTransformOptions  parent_instance;
+	GimpTransformOptions parent_instance;
 
-    GimpOrientationType   flip_type;
+	GimpOrientationType flip_type;
 
-    /*  options gui  */
-    GtkWidget            *direction_frame;
+	/*  options gui  */
+	GtkWidget            *direction_frame;
 };
 
 

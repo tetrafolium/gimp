@@ -30,11 +30,11 @@
  */
 struct _GimpSessionInfoBook
 {
-    gint   position;
-    gint   current_page;
+	gint position;
+	gint current_page;
 
-    /*  list of GimpSessionInfoDockable  */
-    GList *dockables;
+	/*  list of GimpSessionInfoDockable  */
+	GList *dockables;
 };
 
 
@@ -43,16 +43,16 @@ gimp_session_info_book_new         (void);
 void         gimp_session_info_book_free        (GimpSessionInfoBook  *info);
 
 void         gimp_session_info_book_serialize   (GimpConfigWriter     *writer,
-        GimpSessionInfoBook  *book);
+                                                 GimpSessionInfoBook  *book);
 GTokenType   gimp_session_info_book_deserialize (GScanner             *scanner,
-        gint                  scope,
-        GimpSessionInfoBook **book);
+                                                 gint scope,
+                                                 GimpSessionInfoBook **book);
 
 GimpSessionInfoBook *
 gimp_session_info_book_from_widget (GimpDockbook         *dockbook);
 
 GimpDockbook * gimp_session_info_book_restore   (GimpSessionInfoBook  *info,
-        GimpDock             *dock);
+                                                 GimpDock             *dock);
 
 
 #endif  /* __GIMP_SESSION_INFO_BOOK_H__ */

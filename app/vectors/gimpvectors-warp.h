@@ -25,11 +25,11 @@
 void gimp_vectors_warp_point   (GimpVectors *vectors,
                                 GimpCoords  *point,
                                 GimpCoords  *point_warped,
-                                gdouble      y_offset);
+                                gdouble y_offset);
 
 void gimp_vectors_warp_vectors (GimpVectors *vectors,
                                 GimpVectors *vectors_in,
-                                gdouble      yoffset);
+                                gdouble yoffset);
 
 
 #endif /* __GIMP_VECTORS_WARP_H__ */

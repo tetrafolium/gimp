@@ -25,8 +25,8 @@ GType gimp_text_box_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_TEXT_BOX_DYNAMIC, /*< desc="Dynamic" >*/
-    GIMP_TEXT_BOX_FIXED    /*< desc="Fixed"   >*/
+	GIMP_TEXT_BOX_DYNAMIC, /*< desc="Dynamic" >*/
+	GIMP_TEXT_BOX_FIXED /*< desc="Fixed"   >*/
 } GimpTextBoxMode;
 
 
@@ -36,9 +36,9 @@ GType gimp_text_outline_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_TEXT_OUTLINE_NONE,
-    GIMP_TEXT_OUTLINE_STROKE_ONLY,
-    GIMP_TEXT_OUTLINE_STROKE_FILL
+	GIMP_TEXT_OUTLINE_NONE,
+	GIMP_TEXT_OUTLINE_STROKE_ONLY,
+	GIMP_TEXT_OUTLINE_STROKE_FILL
 } GimpTextOutline;
 
 

@@ -34,24 +34,24 @@ typedef struct _GimpDynamicsEditorClass GimpDynamicsEditorClass;
 
 struct _GimpDynamicsEditor
 {
-    GimpDataEditor  parent_instance;
+	GimpDataEditor parent_instance;
 
-    GimpDynamics   *dynamics_model;
+	GimpDynamics   *dynamics_model;
 
-    GtkWidget      *view_selector;
-    GtkWidget      *notebook;
+	GtkWidget      *view_selector;
+	GtkWidget      *notebook;
 };
 
 struct _GimpDynamicsEditorClass
 {
-    GimpDataEditorClass  parent_class;
+	GimpDataEditorClass parent_class;
 };
 
 
 GType       gimp_dynamics_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_dynamics_editor_new      (GimpContext      *context,
-        GimpMenuFactory  *menu_factory);
+                                           GimpMenuFactory  *menu_factory);
 
 
 #endif /* __GIMP_DYNAMICS_EDITOR_H__ */

@@ -31,18 +31,18 @@
 #define GIMP_VIEW_RENDERER_IMAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_IMAGE, GimpViewRendererImageClass))
 
 
-typedef struct _GimpViewRendererImageClass  GimpViewRendererImageClass;
+typedef struct _GimpViewRendererImageClass GimpViewRendererImageClass;
 
 struct _GimpViewRendererImage
 {
-    GimpViewRenderer parent_instance;
+	GimpViewRenderer parent_instance;
 
-    GimpChannelType     channel;
+	GimpChannelType channel;
 };
 
 struct _GimpViewRendererImageClass
 {
-    GimpViewRendererClass  parent_class;
+	GimpViewRendererClass parent_class;
 };
 
 

@@ -30,17 +30,17 @@
 #define GIMP_OVERLAY_FRAME_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OVERLAY_FRAME, GimpOverlayFrameClass))
 
 
-typedef struct _GimpOverlayFrame      GimpOverlayFrame;
+typedef struct _GimpOverlayFrame GimpOverlayFrame;
 typedef struct _GimpOverlayFrameClass GimpOverlayFrameClass;
 
 struct _GimpOverlayFrame
 {
-    GtkBin  parent_instance;
+	GtkBin parent_instance;
 };
 
 struct _GimpOverlayFrameClass
 {
-    GtkBinClass  parent_class;
+	GtkBinClass parent_class;
 };
 
 

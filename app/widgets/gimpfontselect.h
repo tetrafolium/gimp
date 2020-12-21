@@ -34,16 +34,16 @@ G_BEGIN_DECLS
 #define GIMP_FONT_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FONT_SELECT, GimpFontSelectClass))
 
 
-typedef struct _GimpFontSelectClass  GimpFontSelectClass;
+typedef struct _GimpFontSelectClass GimpFontSelectClass;
 
 struct _GimpFontSelect
 {
-    GimpPdbDialog  parent_instance;
+	GimpPdbDialog parent_instance;
 };
 
 struct _GimpFontSelectClass
 {
-    GimpPdbDialogClass  parent_class;
+	GimpPdbDialogClass parent_class;
 };
 
 
