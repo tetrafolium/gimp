@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -29,68 +29,59 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-#define GIMP_TYPE_LAYER            (gimp_layer_get_type ())
-#define GIMP_LAYER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LAYER, GimpLayer))
-#define GIMP_LAYER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LAYER, GimpLayerClass))
-#define GIMP_IS_LAYER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LAYER))
-#define GIMP_IS_LAYER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LAYER))
-#define GIMP_LAYER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LAYER, GimpLayerClass))
-
+#define GIMP_TYPE_LAYER (gimp_layer_get_type())
+#define GIMP_LAYER(obj)                                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LAYER, GimpLayer))
+#define GIMP_LAYER_CLASS(klass)                                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LAYER, GimpLayerClass))
+#define GIMP_IS_LAYER(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LAYER))
+#define GIMP_IS_LAYER_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LAYER))
+#define GIMP_LAYER_GET_CLASS(obj)                                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LAYER, GimpLayerClass))
 
 typedef struct _GimpLayerClass GimpLayerClass;
 typedef struct _GimpLayerPrivate GimpLayerPrivate;
 
-struct _GimpLayer
-{
-	GimpDrawable parent_instance;
+struct _GimpLayer {
+  GimpDrawable parent_instance;
 
-	GimpLayerPrivate *priv;
+  GimpLayerPrivate *priv;
 };
 
-struct _GimpLayerClass
-{
-	GimpDrawableClass parent_class;
+struct _GimpLayerClass {
+  GimpDrawableClass parent_class;
 
-	/* Padding for future expansion */
-	void (*_gimp_reserved1) (void);
-	void (*_gimp_reserved2) (void);
-	void (*_gimp_reserved3) (void);
-	void (*_gimp_reserved4) (void);
-	void (*_gimp_reserved5) (void);
-	void (*_gimp_reserved6) (void);
-	void (*_gimp_reserved7) (void);
-	void (*_gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_layer_get_type(void) G_GNUC_CONST;
 
-GType       gimp_layer_get_type           (void) G_GNUC_CONST;
+GimpLayer *gimp_layer_get_by_id(gint32 layer_id);
 
-GimpLayer * gimp_layer_get_by_id          (gint32 layer_id);
+GimpLayer *gimp_layer_new(GimpImage *image, const gchar *name, gint width,
+                          gint height, GimpImageType type, gdouble opacity,
+                          GimpLayerMode mode);
 
-GimpLayer * gimp_layer_new                (GimpImage       *image,
-                                           const gchar     *name,
-                                           gint width,
-                                           gint height,
-                                           GimpImageType type,
-                                           gdouble opacity,
-                                           GimpLayerMode mode);
+GimpLayer *gimp_layer_new_from_pixbuf(GimpImage *image, const gchar *name,
+                                      GdkPixbuf *pixbuf, gdouble opacity,
+                                      GimpLayerMode mode,
+                                      gdouble progress_start,
+                                      gdouble progress_end);
+GimpLayer *gimp_layer_new_from_surface(GimpImage *image, const gchar *name,
+                                       cairo_surface_t *surface,
+                                       gdouble progress_start,
+                                       gdouble progress_end);
 
-GimpLayer * gimp_layer_new_from_pixbuf    (GimpImage       *image,
-                                           const gchar     *name,
-                                           GdkPixbuf       *pixbuf,
-                                           gdouble opacity,
-                                           GimpLayerMode mode,
-                                           gdouble progress_start,
-                                           gdouble progress_end);
-GimpLayer * gimp_layer_new_from_surface   (GimpImage       *image,
-                                           const gchar     *name,
-                                           cairo_surface_t *surface,
-                                           gdouble progress_start,
-                                           gdouble progress_end);
-
-GimpLayer * gimp_layer_copy               (GimpLayer       *layer);
-
+GimpLayer *gimp_layer_copy(GimpLayer *layer);
 
 G_END_DECLS
 

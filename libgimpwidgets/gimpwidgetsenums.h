@@ -19,11 +19,9 @@
 #ifndef __GIMP_WIDGETS_ENUMS_H__
 #define __GIMP_WIDGETS_ENUMS_H__
 
-
 G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
-
 
 /**
  * GimpAspectType:
@@ -33,17 +31,15 @@ G_BEGIN_DECLS
  *
  * Aspect ratios.
  **/
-#define GIMP_TYPE_ASPECT_TYPE (gimp_aspect_type_get_type ())
+#define GIMP_TYPE_ASPECT_TYPE (gimp_aspect_type_get_type())
 
-GType gimp_aspect_type_get_type (void) G_GNUC_CONST;
+GType gimp_aspect_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_ASPECT_SQUARE, /*< desc="Square"    >*/
-	GIMP_ASPECT_PORTRAIT, /*< desc="Portrait"  >*/
-	GIMP_ASPECT_LANDSCAPE /*< desc="Landscape" >*/
+typedef enum {
+  GIMP_ASPECT_SQUARE,   /*< desc="Square"    >*/
+  GIMP_ASPECT_PORTRAIT, /*< desc="Portrait"  >*/
+  GIMP_ASPECT_LANDSCAPE /*< desc="Landscape" >*/
 } GimpAspectType;
-
 
 /**
  * GimpChainPosition:
@@ -54,18 +50,16 @@ typedef enum
  *
  * Possible chain positions for #GimpChainButton.
  **/
-#define GIMP_TYPE_CHAIN_POSITION (gimp_chain_position_get_type ())
+#define GIMP_TYPE_CHAIN_POSITION (gimp_chain_position_get_type())
 
-GType gimp_chain_position_get_type (void) G_GNUC_CONST;
+GType gimp_chain_position_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CHAIN_TOP,
-	GIMP_CHAIN_LEFT,
-	GIMP_CHAIN_BOTTOM,
-	GIMP_CHAIN_RIGHT
+typedef enum {
+  GIMP_CHAIN_TOP,
+  GIMP_CHAIN_LEFT,
+  GIMP_CHAIN_BOTTOM,
+  GIMP_CHAIN_RIGHT
 } GimpChainPosition;
-
 
 /**
  * GimpColorAreaType:
@@ -75,17 +69,15 @@ typedef enum
  *
  * The types of transparency display for #GimpColorArea.
  **/
-#define GIMP_TYPE_COLOR_AREA_TYPE (gimp_color_area_type_get_type ())
+#define GIMP_TYPE_COLOR_AREA_TYPE (gimp_color_area_type_get_type())
 
-GType gimp_color_area_type_get_type (void) G_GNUC_CONST;
+GType gimp_color_area_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_COLOR_AREA_FLAT = 0,
-	GIMP_COLOR_AREA_SMALL_CHECKS,
-	GIMP_COLOR_AREA_LARGE_CHECKS
+typedef enum {
+  GIMP_COLOR_AREA_FLAT = 0,
+  GIMP_COLOR_AREA_SMALL_CHECKS,
+  GIMP_COLOR_AREA_LARGE_CHECKS
 } GimpColorAreaType;
-
 
 /**
  * GimpColorSelectorChannel:
@@ -103,24 +95,23 @@ typedef enum
  * An enum to specify the types of color channels edited in
  * #GimpColorSelector widgets.
  **/
-#define GIMP_TYPE_COLOR_SELECTOR_CHANNEL (gimp_color_selector_channel_get_type ())
+#define GIMP_TYPE_COLOR_SELECTOR_CHANNEL                                       \
+  (gimp_color_selector_channel_get_type())
 
-GType gimp_color_selector_channel_get_type (void) G_GNUC_CONST;
+GType gimp_color_selector_channel_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_COLOR_SELECTOR_HUE,       /*< desc="_H", help="HSV Hue"        >*/
-	GIMP_COLOR_SELECTOR_SATURATION, /*< desc="_S", help="HSV Saturation" >*/
-	GIMP_COLOR_SELECTOR_VALUE,     /*< desc="_V", help="HSV Value"      >*/
-	GIMP_COLOR_SELECTOR_RED,       /*< desc="_R", help="Red"            >*/
-	GIMP_COLOR_SELECTOR_GREEN,     /*< desc="_G", help="Green"          >*/
-	GIMP_COLOR_SELECTOR_BLUE,      /*< desc="_B", help="Blue"           >*/
-	GIMP_COLOR_SELECTOR_ALPHA,     /*< desc="_A", help="Alpha"          >*/
-	GIMP_COLOR_SELECTOR_LCH_LIGHTNESS, /*< desc="_L", help="LCh Lightness"  >*/
-	GIMP_COLOR_SELECTOR_LCH_CHROMA, /*< desc="_C", help="LCh Chroma"     >*/
-	GIMP_COLOR_SELECTOR_LCH_HUE    /*< desc="_h", help="LCh Hue"        >*/
+typedef enum {
+  GIMP_COLOR_SELECTOR_HUE,           /*< desc="_H", help="HSV Hue"        >*/
+  GIMP_COLOR_SELECTOR_SATURATION,    /*< desc="_S", help="HSV Saturation" >*/
+  GIMP_COLOR_SELECTOR_VALUE,         /*< desc="_V", help="HSV Value"      >*/
+  GIMP_COLOR_SELECTOR_RED,           /*< desc="_R", help="Red"            >*/
+  GIMP_COLOR_SELECTOR_GREEN,         /*< desc="_G", help="Green"          >*/
+  GIMP_COLOR_SELECTOR_BLUE,          /*< desc="_B", help="Blue"           >*/
+  GIMP_COLOR_SELECTOR_ALPHA,         /*< desc="_A", help="Alpha"          >*/
+  GIMP_COLOR_SELECTOR_LCH_LIGHTNESS, /*< desc="_L", help="LCh Lightness"  >*/
+  GIMP_COLOR_SELECTOR_LCH_CHROMA,    /*< desc="_C", help="LCh Chroma"     >*/
+  GIMP_COLOR_SELECTOR_LCH_HUE        /*< desc="_h", help="LCh Hue"        >*/
 } GimpColorSelectorChannel;
-
 
 /**
  * GimpColorSelectorModel:
@@ -133,17 +124,15 @@ typedef enum
  *
  * Since: 2.10
  **/
-#define GIMP_TYPE_COLOR_SELECTOR_MODEL (gimp_color_selector_model_get_type ())
+#define GIMP_TYPE_COLOR_SELECTOR_MODEL (gimp_color_selector_model_get_type())
 
-GType gimp_color_selector_model_get_type (void) G_GNUC_CONST;
+GType gimp_color_selector_model_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_COLOR_SELECTOR_MODEL_RGB, /*< desc="RGB", help="RGB color model"     >*/
-	GIMP_COLOR_SELECTOR_MODEL_LCH, /*< desc="LCH", help="CIE LCh color model" >*/
-	GIMP_COLOR_SELECTOR_MODEL_HSV /*< desc="HSV", help="HSV color model"     >*/
+typedef enum {
+  GIMP_COLOR_SELECTOR_MODEL_RGB, /*< desc="RGB", help="RGB color model"     >*/
+  GIMP_COLOR_SELECTOR_MODEL_LCH, /*< desc="LCH", help="CIE LCh color model" >*/
+  GIMP_COLOR_SELECTOR_MODEL_HSV  /*< desc="HSV", help="HSV color model"     >*/
 } GimpColorSelectorModel;
-
 
 /**
  * GimpIntComboBoxLayout:
@@ -156,17 +145,15 @@ typedef enum
  *
  * Since: 2.10
  **/
-#define GIMP_TYPE_INT_COMBO_BOX_LAYOUT (gimp_int_combo_box_layout_get_type ())
+#define GIMP_TYPE_INT_COMBO_BOX_LAYOUT (gimp_int_combo_box_layout_get_type())
 
-GType gimp_int_combo_box_layout_get_type (void) G_GNUC_CONST;
+GType gimp_int_combo_box_layout_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY,
-	GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED,
-	GIMP_INT_COMBO_BOX_LAYOUT_FULL
+typedef enum {
+  GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY,
+  GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED,
+  GIMP_INT_COMBO_BOX_LAYOUT_FULL
 } GimpIntComboBoxLayout;
-
 
 /**
  * GimpPageSelectorTarget:
@@ -175,36 +162,34 @@ typedef enum
  *
  * Import targets for #GimpPageSelector.
  **/
-#define GIMP_TYPE_PAGE_SELECTOR_TARGET (gimp_page_selector_target_get_type ())
+#define GIMP_TYPE_PAGE_SELECTOR_TARGET (gimp_page_selector_target_get_type())
 
-GType gimp_page_selector_target_get_type (void) G_GNUC_CONST;
+GType gimp_page_selector_target_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PAGE_SELECTOR_TARGET_LAYERS, /*< desc="Layers" >*/
-	GIMP_PAGE_SELECTOR_TARGET_IMAGES /*< desc="Images" >*/
+typedef enum {
+  GIMP_PAGE_SELECTOR_TARGET_LAYERS, /*< desc="Layers" >*/
+  GIMP_PAGE_SELECTOR_TARGET_IMAGES  /*< desc="Images" >*/
 } GimpPageSelectorTarget;
-
 
 /**
  * GimpSizeEntryUpdatePolicy:
- * @GIMP_SIZE_ENTRY_UPDATE_NONE:       the size entry's meaning is up to the user
+ * @GIMP_SIZE_ENTRY_UPDATE_NONE:       the size entry's meaning is up to the
+ *user
  * @GIMP_SIZE_ENTRY_UPDATE_SIZE:       the size entry displays values
  * @GIMP_SIZE_ENTRY_UPDATE_RESOLUTION: the size entry displays resolutions
  *
  * Update policies for #GimpSizeEntry.
  **/
-#define GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY (gimp_size_entry_update_policy_get_type ())
+#define GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY                                     \
+  (gimp_size_entry_update_policy_get_type())
 
-GType gimp_size_entry_update_policy_get_type (void) G_GNUC_CONST;
+GType gimp_size_entry_update_policy_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_SIZE_ENTRY_UPDATE_NONE       = 0,
-	GIMP_SIZE_ENTRY_UPDATE_SIZE       = 1,
-	GIMP_SIZE_ENTRY_UPDATE_RESOLUTION = 2
+typedef enum {
+  GIMP_SIZE_ENTRY_UPDATE_NONE = 0,
+  GIMP_SIZE_ENTRY_UPDATE_SIZE = 1,
+  GIMP_SIZE_ENTRY_UPDATE_RESOLUTION = 2
 } GimpSizeEntryUpdatePolicy;
-
 
 /**
  * GimpZoomType:
@@ -219,23 +204,21 @@ typedef enum
  *
  * the zoom types for #GimpZoomModel.
  **/
-#define GIMP_TYPE_ZOOM_TYPE (gimp_zoom_type_get_type ())
+#define GIMP_TYPE_ZOOM_TYPE (gimp_zoom_type_get_type())
 
-GType gimp_zoom_type_get_type (void) G_GNUC_CONST;
+GType gimp_zoom_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_ZOOM_IN,    /*< desc="Zoom in"  >*/
-	GIMP_ZOOM_OUT,   /*< desc="Zoom out" >*/
-	GIMP_ZOOM_IN_MORE, /*< skip >*/
-	GIMP_ZOOM_OUT_MORE, /*< skip >*/
-	GIMP_ZOOM_IN_MAX, /*< skip >*/
-	GIMP_ZOOM_OUT_MAX, /*< skip >*/
-	GIMP_ZOOM_TO,    /*< skip >*/
-	GIMP_ZOOM_SMOOTH /*< skip >*/
+typedef enum {
+  GIMP_ZOOM_IN,       /*< desc="Zoom in"  >*/
+  GIMP_ZOOM_OUT,      /*< desc="Zoom out" >*/
+  GIMP_ZOOM_IN_MORE,  /*< skip >*/
+  GIMP_ZOOM_OUT_MORE, /*< skip >*/
+  GIMP_ZOOM_IN_MAX,   /*< skip >*/
+  GIMP_ZOOM_OUT_MAX,  /*< skip >*/
+  GIMP_ZOOM_TO,       /*< skip >*/
+  GIMP_ZOOM_SMOOTH    /*< skip >*/
 } GimpZoomType;
-
 
 G_END_DECLS
 
-#endif  /* __GIMP_WIDGETS_ENUMS_H__ */
+#endif /* __GIMP_WIDGETS_ENUMS_H__ */

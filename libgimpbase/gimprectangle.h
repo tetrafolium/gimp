@@ -16,7 +16,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#if !defined(__GIMP_BASE_H_INSIDE__) && !defined(GIMP_BASE_COMPILATION)
 #error "Only <libgimpbase/gimpbase.h> can be included directly."
 #endif
 
@@ -27,34 +27,15 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+gboolean gimp_rectangle_intersect(gint x1, gint y1, gint width1, gint height1,
+                                  gint x2, gint y2, gint width2, gint height2,
+                                  gint *dest_x, gint *dest_y, gint *dest_width,
+                                  gint *dest_height);
 
-gboolean  gimp_rectangle_intersect (gint x1,
-                                    gint y1,
-                                    gint width1,
-                                    gint height1,
-                                    gint x2,
-                                    gint y2,
-                                    gint width2,
-                                    gint height2,
-                                    gint *dest_x,
-                                    gint *dest_y,
-                                    gint *dest_width,
-                                    gint *dest_height);
-
-void      gimp_rectangle_union     (gint x1,
-                                    gint y1,
-                                    gint width1,
-                                    gint height1,
-                                    gint x2,
-                                    gint y2,
-                                    gint width2,
-                                    gint height2,
-                                    gint *dest_x,
-                                    gint *dest_y,
-                                    gint *dest_width,
-                                    gint *dest_height);
-
+void gimp_rectangle_union(gint x1, gint y1, gint width1, gint height1, gint x2,
+                          gint y2, gint width2, gint height2, gint *dest_x,
+                          gint *dest_y, gint *dest_width, gint *dest_height);
 
 G_END_DECLS
 
-#endif  /* __GIMP_RECTANGLE_H__ */
+#endif /* __GIMP_RECTANGLE_H__ */

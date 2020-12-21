@@ -28,7 +28,8 @@
 /**
  * _gimp_plug_in_domain_register:
  * @domain_name: The name of the textdomain (must be unique).
- * @domain_file: The path to the locally installed compiled message catalog (may be NULL).
+ * @domain_file: The path to the locally installed compiled message catalog (may
+ *be NULL).
  *
  * Registers a textdomain for localisation.
  *
@@ -43,29 +44,24 @@
  *
  * Returns: TRUE on success.
  **/
-gboolean
-_gimp_plug_in_domain_register (const gchar *domain_name,
-                               GFile       *domain_file)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean _gimp_plug_in_domain_register(const gchar *domain_name,
+                                       GFile *domain_file) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, domain_name,
-	                                        G_TYPE_FILE, domain_file,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, domain_name,
+                                         G_TYPE_FILE, domain_file, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-plug-in-domain-register",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-plug-in-domain-register", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -83,29 +79,24 @@ _gimp_plug_in_domain_register (const gchar *domain_name,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-_gimp_plug_in_help_register (const gchar *domain_name,
-                             GFile       *domain_file)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean _gimp_plug_in_help_register(const gchar *domain_name,
+                                     GFile *domain_file) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, domain_name,
-	                                        G_TYPE_FILE, domain_file,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, domain_name,
+                                         G_TYPE_FILE, domain_file, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-plug-in-help-register",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-plug-in-help-register", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -124,29 +115,24 @@ _gimp_plug_in_help_register (const gchar *domain_name,
  *
  * Since: 2.4
  **/
-gboolean
-_gimp_plug_in_menu_branch_register (const gchar *menu_path,
-                                    const gchar *menu_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean _gimp_plug_in_menu_branch_register(const gchar *menu_path,
+                                            const gchar *menu_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, menu_path,
-	                                        G_TYPE_STRING, menu_name,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, menu_path,
+                                         G_TYPE_STRING, menu_name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-plug-in-menu-branch-register",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-plug-in-menu-branch-register", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -168,27 +154,23 @@ _gimp_plug_in_menu_branch_register (const gchar *menu_path,
  *
  * Since: 2.6
  **/
-gboolean
-_gimp_plug_in_set_pdb_error_handler (GimpPDBErrorHandler handler)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean _gimp_plug_in_set_pdb_error_handler(GimpPDBErrorHandler handler) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_PDB_ERROR_HANDLER, handler,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_PDB_ERROR_HANDLER,
+                                         handler, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-plug-in-set-pdb-error-handler",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-plug-in-set-pdb-error-handler", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -204,25 +186,21 @@ _gimp_plug_in_set_pdb_error_handler (GimpPDBErrorHandler handler)
  *
  * Since: 2.6
  **/
-GimpPDBErrorHandler
-_gimp_plug_in_get_pdb_error_handler (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpPDBErrorHandler handler = 0;
+GimpPDBErrorHandler _gimp_plug_in_get_pdb_error_handler(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpPDBErrorHandler handler = 0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-plug-in-get-pdb-error-handler",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-plug-in-get-pdb-error-handler", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		handler = GIMP_VALUES_GET_ENUM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    handler = GIMP_VALUES_GET_ENUM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return handler;
+  return handler;
 }

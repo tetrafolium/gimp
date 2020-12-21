@@ -27,7 +27,7 @@
  * provides.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -36,57 +36,56 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_CHAIN_BUTTON            (gimp_chain_button_get_type ())
-#define GIMP_CHAIN_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CHAIN_BUTTON, GimpChainButton))
-#define GIMP_CHAIN_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CHAIN_BUTTON, GimpChainButtonClass))
-#define GIMP_IS_CHAIN_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CHAIN_BUTTON))
-#define GIMP_IS_CHAIN_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CHAIN_BUTTON))
-#define GIMP_CHAIN_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CHAIN_BUTTON, GimpChainButtonClass))
-
+#define GIMP_TYPE_CHAIN_BUTTON (gimp_chain_button_get_type())
+#define GIMP_CHAIN_BUTTON(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CHAIN_BUTTON, GimpChainButton))
+#define GIMP_CHAIN_BUTTON_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CHAIN_BUTTON,                    \
+                           GimpChainButtonClass))
+#define GIMP_IS_CHAIN_BUTTON(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CHAIN_BUTTON))
+#define GIMP_IS_CHAIN_BUTTON_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CHAIN_BUTTON))
+#define GIMP_CHAIN_BUTTON_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CHAIN_BUTTON,                    \
+                             GimpChainButtonClass))
 
 typedef struct _GimpChainButtonPrivate GimpChainButtonPrivate;
 typedef struct _GimpChainButtonClass GimpChainButtonClass;
 
-struct _GimpChainButton
-{
-	GtkGrid parent_instance;
+struct _GimpChainButton {
+  GtkGrid parent_instance;
 
-	GimpChainButtonPrivate *priv;
+  GimpChainButtonPrivate *priv;
 };
 
-struct _GimpChainButtonClass
-{
-	GtkGridClass parent_class;
+struct _GimpChainButtonClass {
+  GtkGridClass parent_class;
 
-	void (* toggled)  (GimpChainButton *button);
+  void (*toggled)(GimpChainButton *button);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_chain_button_get_type(void) G_GNUC_CONST;
 
-GType         gimp_chain_button_get_type      (void) G_GNUC_CONST;
+GtkWidget *gimp_chain_button_new(GimpChainPosition position);
 
-GtkWidget   * gimp_chain_button_new           (GimpChainPosition position);
+void gimp_chain_button_set_icon_size(GimpChainButton *button, GtkIconSize size);
+GtkIconSize gimp_chain_button_get_icon_size(GimpChainButton *button);
 
-void          gimp_chain_button_set_icon_size (GimpChainButton   *button,
-                                               GtkIconSize size);
-GtkIconSize   gimp_chain_button_get_icon_size (GimpChainButton   *button);
+void gimp_chain_button_set_active(GimpChainButton *button, gboolean active);
+gboolean gimp_chain_button_get_active(GimpChainButton *button);
 
-void          gimp_chain_button_set_active    (GimpChainButton   *button,
-                                               gboolean active);
-gboolean      gimp_chain_button_get_active    (GimpChainButton   *button);
-
-GtkWidget   * gimp_chain_button_get_button    (GimpChainButton   *button);
-
+GtkWidget *gimp_chain_button_get_button(GimpChainButton *button);
 
 G_END_DECLS
 

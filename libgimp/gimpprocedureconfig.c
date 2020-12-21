@@ -26,7 +26,6 @@
 
 #include "gimpprocedureconfig-private.h"
 
-
 /**
  * SECTION: gimpprocedureconfig
  * @title: GimpProcedureConfig
@@ -48,155 +47,121 @@
  * Since: 3.0
  **/
 
+enum { PROP_0, PROP_PROCEDURE, N_PROPS };
 
-enum
-{
-	PROP_0,
-	PROP_PROCEDURE,
-	N_PROPS
+struct _GimpProcedureConfigPrivate {
+  GimpProcedure *procedure;
+
+  GimpImage *image;
+  GimpRunMode run_mode;
+
+  GimpMetadata *metadata;
+  gchar *mime_type;
+  GimpMetadataSaveFlags metadata_flags;
+  gboolean metadata_saved;
 };
 
+static void gimp_procedure_config_constructed(GObject *object);
+static void gimp_procedure_config_dispose(GObject *object);
+static void gimp_procedure_config_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec);
+static void gimp_procedure_config_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec);
 
-struct _GimpProcedureConfigPrivate
-{
-	GimpProcedure         *procedure;
-
-	GimpImage             *image;
-	GimpRunMode run_mode;
-
-	GimpMetadata          *metadata;
-	gchar                 *mime_type;
-	GimpMetadataSaveFlags metadata_flags;
-	gboolean metadata_saved;
-};
-
-
-static void   gimp_procedure_config_constructed   (GObject      *object);
-static void   gimp_procedure_config_dispose       (GObject      *object);
-static void   gimp_procedure_config_set_property  (GObject      *object,
-                                                   guint property_id,
-                                                   const GValue *value,
-                                                   GParamSpec   *pspec);
-static void   gimp_procedure_config_get_property  (GObject      *object,
-                                                   guint property_id,
-                                                   GValue       *value,
-                                                   GParamSpec   *pspec);
-
-
-G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GimpProcedureConfig, gimp_procedure_config,
-                                     G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE(GimpProcedureConfig, gimp_procedure_config,
+                                    G_TYPE_OBJECT)
 
 #define parent_class gimp_procedure_config_parent_class
 
-static GParamSpec *props[N_PROPS] = { NULL, };
-
-static const struct
-{
-	const gchar           *name;
-	GimpMetadataSaveFlags flag;
-}
-metadata_properties[] =
-{
-	{ "save-exif",          GIMP_METADATA_SAVE_EXIF          },
-	{ "save-xmp",           GIMP_METADATA_SAVE_XMP           },
-	{ "save-iptc",          GIMP_METADATA_SAVE_IPTC          },
-	{ "save-thumbnail",     GIMP_METADATA_SAVE_THUMBNAIL     },
-	{ "save-color-profile", GIMP_METADATA_SAVE_COLOR_PROFILE },
-	{ "save-comment",       GIMP_METADATA_SAVE_COMMENT       }
+static GParamSpec *props[N_PROPS] = {
+    NULL,
 };
 
+static const struct {
+  const gchar *name;
+  GimpMetadataSaveFlags flag;
+} metadata_properties[] = {
+    {"save-exif", GIMP_METADATA_SAVE_EXIF},
+    {"save-xmp", GIMP_METADATA_SAVE_XMP},
+    {"save-iptc", GIMP_METADATA_SAVE_IPTC},
+    {"save-thumbnail", GIMP_METADATA_SAVE_THUMBNAIL},
+    {"save-color-profile", GIMP_METADATA_SAVE_COLOR_PROFILE},
+    {"save-comment", GIMP_METADATA_SAVE_COMMENT}};
 
-static void
-gimp_procedure_config_class_init (GimpProcedureConfigClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+static void gimp_procedure_config_class_init(GimpProcedureConfigClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-	object_class->constructed  = gimp_procedure_config_constructed;
-	object_class->dispose      = gimp_procedure_config_dispose;
-	object_class->set_property = gimp_procedure_config_set_property;
-	object_class->get_property = gimp_procedure_config_get_property;
+  object_class->constructed = gimp_procedure_config_constructed;
+  object_class->dispose = gimp_procedure_config_dispose;
+  object_class->set_property = gimp_procedure_config_set_property;
+  object_class->get_property = gimp_procedure_config_get_property;
 
-	props[PROP_PROCEDURE] =
-		g_param_spec_object ("procedure",
-		                     "Procedure",
-		                     "The procedure this config object is used for",
-		                     GIMP_TYPE_PROCEDURE,
-		                     GIMP_PARAM_READWRITE |
-		                     G_PARAM_CONSTRUCT_ONLY);
+  props[PROP_PROCEDURE] = g_param_spec_object(
+      "procedure", "Procedure", "The procedure this config object is used for",
+      GIMP_TYPE_PROCEDURE, GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
-	g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties(object_class, N_PROPS, props);
 }
 
-static void
-gimp_procedure_config_init (GimpProcedureConfig *config)
-{
-	config->priv = gimp_procedure_config_get_instance_private (config);
+static void gimp_procedure_config_init(GimpProcedureConfig *config) {
+  config->priv = gimp_procedure_config_get_instance_private(config);
 
-	config->priv->run_mode = -1;
+  config->priv->run_mode = -1;
 }
 
-static void
-gimp_procedure_config_constructed (GObject *object)
-{
-	GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG (object);
+static void gimp_procedure_config_constructed(GObject *object) {
+  GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG(object);
 
-	G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS(parent_class)->constructed(object);
 
-	g_assert (GIMP_IS_PROCEDURE (config->priv->procedure));
+  g_assert(GIMP_IS_PROCEDURE(config->priv->procedure));
 }
 
-static void
-gimp_procedure_config_dispose (GObject *object)
-{
-	GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG (object);
+static void gimp_procedure_config_dispose(GObject *object) {
+  GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG(object);
 
-	g_clear_object (&config->priv->procedure);
-	g_clear_object (&config->priv->metadata);
-	g_clear_pointer (&config->priv->mime_type, g_free);
+  g_clear_object(&config->priv->procedure);
+  g_clear_object(&config->priv->metadata);
+  g_clear_pointer(&config->priv->mime_type, g_free);
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+  G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
-static void
-gimp_procedure_config_set_property (GObject      *object,
-                                    guint property_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
-{
-	GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG (object);
+static void gimp_procedure_config_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec) {
+  GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG(object);
 
-	switch (property_id)
-	{
-	case PROP_PROCEDURE:
-		config->priv->procedure = g_value_dup_object (value);
-		break;
+  switch (property_id) {
+  case PROP_PROCEDURE:
+    config->priv->procedure = g_value_dup_object(value);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_procedure_config_get_property (GObject    *object,
-                                    guint property_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
-{
-	GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG (object);
+static void gimp_procedure_config_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec) {
+  GimpProcedureConfig *config = GIMP_PROCEDURE_CONFIG(object);
 
-	switch (property_id)
-	{
-	case PROP_PROCEDURE:
-		g_value_set_object (value, config->priv->procedure);
-		break;
+  switch (property_id) {
+  case PROP_PROCEDURE:
+    g_value_set_object(value, config->priv->procedure);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
-
 
 /*  public functions  */
 
@@ -212,11 +177,10 @@ gimp_procedure_config_get_property (GObject    *object,
  * Since: 3.0
  **/
 GimpProcedure *
-gimp_procedure_config_get_procedure (GimpProcedureConfig *config)
-{
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), NULL);
+gimp_procedure_config_get_procedure(GimpProcedureConfig *config) {
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), NULL);
 
-	return config->priv->procedure;
+  return config->priv->procedure;
 }
 
 /**
@@ -235,36 +199,33 @@ gimp_procedure_config_get_procedure (GimpProcedureConfig *config)
  *
  * Since: 3.0
  **/
-void
-gimp_procedure_config_set_values (GimpProcedureConfig  *config,
-                                  const GimpValueArray *values)
-{
-	GParamSpec **pspecs;
-	guint n_pspecs;
-	gint n_aux_args;
-	gint n_values;
-	gint i;
+void gimp_procedure_config_set_values(GimpProcedureConfig *config,
+                                      const GimpValueArray *values) {
+  GParamSpec **pspecs;
+  guint n_pspecs;
+  gint n_aux_args;
+  gint n_values;
+  gint i;
 
-	g_return_if_fail (GIMP_IS_PROCEDURE_CONFIG (config));
-	g_return_if_fail (values != NULL);
+  g_return_if_fail(GIMP_IS_PROCEDURE_CONFIG(config));
+  g_return_if_fail(values != NULL);
 
-	pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (config),
-	                                         &n_pspecs);
-	gimp_procedure_get_aux_arguments (config->priv->procedure, &n_aux_args);
-	n_values = gimp_value_array_length (values);
+  pspecs =
+      g_object_class_list_properties(G_OBJECT_GET_CLASS(config), &n_pspecs);
+  gimp_procedure_get_aux_arguments(config->priv->procedure, &n_aux_args);
+  n_values = gimp_value_array_length(values);
 
-	/* The first property is the procedure, all others are arguments. */
-	g_return_if_fail (n_pspecs == n_values + n_aux_args + 1);
+  /* The first property is the procedure, all others are arguments. */
+  g_return_if_fail(n_pspecs == n_values + n_aux_args + 1);
 
-	for (i = 0; i < n_values; i++)
-	{
-		GParamSpec *pspec = pspecs[i + 1];
-		GValue     *value = gimp_value_array_index (values, i);
+  for (i = 0; i < n_values; i++) {
+    GParamSpec *pspec = pspecs[i + 1];
+    GValue *value = gimp_value_array_index(values, i);
 
-		g_object_set_property (G_OBJECT (config), pspec->name, value);
-	}
+    g_object_set_property(G_OBJECT(config), pspec->name, value);
+  }
 
-	g_free (pspecs);
+  g_free(pspecs);
 }
 
 /**
@@ -279,157 +240,124 @@ gimp_procedure_config_set_values (GimpProcedureConfig  *config,
  *
  * Since: 3.0
  **/
-void
-gimp_procedure_config_get_values (GimpProcedureConfig  *config,
-                                  GimpValueArray       *values)
-{
-	GParamSpec **pspecs;
-	guint n_pspecs;
-	gint n_aux_args;
-	gint n_values;
-	gint i;
+void gimp_procedure_config_get_values(GimpProcedureConfig *config,
+                                      GimpValueArray *values) {
+  GParamSpec **pspecs;
+  guint n_pspecs;
+  gint n_aux_args;
+  gint n_values;
+  gint i;
 
-	g_return_if_fail (GIMP_IS_PROCEDURE_CONFIG (config));
-	g_return_if_fail (values != NULL);
+  g_return_if_fail(GIMP_IS_PROCEDURE_CONFIG(config));
+  g_return_if_fail(values != NULL);
 
-	pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (config),
-	                                         &n_pspecs);
-	gimp_procedure_get_aux_arguments (config->priv->procedure, &n_aux_args);
-	n_values = gimp_value_array_length (values);
+  pspecs =
+      g_object_class_list_properties(G_OBJECT_GET_CLASS(config), &n_pspecs);
+  gimp_procedure_get_aux_arguments(config->priv->procedure, &n_aux_args);
+  n_values = gimp_value_array_length(values);
 
-	g_return_if_fail (n_pspecs == n_values + n_aux_args);
+  g_return_if_fail(n_pspecs == n_values + n_aux_args);
 
-	for (i = 0; i < n_values; i++)
-	{
-		GParamSpec *pspec = pspecs[i];
-		GValue     *value = gimp_value_array_index (values, i);
+  for (i = 0; i < n_values; i++) {
+    GParamSpec *pspec = pspecs[i];
+    GValue *value = gimp_value_array_index(values, i);
 
-		g_object_get_property (G_OBJECT (config), pspec->name, value);
-	}
+    g_object_get_property(G_OBJECT(config), pspec->name, value);
+  }
 
-	g_free (pspecs);
+  g_free(pspecs);
 }
 
-static void
-gimp_procedure_config_get_parasite (GimpProcedureConfig *config,
-                                    GParamSpec          *pspec)
-{
-	GimpParasite *parasite;
-	gchar        *value = NULL;
+static void gimp_procedure_config_get_parasite(GimpProcedureConfig *config,
+                                               GParamSpec *pspec) {
+  GimpParasite *parasite;
+  gchar *value = NULL;
 
-	/*  for now we only support strings  */
-	if (!config->priv->image ||
-	    !G_IS_PARAM_SPEC_STRING (pspec))
-		return;
+  /*  for now we only support strings  */
+  if (!config->priv->image || !G_IS_PARAM_SPEC_STRING(pspec))
+    return;
 
-	parasite = gimp_image_get_parasite (config->priv->image, pspec->name);
+  parasite = gimp_image_get_parasite(config->priv->image, pspec->name);
 
-	if (parasite)
-	{
-		value = g_strndup (gimp_parasite_data (parasite),
-		                   gimp_parasite_data_size (parasite));
-		gimp_parasite_free (parasite);
+  if (parasite) {
+    value = g_strndup(gimp_parasite_data(parasite),
+                      gimp_parasite_data_size(parasite));
+    gimp_parasite_free(parasite);
 
-		if (value && !strlen (value))
-			g_clear_pointer (&value, g_free);
-	}
+    if (value && !strlen(value))
+      g_clear_pointer(&value, g_free);
+  }
 
-	if (!value)
-	{
-		/*  special case "gimp-comment" here, yes this is bad hack  */
-		if (!strcmp (pspec->name, "gimp-comment"))
-		{
-			value = gimp_get_default_comment ();
-		}
-	}
+  if (!value) {
+    /*  special case "gimp-comment" here, yes this is bad hack  */
+    if (!strcmp(pspec->name, "gimp-comment")) {
+      value = gimp_get_default_comment();
+    }
+  }
 
-	if (value && strlen (value))
-		g_object_set (config,
-		              pspec->name, value,
-		              NULL);
+  if (value && strlen(value))
+    g_object_set(config, pspec->name, value, NULL);
 
-	g_free (value);
+  g_free(value);
 }
 
-static void
-gimp_procedure_config_set_parasite (GimpProcedureConfig *config,
-                                    GParamSpec          *pspec)
-{
-	GimpParasite *parasite;
-	gchar        *value;
+static void gimp_procedure_config_set_parasite(GimpProcedureConfig *config,
+                                               GParamSpec *pspec) {
+  GimpParasite *parasite;
+  gchar *value;
 
-	/*  for now we only support strings  */
-	if (!config->priv->image ||
-	    !G_IS_PARAM_SPEC_STRING (pspec))
-		return;
+  /*  for now we only support strings  */
+  if (!config->priv->image || !G_IS_PARAM_SPEC_STRING(pspec))
+    return;
 
-	g_object_get (config,
-	              pspec->name, &value,
-	              NULL);
+  g_object_get(config, pspec->name, &value, NULL);
 
-	parasite = gimp_image_get_parasite (config->priv->image, pspec->name);
+  parasite = gimp_image_get_parasite(config->priv->image, pspec->name);
 
-	if (parasite)
-	{
-		/*  it there is a parasite, always override it if its value was
-		 *  changed
-		 */
-		gchar *image_value;
+  if (parasite) {
+    /*  it there is a parasite, always override it if its value was
+     *  changed
+     */
+    gchar *image_value;
 
-		image_value = g_strndup (gimp_parasite_data (parasite),
-		                         gimp_parasite_data_size (parasite));
-		gimp_parasite_free (parasite);
+    image_value = g_strndup(gimp_parasite_data(parasite),
+                            gimp_parasite_data_size(parasite));
+    gimp_parasite_free(parasite);
 
-		if (g_strcmp0 (value, image_value))
-		{
-			if (value && strlen (value))
-			{
-				parasite = gimp_parasite_new (pspec->name,
-				                              GIMP_PARASITE_PERSISTENT,
-				                              strlen (value) + 1,
-				                              value);
-				gimp_image_attach_parasite (config->priv->image,
-				                            parasite);
-				gimp_parasite_free (parasite);
-			}
-			else
-			{
-				gimp_image_detach_parasite (config->priv->image,
-				                            pspec->name);
-			}
-		}
+    if (g_strcmp0(value, image_value)) {
+      if (value && strlen(value)) {
+        parasite = gimp_parasite_new(pspec->name, GIMP_PARASITE_PERSISTENT,
+                                     strlen(value) + 1, value);
+        gimp_image_attach_parasite(config->priv->image, parasite);
+        gimp_parasite_free(parasite);
+      } else {
+        gimp_image_detach_parasite(config->priv->image, pspec->name);
+      }
+    }
 
-		g_free (image_value);
-	}
-	else
-	{
-		/*  otherwise, set the parasite if the value was changed from
-		 *  the default value
-		 */
-		gchar *default_value = NULL;
+    g_free(image_value);
+  } else {
+    /*  otherwise, set the parasite if the value was changed from
+     *  the default value
+     */
+    gchar *default_value = NULL;
 
-		/*  special case "gimp-comment" here, yes this is bad hack  */
-		if (!strcmp (pspec->name, "gimp-comment"))
-		{
-			default_value = gimp_get_default_comment ();
-		}
+    /*  special case "gimp-comment" here, yes this is bad hack  */
+    if (!strcmp(pspec->name, "gimp-comment")) {
+      default_value = gimp_get_default_comment();
+    }
 
-		if (g_strcmp0 (value, default_value) &&
-		    value && strlen (value))
-		{
-			parasite = gimp_parasite_new (pspec->name,
-			                              GIMP_PARASITE_PERSISTENT,
-			                              strlen (value) + 1,
-			                              value);
-			gimp_image_attach_parasite (config->priv->image,
-			                            parasite);
-			gimp_parasite_free (parasite);
-		}
+    if (g_strcmp0(value, default_value) && value && strlen(value)) {
+      parasite = gimp_parasite_new(pspec->name, GIMP_PARASITE_PERSISTENT,
+                                   strlen(value) + 1, value);
+      gimp_image_attach_parasite(config->priv->image, parasite);
+      gimp_parasite_free(parasite);
+    }
 
-		g_free (default_value);
-	}
+    g_free(default_value);
+  }
 
-	g_free (value);
+  g_free(value);
 }
 
 /**
@@ -479,90 +407,78 @@ gimp_procedure_config_set_parasite (GimpProcedureConfig *config,
  *
  * Since: 3.0
  **/
-void
-gimp_procedure_config_begin_run (GimpProcedureConfig  *config,
-                                 GimpImage            *image,
-                                 GimpRunMode run_mode,
-                                 const GimpValueArray *args)
-{
-	GParamSpec **pspecs;
-	guint n_pspecs;
-	gint i;
-	gboolean loaded = FALSE;
-	GError      *error  = NULL;
+void gimp_procedure_config_begin_run(GimpProcedureConfig *config,
+                                     GimpImage *image, GimpRunMode run_mode,
+                                     const GimpValueArray *args) {
+  GParamSpec **pspecs;
+  guint n_pspecs;
+  gint i;
+  gboolean loaded = FALSE;
+  GError *error = NULL;
 
-	g_return_if_fail (GIMP_IS_PROCEDURE_CONFIG (config));
-	g_return_if_fail (image == NULL || GIMP_IS_IMAGE (image));
-	g_return_if_fail (args != NULL);
+  g_return_if_fail(GIMP_IS_PROCEDURE_CONFIG(config));
+  g_return_if_fail(image == NULL || GIMP_IS_IMAGE(image));
+  g_return_if_fail(args != NULL);
 
-	config->priv->image    = image;
-	config->priv->run_mode = run_mode;
+  config->priv->image = image;
+  config->priv->run_mode = run_mode;
 
-	switch (run_mode)
-	{
-	case GIMP_RUN_INTERACTIVE:
-	case GIMP_RUN_WITH_LAST_VALS:
-		if (image)
-		{
-			loaded = gimp_procedure_config_load_parasite (config, image,
-			                                              &error);
-			if (!loaded && error)
-			{
-				g_printerr ("Loading last used values from parasite failed: %s\n",
-				            error->message);
-				g_clear_error (&error);
-			}
-		}
+  switch (run_mode) {
+  case GIMP_RUN_INTERACTIVE:
+  case GIMP_RUN_WITH_LAST_VALS:
+    if (image) {
+      loaded = gimp_procedure_config_load_parasite(config, image, &error);
+      if (!loaded && error) {
+        g_printerr("Loading last used values from parasite failed: %s\n",
+                   error->message);
+        g_clear_error(&error);
+      }
+    }
 
-		if (!loaded &&
-		    !gimp_procedure_config_load_last (config, &error) && error)
-		{
-			g_printerr ("Loading last used values from disk failed: %s\n",
-			            error->message);
-			g_clear_error (&error);
-		}
-		break;
+    if (!loaded && !gimp_procedure_config_load_last(config, &error) && error) {
+      g_printerr("Loading last used values from disk failed: %s\n",
+                 error->message);
+      g_clear_error(&error);
+    }
+    break;
 
-	case GIMP_RUN_NONINTERACTIVE:
-		gimp_procedure_config_set_values (config, args);
-		break;
-	}
+  case GIMP_RUN_NONINTERACTIVE:
+    gimp_procedure_config_set_values(config, args);
+    break;
+  }
 
-	pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (config),
-	                                         &n_pspecs);
+  pspecs =
+      g_object_class_list_properties(G_OBJECT_GET_CLASS(config), &n_pspecs);
 
-	for (i = 0; i < n_pspecs; i++)
-	{
-		GParamSpec *pspec = pspecs[i];
+  for (i = 0; i < n_pspecs; i++) {
+    GParamSpec *pspec = pspecs[i];
 
-		/*  skip our own properties  */
-		if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
-			continue;
+    /*  skip our own properties  */
+    if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
+      continue;
 
-		switch (gimp_procedure_get_argument_sync (config->priv->procedure,
-		                                          pspec->name))
-		{
-		case GIMP_ARGUMENT_SYNC_PARASITE:
-			/*  we sync the property from the image parasite if it is an
-			 *  aux argument, or if we run interactively, because the
-			 *  parasite should be global to the image and not depend on
-			 *  whatever parasite another image had when last using this
-			 *  procedure
-			 */
-			if (gimp_procedure_find_aux_argument (config->priv->procedure,
-			                                      pspec->name) ||
-			    (run_mode != GIMP_RUN_NONINTERACTIVE))
-			{
-				gimp_procedure_config_get_parasite (config, pspec);
-			}
-			break;
+    switch (gimp_procedure_get_argument_sync(config->priv->procedure,
+                                             pspec->name)) {
+    case GIMP_ARGUMENT_SYNC_PARASITE:
+      /*  we sync the property from the image parasite if it is an
+       *  aux argument, or if we run interactively, because the
+       *  parasite should be global to the image and not depend on
+       *  whatever parasite another image had when last using this
+       *  procedure
+       */
+      if (gimp_procedure_find_aux_argument(config->priv->procedure,
+                                           pspec->name) ||
+          (run_mode != GIMP_RUN_NONINTERACTIVE)) {
+        gimp_procedure_config_get_parasite(config, pspec);
+      }
+      break;
 
-		default:
-			break;
-		}
-	}
+    default:
+      break;
+    }
+  }
 
-	g_free (pspecs);
+  g_free(pspecs);
 }
 
 /**
@@ -593,62 +509,55 @@ gimp_procedure_config_begin_run (GimpProcedureConfig  *config,
  *
  * Since: 3.0
  **/
-void
-gimp_procedure_config_end_run (GimpProcedureConfig *config,
-                               GimpPDBStatusType status)
-{
-	g_return_if_fail (GIMP_IS_PROCEDURE_CONFIG (config));
+void gimp_procedure_config_end_run(GimpProcedureConfig *config,
+                                   GimpPDBStatusType status) {
+  g_return_if_fail(GIMP_IS_PROCEDURE_CONFIG(config));
 
-	if (config->priv->run_mode != GIMP_RUN_NONINTERACTIVE)
-		gimp_displays_flush ();
+  if (config->priv->run_mode != GIMP_RUN_NONINTERACTIVE)
+    gimp_displays_flush();
 
-	if (status == GIMP_PDB_SUCCESS &&
-	    config->priv->run_mode == GIMP_RUN_INTERACTIVE)
-	{
-		GParamSpec **pspecs;
-		guint n_pspecs;
-		gint i;
-		GError      *error = NULL;
+  if (status == GIMP_PDB_SUCCESS &&
+      config->priv->run_mode == GIMP_RUN_INTERACTIVE) {
+    GParamSpec **pspecs;
+    guint n_pspecs;
+    gint i;
+    GError *error = NULL;
 
-		if (config->priv->image)
-			gimp_procedure_config_save_parasite (config, config->priv->image,
-			                                     NULL);
+    if (config->priv->image)
+      gimp_procedure_config_save_parasite(config, config->priv->image, NULL);
 
-		if (!gimp_procedure_config_save_last (config, &error))
-		{
-			g_printerr ("Saving last used values to disk failed: %s\n",
-			            error->message);
-			g_clear_error (&error);
-		}
+    if (!gimp_procedure_config_save_last(config, &error)) {
+      g_printerr("Saving last used values to disk failed: %s\n",
+                 error->message);
+      g_clear_error(&error);
+    }
 
-		pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (config),
-		                                         &n_pspecs);
+    pspecs =
+        g_object_class_list_properties(G_OBJECT_GET_CLASS(config), &n_pspecs);
 
-		for (i = 0; i < n_pspecs; i++)
-		{
-			GParamSpec *pspec = pspecs[i];
+    for (i = 0; i < n_pspecs; i++) {
+      GParamSpec *pspec = pspecs[i];
 
-			/*  skip our own properties  */
-			if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
-				continue;
+      /*  skip our own properties  */
+      if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
+        continue;
 
-			switch (gimp_procedure_get_argument_sync (config->priv->procedure,
-			                                          pspec->name))
-			{
-			case GIMP_ARGUMENT_SYNC_PARASITE:
-				gimp_procedure_config_set_parasite (config, pspec);
-				break;
+      switch (gimp_procedure_get_argument_sync(config->priv->procedure,
+                                               pspec->name)) {
+      case GIMP_ARGUMENT_SYNC_PARASITE:
+        gimp_procedure_config_set_parasite(config, pspec);
+        break;
 
-			default:
-				break;
-			}
-		}
+      default:
+        break;
+      }
+    }
 
-		g_free (pspecs);
-	}
+    g_free(pspecs);
+  }
 
-	config->priv->image    = NULL;
-	config->priv->run_mode = -1;
+  config->priv->image = NULL;
+  config->priv->run_mode = -1;
 }
 
 /**
@@ -708,60 +617,50 @@ gimp_procedure_config_end_run (GimpProcedureConfig *config,
  *
  * Since: 3.0
  **/
-GimpMetadata *
-gimp_procedure_config_begin_export (GimpProcedureConfig  *config,
-                                    GimpImage            *original_image,
-                                    GimpRunMode run_mode,
-                                    const GimpValueArray *args,
-                                    const gchar          *mime_type)
-{
-	GObjectClass *object_class;
+GimpMetadata *gimp_procedure_config_begin_export(GimpProcedureConfig *config,
+                                                 GimpImage *original_image,
+                                                 GimpRunMode run_mode,
+                                                 const GimpValueArray *args,
+                                                 const gchar *mime_type) {
+  GObjectClass *object_class;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), NULL);
-	g_return_val_if_fail (GIMP_IS_IMAGE (original_image), NULL);
-	g_return_val_if_fail (args != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), NULL);
+  g_return_val_if_fail(GIMP_IS_IMAGE(original_image), NULL);
+  g_return_val_if_fail(args != NULL, NULL);
 
-	object_class = G_OBJECT_GET_CLASS (config);
+  object_class = G_OBJECT_GET_CLASS(config);
 
-	if (mime_type)
-	{
-		GimpMetadataSaveFlags metadata_flags;
-		gint i;
+  if (mime_type) {
+    GimpMetadataSaveFlags metadata_flags;
+    gint i;
 
-		config->priv->metadata =
-			gimp_image_metadata_save_prepare (original_image,
-			                                  mime_type,
-			                                  &metadata_flags);
+    config->priv->metadata = gimp_image_metadata_save_prepare(
+        original_image, mime_type, &metadata_flags);
 
-		if (config->priv->metadata)
-		{
-			config->priv->mime_type      = g_strdup (mime_type);
-			config->priv->metadata_flags = metadata_flags;
-		}
+    if (config->priv->metadata) {
+      config->priv->mime_type = g_strdup(mime_type);
+      config->priv->metadata_flags = metadata_flags;
+    }
 
-		for (i = 0; i < G_N_ELEMENTS (metadata_properties); i++)
-		{
-			/*  we only disable properties based on metadata flags here
-			 *  and never enable them, so we don't override the user's
-			 *  saved default values that are passed to us via "args"
-			 */
-			if (!(metadata_flags &  metadata_properties[i].flag))
-			{
-				const gchar *prop_name = metadata_properties[i].name;
-				GParamSpec  *pspec;
+    for (i = 0; i < G_N_ELEMENTS(metadata_properties); i++) {
+      /*  we only disable properties based on metadata flags here
+       *  and never enable them, so we don't override the user's
+       *  saved default values that are passed to us via "args"
+       */
+      if (!(metadata_flags & metadata_properties[i].flag)) {
+        const gchar *prop_name = metadata_properties[i].name;
+        GParamSpec *pspec;
 
-				pspec = g_object_class_find_property (object_class, prop_name);
-				if (pspec)
-					g_object_set (config,
-					              prop_name, FALSE,
-					              NULL);
-			}
-		}
-	}
+        pspec = g_object_class_find_property(object_class, prop_name);
+        if (pspec)
+          g_object_set(config, prop_name, FALSE, NULL);
+      }
+    }
+  }
 
-	gimp_procedure_config_begin_run (config, original_image, run_mode, args);
+  gimp_procedure_config_begin_run(config, original_image, run_mode, args);
 
-	return config->priv->metadata;
+  return config->priv->metadata;
 }
 
 /**
@@ -788,27 +687,23 @@ gimp_procedure_config_begin_export (GimpProcedureConfig  *config,
  *
  * Since: 3.0
  **/
-void
-gimp_procedure_config_end_export (GimpProcedureConfig *config,
-                                  GimpImage           *exported_image,
-                                  GFile               *file,
-                                  GimpPDBStatusType status)
-{
-	g_return_if_fail (GIMP_IS_PROCEDURE_CONFIG (config));
-	g_return_if_fail (GIMP_IS_IMAGE (exported_image));
-	g_return_if_fail (G_IS_FILE (file));
+void gimp_procedure_config_end_export(GimpProcedureConfig *config,
+                                      GimpImage *exported_image, GFile *file,
+                                      GimpPDBStatusType status) {
+  g_return_if_fail(GIMP_IS_PROCEDURE_CONFIG(config));
+  g_return_if_fail(GIMP_IS_IMAGE(exported_image));
+  g_return_if_fail(G_IS_FILE(file));
 
-	if (status == GIMP_PDB_SUCCESS)
-	{
-		gimp_procedure_config_save_metadata (config, exported_image, file);
-	}
+  if (status == GIMP_PDB_SUCCESS) {
+    gimp_procedure_config_save_metadata(config, exported_image, file);
+  }
 
-	g_clear_object (&config->priv->metadata);
-	g_clear_pointer (&config->priv->mime_type, g_free);
-	config->priv->metadata_flags = 0;
-	config->priv->metadata_saved = FALSE;
+  g_clear_object(&config->priv->metadata);
+  g_clear_pointer(&config->priv->mime_type, g_free);
+  config->priv->metadata_flags = 0;
+  config->priv->metadata_saved = FALSE;
 
-	gimp_procedure_config_end_run (config, status);
+  gimp_procedure_config_end_run(config, status);
 }
 
 /**
@@ -834,237 +729,193 @@ gimp_procedure_config_end_export (GimpProcedureConfig *config,
  *
  * Since: 3.0
  **/
-void
-gimp_procedure_config_save_metadata (GimpProcedureConfig *config,
-                                     GimpImage           *exported_image,
-                                     GFile               *file)
-{
-	g_return_if_fail (GIMP_IS_PROCEDURE_CONFIG (config));
-	g_return_if_fail (GIMP_IS_IMAGE (exported_image));
-	g_return_if_fail (G_IS_FILE (file));
+void gimp_procedure_config_save_metadata(GimpProcedureConfig *config,
+                                         GimpImage *exported_image,
+                                         GFile *file) {
+  g_return_if_fail(GIMP_IS_PROCEDURE_CONFIG(config));
+  g_return_if_fail(GIMP_IS_IMAGE(exported_image));
+  g_return_if_fail(G_IS_FILE(file));
 
-	if (config->priv->metadata && !config->priv->metadata_saved)
-	{
-		GObjectClass *object_class = G_OBJECT_GET_CLASS (config);
-		GError       *error        = NULL;
-		gint i;
+  if (config->priv->metadata && !config->priv->metadata_saved) {
+    GObjectClass *object_class = G_OBJECT_GET_CLASS(config);
+    GError *error = NULL;
+    gint i;
 
-		for (i = 0; i < G_N_ELEMENTS (metadata_properties); i++)
-		{
-			const gchar           *prop_name = metadata_properties[i].name;
-			GimpMetadataSaveFlags prop_flag = metadata_properties[i].flag;
-			GParamSpec            *pspec;
-			gboolean value;
+    for (i = 0; i < G_N_ELEMENTS(metadata_properties); i++) {
+      const gchar *prop_name = metadata_properties[i].name;
+      GimpMetadataSaveFlags prop_flag = metadata_properties[i].flag;
+      GParamSpec *pspec;
+      gboolean value;
 
-			pspec = g_object_class_find_property (object_class, prop_name);
-			if (pspec)
-			{
-				g_object_get (config,
-				              prop_name, &value,
-				              NULL);
+      pspec = g_object_class_find_property(object_class, prop_name);
+      if (pspec) {
+        g_object_get(config, prop_name, &value, NULL);
 
-				if (value)
-					config->priv->metadata_flags |= prop_flag;
-				else
-					config->priv->metadata_flags &= ~prop_flag;
-			}
-		}
+        if (value)
+          config->priv->metadata_flags |= prop_flag;
+        else
+          config->priv->metadata_flags &= ~prop_flag;
+      }
+    }
 
-		if (!gimp_image_metadata_save_finish (exported_image,
-		                                      config->priv->mime_type,
-		                                      config->priv->metadata,
-		                                      config->priv->metadata_flags,
-		                                      file, &error))
-		{
-			if (error)
-			{
-				/* Even though a failure to write metadata is not enough
-				   reason to say we failed to save the image, we should
-				   still notify the user about the problem. */
-				g_message ("%s: saving metadata failed: %s",
-				           G_STRFUNC, error->message);
-				g_error_free (error);
-			}
-		}
+    if (!gimp_image_metadata_save_finish(
+            exported_image, config->priv->mime_type, config->priv->metadata,
+            config->priv->metadata_flags, file, &error)) {
+      if (error) {
+        /* Even though a failure to write metadata is not enough
+           reason to say we failed to save the image, we should
+           still notify the user about the problem. */
+        g_message("%s: saving metadata failed: %s", G_STRFUNC, error->message);
+        g_error_free(error);
+      }
+    }
 
-		config->priv->metadata_saved = TRUE;
-	}
+    config->priv->metadata_saved = TRUE;
+  }
 }
-
 
 /*  private functions  */
 
-static GFile *
-gimp_procedure_config_get_file (GimpProcedureConfig *config,
-                                const gchar         *extension)
-{
-	GFile *file;
-	gchar *basename;
+static GFile *gimp_procedure_config_get_file(GimpProcedureConfig *config,
+                                             const gchar *extension) {
+  GFile *file;
+  gchar *basename;
 
-	basename = g_strconcat (G_OBJECT_TYPE_NAME (config), extension, NULL);
-	file = gimp_directory_file ("plug-in-settings", basename, NULL);
-	g_free (basename);
+  basename = g_strconcat(G_OBJECT_TYPE_NAME(config), extension, NULL);
+  file = gimp_directory_file("plug-in-settings", basename, NULL);
+  g_free(basename);
 
-	return file;
+  return file;
 }
 
-gboolean
-gimp_procedure_config_load_default (GimpProcedureConfig  *config,
-                                    GError              **error)
-{
-	GFile    *file;
-	gboolean success;
+gboolean gimp_procedure_config_load_default(GimpProcedureConfig *config,
+                                            GError **error) {
+  GFile *file;
+  gboolean success;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	file = gimp_procedure_config_get_file (config, ".default");
+  file = gimp_procedure_config_get_file(config, ".default");
 
-	success = gimp_config_deserialize_file (GIMP_CONFIG (config),
-	                                        file,
-	                                        NULL, error);
+  success =
+      gimp_config_deserialize_file(GIMP_CONFIG(config), file, NULL, error);
 
-	if (!success && error && (*error)->code == GIMP_CONFIG_ERROR_OPEN_ENOENT)
-	{
-		g_clear_error (error);
-	}
+  if (!success && error && (*error)->code == GIMP_CONFIG_ERROR_OPEN_ENOENT) {
+    g_clear_error(error);
+  }
 
-	g_object_unref (file);
+  g_object_unref(file);
 
-	return success;
+  return success;
 }
 
-gboolean
-gimp_procedure_config_save_default (GimpProcedureConfig  *config,
-                                    GError              **error)
-{
-	GFile    *file;
-	gboolean success;
+gboolean gimp_procedure_config_save_default(GimpProcedureConfig *config,
+                                            GError **error) {
+  GFile *file;
+  gboolean success;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	file = gimp_procedure_config_get_file (config, ".default");
+  file = gimp_procedure_config_get_file(config, ".default");
 
-	success = gimp_config_serialize_to_file (GIMP_CONFIG (config),
-	                                         file,
-	                                         "settings",
-	                                         "end of settings",
-	                                         NULL, error);
+  success = gimp_config_serialize_to_file(GIMP_CONFIG(config), file, "settings",
+                                          "end of settings", NULL, error);
 
-	g_object_unref (file);
+  g_object_unref(file);
 
-	return success;
+  return success;
 }
 
-gboolean
-gimp_procedure_config_load_last (GimpProcedureConfig  *config,
-                                 GError              **error)
-{
-	GFile    *file;
-	gboolean success;
+gboolean gimp_procedure_config_load_last(GimpProcedureConfig *config,
+                                         GError **error) {
+  GFile *file;
+  gboolean success;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	file = gimp_procedure_config_get_file (config, ".last");
+  file = gimp_procedure_config_get_file(config, ".last");
 
-	success = gimp_config_deserialize_file (GIMP_CONFIG (config),
-	                                        file,
-	                                        NULL, error);
+  success =
+      gimp_config_deserialize_file(GIMP_CONFIG(config), file, NULL, error);
 
-	if (!success && (*error)->code == GIMP_CONFIG_ERROR_OPEN_ENOENT)
-	{
-		g_clear_error (error);
-	}
+  if (!success && (*error)->code == GIMP_CONFIG_ERROR_OPEN_ENOENT) {
+    g_clear_error(error);
+  }
 
-	g_object_unref (file);
+  g_object_unref(file);
 
-	return success;
+  return success;
 }
 
-gboolean
-gimp_procedure_config_save_last (GimpProcedureConfig  *config,
-                                 GError              **error)
-{
-	GFile    *file;
-	gboolean success;
+gboolean gimp_procedure_config_save_last(GimpProcedureConfig *config,
+                                         GError **error) {
+  GFile *file;
+  gboolean success;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	file = gimp_procedure_config_get_file (config, ".last");
+  file = gimp_procedure_config_get_file(config, ".last");
 
-	success = gimp_config_serialize_to_file (GIMP_CONFIG (config),
-	                                         file,
-	                                         "settings",
-	                                         "end of settings",
-	                                         NULL, error);
+  success = gimp_config_serialize_to_file(GIMP_CONFIG(config), file, "settings",
+                                          "end of settings", NULL, error);
 
-	g_object_unref (file);
+  g_object_unref(file);
 
-	return success;
+  return success;
 }
 
-static gchar *
-gimp_procedure_config_parasite_name (GimpProcedureConfig *config,
-                                     const gchar         *suffix)
-{
-	return g_strconcat (G_OBJECT_TYPE_NAME (config), suffix, NULL);
+static gchar *gimp_procedure_config_parasite_name(GimpProcedureConfig *config,
+                                                  const gchar *suffix) {
+  return g_strconcat(G_OBJECT_TYPE_NAME(config), suffix, NULL);
 }
 
-gboolean
-gimp_procedure_config_load_parasite (GimpProcedureConfig  *config,
-                                     GimpImage            *image,
-                                     GError              **error)
-{
-	gchar        *name;
-	GimpParasite *parasite;
-	gboolean success;
+gboolean gimp_procedure_config_load_parasite(GimpProcedureConfig *config,
+                                             GimpImage *image, GError **error) {
+  gchar *name;
+  GimpParasite *parasite;
+  gboolean success;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), FALSE);
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), FALSE);
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	name = gimp_procedure_config_parasite_name (config, "-last");
-	parasite = gimp_image_get_parasite (image, name);
-	g_free (name);
+  name = gimp_procedure_config_parasite_name(config, "-last");
+  parasite = gimp_image_get_parasite(image, name);
+  g_free(name);
 
-	if (!parasite)
-		return FALSE;
+  if (!parasite)
+    return FALSE;
 
-	success = gimp_config_deserialize_parasite (GIMP_CONFIG (config),
-	                                            parasite,
-	                                            NULL, error);
-	gimp_parasite_free (parasite);
+  success = gimp_config_deserialize_parasite(GIMP_CONFIG(config), parasite,
+                                             NULL, error);
+  gimp_parasite_free(parasite);
 
-	return success;
+  return success;
 }
 
-gboolean
-gimp_procedure_config_save_parasite (GimpProcedureConfig  *config,
-                                     GimpImage            *image,
-                                     GError              **error)
-{
-	gchar        *name;
-	GimpParasite *parasite;
+gboolean gimp_procedure_config_save_parasite(GimpProcedureConfig *config,
+                                             GimpImage *image, GError **error) {
+  gchar *name;
+  GimpParasite *parasite;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), FALSE);
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), FALSE);
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	name = gimp_procedure_config_parasite_name (config, "-last");
-	parasite = gimp_config_serialize_to_parasite (GIMP_CONFIG (config),
-	                                              name,
-	                                              GIMP_PARASITE_PERSISTENT,
-	                                              NULL);
-	g_free (name);
+  name = gimp_procedure_config_parasite_name(config, "-last");
+  parasite = gimp_config_serialize_to_parasite(GIMP_CONFIG(config), name,
+                                               GIMP_PARASITE_PERSISTENT, NULL);
+  g_free(name);
 
-	if (!parasite)
-		return FALSE;
+  if (!parasite)
+    return FALSE;
 
-	gimp_image_attach_parasite (image, parasite);
-	gimp_parasite_free (parasite);
+  gimp_image_attach_parasite(image, parasite);
+  gimp_parasite_free(parasite);
 
-	return TRUE;
+  return TRUE;
 }

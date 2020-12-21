@@ -28,65 +28,65 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-#define GIMP_TYPE_FILE_PROCEDURE            (gimp_file_procedure_get_type ())
-#define GIMP_FILE_PROCEDURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FILE_PROCEDURE, GimpFileProcedure))
-#define GIMP_FILE_PROCEDURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FILE_PROCEDURE, GimpFileProcedureClass))
-#define GIMP_IS_FILE_PROCEDURE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FILE_PROCEDURE))
-#define GIMP_IS_FILE_PROCEDURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FILE_PROCEDURE))
-#define GIMP_FILE_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FILE_PROCEDURE, GimpFileProcedureClass))
-
+#define GIMP_TYPE_FILE_PROCEDURE (gimp_file_procedure_get_type())
+#define GIMP_FILE_PROCEDURE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FILE_PROCEDURE,                 \
+                              GimpFileProcedure))
+#define GIMP_FILE_PROCEDURE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FILE_PROCEDURE,                  \
+                           GimpFileProcedureClass))
+#define GIMP_IS_FILE_PROCEDURE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FILE_PROCEDURE))
+#define GIMP_IS_FILE_PROCEDURE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FILE_PROCEDURE))
+#define GIMP_FILE_PROCEDURE_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FILE_PROCEDURE,                  \
+                             GimpFileProcedureClass))
 
 typedef struct _GimpFileProcedure GimpFileProcedure;
 typedef struct _GimpFileProcedureClass GimpFileProcedureClass;
 typedef struct _GimpFileProcedurePrivate GimpFileProcedurePrivate;
 
-struct _GimpFileProcedure
-{
-	GimpProcedure parent_instance;
+struct _GimpFileProcedure {
+  GimpProcedure parent_instance;
 
-	GimpFileProcedurePrivate *priv;
+  GimpFileProcedurePrivate *priv;
 };
 
-struct _GimpFileProcedureClass
-{
-	GimpProcedureClass parent_class;
+struct _GimpFileProcedureClass {
+  GimpProcedureClass parent_class;
 };
 
+GType gimp_file_procedure_get_type(void) G_GNUC_CONST;
 
-GType           gimp_file_procedure_get_type        (void) G_GNUC_CONST;
+void gimp_file_procedure_set_format_name(GimpFileProcedure *procedure,
+                                         const gchar *format_name);
+const gchar *gimp_file_procedure_get_format_name(GimpFileProcedure *procedure);
 
-void            gimp_file_procedure_set_format_name (GimpFileProcedure *procedure,
-                                                     const gchar       *format_name);
-const gchar   * gimp_file_procedure_get_format_name (GimpFileProcedure *procedure);
+void gimp_file_procedure_set_mime_types(GimpFileProcedure *procedure,
+                                        const gchar *mime_types);
+const gchar *gimp_file_procedure_get_mime_types(GimpFileProcedure *procedure);
 
-void            gimp_file_procedure_set_mime_types  (GimpFileProcedure *procedure,
-                                                     const gchar       *mime_types);
-const gchar   * gimp_file_procedure_get_mime_types  (GimpFileProcedure *procedure);
+void gimp_file_procedure_set_extensions(GimpFileProcedure *procedure,
+                                        const gchar *extensions);
+const gchar *gimp_file_procedure_get_extensions(GimpFileProcedure *procedure);
 
-void            gimp_file_procedure_set_extensions  (GimpFileProcedure *procedure,
-                                                     const gchar       *extensions);
-const gchar   * gimp_file_procedure_get_extensions  (GimpFileProcedure *procedure);
+void gimp_file_procedure_set_prefixes(GimpFileProcedure *procedure,
+                                      const gchar *prefixes);
+const gchar *gimp_file_procedure_get_prefixes(GimpFileProcedure *procedure);
 
-void            gimp_file_procedure_set_prefixes    (GimpFileProcedure *procedure,
-                                                     const gchar       *prefixes);
-const gchar   * gimp_file_procedure_get_prefixes    (GimpFileProcedure *procedure);
+void gimp_file_procedure_set_magics(GimpFileProcedure *procedure,
+                                    const gchar *magics);
+const gchar *gimp_file_procedure_get_magics(GimpFileProcedure *procedure);
 
-void            gimp_file_procedure_set_magics      (GimpFileProcedure *procedure,
-                                                     const gchar       *magics);
-const gchar   * gimp_file_procedure_get_magics      (GimpFileProcedure *procedure);
+void gimp_file_procedure_set_priority(GimpFileProcedure *procedure,
+                                      gint priority);
+gint gimp_file_procedure_get_priority(GimpFileProcedure *procedure);
 
-void            gimp_file_procedure_set_priority    (GimpFileProcedure *procedure,
-                                                     gint priority);
-gint            gimp_file_procedure_get_priority    (GimpFileProcedure *procedure);
-
-void            gimp_file_procedure_set_handles_remote
-        (GimpFileProcedure *procedure,
-        gboolean handles_remote);
-gboolean        gimp_file_procedure_get_handles_remote
-        (GimpFileProcedure *procedure);
-
+void gimp_file_procedure_set_handles_remote(GimpFileProcedure *procedure,
+                                            gboolean handles_remote);
+gboolean gimp_file_procedure_get_handles_remote(GimpFileProcedure *procedure);
 
 G_END_DECLS
 
-#endif  /*  __GIMP_FILE_PROCEDURE_H__  */
+#endif /*  __GIMP_FILE_PROCEDURE_H__  */

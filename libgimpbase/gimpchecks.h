@@ -16,7 +16,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#if !defined(__GIMP_BASE_H_INSIDE__) && !defined(GIMP_BASE_COMPILATION)
 #error "Only <libgimpbase/gimpbase.h> can be included directly."
 #endif
 
@@ -25,7 +25,6 @@
 
 G_BEGIN_DECLS
 
-
 /**
  * GIMP_CHECK_SIZE:
  *
@@ -33,36 +32,31 @@ G_BEGIN_DECLS
  * the core but GIMP plug-ins can't access the user preference and
  * should use this constant instead.
  **/
-#define GIMP_CHECK_SIZE     8
+#define GIMP_CHECK_SIZE 8
 
 /**
  * GIMP_CHECK_SIZE_SM:
  *
  * The default small checkerboard size in pixels.
  **/
-#define GIMP_CHECK_SIZE_SM  4
-
+#define GIMP_CHECK_SIZE_SM 4
 
 /**
  * GIMP_CHECK_DARK:
  *
  * The dark gray value for the default checkerboard pattern.
  **/
-#define GIMP_CHECK_DARK   0.4
+#define GIMP_CHECK_DARK 0.4
 
 /**
  * GIMP_CHECK_LIGHT:
  *
  * The dark light value for the default checkerboard pattern.
  **/
-#define GIMP_CHECK_LIGHT  0.6
+#define GIMP_CHECK_LIGHT 0.6
 
-
-void  gimp_checks_get_shades (GimpCheckType type,
-                              guchar        *light,
-                              guchar        *dark);
-
+void gimp_checks_get_shades(GimpCheckType type, guchar *light, guchar *dark);
 
 G_END_DECLS
 
-#endif  /* __GIMP_CHECKS_H__ */
+#endif /* __GIMP_CHECKS_H__ */

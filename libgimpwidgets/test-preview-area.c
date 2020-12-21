@@ -33,199 +33,157 @@
 
 #include "gimppreviewarea.h"
 
+#define WIDTH 256
+#define HEIGHT 256
+#define NUM_ITERS 100
 
-#define WIDTH      256
-#define HEIGHT     256
-#define NUM_ITERS  100
+static void test_run(GtkWidget *area, gboolean visible) {
+  guchar buf[WIDTH * HEIGHT * 8];
+  gint i, j;
+  gint num_iters = NUM_ITERS;
+  guchar val;
+  gdouble start_time, total_time;
+  GTimer *timer;
+  GEnumClass *enum_class;
+  GEnumValue *enum_value;
 
+  if (!visible)
+    num_iters *= 4;
 
-static void
-test_run (GtkWidget *area,
-          gboolean visible)
-{
-	guchar buf[WIDTH * HEIGHT * 8];
-	gint i, j;
-	gint num_iters = NUM_ITERS;
-	guchar val;
-	gdouble start_time, total_time;
-	GTimer       *timer;
-	GEnumClass   *enum_class;
-	GEnumValue   *enum_value;
+  gtk_widget_realize(area);
 
-	if (!visible)
-		num_iters *= 4;
+  g_print("\nPerformance tests for GimpPreviewArea "
+          "(%d x %d, %s, %d iterations):\n\n",
+          WIDTH, HEIGHT, visible ? "visible" : "hidden", num_iters);
 
-	gtk_widget_realize (area);
+  val = 0;
+  for (j = 0; j < WIDTH * HEIGHT * 8; j++) {
+    val = (val + ((val + (rand() & 0xff)) >> 1)) >> 1;
+    buf[j] = val;
+  }
 
-	g_print ("\nPerformance tests for GimpPreviewArea "
-	         "(%d x %d, %s, %d iterations):\n\n",
-	         WIDTH, HEIGHT, visible ? "visible" : "hidden", num_iters);
+  gimp_preview_area_set_colormap(GIMP_PREVIEW_AREA(area), buf, 256);
 
-	val = 0;
-	for (j = 0; j < WIDTH * HEIGHT * 8; j++)
-	{
-		val = (val + ((val + (rand () & 0xff)) >> 1)) >> 1;
-		buf[j] = val;
-	}
+  /* Let's warm up the cache, and also wait for the window manager
+     to settle. */
+  for (i = 0; i < NUM_ITERS; i++) {
+    gint offset = (rand() % (WIDTH * HEIGHT * 4)) & -4;
 
-	gimp_preview_area_set_colormap (GIMP_PREVIEW_AREA (area), buf, 256);
+    gimp_preview_area_draw(GIMP_PREVIEW_AREA(area), 0, 0, WIDTH, HEIGHT,
+                           GIMP_RGB_IMAGE, buf + offset, WIDTH * 4);
+  }
 
-	/* Let's warm up the cache, and also wait for the window manager
-	   to settle. */
-	for (i = 0; i < NUM_ITERS; i++)
-	{
-		gint offset = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+  gdk_display_flush(gtk_widget_get_display(area));
 
-		gimp_preview_area_draw (GIMP_PREVIEW_AREA (area),
-		                        0, 0, WIDTH, HEIGHT,
-		                        GIMP_RGB_IMAGE,
-		                        buf + offset,
-		                        WIDTH * 4);
-	}
+  timer = g_timer_new();
 
-	gdk_display_flush (gtk_widget_get_display (area));
+  enum_class = g_type_class_ref(GIMP_TYPE_IMAGE_TYPE);
 
-	timer = g_timer_new ();
+  for (enum_value = enum_class->values; enum_value->value_name; enum_value++) {
+    /* gimp_preview_area_draw */
+    start_time = g_timer_elapsed(timer, NULL);
 
-	enum_class = g_type_class_ref (GIMP_TYPE_IMAGE_TYPE);
+    for (i = 0; i < num_iters; i++) {
+      gint offset = (rand() % (WIDTH * HEIGHT * 4)) & -4;
 
-	for (enum_value = enum_class->values; enum_value->value_name; enum_value++)
-	{
-		/* gimp_preview_area_draw */
-		start_time = g_timer_elapsed (timer, NULL);
+      gimp_preview_area_draw(GIMP_PREVIEW_AREA(area), 0, 0, WIDTH, HEIGHT,
+                             enum_value->value, buf + offset, WIDTH * 4);
+    }
 
-		for (i = 0; i < num_iters; i++)
-		{
-			gint offset = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+    gdk_display_flush(gtk_widget_get_display(area));
+    total_time = g_timer_elapsed(timer, NULL) - start_time;
 
-			gimp_preview_area_draw (GIMP_PREVIEW_AREA (area),
-			                        0, 0, WIDTH, HEIGHT,
-			                        enum_value->value,
-			                        buf + offset,
-			                        WIDTH * 4);
-		}
+    g_print("%-20s "
+            "draw  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
+            enum_value->value_name, total_time, num_iters / total_time,
+            num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
 
-		gdk_display_flush (gtk_widget_get_display (area));
-		total_time = g_timer_elapsed (timer, NULL) - start_time;
+    /* gimp_preview_area_blend */
+    start_time = g_timer_elapsed(timer, NULL);
 
-		g_print ("%-20s "
-		         "draw  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
-		         enum_value->value_name,
-		         total_time,
-		         num_iters / total_time,
-		         num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
+    for (i = 0; i < num_iters; i++) {
+      gint offset = (rand() % (WIDTH * HEIGHT * 4)) & -4;
+      gint offset2 = (rand() % (WIDTH * HEIGHT * 4)) & -4;
 
-		/* gimp_preview_area_blend */
-		start_time = g_timer_elapsed (timer, NULL);
+      gimp_preview_area_blend(GIMP_PREVIEW_AREA(area), 0, 0, WIDTH, HEIGHT,
+                              enum_value->value, buf + offset, WIDTH * 4,
+                              buf + offset2, WIDTH * 4, rand() & 0xFF);
+    }
 
-		for (i = 0; i < num_iters; i++)
-		{
-			gint offset  = (rand () % (WIDTH * HEIGHT * 4)) & -4;
-			gint offset2 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+    gdk_display_flush(gtk_widget_get_display(area));
+    total_time = g_timer_elapsed(timer, NULL) - start_time;
 
-			gimp_preview_area_blend (GIMP_PREVIEW_AREA (area),
-			                         0, 0, WIDTH, HEIGHT,
-			                         enum_value->value,
-			                         buf + offset,
-			                         WIDTH * 4,
-			                         buf + offset2,
-			                         WIDTH * 4,
-			                         rand () & 0xFF);
-		}
+    g_print("%-20s "
+            "blend :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
+            enum_value->value_name, total_time, num_iters / total_time,
+            num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
 
-		gdk_display_flush (gtk_widget_get_display (area));
-		total_time = g_timer_elapsed (timer, NULL) - start_time;
+    /* gimp_preview_area_mask */
+    start_time = g_timer_elapsed(timer, NULL);
 
-		g_print ("%-20s "
-		         "blend :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
-		         enum_value->value_name,
-		         total_time,
-		         num_iters / total_time,
-		         num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
+    for (i = 0; i < num_iters; i++) {
+      gint offset = (rand() % (WIDTH * HEIGHT * 4)) & -4;
+      gint offset2 = (rand() % (WIDTH * HEIGHT * 4)) & -4;
+      gint offset3 = (rand() % (WIDTH * HEIGHT * 4)) & -4;
 
-		/* gimp_preview_area_mask */
-		start_time = g_timer_elapsed (timer, NULL);
+      gimp_preview_area_mask(GIMP_PREVIEW_AREA(area), 0, 0, WIDTH, HEIGHT,
+                             enum_value->value, buf + offset, WIDTH * 4,
+                             buf + offset2, WIDTH * 4, buf + offset3, WIDTH);
+    }
 
-		for (i = 0; i < num_iters; i++)
-		{
-			gint offset  = (rand () % (WIDTH * HEIGHT * 4)) & -4;
-			gint offset2 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
-			gint offset3 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+    gdk_display_flush(gtk_widget_get_display(area));
+    total_time = g_timer_elapsed(timer, NULL) - start_time;
 
-			gimp_preview_area_mask (GIMP_PREVIEW_AREA (area),
-			                        0, 0, WIDTH, HEIGHT,
-			                        enum_value->value,
-			                        buf + offset,
-			                        WIDTH * 4,
-			                        buf + offset2,
-			                        WIDTH * 4,
-			                        buf + offset3,
-			                        WIDTH);
-		}
+    g_print("%-20s "
+            "mask  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
+            enum_value->value_name, total_time, num_iters / total_time,
+            num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
+    g_print("\n");
+  }
 
-		gdk_display_flush (gtk_widget_get_display (area));
-		total_time = g_timer_elapsed (timer, NULL) - start_time;
+  start_time = g_timer_elapsed(timer, NULL);
 
-		g_print ("%-20s "
-		         "mask  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
-		         enum_value->value_name,
-		         total_time,
-		         num_iters / total_time,
-		         num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
-		g_print ("\n");
-	}
+  for (i = 0; i < num_iters; i++) {
+    guchar r = rand() % 0xFF;
+    guchar g = rand() % 0xFF;
+    guchar b = rand() % 0xFF;
 
-	start_time = g_timer_elapsed (timer, NULL);
+    gimp_preview_area_fill(GIMP_PREVIEW_AREA(area), 0, 0, WIDTH, HEIGHT, r, g,
+                           b);
+  }
 
-	for (i = 0; i < num_iters; i++)
-	{
-		guchar r = rand () % 0xFF;
-		guchar g = rand () % 0xFF;
-		guchar b = rand () % 0xFF;
-
-		gimp_preview_area_fill (GIMP_PREVIEW_AREA (area),
-		                        0, 0, WIDTH, HEIGHT,
-		                        r, g, b);
-	}
-
-	gdk_display_flush (gtk_widget_get_display (area));
-	total_time = g_timer_elapsed (timer, NULL) - start_time;
-	g_print ("%-20s "
-	         "fill  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
-	         "Color fill",
-	         total_time,
-	         num_iters / total_time,
-	         num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
-	g_print ("\n");
+  gdk_display_flush(gtk_widget_get_display(area));
+  total_time = g_timer_elapsed(timer, NULL) - start_time;
+  g_print("%-20s "
+          "fill  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
+          "Color fill", total_time, num_iters / total_time,
+          num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
+  g_print("\n");
 }
 
-static void
-test_preview_area (void)
-{
-	GtkWidget *window;
-	GtkWidget *area;
+static void test_preview_area(void) {
+  GtkWidget *window;
+  GtkWidget *area;
 
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-	gtk_window_set_accept_focus (GTK_WINDOW (window), FALSE);
+  gtk_window_set_accept_focus(GTK_WINDOW(window), FALSE);
 
-	area = gimp_preview_area_new ();
-	gtk_container_add (GTK_CONTAINER (window), area);
-	gtk_widget_show (area);
+  area = gimp_preview_area_new();
+  gtk_container_add(GTK_CONTAINER(window), area);
+  gtk_widget_show(area);
 
-	test_run (area, FALSE);
+  test_run(area, FALSE);
 
-	gtk_widget_show (window);
+  gtk_widget_show(window);
 
-	test_run (area, TRUE);
+  test_run(area, TRUE);
 }
 
-int
-main (int argc, char **argv)
-{
-	gtk_init (&argc, &argv);
+int main(int argc, char **argv) {
+  gtk_init(&argc, &argv);
 
-	test_preview_area ();
+  test_preview_area();
 
-	return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -29,36 +29,27 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+GtkWidget *gimp_grid_attach_aligned(GtkGrid *grid, gint left, gint top,
+                                    const gchar *label_text, gfloat xalign,
+                                    gfloat yalign, GtkWidget *widget,
+                                    gint columns);
 
-GtkWidget          * gimp_grid_attach_aligned        (GtkGrid           *grid,
-                                                      gint left,
-                                                      gint top,
-                                                      const gchar       *label_text,
-                                                      gfloat xalign,
-                                                      gfloat yalign,
-                                                      GtkWidget         *widget,
-                                                      gint columns);
+void gimp_label_set_attributes(GtkLabel *label, ...);
 
-void                 gimp_label_set_attributes       (GtkLabel          *label,
-                                                      ...);
+GdkMonitor *gimp_widget_get_monitor(GtkWidget *widget);
+GdkMonitor *gimp_get_monitor_at_pointer(void);
 
-GdkMonitor         * gimp_widget_get_monitor         (GtkWidget         *widget);
-GdkMonitor         * gimp_get_monitor_at_pointer     (void);
+void gimp_widget_track_monitor(GtkWidget *widget,
+                               GCallback monitor_changed_callback,
+                               gpointer user_data,
+                               GDestroyNotify user_data_destroy);
 
-void                 gimp_widget_track_monitor       (GtkWidget         *widget,
-                                                      GCallback monitor_changed_callback,
-                                                      gpointer user_data,
-                                                      GDestroyNotify user_data_destroy);
+GimpColorProfile *gimp_monitor_get_color_profile(GdkMonitor *monitor);
+GimpColorProfile *gimp_widget_get_color_profile(GtkWidget *widget);
 
-GimpColorProfile   * gimp_monitor_get_color_profile  (GdkMonitor        *monitor);
-GimpColorProfile   * gimp_widget_get_color_profile   (GtkWidget         *widget);
-
-GimpColorTransform * gimp_widget_get_color_transform (GtkWidget         *widget,
-                                                      GimpColorConfig   *config,
-                                                      GimpColorProfile  *src_profile,
-                                                      const Babl        *src_format,
-                                                      const Babl        *dest_format);
-
+GimpColorTransform *gimp_widget_get_color_transform(
+    GtkWidget *widget, GimpColorConfig *config, GimpColorProfile *src_profile,
+    const Babl *src_format, const Babl *dest_format);
 
 G_END_DECLS
 

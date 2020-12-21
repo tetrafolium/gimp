@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,45 +30,44 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-#define GIMP_TYPE_HINT_BOX            (gimp_hint_box_get_type ())
-#define GIMP_HINT_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HINT_BOX, GimpHintBox))
-#define GIMP_HINT_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_HINT_BOX, GimpHintBoxClass))
-#define GIMP_IS_HINT_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_HINT_BOX))
-#define GIMP_IS_HINT_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_HINT_BOX))
-#define GIMP_HINT_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_HINT_BOX, GimpHintBoxClass))
-
+#define GIMP_TYPE_HINT_BOX (gimp_hint_box_get_type())
+#define GIMP_HINT_BOX(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_HINT_BOX, GimpHintBox))
+#define GIMP_HINT_BOX_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_HINT_BOX, GimpHintBoxClass))
+#define GIMP_IS_HINT_BOX(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_HINT_BOX))
+#define GIMP_IS_HINT_BOX_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_HINT_BOX))
+#define GIMP_HINT_BOX_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_HINT_BOX, GimpHintBoxClass))
 
 typedef struct _GimpHintBoxPrivate GimpHintBoxPrivate;
 typedef struct _GimpHintBoxClass GimpHintBoxClass;
 
-struct _GimpHintBox
-{
-	GtkBox parent_instance;
+struct _GimpHintBox {
+  GtkBox parent_instance;
 
-	GimpHintBoxPrivate *priv;
+  GimpHintBoxPrivate *priv;
 };
 
-struct _GimpHintBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpHintBoxClass {
+  GtkBoxClass parent_class;
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_hint_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_hint_box_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_hint_box_new      (const gchar *hint);
-
+GtkWidget *gimp_hint_box_new(const gchar *hint);
 
 G_END_DECLS
 

@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -28,17 +28,13 @@
 
 G_BEGIN_DECLS
 
+GimpDisplay *_gimp_procedure_get_display(GimpProcedure *procedure,
+                                         gint32 display_id);
+GimpImage *_gimp_procedure_get_image(GimpProcedure *procedure, gint32 image_id);
+GimpItem *_gimp_procedure_get_item(GimpProcedure *procedure, gint32 item_id);
 
-GimpDisplay * _gimp_procedure_get_display     (GimpProcedure *procedure,
-                                               gint32 display_id);
-GimpImage   * _gimp_procedure_get_image       (GimpProcedure *procedure,
-                                               gint32 image_id);
-GimpItem    * _gimp_procedure_get_item        (GimpProcedure *procedure,
-                                               gint32 item_id);
-
-void          _gimp_procedure_destroy_proxies (GimpProcedure *procedure);
-
+void _gimp_procedure_destroy_proxies(GimpProcedure *procedure);
 
 G_END_DECLS
 
-#endif  /*  __GIMP_PROCEDURE_H__  */
+#endif /*  __GIMP_PROCEDURE_H__  */

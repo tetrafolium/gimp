@@ -21,7 +21,6 @@
 #ifndef __GIMP_MATH_H__
 #define __GIMP_MATH_H__
 
-
 #include <math.h>
 
 #ifdef HAVE_IEEEFP_H
@@ -41,9 +40,7 @@
 
 #undef __GIMP_MATH_H_INSIDE__
 
-
 G_BEGIN_DECLS
-
 
 /**
  * SECTION: gimpmath
@@ -55,7 +52,6 @@ G_BEGIN_DECLS
  * the ones from &lt;math.h&gt; for enhanced portability.
  **/
 
-
 /**
  * RINT:
  * @x: the value to be rounded
@@ -63,7 +59,7 @@ G_BEGIN_DECLS
  * This macro rounds its argument @x to an integer value in floating
  * point format. Use RINT() instead of rint().
  **/
-#if defined (HAVE_RINT) && 0
+#if defined(HAVE_RINT) && 0
 /* note:  rint() depends on the current floating-point rounding mode.  when the
  * rounding mode is FE_TONEAREST, it, in parctice, breaks ties to even.  this
  * is different from 'floor (x + 0.5)', which breaks ties up.  in other words
@@ -72,7 +68,7 @@ G_BEGIN_DECLS
  */
 #define RINT(x) rint(x)
 #else
-#define RINT(x) floor ((x) + 0.5)
+#define RINT(x) floor((x) + 0.5)
 #endif
 
 /**
@@ -81,7 +77,7 @@ G_BEGIN_DECLS
  *
  * This macro rounds its positive argument @x to the nearest integer.
  **/
-#define ROUND(x) ((int) ((x) + 0.5))
+#define ROUND(x) ((int)((x) + 0.5))
 
 /**
  * SIGNED_ROUND:
@@ -89,7 +85,7 @@ G_BEGIN_DECLS
  *
  * This macro rounds its argument @x to the nearest integer.
  **/
-#define SIGNED_ROUND(x) ((int) RINT (x))
+#define SIGNED_ROUND(x) ((int)RINT(x))
 
 /**
  * SQR:
@@ -105,7 +101,7 @@ G_BEGIN_DECLS
  *
  * This macro limits it argument @a, an (0-511) int, to 255.
  **/
-#define MAX255(a)  ((a) | (((a) & 256) - (((a) & 256) >> 8)))
+#define MAX255(a) ((a) | (((a)&256) - (((a)&256) >> 8)))
 
 /**
  * CLAMP0255:
@@ -114,7 +110,7 @@ G_BEGIN_DECLS
  * This macro clamps its argument @a, an int32-range int, between 0
  * and 255 inclusive.
  **/
-#define CLAMP0255(a)  CLAMP(a,0,255)
+#define CLAMP0255(a) CLAMP(a, 0, 255)
 
 /**
  * SAFE_CLAMP:
@@ -128,7 +124,8 @@ G_BEGIN_DECLS
  *
  * Since: 2.10
  **/
-#define SAFE_CLAMP(x, low, high)  ((x) > (low) ? (x) < (high) ? (x) : (high) : (low))
+#define SAFE_CLAMP(x, low, high)                                               \
+  ((x) > (low) ? (x) < (high) ? (x) : (high) : (low))
 
 /**
  * gimp_deg_to_rad:
@@ -144,8 +141,7 @@ G_BEGIN_DECLS
  *
  * This macro converts its argument @angle from radian to degree.
  **/
-#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
-
+#define gimp_rad_to_deg(angle) ((angle)*360.0 / (2.0 * G_PI))
 
 G_END_DECLS
 

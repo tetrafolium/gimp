@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#if !defined(__GIMP_BASE_H_INSIDE__) && !defined(GIMP_BASE_COMPILATION)
 #error "Only <libgimpbase/gimpbase.h> can be included directly."
 #endif
 
@@ -27,7 +27,6 @@
 #define __GIMP_LIMITS_H__
 
 G_BEGIN_DECLS
-
 
 /**
  * SECTION: gimplimits
@@ -38,13 +37,12 @@ G_BEGIN_DECLS
  * Boundaries of some GIMP data types and some global constants.
  **/
 
-
 /**
  * GIMP_MIN_IMAGE_SIZE:
  *
  * The minimum width and height of a GIMP image in pixels.
  **/
-#define GIMP_MIN_IMAGE_SIZE  1
+#define GIMP_MIN_IMAGE_SIZE 1
 
 /**
  * GIMP_MAX_IMAGE_SIZE:
@@ -54,8 +52,7 @@ G_BEGIN_DECLS
  * pixel sizes is needed; for example to give a spin button an upper
  * limit.
  **/
-#define GIMP_MAX_IMAGE_SIZE  524288    /*  2^19  */
-
+#define GIMP_MAX_IMAGE_SIZE 524288 /*  2^19  */
 
 /**
  * GIMP_MIN_RESOLUTION:
@@ -65,7 +62,7 @@ G_BEGIN_DECLS
  * resolution is needed. GIMP will not accept resolutions smaller than
  * this value.
  **/
-#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
+#define GIMP_MIN_RESOLUTION 5e-3 /*  shouldn't display as 0.000  */
 
 /**
  * GIMP_MAX_RESOLUTION:
@@ -75,8 +72,7 @@ G_BEGIN_DECLS
  * for a resolution is needed. GIMP will not accept resolutions larger
  * than this value.
  **/
-#define GIMP_MAX_RESOLUTION  1048576.0
-
+#define GIMP_MAX_RESOLUTION 1048576.0
 
 /**
  * GIMP_MAX_MEMSIZE:
@@ -86,11 +82,11 @@ G_BEGIN_DECLS
  * %G_MAXDOUBLE since the #GimpMemsizeEntry doesn't handle larger
  * values.
  **/
-#define GIMP_MAX_MEMSIZE     ((guint64) 1 << 42) /*  4 terabyte;
-	                                          *  needs a 64bit variable
-	                                          *  and must be < G_MAXDOUBLE
-	                                          */
-
+#define GIMP_MAX_MEMSIZE                                                       \
+  ((guint64)1 << 42) /*  4 terabyte;                                           \
+                      *  needs a 64bit variable                                \
+                      *  and must be < G_MAXDOUBLE                             \
+                      */
 
 G_END_DECLS
 

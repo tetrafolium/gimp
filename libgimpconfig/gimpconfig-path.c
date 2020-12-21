@@ -33,7 +33,6 @@
 
 #include "libgimp/libgimp-intl.h"
 
-
 /**
  * SECTION: gimpconfig-path
  * @title: GimpConfig-path
@@ -41,7 +40,6 @@
  *
  * File path utilities for libgimpconfig.
  **/
-
 
 /**
  * gimp_config_path_get_type:
@@ -52,39 +50,38 @@
  *
  * Since: 2.4
  **/
-GType
-gimp_config_path_get_type (void)
-{
-	static GType path_type = 0;
+GType gimp_config_path_get_type(void) {
+  static GType path_type = 0;
 
-	if (!path_type)
-	{
-		const GTypeInfo type_info = { 0, };
+  if (!path_type) {
+    const GTypeInfo type_info = {
+        0,
+    };
 
-		path_type = g_type_register_static (G_TYPE_STRING, "GimpConfigPath",
-		                                    &type_info, 0);
-	}
+    path_type =
+        g_type_register_static(G_TYPE_STRING, "GimpConfigPath", &type_info, 0);
+  }
 
-	return path_type;
+  return path_type;
 }
-
 
 /*
  * GIMP_TYPE_PARAM_CONFIG_PATH
  */
 
-#define GIMP_PARAM_SPEC_CONFIG_PATH(pspec) (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_CONFIG_PATH, GimpParamSpecConfigPath))
+#define GIMP_PARAM_SPEC_CONFIG_PATH(pspec)                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((pspec), GIMP_TYPE_PARAM_CONFIG_PATH,            \
+                              GimpParamSpecConfigPath))
 
 typedef struct _GimpParamSpecConfigPath GimpParamSpecConfigPath;
 
-struct _GimpParamSpecConfigPath
-{
-	GParamSpecString parent_instance;
+struct _GimpParamSpecConfigPath {
+  GParamSpecString parent_instance;
 
-	GimpConfigPathType type;
+  GimpConfigPathType type;
 };
 
-static void  gimp_param_config_path_class_init (GParamSpecClass *class);
+static void gimp_param_config_path_class_init(GParamSpecClass *class);
 
 /**
  * gimp_param_config_path_get_type:
@@ -95,35 +92,31 @@ static void  gimp_param_config_path_class_init (GParamSpecClass *class);
  *
  * Since: 2.4
  **/
-GType
-gimp_param_config_path_get_type (void)
-{
-	static GType spec_type = 0;
+GType gimp_param_config_path_get_type(void) {
+  static GType spec_type = 0;
 
-	if (!spec_type)
-	{
-		const GTypeInfo type_info =
-		{
-			sizeof (GParamSpecClass),
-			NULL, NULL,
-			(GClassInitFunc) gimp_param_config_path_class_init,
-			NULL, NULL,
-			sizeof (GimpParamSpecConfigPath),
-			0, NULL, NULL
-		};
+  if (!spec_type) {
+    const GTypeInfo type_info = {
+        sizeof(GParamSpecClass),
+        NULL,
+        NULL,
+        (GClassInitFunc)gimp_param_config_path_class_init,
+        NULL,
+        NULL,
+        sizeof(GimpParamSpecConfigPath),
+        0,
+        NULL,
+        NULL};
 
-		spec_type = g_type_register_static (G_TYPE_PARAM_STRING,
-		                                    "GimpParamConfigPath",
-		                                    &type_info, 0);
-	}
+    spec_type = g_type_register_static(G_TYPE_PARAM_STRING,
+                                       "GimpParamConfigPath", &type_info, 0);
+  }
 
-	return spec_type;
+  return spec_type;
 }
 
-static void
-gimp_param_config_path_class_init (GParamSpecClass *class)
-{
-	class->value_type = GIMP_TYPE_CONFIG_PATH;
+static void gimp_param_config_path_class_init(GParamSpecClass *class) {
+  class->value_type = GIMP_TYPE_CONFIG_PATH;
 }
 
 /**
@@ -143,24 +136,21 @@ gimp_param_config_path_class_init (GParamSpecClass *class)
  *
  * Since: 2.4
  **/
-GParamSpec *
-gimp_param_spec_config_path (const gchar        *name,
-                             const gchar        *nick,
-                             const gchar        *blurb,
-                             GimpConfigPathType type,
-                             const gchar        *default_value,
-                             GParamFlags flags)
-{
-	GParamSpecString *pspec;
+GParamSpec *gimp_param_spec_config_path(const gchar *name, const gchar *nick,
+                                        const gchar *blurb,
+                                        GimpConfigPathType type,
+                                        const gchar *default_value,
+                                        GParamFlags flags) {
+  GParamSpecString *pspec;
 
-	pspec = g_param_spec_internal (GIMP_TYPE_PARAM_CONFIG_PATH,
-	                               name, nick, blurb, flags);
+  pspec = g_param_spec_internal(GIMP_TYPE_PARAM_CONFIG_PATH, name, nick, blurb,
+                                flags);
 
-	pspec->default_value = g_strdup (default_value);
+  pspec->default_value = g_strdup(default_value);
 
-	GIMP_PARAM_SPEC_CONFIG_PATH (pspec)->type = type;
+  GIMP_PARAM_SPEC_CONFIG_PATH(pspec)->type = type;
 
-	return G_PARAM_SPEC (pspec);
+  return G_PARAM_SPEC(pspec);
 }
 
 /**
@@ -174,24 +164,20 @@ gimp_param_spec_config_path (const gchar        *name,
  *
  * Since: 2.4
  **/
-GimpConfigPathType
-gimp_param_spec_config_path_type (GParamSpec *pspec)
-{
-	g_return_val_if_fail (GIMP_IS_PARAM_SPEC_CONFIG_PATH (pspec), 0);
+GimpConfigPathType gimp_param_spec_config_path_type(GParamSpec *pspec) {
+  g_return_val_if_fail(GIMP_IS_PARAM_SPEC_CONFIG_PATH(pspec), 0);
 
-	return GIMP_PARAM_SPEC_CONFIG_PATH (pspec)->type;
+  return GIMP_PARAM_SPEC_CONFIG_PATH(pspec)->type;
 }
-
 
 /*
  * GimpConfig path utilities
  */
 
-static gchar        * gimp_config_path_expand_only   (const gchar  *path,
-                                                      GError      **error) G_GNUC_MALLOC;
-static inline gchar * gimp_config_path_extract_token (const gchar **str);
-static gchar        * gimp_config_path_unexpand_only (const gchar  *path) G_GNUC_MALLOC;
-
+static gchar *gimp_config_path_expand_only(const gchar *path,
+                                           GError **error) G_GNUC_MALLOC;
+static inline gchar *gimp_config_path_extract_token(const gchar **str);
+static gchar *gimp_config_path_unexpand_only(const gchar *path) G_GNUC_MALLOC;
 
 /**
  * gimp_config_build_data_path:
@@ -210,13 +196,10 @@ static gchar        * gimp_config_path_unexpand_only (const gchar  *path) G_GNUC
  *
  * Since: 2.4
  **/
-gchar *
-gimp_config_build_data_path (const gchar *name)
-{
-	return g_strconcat ("${gimp_dir}", G_DIR_SEPARATOR_S, name,
-	                    G_SEARCHPATH_SEPARATOR_S,
-	                    "${gimp_data_dir}", G_DIR_SEPARATOR_S, name,
-	                    NULL);
+gchar *gimp_config_build_data_path(const gchar *name) {
+  return g_strconcat("${gimp_dir}", G_DIR_SEPARATOR_S, name,
+                     G_SEARCHPATH_SEPARATOR_S, "${gimp_data_dir}",
+                     G_DIR_SEPARATOR_S, name, NULL);
 }
 
 /**
@@ -236,13 +219,10 @@ gimp_config_build_data_path (const gchar *name)
  *
  * Since: 2.4
  **/
-gchar *
-gimp_config_build_plug_in_path (const gchar *name)
-{
-	return g_strconcat ("${gimp_dir}", G_DIR_SEPARATOR_S, name,
-	                    G_SEARCHPATH_SEPARATOR_S,
-	                    "${gimp_plug_in_dir}", G_DIR_SEPARATOR_S, name,
-	                    NULL);
+gchar *gimp_config_build_plug_in_path(const gchar *name) {
+  return g_strconcat("${gimp_dir}", G_DIR_SEPARATOR_S, name,
+                     G_SEARCHPATH_SEPARATOR_S, "${gimp_plug_in_dir}",
+                     G_DIR_SEPARATOR_S, name, NULL);
 }
 
 /**
@@ -261,10 +241,8 @@ gimp_config_build_plug_in_path (const gchar *name)
  *
  * Since: 2.4
  **/
-gchar *
-gimp_config_build_writable_path (const gchar *name)
-{
-	return g_strconcat ("${gimp_dir}", G_DIR_SEPARATOR_S, name, NULL);
+gchar *gimp_config_build_writable_path(const gchar *name) {
+  return g_strconcat("${gimp_dir}", G_DIR_SEPARATOR_S, name, NULL);
 }
 
 /**
@@ -283,10 +261,8 @@ gimp_config_build_writable_path (const gchar *name)
  *
  * Since: 2.10.6
  **/
-gchar *
-gimp_config_build_system_path (const gchar *name)
-{
-	return g_strconcat ("${gimp_plug_in_dir}", G_DIR_SEPARATOR_S, name, NULL);
+gchar *gimp_config_build_system_path(const gchar *name) {
+  return g_strconcat("${gimp_plug_in_dir}", G_DIR_SEPARATOR_S, name, NULL);
 }
 
 /**
@@ -309,30 +285,26 @@ gimp_config_build_system_path (const gchar *name)
  *
  * Since: 2.4
  **/
-gchar *
-gimp_config_path_expand (const gchar  *path,
-                         gboolean recode,
-                         GError      **error)
-{
-	g_return_val_if_fail (path != NULL, NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+gchar *gimp_config_path_expand(const gchar *path, gboolean recode,
+                               GError **error) {
+  g_return_val_if_fail(path != NULL, NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	if (recode)
-	{
-		gchar *retval;
-		gchar *expanded = gimp_config_path_expand_only (path, error);
+  if (recode) {
+    gchar *retval;
+    gchar *expanded = gimp_config_path_expand_only(path, error);
 
-		if (!expanded)
-			return NULL;
+    if (!expanded)
+      return NULL;
 
-		retval = g_filename_from_utf8 (expanded, -1, NULL, NULL, error);
+    retval = g_filename_from_utf8(expanded, -1, NULL, NULL, error);
 
-		g_free (expanded);
+    g_free(expanded);
 
-		return retval;
-	}
+    return retval;
+  }
 
-	return gimp_config_path_expand_only (path, error);
+  return gimp_config_path_expand_only(path, error);
 }
 
 /**
@@ -355,35 +327,31 @@ gimp_config_path_expand (const gchar  *path,
  *
  * Since: 2.10
  **/
-GList *
-gimp_config_path_expand_to_files (const gchar  *path,
-                                  GError      **error)
-{
-	GList *files;
-	GList *list;
-	gchar *expanded;
+GList *gimp_config_path_expand_to_files(const gchar *path, GError **error) {
+  GList *files;
+  GList *list;
+  gchar *expanded;
 
-	g_return_val_if_fail (path != NULL, NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  g_return_val_if_fail(path != NULL, NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	expanded = gimp_config_path_expand (path, TRUE, error);
+  expanded = gimp_config_path_expand(path, TRUE, error);
 
-	if (!expanded)
-		return NULL;
+  if (!expanded)
+    return NULL;
 
-	files = gimp_path_parse (expanded, 256, FALSE, NULL);
+  files = gimp_path_parse(expanded, 256, FALSE, NULL);
 
-	g_free (expanded);
+  g_free(expanded);
 
-	for (list = files; list; list = g_list_next (list))
-	{
-		gchar *dir = list->data;
+  for (list = files; list; list = g_list_next(list)) {
+    gchar *dir = list->data;
 
-		list->data = g_file_new_for_path (dir);
-		g_free (dir);
-	}
+    list->data = g_file_new_for_path(dir);
+    g_free(dir);
+  }
 
-	return files;
+  return files;
 }
 
 /**
@@ -406,30 +374,26 @@ gimp_config_path_expand_to_files (const gchar  *path,
  *
  * Since: 2.10
  **/
-gchar *
-gimp_config_path_unexpand (const gchar  *path,
-                           gboolean recode,
-                           GError      **error)
-{
-	g_return_val_if_fail (path != NULL, NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+gchar *gimp_config_path_unexpand(const gchar *path, gboolean recode,
+                                 GError **error) {
+  g_return_val_if_fail(path != NULL, NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	if (recode)
-	{
-		gchar *retval;
-		gchar *utf8 = g_filename_to_utf8 (path, -1, NULL, NULL, error);
+  if (recode) {
+    gchar *retval;
+    gchar *utf8 = g_filename_to_utf8(path, -1, NULL, NULL, error);
 
-		if (!utf8)
-			return NULL;
+    if (!utf8)
+      return NULL;
 
-		retval = gimp_config_path_unexpand_only (utf8);
+    retval = gimp_config_path_unexpand_only(utf8);
 
-		g_free (utf8);
+    g_free(utf8);
 
-		return retval;
-	}
+    return retval;
+  }
 
-	return gimp_config_path_unexpand_only (path);
+  return gimp_config_path_unexpand_only(path);
 }
 
 /**
@@ -447,25 +411,21 @@ gimp_config_path_unexpand (const gchar  *path,
  *
  * Since: 2.10
  **/
-GFile *
-gimp_file_new_for_config_path (const gchar  *path,
-                               GError      **error)
-{
-	GFile *file = NULL;
-	gchar *expanded;
+GFile *gimp_file_new_for_config_path(const gchar *path, GError **error) {
+  GFile *file = NULL;
+  gchar *expanded;
 
-	g_return_val_if_fail (path != NULL, NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  g_return_val_if_fail(path != NULL, NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	expanded = gimp_config_path_expand (path, TRUE, error);
+  expanded = gimp_config_path_expand(path, TRUE, error);
 
-	if (expanded)
-	{
-		file = g_file_new_for_path (expanded);
-		g_free (expanded);
-	}
+  if (expanded) {
+    file = g_file_new_for_path(expanded);
+    g_free(expanded);
+  }
 
-	return file;
+  return file;
 }
 
 /**
@@ -483,261 +443,220 @@ gimp_file_new_for_config_path (const gchar  *path,
  *
  * Since: 2.10
  **/
-gchar *
-gimp_file_get_config_path (GFile   *file,
-                           GError **error)
-{
-	gchar *unexpanded = NULL;
-	gchar *path;
+gchar *gimp_file_get_config_path(GFile *file, GError **error) {
+  gchar *unexpanded = NULL;
+  gchar *path;
 
-	g_return_val_if_fail (G_IS_FILE (file), NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  g_return_val_if_fail(G_IS_FILE(file), NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
 
-	path = g_file_get_path (file);
+  path = g_file_get_path(file);
 
-	if (path)
-	{
-		unexpanded = gimp_config_path_unexpand (path, TRUE, error);
-		g_free (path);
-	}
-	else
-	{
-		g_set_error_literal (error, 0, 0,
-		                     _("File has no path representation"));
-	}
+  if (path) {
+    unexpanded = gimp_config_path_unexpand(path, TRUE, error);
+    g_free(path);
+  } else {
+    g_set_error_literal(error, 0, 0, _("File has no path representation"));
+  }
 
-	return unexpanded;
+  return unexpanded;
 }
-
 
 /*  private functions  */
 
 #define SUBSTS_ALLOC 4
 
-static gchar *
-gimp_config_path_expand_only (const gchar  *path,
-                              GError      **error)
-{
-	const gchar *home;
-	const gchar *p;
-	const gchar *s;
-	gchar       *n;
-	gchar       *token;
-	gchar       *filename = NULL;
-	gchar       *expanded = NULL;
-	gchar      **substs   = NULL;
-	guint n_substs = 0;
-	gint length   = 0;
-	gint i;
+static gchar *gimp_config_path_expand_only(const gchar *path, GError **error) {
+  const gchar *home;
+  const gchar *p;
+  const gchar *s;
+  gchar *n;
+  gchar *token;
+  gchar *filename = NULL;
+  gchar *expanded = NULL;
+  gchar **substs = NULL;
+  guint n_substs = 0;
+  gint length = 0;
+  gint i;
 
-	home = g_get_home_dir ();
-	if (home)
-		home = gimp_filename_to_utf8 (home);
+  home = g_get_home_dir();
+  if (home)
+    home = gimp_filename_to_utf8(home);
 
-	p = path;
+  p = path;
 
-	while (*p)
-	{
-		if (*p == '~' && home)
-		{
-			length += strlen (home);
-			p += 1;
-		}
-		else if ((token = gimp_config_path_extract_token (&p)) != NULL)
-		{
-			for (i = 0; i < n_substs; i++)
-				if (strcmp (substs[2*i], token) == 0)
-					break;
+  while (*p) {
+    if (*p == '~' && home) {
+      length += strlen(home);
+      p += 1;
+    } else if ((token = gimp_config_path_extract_token(&p)) != NULL) {
+      for (i = 0; i < n_substs; i++)
+        if (strcmp(substs[2 * i], token) == 0)
+          break;
 
-			if (i < n_substs)
-			{
-				s = substs[2*i+1];
-			}
-			else
-			{
-				s = NULL;
+      if (i < n_substs) {
+        s = substs[2 * i + 1];
+      } else {
+        s = NULL;
 
-				if (strcmp (token, "gimp_dir") == 0)
-					s = gimp_directory ();
-				else if (strcmp (token, "gimp_data_dir") == 0)
-					s = gimp_data_directory ();
-				else if (strcmp (token, "gimp_plug_in_dir") == 0 ||
-				         strcmp (token, "gimp_plugin_dir") == 0)
-					s = gimp_plug_in_directory ();
-				else if (strcmp (token, "gimp_sysconf_dir") == 0)
-					s = gimp_sysconf_directory ();
-				else if (strcmp (token, "gimp_installation_dir") == 0)
-					s = gimp_installation_directory ();
-				else if (strcmp (token, "gimp_cache_dir") == 0)
-					s = gimp_cache_directory ();
-				else if (strcmp (token, "gimp_temp_dir") == 0)
-					s = gimp_temp_directory ();
+        if (strcmp(token, "gimp_dir") == 0)
+          s = gimp_directory();
+        else if (strcmp(token, "gimp_data_dir") == 0)
+          s = gimp_data_directory();
+        else if (strcmp(token, "gimp_plug_in_dir") == 0 ||
+                 strcmp(token, "gimp_plugin_dir") == 0)
+          s = gimp_plug_in_directory();
+        else if (strcmp(token, "gimp_sysconf_dir") == 0)
+          s = gimp_sysconf_directory();
+        else if (strcmp(token, "gimp_installation_dir") == 0)
+          s = gimp_installation_directory();
+        else if (strcmp(token, "gimp_cache_dir") == 0)
+          s = gimp_cache_directory();
+        else if (strcmp(token, "gimp_temp_dir") == 0)
+          s = gimp_temp_directory();
 
-				if (!s)
-					s = g_getenv (token);
+        if (!s)
+          s = g_getenv(token);
 
 #ifdef G_OS_WIN32
-				/* The default user gimprc on Windows references
-				 * ${TEMP}, but not all Windows installations have that
-				 * environment variable, even if it should be kinda
-				 * standard. So special-case it.
-				 */
-				if (!s && strcmp (token, "TEMP") == 0)
-					s = g_get_tmp_dir ();
-#endif  /* G_OS_WIN32 */
-			}
+        /* The default user gimprc on Windows references
+         * ${TEMP}, but not all Windows installations have that
+         * environment variable, even if it should be kinda
+         * standard. So special-case it.
+         */
+        if (!s && strcmp(token, "TEMP") == 0)
+          s = g_get_tmp_dir();
+#endif /* G_OS_WIN32 */
+      }
 
-			if (!s)
-			{
-				g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
-				             _("Cannot expand ${%s}"), token);
-				g_free (token);
-				goto cleanup;
-			}
+      if (!s) {
+        g_set_error(error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+                    _("Cannot expand ${%s}"), token);
+        g_free(token);
+        goto cleanup;
+      }
 
-			if (n_substs % SUBSTS_ALLOC == 0)
-				substs = g_renew (gchar *, substs, 2 * (n_substs + SUBSTS_ALLOC));
+      if (n_substs % SUBSTS_ALLOC == 0)
+        substs = g_renew(gchar *, substs, 2 * (n_substs + SUBSTS_ALLOC));
 
-			substs[2*n_substs]     = token;
-			substs[2*n_substs + 1] = (gchar *) gimp_filename_to_utf8 (s);
+      substs[2 * n_substs] = token;
+      substs[2 * n_substs + 1] = (gchar *)gimp_filename_to_utf8(s);
 
-			length += strlen (substs[2*n_substs + 1]);
+      length += strlen(substs[2 * n_substs + 1]);
 
-			n_substs++;
-		}
-		else
-		{
-			length += g_utf8_skip[(const guchar) *p];
-			p = g_utf8_next_char (p);
-		}
-	}
+      n_substs++;
+    } else {
+      length += g_utf8_skip[(const guchar)*p];
+      p = g_utf8_next_char(p);
+    }
+  }
 
-	if (n_substs == 0)
-		return g_strdup (path);
+  if (n_substs == 0)
+    return g_strdup(path);
 
-	expanded = g_new (gchar, length + 1);
+  expanded = g_new(gchar, length + 1);
 
-	p = path;
-	n = expanded;
+  p = path;
+  n = expanded;
 
-	while (*p)
-	{
-		if (*p == '~' && home)
-		{
-			*n = '\0';
-			strcat (n, home);
-			n += strlen (home);
-			p += 1;
-		}
-		else if ((token = gimp_config_path_extract_token (&p)) != NULL)
-		{
-			for (i = 0; i < n_substs; i++)
-			{
-				if (strcmp (substs[2*i], token) == 0)
-				{
-					s = substs[2*i+1];
+  while (*p) {
+    if (*p == '~' && home) {
+      *n = '\0';
+      strcat(n, home);
+      n += strlen(home);
+      p += 1;
+    } else if ((token = gimp_config_path_extract_token(&p)) != NULL) {
+      for (i = 0; i < n_substs; i++) {
+        if (strcmp(substs[2 * i], token) == 0) {
+          s = substs[2 * i + 1];
 
-					*n = '\0';
-					strcat (n, s);
-					n += strlen (s);
+          *n = '\0';
+          strcat(n, s);
+          n += strlen(s);
 
-					break;
-				}
-			}
+          break;
+        }
+      }
 
-			g_free (token);
-		}
-		else
-		{
-			*n++ = *p++;
-		}
-	}
+      g_free(token);
+    } else {
+      *n++ = *p++;
+    }
+  }
 
-	*n = '\0';
+  *n = '\0';
 
 cleanup:
-	for (i = 0; i < n_substs; i++)
-		g_free (substs[2*i]);
+  for (i = 0; i < n_substs; i++)
+    g_free(substs[2 * i]);
 
-	g_free (substs);
-	g_free (filename);
+  g_free(substs);
+  g_free(filename);
 
-	return expanded;
+  return expanded;
 }
 
-static inline gchar *
-gimp_config_path_extract_token (const gchar **str)
-{
-	const gchar *p;
-	gchar       *token;
+static inline gchar *gimp_config_path_extract_token(const gchar **str) {
+  const gchar *p;
+  gchar *token;
 
-	if (strncmp (*str, "${", 2))
-		return NULL;
+  if (strncmp(*str, "${", 2))
+    return NULL;
 
-	p = *str + 2;
+  p = *str + 2;
 
-	while (*p && (*p != '}'))
-		p = g_utf8_next_char (p);
+  while (*p && (*p != '}'))
+    p = g_utf8_next_char(p);
 
-	if (!*p)
-		return NULL;
+  if (!*p)
+    return NULL;
 
-	token = g_strndup (*str + 2, g_utf8_pointer_to_offset (*str + 2, p));
+  token = g_strndup(*str + 2, g_utf8_pointer_to_offset(*str + 2, p));
 
-	*str = p + 1; /* after the closing bracket */
+  *str = p + 1; /* after the closing bracket */
 
-	return token;
+  return token;
 }
 
-static gchar *
-gimp_config_path_unexpand_only (const gchar *path)
-{
-	const struct
-	{
-		const gchar *id;
-		const gchar *prefix;
-	}
-	identifiers[] =
-	{
-		{ "${gimp_plug_in_dir}",      gimp_plug_in_directory () },
-		{ "${gimp_data_dir}",         gimp_data_directory () },
-		{ "${gimp_sysconf_dir}",      gimp_sysconf_directory () },
-		{ "${gimp_installation_dir}", gimp_installation_directory () },
-		{ "${gimp_cache_dir}",        gimp_cache_directory () },
-		{ "${gimp_temp_dir}",         gimp_temp_directory () },
-		{ "${gimp_dir}",              gimp_directory () }
-	};
+static gchar *gimp_config_path_unexpand_only(const gchar *path) {
+  const struct {
+    const gchar *id;
+    const gchar *prefix;
+  } identifiers[] = {
+      {"${gimp_plug_in_dir}", gimp_plug_in_directory()},
+      {"${gimp_data_dir}", gimp_data_directory()},
+      {"${gimp_sysconf_dir}", gimp_sysconf_directory()},
+      {"${gimp_installation_dir}", gimp_installation_directory()},
+      {"${gimp_cache_dir}", gimp_cache_directory()},
+      {"${gimp_temp_dir}", gimp_temp_directory()},
+      {"${gimp_dir}", gimp_directory()}};
 
-	GList *files;
-	GList *list;
-	gchar *unexpanded;
+  GList *files;
+  GList *list;
+  gchar *unexpanded;
 
-	files = gimp_path_parse (path, 256, FALSE, NULL);
+  files = gimp_path_parse(path, 256, FALSE, NULL);
 
-	for (list = files; list; list = g_list_next (list))
-	{
-		gchar *dir = list->data;
-		gint i;
+  for (list = files; list; list = g_list_next(list)) {
+    gchar *dir = list->data;
+    gint i;
 
-		for (i = 0; i < G_N_ELEMENTS (identifiers); i++)
-		{
-			if (g_str_has_prefix (dir, identifiers[i].prefix))
-			{
-				gchar *tmp = g_strconcat (identifiers[i].id,
-				                          dir + strlen (identifiers[i].prefix),
-				                          NULL);
+    for (i = 0; i < G_N_ELEMENTS(identifiers); i++) {
+      if (g_str_has_prefix(dir, identifiers[i].prefix)) {
+        gchar *tmp = g_strconcat(identifiers[i].id,
+                                 dir + strlen(identifiers[i].prefix), NULL);
 
-				g_free (dir);
-				list->data = tmp;
+        g_free(dir);
+        list->data = tmp;
 
-				break;
-			}
-		}
-	}
+        break;
+      }
+    }
+  }
 
-	unexpanded = gimp_path_to_str (files);
+  unexpanded = gimp_path_to_str(files);
 
-	gimp_path_free (files);
+  gimp_path_free(files);
 
-	return unexpanded;
+  return unexpanded;
 }

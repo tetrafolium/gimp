@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -30,13 +30,8 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-GdkPixbuf * _gimp_pixbuf_from_data (guchar                 *data,
-                                    gint width,
-                                    gint height,
-                                    gint bpp,
-                                    GimpPixbufTransparency alpha);
-
+GdkPixbuf *_gimp_pixbuf_from_data(guchar *data, gint width, gint height,
+                                  gint bpp, GimpPixbufTransparency alpha);
 
 G_END_DECLS
 

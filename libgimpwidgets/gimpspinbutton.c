@@ -23,16 +23,15 @@
 
 #include <string.h>
 
+#include <gdk/gdkkeysyms.h>
 #include <gegl.h>
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
 
 #include "libgimpmath/gimpmath.h"
 
 #include "gimpwidgetstypes.h"
 
 #include "gimpspinbutton.h"
-
 
 /**
  * SECTION: gimpspinbutton
@@ -51,248 +50,202 @@
  *   - Modifiers can be used during scrolling for smaller/bigger increments.
  **/
 
-
 #define MAX_DIGITS 20
 
-
-struct _GimpSpinButtonPrivate
-{
-	gboolean changed;
+struct _GimpSpinButtonPrivate {
+  gboolean changed;
 };
-
 
 /*  local function prototypes  */
 
-static gboolean   gimp_spin_button_scroll    (GtkWidget      *widget,
-                                              GdkEventScroll *event);
-static gboolean   gimp_spin_button_key_press (GtkWidget      *widget,
-                                              GdkEventKey    *event);
-static gboolean   gimp_spin_button_focus_in  (GtkWidget      *widget,
-                                              GdkEventFocus  *event);
-static gboolean   gimp_spin_button_focus_out (GtkWidget      *widget,
-                                              GdkEventFocus  *event);
+static gboolean gimp_spin_button_scroll(GtkWidget *widget,
+                                        GdkEventScroll *event);
+static gboolean gimp_spin_button_key_press(GtkWidget *widget,
+                                           GdkEventKey *event);
+static gboolean gimp_spin_button_focus_in(GtkWidget *widget,
+                                          GdkEventFocus *event);
+static gboolean gimp_spin_button_focus_out(GtkWidget *widget,
+                                           GdkEventFocus *event);
 
-static gint       gimp_spin_button_input     (GtkSpinButton  *spin_button,
-                                              gdouble        *new_value);
+static gint gimp_spin_button_input(GtkSpinButton *spin_button,
+                                   gdouble *new_value);
 
-static void       gimp_spin_button_changed   (GtkEditable    *editable,
-                                              gpointer data);
+static void gimp_spin_button_changed(GtkEditable *editable, gpointer data);
 
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpSpinButton, gimp_spin_button,
-                            GTK_TYPE_SPIN_BUTTON)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpSpinButton, gimp_spin_button,
+                           GTK_TYPE_SPIN_BUTTON)
 
 #define parent_class gimp_spin_button_parent_class
 
-
 /*  private functions  */
 
+static void gimp_spin_button_class_init(GimpSpinButtonClass *klass) {
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
+  GtkSpinButtonClass *spin_button_class = GTK_SPIN_BUTTON_CLASS(klass);
 
-static void
-gimp_spin_button_class_init (GimpSpinButtonClass *klass)
-{
-	GtkWidgetClass     *widget_class      = GTK_WIDGET_CLASS (klass);
-	GtkSpinButtonClass *spin_button_class = GTK_SPIN_BUTTON_CLASS (klass);
+  widget_class->scroll_event = gimp_spin_button_scroll;
+  widget_class->key_press_event = gimp_spin_button_key_press;
+  widget_class->focus_in_event = gimp_spin_button_focus_in;
+  widget_class->focus_out_event = gimp_spin_button_focus_out;
 
-	widget_class->scroll_event    = gimp_spin_button_scroll;
-	widget_class->key_press_event = gimp_spin_button_key_press;
-	widget_class->focus_in_event  = gimp_spin_button_focus_in;
-	widget_class->focus_out_event = gimp_spin_button_focus_out;
-
-	spin_button_class->input      = gimp_spin_button_input;
+  spin_button_class->input = gimp_spin_button_input;
 }
 
-static void
-gimp_spin_button_init (GimpSpinButton *spin_button)
-{
-	spin_button->priv = gimp_spin_button_get_instance_private (spin_button);
+static void gimp_spin_button_init(GimpSpinButton *spin_button) {
+  spin_button->priv = gimp_spin_button_get_instance_private(spin_button);
 
-	g_signal_connect (spin_button, "changed",
-	                  G_CALLBACK (gimp_spin_button_changed),
-	                  NULL);
+  g_signal_connect(spin_button, "changed", G_CALLBACK(gimp_spin_button_changed),
+                   NULL);
 }
 
-static gboolean
-gimp_spin_button_scroll (GtkWidget      *widget,
-                         GdkEventScroll *event)
-{
-	if (event->direction == GDK_SCROLL_UP ||
-	    event->direction == GDK_SCROLL_DOWN)
-	{
-		GtkSpinButton *spin_button = GTK_SPIN_BUTTON (widget);
-		GtkAdjustment *adjustment  = gtk_spin_button_get_adjustment (spin_button);
-		gdouble step_inc;
-		gdouble page_inc;
-		gint digits;
-		gdouble step;
+static gboolean gimp_spin_button_scroll(GtkWidget *widget,
+                                        GdkEventScroll *event) {
+  if (event->direction == GDK_SCROLL_UP ||
+      event->direction == GDK_SCROLL_DOWN) {
+    GtkSpinButton *spin_button = GTK_SPIN_BUTTON(widget);
+    GtkAdjustment *adjustment = gtk_spin_button_get_adjustment(spin_button);
+    gdouble step_inc;
+    gdouble page_inc;
+    gint digits;
+    gdouble step;
 
-		step_inc = gtk_adjustment_get_step_increment (adjustment);
-		page_inc = gtk_adjustment_get_page_increment (adjustment);
-		digits   = gtk_spin_button_get_digits (spin_button);
+    step_inc = gtk_adjustment_get_step_increment(adjustment);
+    page_inc = gtk_adjustment_get_page_increment(adjustment);
+    digits = gtk_spin_button_get_digits(spin_button);
 
-		if (event->state & GDK_SHIFT_MASK)
-		{
-			step = step_inc * step_inc / page_inc;
-			step = MAX (step, pow (10.0, -digits));
-		}
-		else if (event->state & GDK_CONTROL_MASK)
-		{
-			step = page_inc;
-		}
-		else
-		{
-			step = step_inc;
-		}
+    if (event->state & GDK_SHIFT_MASK) {
+      step = step_inc * step_inc / page_inc;
+      step = MAX(step, pow(10.0, -digits));
+    } else if (event->state & GDK_CONTROL_MASK) {
+      step = page_inc;
+    } else {
+      step = step_inc;
+    }
 
-		if (event->direction == GDK_SCROLL_DOWN)
-			step = -step;
+    if (event->direction == GDK_SCROLL_DOWN)
+      step = -step;
 
-		if (!gtk_widget_has_focus (widget))
-			gtk_widget_grab_focus (widget);
+    if (!gtk_widget_has_focus(widget))
+      gtk_widget_grab_focus(widget);
 
-		gtk_spin_button_spin (spin_button, GTK_SPIN_USER_DEFINED, step);
+    gtk_spin_button_spin(spin_button, GTK_SPIN_USER_DEFINED, step);
 
-		return TRUE;
-	}
+    return TRUE;
+  }
 
-	return GTK_WIDGET_CLASS (parent_class)->scroll_event (widget, event);
+  return GTK_WIDGET_CLASS(parent_class)->scroll_event(widget, event);
 }
 
-static gboolean
-gimp_spin_button_key_press (GtkWidget   *widget,
-                            GdkEventKey *event)
-{
-	switch (event->keyval)
-	{
-	case GDK_KEY_Return:
-	case GDK_KEY_KP_Enter:
-	case GDK_KEY_ISO_Enter:
-	case GDK_KEY_Escape:
-	{
-		GtkEntry      *entry       = GTK_ENTRY (widget);
-		GtkSpinButton *spin_button = GTK_SPIN_BUTTON (widget);
-		gchar         *text;
-		gboolean changed;
+static gboolean gimp_spin_button_key_press(GtkWidget *widget,
+                                           GdkEventKey *event) {
+  switch (event->keyval) {
+  case GDK_KEY_Return:
+  case GDK_KEY_KP_Enter:
+  case GDK_KEY_ISO_Enter:
+  case GDK_KEY_Escape: {
+    GtkEntry *entry = GTK_ENTRY(widget);
+    GtkSpinButton *spin_button = GTK_SPIN_BUTTON(widget);
+    gchar *text;
+    gboolean changed;
 
-		text = g_strdup (gtk_entry_get_text (entry));
+    text = g_strdup(gtk_entry_get_text(entry));
 
-		if (event->keyval == GDK_KEY_Escape)
-		{
-			gtk_spin_button_set_value (
-				spin_button,
-				gtk_spin_button_get_value (spin_button));
-		}
-		else
-		{
-			gtk_spin_button_update (spin_button);
-		}
+    if (event->keyval == GDK_KEY_Escape) {
+      gtk_spin_button_set_value(spin_button,
+                                gtk_spin_button_get_value(spin_button));
+    } else {
+      gtk_spin_button_update(spin_button);
+    }
 
-		changed = strcmp (gtk_entry_get_text (entry), text);
+    changed = strcmp(gtk_entry_get_text(entry), text);
 
-		g_free (text);
+    g_free(text);
 
-		if (changed)
-		{
-			gtk_editable_set_position (GTK_EDITABLE (widget), -1);
+    if (changed) {
+      gtk_editable_set_position(GTK_EDITABLE(widget), -1);
 
-			return TRUE;
-		}
-	}
-	break;
-	}
+      return TRUE;
+    }
+  } break;
+  }
 
-	return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
+  return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
 }
 
-static gboolean
-gimp_spin_button_focus_in (GtkWidget     *widget,
-                           GdkEventFocus *event)
-{
-	GimpSpinButton *spin_button = GIMP_SPIN_BUTTON (widget);
+static gboolean gimp_spin_button_focus_in(GtkWidget *widget,
+                                          GdkEventFocus *event) {
+  GimpSpinButton *spin_button = GIMP_SPIN_BUTTON(widget);
 
-	spin_button->priv->changed = FALSE;
+  spin_button->priv->changed = FALSE;
 
-	return GTK_WIDGET_CLASS (parent_class)->focus_in_event (widget, event);
+  return GTK_WIDGET_CLASS(parent_class)->focus_in_event(widget, event);
 }
 
-static gboolean
-gimp_spin_button_focus_out (GtkWidget     *widget,
-                            GdkEventFocus *event)
-{
-	GimpSpinButton *spin_button = GIMP_SPIN_BUTTON (widget);
-	gboolean editable;
-	gboolean result;
+static gboolean gimp_spin_button_focus_out(GtkWidget *widget,
+                                           GdkEventFocus *event) {
+  GimpSpinButton *spin_button = GIMP_SPIN_BUTTON(widget);
+  gboolean editable;
+  gboolean result;
 
-	editable = gtk_editable_get_editable (GTK_EDITABLE (widget));
+  editable = gtk_editable_get_editable(GTK_EDITABLE(widget));
 
-	if (!spin_button->priv->changed)
-		gtk_editable_set_editable (GTK_EDITABLE (widget), FALSE);
+  if (!spin_button->priv->changed)
+    gtk_editable_set_editable(GTK_EDITABLE(widget), FALSE);
 
-	result = GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, event);
+  result = GTK_WIDGET_CLASS(parent_class)->focus_out_event(widget, event);
 
-	if (!spin_button->priv->changed)
-		gtk_editable_set_editable (GTK_EDITABLE (widget), editable);
+  if (!spin_button->priv->changed)
+    gtk_editable_set_editable(GTK_EDITABLE(widget), editable);
 
-	return result;
+  return result;
 }
 
-static gint
-gimp_spin_button_input (GtkSpinButton *spin_button,
-                        gdouble       *new_value)
-{
-	if (gtk_spin_button_get_wrap (spin_button))
-	{
-		gdouble value;
-		gdouble min;
-		gdouble max;
-		gchar   *endptr;
+static gint gimp_spin_button_input(GtkSpinButton *spin_button,
+                                   gdouble *new_value) {
+  if (gtk_spin_button_get_wrap(spin_button)) {
+    gdouble value;
+    gdouble min;
+    gdouble max;
+    gchar *endptr;
 
-		value = g_strtod (gtk_entry_get_text (GTK_ENTRY (spin_button)), &endptr);
+    value = g_strtod(gtk_entry_get_text(GTK_ENTRY(spin_button)), &endptr);
 
-		if (*endptr)
-			return FALSE;
+    if (*endptr)
+      return FALSE;
 
-		gtk_spin_button_get_range (spin_button, &min, &max);
+    gtk_spin_button_get_range(spin_button, &min, &max);
 
-		if (min < max)
-		{
-			gdouble rem;
+    if (min < max) {
+      gdouble rem;
 
-			rem = fmod (value - min, max - min);
+      rem = fmod(value - min, max - min);
 
-			if (rem < 0.0)
-				rem += max - min;
+      if (rem < 0.0)
+        rem += max - min;
 
-			if (rem == 0.0)
-				value = CLAMP (value, min, max);
-			else
-				value = min + rem;
-		}
-		else
-		{
-			value = min;
-		}
+      if (rem == 0.0)
+        value = CLAMP(value, min, max);
+      else
+        value = min + rem;
+    } else {
+      value = min;
+    }
 
-		*new_value = value;
+    *new_value = value;
 
-		return TRUE;
-	}
+    return TRUE;
+  }
 
-	return FALSE;
+  return FALSE;
 }
 
-static void
-gimp_spin_button_changed (GtkEditable *editable,
-                          gpointer data)
-{
-	GimpSpinButton *spin_button = GIMP_SPIN_BUTTON (editable);
+static void gimp_spin_button_changed(GtkEditable *editable, gpointer data) {
+  GimpSpinButton *spin_button = GIMP_SPIN_BUTTON(editable);
 
-	spin_button->priv->changed = TRUE;
+  spin_button->priv->changed = TRUE;
 }
-
 
 /*  public functions  */
-
 
 /**
  * gimp_spin_button_new:
@@ -309,22 +262,19 @@ gimp_spin_button_changed (GtkEditable *editable,
  *
  * Since: 2.10.10
  */
-GtkWidget *
-gimp_spin_button_new (GtkAdjustment *adjustment,
-                      gdouble climb_rate,
-                      guint digits)
-{
-	GtkWidget *spin_button;
+GtkWidget *gimp_spin_button_new(GtkAdjustment *adjustment, gdouble climb_rate,
+                                guint digits) {
+  GtkWidget *spin_button;
 
-	g_return_val_if_fail (adjustment == NULL || GTK_IS_ADJUSTMENT (adjustment),
-	                      NULL);
+  g_return_val_if_fail(adjustment == NULL || GTK_IS_ADJUSTMENT(adjustment),
+                       NULL);
 
-	spin_button = g_object_new (GIMP_TYPE_SPIN_BUTTON, NULL);
+  spin_button = g_object_new(GIMP_TYPE_SPIN_BUTTON, NULL);
 
-	gtk_spin_button_configure (GTK_SPIN_BUTTON (spin_button),
-	                           adjustment, climb_rate, digits);
+  gtk_spin_button_configure(GTK_SPIN_BUTTON(spin_button), adjustment,
+                            climb_rate, digits);
 
-	return spin_button;
+  return spin_button;
 }
 
 /**
@@ -347,37 +297,31 @@ gimp_spin_button_new (GtkAdjustment *adjustment,
  *
  * Since: 2.10.10
  */
-GtkWidget *
-gimp_spin_button_new_with_range (gdouble min,
-                                 gdouble max,
-                                 gdouble step)
-{
-	GtkAdjustment *adjustment;
-	GtkWidget     *spin_button;
-	gint digits;
+GtkWidget *gimp_spin_button_new_with_range(gdouble min, gdouble max,
+                                           gdouble step) {
+  GtkAdjustment *adjustment;
+  GtkWidget *spin_button;
+  gint digits;
 
-	g_return_val_if_fail (min <= max, NULL);
-	g_return_val_if_fail (step != 0.0, NULL);
+  g_return_val_if_fail(min <= max, NULL);
+  g_return_val_if_fail(step != 0.0, NULL);
 
-	spin_button = g_object_new (GIMP_TYPE_SPIN_BUTTON, NULL);
+  spin_button = g_object_new(GIMP_TYPE_SPIN_BUTTON, NULL);
 
-	adjustment = gtk_adjustment_new (min, min, max, step, 10.0 * step, 0.0);
+  adjustment = gtk_adjustment_new(min, min, max, step, 10.0 * step, 0.0);
 
-	if (fabs (step) >= 1.0 || step == 0.0)
-	{
-		digits = 0;
-	}
-	else
-	{
-		digits = abs ((gint) floor (log10 (fabs (step))));
+  if (fabs(step) >= 1.0 || step == 0.0) {
+    digits = 0;
+  } else {
+    digits = abs((gint)floor(log10(fabs(step))));
 
-		if (digits > MAX_DIGITS)
-			digits = MAX_DIGITS;
-	}
+    if (digits > MAX_DIGITS)
+      digits = MAX_DIGITS;
+  }
 
-	gtk_spin_button_configure   (GTK_SPIN_BUTTON (spin_button),
-	                             adjustment, step, digits);
-	gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spin_button), TRUE);
+  gtk_spin_button_configure(GTK_SPIN_BUTTON(spin_button), adjustment, step,
+                            digits);
+  gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(spin_button), TRUE);
 
-	return spin_button;
+  return spin_button;
 }

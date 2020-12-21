@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -28,18 +28,13 @@
 
 G_BEGIN_DECLS
 
-
 /**
  * GimpWidgetsError:
  * @GIMP_WIDGETS_PARSE_ERROR: A parse error has occurred
  *
  * Types of errors returned by libgimpwidgets functions
  **/
-typedef enum
-{
-	GIMP_WIDGETS_PARSE_ERROR
-} GimpWidgetsError;
-
+typedef enum { GIMP_WIDGETS_PARSE_ERROR } GimpWidgetsError;
 
 /**
  * GIMP_WIDGETS_ERROR:
@@ -48,11 +43,10 @@ typedef enum
  *
  * Since: 2.8
  */
-#define GIMP_WIDGETS_ERROR (gimp_widgets_error_quark ())
+#define GIMP_WIDGETS_ERROR (gimp_widgets_error_quark())
 
-GQuark  gimp_widgets_error_quark (void) G_GNUC_CONST;
-
+GQuark gimp_widgets_error_quark(void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif  /* __GIMP_WIDGETS_ERROR_H__ */
+#endif /* __GIMP_WIDGETS_ERROR_H__ */

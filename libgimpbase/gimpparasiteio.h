@@ -26,7 +26,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /*  Data structures for various standard parasites used by plug-ins and
  *  the GIMP core, and functions to build and parse their string
  *  representations.
@@ -55,32 +54,31 @@ typedef struct _GimpPixPipeParams GimpPixPipeParams;
  *
  * PLease somebody help documenting this.
  **/
-struct _GimpPixPipeParams
-{
-	gint step;
-	gint ncells;
-	gint dim;
-	gint cols;
-	gint rows;
-	gint cellwidth;
-	gint cellheight;
-	gchar *placement;
-	gint rank[GIMP_PIXPIPE_MAXDIM];
-	gchar *selection[GIMP_PIXPIPE_MAXDIM];
+struct _GimpPixPipeParams {
+  gint step;
+  gint ncells;
+  gint dim;
+  gint cols;
+  gint rows;
+  gint cellwidth;
+  gint cellheight;
+  gchar *placement;
+  gint rank[GIMP_PIXPIPE_MAXDIM];
+  gchar *selection[GIMP_PIXPIPE_MAXDIM];
 };
 
 /* Initialize with dummy values */
-void    gimp_pixpipe_params_init  (GimpPixPipeParams *params);
+void gimp_pixpipe_params_init(GimpPixPipeParams *params);
 
 /* Parse a string into a GimpPixPipeParams */
-void    gimp_pixpipe_params_parse (const gchar       *parameters,
-                                   GimpPixPipeParams *params);
+void gimp_pixpipe_params_parse(const gchar *parameters,
+                               GimpPixPipeParams *params);
 
 /* Build a string representation of GimpPixPipeParams */
-gchar * gimp_pixpipe_params_build (GimpPixPipeParams *params) G_GNUC_MALLOC;
+gchar *gimp_pixpipe_params_build(GimpPixPipeParams *params) G_GNUC_MALLOC;
 
 /* Free the internal values. It does not free the struct itself. */
-void    gimp_pixpipe_params_free  (GimpPixPipeParams *params);
+void gimp_pixpipe_params_free(GimpPixPipeParams *params);
 
 G_END_DECLS
 

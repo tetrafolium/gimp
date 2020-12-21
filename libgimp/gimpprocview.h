@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_UI_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_UI_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimpui.h> can be included directly."
 #endif
 
@@ -27,13 +27,10 @@
 
 G_BEGIN_DECLS
 
-
 /* For information look into the C source or the html documentation */
 
-
-GtkWidget * gimp_proc_view_new (const gchar *procedure_name);
-
+GtkWidget *gimp_proc_view_new(const gchar *procedure_name);
 
 G_END_DECLS
 
-#endif  /* __GIMP_PROC_VIEW_H__ */
+#endif /* __GIMP_PROC_VIEW_H__ */

@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -28,54 +28,52 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_MEMSIZE_ENTRY            (gimp_memsize_entry_get_type ())
-#define GIMP_MEMSIZE_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MEMSIZE_ENTRY, GimpMemsizeEntry))
-#define GIMP_MEMSIZE_ENTRY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MEMSIZE_ENTRY, GimpMemsizeEntryClass))
-#define GIMP_IS_MEMSIZE_ENTRY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MEMSIZE_ENTRY))
-#define GIMP_IS_MEMSIZE_ENTRY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MEMSIZE_ENTRY))
-#define GIMP_MEMSIZE_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MEMSIZE_ENTRY, GimpMemsizeEntryClass))
-
+#define GIMP_TYPE_MEMSIZE_ENTRY (gimp_memsize_entry_get_type())
+#define GIMP_MEMSIZE_ENTRY(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MEMSIZE_ENTRY, GimpMemsizeEntry))
+#define GIMP_MEMSIZE_ENTRY_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MEMSIZE_ENTRY,                   \
+                           GimpMemsizeEntryClass))
+#define GIMP_IS_MEMSIZE_ENTRY(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MEMSIZE_ENTRY))
+#define GIMP_IS_MEMSIZE_ENTRY_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MEMSIZE_ENTRY))
+#define GIMP_MEMSIZE_ENTRY_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MEMSIZE_ENTRY,                   \
+                             GimpMemsizeEntryClass))
 
 typedef struct _GimpMemsizeEntryPrivate GimpMemsizeEntryPrivate;
 typedef struct _GimpMemsizeEntryClass GimpMemsizeEntryClass;
 
-struct _GimpMemsizeEntry
-{
-	GtkBox parent_instance;
+struct _GimpMemsizeEntry {
+  GtkBox parent_instance;
 
-	GimpMemsizeEntryPrivate *priv;
+  GimpMemsizeEntryPrivate *priv;
 };
 
-struct _GimpMemsizeEntryClass
-{
-	GtkBoxClass parent_class;
+struct _GimpMemsizeEntryClass {
+  GtkBoxClass parent_class;
 
-	void (* value_changed)  (GimpMemsizeEntry *entry);
+  void (*value_changed)(GimpMemsizeEntry *entry);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_memsize_entry_get_type(void) G_GNUC_CONST;
 
-GType       gimp_memsize_entry_get_type       (void) G_GNUC_CONST;
+GtkWidget *gimp_memsize_entry_new(guint64 value, guint64 lower, guint64 upper);
+void gimp_memsize_entry_set_value(GimpMemsizeEntry *entry, guint64 value);
+guint64 gimp_memsize_entry_get_value(GimpMemsizeEntry *entry);
 
-GtkWidget * gimp_memsize_entry_new            (guint64 value,
-                                               guint64 lower,
-                                               guint64 upper);
-void        gimp_memsize_entry_set_value      (GimpMemsizeEntry *entry,
-                                               guint64 value);
-guint64     gimp_memsize_entry_get_value      (GimpMemsizeEntry *entry);
-
-GtkWidget * gimp_memsize_entry_get_spinbutton (GimpMemsizeEntry *entry);
-
+GtkWidget *gimp_memsize_entry_get_spinbutton(GimpMemsizeEntry *entry);
 
 G_END_DECLS
 

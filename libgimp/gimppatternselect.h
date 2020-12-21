@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -37,22 +37,18 @@ G_BEGIN_DECLS
  * @dialog_closing: Dialog closing?
  * @user_data: (closure): user data
  */
-typedef void (* GimpRunPatternCallback)   (const gchar  *pattern_name,
-                                           gint width,
-                                           gint height,
-                                           gint bpp,
-                                           const guchar *mask_data,
-                                           gboolean dialog_closing,
-                                           gpointer user_data);
+typedef void (*GimpRunPatternCallback)(const gchar *pattern_name, gint width,
+                                       gint height, gint bpp,
+                                       const guchar *mask_data,
+                                       gboolean dialog_closing,
+                                       gpointer user_data);
 
-
-const gchar * gimp_pattern_select_new     (const gchar            *title,
-                                           const gchar            *pattern_name,
-                                           GimpRunPatternCallback callback,
-                                           gpointer data,
-                                           GDestroyNotify data_destroy);
-void          gimp_pattern_select_destroy (const gchar            *pattern_callback);
-
+const gchar *gimp_pattern_select_new(const gchar *title,
+                                     const gchar *pattern_name,
+                                     GimpRunPatternCallback callback,
+                                     gpointer data,
+                                     GDestroyNotify data_destroy);
+void gimp_pattern_select_destroy(const gchar *pattern_callback);
 
 G_END_DECLS
 

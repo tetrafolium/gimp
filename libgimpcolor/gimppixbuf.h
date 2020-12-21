@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_COLOR_H_INSIDE__) && !defined (GIMP_COLOR_COMPILATION)
+#if !defined(__GIMP_COLOR_H_INSIDE__) && !defined(GIMP_COLOR_COMPILATION)
 #error "Only <libgimpcolor/gimpcolor.h> can be included directly."
 #endif
 
@@ -30,14 +30,11 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+const Babl *gimp_pixbuf_get_format(GdkPixbuf *pixbuf);
+GeglBuffer *gimp_pixbuf_create_buffer(GdkPixbuf *pixbuf);
 
-const Babl * gimp_pixbuf_get_format      (GdkPixbuf *pixbuf);
-GeglBuffer * gimp_pixbuf_create_buffer   (GdkPixbuf *pixbuf);
-
-guint8     * gimp_pixbuf_get_icc_profile (GdkPixbuf *pixbuf,
-                                          gsize     *length);
-
+guint8 *gimp_pixbuf_get_icc_profile(GdkPixbuf *pixbuf, gsize *length);
 
 G_END_DECLS
 
-#endif  /* __GIMP_PIXBUF_H__ */
+#endif /* __GIMP_PIXBUF_H__ */

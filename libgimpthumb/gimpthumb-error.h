@@ -22,7 +22,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_THUMB_H_INSIDE__) && !defined (GIMP_THUMB_COMPILATION)
+#if !defined(__GIMP_THUMB_H_INSIDE__) && !defined(GIMP_THUMB_COMPILATION)
 #error "Only <libgimpthumb/gimpthumb.h> can be included directly."
 #endif
 
@@ -30,7 +30,6 @@
 #define __GIMP_THUMB_ERROR_H__
 
 G_BEGIN_DECLS
-
 
 /**
  * GimpThumbError:
@@ -41,24 +40,21 @@ G_BEGIN_DECLS
  * These are the possible error codes used when a #GError is set by
  * libgimpthumb.
  **/
-typedef enum
-{
-	GIMP_THUMB_ERROR_OPEN,
-	GIMP_THUMB_ERROR_OPEN_ENOENT,
-	GIMP_THUMB_ERROR_MKDIR
+typedef enum {
+  GIMP_THUMB_ERROR_OPEN,
+  GIMP_THUMB_ERROR_OPEN_ENOENT,
+  GIMP_THUMB_ERROR_MKDIR
 } GimpThumbError;
-
 
 /**
  * GIMP_THUMB_ERROR:
  *
  * Identifier for the libgimpthumb error domain.
  **/
-#define GIMP_THUMB_ERROR (gimp_thumb_error_quark ())
+#define GIMP_THUMB_ERROR (gimp_thumb_error_quark())
 
-GQuark  gimp_thumb_error_quark (void) G_GNUC_CONST;
-
+GQuark gimp_thumb_error_quark(void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif  /* __GIMP_THUMB_ERROR_H__ */
+#endif /* __GIMP_THUMB_ERROR_H__ */

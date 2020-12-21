@@ -16,7 +16,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_COLOR_H_INSIDE__) && !defined (GIMP_COLOR_COMPILATION)
+#if !defined(__GIMP_COLOR_H_INSIDE__) && !defined(GIMP_COLOR_COMPILATION)
 #error "Only <libgimpcolor/gimpcolor.h> can be included directly."
 #endif
 
@@ -27,23 +27,17 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /*
  * GIMP_TYPE_HSL
  */
 
-#define GIMP_TYPE_HSL       (gimp_hsl_get_type ())
+#define GIMP_TYPE_HSL (gimp_hsl_get_type())
 
-GType   gimp_hsl_get_type   (void) G_GNUC_CONST;
+GType gimp_hsl_get_type(void) G_GNUC_CONST;
 
-void    gimp_hsl_set        (GimpHSL *hsl,
-                             gdouble h,
-                             gdouble s,
-                             gdouble l);
-void    gimp_hsl_set_alpha  (GimpHSL *hsl,
-                             gdouble a);
-
+void gimp_hsl_set(GimpHSL *hsl, gdouble h, gdouble s, gdouble l);
+void gimp_hsl_set_alpha(GimpHSL *hsl, gdouble a);
 
 G_END_DECLS
 
-#endif  /* __GIMP_HSL_H__ */
+#endif /* __GIMP_HSL_H__ */

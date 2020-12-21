@@ -21,14 +21,13 @@
 
 #include "config.h"
 
-#include <gio/gio.h>
 #include <gegl.h>
+#include <gio/gio.h>
 
 #include "gimpcolortypes.h"
 
 #include "gimpcolormanaged.h"
 #include "gimpcolorprofile.h"
-
 
 /**
  * SECTION: gimpcolormanaged
@@ -38,39 +37,22 @@
  * An interface dealing with color profiles.
  **/
 
+enum { PROFILE_CHANGED, LAST_SIGNAL };
 
-enum
-{
-	PROFILE_CHANGED,
-	LAST_SIGNAL
-};
+G_DEFINE_INTERFACE(GimpColorManaged, gimp_color_managed, G_TYPE_OBJECT)
 
-
-G_DEFINE_INTERFACE (GimpColorManaged, gimp_color_managed, G_TYPE_OBJECT)
-
-
-static guint gimp_color_managed_signals[LAST_SIGNAL] = { 0 };
-
+static guint gimp_color_managed_signals[LAST_SIGNAL] = {0};
 
 /*  private functions  */
 
-
-static void
-gimp_color_managed_default_init (GimpColorManagedInterface *iface)
-{
-	gimp_color_managed_signals[PROFILE_CHANGED] =
-		g_signal_new ("profile-changed",
-		              G_TYPE_FROM_INTERFACE (iface),
-		              G_SIGNAL_RUN_FIRST,
-		              G_STRUCT_OFFSET (GimpColorManagedInterface,
-		                               profile_changed),
-		              NULL, NULL, NULL,
-		              G_TYPE_NONE, 0);
+static void gimp_color_managed_default_init(GimpColorManagedInterface *iface) {
+  gimp_color_managed_signals[PROFILE_CHANGED] = g_signal_new(
+      "profile-changed", G_TYPE_FROM_INTERFACE(iface), G_SIGNAL_RUN_FIRST,
+      G_STRUCT_OFFSET(GimpColorManagedInterface, profile_changed), NULL, NULL,
+      NULL, G_TYPE_NONE, 0);
 }
 
-
 /*  public functions  */
-
 
 /**
  * gimp_color_managed_get_icc_profile:
@@ -82,23 +64,21 @@ gimp_color_managed_default_init (GimpColorManagedInterface *iface)
  *
  * Since: 2.4
  */
-const guint8 *
-gimp_color_managed_get_icc_profile (GimpColorManaged *managed,
-                                    gsize            *len)
-{
-	GimpColorManagedInterface *iface;
+const guint8 *gimp_color_managed_get_icc_profile(GimpColorManaged *managed,
+                                                 gsize *len) {
+  GimpColorManagedInterface *iface;
 
-	g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
-	g_return_val_if_fail (len != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_COLOR_MANAGED(managed), NULL);
+  g_return_val_if_fail(len != NULL, NULL);
 
-	*len = 0;
+  *len = 0;
 
-	iface = GIMP_COLOR_MANAGED_GET_IFACE (managed);
+  iface = GIMP_COLOR_MANAGED_GET_IFACE(managed);
 
-	if (iface->get_icc_profile)
-		return iface->get_icc_profile (managed, len);
+  if (iface->get_icc_profile)
+    return iface->get_icc_profile(managed, len);
 
-	return NULL;
+  return NULL;
 }
 
 /**
@@ -113,18 +93,17 @@ gimp_color_managed_get_icc_profile (GimpColorManaged *managed,
  * Since: 2.10
  **/
 GimpColorProfile *
-gimp_color_managed_get_color_profile (GimpColorManaged *managed)
-{
-	GimpColorManagedInterface *iface;
+gimp_color_managed_get_color_profile(GimpColorManaged *managed) {
+  GimpColorManagedInterface *iface;
 
-	g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
+  g_return_val_if_fail(GIMP_IS_COLOR_MANAGED(managed), NULL);
 
-	iface = GIMP_COLOR_MANAGED_GET_IFACE (managed);
+  iface = GIMP_COLOR_MANAGED_GET_IFACE(managed);
 
-	if (iface->get_color_profile)
-		return iface->get_color_profile (managed);
+  if (iface->get_color_profile)
+    return iface->get_color_profile(managed);
 
-	return NULL;
+  return NULL;
 }
 
 /**
@@ -135,10 +114,8 @@ gimp_color_managed_get_color_profile (GimpColorManaged *managed)
  *
  * Since: 2.4
  **/
-void
-gimp_color_managed_profile_changed (GimpColorManaged *managed)
-{
-	g_return_if_fail (GIMP_IS_COLOR_MANAGED (managed));
+void gimp_color_managed_profile_changed(GimpColorManaged *managed) {
+  g_return_if_fail(GIMP_IS_COLOR_MANAGED(managed));
 
-	g_signal_emit (managed, gimp_color_managed_signals[PROFILE_CHANGED], 0);
+  g_signal_emit(managed, gimp_color_managed_signals[PROFILE_CHANGED], 0);
 }

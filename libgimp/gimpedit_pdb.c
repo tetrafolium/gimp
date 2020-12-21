@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpedit
  * @title: gimpedit
@@ -33,11 +32,11 @@
  * Edit menu functions (cut, copy, paste, clear, etc.)
  **/
 
-
 /**
  * gimp_edit_cut:
  * @num_drawables: The number of drawables.
- * @drawables: (array length=num_drawables) (element-type GimpItem): The drawables to cut from.
+ * @drawables: (array length=num_drawables) (element-type GimpItem): The
+ *drawables to cut from.
  *
  * Cut from the specified drawables.
  *
@@ -50,39 +49,37 @@
  * will fail if the selected area lies completely outside the bounds of
  * the current drawables and there is nothing to cut from.
  *
- * Returns: TRUE if the cut was successful, FALSE if there was nothing to copy from.
+ * Returns: TRUE if the cut was successful, FALSE if there was nothing to copy
+ *from.
  **/
-gboolean
-gimp_edit_cut (gint num_drawables,
-               const GimpItem **drawables)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean non_empty = FALSE;
+gboolean gimp_edit_cut(gint num_drawables, const GimpItem **drawables) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean non_empty = FALSE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_INT, num_drawables,
-	                                        GIMP_TYPE_OBJECT_ARRAY, NULL,
-	                                        G_TYPE_NONE);
-	gimp_value_set_object_array (gimp_value_array_index (args, 1), GIMP_TYPE_ITEM, (GObject **) drawables, num_drawables);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_INT, num_drawables,
+                                         GIMP_TYPE_OBJECT_ARRAY, NULL,
+                                         G_TYPE_NONE);
+  gimp_value_set_object_array(gimp_value_array_index(args, 1), GIMP_TYPE_ITEM,
+                              (GObject **)drawables, num_drawables);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-cut",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-edit-cut", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		non_empty = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    non_empty = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return non_empty;
+  return non_empty;
 }
 
 /**
  * gimp_edit_copy:
  * @num_drawables: The number of drawables to save.
- * @drawables: (array length=num_drawables) (element-type GimpItem): Drawables to copy from.
+ * @drawables: (array length=num_drawables) (element-type GimpItem): Drawables
+ *to copy from.
  *
  * Copy from the specified drawables.
  *
@@ -96,33 +93,30 @@ gimp_edit_cut (gint num_drawables,
  * nothing to copy from. All the drawables must belong to the same
  * image.
  *
- * Returns: TRUE if the cut was successful, FALSE if there was nothing to copy from.
+ * Returns: TRUE if the cut was successful, FALSE if there was nothing to copy
+ *from.
  **/
-gboolean
-gimp_edit_copy (gint num_drawables,
-                const GimpItem **drawables)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean non_empty = FALSE;
+gboolean gimp_edit_copy(gint num_drawables, const GimpItem **drawables) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean non_empty = FALSE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_INT, num_drawables,
-	                                        GIMP_TYPE_OBJECT_ARRAY, NULL,
-	                                        G_TYPE_NONE);
-	gimp_value_set_object_array (gimp_value_array_index (args, 1), GIMP_TYPE_ITEM, (GObject **) drawables, num_drawables);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_INT, num_drawables,
+                                         GIMP_TYPE_OBJECT_ARRAY, NULL,
+                                         G_TYPE_NONE);
+  gimp_value_set_object_array(gimp_value_array_index(args, 1), GIMP_TYPE_ITEM,
+                              (GObject **)drawables, num_drawables);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-copy",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-edit-copy", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		non_empty = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    non_empty = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return non_empty;
+  return non_empty;
 }
 
 /**
@@ -142,28 +136,24 @@ gimp_edit_copy (gint num_drawables,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_edit_copy_visible (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean non_empty = FALSE;
+gboolean gimp_edit_copy_visible(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean non_empty = FALSE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-copy-visible",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-edit-copy-visible", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		non_empty = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    non_empty = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return non_empty;
+  return non_empty;
 }
 
 /**
@@ -191,30 +181,25 @@ gimp_edit_copy_visible (GimpImage *image)
  *
  * Returns: (transfer none): The new floating selection.
  **/
-GimpLayer *
-gimp_edit_paste (GimpDrawable *drawable,
-                 gboolean paste_into)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpLayer *floating_sel = NULL;
+GimpLayer *gimp_edit_paste(GimpDrawable *drawable, gboolean paste_into) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpLayer *floating_sel = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_DRAWABLE, drawable,
-	                                        G_TYPE_BOOLEAN, paste_into,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, GIMP_TYPE_DRAWABLE, drawable,
+                                      G_TYPE_BOOLEAN, paste_into, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-paste",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-edit-paste", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		floating_sel = GIMP_VALUES_GET_LAYER (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    floating_sel = GIMP_VALUES_GET_LAYER(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return floating_sel;
+  return floating_sel;
 }
 
 /**
@@ -231,33 +216,30 @@ gimp_edit_paste (GimpDrawable *drawable,
  *
  * Since: 2.10
  **/
-GimpImage *
-gimp_edit_paste_as_new_image (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpImage *image = NULL;
+GimpImage *gimp_edit_paste_as_new_image(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpImage *image = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-paste-as-new-image",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-edit-paste-as-new-image", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		image = GIMP_VALUES_GET_IMAGE (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    image = GIMP_VALUES_GET_IMAGE(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return image;
+  return image;
 }
 
 /**
  * gimp_edit_named_cut:
  * @num_drawables: The number of drawables.
- * @drawables: (array length=num_drawables) (element-type GimpItem): The drawables to cut from.
+ * @drawables: (array length=num_drawables) (element-type GimpItem): The
+ *drawables to cut from.
  * @buffer_name: The name of the buffer to create.
  *
  * Cut into a named buffer.
@@ -273,39 +255,35 @@ gimp_edit_paste_as_new_image (void)
  *
  * Since: 2.4
  **/
-gchar *
-gimp_edit_named_cut (gint num_drawables,
-                     const GimpItem **drawables,
-                     const gchar     *buffer_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *real_name = NULL;
+gchar *gimp_edit_named_cut(gint num_drawables, const GimpItem **drawables,
+                           const gchar *buffer_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *real_name = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_INT, num_drawables,
-	                                        GIMP_TYPE_OBJECT_ARRAY, NULL,
-	                                        G_TYPE_STRING, buffer_name,
-	                                        G_TYPE_NONE);
-	gimp_value_set_object_array (gimp_value_array_index (args, 1), GIMP_TYPE_ITEM, (GObject **) drawables, num_drawables);
+  args = gimp_value_array_new_from_types(
+      NULL, G_TYPE_INT, num_drawables, GIMP_TYPE_OBJECT_ARRAY, NULL,
+      G_TYPE_STRING, buffer_name, G_TYPE_NONE);
+  gimp_value_set_object_array(gimp_value_array_index(args, 1), GIMP_TYPE_ITEM,
+                              (GObject **)drawables, num_drawables);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-named-cut",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-edit-named-cut", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		real_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    real_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return real_name;
+  return real_name;
 }
 
 /**
  * gimp_edit_named_copy:
  * @num_drawables: The number of drawables.
- * @drawables: (array length=num_drawables) (element-type GimpItem): The drawables to copy from.
+ * @drawables: (array length=num_drawables) (element-type GimpItem): The
+ *drawables to copy from.
  * @buffer_name: The name of the buffer to create.
  *
  * Copy into a named buffer.
@@ -321,33 +299,28 @@ gimp_edit_named_cut (gint num_drawables,
  *
  * Since: 2.4
  **/
-gchar *
-gimp_edit_named_copy (gint num_drawables,
-                      const GimpItem **drawables,
-                      const gchar     *buffer_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *real_name = NULL;
+gchar *gimp_edit_named_copy(gint num_drawables, const GimpItem **drawables,
+                            const gchar *buffer_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *real_name = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_INT, num_drawables,
-	                                        GIMP_TYPE_OBJECT_ARRAY, NULL,
-	                                        G_TYPE_STRING, buffer_name,
-	                                        G_TYPE_NONE);
-	gimp_value_set_object_array (gimp_value_array_index (args, 1), GIMP_TYPE_ITEM, (GObject **) drawables, num_drawables);
+  args = gimp_value_array_new_from_types(
+      NULL, G_TYPE_INT, num_drawables, GIMP_TYPE_OBJECT_ARRAY, NULL,
+      G_TYPE_STRING, buffer_name, G_TYPE_NONE);
+  gimp_value_set_object_array(gimp_value_array_index(args, 1), GIMP_TYPE_ITEM,
+                              (GObject **)drawables, num_drawables);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-named-copy",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-edit-named-copy", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		real_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    real_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return real_name;
+  return real_name;
 }
 
 /**
@@ -368,30 +341,25 @@ gimp_edit_named_copy (gint num_drawables,
  *
  * Since: 2.4
  **/
-gchar *
-gimp_edit_named_copy_visible (GimpImage   *image,
-                              const gchar *buffer_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *real_name = NULL;
+gchar *gimp_edit_named_copy_visible(GimpImage *image,
+                                    const gchar *buffer_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *real_name = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_STRING, buffer_name,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, G_TYPE_STRING, buffer_name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-named-copy-visible",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-edit-named-copy-visible", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		real_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    real_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return real_name;
+  return real_name;
 }
 
 /**
@@ -409,32 +377,27 @@ gimp_edit_named_copy_visible (GimpImage   *image,
  *
  * Since: 2.4
  **/
-GimpLayer *
-gimp_edit_named_paste (GimpDrawable *drawable,
-                       const gchar  *buffer_name,
-                       gboolean paste_into)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpLayer *floating_sel = NULL;
+GimpLayer *gimp_edit_named_paste(GimpDrawable *drawable,
+                                 const gchar *buffer_name,
+                                 gboolean paste_into) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpLayer *floating_sel = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_DRAWABLE, drawable,
-	                                        G_TYPE_STRING, buffer_name,
-	                                        G_TYPE_BOOLEAN, paste_into,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_DRAWABLE, drawable, G_TYPE_STRING, buffer_name,
+      G_TYPE_BOOLEAN, paste_into, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-named-paste",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-edit-named-paste", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		floating_sel = GIMP_VALUES_GET_LAYER (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    floating_sel = GIMP_VALUES_GET_LAYER(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return floating_sel;
+  return floating_sel;
 }
 
 /**
@@ -450,26 +413,22 @@ gimp_edit_named_paste (GimpDrawable *drawable,
  *
  * Since: 2.10
  **/
-GimpImage *
-gimp_edit_named_paste_as_new_image (const gchar *buffer_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpImage *image = NULL;
+GimpImage *gimp_edit_named_paste_as_new_image(const gchar *buffer_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpImage *image = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, buffer_name,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, buffer_name,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-edit-named-paste-as-new-image",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-edit-named-paste-as-new-image", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		image = GIMP_VALUES_GET_IMAGE (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    image = GIMP_VALUES_GET_IMAGE(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return image;
+  return image;
 }

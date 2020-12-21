@@ -46,9 +46,9 @@
 #include <libgimpwidgets/gimpcolorscale.h>
 #include <libgimpwidgets/gimpcolorscaleentry.h>
 #include <libgimpwidgets/gimpcolorscales.h>
-#include <libgimpwidgets/gimpcolorselector.h>
 #include <libgimpwidgets/gimpcolorselect.h>
 #include <libgimpwidgets/gimpcolorselection.h>
+#include <libgimpwidgets/gimpcolorselector.h>
 #include <libgimpwidgets/gimpdialog.h>
 #include <libgimpwidgets/gimpenumcombobox.h>
 #include <libgimpwidgets/gimpenumlabel.h>
@@ -92,7 +92,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /*
  *  Widget Constructors
  */
@@ -102,17 +101,14 @@ G_BEGIN_DECLS
  *  gint          item_data,
  *  GtkWidget   **widget_ptr,
  */
-GtkWidget * gimp_int_radio_group_new (gboolean in_frame,
-                                      const gchar      *frame_title,
-                                      GCallback radio_button_callback,
-                                      gpointer radio_button_callback_data,
-                                      GDestroyNotify radio_button_callback_destroy,
-                                      gint initial,              /* item_data */
-                                      ...) G_GNUC_NULL_TERMINATED;
+GtkWidget *gimp_int_radio_group_new(
+    gboolean in_frame, const gchar *frame_title,
+    GCallback radio_button_callback, gpointer radio_button_callback_data,
+    GDestroyNotify radio_button_callback_destroy, gint initial, /* item_data */
+    ...) G_GNUC_NULL_TERMINATED;
 
-void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
-                                             gint item_data);
-
+void gimp_int_radio_group_set_active(GtkRadioButton *radio_button,
+                                     gint item_data);
 
 /**
  * GIMP_RANDOM_SEED_SPINBUTTON:
@@ -120,8 +116,8 @@ void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
  *
  * Returns: the random_seed's #GtkSpinButton.
  **/
-#define GIMP_RANDOM_SEED_SPINBUTTON(hbox) \
-	(g_object_get_data (G_OBJECT (hbox), "spinbutton"))
+#define GIMP_RANDOM_SEED_SPINBUTTON(hbox)                                      \
+  (g_object_get_data(G_OBJECT(hbox), "spinbutton"))
 
 /**
  * GIMP_RANDOM_SEED_SPINBUTTON_ADJ:
@@ -129,9 +125,9 @@ void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
  *
  * Returns: the #GtkAdjustment of the random_seed's #GtkSpinButton.
  **/
-#define GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)       \
-	gtk_spin_button_get_adjustment \
-	        (GTK_SPIN_BUTTON (g_object_get_data (G_OBJECT (hbox), "spinbutton")))
+#define GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)                                  \
+  gtk_spin_button_get_adjustment(                                              \
+      GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(hbox), "spinbutton")))
 
 /**
  * GIMP_RANDOM_SEED_TOGGLE:
@@ -139,11 +135,10 @@ void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
  *
  * Returns: the random_seed's #GtkToggleButton.
  **/
-#define GIMP_RANDOM_SEED_TOGGLE(hbox) \
-	(g_object_get_data (G_OBJECT(hbox), "toggle"))
+#define GIMP_RANDOM_SEED_TOGGLE(hbox)                                          \
+  (g_object_get_data(G_OBJECT(hbox), "toggle"))
 
-GtkWidget * gimp_random_seed_new   (guint32            *seed,
-                                    gboolean           *random_seed);
+GtkWidget *gimp_random_seed_new(guint32 *seed, gboolean *random_seed);
 
 /**
  * GIMP_COORDINATES_CHAINBUTTON:
@@ -152,58 +147,39 @@ GtkWidget * gimp_random_seed_new   (guint32            *seed,
  * Returns: the #GimpChainButton which is attached to the
  *          #GimpSizeEntry.
  **/
-#define GIMP_COORDINATES_CHAINBUTTON(sizeentry) \
-	(g_object_get_data (G_OBJECT (sizeentry), "chainbutton"))
+#define GIMP_COORDINATES_CHAINBUTTON(sizeentry)                                \
+  (g_object_get_data(G_OBJECT(sizeentry), "chainbutton"))
 
-GtkWidget * gimp_coordinates_new   (GimpUnit unit,
-                                    const gchar        *unit_format,
-                                    gboolean menu_show_pixels,
-                                    gboolean menu_show_percent,
-                                    gint spinbutton_width,
-                                    GimpSizeEntryUpdatePolicy update_policy,
+GtkWidget *gimp_coordinates_new(
+    GimpUnit unit, const gchar *unit_format, gboolean menu_show_pixels,
+    gboolean menu_show_percent, gint spinbutton_width,
+    GimpSizeEntryUpdatePolicy update_policy,
 
-                                    gboolean chainbutton_active,
-                                    gboolean chain_constrains_ratio,
+    gboolean chainbutton_active, gboolean chain_constrains_ratio,
 
-                                    const gchar        *xlabel,
-                                    gdouble x,
-                                    gdouble xres,
-                                    gdouble lower_boundary_x,
-                                    gdouble upper_boundary_x,
-                                    gdouble xsize_0,               /* % */
-                                    gdouble xsize_100,             /* % */
+    const gchar *xlabel, gdouble x, gdouble xres, gdouble lower_boundary_x,
+    gdouble upper_boundary_x, gdouble xsize_0, /* % */
+    gdouble xsize_100,                         /* % */
 
-                                    const gchar        *ylabel,
-                                    gdouble y,
-                                    gdouble yres,
-                                    gdouble lower_boundary_y,
-                                    gdouble upper_boundary_y,
-                                    gdouble ysize_0,               /* % */
-                                    gdouble ysize_100 /* % */);
-
+    const gchar *ylabel, gdouble y, gdouble yres, gdouble lower_boundary_y,
+    gdouble upper_boundary_y, gdouble ysize_0, /* % */
+    gdouble ysize_100 /* % */);
 
 /*
  *  Standard Callbacks
  */
 
-void gimp_toggle_button_update           (GtkWidget       *widget,
-                                          gpointer data);
+void gimp_toggle_button_update(GtkWidget *widget, gpointer data);
 
-void gimp_radio_button_update            (GtkWidget       *widget,
-                                          gpointer data);
+void gimp_radio_button_update(GtkWidget *widget, gpointer data);
 
-void gimp_int_adjustment_update          (GtkAdjustment   *adjustment,
-                                          gpointer data);
+void gimp_int_adjustment_update(GtkAdjustment *adjustment, gpointer data);
 
-void gimp_uint_adjustment_update         (GtkAdjustment   *adjustment,
-                                          gpointer data);
+void gimp_uint_adjustment_update(GtkAdjustment *adjustment, gpointer data);
 
-void gimp_float_adjustment_update        (GtkAdjustment   *adjustment,
-                                          gpointer data);
+void gimp_float_adjustment_update(GtkAdjustment *adjustment, gpointer data);
 
-void gimp_double_adjustment_update       (GtkAdjustment   *adjustment,
-                                          gpointer data);
-
+void gimp_double_adjustment_update(GtkAdjustment *adjustment, gpointer data);
 
 G_END_DECLS
 

@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -29,9 +29,7 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-GimpColorConfig * gimp_get_color_configuration (void);
-
+GimpColorConfig *gimp_get_color_configuration(void);
 
 G_END_DECLS
 

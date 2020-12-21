@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_UI_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_UI_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimpui.h> can be included directly."
 #endif
 
@@ -29,7 +29,6 @@
 G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
-
 
 /**
  * GimpExportCapabilities:
@@ -42,24 +41,23 @@ G_BEGIN_DECLS
  * @GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION: Handles animation of layers
  * @GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS:         Handles layer masks
  * @GIMP_EXPORT_NEEDS_ALPHA:                    Needs alpha channels
- * @GIMP_EXPORT_NEEDS_CROP:                     Needs to crop content to image bounds
+ * @GIMP_EXPORT_NEEDS_CROP:                     Needs to crop content to image
+ *bounds
  *
  * The types of images and layers an export procedure can handle
  **/
-typedef enum
-{
-	GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 << 0,
-	GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 << 1,
-	GIMP_EXPORT_CAN_HANDLE_INDEXED             = 1 << 2,
-	GIMP_EXPORT_CAN_HANDLE_BITMAP              = 1 << 3,
-	GIMP_EXPORT_CAN_HANDLE_ALPHA               = 1 << 4,
-	GIMP_EXPORT_CAN_HANDLE_LAYERS              = 1 << 5,
-	GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION = 1 << 6,
-	GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS         = 1 << 7,
-	GIMP_EXPORT_NEEDS_ALPHA                    = 1 << 8,
-	GIMP_EXPORT_NEEDS_CROP                     = 1 << 9
+typedef enum {
+  GIMP_EXPORT_CAN_HANDLE_RGB = 1 << 0,
+  GIMP_EXPORT_CAN_HANDLE_GRAY = 1 << 1,
+  GIMP_EXPORT_CAN_HANDLE_INDEXED = 1 << 2,
+  GIMP_EXPORT_CAN_HANDLE_BITMAP = 1 << 3,
+  GIMP_EXPORT_CAN_HANDLE_ALPHA = 1 << 4,
+  GIMP_EXPORT_CAN_HANDLE_LAYERS = 1 << 5,
+  GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION = 1 << 6,
+  GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS = 1 << 7,
+  GIMP_EXPORT_NEEDS_ALPHA = 1 << 8,
+  GIMP_EXPORT_NEEDS_CROP = 1 << 9
 } GimpExportCapabilities;
-
 
 /**
  * GimpExportReturn:
@@ -69,25 +67,20 @@ typedef enum
  *
  * Possible return values of gimp_export_image().
  **/
-typedef enum
-{
-	GIMP_EXPORT_CANCEL,
-	GIMP_EXPORT_IGNORE,
-	GIMP_EXPORT_EXPORT
+typedef enum {
+  GIMP_EXPORT_CANCEL,
+  GIMP_EXPORT_IGNORE,
+  GIMP_EXPORT_EXPORT
 } GimpExportReturn;
 
+GtkWidget *gimp_export_dialog_new(const gchar *format_name, const gchar *role,
+                                  const gchar *help_id);
+GtkWidget *gimp_export_dialog_get_content_area(GtkWidget *dialog);
 
-GtkWidget        * gimp_export_dialog_new              (const gchar            *format_name,
-                                                        const gchar            *role,
-                                                        const gchar            *help_id);
-GtkWidget        * gimp_export_dialog_get_content_area (GtkWidget              *dialog);
-
-GimpExportReturn   gimp_export_image                   (GimpImage             **image,
-                                                        gint                   *n_drawables,
-                                                        GimpDrawable         ***drawables,
-                                                        const gchar            *format_name,
-                                                        GimpExportCapabilities capabilities);
-
+GimpExportReturn gimp_export_image(GimpImage **image, gint *n_drawables,
+                                   GimpDrawable ***drawables,
+                                   const gchar *format_name,
+                                   GimpExportCapabilities capabilities);
 
 G_END_DECLS
 

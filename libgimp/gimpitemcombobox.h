@@ -20,7 +20,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_UI_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_UI_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimpui.h> can be included directly."
 #endif
 
@@ -31,28 +31,38 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+#define GIMP_TYPE_DRAWABLE_COMBO_BOX (gimp_drawable_combo_box_get_type())
+#define GIMP_DRAWABLE_COMBO_BOX(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DRAWABLE_COMBO_BOX,             \
+                              GimpDrawableComboBox))
+#define GIMP_IS_DRAWABLE_COMBO_BOX(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DRAWABLE_COMBO_BOX))
 
-#define GIMP_TYPE_DRAWABLE_COMBO_BOX    (gimp_drawable_combo_box_get_type ())
-#define GIMP_DRAWABLE_COMBO_BOX(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DRAWABLE_COMBO_BOX, GimpDrawableComboBox))
-#define GIMP_IS_DRAWABLE_COMBO_BOX(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DRAWABLE_COMBO_BOX))
+#define GIMP_TYPE_CHANNEL_COMBO_BOX (gimp_channel_combo_box_get_type())
+#define GIMP_CHANNEL_COMBO_BOX(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CHANNEL_COMBO_BOX,              \
+                              GimpChannelComboBox))
+#define GIMP_IS_CHANNEL_COMBO_BOX(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CHANNEL_COMBO_BOX))
 
-#define GIMP_TYPE_CHANNEL_COMBO_BOX     (gimp_channel_combo_box_get_type ())
-#define GIMP_CHANNEL_COMBO_BOX(obj)     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CHANNEL_COMBO_BOX, GimpChannelComboBox))
-#define GIMP_IS_CHANNEL_COMBO_BOX(obj)  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CHANNEL_COMBO_BOX))
+#define GIMP_TYPE_LAYER_COMBO_BOX (gimp_layer_combo_box_get_type())
+#define GIMP_LAYER_COMBO_BOX(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LAYER_COMBO_BOX,                \
+                              GimpLayerComboBox))
+#define GIMP_IS_LAYER_COMBO_BOX(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LAYER_COMBO_BOX))
 
-#define GIMP_TYPE_LAYER_COMBO_BOX       (gimp_layer_combo_box_get_type ())
-#define GIMP_LAYER_COMBO_BOX(obj)       (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LAYER_COMBO_BOX, GimpLayerComboBox))
-#define GIMP_IS_LAYER_COMBO_BOX(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LAYER_COMBO_BOX))
+#define GIMP_TYPE_VECTORS_COMBO_BOX (gimp_vectors_combo_box_get_type())
+#define GIMP_VECTORS_COMBO_BOX(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VECTORS_COMBO_BOX,              \
+                              GimpVectorsComboBox))
+#define GIMP_IS_VECTORS_COMBO_BOX(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_VECTORS_COMBO_BOX))
 
-#define GIMP_TYPE_VECTORS_COMBO_BOX     (gimp_vectors_combo_box_get_type ())
-#define GIMP_VECTORS_COMBO_BOX(obj)     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VECTORS_COMBO_BOX, GimpVectorsComboBox))
-#define GIMP_IS_VECTORS_COMBO_BOX(obj)  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_VECTORS_COMBO_BOX))
-
-
-GType       gimp_drawable_combo_box_get_type (void) G_GNUC_CONST;
-GType       gimp_channel_combo_box_get_type  (void) G_GNUC_CONST;
-GType       gimp_layer_combo_box_get_type    (void) G_GNUC_CONST;
-GType       gimp_vectors_combo_box_get_type  (void) G_GNUC_CONST;
+GType gimp_drawable_combo_box_get_type(void) G_GNUC_CONST;
+GType gimp_channel_combo_box_get_type(void) G_GNUC_CONST;
+GType gimp_layer_combo_box_get_type(void) G_GNUC_CONST;
+GType gimp_vectors_combo_box_get_type(void) G_GNUC_CONST;
 
 /**
  * GimpItemConstraintFunc:
@@ -60,23 +70,20 @@ GType       gimp_vectors_combo_box_get_type  (void) G_GNUC_CONST;
  * @item:
  * @data: (closure):
  */
-typedef gboolean (* GimpItemConstraintFunc) (GimpImage *image,
-                                             GimpItem  *item,
-                                             gpointer data);
+typedef gboolean (*GimpItemConstraintFunc)(GimpImage *image, GimpItem *item,
+                                           gpointer data);
 
-GtkWidget * gimp_drawable_combo_box_new (GimpItemConstraintFunc constraint,
-                                         gpointer data,
-                                         GDestroyNotify data_destroy);
-GtkWidget * gimp_channel_combo_box_new  (GimpItemConstraintFunc constraint,
-                                         gpointer data,
-                                         GDestroyNotify data_destroy);
-GtkWidget * gimp_layer_combo_box_new    (GimpItemConstraintFunc constraint,
-                                         gpointer data,
-                                         GDestroyNotify data_destroy);
-GtkWidget * gimp_vectors_combo_box_new  (GimpItemConstraintFunc constraint,
-                                         gpointer data,
-                                         GDestroyNotify data_destroy);
-
+GtkWidget *gimp_drawable_combo_box_new(GimpItemConstraintFunc constraint,
+                                       gpointer data,
+                                       GDestroyNotify data_destroy);
+GtkWidget *gimp_channel_combo_box_new(GimpItemConstraintFunc constraint,
+                                      gpointer data,
+                                      GDestroyNotify data_destroy);
+GtkWidget *gimp_layer_combo_box_new(GimpItemConstraintFunc constraint,
+                                    gpointer data, GDestroyNotify data_destroy);
+GtkWidget *gimp_vectors_combo_box_new(GimpItemConstraintFunc constraint,
+                                      gpointer data,
+                                      GDestroyNotify data_destroy);
 
 G_END_DECLS
 

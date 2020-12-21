@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -27,7 +27,6 @@
 #define __GIMP_INT_STORE_H__
 
 G_BEGIN_DECLS
-
 
 /**
  * GimpIntStoreColumns:
@@ -41,69 +40,64 @@ G_BEGIN_DECLS
  *
  * The column types of #GimpIntStore.
  **/
-typedef enum
-{
-	GIMP_INT_STORE_VALUE,
-	GIMP_INT_STORE_LABEL,
-	GIMP_INT_STORE_ABBREV,
-	GIMP_INT_STORE_ICON_NAME,
-	GIMP_INT_STORE_PIXBUF,
-	GIMP_INT_STORE_USER_DATA,
-	GIMP_INT_STORE_NUM_COLUMNS
+typedef enum {
+  GIMP_INT_STORE_VALUE,
+  GIMP_INT_STORE_LABEL,
+  GIMP_INT_STORE_ABBREV,
+  GIMP_INT_STORE_ICON_NAME,
+  GIMP_INT_STORE_PIXBUF,
+  GIMP_INT_STORE_USER_DATA,
+  GIMP_INT_STORE_NUM_COLUMNS
 } GimpIntStoreColumns;
 
-
-#define GIMP_TYPE_INT_STORE            (gimp_int_store_get_type ())
-#define GIMP_INT_STORE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_INT_STORE, GimpIntStore))
-#define GIMP_INT_STORE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_INT_STORE, GimpIntStoreClass))
-#define GIMP_IS_INT_STORE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_INT_STORE))
-#define GIMP_IS_INT_STORE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_INT_STORE))
-#define GIMP_INT_STORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_INT_STORE, GimpIntStoreClass))
-
+#define GIMP_TYPE_INT_STORE (gimp_int_store_get_type())
+#define GIMP_INT_STORE(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_INT_STORE, GimpIntStore))
+#define GIMP_INT_STORE_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_INT_STORE, GimpIntStoreClass))
+#define GIMP_IS_INT_STORE(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_INT_STORE))
+#define GIMP_IS_INT_STORE_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_INT_STORE))
+#define GIMP_INT_STORE_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_INT_STORE, GimpIntStoreClass))
 
 typedef struct _GimpIntStorePrivate GimpIntStorePrivate;
 typedef struct _GimpIntStoreClass GimpIntStoreClass;
 
-struct _GimpIntStore
-{
-	GtkListStore parent_instance;
+struct _GimpIntStore {
+  GtkListStore parent_instance;
 
-	GimpIntStorePrivate *priv;
+  GimpIntStorePrivate *priv;
 };
 
-struct _GimpIntStoreClass
-{
-	GtkListStoreClass parent_class;
+struct _GimpIntStoreClass {
+  GtkListStoreClass parent_class;
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_int_store_get_type(void) G_GNUC_CONST;
 
-GType          gimp_int_store_get_type        (void) G_GNUC_CONST;
+GtkListStore *gimp_int_store_new(const gchar *first_label, gint first_value,
+                                 ...) G_GNUC_NULL_TERMINATED;
+GtkListStore *gimp_int_store_new_valist(const gchar *first_label,
+                                        gint first_value, va_list values);
 
-GtkListStore * gimp_int_store_new             (const gchar   *first_label,
-                                               gint first_value,
-                                               ...) G_GNUC_NULL_TERMINATED;
-GtkListStore * gimp_int_store_new_valist      (const gchar   *first_label,
-                                               gint first_value,
-                                               va_list values);
-
-gboolean       gimp_int_store_lookup_by_value (GtkTreeModel  *model,
-                                               gint value,
-                                               GtkTreeIter   *iter);
-gboolean   gimp_int_store_lookup_by_user_data (GtkTreeModel  *model,
-                                               gpointer user_data,
-                                               GtkTreeIter   *iter);
-
+gboolean gimp_int_store_lookup_by_value(GtkTreeModel *model, gint value,
+                                        GtkTreeIter *iter);
+gboolean gimp_int_store_lookup_by_user_data(GtkTreeModel *model,
+                                            gpointer user_data,
+                                            GtkTreeIter *iter);
 
 G_END_DECLS
 
-#endif  /* __GIMP_INT_STORE_H__ */
+#endif /* __GIMP_INT_STORE_H__ */

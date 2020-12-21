@@ -25,7 +25,6 @@
 
 #include "gimpconfig-error.h"
 
-
 /**
  * SECTION: gimpconfig-error
  * @title: GimpConfig-error
@@ -33,7 +32,6 @@
  *
  * Error utils for libgimpconfig.
  **/
-
 
 /**
  * gimp_config_error_quark:
@@ -44,8 +42,6 @@
  *
  * Since: 2.4
  **/
-GQuark
-gimp_config_error_quark (void)
-{
-	return g_quark_from_static_string ("gimp-config-error-quark");
+GQuark gimp_config_error_quark(void) {
+  return g_quark_from_static_string("gimp-config-error-quark");
 }

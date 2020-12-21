@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimppattern
  * @title: gimppattern
@@ -32,7 +31,6 @@
  *
  * Functions operating on a single pattern.
  **/
-
 
 /**
  * gimp_pattern_get_info:
@@ -50,41 +48,34 @@
  *
  * Since: 2.2
  **/
-gboolean
-gimp_pattern_get_info (const gchar *name,
-                       gint        *width,
-                       gint        *height,
-                       gint        *bpp)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_pattern_get_info(const gchar *name, gint *width, gint *height,
+                               gint *bpp) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-pattern-get-info",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-pattern-get-info", args);
+  gimp_value_array_unref(args);
 
-	*width = 0;
-	*height = 0;
-	*bpp = 0;
+  *width = 0;
+  *height = 0;
+  *bpp = 0;
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-	{
-		*width = GIMP_VALUES_GET_INT (return_vals, 1);
-		*height = GIMP_VALUES_GET_INT (return_vals, 2);
-		*bpp = GIMP_VALUES_GET_INT (return_vals, 3);
-	}
+  if (success) {
+    *width = GIMP_VALUES_GET_INT(return_vals, 1);
+    *height = GIMP_VALUES_GET_INT(return_vals, 2);
+    *bpp = GIMP_VALUES_GET_INT(return_vals, 3);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -94,7 +85,8 @@ gimp_pattern_get_info (const gchar *name,
  * @height: (out): The pattern height.
  * @bpp: (out): The pattern bpp.
  * @num_color_bytes: (out): Number of pattern bytes.
- * @color_bytes: (out) (array length=num_color_bytes) (element-type guint8) (transfer full): The pattern data.
+ * @color_bytes: (out) (array length=num_color_bytes) (element-type guint8)
+ *(transfer full): The pattern data.
  *
  * Retrieve information about the specified pattern (including pixels).
  *
@@ -106,45 +98,37 @@ gimp_pattern_get_info (const gchar *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_pattern_get_pixels (const gchar  *name,
-                         gint         *width,
-                         gint         *height,
-                         gint         *bpp,
-                         gint         *num_color_bytes,
-                         guint8      **color_bytes)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_pattern_get_pixels(const gchar *name, gint *width, gint *height,
+                                 gint *bpp, gint *num_color_bytes,
+                                 guint8 **color_bytes) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-pattern-get-pixels",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-pattern-get-pixels", args);
+  gimp_value_array_unref(args);
 
-	*width = 0;
-	*height = 0;
-	*bpp = 0;
-	*num_color_bytes = 0;
-	*color_bytes = NULL;
+  *width = 0;
+  *height = 0;
+  *bpp = 0;
+  *num_color_bytes = 0;
+  *color_bytes = NULL;
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-	{
-		*width = GIMP_VALUES_GET_INT (return_vals, 1);
-		*height = GIMP_VALUES_GET_INT (return_vals, 2);
-		*bpp = GIMP_VALUES_GET_INT (return_vals, 3);
-		*num_color_bytes = GIMP_VALUES_GET_INT (return_vals, 4);
-		*color_bytes = GIMP_VALUES_DUP_UINT8_ARRAY (return_vals, 5);
-	}
+  if (success) {
+    *width = GIMP_VALUES_GET_INT(return_vals, 1);
+    *height = GIMP_VALUES_GET_INT(return_vals, 2);
+    *bpp = GIMP_VALUES_GET_INT(return_vals, 3);
+    *num_color_bytes = GIMP_VALUES_GET_INT(return_vals, 4);
+    *color_bytes = GIMP_VALUES_DUP_UINT8_ARRAY(return_vals, 5);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }

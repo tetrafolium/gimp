@@ -21,7 +21,7 @@
 
 #ifndef GIMP_DISABLE_DEPRECATED
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -32,56 +32,52 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-#define GIMP_TYPE_FILE_ENTRY            (gimp_file_entry_get_type ())
-#define GIMP_FILE_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FILE_ENTRY, GimpFileEntry))
-#define GIMP_FILE_ENTRY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FILE_ENTRY, GimpFileEntryClass))
-#define GIMP_IS_FILE_ENTRY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_FILE_ENTRY))
-#define GIMP_IS_FILE_ENTRY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FILE_ENTRY))
-#define GIMP_FILE_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FILE_ENTRY, GimpFileEntryClass))
-
+#define GIMP_TYPE_FILE_ENTRY (gimp_file_entry_get_type())
+#define GIMP_FILE_ENTRY(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FILE_ENTRY, GimpFileEntry))
+#define GIMP_FILE_ENTRY_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FILE_ENTRY, GimpFileEntryClass))
+#define GIMP_IS_FILE_ENTRY(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_FILE_ENTRY))
+#define GIMP_IS_FILE_ENTRY_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FILE_ENTRY))
+#define GIMP_FILE_ENTRY_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FILE_ENTRY, GimpFileEntryClass))
 
 typedef struct _GimpFileEntryPrivate GimpFileEntryPrivate;
 typedef struct _GimpFileEntryClass GimpFileEntryClass;
 
-struct _GimpFileEntry
-{
-	GtkBox parent_instance;
+struct _GimpFileEntry {
+  GtkBox parent_instance;
 
-	GimpFileEntryPrivate *priv;
+  GimpFileEntryPrivate *priv;
 };
 
-struct _GimpFileEntryClass
-{
-	GtkBoxClass parent_class;
+struct _GimpFileEntryClass {
+  GtkBoxClass parent_class;
 
-	void (* filename_changed) (GimpFileEntry *entry);
+  void (*filename_changed)(GimpFileEntry *entry);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_file_entry_get_type(void) G_GNUC_CONST;
 
-GType       gimp_file_entry_get_type     (void) G_GNUC_CONST;
+GtkWidget *gimp_file_entry_new(const gchar *title, const gchar *filename,
+                               gboolean dir_only, gboolean check_valid);
 
-GtkWidget * gimp_file_entry_new          (const gchar   *title,
-                                          const gchar   *filename,
-                                          gboolean dir_only,
-                                          gboolean check_valid);
+gchar *gimp_file_entry_get_filename(GimpFileEntry *entry);
+void gimp_file_entry_set_filename(GimpFileEntry *entry, const gchar *filename);
 
-gchar     * gimp_file_entry_get_filename (GimpFileEntry *entry);
-void        gimp_file_entry_set_filename (GimpFileEntry *entry,
-                                          const gchar   *filename);
-
-GtkWidget * gimp_file_entry_get_entry    (GimpFileEntry *entry);
-
+GtkWidget *gimp_file_entry_get_entry(GimpFileEntry *entry);
 
 G_END_DECLS
 

@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimppalette
  * @title: gimppalette
@@ -32,7 +31,6 @@
  *
  * Functions operating on a single palette.
  **/
-
 
 /**
  * gimp_palette_new:
@@ -47,28 +45,24 @@
  *
  * Since: 2.2
  **/
-gchar *
-gimp_palette_new (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *actual_name = NULL;
+gchar *gimp_palette_new(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *actual_name = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-new",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-palette-new", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		actual_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    actual_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return actual_name;
+  return actual_name;
 }
 
 /**
@@ -84,28 +78,24 @@ gimp_palette_new (const gchar *name)
  *
  * Since: 2.2
  **/
-gchar *
-gimp_palette_duplicate (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *copy_name = NULL;
+gchar *gimp_palette_duplicate(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *copy_name = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-duplicate",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-duplicate", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		copy_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    copy_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return copy_name;
+  return copy_name;
 }
 
 /**
@@ -122,30 +112,24 @@ gimp_palette_duplicate (const gchar *name)
  *
  * Since: 2.2
  **/
-gchar *
-gimp_palette_rename (const gchar *name,
-                     const gchar *new_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *actual_name = NULL;
+gchar *gimp_palette_rename(const gchar *name, const gchar *new_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *actual_name = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_STRING, new_name,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name,
+                                         G_TYPE_STRING, new_name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-rename",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-palette-rename", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		actual_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    actual_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return actual_name;
+  return actual_name;
 }
 
 /**
@@ -160,27 +144,23 @@ gimp_palette_rename (const gchar *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_delete (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_delete(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-delete",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-palette-delete", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -195,28 +175,24 @@ gimp_palette_delete (const gchar *name)
  *
  * Since: 2.4
  **/
-gboolean
-gimp_palette_is_editable (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean editable = FALSE;
+gboolean gimp_palette_is_editable(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean editable = FALSE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-is-editable",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-is-editable", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		editable = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    editable = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return editable;
+  return editable;
 }
 
 /**
@@ -233,33 +209,28 @@ gimp_palette_is_editable (const gchar *name)
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_get_info (const gchar *name,
-                       gint        *num_colors)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_get_info(const gchar *name, gint *num_colors) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-get-info",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-get-info", args);
+  gimp_value_array_unref(args);
 
-	*num_colors = 0;
+  *num_colors = 0;
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-		*num_colors = GIMP_VALUES_GET_INT (return_vals, 1);
+  if (success)
+    *num_colors = GIMP_VALUES_GET_INT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -277,34 +248,28 @@ gimp_palette_get_info (const gchar *name,
  *
  * Since: 2.6
  **/
-GimpRGB *
-gimp_palette_get_colors (const gchar *name,
-                         gint        *num_colors)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpRGB *colors = NULL;
+GimpRGB *gimp_palette_get_colors(const gchar *name, gint *num_colors) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpRGB *colors = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-get-colors",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-get-colors", args);
+  gimp_value_array_unref(args);
 
-	*num_colors = 0;
+  *num_colors = 0;
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-	{
-		*num_colors = GIMP_VALUES_GET_INT (return_vals, 1);
-		colors = GIMP_VALUES_DUP_RGB_ARRAY (return_vals, 2);
-	}
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS) {
+    *num_colors = GIMP_VALUES_GET_INT(return_vals, 1);
+    colors = GIMP_VALUES_DUP_RGB_ARRAY(return_vals, 2);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return colors;
+  return colors;
 }
 
 /**
@@ -320,28 +285,24 @@ gimp_palette_get_colors (const gchar *name,
  *
  * Since: 2.4
  **/
-gint
-gimp_palette_get_columns (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gint num_columns = 0;
+gint gimp_palette_get_columns(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gint num_columns = 0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-get-columns",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-get-columns", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		num_columns = GIMP_VALUES_GET_INT (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    num_columns = GIMP_VALUES_GET_INT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return num_columns;
+  return num_columns;
 }
 
 /**
@@ -359,29 +320,23 @@ gimp_palette_get_columns (const gchar *name)
  *
  * Since: 2.4
  **/
-gboolean
-gimp_palette_set_columns (const gchar *name,
-                          gint columns)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_set_columns(const gchar *name, gint columns) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_INT, columns,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_INT,
+                                         columns, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-set-columns",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-set-columns", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -400,37 +355,30 @@ gimp_palette_set_columns (const gchar *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_add_entry (const gchar   *name,
-                        const gchar   *entry_name,
-                        const GimpRGB *color,
-                        gint          *entry_num)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_add_entry(const gchar *name, const gchar *entry_name,
+                                const GimpRGB *color, gint *entry_num) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_STRING, entry_name,
-	                                        GIMP_TYPE_RGB, color,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name,
+                                         G_TYPE_STRING, entry_name,
+                                         GIMP_TYPE_RGB, color, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-add-entry",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-add-entry", args);
+  gimp_value_array_unref(args);
 
-	*entry_num = 0;
+  *entry_num = 0;
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-		*entry_num = GIMP_VALUES_GET_INT (return_vals, 1);
+  if (success)
+    *entry_num = GIMP_VALUES_GET_INT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -447,29 +395,23 @@ gimp_palette_add_entry (const gchar   *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_delete_entry (const gchar *name,
-                           gint entry_num)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_delete_entry(const gchar *name, gint entry_num) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_INT, entry_num,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_INT,
+                                         entry_num, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-delete-entry",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palette-delete-entry", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -488,33 +430,27 @@ gimp_palette_delete_entry (const gchar *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_entry_get_color (const gchar *name,
-                              gint entry_num,
-                              GimpRGB     *color)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_entry_get_color(const gchar *name, gint entry_num,
+                                      GimpRGB *color) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_INT, entry_num,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_INT,
+                                         entry_num, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-entry-get-color",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-palette-entry-get-color", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-		GIMP_VALUES_GET_RGB (return_vals, 1, &*color);
+  if (success)
+    GIMP_VALUES_GET_RGB(return_vals, 1, &*color);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -533,31 +469,25 @@ gimp_palette_entry_get_color (const gchar *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_entry_set_color (const gchar   *name,
-                              gint entry_num,
-                              const GimpRGB *color)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_entry_set_color(const gchar *name, gint entry_num,
+                                      const GimpRGB *color) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_INT, entry_num,
-	                                        GIMP_TYPE_RGB, color,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_INT,
+                                         entry_num, GIMP_TYPE_RGB, color,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-entry-set-color",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-palette-entry-set-color", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -576,35 +506,29 @@ gimp_palette_entry_set_color (const gchar   *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_entry_get_name (const gchar  *name,
-                             gint entry_num,
-                             gchar       **entry_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_entry_get_name(const gchar *name, gint entry_num,
+                                     gchar **entry_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_INT, entry_num,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_INT,
+                                         entry_num, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-entry-get-name",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-palette-entry-get-name", args);
+  gimp_value_array_unref(args);
 
-	*entry_name = NULL;
+  *entry_name = NULL;
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-		*entry_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (success)
+    *entry_name = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -623,29 +547,23 @@ gimp_palette_entry_get_name (const gchar  *name,
  *
  * Since: 2.2
  **/
-gboolean
-gimp_palette_entry_set_name (const gchar *name,
-                             gint entry_num,
-                             const gchar *entry_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palette_entry_set_name(const gchar *name, gint entry_num,
+                                     const gchar *entry_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_INT, entry_num,
-	                                        G_TYPE_STRING, entry_name,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_INT,
+                                         entry_num, G_TYPE_STRING, entry_name,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palette-entry-set-name",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-palette-entry-set-name", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }

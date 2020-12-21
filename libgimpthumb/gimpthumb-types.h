@@ -25,7 +25,6 @@
 #ifndef __GIMP_THUMB_TYPES_H__
 #define __GIMP_THUMB_TYPES_H__
 
-
 #include <libgimpthumb/gimpthumb-enums.h>
 
 G_BEGIN_DECLS
@@ -33,6 +32,5 @@ G_BEGIN_DECLS
 typedef struct _GimpThumbnail GimpThumbnail;
 
 G_END_DECLS
-
 
 #endif /* __GIMP_THUMB_TYPES_H__ */

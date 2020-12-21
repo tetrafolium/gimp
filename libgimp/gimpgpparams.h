@@ -24,23 +24,16 @@
 
 G_BEGIN_DECLS
 
+GParamSpec *_gimp_gp_param_def_to_param_spec(const GPParamDef *param_def);
+void _gimp_param_spec_to_gp_param_def(GParamSpec *pspec, GPParamDef *param_def);
 
-GParamSpec     * _gimp_gp_param_def_to_param_spec (const GPParamDef     *param_def);
-void             _gimp_param_spec_to_gp_param_def (GParamSpec           *pspec,
-                                                   GPParamDef           *param_def);
-
-GimpValueArray * _gimp_gp_params_to_value_array   (gpointer gimp,
-                                                   GParamSpec          **pspecs,
-                                                   gint n_pspecs,
-                                                   const GPParam        *params,
-                                                   gint n_params,
-                                                   gboolean return_values);
-GPParam        * _gimp_value_array_to_gp_params   (const GimpValueArray *args,
-                                                   gboolean full_copy);
-void             _gimp_gp_params_free             (GPParam              *params,
-                                                   gint n_params,
-                                                   gboolean full_copy);
-
+GimpValueArray *
+_gimp_gp_params_to_value_array(gpointer gimp, GParamSpec **pspecs,
+                               gint n_pspecs, const GPParam *params,
+                               gint n_params, gboolean return_values);
+GPParam *_gimp_value_array_to_gp_params(const GimpValueArray *args,
+                                        gboolean full_copy);
+void _gimp_gp_params_free(GPParam *params, gint n_params, gboolean full_copy);
 
 G_END_DECLS
 

@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,32 +30,30 @@
 
 G_BEGIN_DECLS
 
-#define GIMP_TYPE_LABEL_INT_WIDGET (gimp_label_int_widget_get_type ())
-G_DECLARE_DERIVABLE_TYPE (GimpLabelIntWidget, gimp_label_int_widget, GIMP, LABEL_INT_WIDGET, GimpLabeled)
+#define GIMP_TYPE_LABEL_INT_WIDGET (gimp_label_int_widget_get_type())
+G_DECLARE_DERIVABLE_TYPE(GimpLabelIntWidget, gimp_label_int_widget, GIMP,
+                         LABEL_INT_WIDGET, GimpLabeled)
 
-struct _GimpLabelIntWidgetClass
-{
-	GimpLabeledClass parent_class;
+struct _GimpLabelIntWidgetClass {
+  GimpLabeledClass parent_class;
 
-	/*  Signals */
-	void (* value_changed)    (GtkWidget *int_widget);
+  /*  Signals */
+  void (*value_changed)(GtkWidget *int_widget);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
-GtkWidget  * gimp_label_int_widget_new        (const gchar        *text,
-                                               GtkWidget          *widget);
+GtkWidget *gimp_label_int_widget_new(const gchar *text, GtkWidget *widget);
 
-GtkWidget  * gimp_label_int_widget_get_widget (GimpLabelIntWidget *widget);
-
+GtkWidget *gimp_label_int_widget_get_widget(GimpLabelIntWidget *widget);
 
 G_END_DECLS
 

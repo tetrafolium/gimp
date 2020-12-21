@@ -27,19 +27,20 @@
 
 #include <libintl.h>
 
-
-#define  _(String) dgettext (GETTEXT_PACKAGE "-libgimp", String)
-#define Q_(String) g_dpgettext (GETTEXT_PACKAGE "-libgimp", String, 0)
-#define C_(Context,String) g_dpgettext (GETTEXT_PACKAGE "-libgimp", Context "\004" String, strlen (Context) + 1)
+#define _(String) dgettext(GETTEXT_PACKAGE "-libgimp", String)
+#define Q_(String) g_dpgettext(GETTEXT_PACKAGE "-libgimp", String, 0)
+#define C_(Context, String)                                                    \
+  g_dpgettext(GETTEXT_PACKAGE "-libgimp", Context "\004" String,               \
+              strlen(Context) + 1)
 
 #undef gettext
-#define gettext(String) dgettext (GETTEXT_PACKAGE "-libgimp", String)
+#define gettext(String) dgettext(GETTEXT_PACKAGE "-libgimp", String)
 
 #undef ngettext
-#define ngettext(String1, String2, number) dngettext (GETTEXT_PACKAGE "-libgimp", String1, String2, number)
+#define ngettext(String1, String2, number)                                     \
+  dngettext(GETTEXT_PACKAGE "-libgimp", String1, String2, number)
 
 #define N_(String) (String)
-#define NC_(Context,String) (String)
-
+#define NC_(Context, String) (String)
 
 #endif /* __LIBGIMP_INTL_H__ */

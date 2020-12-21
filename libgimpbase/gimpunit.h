@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#if !defined(__GIMP_BASE_H_INSIDE__) && !defined(GIMP_BASE_COMPILATION)
 #error "Only <libgimpbase/gimpbase.h> can be included directly."
 #endif
 
@@ -36,84 +36,66 @@ G_BEGIN_DECLS
  * #GIMP_TYPE_UNIT is a #GType derived from #G_TYPE_INT.
  **/
 
-#define GIMP_TYPE_UNIT               (gimp_unit_get_type ())
-#define GIMP_VALUE_HOLDS_UNIT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_UNIT))
+#define GIMP_TYPE_UNIT (gimp_unit_get_type())
+#define GIMP_VALUE_HOLDS_UNIT(value)                                           \
+  (G_TYPE_CHECK_VALUE_TYPE((value), GIMP_TYPE_UNIT))
 
-GType        gimp_unit_get_type      (void) G_GNUC_CONST;
-
+GType gimp_unit_get_type(void) G_GNUC_CONST;
 
 /*
  * GIMP_TYPE_PARAM_UNIT
  */
 
-#define GIMP_TYPE_PARAM_UNIT           (gimp_param_unit_get_type ())
-#define GIMP_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_UNIT, GimpParamSpecUnit))
-#define GIMP_IS_PARAM_SPEC_UNIT(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_UNIT))
+#define GIMP_TYPE_PARAM_UNIT (gimp_param_unit_get_type())
+#define GIMP_PARAM_SPEC_UNIT(pspec)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((pspec), GIMP_TYPE_PARAM_UNIT, GimpParamSpecUnit))
+#define GIMP_IS_PARAM_SPEC_UNIT(pspec)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((pspec), GIMP_TYPE_PARAM_UNIT))
 
 typedef struct _GimpParamSpecUnit GimpParamSpecUnit;
 
-struct _GimpParamSpecUnit
-{
-	GParamSpecInt parent_instance;
+struct _GimpParamSpecUnit {
+  GParamSpecInt parent_instance;
 
-	gboolean allow_percent;
+  gboolean allow_percent;
 };
 
-GType        gimp_param_unit_get_type     (void) G_GNUC_CONST;
+GType gimp_param_unit_get_type(void) G_GNUC_CONST;
 
-GParamSpec * gimp_param_spec_unit         (const gchar  *name,
-                                           const gchar  *nick,
-                                           const gchar  *blurb,
-                                           gboolean allow_pixels,
-                                           gboolean allow_percent,
-                                           GimpUnit default_value,
-                                           GParamFlags flags);
+GParamSpec *gimp_param_spec_unit(const gchar *name, const gchar *nick,
+                                 const gchar *blurb, gboolean allow_pixels,
+                                 gboolean allow_percent, GimpUnit default_value,
+                                 GParamFlags flags);
 
+gint gimp_unit_get_number_of_units(void);
+gint gimp_unit_get_number_of_built_in_units(void) G_GNUC_CONST;
 
+GimpUnit gimp_unit_new(gchar *identifier, gdouble factor, gint digits,
+                       gchar *symbol, gchar *abbreviation, gchar *singular,
+                       gchar *plural);
 
-gint          gimp_unit_get_number_of_units          (void);
-gint          gimp_unit_get_number_of_built_in_units (void) G_GNUC_CONST;
+gboolean gimp_unit_get_deletion_flag(GimpUnit unit);
+void gimp_unit_set_deletion_flag(GimpUnit unit, gboolean deletion_flag);
 
-GimpUnit      gimp_unit_new                 (gchar       *identifier,
-                                             gdouble factor,
-                                             gint digits,
-                                             gchar       *symbol,
-                                             gchar       *abbreviation,
-                                             gchar       *singular,
-                                             gchar       *plural);
+gdouble gimp_unit_get_factor(GimpUnit unit);
 
-gboolean      gimp_unit_get_deletion_flag   (GimpUnit unit);
-void          gimp_unit_set_deletion_flag   (GimpUnit unit,
-                                             gboolean deletion_flag);
+gint gimp_unit_get_digits(GimpUnit unit);
+gint gimp_unit_get_scaled_digits(GimpUnit unit, gdouble resolution);
 
-gdouble       gimp_unit_get_factor          (GimpUnit unit);
+const gchar *gimp_unit_get_identifier(GimpUnit unit);
 
-gint          gimp_unit_get_digits          (GimpUnit unit);
-gint          gimp_unit_get_scaled_digits   (GimpUnit unit,
-                                             gdouble resolution);
+const gchar *gimp_unit_get_symbol(GimpUnit unit);
+const gchar *gimp_unit_get_abbreviation(GimpUnit unit);
+const gchar *gimp_unit_get_singular(GimpUnit unit);
+const gchar *gimp_unit_get_plural(GimpUnit unit);
 
-const gchar * gimp_unit_get_identifier      (GimpUnit unit);
+gchar *gimp_unit_format_string(const gchar *format, GimpUnit unit);
 
-const gchar * gimp_unit_get_symbol          (GimpUnit unit);
-const gchar * gimp_unit_get_abbreviation    (GimpUnit unit);
-const gchar * gimp_unit_get_singular        (GimpUnit unit);
-const gchar * gimp_unit_get_plural          (GimpUnit unit);
+gdouble gimp_pixels_to_units(gdouble pixels, GimpUnit unit, gdouble resolution);
+gdouble gimp_units_to_pixels(gdouble value, GimpUnit unit, gdouble resolution);
+gdouble gimp_units_to_points(gdouble value, GimpUnit unit, gdouble resolution);
 
-gchar       * gimp_unit_format_string       (const gchar *format,
-                                             GimpUnit unit);
-
-gdouble       gimp_pixels_to_units          (gdouble pixels,
-                                             GimpUnit unit,
-                                             gdouble resolution);
-gdouble       gimp_units_to_pixels          (gdouble value,
-                                             GimpUnit unit,
-                                             gdouble resolution);
-gdouble       gimp_units_to_points          (gdouble value,
-                                             GimpUnit unit,
-                                             gdouble resolution);
-
-gboolean      gimp_unit_is_metric           (GimpUnit unit);
-
+gboolean gimp_unit_is_metric(GimpUnit unit);
 
 G_END_DECLS
 

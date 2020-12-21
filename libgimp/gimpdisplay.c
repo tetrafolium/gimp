@@ -28,103 +28,71 @@
 #include "gimpplugin-private.h"
 #include "gimpprocedure-private.h"
 
+enum { PROP_0, PROP_ID, N_PROPS };
 
-enum
-{
-	PROP_0,
-	PROP_ID,
-	N_PROPS
+struct _GimpDisplayPrivate {
+  gint id;
 };
 
+static void gimp_display_set_property(GObject *object, guint property_id,
+                                      const GValue *value, GParamSpec *pspec);
+static void gimp_display_get_property(GObject *object, guint property_id,
+                                      GValue *value, GParamSpec *pspec);
 
-struct _GimpDisplayPrivate
-{
-	gint id;
-};
-
-
-static void   gimp_display_set_property  (GObject      *object,
-                                          guint property_id,
-                                          const GValue *value,
-                                          GParamSpec   *pspec);
-static void   gimp_display_get_property  (GObject      *object,
-                                          guint property_id,
-                                          GValue       *value,
-                                          GParamSpec   *pspec);
-
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpDisplay, gimp_display, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpDisplay, gimp_display, G_TYPE_OBJECT)
 
 #define parent_class gimp_display_parent_class
 
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[N_PROPS] = {
+    NULL,
+};
 
+static void gimp_display_class_init(GimpDisplayClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void
-gimp_display_class_init (GimpDisplayClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->set_property = gimp_display_set_property;
+  object_class->get_property = gimp_display_get_property;
 
-	object_class->set_property = gimp_display_set_property;
-	object_class->get_property = gimp_display_get_property;
+  props[PROP_ID] = g_param_spec_int(
+      "id", "The display id", "The display id for internal use", 0, G_MAXINT32,
+      0, GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
-	props[PROP_ID] =
-		g_param_spec_int ("id",
-		                  "The display id",
-		                  "The display id for internal use",
-		                  0, G_MAXINT32, 0,
-		                  GIMP_PARAM_READWRITE |
-		                  G_PARAM_CONSTRUCT_ONLY);
-
-	g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties(object_class, N_PROPS, props);
 }
 
-static void
-gimp_display_init (GimpDisplay *display)
-{
-	display->priv = gimp_display_get_instance_private (display);
+static void gimp_display_init(GimpDisplay *display) {
+  display->priv = gimp_display_get_instance_private(display);
 }
 
-static void
-gimp_display_set_property (GObject      *object,
-                           guint property_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
-{
-	GimpDisplay *display = GIMP_DISPLAY (object);
+static void gimp_display_set_property(GObject *object, guint property_id,
+                                      const GValue *value, GParamSpec *pspec) {
+  GimpDisplay *display = GIMP_DISPLAY(object);
 
-	switch (property_id)
-	{
-	case PROP_ID:
-		display->priv->id = g_value_get_int (value);
-		break;
+  switch (property_id) {
+  case PROP_ID:
+    display->priv->id = g_value_get_int(value);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_display_get_property (GObject    *object,
-                           guint property_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
-{
-	GimpDisplay *display = GIMP_DISPLAY (object);
+static void gimp_display_get_property(GObject *object, guint property_id,
+                                      GValue *value, GParamSpec *pspec) {
+  GimpDisplay *display = GIMP_DISPLAY(object);
 
-	switch (property_id)
-	{
-	case PROP_ID:
-		g_value_set_int (value, display->priv->id);
-		break;
+  switch (property_id) {
+  case PROP_ID:
+    g_value_set_int(value, display->priv->id);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
-
 
 /* Public API */
 
@@ -136,10 +104,8 @@ gimp_display_get_property (GObject    *object,
  *
  * Since: 3.0
  **/
-gint32
-gimp_display_get_id (GimpDisplay *display)
-{
-	return display ? display->priv->id : -1;
+gint32 gimp_display_get_id(GimpDisplay *display) {
+  return display ? display->priv->id : -1;
 }
 
 /**
@@ -155,18 +121,15 @@ gimp_display_get_id (GimpDisplay *display)
  *
  * Since: 3.0
  **/
-GimpDisplay *
-gimp_display_get_by_id (gint32 display_id)
-{
-	if (display_id > 0)
-	{
-		GimpPlugIn    *plug_in   = gimp_get_plug_in ();
-		GimpProcedure *procedure = _gimp_plug_in_get_procedure (plug_in);
+GimpDisplay *gimp_display_get_by_id(gint32 display_id) {
+  if (display_id > 0) {
+    GimpPlugIn *plug_in = gimp_get_plug_in();
+    GimpProcedure *procedure = _gimp_plug_in_get_procedure(plug_in);
 
-		return _gimp_procedure_get_display (procedure, display_id);
-	}
+    return _gimp_procedure_get_display(procedure, display_id);
+  }
 
-	return NULL;
+  return NULL;
 }
 
 /**
@@ -182,8 +145,6 @@ gimp_display_get_by_id (gint32 display_id)
  *
  * Since: 2.4
  **/
-gboolean
-gimp_display_is_valid (GimpDisplay *display)
-{
-	return gimp_display_id_is_valid (gimp_display_get_id (display));
+gboolean gimp_display_is_valid(GimpDisplay *display) {
+  return gimp_display_id_is_valid(gimp_display_get_id(display));
 }

@@ -27,7 +27,6 @@ G_BEGIN_DECLS
 
 /* For information look into the html documentation */
 
-
 typedef struct _GimpProcedureDialog GimpProcedureDialog;
 typedef struct _GimpSaveProcedureDialog GimpSaveProcedureDialog;
 
@@ -49,7 +48,6 @@ typedef struct _GimpFontSelectButton GimpFontSelectButton;
 typedef struct _GimpGradientSelectButton GimpGradientSelectButton;
 typedef struct _GimpPaletteSelectButton GimpPaletteSelectButton;
 typedef struct _GimpPatternSelectButton GimpPatternSelectButton;
-
 
 G_END_DECLS
 

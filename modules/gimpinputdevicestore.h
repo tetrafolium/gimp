@@ -21,22 +21,22 @@
 #ifndef __GIMP_INPUT_DEVICE_STORE_H__
 #define __GIMP_INPUT_DEVICE_STORE_H__
 
-
-#define GIMP_TYPE_INPUT_DEVICE_STORE    (gimp_input_device_store_get_type ())
-#define GIMP_INPUT_DEVICE_STORE(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_INPUT_DEVICE_STORE, GimpInputDeviceStore))
-#define GIMP_IS_INPUT_DEVICE_STORE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_INPUT_DEVICE_STORE))
+#define GIMP_TYPE_INPUT_DEVICE_STORE (gimp_input_device_store_get_type())
+#define GIMP_INPUT_DEVICE_STORE(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_INPUT_DEVICE_STORE,             \
+                              GimpInputDeviceStore))
+#define GIMP_IS_INPUT_DEVICE_STORE(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_INPUT_DEVICE_STORE))
 
 typedef struct _GimpInputDeviceStore GimpInputDeviceStore;
 
+void gimp_input_device_store_register_types(GTypeModule *module);
 
-void                   gimp_input_device_store_register_types  (GTypeModule           *module);
+GType gimp_input_device_store_get_type(void);
 
-GType                  gimp_input_device_store_get_type        (void);
+GimpInputDeviceStore *gimp_input_device_store_new(void);
+gchar *gimp_input_device_store_get_device_file(GimpInputDeviceStore *store,
+                                               const gchar *udi);
+GError *gimp_input_device_store_get_error(GimpInputDeviceStore *store);
 
-GimpInputDeviceStore * gimp_input_device_store_new             (void);
-gchar                * gimp_input_device_store_get_device_file (GimpInputDeviceStore  *store,
-                                                                const gchar           *udi);
-GError               * gimp_input_device_store_get_error       (GimpInputDeviceStore  *store);
-
-
-#endif  /* __GIMP_INPUT_DEVICE_STORE_H__ */
+#endif /* __GIMP_INPUT_DEVICE_STORE_H__ */

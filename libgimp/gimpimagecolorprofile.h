@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -29,18 +29,16 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+GimpColorProfile *gimp_image_get_color_profile(GimpImage *image);
+gboolean gimp_image_set_color_profile(GimpImage *image,
+                                      GimpColorProfile *profile);
 
-GimpColorProfile * gimp_image_get_color_profile           (GimpImage                 *image);
-gboolean           gimp_image_set_color_profile           (GimpImage                 *image,
-                                                           GimpColorProfile          *profile);
+GimpColorProfile *gimp_image_get_effective_color_profile(GimpImage *image);
 
-GimpColorProfile * gimp_image_get_effective_color_profile (GimpImage                 *image);
-
-gboolean           gimp_image_convert_color_profile       (GimpImage                 *image,
-                                                           GimpColorProfile          *profile,
-                                                           GimpColorRenderingIntent intent,
-                                                           gboolean bpc);
-
+gboolean gimp_image_convert_color_profile(GimpImage *image,
+                                          GimpColorProfile *profile,
+                                          GimpColorRenderingIntent intent,
+                                          gboolean bpc);
 
 G_END_DECLS
 

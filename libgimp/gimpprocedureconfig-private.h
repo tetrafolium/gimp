@@ -22,23 +22,19 @@
 #ifndef __GIMP_PROCEDURE_CONFIG_PRIVATE_H__
 #define __GIMP_PROCEDURE_CONFIG_PRIVATE_H__
 
+gboolean gimp_procedure_config_load_default(GimpProcedureConfig *config,
+                                            GError **error);
+gboolean gimp_procedure_config_save_default(GimpProcedureConfig *config,
+                                            GError **error);
 
-gboolean   gimp_procedure_config_load_default  (GimpProcedureConfig  *config,
-                                                GError              **error);
-gboolean   gimp_procedure_config_save_default  (GimpProcedureConfig  *config,
-                                                GError              **error);
+gboolean gimp_procedure_config_load_last(GimpProcedureConfig *config,
+                                         GError **error);
+gboolean gimp_procedure_config_save_last(GimpProcedureConfig *config,
+                                         GError **error);
 
-gboolean   gimp_procedure_config_load_last     (GimpProcedureConfig  *config,
-                                                GError              **error);
-gboolean   gimp_procedure_config_save_last     (GimpProcedureConfig  *config,
-                                                GError              **error);
-
-gboolean   gimp_procedure_config_load_parasite (GimpProcedureConfig  *config,
-                                                GimpImage            *image,
-                                                GError              **error);
-gboolean   gimp_procedure_config_save_parasite (GimpProcedureConfig  *config,
-                                                GimpImage            *image,
-                                                GError              **error);
-
+gboolean gimp_procedure_config_load_parasite(GimpProcedureConfig *config,
+                                             GimpImage *image, GError **error);
+gboolean gimp_procedure_config_save_parasite(GimpProcedureConfig *config,
+                                             GimpImage *image, GError **error);
 
 #endif /* __GIMP_PROCEDURE_CONFIG_PRIVATE_H__ */

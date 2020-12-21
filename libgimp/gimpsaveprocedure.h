@@ -28,7 +28,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /**
  * GimpRunSaveFunc:
  * @procedure:   the #GimpProcedure that runs.
@@ -47,71 +46,69 @@ G_BEGIN_DECLS
  *
  * Since: 3.0
  **/
-typedef GimpValueArray * (* GimpRunSaveFunc) (GimpProcedure        *procedure,
-                                              GimpRunMode run_mode,
-                                              GimpImage            *image,
-                                              gint n_drawables,
-                                              GimpDrawable        **drawables,
-                                              GFile                *file,
-                                              const GimpValueArray *args,
-                                              gpointer run_data);
+typedef GimpValueArray *(*GimpRunSaveFunc)(
+    GimpProcedure *procedure, GimpRunMode run_mode, GimpImage *image,
+    gint n_drawables, GimpDrawable **drawables, GFile *file,
+    const GimpValueArray *args, gpointer run_data);
 
-
-#define GIMP_TYPE_SAVE_PROCEDURE            (gimp_save_procedure_get_type ())
-#define GIMP_SAVE_PROCEDURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SAVE_PROCEDURE, GimpSaveProcedure))
-#define GIMP_SAVE_PROCEDURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SAVE_PROCEDURE, GimpSaveProcedureClass))
-#define GIMP_IS_SAVE_PROCEDURE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SAVE_PROCEDURE))
-#define GIMP_IS_SAVE_PROCEDURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SAVE_PROCEDURE))
-#define GIMP_SAVE_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SAVE_PROCEDURE, GimpSaveProcedureClass))
-
+#define GIMP_TYPE_SAVE_PROCEDURE (gimp_save_procedure_get_type())
+#define GIMP_SAVE_PROCEDURE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SAVE_PROCEDURE,                 \
+                              GimpSaveProcedure))
+#define GIMP_SAVE_PROCEDURE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SAVE_PROCEDURE,                  \
+                           GimpSaveProcedureClass))
+#define GIMP_IS_SAVE_PROCEDURE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SAVE_PROCEDURE))
+#define GIMP_IS_SAVE_PROCEDURE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SAVE_PROCEDURE))
+#define GIMP_SAVE_PROCEDURE_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SAVE_PROCEDURE,                  \
+                             GimpSaveProcedureClass))
 
 typedef struct _GimpSaveProcedure GimpSaveProcedure;
 typedef struct _GimpSaveProcedureClass GimpSaveProcedureClass;
 typedef struct _GimpSaveProcedurePrivate GimpSaveProcedurePrivate;
 
-struct _GimpSaveProcedure
-{
-	GimpFileProcedure parent_instance;
+struct _GimpSaveProcedure {
+  GimpFileProcedure parent_instance;
 
-	GimpSaveProcedurePrivate *priv;
+  GimpSaveProcedurePrivate *priv;
 };
 
-struct _GimpSaveProcedureClass
-{
-	GimpFileProcedureClass parent_class;
+struct _GimpSaveProcedureClass {
+  GimpFileProcedureClass parent_class;
 };
 
+GType gimp_save_procedure_get_type(void) G_GNUC_CONST;
 
-GType           gimp_save_procedure_get_type (void) G_GNUC_CONST;
+GimpProcedure *gimp_save_procedure_new(GimpPlugIn *plug_in, const gchar *name,
+                                       GimpPDBProcType proc_type,
+                                       GimpRunSaveFunc run_func,
+                                       gpointer run_data,
+                                       GDestroyNotify run_data_destroy);
 
-GimpProcedure * gimp_save_procedure_new      (GimpPlugIn      *plug_in,
-                                              const gchar     *name,
-                                              GimpPDBProcType proc_type,
-                                              GimpRunSaveFunc run_func,
-                                              gpointer run_data,
-                                              GDestroyNotify run_data_destroy);
+void gimp_save_procedure_set_support_exif(GimpSaveProcedure *procedure,
+                                          gboolean supports);
+void gimp_save_procedure_set_support_iptc(GimpSaveProcedure *procedure,
+                                          gboolean supports);
+void gimp_save_procedure_set_support_xmp(GimpSaveProcedure *procedure,
+                                         gboolean supports);
+void gimp_save_procedure_set_support_profile(GimpSaveProcedure *procedure,
+                                             gboolean supports);
+void gimp_save_procedure_set_support_thumbnail(GimpSaveProcedure *procedure,
+                                               gboolean supports);
+void gimp_save_procedure_set_support_comment(GimpSaveProcedure *procedure,
+                                             gboolean supports);
 
-void            gimp_save_procedure_set_support_exif      (GimpSaveProcedure *procedure,
-                                                           gboolean supports);
-void            gimp_save_procedure_set_support_iptc      (GimpSaveProcedure *procedure,
-                                                           gboolean supports);
-void            gimp_save_procedure_set_support_xmp       (GimpSaveProcedure *procedure,
-                                                           gboolean supports);
-void            gimp_save_procedure_set_support_profile   (GimpSaveProcedure *procedure,
-                                                           gboolean supports);
-void            gimp_save_procedure_set_support_thumbnail (GimpSaveProcedure *procedure,
-                                                           gboolean supports);
-void            gimp_save_procedure_set_support_comment   (GimpSaveProcedure *procedure,
-                                                           gboolean supports);
-
-gboolean        gimp_save_procedure_get_support_exif      (GimpSaveProcedure *procedure);
-gboolean        gimp_save_procedure_get_support_iptc      (GimpSaveProcedure *procedure);
-gboolean        gimp_save_procedure_get_support_xmp       (GimpSaveProcedure *procedure);
-gboolean        gimp_save_procedure_get_support_profile   (GimpSaveProcedure *procedure);
-gboolean        gimp_save_procedure_get_support_thumbnail (GimpSaveProcedure *procedure);
-gboolean        gimp_save_procedure_get_support_comment   (GimpSaveProcedure *procedure);
-
+gboolean gimp_save_procedure_get_support_exif(GimpSaveProcedure *procedure);
+gboolean gimp_save_procedure_get_support_iptc(GimpSaveProcedure *procedure);
+gboolean gimp_save_procedure_get_support_xmp(GimpSaveProcedure *procedure);
+gboolean gimp_save_procedure_get_support_profile(GimpSaveProcedure *procedure);
+gboolean
+gimp_save_procedure_get_support_thumbnail(GimpSaveProcedure *procedure);
+gboolean gimp_save_procedure_get_support_comment(GimpSaveProcedure *procedure);
 
 G_END_DECLS
 
-#endif  /*  __GIMP_SAVE_PROCEDURE_H__  */
+#endif /*  __GIMP_SAVE_PROCEDURE_H__  */

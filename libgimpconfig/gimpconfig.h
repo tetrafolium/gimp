@@ -38,4 +38,4 @@
 
 #undef __GIMP_CONFIG_H_INSIDE__
 
-#endif  /* __GIMP_CONFIG_H__ */
+#endif /* __GIMP_CONFIG_H__ */

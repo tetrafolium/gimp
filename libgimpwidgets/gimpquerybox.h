@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,7 +30,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /**
  * GimpQueryStringCallback:
  * @query_box: The query box.
@@ -39,9 +38,8 @@ G_BEGIN_DECLS
  *
  * Note that you must not g_free() the passed string.
  **/
-typedef void (* GimpQueryStringCallback)  (GtkWidget   *query_box,
-                                           const gchar *string,
-                                           gpointer data);
+typedef void (*GimpQueryStringCallback)(GtkWidget *query_box,
+                                        const gchar *string, gpointer data);
 
 /**
  * GimpQueryIntCallback:
@@ -51,9 +49,8 @@ typedef void (* GimpQueryStringCallback)  (GtkWidget   *query_box,
  *
  * The callback for an int query box.
  **/
-typedef void (* GimpQueryIntCallback)     (GtkWidget   *query_box,
-                                           gint value,
-                                           gpointer data);
+typedef void (*GimpQueryIntCallback)(GtkWidget *query_box, gint value,
+                                     gpointer data);
 
 /**
  * GimpQueryDoubleCallback:
@@ -63,9 +60,8 @@ typedef void (* GimpQueryIntCallback)     (GtkWidget   *query_box,
  *
  * The callback for a double query box.
  **/
-typedef void (* GimpQueryDoubleCallback)  (GtkWidget   *query_box,
-                                           gdouble value,
-                                           gpointer data);
+typedef void (*GimpQueryDoubleCallback)(GtkWidget *query_box, gdouble value,
+                                        gpointer data);
 
 /**
  * GimpQuerySizeCallback:
@@ -76,10 +72,8 @@ typedef void (* GimpQueryDoubleCallback)  (GtkWidget   *query_box,
  *
  * The callback for a size query box.
  **/
-typedef void (* GimpQuerySizeCallback)    (GtkWidget   *query_box,
-                                           gdouble size,
-                                           GimpUnit unit,
-                                           gpointer data);
+typedef void (*GimpQuerySizeCallback)(GtkWidget *query_box, gdouble size,
+                                      GimpUnit unit, gpointer data);
 
 /**
  * GimpQueryBooleanCallback:
@@ -89,10 +83,8 @@ typedef void (* GimpQuerySizeCallback)    (GtkWidget   *query_box,
  *
  * The callback for a boolean query box.
  **/
-typedef void (* GimpQueryBooleanCallback) (GtkWidget   *query_box,
-                                           gboolean value,
-                                           gpointer data);
-
+typedef void (*GimpQueryBooleanCallback)(GtkWidget *query_box, gboolean value,
+                                         gpointer data);
 
 /**
  * GIMP_QUERY_BOX_VBOX:
@@ -101,84 +93,47 @@ typedef void (* GimpQueryBooleanCallback) (GtkWidget   *query_box,
  * A macro to access the vertical #GtkBox in a #libgimpwidgets-gimpquerybox.
  * Useful if you want to add more widgets.
  **/
-#define GIMP_QUERY_BOX_VBOX(qbox) g_object_get_data (G_OBJECT (qbox), \
-	                                             "gimp-query-box-vbox")
-
+#define GIMP_QUERY_BOX_VBOX(qbox)                                              \
+  g_object_get_data(G_OBJECT(qbox), "gimp-query-box-vbox")
 
 /*  some simple query dialogs  */
-GtkWidget * gimp_query_string_box  (const gchar              *title,
-                                    GtkWidget                *parent,
-                                    GimpHelpFunc help_func,
-                                    const gchar              *help_id,
-                                    const gchar              *message,
-                                    const gchar              *initial,
-                                    GObject                  *object,
-                                    const gchar              *signal,
-                                    GimpQueryStringCallback callback,
-                                    gpointer data,
-                                    GDestroyNotify data_destroy);
+GtkWidget *gimp_query_string_box(const gchar *title, GtkWidget *parent,
+                                 GimpHelpFunc help_func, const gchar *help_id,
+                                 const gchar *message, const gchar *initial,
+                                 GObject *object, const gchar *signal,
+                                 GimpQueryStringCallback callback,
+                                 gpointer data, GDestroyNotify data_destroy);
 
-GtkWidget * gimp_query_int_box     (const gchar              *title,
-                                    GtkWidget                *parent,
-                                    GimpHelpFunc help_func,
-                                    const gchar              *help_id,
-                                    const gchar              *message,
-                                    gint initial,
-                                    gint lower,
-                                    gint upper,
-                                    GObject                  *object,
-                                    const gchar              *signal,
-                                    GimpQueryIntCallback callback,
-                                    gpointer data,
-                                    GDestroyNotify data_destroy);
+GtkWidget *gimp_query_int_box(const gchar *title, GtkWidget *parent,
+                              GimpHelpFunc help_func, const gchar *help_id,
+                              const gchar *message, gint initial, gint lower,
+                              gint upper, GObject *object, const gchar *signal,
+                              GimpQueryIntCallback callback, gpointer data,
+                              GDestroyNotify data_destroy);
 
-GtkWidget * gimp_query_double_box  (const gchar              *title,
-                                    GtkWidget                *parent,
-                                    GimpHelpFunc help_func,
-                                    const gchar              *help_id,
-                                    const gchar              *message,
-                                    gdouble initial,
-                                    gdouble lower,
-                                    gdouble upper,
-                                    gint digits,
-                                    GObject                  *object,
-                                    const gchar              *signal,
-                                    GimpQueryDoubleCallback callback,
-                                    gpointer data,
-                                    GDestroyNotify data_destroy);
+GtkWidget *gimp_query_double_box(const gchar *title, GtkWidget *parent,
+                                 GimpHelpFunc help_func, const gchar *help_id,
+                                 const gchar *message, gdouble initial,
+                                 gdouble lower, gdouble upper, gint digits,
+                                 GObject *object, const gchar *signal,
+                                 GimpQueryDoubleCallback callback,
+                                 gpointer data, GDestroyNotify data_destroy);
 
-GtkWidget * gimp_query_size_box    (const gchar              *title,
-                                    GtkWidget                *parent,
-                                    GimpHelpFunc help_func,
-                                    const gchar              *help_id,
-                                    const gchar              *message,
-                                    gdouble initial,
-                                    gdouble lower,
-                                    gdouble upper,
-                                    gint digits,
-                                    GimpUnit unit,
-                                    gdouble resolution,
-                                    gboolean dot_for_dot,
-                                    GObject                  *object,
-                                    const gchar              *signal,
-                                    GimpQuerySizeCallback callback,
-                                    gpointer data,
-                                    GDestroyNotify data_destroy);
+GtkWidget *gimp_query_size_box(
+    const gchar *title, GtkWidget *parent, GimpHelpFunc help_func,
+    const gchar *help_id, const gchar *message, gdouble initial, gdouble lower,
+    gdouble upper, gint digits, GimpUnit unit, gdouble resolution,
+    gboolean dot_for_dot, GObject *object, const gchar *signal,
+    GimpQuerySizeCallback callback, gpointer data, GDestroyNotify data_destroy);
 
-GtkWidget * gimp_query_boolean_box (const gchar              *title,
-                                    GtkWidget                *parent,
-                                    GimpHelpFunc help_func,
-                                    const gchar              *help_id,
-                                    const gchar              *icon_name,
-                                    const gchar              *message,
-                                    const gchar              *true_button,
-                                    const gchar              *false_button,
-                                    GObject                  *object,
-                                    const gchar              *signal,
-                                    GimpQueryBooleanCallback callback,
-                                    gpointer data,
-                                    GDestroyNotify data_destroy);
-
+GtkWidget *gimp_query_boolean_box(const gchar *title, GtkWidget *parent,
+                                  GimpHelpFunc help_func, const gchar *help_id,
+                                  const gchar *icon_name, const gchar *message,
+                                  const gchar *true_button,
+                                  const gchar *false_button, GObject *object,
+                                  const gchar *signal,
+                                  GimpQueryBooleanCallback callback,
+                                  gpointer data, GDestroyNotify data_destroy);
 
 G_END_DECLS
 

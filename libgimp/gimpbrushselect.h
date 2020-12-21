@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -39,27 +39,19 @@ G_BEGIN_DECLS
  * @dialog_closing: Dialog closing?
  * @user_data: (closure): user data
  */
-typedef void (* GimpRunBrushCallback)   (const gchar          *brush_name,
-                                         gdouble opacity,
-                                         gint spacing,
-                                         GimpLayerMode paint_mode,
-                                         gint width,
-                                         gint height,
-                                         const guchar         *mask_data,
-                                         gboolean dialog_closing,
-                                         gpointer user_data);
+typedef void (*GimpRunBrushCallback)(const gchar *brush_name, gdouble opacity,
+                                     gint spacing, GimpLayerMode paint_mode,
+                                     gint width, gint height,
+                                     const guchar *mask_data,
+                                     gboolean dialog_closing,
+                                     gpointer user_data);
 
-
-const gchar * gimp_brush_select_new     (const gchar          *title,
-                                         const gchar          *brush_name,
-                                         gdouble opacity,
-                                         gint spacing,
-                                         GimpLayerMode paint_mode,
-                                         GimpRunBrushCallback callback,
-                                         gpointer data,
-                                         GDestroyNotify data_destroy);
-void          gimp_brush_select_destroy (const gchar          *brush_callback);
-
+const gchar *gimp_brush_select_new(const gchar *title, const gchar *brush_name,
+                                   gdouble opacity, gint spacing,
+                                   GimpLayerMode paint_mode,
+                                   GimpRunBrushCallback callback, gpointer data,
+                                   GDestroyNotify data_destroy);
+void gimp_brush_select_destroy(const gchar *brush_callback);
 
 G_END_DECLS
 

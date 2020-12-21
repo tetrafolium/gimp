@@ -25,8 +25,8 @@
  * So we call instead a separate program, then exit.
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <sys/stat.h>
@@ -39,64 +39,57 @@
 
 #include "app/widgets/gimpcriticaldialog.h"
 
+int main(int argc, char **argv) {
+  const gchar *program;
+  const gchar *pid;
+  const gchar *reason;
+  const gchar *message;
+  const gchar *bt_file = NULL;
+  const gchar *last_version = NULL;
+  const gchar *release_date = NULL;
+  gchar *trace = NULL;
+  gchar *error;
+  GtkWidget *dialog;
 
+  if (argc != 6 && argc != 8) {
+    g_print("Usage: gimp-debug-tool-2.0 [PROGRAM] [PID] [REASON] [MESSAGE] "
+            "[BT_FILE] "
+            "([LAST_VERSION] [RELEASE_TIMESTAMP])\n");
+    exit(EXIT_FAILURE);
+  }
 
-int
-main (int argc,
-      char **argv)
-{
-	const gchar *program;
-	const gchar *pid;
-	const gchar *reason;
-	const gchar *message;
-	const gchar *bt_file      = NULL;
-	const gchar *last_version = NULL;
-	const gchar *release_date = NULL;
-	gchar       *trace        = NULL;
-	gchar       *error;
-	GtkWidget   *dialog;
+  program = argv[1];
+  pid = argv[2];
+  reason = argv[3];
+  message = argv[4];
 
-	if (argc != 6 && argc != 8)
-	{
-		g_print ("Usage: gimp-debug-tool-2.0 [PROGRAM] [PID] [REASON] [MESSAGE] [BT_FILE] "
-		         "([LAST_VERSION] [RELEASE_TIMESTAMP])\n");
-		exit (EXIT_FAILURE);
-	}
+  error = g_strdup_printf("%s: %s", reason, message);
 
-	program = argv[1];
-	pid     = argv[2];
-	reason  = argv[3];
-	message = argv[4];
+  bt_file = argv[5];
+  g_file_get_contents(bt_file, &trace, NULL, NULL);
 
-	error   = g_strdup_printf ("%s: %s", reason, message);
+  if (trace == NULL || strlen(trace) == 0)
+    exit(EXIT_FAILURE);
 
-	bt_file = argv[5];
-	g_file_get_contents (bt_file, &trace, NULL, NULL);
+  if (argc == 8) {
+    last_version = argv[6];
+    release_date = argv[7];
+  }
 
-	if (trace == NULL || strlen (trace) == 0)
-		exit (EXIT_FAILURE);
+  gtk_init(&argc, &argv);
 
-	if (argc == 8)
-	{
-		last_version = argv[6];
-		release_date = argv[7];
-	}
+  dialog = gimp_critical_dialog_new(
+      _("GIMP Crash Debug"), last_version,
+      release_date ? g_ascii_strtoll(release_date, NULL, 10) : -1);
+  gimp_critical_dialog_add(dialog, error, trace, TRUE, program,
+                           g_ascii_strtoull(pid, NULL, 10));
+  g_free(error);
+  g_free(trace);
+  g_signal_connect(dialog, "delete-event", G_CALLBACK(gtk_main_quit), NULL);
+  g_signal_connect(dialog, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-	gtk_init (&argc, &argv);
+  gtk_widget_show(dialog);
+  gtk_main();
 
-	dialog = gimp_critical_dialog_new (_("GIMP Crash Debug"), last_version,
-	                                   release_date ? g_ascii_strtoll (release_date, NULL, 10) : -1);
-	gimp_critical_dialog_add (dialog, error, trace, TRUE, program,
-	                          g_ascii_strtoull (pid, NULL, 10));
-	g_free (error);
-	g_free (trace);
-	g_signal_connect (dialog, "delete-event",
-	                  G_CALLBACK (gtk_main_quit), NULL);
-	g_signal_connect (dialog, "destroy",
-	                  G_CALLBACK (gtk_main_quit), NULL);
-
-	gtk_widget_show (dialog);
-	gtk_main ();
-
-	exit (EXIT_SUCCESS);
+  exit(EXIT_SUCCESS);
 }

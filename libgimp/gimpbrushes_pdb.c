@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpbrushes
  * @title: gimpbrushes
@@ -32,7 +31,6 @@
  *
  * Functions related to getting and setting brushes.
  **/
-
 
 /**
  * gimp_brushes_refresh:
@@ -44,26 +42,22 @@
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_brushes_refresh (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_brushes_refresh(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-brushes-refresh",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-brushes-refresh", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -81,32 +75,26 @@ gimp_brushes_refresh (void)
  *          The list of brush names.
  *          The returned value must be freed with g_strfreev().
  **/
-gchar **
-gimp_brushes_get_list (const gchar *filter,
-                       gint        *num_brushes)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar **brush_list = NULL;
+gchar **gimp_brushes_get_list(const gchar *filter, gint *num_brushes) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar **brush_list = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, filter,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, filter, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-brushes-get-list",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-brushes-get-list", args);
+  gimp_value_array_unref(args);
 
-	*num_brushes = 0;
+  *num_brushes = 0;
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-	{
-		*num_brushes = GIMP_VALUES_GET_INT (return_vals, 1);
-		brush_list = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
-	}
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS) {
+    *num_brushes = GIMP_VALUES_GET_INT(return_vals, 1);
+    brush_list = GIMP_VALUES_DUP_STRING_ARRAY(return_vals, 2);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return brush_list;
+  return brush_list;
 }

@@ -28,30 +28,26 @@
 #include "gimpbase-private.h"
 #include "gimpcompatenums.h"
 
+GimpUnitVtable _gimp_unit_vtable = {
+    NULL,
+};
 
-GimpUnitVtable _gimp_unit_vtable = { NULL, };
+void gimp_base_init(GimpUnitVtable *vtable) {
+  static gboolean gimp_base_initialized = FALSE;
 
+  g_return_if_fail(vtable != NULL);
 
-void
-gimp_base_init (GimpUnitVtable *vtable)
-{
-	static gboolean gimp_base_initialized = FALSE;
+  if (gimp_base_initialized)
+    g_error("gimp_base_init() must only be called once!");
 
-	g_return_if_fail (vtable != NULL);
+  _gimp_unit_vtable = *vtable;
 
-	if (gimp_base_initialized)
-		g_error ("gimp_base_init() must only be called once!");
+  gimp_base_compat_enums_init();
 
-	_gimp_unit_vtable = *vtable;
-
-	gimp_base_compat_enums_init ();
-
-	gimp_base_initialized = TRUE;
+  gimp_base_initialized = TRUE;
 }
 
-void
-gimp_base_compat_enums_init (void)
-{
+void gimp_base_compat_enums_init(void) {
 #if 0
 	static gboolean gimp_base_compat_initialized = FALSE;
 	GQuark quark;

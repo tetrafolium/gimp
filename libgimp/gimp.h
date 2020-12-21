@@ -22,9 +22,9 @@
 #define __GIMP_H__
 
 #include <cairo.h>
-#include <glib-object.h>
-#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
+#include <glib-object.h>
 
 #include <libgimpbase/gimpbase.h>
 #include <libgimpcolor/gimpcolor.h>
@@ -56,8 +56,8 @@
 #include <libgimp/gimppatternselect.h>
 #include <libgimp/gimppdb.h>
 #include <libgimp/gimpplugin.h>
-#include <libgimp/gimpprocedureconfig.h>
 #include <libgimp/gimpprocedure-params.h>
+#include <libgimp/gimpprocedureconfig.h>
 #include <libgimp/gimpprogress.h>
 #include <libgimp/gimpsaveprocedure.h>
 #include <libgimp/gimpselection.h>
@@ -74,11 +74,9 @@
 
 G_BEGIN_DECLS
 
-
-#define gimp_get_data      gimp_pdb_get_data
+#define gimp_get_data gimp_pdb_get_data
 #define gimp_get_data_size gimp_pdb_get_data_size
-#define gimp_set_data      gimp_pdb_set_data
-
+#define gimp_set_data gimp_pdb_set_data
 
 /**
  * GIMP_MAIN:
@@ -102,94 +100,78 @@ G_BEGIN_DECLS
  * define a main() in case some plug-in still is built as a console
  * application.
  */
-#  ifdef __GNUC__
-#    ifndef _stdcall
-#      define _stdcall __attribute__((stdcall))
-#    endif
-#  endif
-
-#  define GIMP_MAIN(plug_in_type)                       \
-	struct HINSTANCE__;                                  \
-                                                        \
-	int _stdcall                                         \
-	WinMain (struct HINSTANCE__ *hInstance,              \
-	         struct HINSTANCE__ *hPrevInstance,          \
-	         char *lpszCmdLine,                          \
-	         int nCmdShow);                            \
-                                                        \
-	int _stdcall                                         \
-	WinMain (struct HINSTANCE__ *hInstance,              \
-	         struct HINSTANCE__ *hPrevInstance,          \
-	         char *lpszCmdLine,                          \
-	         int nCmdShow)                             \
-	{                                                    \
-		return gimp_main (plug_in_type,                    \
-		                  __argc, __argv);                 \
-	}                                                    \
-                                                        \
-	int                                                  \
-	main (int argc, char *argv[])                        \
-	{                                                    \
-		/* Use __argc and __argv here, too, as they work \
-		 * better with mingw-w64. \
-		 */                                     \
-		return gimp_main (plug_in_type,                    \
-		                  __argc, __argv);                 \
-	}
-#else
-#  define GIMP_MAIN(plug_in_type)                       \
-	int                                                  \
-	main (int argc, char *argv[])                        \
-	{                                                    \
-		return gimp_main (plug_in_type,                    \
-		                  argc, argv);                     \
-	}
+#ifdef __GNUC__
+#ifndef _stdcall
+#define _stdcall __attribute__((stdcall))
+#endif
 #endif
 
+#define GIMP_MAIN(plug_in_type)                                                \
+  struct HINSTANCE__;                                                          \
+                                                                               \
+  int _stdcall WinMain(struct HINSTANCE__ *hInstance,                          \
+                       struct HINSTANCE__ *hPrevInstance, char *lpszCmdLine,   \
+                       int nCmdShow);                                          \
+                                                                               \
+  int _stdcall WinMain(struct HINSTANCE__ *hInstance,                          \
+                       struct HINSTANCE__ *hPrevInstance, char *lpszCmdLine,   \
+                       int nCmdShow) {                                         \
+    return gimp_main(plug_in_type, __argc, __argv);                            \
+  }                                                                            \
+                                                                               \
+  int main(int argc, char *argv[]) {                                           \
+    /* Use __argc and __argv here, too, as they work                           \
+     * better with mingw-w64.                                                  \
+     */                                                                        \
+    return gimp_main(plug_in_type, __argc, __argv);                            \
+  }
+#else
+#define GIMP_MAIN(plug_in_type)                                                \
+  int main(int argc, char *argv[]) {                                           \
+    return gimp_main(plug_in_type, argc, argv);                                \
+  }
+#endif
 
 /* The main procedure that must be called with the plug-in's
  * GimpPlugIn subclass type and the 'argc' and 'argv' that are passed
  * to "main".
  */
-gint                gimp_main                 (GType plug_in_type,
-                                               gint argc,
-                                               gchar *argv[]);
+gint gimp_main(GType plug_in_type, gint argc, gchar *argv[]);
 
 /* Return the GimpPlugIn singleton of this plug-in process
  */
-GimpPlugIn        * gimp_get_plug_in          (void);
+GimpPlugIn *gimp_get_plug_in(void);
 
 /* Return the GimpPDB singleton of this plug-in process
  */
-GimpPDB           * gimp_get_pdb              (void);
+GimpPDB *gimp_get_pdb(void);
 
 /* Forcefully causes the gimp library to exit and
  * close down its connection to main gimp application.
  */
-void                gimp_quit                 (void) G_GNUC_NORETURN;
+void gimp_quit(void) G_GNUC_NORETURN;
 
 /* Return various constants given by the GIMP core at plug-in config time.
  */
-guint               gimp_tile_width           (void) G_GNUC_CONST;
-guint               gimp_tile_height          (void) G_GNUC_CONST;
-gboolean            gimp_show_help_button     (void) G_GNUC_CONST;
-gboolean            gimp_export_color_profile (void) G_GNUC_CONST;
-gboolean            gimp_export_comment       (void) G_GNUC_CONST;
-gboolean            gimp_export_exif          (void) G_GNUC_CONST;
-gboolean            gimp_export_xmp           (void) G_GNUC_CONST;
-gboolean            gimp_export_iptc          (void) G_GNUC_CONST;
-gint                gimp_get_num_processors   (void) G_GNUC_CONST;
-GimpCheckSize       gimp_check_size           (void) G_GNUC_CONST;
-GimpCheckType       gimp_check_type           (void) G_GNUC_CONST;
-GimpDisplay       * gimp_default_display      (void) G_GNUC_CONST;
-const gchar       * gimp_wm_class             (void) G_GNUC_CONST;
-const gchar       * gimp_display_name         (void) G_GNUC_CONST;
-gint                gimp_monitor_number       (void) G_GNUC_CONST;
-guint32             gimp_user_time            (void) G_GNUC_CONST;
-const gchar       * gimp_icon_theme_dir       (void) G_GNUC_CONST;
+guint gimp_tile_width(void) G_GNUC_CONST;
+guint gimp_tile_height(void) G_GNUC_CONST;
+gboolean gimp_show_help_button(void) G_GNUC_CONST;
+gboolean gimp_export_color_profile(void) G_GNUC_CONST;
+gboolean gimp_export_comment(void) G_GNUC_CONST;
+gboolean gimp_export_exif(void) G_GNUC_CONST;
+gboolean gimp_export_xmp(void) G_GNUC_CONST;
+gboolean gimp_export_iptc(void) G_GNUC_CONST;
+gint gimp_get_num_processors(void) G_GNUC_CONST;
+GimpCheckSize gimp_check_size(void) G_GNUC_CONST;
+GimpCheckType gimp_check_type(void) G_GNUC_CONST;
+GimpDisplay *gimp_default_display(void) G_GNUC_CONST;
+const gchar *gimp_wm_class(void) G_GNUC_CONST;
+const gchar *gimp_display_name(void) G_GNUC_CONST;
+gint gimp_monitor_number(void) G_GNUC_CONST;
+guint32 gimp_user_time(void) G_GNUC_CONST;
+const gchar *gimp_icon_theme_dir(void) G_GNUC_CONST;
 
-const gchar       * gimp_get_progname         (void) G_GNUC_CONST;
-
+const gchar *gimp_get_progname(void) G_GNUC_CONST;
 
 G_END_DECLS
 

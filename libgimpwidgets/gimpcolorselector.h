@@ -23,7 +23,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -34,14 +34,13 @@ G_BEGIN_DECLS
 
 /* For information look at the html documentation */
 
-
 /**
  * GIMP_COLOR_SELECTOR_SIZE:
  *
  * The suggested size for a color area in a #GimpColorSelector
  * implementation.
  **/
-#define GIMP_COLOR_SELECTOR_SIZE     150
+#define GIMP_COLOR_SELECTOR_SIZE 150
 
 /**
  * GIMP_COLOR_SELECTOR_BAR_SIZE:
@@ -51,126 +50,119 @@ G_BEGIN_DECLS
  **/
 #define GIMP_COLOR_SELECTOR_BAR_SIZE 15
 
-
-#define GIMP_TYPE_COLOR_SELECTOR            (gimp_color_selector_get_type ())
-#define GIMP_COLOR_SELECTOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_SELECTOR, GimpColorSelector))
-#define GIMP_COLOR_SELECTOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_SELECTOR, GimpColorSelectorClass))
-#define GIMP_IS_COLOR_SELECTOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_SELECTOR))
-#define GIMP_IS_COLOR_SELECTOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_SELECTOR))
-#define GIMP_COLOR_SELECTOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_SELECTOR, GimpColorSelectorClass))
+#define GIMP_TYPE_COLOR_SELECTOR (gimp_color_selector_get_type())
+#define GIMP_COLOR_SELECTOR(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_SELECTOR,                 \
+                              GimpColorSelector))
+#define GIMP_COLOR_SELECTOR_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_SELECTOR,                  \
+                           GimpColorSelectorClass))
+#define GIMP_IS_COLOR_SELECTOR(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_SELECTOR))
+#define GIMP_IS_COLOR_SELECTOR_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_SELECTOR))
+#define GIMP_COLOR_SELECTOR_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_SELECTOR,                  \
+                             GimpColorSelectorClass))
 
 typedef struct _GimpColorSelectorPrivate GimpColorSelectorPrivate;
 typedef struct _GimpColorSelectorClass GimpColorSelectorClass;
 
-struct _GimpColorSelector
-{
-	GtkBox parent_instance;
+struct _GimpColorSelector {
+  GtkBox parent_instance;
 
-	GimpColorSelectorPrivate *priv;
+  GimpColorSelectorPrivate *priv;
 
-	/* FIXME MOVE TO PRIVATE */
-	gboolean toggles_visible;
-	gboolean toggles_sensitive;
-	gboolean show_alpha;
+  /* FIXME MOVE TO PRIVATE */
+  gboolean toggles_visible;
+  gboolean toggles_sensitive;
+  gboolean show_alpha;
 
-	GimpRGB rgb;
-	GimpHSV hsv;
+  GimpRGB rgb;
+  GimpHSV hsv;
 
-	GimpColorSelectorChannel channel;
+  GimpColorSelectorChannel channel;
 };
 
-struct _GimpColorSelectorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpColorSelectorClass {
+  GtkBoxClass parent_class;
 
-	const gchar *name;
-	const gchar *help_id;
-	const gchar *icon_name;
+  const gchar *name;
+  const gchar *help_id;
+  const gchar *icon_name;
 
-	/*  virtual functions  */
-	void (* set_toggles_visible)   (GimpColorSelector        *selector,
-	                                gboolean visible);
-	void (* set_toggles_sensitive) (GimpColorSelector        *selector,
-	                                gboolean sensitive);
-	void (* set_show_alpha)        (GimpColorSelector        *selector,
-	                                gboolean show_alpha);
-	void (* set_color)             (GimpColorSelector        *selector,
-	                                const GimpRGB            *rgb,
-	                                const GimpHSV            *hsv);
-	void (* set_channel)           (GimpColorSelector        *selector,
-	                                GimpColorSelectorChannel channel);
-	void (* set_model_visible)     (GimpColorSelector        *selector,
-	                                GimpColorSelectorModel model,
-	                                gboolean visible);
-	void (* set_config)            (GimpColorSelector        *selector,
-	                                GimpColorConfig          *config);
+  /*  virtual functions  */
+  void (*set_toggles_visible)(GimpColorSelector *selector, gboolean visible);
+  void (*set_toggles_sensitive)(GimpColorSelector *selector,
+                                gboolean sensitive);
+  void (*set_show_alpha)(GimpColorSelector *selector, gboolean show_alpha);
+  void (*set_color)(GimpColorSelector *selector, const GimpRGB *rgb,
+                    const GimpHSV *hsv);
+  void (*set_channel)(GimpColorSelector *selector,
+                      GimpColorSelectorChannel channel);
+  void (*set_model_visible)(GimpColorSelector *selector,
+                            GimpColorSelectorModel model, gboolean visible);
+  void (*set_config)(GimpColorSelector *selector, GimpColorConfig *config);
 
-	/*  signals  */
-	void (* color_changed)         (GimpColorSelector        *selector,
-	                                const GimpRGB            *rgb,
-	                                const GimpHSV            *hsv);
-	void (* channel_changed)       (GimpColorSelector        *selector,
-	                                GimpColorSelectorChannel channel);
-	void (* model_visible_changed) (GimpColorSelector        *selector,
-	                                GimpColorSelectorModel model,
-	                                gboolean visible);
+  /*  signals  */
+  void (*color_changed)(GimpColorSelector *selector, const GimpRGB *rgb,
+                        const GimpHSV *hsv);
+  void (*channel_changed)(GimpColorSelector *selector,
+                          GimpColorSelectorChannel channel);
+  void (*model_visible_changed)(GimpColorSelector *selector,
+                                GimpColorSelectorModel model, gboolean visible);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_color_selector_get_type(void) G_GNUC_CONST;
+GtkWidget *gimp_color_selector_new(GType selector_type, const GimpRGB *rgb,
+                                   const GimpHSV *hsv,
+                                   GimpColorSelectorChannel channel);
 
-GType       gimp_color_selector_get_type         (void) G_GNUC_CONST;
-GtkWidget * gimp_color_selector_new              (GType selector_type,
-                                                  const GimpRGB     *rgb,
-                                                  const GimpHSV     *hsv,
-                                                  GimpColorSelectorChannel channel);
+void gimp_color_selector_set_toggles_visible(GimpColorSelector *selector,
+                                             gboolean visible);
+gboolean gimp_color_selector_get_toggles_visible(GimpColorSelector *selector);
 
-void     gimp_color_selector_set_toggles_visible   (GimpColorSelector *selector,
-                                                    gboolean visible);
-gboolean gimp_color_selector_get_toggles_visible   (GimpColorSelector *selector);
+void gimp_color_selector_set_toggles_sensitive(GimpColorSelector *selector,
+                                               gboolean sensitive);
+gboolean gimp_color_selector_get_toggles_sensitive(GimpColorSelector *selector);
 
-void     gimp_color_selector_set_toggles_sensitive (GimpColorSelector *selector,
-                                                    gboolean sensitive);
-gboolean gimp_color_selector_get_toggles_sensitive (GimpColorSelector *selector);
+void gimp_color_selector_set_show_alpha(GimpColorSelector *selector,
+                                        gboolean show_alpha);
+gboolean gimp_color_selector_get_show_alpha(GimpColorSelector *selector);
 
-void     gimp_color_selector_set_show_alpha        (GimpColorSelector *selector,
-                                                    gboolean show_alpha);
-gboolean gimp_color_selector_get_show_alpha        (GimpColorSelector *selector);
+void gimp_color_selector_set_color(GimpColorSelector *selector,
+                                   const GimpRGB *rgb, const GimpHSV *hsv);
+void gimp_color_selector_get_color(GimpColorSelector *selector, GimpRGB *rgb,
+                                   GimpHSV *hsv);
 
-void     gimp_color_selector_set_color             (GimpColorSelector *selector,
-                                                    const GimpRGB     *rgb,
-                                                    const GimpHSV     *hsv);
-void     gimp_color_selector_get_color             (GimpColorSelector *selector,
-                                                    GimpRGB           *rgb,
-                                                    GimpHSV           *hsv);
-
-void     gimp_color_selector_set_channel           (GimpColorSelector *selector,
-                                                    GimpColorSelectorChannel channel);
+void gimp_color_selector_set_channel(GimpColorSelector *selector,
+                                     GimpColorSelectorChannel channel);
 GimpColorSelectorChannel
-gimp_color_selector_get_channel           (GimpColorSelector *selector);
+gimp_color_selector_get_channel(GimpColorSelector *selector);
 
-void     gimp_color_selector_set_model_visible     (GimpColorSelector *selector,
-                                                    GimpColorSelectorModel model,
-                                                    gboolean visible);
-gboolean gimp_color_selector_get_model_visible     (GimpColorSelector *selector,
-                                                    GimpColorSelectorModel model);
+void gimp_color_selector_set_model_visible(GimpColorSelector *selector,
+                                           GimpColorSelectorModel model,
+                                           gboolean visible);
+gboolean gimp_color_selector_get_model_visible(GimpColorSelector *selector,
+                                               GimpColorSelectorModel model);
 
-void     gimp_color_selector_emit_color_changed         (GimpColorSelector *selector);
-void     gimp_color_selector_emit_channel_changed       (GimpColorSelector *selector);
-void     gimp_color_selector_emit_model_visible_changed (GimpColorSelector *selector,
-                                                         GimpColorSelectorModel model);
+void gimp_color_selector_emit_color_changed(GimpColorSelector *selector);
+void gimp_color_selector_emit_channel_changed(GimpColorSelector *selector);
+void gimp_color_selector_emit_model_visible_changed(
+    GimpColorSelector *selector, GimpColorSelectorModel model);
 
-void     gimp_color_selector_set_config            (GimpColorSelector *selector,
-                                                    GimpColorConfig   *config);
-
+void gimp_color_selector_set_config(GimpColorSelector *selector,
+                                    GimpColorConfig *config);
 
 G_END_DECLS
 

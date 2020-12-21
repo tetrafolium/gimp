@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_CONFIG_H_INSIDE__) && !defined (GIMP_CONFIG_COMPILATION)
+#if !defined(__GIMP_CONFIG_H_INSIDE__) && !defined(GIMP_CONFIG_COMPILATION)
 #error "Only <libgimpconfig/gimpconfig.h> can be included directly."
 #endif
 
@@ -28,7 +28,6 @@
 G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
-
 
 /**
  * GimpConfigError:
@@ -40,20 +39,18 @@ G_BEGIN_DECLS
  *
  * The possible values of a #GError thrown by libgimpconfig.
  **/
-typedef enum
-{
-	GIMP_CONFIG_ERROR_OPEN,
-	GIMP_CONFIG_ERROR_OPEN_ENOENT,
-	GIMP_CONFIG_ERROR_WRITE,
-	GIMP_CONFIG_ERROR_PARSE,
-	GIMP_CONFIG_ERROR_VERSION
+typedef enum {
+  GIMP_CONFIG_ERROR_OPEN,
+  GIMP_CONFIG_ERROR_OPEN_ENOENT,
+  GIMP_CONFIG_ERROR_WRITE,
+  GIMP_CONFIG_ERROR_PARSE,
+  GIMP_CONFIG_ERROR_VERSION
 } GimpConfigError;
 
-#define GIMP_CONFIG_ERROR (gimp_config_error_quark ())
+#define GIMP_CONFIG_ERROR (gimp_config_error_quark())
 
-GQuark        gimp_config_error_quark   (void) G_GNUC_CONST;
-
+GQuark gimp_config_error_quark(void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif  /* __GIMP_CONFIG_ERROR_H__ */
+#endif /* __GIMP_CONFIG_ERROR_H__ */

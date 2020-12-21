@@ -28,7 +28,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /**
  * GimpRunLoadFunc:
  * @procedure:   the #GimpProcedure that runs.
@@ -44,56 +43,57 @@ G_BEGIN_DECLS
  *
  * Since: 3.0
  **/
-typedef GimpValueArray * (* GimpRunLoadFunc) (GimpProcedure        *procedure,
-                                              GimpRunMode run_mode,
-                                              GFile                *file,
-                                              const GimpValueArray *args,
-                                              gpointer run_data);
+typedef GimpValueArray *(*GimpRunLoadFunc)(GimpProcedure *procedure,
+                                           GimpRunMode run_mode, GFile *file,
+                                           const GimpValueArray *args,
+                                           gpointer run_data);
 
-
-#define GIMP_TYPE_LOAD_PROCEDURE            (gimp_load_procedure_get_type ())
-#define GIMP_LOAD_PROCEDURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LOAD_PROCEDURE, GimpLoadProcedure))
-#define GIMP_LOAD_PROCEDURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LOAD_PROCEDURE, GimpLoadProcedureClass))
-#define GIMP_IS_LOAD_PROCEDURE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LOAD_PROCEDURE))
-#define GIMP_IS_LOAD_PROCEDURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LOAD_PROCEDURE))
-#define GIMP_LOAD_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LOAD_PROCEDURE, GimpLoadProcedureClass))
-
+#define GIMP_TYPE_LOAD_PROCEDURE (gimp_load_procedure_get_type())
+#define GIMP_LOAD_PROCEDURE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LOAD_PROCEDURE,                 \
+                              GimpLoadProcedure))
+#define GIMP_LOAD_PROCEDURE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LOAD_PROCEDURE,                  \
+                           GimpLoadProcedureClass))
+#define GIMP_IS_LOAD_PROCEDURE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LOAD_PROCEDURE))
+#define GIMP_IS_LOAD_PROCEDURE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LOAD_PROCEDURE))
+#define GIMP_LOAD_PROCEDURE_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LOAD_PROCEDURE,                  \
+                             GimpLoadProcedureClass))
 
 typedef struct _GimpLoadProcedure GimpLoadProcedure;
 typedef struct _GimpLoadProcedureClass GimpLoadProcedureClass;
 typedef struct _GimpLoadProcedurePrivate GimpLoadProcedurePrivate;
 
-struct _GimpLoadProcedure
-{
-	GimpFileProcedure parent_instance;
+struct _GimpLoadProcedure {
+  GimpFileProcedure parent_instance;
 
-	GimpLoadProcedurePrivate *priv;
+  GimpLoadProcedurePrivate *priv;
 };
 
-struct _GimpLoadProcedureClass
-{
-	GimpFileProcedureClass parent_class;
+struct _GimpLoadProcedureClass {
+  GimpFileProcedureClass parent_class;
 };
 
+GType gimp_load_procedure_get_type(void) G_GNUC_CONST;
 
-GType           gimp_load_procedure_get_type             (void) G_GNUC_CONST;
+GimpProcedure *gimp_load_procedure_new(GimpPlugIn *plug_in, const gchar *name,
+                                       GimpPDBProcType proc_type,
+                                       GimpRunLoadFunc run_func,
+                                       gpointer run_data,
+                                       GDestroyNotify run_data_destroy);
 
-GimpProcedure * gimp_load_procedure_new                  (GimpPlugIn        *plug_in,
-                                                          const gchar       *name,
-                                                          GimpPDBProcType proc_type,
-                                                          GimpRunLoadFunc run_func,
-                                                          gpointer run_data,
-                                                          GDestroyNotify run_data_destroy);
+void gimp_load_procedure_set_handles_raw(GimpLoadProcedure *procedure,
+                                         gboolean handles_raw);
+gboolean gimp_load_procedure_get_handles_raw(GimpLoadProcedure *procedure);
 
-void            gimp_load_procedure_set_handles_raw      (GimpLoadProcedure *procedure,
-                                                          gboolean handles_raw);
-gboolean        gimp_load_procedure_get_handles_raw      (GimpLoadProcedure *procedure);
-
-void            gimp_load_procedure_set_thumbnail_loader (GimpLoadProcedure *procedure,
-                                                          const gchar       *thumbnail_proc);
-const gchar   * gimp_load_procedure_get_thumbnail_loader (GimpLoadProcedure *procedure);
-
+void gimp_load_procedure_set_thumbnail_loader(GimpLoadProcedure *procedure,
+                                              const gchar *thumbnail_proc);
+const gchar *
+gimp_load_procedure_get_thumbnail_loader(GimpLoadProcedure *procedure);
 
 G_END_DECLS
 
-#endif  /*  __GIMP_LOAD_PROCEDURE_H__  */
+#endif /*  __GIMP_LOAD_PROCEDURE_H__  */

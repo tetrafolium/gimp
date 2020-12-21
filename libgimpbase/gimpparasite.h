@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#if !defined(__GIMP_BASE_H_INSIDE__) && !defined(GIMP_BASE_COMPILATION)
 #error "Only <libgimpbase/gimpbase.h> can be included directly."
 #endif
 
@@ -30,45 +30,41 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /*
  * GIMP_TYPE_PARASITE
  */
 
-#define GIMP_TYPE_PARASITE               (gimp_parasite_get_type ())
-#define GIMP_VALUE_HOLDS_PARASITE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_PARASITE))
+#define GIMP_TYPE_PARASITE (gimp_parasite_get_type())
+#define GIMP_VALUE_HOLDS_PARASITE(value)                                       \
+  (G_TYPE_CHECK_VALUE_TYPE((value), GIMP_TYPE_PARASITE))
 
-GType   gimp_parasite_get_type           (void) G_GNUC_CONST;
-
+GType gimp_parasite_get_type(void) G_GNUC_CONST;
 
 /*
  * GIMP_TYPE_PARAM_PARASITE
  */
 
-#define GIMP_TYPE_PARAM_PARASITE           (gimp_param_parasite_get_type ())
-#define GIMP_IS_PARAM_SPEC_PARASITE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_PARASITE))
+#define GIMP_TYPE_PARAM_PARASITE (gimp_param_parasite_get_type())
+#define GIMP_IS_PARAM_SPEC_PARASITE(pspec)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((pspec), GIMP_TYPE_PARAM_PARASITE))
 
 typedef struct _GimpParamSpecParasite GimpParamSpecParasite;
 
-GType        gimp_param_parasite_get_type  (void) G_GNUC_CONST;
+GType gimp_param_parasite_get_type(void) G_GNUC_CONST;
 
-GParamSpec * gimp_param_spec_parasite      (const gchar  *name,
-                                            const gchar  *nick,
-                                            const gchar  *blurb,
-                                            GParamFlags flags);
-
+GParamSpec *gimp_param_spec_parasite(const gchar *name, const gchar *nick,
+                                     const gchar *blurb, GParamFlags flags);
 
 #define GIMP_PARASITE_PERSISTENT 1
-#define GIMP_PARASITE_UNDOABLE   2
+#define GIMP_PARASITE_UNDOABLE 2
 
-#define GIMP_PARASITE_ATTACH_PARENT     (0x80 << 8)
+#define GIMP_PARASITE_ATTACH_PARENT (0x80 << 8)
 #define GIMP_PARASITE_PARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT << 8)
-#define GIMP_PARASITE_PARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE << 8)
+#define GIMP_PARASITE_PARENT_UNDOABLE (GIMP_PARASITE_UNDOABLE << 8)
 
-#define GIMP_PARASITE_ATTACH_GRANDPARENT     (0x80 << 16)
+#define GIMP_PARASITE_ATTACH_GRANDPARENT (0x80 << 16)
 #define GIMP_PARASITE_GRANDPARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT << 16)
-#define GIMP_PARASITE_GRANDPARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE << 16)
-
+#define GIMP_PARASITE_GRANDPARENT_UNDOABLE (GIMP_PARASITE_UNDOABLE << 16)
 
 /**
  * GimpParasite:
@@ -78,37 +74,29 @@ GParamSpec * gimp_param_spec_parasite      (const gchar  *name,
  * @data:  the parasite data, the owner os the parasite is responsible
  *   for tracking byte order and internal structure
  **/
-struct _GimpParasite
-{
-	gchar    *name;
-	guint32 flags;
-	guint32 size;
-	gpointer data;
+struct _GimpParasite {
+  gchar *name;
+  guint32 flags;
+  guint32 size;
+  gpointer data;
 };
 
+GimpParasite *gimp_parasite_new(const gchar *name, guint32 flags, guint32 size,
+                                gconstpointer data);
+void gimp_parasite_free(GimpParasite *parasite);
 
-GimpParasite * gimp_parasite_new           (const gchar        *name,
-                                            guint32 flags,
-                                            guint32 size,
-                                            gconstpointer data);
-void           gimp_parasite_free          (GimpParasite       *parasite);
+GimpParasite *gimp_parasite_copy(const GimpParasite *parasite);
 
-GimpParasite * gimp_parasite_copy          (const GimpParasite *parasite);
+gboolean gimp_parasite_compare(const GimpParasite *a, const GimpParasite *b);
 
-gboolean       gimp_parasite_compare       (const GimpParasite *a,
-                                            const GimpParasite *b);
-
-gboolean       gimp_parasite_is_type       (const GimpParasite *parasite,
-                                            const gchar        *name);
-gboolean       gimp_parasite_is_persistent (const GimpParasite *parasite);
-gboolean       gimp_parasite_is_undoable   (const GimpParasite *parasite);
-gboolean       gimp_parasite_has_flag      (const GimpParasite *parasite,
-                                            gulong flag);
-gulong         gimp_parasite_flags         (const GimpParasite *parasite);
-const gchar  * gimp_parasite_name          (const GimpParasite *parasite);
-gconstpointer  gimp_parasite_data          (const GimpParasite *parasite);
-glong          gimp_parasite_data_size     (const GimpParasite *parasite);
-
+gboolean gimp_parasite_is_type(const GimpParasite *parasite, const gchar *name);
+gboolean gimp_parasite_is_persistent(const GimpParasite *parasite);
+gboolean gimp_parasite_is_undoable(const GimpParasite *parasite);
+gboolean gimp_parasite_has_flag(const GimpParasite *parasite, gulong flag);
+gulong gimp_parasite_flags(const GimpParasite *parasite);
+const gchar *gimp_parasite_name(const GimpParasite *parasite);
+gconstpointer gimp_parasite_data(const GimpParasite *parasite);
+glong gimp_parasite_data_size(const GimpParasite *parasite);
 
 G_END_DECLS
 

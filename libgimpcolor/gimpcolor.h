@@ -26,11 +26,11 @@
 #include <libgimpcolor/gimpadaptivesupersample.h>
 #include <libgimpcolor/gimpbilinear.h>
 #include <libgimpcolor/gimpcairo.h>
+#include <libgimpcolor/gimpcmyk.h>
 #include <libgimpcolor/gimpcolormanaged.h>
 #include <libgimpcolor/gimpcolorprofile.h>
 #include <libgimpcolor/gimpcolorspace.h>
 #include <libgimpcolor/gimpcolortransform.h>
-#include <libgimpcolor/gimpcmyk.h>
 #include <libgimpcolor/gimphsl.h>
 #include <libgimpcolor/gimphsv.h>
 #include <libgimpcolor/gimppixbuf.h>
@@ -38,4 +38,4 @@
 
 #undef __GIMP_COLOR_H_INSIDE__
 
-#endif  /* __GIMP_COLOR_H__ */
+#endif /* __GIMP_COLOR_H__ */

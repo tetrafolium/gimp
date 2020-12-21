@@ -27,7 +27,6 @@
 
 #include "gimp.h"
 
-
 /*  include the implementation, they are shared between app/ and
  *  libgimp/ but need different headers.
  */

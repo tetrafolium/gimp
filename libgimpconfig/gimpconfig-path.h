@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_CONFIG_H_INSIDE__) && !defined (GIMP_CONFIG_COMPILATION)
+#if !defined(__GIMP_CONFIG_H_INSIDE__) && !defined(GIMP_CONFIG_COMPILATION)
 #error "Only <libgimpconfig/gimpconfig.h> can be included directly."
 #endif
 
@@ -30,17 +30,15 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /*
  * GIMP_TYPE_CONFIG_PATH
  */
 
-#define GIMP_TYPE_CONFIG_PATH               (gimp_config_path_get_type ())
-#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
+#define GIMP_TYPE_CONFIG_PATH (gimp_config_path_get_type())
+#define GIMP_VALUE_HOLDS_CONFIG_PATH(value)                                    \
+  (G_TYPE_CHECK_VALUE_TYPE((value), GIMP_TYPE_CONFIG_PATH))
 
-GType               gimp_config_path_get_type        (void) G_GNUC_CONST;
-
-
+GType gimp_config_path_get_type(void) G_GNUC_CONST;
 
 /*
  * GIMP_TYPE_PARAM_CONFIG_PATH
@@ -55,54 +53,47 @@ GType               gimp_config_path_get_type        (void) G_GNUC_CONST;
  *
  * Types of config paths.
  **/
-typedef enum
-{
-	GIMP_CONFIG_PATH_FILE,
-	GIMP_CONFIG_PATH_FILE_LIST,
-	GIMP_CONFIG_PATH_DIR,
-	GIMP_CONFIG_PATH_DIR_LIST
+typedef enum {
+  GIMP_CONFIG_PATH_FILE,
+  GIMP_CONFIG_PATH_FILE_LIST,
+  GIMP_CONFIG_PATH_DIR,
+  GIMP_CONFIG_PATH_DIR_LIST
 } GimpConfigPathType;
 
+#define GIMP_TYPE_PARAM_CONFIG_PATH (gimp_param_config_path_get_type())
+#define GIMP_IS_PARAM_SPEC_CONFIG_PATH(pspec)                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((pspec), GIMP_TYPE_PARAM_CONFIG_PATH))
 
-#define GIMP_TYPE_PARAM_CONFIG_PATH            (gimp_param_config_path_get_type ())
-#define GIMP_IS_PARAM_SPEC_CONFIG_PATH(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_CONFIG_PATH))
+GType gimp_param_config_path_get_type(void) G_GNUC_CONST;
 
-GType               gimp_param_config_path_get_type  (void) G_GNUC_CONST;
+GParamSpec *gimp_param_spec_config_path(const gchar *name, const gchar *nick,
+                                        const gchar *blurb,
+                                        GimpConfigPathType type,
+                                        const gchar *default_value,
+                                        GParamFlags flags);
 
-GParamSpec        * gimp_param_spec_config_path      (const gchar  *name,
-                                                      const gchar  *nick,
-                                                      const gchar  *blurb,
-                                                      GimpConfigPathType type,
-                                                      const gchar  *default_value,
-                                                      GParamFlags flags);
-
-GimpConfigPathType  gimp_param_spec_config_path_type (GParamSpec   *pspec);
-
+GimpConfigPathType gimp_param_spec_config_path_type(GParamSpec *pspec);
 
 /*
  * GimpConfigPath utilities
  */
 
-gchar             * gimp_config_path_expand          (const gchar  *path,
-                                                      gboolean recode,
-                                                      GError      **error) G_GNUC_MALLOC;
-GList             * gimp_config_path_expand_to_files (const gchar  *path,
-                                                      GError      **error) G_GNUC_MALLOC;
+gchar *gimp_config_path_expand(const gchar *path, gboolean recode,
+                               GError **error) G_GNUC_MALLOC;
+GList *gimp_config_path_expand_to_files(const gchar *path,
+                                        GError **error) G_GNUC_MALLOC;
 
-gchar             * gimp_config_path_unexpand        (const gchar  *path,
-                                                      gboolean recode,
-                                                      GError      **error) G_GNUC_MALLOC;
+gchar *gimp_config_path_unexpand(const gchar *path, gboolean recode,
+                                 GError **error) G_GNUC_MALLOC;
 
-GFile             * gimp_file_new_for_config_path    (const gchar  *path,
-                                                      GError      **error) G_GNUC_MALLOC;
-gchar             * gimp_file_get_config_path        (GFile        *file,
-                                                      GError      **error) G_GNUC_MALLOC;
+GFile *gimp_file_new_for_config_path(const gchar *path,
+                                     GError **error) G_GNUC_MALLOC;
+gchar *gimp_file_get_config_path(GFile *file, GError **error) G_GNUC_MALLOC;
 
-gchar             * gimp_config_build_data_path      (const gchar  *name) G_GNUC_MALLOC;
-gchar             * gimp_config_build_writable_path  (const gchar  *name) G_GNUC_MALLOC;
-gchar             * gimp_config_build_plug_in_path   (const gchar  *name) G_GNUC_MALLOC;
-gchar             * gimp_config_build_system_path    (const gchar  *name) G_GNUC_MALLOC;
-
+gchar *gimp_config_build_data_path(const gchar *name) G_GNUC_MALLOC;
+gchar *gimp_config_build_writable_path(const gchar *name) G_GNUC_MALLOC;
+gchar *gimp_config_build_plug_in_path(const gchar *name) G_GNUC_MALLOC;
+gchar *gimp_config_build_system_path(const gchar *name) G_GNUC_MALLOC;
 
 G_END_DECLS
 

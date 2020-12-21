@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpdebug
  * @title: gimpdebug
@@ -33,7 +32,6 @@
  * Miscellaneous debug utility functions. Not part of the stable
  * library interface.
  **/
-
 
 /**
  * gimp_debug_timer_start:
@@ -51,26 +49,22 @@
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_debug_timer_start (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_debug_timer_start(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-debug-timer-start",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-debug-timer-start", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -89,25 +83,21 @@ gimp_debug_timer_start (void)
  *
  * Returns: The elapsed time, in seconds.
  **/
-gdouble
-gimp_debug_timer_end (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gdouble elapsed = 0.0;
+gdouble gimp_debug_timer_end(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gdouble elapsed = 0.0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-debug-timer-end",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-debug-timer-end", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		elapsed = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    elapsed = GIMP_VALUES_GET_DOUBLE(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return elapsed;
+  return elapsed;
 }

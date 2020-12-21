@@ -27,7 +27,6 @@
 
 #include "gimpchecks.h"
 
-
 /**
  * SECTION: gimpchecks
  * @title: gimpchecks
@@ -36,7 +35,6 @@
  *
  * Constants and functions related to rendering checkerboards.
  **/
-
 
 /**
  * gimp_checks_get_shades:
@@ -49,25 +47,20 @@
  *
  * Since: 2.2
  **/
-void
-gimp_checks_get_shades (GimpCheckType type,
-                        guchar        *light,
-                        guchar        *dark)
-{
-	const guchar shades[6][2] =
-	{
-		{ 204, 255 }, /*  LIGHT_CHECKS  */
-		{ 102, 153 }, /*  GRAY_CHECKS   */
-		{   0,  51 },/*  DARK_CHECKS   */
-		{ 255, 255 }, /*  WHITE_ONLY    */
-		{ 127, 127 }, /*  GRAY_ONLY     */
-		{   0,   0 }/*  BLACK_ONLY    */
-	};
+void gimp_checks_get_shades(GimpCheckType type, guchar *light, guchar *dark) {
+  const guchar shades[6][2] = {
+      {204, 255}, /*  LIGHT_CHECKS  */
+      {102, 153}, /*  GRAY_CHECKS   */
+      {0, 51},    /*  DARK_CHECKS   */
+      {255, 255}, /*  WHITE_ONLY    */
+      {127, 127}, /*  GRAY_ONLY     */
+      {0, 0}      /*  BLACK_ONLY    */
+  };
 
-	type = MIN (type, 5);
+  type = MIN(type, 5);
 
-	if (light)
-		*light = shades[type][1];
-	if (dark)
-		*dark  = shades[type][0];
+  if (light)
+    *light = shades[type][1];
+  if (dark)
+    *dark = shades[type][0];
 }

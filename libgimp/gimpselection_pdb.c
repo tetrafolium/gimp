@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpselection
  * @title: gimpselection
@@ -32,7 +31,6 @@
  *
  * Functions for manipulating selections.
  **/
-
 
 /**
  * gimp_selection_bounds:
@@ -56,47 +54,38 @@
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_bounds (GimpImage *image,
-                       gboolean  *non_empty,
-                       gint      *x1,
-                       gint      *y1,
-                       gint      *x2,
-                       gint      *y2)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_bounds(GimpImage *image, gboolean *non_empty, gint *x1,
+                               gint *y1, gint *x2, gint *y2) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-bounds",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-bounds", args);
+  gimp_value_array_unref(args);
 
-	*non_empty = FALSE;
-	*x1 = 0;
-	*y1 = 0;
-	*x2 = 0;
-	*y2 = 0;
+  *non_empty = FALSE;
+  *x1 = 0;
+  *y1 = 0;
+  *x2 = 0;
+  *y2 = 0;
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-	{
-		*non_empty = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
-		*x1 = GIMP_VALUES_GET_INT (return_vals, 2);
-		*y1 = GIMP_VALUES_GET_INT (return_vals, 3);
-		*x2 = GIMP_VALUES_GET_INT (return_vals, 4);
-		*y2 = GIMP_VALUES_GET_INT (return_vals, 5);
-	}
+  if (success) {
+    *non_empty = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
+    *x1 = GIMP_VALUES_GET_INT(return_vals, 2);
+    *y1 = GIMP_VALUES_GET_INT(return_vals, 3);
+    *x2 = GIMP_VALUES_GET_INT(return_vals, 4);
+    *y2 = GIMP_VALUES_GET_INT(return_vals, 5);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -112,32 +101,24 @@ gimp_selection_bounds (GimpImage *image,
  *
  * Returns: Value of the selection.
  **/
-gint
-gimp_selection_value (GimpImage *image,
-                      gint x,
-                      gint y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gint value = 0;
+gint gimp_selection_value(GimpImage *image, gint x, gint y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gint value = 0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, x,
-	                                        G_TYPE_INT, y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, G_TYPE_INT, x, G_TYPE_INT, y, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-value",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-value", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		value = GIMP_VALUES_GET_INT (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    value = GIMP_VALUES_GET_INT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return value;
+  return value;
 }
 
 /**
@@ -151,28 +132,24 @@ gimp_selection_value (GimpImage *image,
  *
  * Returns: Is the selection empty?
  **/
-gboolean
-gimp_selection_is_empty (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean is_empty = FALSE;
+gboolean gimp_selection_is_empty(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean is_empty = FALSE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-is-empty",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-is-empty", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		is_empty = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    is_empty = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return is_empty;
+  return is_empty;
 }
 
 /**
@@ -191,37 +168,31 @@ gimp_selection_is_empty (GimpImage *image)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_translate (GimpImage *image,
-                          gint offx,
-                          gint offy)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_translate(GimpImage *image, gint offx, gint offy) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, offx,
-	                                        G_TYPE_INT, offy,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image, G_TYPE_INT,
+                                      offx, G_TYPE_INT, offy, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-translate",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-translate", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
  * _gimp_selection_float:
  * @num_drawables: The number of drawables.
- * @drawables: (array length=num_drawables) (element-type GimpItem): The drawables from which to float selection.
+ * @drawables: (array length=num_drawables) (element-type GimpItem): The
+ *drawables from which to float selection.
  * @offx: x offset for translation.
  * @offy: y offset for translation.
  *
@@ -236,35 +207,28 @@ gimp_selection_translate (GimpImage *image,
  *
  * Returns: (transfer none): The floated layer.
  **/
-GimpLayer *
-_gimp_selection_float (gint num_drawables,
-                       const GimpItem **drawables,
-                       gint offx,
-                       gint offy)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpLayer *layer = NULL;
+GimpLayer *_gimp_selection_float(gint num_drawables, const GimpItem **drawables,
+                                 gint offx, gint offy) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpLayer *layer = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_INT, num_drawables,
-	                                        GIMP_TYPE_OBJECT_ARRAY, NULL,
-	                                        G_TYPE_INT, offx,
-	                                        G_TYPE_INT, offy,
-	                                        G_TYPE_NONE);
-	gimp_value_set_object_array (gimp_value_array_index (args, 1), GIMP_TYPE_ITEM, (GObject **) drawables, num_drawables);
+  args = gimp_value_array_new_from_types(
+      NULL, G_TYPE_INT, num_drawables, GIMP_TYPE_OBJECT_ARRAY, NULL, G_TYPE_INT,
+      offx, G_TYPE_INT, offy, G_TYPE_NONE);
+  gimp_value_set_object_array(gimp_value_array_index(args, 1), GIMP_TYPE_ITEM,
+                              (GObject **)drawables, num_drawables);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-float",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-float", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    layer = GIMP_VALUES_GET_LAYER(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return layer;
+  return layer;
 }
 
 /**
@@ -278,27 +242,23 @@ _gimp_selection_float (gint num_drawables,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_invert (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_invert(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-invert",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-invert", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -314,27 +274,23 @@ gimp_selection_invert (GimpImage *image)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_sharpen (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_sharpen(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-sharpen",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-sharpen", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -348,27 +304,23 @@ gimp_selection_sharpen (GimpImage *image)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_all (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_all(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-all",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-selection-all", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -382,27 +334,23 @@ gimp_selection_all (GimpImage *image)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_none (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_none(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-none",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-selection-none", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -417,29 +365,23 @@ gimp_selection_none (GimpImage *image)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_feather (GimpImage *image,
-                        gdouble radius)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_feather(GimpImage *image, gdouble radius) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_DOUBLE, radius,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_DOUBLE, radius, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-feather",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-feather", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -455,29 +397,23 @@ gimp_selection_feather (GimpImage *image,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_border (GimpImage *image,
-                       gint radius)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_border(GimpImage *image, gint radius) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, radius,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_INT, radius, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-border",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-border", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -492,29 +428,23 @@ gimp_selection_border (GimpImage *image,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_grow (GimpImage *image,
-                     gint steps)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_grow(GimpImage *image, gint steps) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, steps,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_INT, steps, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-grow",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-selection-grow", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -530,29 +460,23 @@ gimp_selection_grow (GimpImage *image,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_selection_shrink (GimpImage *image,
-                       gint steps)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_shrink(GimpImage *image, gint steps) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, steps,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_INT, steps, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-shrink",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-shrink", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -570,27 +494,23 @@ gimp_selection_shrink (GimpImage *image,
  *
  * Since: 2.10
  **/
-gboolean
-gimp_selection_flood (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_selection_flood(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-flood",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-selection-flood", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -605,26 +525,22 @@ gimp_selection_flood (GimpImage *image)
  *
  * Returns: (transfer none): The new channel.
  **/
-GimpChannel *
-gimp_selection_save (GimpImage *image)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpChannel *channel = NULL;
+GimpChannel *gimp_selection_save(GimpImage *image) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpChannel *channel = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-selection-save",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-selection-save", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		channel = GIMP_VALUES_GET_CHANNEL (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    channel = GIMP_VALUES_GET_CHANNEL(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return channel;
+  return channel;
 }

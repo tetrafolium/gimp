@@ -28,15 +28,15 @@
 #include <glib/gi18n.h>
 
 #ifndef HAVE_BIND_TEXTDOMAIN_CODESET
-#    define bind_textdomain_codeset(Domain, Codeset) (Domain)
+#define bind_textdomain_codeset(Domain, Codeset) (Domain)
 #endif
 
-#define INIT_I18N()     G_STMT_START{                                \
-		bindtextdomain (GETTEXT_PACKAGE "-std-plug-ins",                    \
-		                gimp_locale_directory ());                         \
-		bind_textdomain_codeset (GETTEXT_PACKAGE "-std-plug-ins", "UTF-8"); \
-		textdomain (GETTEXT_PACKAGE "-std-plug-ins");                       \
-} G_STMT_END
-
+#define INIT_I18N()                                                            \
+  G_STMT_START {                                                               \
+    bindtextdomain(GETTEXT_PACKAGE "-std-plug-ins", gimp_locale_directory());  \
+    bind_textdomain_codeset(GETTEXT_PACKAGE "-std-plug-ins", "UTF-8");         \
+    textdomain(GETTEXT_PACKAGE "-std-plug-ins");                               \
+  }                                                                            \
+  G_STMT_END
 
 #endif /* __STDPLUGINS_INTL_H__ */

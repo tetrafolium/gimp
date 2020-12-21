@@ -25,7 +25,6 @@
 
 #include "gimpwidgets-error.h"
 
-
 /**
  * gimp_widgets_error_quark:
  *
@@ -33,8 +32,6 @@
  *
  * Returns: the #GQuark that defines the GIMP widgets error domain.
  **/
-GQuark
-gimp_widgets_error_quark (void)
-{
-	return g_quark_from_static_string ("gimp-widgets-error-quark");
+GQuark gimp_widgets_error_quark(void) {
+  return g_quark_from_static_string("gimp-widgets-error-quark");
 }

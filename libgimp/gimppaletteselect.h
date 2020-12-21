@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -27,19 +27,16 @@
 
 G_BEGIN_DECLS
 
+typedef void (*GimpRunPaletteCallback)(const gchar *palette_name,
+                                       gboolean dialog_closing,
+                                       gpointer user_data);
 
-typedef void (* GimpRunPaletteCallback)   (const gchar *palette_name,
-                                           gboolean dialog_closing,
-                                           gpointer user_data);
-
-
-const gchar * gimp_palette_select_new     (const gchar            *title,
-                                           const gchar            *palette_name,
-                                           GimpRunPaletteCallback callback,
-                                           gpointer data,
-                                           GDestroyNotify data_destroy);
-void          gimp_palette_select_destroy (const gchar            *palette_callback);
-
+const gchar *gimp_palette_select_new(const gchar *title,
+                                     const gchar *palette_name,
+                                     GimpRunPaletteCallback callback,
+                                     gpointer data,
+                                     GDestroyNotify data_destroy);
+void gimp_palette_select_destroy(const gchar *palette_callback);
 
 G_END_DECLS
 

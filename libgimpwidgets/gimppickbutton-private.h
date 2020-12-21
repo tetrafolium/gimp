@@ -16,12 +16,9 @@
 #ifndef __GIMP_PICK_BUTTON_PRIVATE_H__
 #define __GIMP_PICK_BUTTON_PRIVATE_H__
 
-
-struct _GimpPickButtonPrivate
-{
-	GdkCursor *cursor;
-	GtkWidget *grab_widget;
+struct _GimpPickButtonPrivate {
+  GdkCursor *cursor;
+  GtkWidget *grab_widget;
 };
-
 
 #endif /* ! __GIMP_PICK_BUTTON_PRIVATE_H__ */

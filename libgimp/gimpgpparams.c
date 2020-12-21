@@ -26,12 +26,11 @@
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
-#include "libgimpcolor/gimpcolor.h"
 #include "libgimpbase/gimpprotocol.h"
+#include "libgimpcolor/gimpcolor.h"
 
 #include "gimp.h"
 #include "gimpgpparams.h"
-
 
 /*  include the implementation, they are shared between app/ and
  *  libgimp/ but need different headers.

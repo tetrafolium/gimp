@@ -16,7 +16,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_COLOR_H_INSIDE__) && !defined (GIMP_COLOR_COMPILATION)
+#if !defined(__GIMP_COLOR_H_INSIDE__) && !defined(GIMP_COLOR_COMPILATION)
 #error "Only <libgimpcolor/gimpcolor.h> can be included directly."
 #endif
 
@@ -27,7 +27,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /**
  * GimpRenderFunc:
  * @x:
@@ -35,10 +34,8 @@ G_BEGIN_DECLS
  * @color:
  * @data: (closure):
  */
-typedef void (* GimpRenderFunc)   (gdouble x,
-                                   gdouble y,
-                                   GimpRGB  *color,
-                                   gpointer data);
+typedef void (*GimpRenderFunc)(gdouble x, gdouble y, GimpRGB *color,
+                               gpointer data);
 /**
  * GimpPutPixelFunc:
  * @x:
@@ -46,10 +43,7 @@ typedef void (* GimpRenderFunc)   (gdouble x,
  * @color:
  * @data: (closure):
  */
-typedef void (* GimpPutPixelFunc) (gint x,
-                                   gint y,
-                                   GimpRGB  *color,
-                                   gpointer data);
+typedef void (*GimpPutPixelFunc)(gint x, gint y, GimpRGB *color, gpointer data);
 /**
  * GimpProgressFunc:
  * @min:
@@ -57,26 +51,15 @@ typedef void (* GimpPutPixelFunc) (gint x,
  * @current:
  * @data: (closure):
  */
-typedef void (* GimpProgressFunc) (gint min,
-                                   gint max,
-                                   gint current,
-                                   gpointer data);
+typedef void (*GimpProgressFunc)(gint min, gint max, gint current,
+                                 gpointer data);
 
-
-gulong   gimp_adaptive_supersample_area (gint x1,
-                                         gint y1,
-                                         gint x2,
-                                         gint y2,
-                                         gint max_depth,
-                                         gdouble threshold,
-                                         GimpRenderFunc render_func,
-                                         gpointer render_data,
-                                         GimpPutPixelFunc put_pixel_func,
-                                         gpointer put_pixel_data,
-                                         GimpProgressFunc progress_func,
-                                         gpointer progress_data);
-
+gulong gimp_adaptive_supersample_area(
+    gint x1, gint y1, gint x2, gint y2, gint max_depth, gdouble threshold,
+    GimpRenderFunc render_func, gpointer render_data,
+    GimpPutPixelFunc put_pixel_func, gpointer put_pixel_data,
+    GimpProgressFunc progress_func, gpointer progress_data);
 
 G_END_DECLS
 
-#endif  /* __GIMP_ADAPTIVE_SUPERSAMPLE_H__ */
+#endif /* __GIMP_ADAPTIVE_SUPERSAMPLE_H__ */

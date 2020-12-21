@@ -18,10 +18,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
-
 
 #ifndef __GIMP_IMAGE_METADATA_H__
 #define __GIMP_IMAGE_METADATA_H__
@@ -30,29 +29,23 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+GimpMetadata *gimp_image_metadata_load_prepare(GimpImage *image,
+                                               const gchar *mime_type,
+                                               GFile *file, GError **error);
+void gimp_image_metadata_load_finish(GimpImage *image, const gchar *mime_type,
+                                     GimpMetadata *metadata,
+                                     GimpMetadataLoadFlags flags);
 
-GimpMetadata * gimp_image_metadata_load_prepare   (GimpImage             *image,
-                                                   const gchar           *mime_type,
-                                                   GFile                 *file,
-                                                   GError               **error);
-void           gimp_image_metadata_load_finish    (GimpImage             *image,
-                                                   const gchar           *mime_type,
-                                                   GimpMetadata          *metadata,
-                                                   GimpMetadataLoadFlags flags);
+GimpMetadata *
+gimp_image_metadata_save_prepare(GimpImage *image, const gchar *mime_type,
+                                 GimpMetadataSaveFlags *suggested_flags);
+gboolean gimp_image_metadata_save_finish(GimpImage *image,
+                                         const gchar *mime_type,
+                                         GimpMetadata *metadata,
+                                         GimpMetadataSaveFlags flags,
+                                         GFile *file, GError **error);
 
-GimpMetadata * gimp_image_metadata_save_prepare   (GimpImage             *image,
-                                                   const gchar           *mime_type,
-                                                   GimpMetadataSaveFlags *suggested_flags);
-gboolean       gimp_image_metadata_save_finish    (GimpImage             *image,
-                                                   const gchar           *mime_type,
-                                                   GimpMetadata          *metadata,
-                                                   GimpMetadataSaveFlags flags,
-                                                   GFile                 *file,
-                                                   GError               **error);
-
-GimpImage    * gimp_image_metadata_load_thumbnail (GFile                 *file,
-                                                   GError               **error);
-
+GimpImage *gimp_image_metadata_load_thumbnail(GFile *file, GError **error);
 
 G_END_DECLS
 

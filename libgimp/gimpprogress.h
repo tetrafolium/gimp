@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -35,9 +35,9 @@ G_BEGIN_DECLS
  *
  * Starts the progress
  */
-typedef void (* GimpProgressVtableStartFunc) (const gchar *message,
-                                              gboolean cancelable,
-                                              gpointer user_data);
+typedef void (*GimpProgressVtableStartFunc)(const gchar *message,
+                                            gboolean cancelable,
+                                            gpointer user_data);
 
 /**
  * GimpProgressVtableEndFunc:
@@ -45,7 +45,7 @@ typedef void (* GimpProgressVtableStartFunc) (const gchar *message,
  *
  * Ends the progress
  */
-typedef void (* GimpProgressVtableEndFunc) (gpointer user_data);
+typedef void (*GimpProgressVtableEndFunc)(gpointer user_data);
 
 /**
  * GimpProgressVtableSetTextFunc:
@@ -54,8 +54,8 @@ typedef void (* GimpProgressVtableEndFunc) (gpointer user_data);
  *
  * Sets a new text on the progress.
  */
-typedef void (* GimpProgressVtableSetTextFunc) (const gchar *message,
-                                                gpointer user_data);
+typedef void (*GimpProgressVtableSetTextFunc)(const gchar *message,
+                                              gpointer user_data);
 
 /**
  * GimpProgressVtableSetValueFunc:
@@ -64,8 +64,8 @@ typedef void (* GimpProgressVtableSetTextFunc) (const gchar *message,
  *
  * Sets a new percentage on the progress.
  */
-typedef void (* GimpProgressVtableSetValueFunc) (gdouble percentage,
-                                                 gpointer user_data);
+typedef void (*GimpProgressVtableSetValueFunc)(gdouble percentage,
+                                               gpointer user_data);
 
 /**
  * GimpProgressVtablePulseFunc:
@@ -73,7 +73,7 @@ typedef void (* GimpProgressVtableSetValueFunc) (gdouble percentage,
  *
  * Makes the progress pulse
  */
-typedef void (* GimpProgressVtablePulseFunc) (gpointer user_data);
+typedef void (*GimpProgressVtablePulseFunc)(gpointer user_data);
 
 /**
  * GimpProgressVtableGetWindowFunc:
@@ -81,8 +81,7 @@ typedef void (* GimpProgressVtablePulseFunc) (gpointer user_data);
  *
  * Returns: the ID of the window where the progress is displayed.
  */
-typedef guint32 (* GimpProgressVtableGetWindowFunc) (gpointer user_data);
-
+typedef guint32 (*GimpProgressVtableGetWindowFunc)(gpointer user_data);
 
 typedef struct _GimpProgressVtable GimpProgressVtable;
 
@@ -103,41 +102,38 @@ typedef struct _GimpProgressVtable GimpProgressVtable;
  * @_gimp_reserved7: reserved pointer for future expansion.
  * @_gimp_reserved8: reserved pointer for future expansion.
  **/
-struct _GimpProgressVtable
-{
-	GimpProgressVtableStartFunc start;
-	GimpProgressVtableEndFunc end;
-	GimpProgressVtableSetTextFunc set_text;
-	GimpProgressVtableSetValueFunc set_value;
-	GimpProgressVtablePulseFunc pulse;
-	GimpProgressVtableGetWindowFunc get_window;
+struct _GimpProgressVtable {
+  GimpProgressVtableStartFunc start;
+  GimpProgressVtableEndFunc end;
+  GimpProgressVtableSetTextFunc set_text;
+  GimpProgressVtableSetValueFunc set_value;
+  GimpProgressVtablePulseFunc pulse;
+  GimpProgressVtableGetWindowFunc get_window;
 
-	/* Padding for future expansion. Must be initialized with NULL! */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion. Must be initialized with NULL! */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+const gchar *gimp_progress_install_vtable(const GimpProgressVtable *vtable,
+                                          gpointer user_data,
+                                          GDestroyNotify user_data_destroy);
+void gimp_progress_uninstall(const gchar *progress_callback);
 
-const gchar * gimp_progress_install_vtable  (const GimpProgressVtable *vtable,
-                                             gpointer user_data,
-                                             GDestroyNotify user_data_destroy);
-void          gimp_progress_uninstall       (const gchar              *progress_callback);
+gboolean gimp_progress_init(const gchar *message);
+gboolean gimp_progress_init_printf(const gchar *format, ...)
+    G_GNUC_PRINTF(1, 2);
 
-gboolean      gimp_progress_init            (const gchar              *message);
-gboolean      gimp_progress_init_printf     (const gchar              *format,
-                                             ...) G_GNUC_PRINTF (1, 2);
+gboolean gimp_progress_set_text_printf(const gchar *format, ...)
+    G_GNUC_PRINTF(1, 2);
 
-gboolean      gimp_progress_set_text_printf (const gchar              *format,
-                                             ...) G_GNUC_PRINTF (1, 2);
-
-gboolean      gimp_progress_update          (gdouble percentage);
-
+gboolean gimp_progress_update(gdouble percentage);
 
 G_END_DECLS
 

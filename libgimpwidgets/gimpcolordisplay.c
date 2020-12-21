@@ -35,7 +35,6 @@
 #include "gimpcolordisplay.h"
 #include "gimpicons.h"
 
-
 /**
  * SECTION: gimpcolordisplay
  * @title: GimpColorDisplay
@@ -46,245 +45,192 @@
  * display color correction modules.
  **/
 
+enum { PROP_0, PROP_ENABLED, PROP_COLOR_CONFIG, PROP_COLOR_MANAGED };
 
-enum
-{
-	PROP_0,
-	PROP_ENABLED,
-	PROP_COLOR_CONFIG,
-	PROP_COLOR_MANAGED
+enum { CHANGED, LAST_SIGNAL };
+
+struct _GimpColorDisplayPrivate {
+  gboolean enabled;
+  GimpColorConfig *config;
+  GimpColorManaged *managed;
 };
 
-enum
-{
-	CHANGED,
-	LAST_SIGNAL
-};
+#define GET_PRIVATE(obj) (((GimpColorDisplay *)(obj))->priv)
 
+static void gimp_color_display_constructed(GObject *object);
+static void gimp_color_display_dispose(GObject *object);
+static void gimp_color_display_set_property(GObject *object, guint property_id,
+                                            const GValue *value,
+                                            GParamSpec *pspec);
+static void gimp_color_display_get_property(GObject *object, guint property_id,
+                                            GValue *value, GParamSpec *pspec);
 
-struct _GimpColorDisplayPrivate
-{
-	gboolean enabled;
-	GimpColorConfig  *config;
-	GimpColorManaged *managed;
-};
+static void gimp_color_display_set_color_config(GimpColorDisplay *display,
+                                                GimpColorConfig *config);
+static void gimp_color_display_set_color_managed(GimpColorDisplay *display,
+                                                 GimpColorManaged *managed);
 
-#define GET_PRIVATE(obj) (((GimpColorDisplay *) (obj))->priv)
-
-
-
-static void       gimp_color_display_constructed (GObject       *object);
-static void       gimp_color_display_dispose      (GObject      *object);
-static void       gimp_color_display_set_property (GObject      *object,
-                                                   guint property_id,
-                                                   const GValue *value,
-                                                   GParamSpec    *pspec);
-static void       gimp_color_display_get_property (GObject      *object,
-                                                   guint property_id,
-                                                   GValue       *value,
-                                                   GParamSpec   *pspec);
-
-static void  gimp_color_display_set_color_config  (GimpColorDisplay *display,
-                                                   GimpColorConfig  *config);
-static void  gimp_color_display_set_color_managed (GimpColorDisplay *display,
-                                                   GimpColorManaged *managed);
-
-
-G_DEFINE_TYPE_WITH_CODE (GimpColorDisplay, gimp_color_display, G_TYPE_OBJECT,
-                         G_ADD_PRIVATE (GimpColorDisplay)
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL))
+G_DEFINE_TYPE_WITH_CODE(GimpColorDisplay, gimp_color_display, G_TYPE_OBJECT,
+                        G_ADD_PRIVATE(GimpColorDisplay)
+                            G_IMPLEMENT_INTERFACE(GIMP_TYPE_CONFIG, NULL))
 
 #define parent_class gimp_color_display_parent_class
 
-static guint display_signals[LAST_SIGNAL] = { 0 };
+static guint display_signals[LAST_SIGNAL] = {0};
 
+static void gimp_color_display_class_init(GimpColorDisplayClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void
-gimp_color_display_class_init (GimpColorDisplayClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->constructed = gimp_color_display_constructed;
+  object_class->dispose = gimp_color_display_dispose;
+  object_class->set_property = gimp_color_display_set_property;
+  object_class->get_property = gimp_color_display_get_property;
 
-	object_class->constructed  = gimp_color_display_constructed;
-	object_class->dispose      = gimp_color_display_dispose;
-	object_class->set_property = gimp_color_display_set_property;
-	object_class->get_property = gimp_color_display_get_property;
+  g_object_class_install_property(
+      object_class, PROP_ENABLED,
+      g_param_spec_boolean("enabled", "Enabled",
+                           "Whether this display filter is enabled", TRUE,
+                           GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_ENABLED,
-	                                 g_param_spec_boolean ("enabled",
-	                                                       "Enabled",
-	                                                       "Whether this display filter is enabled",
-	                                                       TRUE,
-	                                                       GIMP_PARAM_READWRITE |
-	                                                       G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, PROP_COLOR_CONFIG,
+      g_param_spec_object("color-config", "Color Config",
+                          "The color config used for this filter",
+                          GIMP_TYPE_COLOR_CONFIG,
+                          GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-	g_object_class_install_property (object_class, PROP_COLOR_CONFIG,
-	                                 g_param_spec_object ("color-config",
-	                                                      "Color Config",
-	                                                      "The color config used for this filter",
-	                                                      GIMP_TYPE_COLOR_CONFIG,
-	                                                      GIMP_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property(
+      object_class, PROP_COLOR_MANAGED,
+      g_param_spec_object("color-managed", "Color Managed",
+                          "The color managed pixel source that is filtered",
+                          GIMP_TYPE_COLOR_MANAGED,
+                          GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-	g_object_class_install_property (object_class, PROP_COLOR_MANAGED,
-	                                 g_param_spec_object ("color-managed",
-	                                                      "Color Managed",
-	                                                      "The color managed pixel source that is filtered",
-	                                                      GIMP_TYPE_COLOR_MANAGED,
-	                                                      GIMP_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT_ONLY));
+  display_signals[CHANGED] =
+      g_signal_new("changed", G_TYPE_FROM_CLASS(klass), G_SIGNAL_RUN_FIRST,
+                   G_STRUCT_OFFSET(GimpColorDisplayClass, changed), NULL, NULL,
+                   NULL, G_TYPE_NONE, 0);
 
-	display_signals[CHANGED] =
-		g_signal_new ("changed",
-		              G_TYPE_FROM_CLASS (klass),
-		              G_SIGNAL_RUN_FIRST,
-		              G_STRUCT_OFFSET (GimpColorDisplayClass, changed),
-		              NULL, NULL, NULL,
-		              G_TYPE_NONE, 0);
+  klass->name = "Unnamed";
+  klass->help_id = NULL;
+  klass->icon_name = GIMP_ICON_DISPLAY_FILTER;
 
-	klass->name            = "Unnamed";
-	klass->help_id         = NULL;
-	klass->icon_name       = GIMP_ICON_DISPLAY_FILTER;
+  klass->convert_buffer = NULL;
+  klass->configure = NULL;
 
-	klass->convert_buffer  = NULL;
-	klass->configure       = NULL;
-
-	klass->changed         = NULL;
+  klass->changed = NULL;
 }
 
-static void
-gimp_color_display_init (GimpColorDisplay *display)
-{
-	display->priv = gimp_color_display_get_instance_private (display);
+static void gimp_color_display_init(GimpColorDisplay *display) {
+  display->priv = gimp_color_display_get_instance_private(display);
 }
 
-static void
-gimp_color_display_constructed (GObject *object)
-{
-	G_OBJECT_CLASS (parent_class)->constructed (object);
+static void gimp_color_display_constructed(GObject *object) {
+  G_OBJECT_CLASS(parent_class)->constructed(object);
 
-	/* emit an initial "changed" signal after all construct properties are set */
-	gimp_color_display_changed (GIMP_COLOR_DISPLAY (object));
+  /* emit an initial "changed" signal after all construct properties are set */
+  gimp_color_display_changed(GIMP_COLOR_DISPLAY(object));
 }
 
-static void
-gimp_color_display_dispose (GObject *object)
-{
-	GimpColorDisplayPrivate *private = GET_PRIVATE (object);
+static void gimp_color_display_dispose(GObject *object) {
+  GimpColorDisplayPrivate *private = GET_PRIVATE(object);
 
-	if (private->config)
-	{
-		g_signal_handlers_disconnect_by_func (private->config,
-		                                      gimp_color_display_changed,
-		                                      object);
-		g_object_unref (private->config);
-		private->config = NULL;
-	}
+  if (private->config) {
+    g_signal_handlers_disconnect_by_func(private->config,
+                                         gimp_color_display_changed, object);
+    g_object_unref(private->config);
+  private
+    ->config = NULL;
+  }
 
-	if (private->managed)
-	{
-		g_signal_handlers_disconnect_by_func (private->managed,
-		                                      gimp_color_display_changed,
-		                                      object);
-		g_object_unref (private->managed);
-		private->managed = NULL;
-	}
+  if (private->managed) {
+    g_signal_handlers_disconnect_by_func(private->managed,
+                                         gimp_color_display_changed, object);
+    g_object_unref(private->managed);
+  private
+    ->managed = NULL;
+  }
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+  G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
-static void
-gimp_color_display_set_property (GObject      *object,
-                                 guint property_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
-{
-	GimpColorDisplay        *display = GIMP_COLOR_DISPLAY (object);
-	GimpColorDisplayPrivate *private = GET_PRIVATE (object);
+static void gimp_color_display_set_property(GObject *object, guint property_id,
+                                            const GValue *value,
+                                            GParamSpec *pspec) {
+  GimpColorDisplay *display = GIMP_COLOR_DISPLAY(object);
+  GimpColorDisplayPrivate *private = GET_PRIVATE(object);
 
-	switch (property_id)
-	{
-	case PROP_ENABLED:
-		private->enabled = g_value_get_boolean (value);
-		break;
+  switch (property_id) {
+  case PROP_ENABLED:
+  private
+    ->enabled = g_value_get_boolean(value);
+    break;
 
-	case PROP_COLOR_CONFIG:
-		gimp_color_display_set_color_config (display,
-		                                     g_value_get_object (value));
-		break;
+  case PROP_COLOR_CONFIG:
+    gimp_color_display_set_color_config(display, g_value_get_object(value));
+    break;
 
-	case PROP_COLOR_MANAGED:
-		gimp_color_display_set_color_managed (display,
-		                                      g_value_get_object (value));
-		break;
+  case PROP_COLOR_MANAGED:
+    gimp_color_display_set_color_managed(display, g_value_get_object(value));
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_color_display_get_property (GObject    *object,
-                                 guint property_id,
-                                 GValue     *value,
-                                 GParamSpec *pspec)
-{
-	GimpColorDisplayPrivate *private = GET_PRIVATE (object);
+static void gimp_color_display_get_property(GObject *object, guint property_id,
+                                            GValue *value, GParamSpec *pspec) {
+  GimpColorDisplayPrivate *private = GET_PRIVATE(object);
 
-	switch (property_id)
-	{
-	case PROP_ENABLED:
-		g_value_set_boolean (value, private->enabled);
-		break;
+  switch (property_id) {
+  case PROP_ENABLED:
+    g_value_set_boolean(value, private->enabled);
+    break;
 
-	case PROP_COLOR_CONFIG:
-		g_value_set_object (value, private->config);
-		break;
+  case PROP_COLOR_CONFIG:
+    g_value_set_object(value, private->config);
+    break;
 
-	case PROP_COLOR_MANAGED:
-		g_value_set_object (value, private->managed);
-		break;
+  case PROP_COLOR_MANAGED:
+    g_value_set_object(value, private->managed);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_color_display_set_color_config (GimpColorDisplay *display,
-                                     GimpColorConfig  *config)
-{
-	GimpColorDisplayPrivate *private = GET_PRIVATE (display);
+static void gimp_color_display_set_color_config(GimpColorDisplay *display,
+                                                GimpColorConfig *config) {
+  GimpColorDisplayPrivate *private = GET_PRIVATE(display);
 
-	g_return_if_fail (private->config == NULL);
+  g_return_if_fail(private->config == NULL);
 
-	if (config)
-	{
-		private->config = g_object_ref (config);
+  if (config) {
+  private
+    ->config = g_object_ref(config);
 
-		g_signal_connect_swapped (private->config, "notify",
-		                          G_CALLBACK (gimp_color_display_changed),
-		                          display);
-	}
+    g_signal_connect_swapped(private->config, "notify",
+                             G_CALLBACK(gimp_color_display_changed), display);
+  }
 }
 
-static void
-gimp_color_display_set_color_managed (GimpColorDisplay *display,
-                                      GimpColorManaged *managed)
-{
-	GimpColorDisplayPrivate *private = GET_PRIVATE (display);
+static void gimp_color_display_set_color_managed(GimpColorDisplay *display,
+                                                 GimpColorManaged *managed) {
+  GimpColorDisplayPrivate *private = GET_PRIVATE(display);
 
-	g_return_if_fail (private->managed == NULL);
+  g_return_if_fail(private->managed == NULL);
 
-	if (managed)
-	{
-		private->managed = g_object_ref (managed);
+  if (managed) {
+  private
+    ->managed = g_object_ref(managed);
 
-		g_signal_connect_swapped (private->managed, "profile-changed",
-		                          G_CALLBACK (gimp_color_display_changed),
-		                          display);
-	}
+    g_signal_connect_swapped(private->managed, "profile-changed",
+                             G_CALLBACK(gimp_color_display_changed), display);
+  }
 }
 
 /**
@@ -297,12 +243,10 @@ gimp_color_display_set_color_managed (GimpColorDisplay *display,
  *
  * Since: 2.0
  **/
-GimpColorDisplay *
-gimp_color_display_clone (GimpColorDisplay *display)
-{
-	g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
+GimpColorDisplay *gimp_color_display_clone(GimpColorDisplay *display) {
+  g_return_val_if_fail(GIMP_IS_COLOR_DISPLAY(display), NULL);
 
-	return GIMP_COLOR_DISPLAY (gimp_config_duplicate (GIMP_CONFIG (display)));
+  return GIMP_COLOR_DISPLAY(gimp_config_duplicate(GIMP_CONFIG(display)));
 }
 
 /**
@@ -315,24 +259,22 @@ gimp_color_display_clone (GimpColorDisplay *display)
  *
  * Since: 2.10
  **/
-void
-gimp_color_display_convert_buffer (GimpColorDisplay *display,
-                                   GeglBuffer       *buffer,
-                                   GeglRectangle    *area)
-{
-	GimpColorDisplayPrivate *private;
+void gimp_color_display_convert_buffer(GimpColorDisplay *display,
+                                       GeglBuffer *buffer,
+                                       GeglRectangle *area) {
+  GimpColorDisplayPrivate *private;
 
-	g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
-	g_return_if_fail (GEGL_IS_BUFFER (buffer));
+  g_return_if_fail(GIMP_IS_COLOR_DISPLAY(display));
+  g_return_if_fail(GEGL_IS_BUFFER(buffer));
 
-	private = GET_PRIVATE (display);
+private
+  = GET_PRIVATE(display);
 
-	if (private->enabled &&
-	    GIMP_COLOR_DISPLAY_GET_CLASS (display)->convert_buffer)
-	{
-		GIMP_COLOR_DISPLAY_GET_CLASS (display)->convert_buffer (display, buffer,
-		                                                        area);
-	}
+  if (private->enabled &&
+      GIMP_COLOR_DISPLAY_GET_CLASS(display)->convert_buffer) {
+    GIMP_COLOR_DISPLAY_GET_CLASS(display)->convert_buffer(display, buffer,
+                                                          area);
+  }
 }
 
 /**
@@ -346,16 +288,12 @@ gimp_color_display_convert_buffer (GimpColorDisplay *display,
  *
  * Since: 2.0
  **/
-void
-gimp_color_display_load_state (GimpColorDisplay *display,
-                               GimpParasite     *state)
-{
-	g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
-	g_return_if_fail (state != NULL);
+void gimp_color_display_load_state(GimpColorDisplay *display,
+                                   GimpParasite *state) {
+  g_return_if_fail(GIMP_IS_COLOR_DISPLAY(display));
+  g_return_if_fail(state != NULL);
 
-	gimp_config_deserialize_parasite (GIMP_CONFIG (display),
-	                                  state,
-	                                  NULL, NULL);
+  gimp_config_deserialize_parasite(GIMP_CONFIG(display), state, NULL, NULL);
 }
 
 /**
@@ -368,15 +306,11 @@ gimp_color_display_load_state (GimpColorDisplay *display,
  *
  * Since: 2.0
  **/
-GimpParasite *
-gimp_color_display_save_state (GimpColorDisplay *display)
-{
-	g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
+GimpParasite *gimp_color_display_save_state(GimpColorDisplay *display) {
+  g_return_val_if_fail(GIMP_IS_COLOR_DISPLAY(display), NULL);
 
-	return gimp_config_serialize_to_parasite (GIMP_CONFIG (display),
-	                                          "Display/Proof",
-	                                          GIMP_PARASITE_PERSISTENT,
-	                                          NULL);
+  return gimp_config_serialize_to_parasite(
+      GIMP_CONFIG(display), "Display/Proof", GIMP_PARASITE_PERSISTENT, NULL);
 }
 
 /**
@@ -391,57 +325,45 @@ gimp_color_display_save_state (GimpColorDisplay *display)
  *
  * Since: 2.0
  **/
-GtkWidget *
-gimp_color_display_configure (GimpColorDisplay *display)
-{
-	g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
+GtkWidget *gimp_color_display_configure(GimpColorDisplay *display) {
+  g_return_val_if_fail(GIMP_IS_COLOR_DISPLAY(display), NULL);
 
-	if (GIMP_COLOR_DISPLAY_GET_CLASS (display)->configure)
-		return GIMP_COLOR_DISPLAY_GET_CLASS (display)->configure (display);
+  if (GIMP_COLOR_DISPLAY_GET_CLASS(display)->configure)
+    return GIMP_COLOR_DISPLAY_GET_CLASS(display)->configure(display);
 
-	return NULL;
+  return NULL;
 }
 
-void
-gimp_color_display_configure_reset (GimpColorDisplay *display)
-{
-	g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
+void gimp_color_display_configure_reset(GimpColorDisplay *display) {
+  g_return_if_fail(GIMP_IS_COLOR_DISPLAY(display));
 
-	gimp_config_reset (GIMP_CONFIG (display));
+  gimp_config_reset(GIMP_CONFIG(display));
 }
 
-void
-gimp_color_display_changed (GimpColorDisplay *display)
-{
-	g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
+void gimp_color_display_changed(GimpColorDisplay *display) {
+  g_return_if_fail(GIMP_IS_COLOR_DISPLAY(display));
 
-	g_signal_emit (display, display_signals[CHANGED], 0);
+  g_signal_emit(display, display_signals[CHANGED], 0);
 }
 
-void
-gimp_color_display_set_enabled (GimpColorDisplay *display,
-                                gboolean enabled)
-{
-	GimpColorDisplayPrivate *private;
+void gimp_color_display_set_enabled(GimpColorDisplay *display,
+                                    gboolean enabled) {
+  GimpColorDisplayPrivate *private;
 
-	g_return_if_fail (GIMP_IS_COLOR_DISPLAY (display));
+  g_return_if_fail(GIMP_IS_COLOR_DISPLAY(display));
 
-	private = GET_PRIVATE (display);
+private
+  = GET_PRIVATE(display);
 
-	if (enabled != private->enabled)
-	{
-		g_object_set (display,
-		              "enabled", enabled,
-		              NULL);
-	}
+  if (enabled != private->enabled) {
+    g_object_set(display, "enabled", enabled, NULL);
+  }
 }
 
-gboolean
-gimp_color_display_get_enabled (GimpColorDisplay *display)
-{
-	g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), FALSE);
+gboolean gimp_color_display_get_enabled(GimpColorDisplay *display) {
+  g_return_val_if_fail(GIMP_IS_COLOR_DISPLAY(display), FALSE);
 
-	return GET_PRIVATE (display)->enabled;
+  return GET_PRIVATE(display)->enabled;
 }
 
 /**
@@ -453,12 +375,10 @@ gimp_color_display_get_enabled (GimpColorDisplay *display)
  *
  * Since: 2.4
  **/
-GimpColorConfig *
-gimp_color_display_get_config (GimpColorDisplay *display)
-{
-	g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
+GimpColorConfig *gimp_color_display_get_config(GimpColorDisplay *display) {
+  g_return_val_if_fail(GIMP_IS_COLOR_DISPLAY(display), NULL);
 
-	return GET_PRIVATE (display)->config;
+  return GET_PRIVATE(display)->config;
 }
 
 /**
@@ -470,10 +390,8 @@ gimp_color_display_get_config (GimpColorDisplay *display)
  *
  * Since: 2.4
  **/
-GimpColorManaged *
-gimp_color_display_get_managed (GimpColorDisplay *display)
-{
-	g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY (display), NULL);
+GimpColorManaged *gimp_color_display_get_managed(GimpColorDisplay *display) {
+  g_return_val_if_fail(GIMP_IS_COLOR_DISPLAY(display), NULL);
 
-	return GET_PRIVATE (display)->managed;
+  return GET_PRIVATE(display)->managed;
 }

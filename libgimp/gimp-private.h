@@ -23,9 +23,7 @@
 
 G_BEGIN_DECLS
 
-
-void   _gimp_config (GPConfig *config);
-
+void _gimp_config(GPConfig *config);
 
 G_END_DECLS
 

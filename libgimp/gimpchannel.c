@@ -22,27 +22,18 @@
 
 #include "gimp.h"
 
-
-struct _GimpChannelPrivate
-{
-	gpointer unused;
+struct _GimpChannelPrivate {
+  gpointer unused;
 };
 
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpChannel, gimp_channel, GIMP_TYPE_DRAWABLE)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpChannel, gimp_channel, GIMP_TYPE_DRAWABLE)
 
 #define parent_class gimp_drawable_parent_class
 
+static void gimp_channel_class_init(GimpChannelClass *klass) {}
 
-static void
-gimp_channel_class_init (GimpChannelClass *klass)
-{
-}
-
-static void
-gimp_channel_init (GimpChannel *channel)
-{
-	channel->priv = gimp_channel_get_instance_private (channel);
+static void gimp_channel_init(GimpChannel *channel) {
+  channel->priv = gimp_channel_get_instance_private(channel);
 }
 
 /**
@@ -60,15 +51,13 @@ gimp_channel_init (GimpChannel *channel)
  *
  * Since: 3.0
  **/
-GimpChannel *
-gimp_channel_get_by_id (gint32 channel_id)
-{
-	GimpItem *item = gimp_item_get_by_id (channel_id);
+GimpChannel *gimp_channel_get_by_id(gint32 channel_id) {
+  GimpItem *item = gimp_item_get_by_id(channel_id);
 
-	if (GIMP_IS_CHANNEL (item))
-		return (GimpChannel *) item;
+  if (GIMP_IS_CHANNEL(item))
+    return (GimpChannel *)item;
 
-	return NULL;
+  return NULL;
 }
 
 /**
@@ -93,18 +82,8 @@ gimp_channel_get_by_id (gint32 channel_id)
  * Returns: (transfer none): The newly created channel.
  *          The object belongs to libgimp and you should not free it.
  */
-GimpChannel *
-gimp_channel_new (GimpImage     *image,
-                  const gchar   *name,
-                  guint width,
-                  guint height,
-                  gdouble opacity,
-                  const GimpRGB *color)
-{
-	return _gimp_channel_new (image,
-	                          width,
-	                          height,
-	                          name,
-	                          opacity,
-	                          color);
+GimpChannel *gimp_channel_new(GimpImage *image, const gchar *name, guint width,
+                              guint height, gdouble opacity,
+                              const GimpRGB *color) {
+  return _gimp_channel_new(image, width, height, name, opacity, color);
 }

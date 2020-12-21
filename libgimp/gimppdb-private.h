@@ -24,28 +24,23 @@
 
 G_BEGIN_DECLS
 
-
-typedef enum
-{
-	GIMP_PDB_ERROR_FAILED, /* generic error condition */
-	GIMP_PDB_ERROR_CANCELLED,
-	GIMP_PDB_ERROR_PDB_NOT_FOUND,
-	GIMP_PDB_ERROR_INVALID_ARGUMENT,
-	GIMP_PDB_ERROR_INVALID_RETURN_VALUE,
-	GIMP_PDB_ERROR_INTERNAL_ERROR
+typedef enum {
+  GIMP_PDB_ERROR_FAILED, /* generic error condition */
+  GIMP_PDB_ERROR_CANCELLED,
+  GIMP_PDB_ERROR_PDB_NOT_FOUND,
+  GIMP_PDB_ERROR_INVALID_ARGUMENT,
+  GIMP_PDB_ERROR_INVALID_RETURN_VALUE,
+  GIMP_PDB_ERROR_INTERNAL_ERROR
 } GimpPdbErrorCode;
 
+#define GIMP_PDB_ERROR (_gimp_pdb_error_quark())
 
-#define GIMP_PDB_ERROR (_gimp_pdb_error_quark ())
+GQuark _gimp_pdb_error_quark(void) G_GNUC_CONST;
 
-GQuark _gimp_pdb_error_quark (void) G_GNUC_CONST;
+GimpPDB *_gimp_pdb_new(GimpPlugIn *plug_in);
 
-
-GimpPDB    * _gimp_pdb_new         (GimpPlugIn *plug_in);
-
-GimpPlugIn * _gimp_pdb_get_plug_in (GimpPDB    *pdb);
-
+GimpPlugIn *_gimp_pdb_get_plug_in(GimpPDB *pdb);
 
 G_END_DECLS
 
-#endif  /*  __GIMP_PDB_PRIVATE_H__  */
+#endif /*  __GIMP_PDB_PRIVATE_H__  */

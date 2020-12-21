@@ -21,9 +21,7 @@
 #ifndef __GIMP_MATH_TYPES_H__
 #define __GIMP_MATH_TYPES_H__
 
-
 #include <libgimpbase/gimpbasetypes.h>
-
 
 G_BEGIN_DECLS
 
@@ -37,9 +35,8 @@ typedef struct _GimpMatrix4 GimpMatrix4;
  *
  * A two by two matrix.
  **/
-struct _GimpMatrix2
-{
-	gdouble coeff[2][2];
+struct _GimpMatrix2 {
+  gdouble coeff[2][2];
 };
 
 /**
@@ -48,9 +45,8 @@ struct _GimpMatrix2
  *
  * A three by three matrix.
  **/
-struct _GimpMatrix3
-{
-	gdouble coeff[3][3];
+struct _GimpMatrix3 {
+  gdouble coeff[3][3];
 };
 
 /**
@@ -59,11 +55,9 @@ struct _GimpMatrix3
  *
  * A four by four matrix.
  **/
-struct _GimpMatrix4
-{
-	gdouble coeff[4][4];
+struct _GimpMatrix4 {
+  gdouble coeff[4][4];
 };
-
 
 typedef struct _GimpVector2 GimpVector2;
 typedef struct _GimpVector3 GimpVector3;
@@ -76,9 +70,8 @@ typedef struct _GimpVector4 GimpVector4;
  *
  * A two dimensional vector.
  **/
-struct _GimpVector2
-{
-	gdouble x, y;
+struct _GimpVector2 {
+  gdouble x, y;
 };
 
 /**
@@ -86,10 +79,9 @@ struct _GimpVector2
  *
  * Boxed type representing a two-dimensional vector.
  */
-#define GIMP_TYPE_VECTOR2 (gimp_vector2_get_type ())
+#define GIMP_TYPE_VECTOR2 (gimp_vector2_get_type())
 
-GType gimp_vector2_get_type (void) G_GNUC_CONST;
-
+GType gimp_vector2_get_type(void) G_GNUC_CONST;
 
 /**
  * GimpVector3:
@@ -99,9 +91,8 @@ GType gimp_vector2_get_type (void) G_GNUC_CONST;
  *
  * A three dimensional vector.
  **/
-struct _GimpVector3
-{
-	gdouble x, y, z;
+struct _GimpVector3 {
+  gdouble x, y, z;
 };
 
 /**
@@ -109,10 +100,9 @@ struct _GimpVector3
  *
  * Boxed type representing a three-dimensional vector.
  */
-#define GIMP_TYPE_VECTOR3 (gimp_vector3_get_type ())
+#define GIMP_TYPE_VECTOR3 (gimp_vector3_get_type())
 
-GType gimp_vector3_get_type (void) G_GNUC_CONST;
-
+GType gimp_vector3_get_type(void) G_GNUC_CONST;
 
 /**
  * GimpVector4:
@@ -123,11 +113,9 @@ GType gimp_vector3_get_type (void) G_GNUC_CONST;
  *
  * A four dimensional vector.
  **/
-struct _GimpVector4
-{
-	gdouble x, y, z, w;
+struct _GimpVector4 {
+  gdouble x, y, z, w;
 };
-
 
 G_END_DECLS
 

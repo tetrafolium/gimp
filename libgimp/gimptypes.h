@@ -27,7 +27,6 @@ G_BEGIN_DECLS
 
 /* For information look into the html documentation */
 
-
 typedef struct _GimpPDB GimpPDB;
 typedef struct _GimpPlugIn GimpPlugIn;
 typedef struct _GimpProcedure GimpProcedure;
@@ -44,7 +43,6 @@ typedef struct _GimpVectors GimpVectors;
 
 typedef struct _GimpDisplay GimpDisplay;
 
-
 /* FIXME move somewhere else */
 
 /**
@@ -56,13 +54,11 @@ typedef struct _GimpDisplay GimpDisplay;
  * How to deal with transparency when creating thubnail pixbufs from
  * images and drawables.
  **/
-typedef enum
-{
-	GIMP_PIXBUF_KEEP_ALPHA,
-	GIMP_PIXBUF_SMALL_CHECKS,
-	GIMP_PIXBUF_LARGE_CHECKS
+typedef enum {
+  GIMP_PIXBUF_KEEP_ALPHA,
+  GIMP_PIXBUF_SMALL_CHECKS,
+  GIMP_PIXBUF_LARGE_CHECKS
 } GimpPixbufTransparency;
-
 
 G_END_DECLS
 

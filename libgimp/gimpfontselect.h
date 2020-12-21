@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -27,19 +27,14 @@
 
 G_BEGIN_DECLS
 
+typedef void (*GimpRunFontCallback)(const gchar *font_name,
+                                    gboolean dialog_closing,
+                                    gpointer user_data);
 
-typedef void (* GimpRunFontCallback)   (const gchar *font_name,
-                                        gboolean dialog_closing,
-                                        gpointer user_data);
-
-
-const gchar * gimp_font_select_new     (const gchar         *title,
-                                        const gchar         *font_name,
-                                        GimpRunFontCallback callback,
-                                        gpointer data,
-                                        GDestroyNotify data_destroy);
-void          gimp_font_select_destroy (const gchar         *font_callback);
-
+const gchar *gimp_font_select_new(const gchar *title, const gchar *font_name,
+                                  GimpRunFontCallback callback, gpointer data,
+                                  GDestroyNotify data_destroy);
+void gimp_font_select_destroy(const gchar *font_callback);
 
 G_END_DECLS
 

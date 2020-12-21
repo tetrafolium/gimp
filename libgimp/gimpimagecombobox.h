@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_UI_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_UI_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimpui.h> can be included directly."
 #endif
 
@@ -35,21 +35,18 @@ G_BEGIN_DECLS
  * @image:
  * @data: (closure):
  */
-typedef gboolean (* GimpImageConstraintFunc) (GimpImage *image,
-                                              gpointer data);
+typedef gboolean (*GimpImageConstraintFunc)(GimpImage *image, gpointer data);
 
-
-#define GIMP_TYPE_IMAGE_COMBO_BOX       (gimp_image_combo_box_get_type ())
-#define GIMP_IMAGE_COMBO_BOX(obj)       (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_IMAGE_COMBO_BOX, GimpImageComboBox))
+#define GIMP_TYPE_IMAGE_COMBO_BOX (gimp_image_combo_box_get_type())
+#define GIMP_IMAGE_COMBO_BOX(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_IMAGE_COMBO_BOX,                \
+                              GimpImageComboBox))
 #define GIMP_IS_IMAGE_COMBO_BOX(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_IMAGE_COMBO_BOX)
 
+GType gimp_image_combo_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_image_combo_box_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_image_combo_box_new      (GimpImageConstraintFunc constraint,
-                                           gpointer data,
-                                           GDestroyNotify data_destroy);
-
+GtkWidget *gimp_image_combo_box_new(GimpImageConstraintFunc constraint,
+                                    gpointer data, GDestroyNotify data_destroy);
 
 G_END_DECLS
 

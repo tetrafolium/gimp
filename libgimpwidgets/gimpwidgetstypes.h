@@ -29,7 +29,6 @@ G_BEGIN_DECLS
 
 /* For information look into the html documentation */
 
-
 typedef struct _GimpBrowser GimpBrowser;
 typedef struct _GimpBusyBox GimpBusyBox;
 typedef struct _GimpButton GimpButton;
@@ -82,7 +81,6 @@ typedef struct _GimpUnitComboBox GimpUnitComboBox;
 typedef struct _GimpUnitStore GimpUnitStore;
 typedef struct _GimpZoomModel GimpZoomModel;
 
-
 /**
  * GimpHelpFunc:
  * @help_id:   the help ID
@@ -103,9 +101,7 @@ typedef struct _GimpZoomModel GimpZoomModel;
  * provide your own @help_func which has to call gimp_help() to
  * actually display the help.
  **/
-typedef void (* GimpHelpFunc) (const gchar *help_id,
-                               gpointer help_data);
-
+typedef void (*GimpHelpFunc)(const gchar *help_id, gpointer help_data);
 
 G_END_DECLS
 

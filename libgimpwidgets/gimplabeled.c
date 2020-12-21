@@ -24,11 +24,10 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 
-#include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
+#include "libgimpmath/gimpmath.h"
 
 #include "gimpwidgets.h"
-
 
 /**
  * SECTION: gimplabeled
@@ -40,139 +39,112 @@
  * another widget.
  **/
 
-enum
-{
-	PROP_0,
-	PROP_LABEL,
+enum {
+  PROP_0,
+  PROP_LABEL,
 };
 
-typedef struct _GimpLabeledPrivate
-{
-	GtkWidget     *label;
-	GtkWidget     *mnemonic_widget;
+typedef struct _GimpLabeledPrivate {
+  GtkWidget *label;
+  GtkWidget *mnemonic_widget;
 } GimpLabeledPrivate;
 
+static void gimp_labeled_constructed(GObject *object);
+static void gimp_labeled_set_property(GObject *object, guint property_id,
+                                      const GValue *value, GParamSpec *pspec);
+static void gimp_labeled_get_property(GObject *object, guint property_id,
+                                      GValue *value, GParamSpec *pspec);
 
-static void       gimp_labeled_constructed       (GObject       *object);
-static void       gimp_labeled_set_property      (GObject       *object,
-                                                  guint property_id,
-                                                  const GValue  *value,
-                                                  GParamSpec    *pspec);
-static void       gimp_labeled_get_property      (GObject       *object,
-                                                  guint property_id,
-                                                  GValue        *value,
-                                                  GParamSpec    *pspec);
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpLabeled, gimp_labeled, GTK_TYPE_GRID)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpLabeled, gimp_labeled, GTK_TYPE_GRID)
 
 #define parent_class gimp_labeled_parent_class
 
+static void gimp_labeled_class_init(GimpLabeledClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void
-gimp_labeled_class_init (GimpLabeledClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->constructed = gimp_labeled_constructed;
+  object_class->set_property = gimp_labeled_set_property;
+  object_class->get_property = gimp_labeled_get_property;
 
-	object_class->constructed  = gimp_labeled_constructed;
-	object_class->set_property = gimp_labeled_set_property;
-	object_class->get_property = gimp_labeled_get_property;
-
-	/**
-	 * GimpLabeled:label:
-	 *
-	 * Label text with pango markup and mnemonic.
-	 *
-	 * Since: 3.0
-	 **/
-	g_object_class_install_property (object_class, PROP_LABEL,
-	                                 g_param_spec_string ("label",
-	                                                      "Label text",
-	                                                      "The text of the label part of this widget",
-	                                                      NULL,
-	                                                      GIMP_PARAM_READWRITE));
+  /**
+   * GimpLabeled:label:
+   *
+   * Label text with pango markup and mnemonic.
+   *
+   * Since: 3.0
+   **/
+  g_object_class_install_property(
+      object_class, PROP_LABEL,
+      g_param_spec_string("label", "Label text",
+                          "The text of the label part of this widget", NULL,
+                          GIMP_PARAM_READWRITE));
 }
 
-static void
-gimp_labeled_init (GimpLabeled *labeled)
-{
+static void gimp_labeled_init(GimpLabeled *labeled) {}
+
+static void gimp_labeled_constructed(GObject *object) {
+  GimpLabeledClass *klass;
+  GimpLabeled *labeled = GIMP_LABELED(object);
+  GimpLabeledPrivate *priv = gimp_labeled_get_instance_private(labeled);
+  gint x = 0;
+  gint y = 0;
+  gint width = 1;
+  gint height = 1;
+
+  G_OBJECT_CLASS(parent_class)->constructed(object);
+
+  priv->label = gtk_label_new_with_mnemonic(NULL);
+  gtk_label_set_xalign(GTK_LABEL(priv->label), 0.0);
+
+  klass = GIMP_LABELED_GET_CLASS(labeled);
+  g_return_if_fail(klass->populate);
+  priv->mnemonic_widget = klass->populate(labeled, &x, &y, &width, &height);
+
+  if (priv->mnemonic_widget)
+    gtk_label_set_mnemonic_widget(GTK_LABEL(priv->label),
+                                  priv->mnemonic_widget);
+
+  gtk_grid_attach(GTK_GRID(labeled), priv->label, x, y, width, height);
+  gtk_widget_show(priv->label);
 }
 
-static void
-gimp_labeled_constructed (GObject *object)
-{
-	GimpLabeledClass   *klass;
-	GimpLabeled        *labeled = GIMP_LABELED (object);
-	GimpLabeledPrivate *priv    = gimp_labeled_get_instance_private (labeled);
-	gint x       = 0;
-	gint y       = 0;
-	gint width   = 1;
-	gint height  = 1;
+static void gimp_labeled_set_property(GObject *object, guint property_id,
+                                      const GValue *value, GParamSpec *pspec) {
+  GimpLabeled *entry = GIMP_LABELED(object);
+  GimpLabeledPrivate *priv = gimp_labeled_get_instance_private(entry);
 
-	G_OBJECT_CLASS (parent_class)->constructed (object);
+  switch (property_id) {
+  case PROP_LABEL: {
+    /* This should not happen since the property is **not** set with
+     * G_PARAM_CONSTRUCT, hence the label should exist when the
+     * property is first set.
+     */
+    g_return_if_fail(priv->label);
 
-	priv->label = gtk_label_new_with_mnemonic (NULL);
-	gtk_label_set_xalign (GTK_LABEL (priv->label), 0.0);
+    gtk_label_set_markup_with_mnemonic(GTK_LABEL(priv->label),
+                                       g_value_get_string(value));
+  } break;
 
-	klass = GIMP_LABELED_GET_CLASS (labeled);
-	g_return_if_fail (klass->populate);
-	priv->mnemonic_widget = klass->populate (labeled, &x, &y, &width, &height);
-
-	if (priv->mnemonic_widget)
-		gtk_label_set_mnemonic_widget (GTK_LABEL (priv->label), priv->mnemonic_widget);
-
-	gtk_grid_attach (GTK_GRID (labeled), priv->label, x, y, width, height);
-	gtk_widget_show (priv->label);
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_labeled_set_property (GObject      *object,
-                           guint property_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
-{
-	GimpLabeled        *entry = GIMP_LABELED (object);
-	GimpLabeledPrivate *priv  = gimp_labeled_get_instance_private (entry);
+static void gimp_labeled_get_property(GObject *object, guint property_id,
+                                      GValue *value, GParamSpec *pspec) {
+  GimpLabeled *entry = GIMP_LABELED(object);
+  GimpLabeledPrivate *priv = gimp_labeled_get_instance_private(entry);
 
-	switch (property_id)
-	{
-	case PROP_LABEL:
-	{
-		/* This should not happen since the property is **not** set with
-		 * G_PARAM_CONSTRUCT, hence the label should exist when the
-		 * property is first set.
-		 */
-		g_return_if_fail (priv->label);
+  switch (property_id) {
+  case PROP_LABEL:
+    g_value_set_string(value, gtk_label_get_label(GTK_LABEL(priv->label)));
+    break;
 
-		gtk_label_set_markup_with_mnemonic (GTK_LABEL (priv->label),
-		                                    g_value_get_string (value));
-	}
-	break;
-
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gimp_labeled_get_property (GObject    *object,
-                           guint property_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
-{
-	GimpLabeled        *entry = GIMP_LABELED (object);
-	GimpLabeledPrivate *priv  = gimp_labeled_get_instance_private (entry);
-
-	switch (property_id)
-	{
-	case PROP_LABEL:
-		g_value_set_string (value, gtk_label_get_label (GTK_LABEL (priv->label)));
-		break;
-
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
 /* Public functions */
@@ -186,14 +158,12 @@ gimp_labeled_get_property (GObject    *object,
  *
  * Returns: (transfer none): The #GtkLabel contained in @labeled.
  **/
-GtkWidget *
-gimp_labeled_get_label (GimpLabeled *labeled)
-{
-	GimpLabeledPrivate *priv = gimp_labeled_get_instance_private (labeled);
+GtkWidget *gimp_labeled_get_label(GimpLabeled *labeled) {
+  GimpLabeledPrivate *priv = gimp_labeled_get_instance_private(labeled);
 
-	g_return_val_if_fail (GIMP_IS_LABELED (labeled), NULL);
+  g_return_val_if_fail(GIMP_IS_LABELED(labeled), NULL);
 
-	return priv->label;
+  return priv->label;
 }
 
 /**
@@ -212,14 +182,12 @@ gimp_labeled_get_label (GimpLabeled *labeled)
  * Returns: the label text as entered, which includes pango markup and
  *          mnemonics similarly to gtk_label_get_label().
  */
-const gchar *
-gimp_labeled_get_text (GimpLabeled *labeled)
-{
-	GimpLabeledPrivate *priv = gimp_labeled_get_instance_private (labeled);
+const gchar *gimp_labeled_get_text(GimpLabeled *labeled) {
+  GimpLabeledPrivate *priv = gimp_labeled_get_instance_private(labeled);
 
-	g_return_val_if_fail (GIMP_IS_LABELED (labeled), NULL);
+  g_return_val_if_fail(GIMP_IS_LABELED(labeled), NULL);
 
-	return gtk_label_get_label (GTK_LABEL (priv->label));
+  return gtk_label_get_label(GTK_LABEL(priv->label));
 }
 
 /**
@@ -231,13 +199,10 @@ gimp_labeled_get_text (GimpLabeled *labeled)
  * gtk_label_set_markup_with_mnemonic() on the #GtkLabel as a
  * #GimpLabeled expects a mnemonic. Pango markup are also allowed.
  */
-void
-gimp_labeled_set_text (GimpLabeled *labeled,
-                       const gchar *text)
-{
-	GimpLabeledPrivate *priv = gimp_labeled_get_instance_private (labeled);
+void gimp_labeled_set_text(GimpLabeled *labeled, const gchar *text) {
+  GimpLabeledPrivate *priv = gimp_labeled_get_instance_private(labeled);
 
-	g_return_if_fail (GIMP_IS_LABELED (labeled));
+  g_return_if_fail(GIMP_IS_LABELED(labeled));
 
-	gtk_label_set_markup_with_mnemonic (GTK_LABEL (priv->label), text);
+  gtk_label_set_markup_with_mnemonic(GTK_LABEL(priv->label), text);
 }

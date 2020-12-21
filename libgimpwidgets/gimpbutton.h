@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,51 +30,49 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-#define GIMP_TYPE_BUTTON            (gimp_button_get_type ())
-#define GIMP_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BUTTON, GimpButton))
-#define GIMP_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BUTTON, GimpButtonClass))
-#define GIMP_IS_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BUTTON))
-#define GIMP_IS_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BUTTON))
-#define GIMP_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BUTTON, GimpButtonClass))
-
+#define GIMP_TYPE_BUTTON (gimp_button_get_type())
+#define GIMP_BUTTON(obj)                                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BUTTON, GimpButton))
+#define GIMP_BUTTON_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BUTTON, GimpButtonClass))
+#define GIMP_IS_BUTTON(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BUTTON))
+#define GIMP_IS_BUTTON_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BUTTON))
+#define GIMP_BUTTON_GET_CLASS(obj)                                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BUTTON, GimpButtonClass))
 
 typedef struct _GimpButtonPrivate GimpButtonPrivate;
 typedef struct _GimpButtonClass GimpButtonClass;
 
-struct _GimpButton
-{
-	GtkButton parent_instance;
+struct _GimpButton {
+  GtkButton parent_instance;
 
-	GimpButtonPrivate *priv;
+  GimpButtonPrivate *priv;
 };
 
-struct _GimpButtonClass
-{
-	GtkButtonClass parent_class;
+struct _GimpButtonClass {
+  GtkButtonClass parent_class;
 
-	void (* extended_clicked) (GimpButton      *button,
-	                           GdkModifierType modifier_state);
+  void (*extended_clicked)(GimpButton *button, GdkModifierType modifier_state);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_button_get_type(void) G_GNUC_CONST;
 
-GType       gimp_button_get_type         (void) G_GNUC_CONST;
+GtkWidget *gimp_button_new(void);
 
-GtkWidget * gimp_button_new              (void);
-
-void        gimp_button_extended_clicked (GimpButton      *button,
-                                          GdkModifierType modifier_state);
-
+void gimp_button_extended_clicked(GimpButton *button,
+                                  GdkModifierType modifier_state);
 
 G_END_DECLS
 

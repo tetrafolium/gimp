@@ -19,20 +19,16 @@
 #ifndef __GIMP_COLOR_TYPES_H__
 #define __GIMP_COLOR_TYPES_H__
 
-
 #include <libgimpbase/gimpbasetypes.h>
 #include <libgimpconfig/gimpconfigtypes.h>
-
 
 G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-typedef struct _GimpColorManaged GimpColorManaged;    /* dummy typedef */
+typedef struct _GimpColorManaged GimpColorManaged; /* dummy typedef */
 typedef struct _GimpColorProfile GimpColorProfile;
 typedef struct _GimpColorTransform GimpColorTransform;
-
 
 /*  usually we don't keep the structure definitions in the types file
  *  but GimpRGB appears in too many header files...
@@ -53,9 +49,8 @@ typedef struct _GimpCMYK GimpCMYK;
  * Used to keep RGB and RGBA colors. All components are in a range of
  * [0.0..1.0].
  **/
-struct _GimpRGB
-{
-	gdouble r, g, b, a;
+struct _GimpRGB {
+  gdouble r, g, b, a;
 };
 
 /**
@@ -68,9 +63,8 @@ struct _GimpRGB
  * Used to keep HSV and HSVA colors. All components are in a range of
  * [0.0..1.0].
  **/
-struct _GimpHSV
-{
-	gdouble h, s, v, a;
+struct _GimpHSV {
+  gdouble h, s, v, a;
 };
 
 /**
@@ -83,9 +77,8 @@ struct _GimpHSV
  * Used to keep HSL and HSLA colors. All components are in a range of
  * [0.0..1.0].
  **/
-struct _GimpHSL
-{
-	gdouble h, s, l, a;
+struct _GimpHSL {
+  gdouble h, s, l, a;
 };
 
 /**
@@ -101,12 +94,10 @@ struct _GimpHSL
  * colorspace, but we keep one around anyway so color conversions
  * going to CMYK and back can preserve alpha.
  **/
-struct _GimpCMYK
-{
-	gdouble c, m, y, k, a;
+struct _GimpCMYK {
+  gdouble c, m, y, k, a;
 };
-
 
 G_END_DECLS
 
-#endif  /* __GIMP_COLOR_TYPES_H__ */
+#endif /* __GIMP_COLOR_TYPES_H__ */

@@ -19,7 +19,6 @@
 #ifndef __GIMP_BASE_ENUMS_H__
 #define __GIMP_BASE_ENUMS_H__
 
-
 /**
  * SECTION: gimpbaseenums
  * @title: gimpbaseenums
@@ -28,11 +27,9 @@
  * Basic GIMP enumeration data types.
  **/
 
-
 G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
-
 
 /**
  * GimpAddMaskType:
@@ -46,21 +43,19 @@ G_BEGIN_DECLS
  *
  * Modes of initialising a layer mask.
  **/
-#define GIMP_TYPE_ADD_MASK_TYPE (gimp_add_mask_type_get_type ())
+#define GIMP_TYPE_ADD_MASK_TYPE (gimp_add_mask_type_get_type())
 
-GType gimp_add_mask_type_get_type (void) G_GNUC_CONST;
+GType gimp_add_mask_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_ADD_MASK_WHITE,      /*< desc="_White (full opacity)"           >*/
-	GIMP_ADD_MASK_BLACK,      /*< desc="_Black (full transparency)"      >*/
-	GIMP_ADD_MASK_ALPHA,      /*< desc="Layer's _alpha channel"          >*/
-	GIMP_ADD_MASK_ALPHA_TRANSFER, /*< desc="_Transfer layer's alpha channel" >*/
-	GIMP_ADD_MASK_SELECTION,  /*< desc="_Selection"                      >*/
-	GIMP_ADD_MASK_COPY,       /*< desc="_Grayscale copy of layer"        >*/
-	GIMP_ADD_MASK_CHANNEL     /*< desc="C_hannel"                        >*/
+typedef enum {
+  GIMP_ADD_MASK_WHITE,          /*< desc="_White (full opacity)"           >*/
+  GIMP_ADD_MASK_BLACK,          /*< desc="_Black (full transparency)"      >*/
+  GIMP_ADD_MASK_ALPHA,          /*< desc="Layer's _alpha channel"          >*/
+  GIMP_ADD_MASK_ALPHA_TRANSFER, /*< desc="_Transfer layer's alpha channel" >*/
+  GIMP_ADD_MASK_SELECTION,      /*< desc="_Selection"                      >*/
+  GIMP_ADD_MASK_COPY,           /*< desc="_Grayscale copy of layer"        >*/
+  GIMP_ADD_MASK_CHANNEL         /*< desc="C_hannel"                        >*/
 } GimpAddMaskType;
-
 
 /**
  * GimpBrushGeneratedShape:
@@ -70,17 +65,15 @@ typedef enum
  *
  * Shapes of generated brushes.
  **/
-#define GIMP_TYPE_BRUSH_GENERATED_SHAPE (gimp_brush_generated_shape_get_type ())
+#define GIMP_TYPE_BRUSH_GENERATED_SHAPE (gimp_brush_generated_shape_get_type())
 
-GType gimp_brush_generated_shape_get_type (void) G_GNUC_CONST;
+GType gimp_brush_generated_shape_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_BRUSH_GENERATED_CIRCLE, /*< desc="Circle"  >*/
-	GIMP_BRUSH_GENERATED_SQUARE, /*< desc="Square"  >*/
-	GIMP_BRUSH_GENERATED_DIAMOND /*< desc="Diamond" >*/
+typedef enum {
+  GIMP_BRUSH_GENERATED_CIRCLE, /*< desc="Circle"  >*/
+  GIMP_BRUSH_GENERATED_SQUARE, /*< desc="Square"  >*/
+  GIMP_BRUSH_GENERATED_DIAMOND /*< desc="Diamond" >*/
 } GimpBrushGeneratedShape;
-
 
 /**
  * GimpCapStyle:
@@ -90,17 +83,15 @@ typedef enum
  *
  * Style of line endings.
  **/
-#define GIMP_TYPE_CAP_STYLE (gimp_cap_style_get_type ())
+#define GIMP_TYPE_CAP_STYLE (gimp_cap_style_get_type())
 
-GType gimp_cap_style_get_type (void) G_GNUC_CONST;
+GType gimp_cap_style_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CAP_BUTT, /*< desc="Butt"   >*/
-	GIMP_CAP_ROUND, /*< desc="Round"  >*/
-	GIMP_CAP_SQUARE /*< desc="Square" >*/
+typedef enum {
+  GIMP_CAP_BUTT,  /*< desc="Butt"   >*/
+  GIMP_CAP_ROUND, /*< desc="Round"  >*/
+  GIMP_CAP_SQUARE /*< desc="Square" >*/
 } GimpCapStyle;
-
 
 /**
  * GimpChannelOps:
@@ -111,18 +102,16 @@ typedef enum
  *
  * Operations to combine channels and selections.
  **/
-#define GIMP_TYPE_CHANNEL_OPS (gimp_channel_ops_get_type ())
+#define GIMP_TYPE_CHANNEL_OPS (gimp_channel_ops_get_type())
 
-GType gimp_channel_ops_get_type (void) G_GNUC_CONST;
+GType gimp_channel_ops_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CHANNEL_OP_ADD,   /*< desc="Add to the current selection"         >*/
-	GIMP_CHANNEL_OP_SUBTRACT, /*< desc="Subtract from the current selection"  >*/
-	GIMP_CHANNEL_OP_REPLACE, /*< desc="Replace the current selection"        >*/
-	GIMP_CHANNEL_OP_INTERSECT /*< desc="Intersect with the current selection" >*/
+typedef enum {
+  GIMP_CHANNEL_OP_ADD,      /*< desc="Add to the current selection"         >*/
+  GIMP_CHANNEL_OP_SUBTRACT, /*< desc="Subtract from the current selection"  >*/
+  GIMP_CHANNEL_OP_REPLACE,  /*< desc="Replace the current selection"        >*/
+  GIMP_CHANNEL_OP_INTERSECT /*< desc="Intersect with the current selection" >*/
 } GimpChannelOps;
-
 
 /**
  * GimpChannelType:
@@ -135,20 +124,18 @@ typedef enum
  *
  * Channels (as in color components).
  **/
-#define GIMP_TYPE_CHANNEL_TYPE (gimp_channel_type_get_type ())
+#define GIMP_TYPE_CHANNEL_TYPE (gimp_channel_type_get_type())
 
-GType gimp_channel_type_get_type (void) G_GNUC_CONST;
+GType gimp_channel_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CHANNEL_RED,  /*< desc="Red"     >*/
-	GIMP_CHANNEL_GREEN, /*< desc="Green"   >*/
-	GIMP_CHANNEL_BLUE, /*< desc="Blue"    >*/
-	GIMP_CHANNEL_GRAY, /*< desc="Gray"    >*/
-	GIMP_CHANNEL_INDEXED, /*< desc="Indexed" >*/
-	GIMP_CHANNEL_ALPHA /*< desc="Alpha"   >*/
+typedef enum {
+  GIMP_CHANNEL_RED,     /*< desc="Red"     >*/
+  GIMP_CHANNEL_GREEN,   /*< desc="Green"   >*/
+  GIMP_CHANNEL_BLUE,    /*< desc="Blue"    >*/
+  GIMP_CHANNEL_GRAY,    /*< desc="Gray"    >*/
+  GIMP_CHANNEL_INDEXED, /*< desc="Indexed" >*/
+  GIMP_CHANNEL_ALPHA    /*< desc="Alpha"   >*/
 } GimpChannelType;
-
 
 /**
  * GimpCheckSize:
@@ -158,17 +145,15 @@ typedef enum
  *
  * Size of the checkerboard indicating transparency.
  **/
-#define GIMP_TYPE_CHECK_SIZE (gimp_check_size_get_type ())
+#define GIMP_TYPE_CHECK_SIZE (gimp_check_size_get_type())
 
-GType gimp_check_size_get_type (void) G_GNUC_CONST;
+GType gimp_check_size_get_type(void) G_GNUC_CONST;
 
-typedef enum  /*< pdb-skip >*/
-{
-	GIMP_CHECK_SIZE_SMALL_CHECKS  = 0,/*< desc="Small"  >*/
-	GIMP_CHECK_SIZE_MEDIUM_CHECKS = 1, /*< desc="Medium" >*/
-	GIMP_CHECK_SIZE_LARGE_CHECKS  = 2/*< desc="Large"  >*/
+typedef enum                         /*< pdb-skip >*/
+{ GIMP_CHECK_SIZE_SMALL_CHECKS = 0,  /*< desc="Small"  >*/
+  GIMP_CHECK_SIZE_MEDIUM_CHECKS = 1, /*< desc="Medium" >*/
+  GIMP_CHECK_SIZE_LARGE_CHECKS = 2   /*< desc="Large"  >*/
 } GimpCheckSize;
-
 
 /**
  * GimpCheckType:
@@ -181,20 +166,18 @@ typedef enum  /*< pdb-skip >*/
  *
  * Color/Brightness of the checkerboard indicating transparency.
  **/
-#define GIMP_TYPE_CHECK_TYPE (gimp_check_type_get_type ())
+#define GIMP_TYPE_CHECK_TYPE (gimp_check_type_get_type())
 
-GType gimp_check_type_get_type (void) G_GNUC_CONST;
+GType gimp_check_type_get_type(void) G_GNUC_CONST;
 
-typedef enum  /*< pdb-skip >*/
-{
-	GIMP_CHECK_TYPE_LIGHT_CHECKS = 0, /*< desc="Light checks"    >*/
-	GIMP_CHECK_TYPE_GRAY_CHECKS  = 1,/*< desc="Mid-tone checks" >*/
-	GIMP_CHECK_TYPE_DARK_CHECKS  = 2,/*< desc="Dark checks"     >*/
-	GIMP_CHECK_TYPE_WHITE_ONLY   = 3,/*< desc="White only"      >*/
-	GIMP_CHECK_TYPE_GRAY_ONLY    = 4,/*< desc="Gray only"       >*/
-	GIMP_CHECK_TYPE_BLACK_ONLY   = 5/*< desc="Black only"      >*/
+typedef enum                        /*< pdb-skip >*/
+{ GIMP_CHECK_TYPE_LIGHT_CHECKS = 0, /*< desc="Light checks"    >*/
+  GIMP_CHECK_TYPE_GRAY_CHECKS = 1,  /*< desc="Mid-tone checks" >*/
+  GIMP_CHECK_TYPE_DARK_CHECKS = 2,  /*< desc="Dark checks"     >*/
+  GIMP_CHECK_TYPE_WHITE_ONLY = 3,   /*< desc="White only"      >*/
+  GIMP_CHECK_TYPE_GRAY_ONLY = 4,    /*< desc="Gray only"       >*/
+  GIMP_CHECK_TYPE_BLACK_ONLY = 5    /*< desc="Black only"      >*/
 } GimpCheckType;
-
 
 /**
  * GimpCloneType:
@@ -203,16 +186,14 @@ typedef enum  /*< pdb-skip >*/
  *
  * Clone sources.
  **/
-#define GIMP_TYPE_CLONE_TYPE (gimp_clone_type_get_type ())
+#define GIMP_TYPE_CLONE_TYPE (gimp_clone_type_get_type())
 
-GType gimp_clone_type_get_type (void) G_GNUC_CONST;
+GType gimp_clone_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CLONE_IMAGE, /*< desc="Image"   >*/
-	GIMP_CLONE_PATTERN /*< desc="Pattern" >*/
+typedef enum {
+  GIMP_CLONE_IMAGE,  /*< desc="Image"   >*/
+  GIMP_CLONE_PATTERN /*< desc="Pattern" >*/
 } GimpCloneType;
-
 
 /**
  * GimpColorTag:
@@ -230,23 +211,21 @@ typedef enum
  *
  * Since: 2.10
  **/
-#define GIMP_TYPE_COLOR_TAG (gimp_color_tag_get_type ())
+#define GIMP_TYPE_COLOR_TAG (gimp_color_tag_get_type())
 
-GType gimp_color_tag_get_type (void) G_GNUC_CONST;
+GType gimp_color_tag_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_COLOR_TAG_NONE, /*< desc="None"   >*/
-	GIMP_COLOR_TAG_BLUE, /*< desc="Blue"   >*/
-	GIMP_COLOR_TAG_GREEN, /*< desc="Green"  >*/
-	GIMP_COLOR_TAG_YELLOW, /*< desc="Yellow" >*/
-	GIMP_COLOR_TAG_ORANGE, /*< desc="Orange" >*/
-	GIMP_COLOR_TAG_BROWN, /*< desc="Brown"  >*/
-	GIMP_COLOR_TAG_RED, /*< desc="Red"    >*/
-	GIMP_COLOR_TAG_VIOLET, /*< desc="Violet" >*/
-	GIMP_COLOR_TAG_GRAY /*< desc="Gray"   >*/
+typedef enum {
+  GIMP_COLOR_TAG_NONE,   /*< desc="None"   >*/
+  GIMP_COLOR_TAG_BLUE,   /*< desc="Blue"   >*/
+  GIMP_COLOR_TAG_GREEN,  /*< desc="Green"  >*/
+  GIMP_COLOR_TAG_YELLOW, /*< desc="Yellow" >*/
+  GIMP_COLOR_TAG_ORANGE, /*< desc="Orange" >*/
+  GIMP_COLOR_TAG_BROWN,  /*< desc="Brown"  >*/
+  GIMP_COLOR_TAG_RED,    /*< desc="Red"    >*/
+  GIMP_COLOR_TAG_VIOLET, /*< desc="Violet" >*/
+  GIMP_COLOR_TAG_GRAY    /*< desc="Gray"   >*/
 } GimpColorTag;
-
 
 /**
  * GimpComponentType:
@@ -261,20 +240,18 @@ typedef enum
  *
  * Since: 2.10
  **/
-#define GIMP_TYPE_COMPONENT_TYPE (gimp_component_type_get_type ())
+#define GIMP_TYPE_COMPONENT_TYPE (gimp_component_type_get_type())
 
-GType gimp_component_type_get_type (void) G_GNUC_CONST;
+GType gimp_component_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_COMPONENT_TYPE_U8     = 100,/*< desc="8-bit integer"         >*/
-	GIMP_COMPONENT_TYPE_U16    = 200,/*< desc="16-bit integer"        >*/
-	GIMP_COMPONENT_TYPE_U32    = 300,/*< desc="32-bit integer"        >*/
-	GIMP_COMPONENT_TYPE_HALF   = 500,/*< desc="16-bit floating point" >*/
-	GIMP_COMPONENT_TYPE_FLOAT  = 600,/*< desc="32-bit floating point" >*/
-	GIMP_COMPONENT_TYPE_DOUBLE = 700 /*< desc="64-bit floating point" >*/
+typedef enum {
+  GIMP_COMPONENT_TYPE_U8 = 100,    /*< desc="8-bit integer"         >*/
+  GIMP_COMPONENT_TYPE_U16 = 200,   /*< desc="16-bit integer"        >*/
+  GIMP_COMPONENT_TYPE_U32 = 300,   /*< desc="32-bit integer"        >*/
+  GIMP_COMPONENT_TYPE_HALF = 500,  /*< desc="16-bit floating point" >*/
+  GIMP_COMPONENT_TYPE_FLOAT = 600, /*< desc="32-bit floating point" >*/
+  GIMP_COMPONENT_TYPE_DOUBLE = 700 /*< desc="64-bit floating point" >*/
 } GimpComponentType;
-
 
 /**
  * GimpConvertPaletteType:
@@ -285,18 +262,16 @@ typedef enum
  *
  * Types of palettes for indexed conversion.
  **/
-#define GIMP_TYPE_CONVERT_PALETTE_TYPE (gimp_convert_palette_type_get_type ())
+#define GIMP_TYPE_CONVERT_PALETTE_TYPE (gimp_convert_palette_type_get_type())
 
-GType gimp_convert_palette_type_get_type (void) G_GNUC_CONST;
+GType gimp_convert_palette_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CONVERT_PALETTE_GENERATE, /*< desc="Generate optimum palette"          >*/
-	GIMP_CONVERT_PALETTE_WEB,  /*< desc="Use web-optimized palette"         >*/
-	GIMP_CONVERT_PALETTE_MONO, /*< desc="Use black and white (1-bit) palette" >*/
-	GIMP_CONVERT_PALETTE_CUSTOM /*< desc="Use custom palette"                >*/
+typedef enum {
+  GIMP_CONVERT_PALETTE_GENERATE, /*< desc="Generate optimum palette" >*/
+  GIMP_CONVERT_PALETTE_WEB,   /*< desc="Use web-optimized palette"         >*/
+  GIMP_CONVERT_PALETTE_MONO,  /*< desc="Use black and white (1-bit) palette" >*/
+  GIMP_CONVERT_PALETTE_CUSTOM /*< desc="Use custom palette"                >*/
 } GimpConvertPaletteType;
-
 
 /**
  * GimpConvolveType:
@@ -305,16 +280,14 @@ typedef enum
  *
  * Types of convolutions.
  **/
-#define GIMP_TYPE_CONVOLVE_TYPE (gimp_convolve_type_get_type ())
+#define GIMP_TYPE_CONVOLVE_TYPE (gimp_convolve_type_get_type())
 
-GType gimp_convolve_type_get_type (void) G_GNUC_CONST;
+GType gimp_convolve_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_CONVOLVE_BLUR, /*< desc="Blur"    >*/
-	GIMP_CONVOLVE_SHARPEN /*< desc="Sharpen" >*/
+typedef enum {
+  GIMP_CONVOLVE_BLUR,   /*< desc="Blur"    >*/
+  GIMP_CONVOLVE_SHARPEN /*< desc="Sharpen" >*/
 } GimpConvolveType;
-
 
 /**
  * GimpDesaturateMode:
@@ -326,19 +299,17 @@ typedef enum
  *
  * Grayscale conversion methods.
  **/
-#define GIMP_TYPE_DESATURATE_MODE (gimp_desaturate_mode_get_type ())
+#define GIMP_TYPE_DESATURATE_MODE (gimp_desaturate_mode_get_type())
 
-GType gimp_desaturate_mode_get_type (void) G_GNUC_CONST;
+GType gimp_desaturate_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_DESATURATE_LIGHTNESS, /*< desc="Lightness (HSL)"          >*/
-	GIMP_DESATURATE_LUMA,    /*< desc="Luma"                     >*/
-	GIMP_DESATURATE_AVERAGE, /*< desc="Average (HSI Intensity)"  >*/
-	GIMP_DESATURATE_LUMINANCE, /*< desc="Luminance"                >*/
-	GIMP_DESATURATE_VALUE    /*< desc="Value (HSV)"              >*/
+typedef enum {
+  GIMP_DESATURATE_LIGHTNESS, /*< desc="Lightness (HSL)"          >*/
+  GIMP_DESATURATE_LUMA,      /*< desc="Luma"                     >*/
+  GIMP_DESATURATE_AVERAGE,   /*< desc="Average (HSI Intensity)"  >*/
+  GIMP_DESATURATE_LUMINANCE, /*< desc="Luminance"                >*/
+  GIMP_DESATURATE_VALUE      /*< desc="Value (HSV)"              >*/
 } GimpDesaturateMode;
-
 
 /**
  * GimpDodgeBurnType:
@@ -347,16 +318,14 @@ typedef enum
  *
  * Methods for the dodge/burn operation.
  **/
-#define GIMP_TYPE_DODGE_BURN_TYPE (gimp_dodge_burn_type_get_type ())
+#define GIMP_TYPE_DODGE_BURN_TYPE (gimp_dodge_burn_type_get_type())
 
-GType gimp_dodge_burn_type_get_type (void) G_GNUC_CONST;
+GType gimp_dodge_burn_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_DODGE_BURN_TYPE_DODGE, /*< desc="Dodge" >*/
-	GIMP_DODGE_BURN_TYPE_BURN /*< desc="Burn"  >*/
+typedef enum {
+  GIMP_DODGE_BURN_TYPE_DODGE, /*< desc="Dodge" >*/
+  GIMP_DODGE_BURN_TYPE_BURN   /*< desc="Burn"  >*/
 } GimpDodgeBurnType;
-
 
 /**
  * GimpFillType:
@@ -368,19 +337,17 @@ typedef enum
  *
  * Types of filling.
  **/
-#define GIMP_TYPE_FILL_TYPE (gimp_fill_type_get_type ())
+#define GIMP_TYPE_FILL_TYPE (gimp_fill_type_get_type())
 
-GType gimp_fill_type_get_type (void) G_GNUC_CONST;
+GType gimp_fill_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_FILL_FOREGROUND, /*< desc="Foreground color" >*/
-	GIMP_FILL_BACKGROUND, /*< desc="Background color" >*/
-	GIMP_FILL_WHITE,   /*< desc="White"            >*/
-	GIMP_FILL_TRANSPARENT, /*< desc="Transparency"     >*/
-	GIMP_FILL_PATTERN  /*< desc="Pattern"          >*/
+typedef enum {
+  GIMP_FILL_FOREGROUND,  /*< desc="Foreground color" >*/
+  GIMP_FILL_BACKGROUND,  /*< desc="Background color" >*/
+  GIMP_FILL_WHITE,       /*< desc="White"            >*/
+  GIMP_FILL_TRANSPARENT, /*< desc="Transparency"     >*/
+  GIMP_FILL_PATTERN      /*< desc="Pattern"          >*/
 } GimpFillType;
-
 
 /**
  * GimpForegroundExtractMode:
@@ -388,15 +355,12 @@ typedef enum
  *
  * Foreground extract engines.
  **/
-#define GIMP_TYPE_FOREGROUND_EXTRACT_MODE (gimp_foreground_extract_mode_get_type ())
+#define GIMP_TYPE_FOREGROUND_EXTRACT_MODE                                      \
+  (gimp_foreground_extract_mode_get_type())
 
-GType gimp_foreground_extract_mode_get_type (void) G_GNUC_CONST;
+GType gimp_foreground_extract_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_FOREGROUND_EXTRACT_MATTING
-} GimpForegroundExtractMode;
-
+typedef enum { GIMP_FOREGROUND_EXTRACT_MATTING } GimpForegroundExtractMode;
 
 /**
  * GimpGradientBlendColorSpace:
@@ -408,17 +372,17 @@ typedef enum
  *
  * Since: 2.10
  */
-#define GIMP_TYPE_GRADIENT_BLEND_COLOR_SPACE (gimp_gradient_blend_color_space_get_type ())
+#define GIMP_TYPE_GRADIENT_BLEND_COLOR_SPACE                                   \
+  (gimp_gradient_blend_color_space_get_type())
 
-GType gimp_gradient_blend_color_space_get_type (void) G_GNUC_CONST;
+GType gimp_gradient_blend_color_space_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_GRADIENT_BLEND_RGB_PERCEPTUAL, /*< desc="Perceptual RGB", nick=rgb-perceptual >*/
-	GIMP_GRADIENT_BLEND_RGB_LINEAR,  /*< desc="Linear RGB",     nick=rgb-linear     >*/
-	GIMP_GRADIENT_BLEND_CIE_LAB      /*< desc="CIE Lab",        nick=cie-lab        >*/
+typedef enum {
+  GIMP_GRADIENT_BLEND_RGB_PERCEPTUAL, /*< desc="Perceptual RGB",
+                                         nick=rgb-perceptual >*/
+  GIMP_GRADIENT_BLEND_RGB_LINEAR, /*< desc="Linear RGB",     nick=rgb-linear >*/
+  GIMP_GRADIENT_BLEND_CIE_LAB /*< desc="CIE Lab",        nick=cie-lab        >*/
 } GimpGradientBlendColorSpace;
-
 
 /**
  * GimpGradientSegmentColor:
@@ -428,17 +392,18 @@ typedef enum
  *
  * Coloring types for gradient segments.
  **/
-#define GIMP_TYPE_GRADIENT_SEGMENT_COLOR (gimp_gradient_segment_color_get_type ())
+#define GIMP_TYPE_GRADIENT_SEGMENT_COLOR                                       \
+  (gimp_gradient_segment_color_get_type())
 
-GType gimp_gradient_segment_color_get_type (void) G_GNUC_CONST;
+GType gimp_gradient_segment_color_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_GRADIENT_SEGMENT_RGB,  /*< desc="RGB"                                             >*/
-	GIMP_GRADIENT_SEGMENT_HSV_CCW, /*< desc="HSV (counter-clockwise hue)", abbrev="HSV (ccw)" >*/
-	GIMP_GRADIENT_SEGMENT_HSV_CW /*< desc="HSV (clockwise hue)",         abbrev="HSV (cw)"  >*/
+typedef enum {
+  GIMP_GRADIENT_SEGMENT_RGB,     /*< desc="RGB"     >*/
+  GIMP_GRADIENT_SEGMENT_HSV_CCW, /*< desc="HSV (counter-clockwise hue)",
+                                    abbrev="HSV (ccw)" >*/
+  GIMP_GRADIENT_SEGMENT_HSV_CW   /*< desc="HSV (clockwise hue)",   abbrev="HSV
+                                    (cw)"  >*/
 } GimpGradientSegmentColor;
-
 
 /**
  * GimpGradientSegmentType:
@@ -451,20 +416,20 @@ typedef enum
  *
  * Transition functions for gradient segments.
  **/
-#define GIMP_TYPE_GRADIENT_SEGMENT_TYPE (gimp_gradient_segment_type_get_type ())
+#define GIMP_TYPE_GRADIENT_SEGMENT_TYPE (gimp_gradient_segment_type_get_type())
 
-GType gimp_gradient_segment_type_get_type (void) G_GNUC_CONST;
+GType gimp_gradient_segment_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_GRADIENT_SEGMENT_LINEAR,         /*< desc="Linear"                                           >*/
-	GIMP_GRADIENT_SEGMENT_CURVED,         /*< desc="Curved"                                           >*/
-	GIMP_GRADIENT_SEGMENT_SINE,           /*< desc="Sinusoidal"                                       >*/
-	GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING, /*< desc="Spherical (increasing)", abbrev="Spherical (inc)" >*/
-	GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING, /*< desc="Spherical (decreasing)", abbrev="Spherical (dec)" >*/
-	GIMP_GRADIENT_SEGMENT_STEP            /*< desc="Step"                                             >*/
+typedef enum {
+  GIMP_GRADIENT_SEGMENT_LINEAR,            /*< desc="Linear"            >*/
+  GIMP_GRADIENT_SEGMENT_CURVED,            /*< desc="Curved"            >*/
+  GIMP_GRADIENT_SEGMENT_SINE,              /*< desc="Sinusoidal"              >*/
+  GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING, /*< desc="Spherical (increasing)",
+                                              abbrev="Spherical (inc)" >*/
+  GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING, /*< desc="Spherical (decreasing)",
+                                              abbrev="Spherical (dec)" >*/
+  GIMP_GRADIENT_SEGMENT_STEP               /*< desc="Step"               >*/
 } GimpGradientSegmentType;
-
 
 /**
  * GimpGradientType:
@@ -482,25 +447,27 @@ typedef enum
  *
  * Gradient shapes.
  **/
-#define GIMP_TYPE_GRADIENT_TYPE (gimp_gradient_type_get_type ())
+#define GIMP_TYPE_GRADIENT_TYPE (gimp_gradient_type_get_type())
 
-GType gimp_gradient_type_get_type (void) G_GNUC_CONST;
+GType gimp_gradient_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_GRADIENT_LINEAR,            /*< desc="Linear"                                              >*/
-	GIMP_GRADIENT_BILINEAR,          /*< desc="Bi-linear"                                           >*/
-	GIMP_GRADIENT_RADIAL,            /*< desc="Radial"                                              >*/
-	GIMP_GRADIENT_SQUARE,            /*< desc="Square"                                              >*/
-	GIMP_GRADIENT_CONICAL_SYMMETRIC, /*< desc="Conical (symmetric)",        abbrev="Conical (sym)"  >*/
-	GIMP_GRADIENT_CONICAL_ASYMMETRIC, /*< desc="Conical (asymmetric)",       abbrev="Conical (asym)" >*/
-	GIMP_GRADIENT_SHAPEBURST_ANGULAR, /*< desc="Shaped (angular)"                                    >*/
-	GIMP_GRADIENT_SHAPEBURST_SPHERICAL, /*< desc="Shaped (spherical)"                                  >*/
-	GIMP_GRADIENT_SHAPEBURST_DIMPLED, /*< desc="Shaped (dimpled)"                                    >*/
-	GIMP_GRADIENT_SPIRAL_CLOCKWISE,  /*< desc="Spiral (clockwise)",         abbrev="Spiral (cw)"    >*/
-	GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE /*< desc="Spiral (counter-clockwise)", abbrev="Spiral (ccw)"   >*/
+typedef enum {
+  GIMP_GRADIENT_LINEAR,               /*< desc="Linear"               >*/
+  GIMP_GRADIENT_BILINEAR,             /*< desc="Bi-linear"             >*/
+  GIMP_GRADIENT_RADIAL,               /*< desc="Radial"               >*/
+  GIMP_GRADIENT_SQUARE,               /*< desc="Square"               >*/
+  GIMP_GRADIENT_CONICAL_SYMMETRIC,    /*< desc="Conical (symmetric)",
+                                         abbrev="Conical (sym)"  >*/
+  GIMP_GRADIENT_CONICAL_ASYMMETRIC,   /*< desc="Conical (asymmetric)",
+                                         abbrev="Conical (asym)" >*/
+  GIMP_GRADIENT_SHAPEBURST_ANGULAR,   /*< desc="Shaped (angular)"   >*/
+  GIMP_GRADIENT_SHAPEBURST_SPHERICAL, /*< desc="Shaped (spherical)" >*/
+  GIMP_GRADIENT_SHAPEBURST_DIMPLED,   /*< desc="Shaped (dimpled)"   >*/
+  GIMP_GRADIENT_SPIRAL_CLOCKWISE,     /*< desc="Spiral (clockwise)",
+                                         abbrev="Spiral (cw)"    >*/
+  GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE  /*< desc="Spiral (counter-clockwise)",
+                                         abbrev="Spiral (ccw)"   >*/
 } GimpGradientType;
-
 
 /**
  * GimpGridStyle:
@@ -512,19 +479,17 @@ typedef enum
  *
  * Rendering types for the display grid.
  **/
-#define GIMP_TYPE_GRID_STYLE (gimp_grid_style_get_type ())
+#define GIMP_TYPE_GRID_STYLE (gimp_grid_style_get_type())
 
-GType gimp_grid_style_get_type (void) G_GNUC_CONST;
+GType gimp_grid_style_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_GRID_DOTS,       /*< desc="Intersections (dots)"       >*/
-	GIMP_GRID_INTERSECTIONS, /*< desc="Intersections (crosshairs)" >*/
-	GIMP_GRID_ON_OFF_DASH, /*< desc="Dashed"                     >*/
-	GIMP_GRID_DOUBLE_DASH, /*< desc="Double dashed"              >*/
-	GIMP_GRID_SOLID       /*< desc="Solid"                      >*/
+typedef enum {
+  GIMP_GRID_DOTS,          /*< desc="Intersections (dots)"       >*/
+  GIMP_GRID_INTERSECTIONS, /*< desc="Intersections (crosshairs)" >*/
+  GIMP_GRID_ON_OFF_DASH,   /*< desc="Dashed"                     >*/
+  GIMP_GRID_DOUBLE_DASH,   /*< desc="Double dashed"              >*/
+  GIMP_GRID_SOLID          /*< desc="Solid"                      >*/
 } GimpGridStyle;
-
 
 /**
  * GimpHueRange:
@@ -538,21 +503,19 @@ typedef enum
  *
  * Hue ranges.
  **/
-#define GIMP_TYPE_HUE_RANGE (gimp_hue_range_get_type ())
+#define GIMP_TYPE_HUE_RANGE (gimp_hue_range_get_type())
 
-GType gimp_hue_range_get_type (void) G_GNUC_CONST;
+GType gimp_hue_range_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_HUE_RANGE_ALL,
-	GIMP_HUE_RANGE_RED,
-	GIMP_HUE_RANGE_YELLOW,
-	GIMP_HUE_RANGE_GREEN,
-	GIMP_HUE_RANGE_CYAN,
-	GIMP_HUE_RANGE_BLUE,
-	GIMP_HUE_RANGE_MAGENTA
+typedef enum {
+  GIMP_HUE_RANGE_ALL,
+  GIMP_HUE_RANGE_RED,
+  GIMP_HUE_RANGE_YELLOW,
+  GIMP_HUE_RANGE_GREEN,
+  GIMP_HUE_RANGE_CYAN,
+  GIMP_HUE_RANGE_BLUE,
+  GIMP_HUE_RANGE_MAGENTA
 } GimpHueRange;
-
 
 /**
  * GimpIconType:
@@ -562,17 +525,15 @@ typedef enum
  *
  * Icon types for plug-ins to register.
  **/
-#define GIMP_TYPE_ICON_TYPE (gimp_icon_type_get_type ())
+#define GIMP_TYPE_ICON_TYPE (gimp_icon_type_get_type())
 
-GType gimp_icon_type_get_type (void) G_GNUC_CONST;
+GType gimp_icon_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_ICON_TYPE_ICON_NAME, /*< desc="Icon name"  >*/
-	GIMP_ICON_TYPE_PIXBUF, /*< desc="Pixbuf"     >*/
-	GIMP_ICON_TYPE_IMAGE_FILE /*< desc="Image file" >*/
+typedef enum {
+  GIMP_ICON_TYPE_ICON_NAME, /*< desc="Icon name"  >*/
+  GIMP_ICON_TYPE_PIXBUF,    /*< desc="Pixbuf"     >*/
+  GIMP_ICON_TYPE_IMAGE_FILE /*< desc="Image file" >*/
 } GimpIconType;
-
 
 /**
  * GimpImageBaseType:
@@ -582,17 +543,15 @@ typedef enum
  *
  * Image color models.
  **/
-#define GIMP_TYPE_IMAGE_BASE_TYPE (gimp_image_base_type_get_type ())
+#define GIMP_TYPE_IMAGE_BASE_TYPE (gimp_image_base_type_get_type())
 
-GType gimp_image_base_type_get_type (void) G_GNUC_CONST;
+GType gimp_image_base_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_RGB, /*< desc="RGB color"     >*/
-	GIMP_GRAY, /*< desc="Grayscale"     >*/
-	GIMP_INDEXED /*< desc="Indexed color" >*/
+typedef enum {
+  GIMP_RGB,    /*< desc="RGB color"     >*/
+  GIMP_GRAY,   /*< desc="Grayscale"     >*/
+  GIMP_INDEXED /*< desc="Indexed color" >*/
 } GimpImageBaseType;
-
 
 /**
  * GimpImageType:
@@ -605,20 +564,18 @@ typedef enum
  *
  * Possible drawable types.
  **/
-#define GIMP_TYPE_IMAGE_TYPE (gimp_image_type_get_type ())
+#define GIMP_TYPE_IMAGE_TYPE (gimp_image_type_get_type())
 
-GType gimp_image_type_get_type (void) G_GNUC_CONST;
+GType gimp_image_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_RGB_IMAGE,  /*< desc="RGB"             >*/
-	GIMP_RGBA_IMAGE, /*< desc="RGB-alpha"       >*/
-	GIMP_GRAY_IMAGE, /*< desc="Grayscale"       >*/
-	GIMP_GRAYA_IMAGE, /*< desc="Grayscale-alpha" >*/
-	GIMP_INDEXED_IMAGE, /*< desc="Indexed"         >*/
-	GIMP_INDEXEDA_IMAGE /*< desc="Indexed-alpha"   >*/
+typedef enum {
+  GIMP_RGB_IMAGE,     /*< desc="RGB"             >*/
+  GIMP_RGBA_IMAGE,    /*< desc="RGB-alpha"       >*/
+  GIMP_GRAY_IMAGE,    /*< desc="Grayscale"       >*/
+  GIMP_GRAYA_IMAGE,   /*< desc="Grayscale-alpha" >*/
+  GIMP_INDEXED_IMAGE, /*< desc="Indexed"         >*/
+  GIMP_INDEXEDA_IMAGE /*< desc="Indexed-alpha"   >*/
 } GimpImageType;
-
 
 /**
  * GimpInkBlobType:
@@ -628,17 +585,15 @@ typedef enum
  *
  * Ink tool tips.
  **/
-#define GIMP_TYPE_INK_BLOB_TYPE (gimp_ink_blob_type_get_type ())
+#define GIMP_TYPE_INK_BLOB_TYPE (gimp_ink_blob_type_get_type())
 
-GType gimp_ink_blob_type_get_type (void) G_GNUC_CONST;
+GType gimp_ink_blob_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_INK_BLOB_TYPE_CIRCLE, /*< desc="Circle"  >*/
-	GIMP_INK_BLOB_TYPE_SQUARE, /*< desc="Square"  >*/
-	GIMP_INK_BLOB_TYPE_DIAMOND /*< desc="Diamond" >*/
+typedef enum {
+  GIMP_INK_BLOB_TYPE_CIRCLE, /*< desc="Circle"  >*/
+  GIMP_INK_BLOB_TYPE_SQUARE, /*< desc="Square"  >*/
+  GIMP_INK_BLOB_TYPE_DIAMOND /*< desc="Diamond" >*/
 } GimpInkBlobType;
-
 
 /**
  * GimpInterpolationType:
@@ -650,19 +605,17 @@ typedef enum
  *
  * Interpolation types.
  **/
-#define GIMP_TYPE_INTERPOLATION_TYPE (gimp_interpolation_type_get_type ())
+#define GIMP_TYPE_INTERPOLATION_TYPE (gimp_interpolation_type_get_type())
 
-GType gimp_interpolation_type_get_type (void) G_GNUC_CONST;
+GType gimp_interpolation_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_INTERPOLATION_NONE, /*< desc="None"   >*/
-	GIMP_INTERPOLATION_LINEAR, /*< desc="Linear" >*/
-	GIMP_INTERPOLATION_CUBIC, /*< desc="Cubic"  >*/
-	GIMP_INTERPOLATION_NOHALO, /*< desc="NoHalo" >*/
-	GIMP_INTERPOLATION_LOHALO /*< desc="LoHalo" >*/
+typedef enum {
+  GIMP_INTERPOLATION_NONE,   /*< desc="None"   >*/
+  GIMP_INTERPOLATION_LINEAR, /*< desc="Linear" >*/
+  GIMP_INTERPOLATION_CUBIC,  /*< desc="Cubic"  >*/
+  GIMP_INTERPOLATION_NOHALO, /*< desc="NoHalo" >*/
+  GIMP_INTERPOLATION_LOHALO  /*< desc="LoHalo" >*/
 } GimpInterpolationType;
-
 
 /**
  * GimpJoinStyle:
@@ -672,17 +625,15 @@ typedef enum
  *
  * Line join styles.
  **/
-#define GIMP_TYPE_JOIN_STYLE (gimp_join_style_get_type ())
+#define GIMP_TYPE_JOIN_STYLE (gimp_join_style_get_type())
 
-GType gimp_join_style_get_type (void) G_GNUC_CONST;
+GType gimp_join_style_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_JOIN_MITER, /*< desc="Miter" >*/
-	GIMP_JOIN_ROUND, /*< desc="Round" >*/
-	GIMP_JOIN_BEVEL /*< desc="Bevel" >*/
+typedef enum {
+  GIMP_JOIN_MITER, /*< desc="Miter" >*/
+  GIMP_JOIN_ROUND, /*< desc="Round" >*/
+  GIMP_JOIN_BEVEL  /*< desc="Bevel" >*/
 } GimpJoinStyle;
-
 
 /**
  * GimpMaskApplyMode:
@@ -691,16 +642,11 @@ typedef enum
  *
  * Layer mask apply modes.
  **/
-#define GIMP_TYPE_MASK_APPLY_MODE (gimp_mask_apply_mode_get_type ())
+#define GIMP_TYPE_MASK_APPLY_MODE (gimp_mask_apply_mode_get_type())
 
-GType gimp_mask_apply_mode_get_type (void) G_GNUC_CONST;
+GType gimp_mask_apply_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_MASK_APPLY,
-	GIMP_MASK_DISCARD
-} GimpMaskApplyMode;
-
+typedef enum { GIMP_MASK_APPLY, GIMP_MASK_DISCARD } GimpMaskApplyMode;
 
 /**
  * GimpMergeType:
@@ -711,18 +657,16 @@ typedef enum
  *
  * Types of merging layers.
  **/
-#define GIMP_TYPE_MERGE_TYPE (gimp_merge_type_get_type ())
+#define GIMP_TYPE_MERGE_TYPE (gimp_merge_type_get_type())
 
-GType gimp_merge_type_get_type (void) G_GNUC_CONST;
+GType gimp_merge_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_EXPAND_AS_NECESSARY, /*< desc="Expanded as necessary"  >*/
-	GIMP_CLIP_TO_IMAGE,    /*< desc="Clipped to image"        >*/
-	GIMP_CLIP_TO_BOTTOM_LAYER, /*< desc="Clipped to bottom layer" >*/
-	GIMP_FLATTEN_IMAGE     /*< desc="Flatten"                 >*/
+typedef enum {
+  GIMP_EXPAND_AS_NECESSARY,  /*< desc="Expanded as necessary"  >*/
+  GIMP_CLIP_TO_IMAGE,        /*< desc="Clipped to image"        >*/
+  GIMP_CLIP_TO_BOTTOM_LAYER, /*< desc="Clipped to bottom layer" >*/
+  GIMP_FLATTEN_IMAGE         /*< desc="Flatten"                 >*/
 } GimpMergeType;
-
 
 /**
  * GimpMessageHandlerType:
@@ -732,17 +676,15 @@ typedef enum
  *
  * How to present messages.
  **/
-#define GIMP_TYPE_MESSAGE_HANDLER_TYPE (gimp_message_handler_type_get_type ())
+#define GIMP_TYPE_MESSAGE_HANDLER_TYPE (gimp_message_handler_type_get_type())
 
-GType gimp_message_handler_type_get_type (void) G_GNUC_CONST;
+GType gimp_message_handler_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_MESSAGE_BOX,
-	GIMP_CONSOLE,
-	GIMP_ERROR_CONSOLE
+typedef enum {
+  GIMP_MESSAGE_BOX,
+  GIMP_CONSOLE,
+  GIMP_ERROR_CONSOLE
 } GimpMessageHandlerType;
-
 
 /**
  * GimpOffsetType:
@@ -752,17 +694,15 @@ typedef enum
  *
  * Background fill types for the offset operation.
  **/
-#define GIMP_TYPE_OFFSET_TYPE (gimp_offset_type_get_type ())
+#define GIMP_TYPE_OFFSET_TYPE (gimp_offset_type_get_type())
 
-GType gimp_offset_type_get_type (void) G_GNUC_CONST;
+GType gimp_offset_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_OFFSET_BACKGROUND,
-	GIMP_OFFSET_TRANSPARENT,
-	GIMP_OFFSET_WRAP_AROUND
+typedef enum {
+  GIMP_OFFSET_BACKGROUND,
+  GIMP_OFFSET_TRANSPARENT,
+  GIMP_OFFSET_WRAP_AROUND
 } GimpOffsetType;
-
 
 /**
  * GimpOrientationType:
@@ -772,17 +712,15 @@ typedef enum
  *
  * Orientations for various purposes.
  **/
-#define GIMP_TYPE_ORIENTATION_TYPE (gimp_orientation_type_get_type ())
+#define GIMP_TYPE_ORIENTATION_TYPE (gimp_orientation_type_get_type())
 
-GType gimp_orientation_type_get_type (void) G_GNUC_CONST;
+GType gimp_orientation_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_ORIENTATION_HORIZONTAL, /*< desc="Horizontal" >*/
-	GIMP_ORIENTATION_VERTICAL, /*< desc="Vertical"   >*/
-	GIMP_ORIENTATION_UNKNOWN /*< desc="Unknown"    >*/
+typedef enum {
+  GIMP_ORIENTATION_HORIZONTAL, /*< desc="Horizontal" >*/
+  GIMP_ORIENTATION_VERTICAL,   /*< desc="Vertical"   >*/
+  GIMP_ORIENTATION_UNKNOWN     /*< desc="Unknown"    >*/
 } GimpOrientationType;
-
 
 /**
  * GimpPaintApplicationMode:
@@ -791,16 +729,15 @@ typedef enum
  *
  * Paint application modes.
  **/
-#define GIMP_TYPE_PAINT_APPLICATION_MODE (gimp_paint_application_mode_get_type ())
+#define GIMP_TYPE_PAINT_APPLICATION_MODE                                       \
+  (gimp_paint_application_mode_get_type())
 
-GType gimp_paint_application_mode_get_type (void) G_GNUC_CONST;
+GType gimp_paint_application_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PAINT_CONSTANT, /*< desc="Constant"    >*/
-	GIMP_PAINT_INCREMENTAL /*< desc="Incremental" >*/
+typedef enum {
+  GIMP_PAINT_CONSTANT,   /*< desc="Constant"    >*/
+  GIMP_PAINT_INCREMENTAL /*< desc="Incremental" >*/
 } GimpPaintApplicationMode;
-
 
 /**
  * GimpPDBErrorHandler:
@@ -809,16 +746,14 @@ typedef enum
  *
  * PDB error handlers.
  **/
-#define GIMP_TYPE_PDB_ERROR_HANDLER (gimp_pdb_error_handler_get_type ())
+#define GIMP_TYPE_PDB_ERROR_HANDLER (gimp_pdb_error_handler_get_type())
 
-GType gimp_pdb_error_handler_get_type (void) G_GNUC_CONST;
+GType gimp_pdb_error_handler_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PDB_ERROR_HANDLER_INTERNAL,
-	GIMP_PDB_ERROR_HANDLER_PLUGIN
+typedef enum {
+  GIMP_PDB_ERROR_HANDLER_INTERNAL,
+  GIMP_PDB_ERROR_HANDLER_PLUGIN
 } GimpPDBErrorHandler;
-
 
 /**
  * GimpPDBProcType:
@@ -829,18 +764,16 @@ typedef enum
  *
  * Types of PDB procedures.
  **/
-#define GIMP_TYPE_PDB_PROC_TYPE (gimp_pdb_proc_type_get_type ())
+#define GIMP_TYPE_PDB_PROC_TYPE (gimp_pdb_proc_type_get_type())
 
-GType gimp_pdb_proc_type_get_type (void) G_GNUC_CONST;
+GType gimp_pdb_proc_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PDB_PROC_TYPE_INTERNAL, /*< desc="Internal GIMP procedure" >*/
-	GIMP_PDB_PROC_TYPE_PLUGIN, /*< desc="GIMP Plug-In" >*/
-	GIMP_PDB_PROC_TYPE_EXTENSION, /*< desc="GIMP Extension" >*/
-	GIMP_PDB_PROC_TYPE_TEMPORARY /*< desc="Temporary Procedure" >*/
+typedef enum {
+  GIMP_PDB_PROC_TYPE_INTERNAL,  /*< desc="Internal GIMP procedure" >*/
+  GIMP_PDB_PROC_TYPE_PLUGIN,    /*< desc="GIMP Plug-In" >*/
+  GIMP_PDB_PROC_TYPE_EXTENSION, /*< desc="GIMP Extension" >*/
+  GIMP_PDB_PROC_TYPE_TEMPORARY  /*< desc="Temporary Procedure" >*/
 } GimpPDBProcType;
-
 
 /**
  * GimpPDBStatusType:
@@ -852,19 +785,17 @@ typedef enum
  *
  * Return status of PDB calls.
  **/
-#define GIMP_TYPE_PDB_STATUS_TYPE (gimp_pdb_status_type_get_type ())
+#define GIMP_TYPE_PDB_STATUS_TYPE (gimp_pdb_status_type_get_type())
 
-GType gimp_pdb_status_type_get_type (void) G_GNUC_CONST;
+GType gimp_pdb_status_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PDB_EXECUTION_ERROR,
-	GIMP_PDB_CALLING_ERROR,
-	GIMP_PDB_PASS_THROUGH,
-	GIMP_PDB_SUCCESS,
-	GIMP_PDB_CANCEL
+typedef enum {
+  GIMP_PDB_EXECUTION_ERROR,
+  GIMP_PDB_CALLING_ERROR,
+  GIMP_PDB_PASS_THROUGH,
+  GIMP_PDB_SUCCESS,
+  GIMP_PDB_CANCEL
 } GimpPDBStatusType;
-
 
 /**
  * GimpPrecision:
@@ -903,41 +834,50 @@ typedef enum
  *
  * Since: 2.10
  **/
-#define GIMP_TYPE_PRECISION (gimp_precision_get_type ())
+#define GIMP_TYPE_PRECISION (gimp_precision_get_type())
 
-GType gimp_precision_get_type (void) G_GNUC_CONST;
+GType gimp_precision_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PRECISION_U8_LINEAR         = 100,/*< desc="8-bit linear integer"         >*/
-	GIMP_PRECISION_U8_NON_LINEAR     = 150,/*< desc="8-bit non-linear integer"          >*/
-	GIMP_PRECISION_U8_PERCEPTUAL     = 175,/*< desc="8-bit perceptual integer"          >*/
-	GIMP_PRECISION_U16_LINEAR        = 200,/*< desc="16-bit linear integer"        >*/
-	GIMP_PRECISION_U16_NON_LINEAR    = 250,/*< desc="16-bit non-linear integer"         >*/
-	GIMP_PRECISION_U16_PERCEPTUAL    = 275,/*< desc="16-bit perceptual integer"         >*/
-	GIMP_PRECISION_U32_LINEAR        = 300,/*< desc="32-bit linear integer"        >*/
-	GIMP_PRECISION_U32_NON_LINEAR    = 350,/*< desc="32-bit non-linear integer"         >*/
-	GIMP_PRECISION_U32_PERCEPTUAL    = 375,/*< desc="32-bit perceptual integer"         >*/
-	GIMP_PRECISION_HALF_LINEAR       = 500,/*< desc="16-bit linear floating point" >*/
-	GIMP_PRECISION_HALF_NON_LINEAR   = 550,/*< desc="16-bit non-linear floating point"  >*/
-	GIMP_PRECISION_HALF_PERCEPTUAL   = 575,/*< desc="16-bit perceptual floating point"  >*/
-	GIMP_PRECISION_FLOAT_LINEAR      = 600,/*< desc="32-bit linear floating point" >*/
-	GIMP_PRECISION_FLOAT_NON_LINEAR  = 650,/*< desc="32-bit non-linear floating point"  >*/
-	GIMP_PRECISION_FLOAT_PERCEPTUAL  = 675,/*< desc="32-bit perceptual floating point"  >*/
-	GIMP_PRECISION_DOUBLE_LINEAR     = 700,/*< desc="64-bit linear floating point" >*/
-	GIMP_PRECISION_DOUBLE_NON_LINEAR = 750, /*< desc="64-bit non-linear floating point"  >*/
-	GIMP_PRECISION_DOUBLE_PERCEPTUAL = 775, /*< desc="64-bit perceptual floating point"  >*/
+typedef enum {
+  GIMP_PRECISION_U8_LINEAR = 100, /*< desc="8-bit linear integer"         >*/
+  GIMP_PRECISION_U8_NON_LINEAR = 150, /*< desc="8-bit non-linear integer" >*/
+  GIMP_PRECISION_U8_PERCEPTUAL = 175, /*< desc="8-bit perceptual integer" >*/
+  GIMP_PRECISION_U16_LINEAR = 200, /*< desc="16-bit linear integer"        >*/
+  GIMP_PRECISION_U16_NON_LINEAR =
+      250, /*< desc="16-bit non-linear integer"         >*/
+  GIMP_PRECISION_U16_PERCEPTUAL =
+      275, /*< desc="16-bit perceptual integer"         >*/
+  GIMP_PRECISION_U32_LINEAR = 300, /*< desc="32-bit linear integer"        >*/
+  GIMP_PRECISION_U32_NON_LINEAR =
+      350, /*< desc="32-bit non-linear integer"         >*/
+  GIMP_PRECISION_U32_PERCEPTUAL =
+      375, /*< desc="32-bit perceptual integer"         >*/
+  GIMP_PRECISION_HALF_LINEAR = 500, /*< desc="16-bit linear floating point" >*/
+  GIMP_PRECISION_HALF_NON_LINEAR =
+      550, /*< desc="16-bit non-linear floating point"  >*/
+  GIMP_PRECISION_HALF_PERCEPTUAL =
+      575, /*< desc="16-bit perceptual floating point"  >*/
+  GIMP_PRECISION_FLOAT_LINEAR = 600, /*< desc="32-bit linear floating point" >*/
+  GIMP_PRECISION_FLOAT_NON_LINEAR =
+      650, /*< desc="32-bit non-linear floating point"  >*/
+  GIMP_PRECISION_FLOAT_PERCEPTUAL =
+      675, /*< desc="32-bit perceptual floating point"  >*/
+  GIMP_PRECISION_DOUBLE_LINEAR =
+      700, /*< desc="64-bit linear floating point" >*/
+  GIMP_PRECISION_DOUBLE_NON_LINEAR =
+      750, /*< desc="64-bit non-linear floating point"  >*/
+  GIMP_PRECISION_DOUBLE_PERCEPTUAL =
+      775, /*< desc="64-bit perceptual floating point"  >*/
 
 #ifndef GIMP_DISABLE_DEPRECATED
-	GIMP_PRECISION_U8_GAMMA      = GIMP_PRECISION_U8_NON_LINEAR,
-	GIMP_PRECISION_U16_GAMMA     = GIMP_PRECISION_U16_NON_LINEAR,
-	GIMP_PRECISION_U32_GAMMA     = GIMP_PRECISION_U32_NON_LINEAR,
-	GIMP_PRECISION_HALF_GAMMA    = GIMP_PRECISION_HALF_NON_LINEAR,
-	GIMP_PRECISION_FLOAT_GAMMA   = GIMP_PRECISION_FLOAT_NON_LINEAR,
-	GIMP_PRECISION_DOUBLE_GAMMA  = GIMP_PRECISION_DOUBLE_NON_LINEAR
+  GIMP_PRECISION_U8_GAMMA = GIMP_PRECISION_U8_NON_LINEAR,
+  GIMP_PRECISION_U16_GAMMA = GIMP_PRECISION_U16_NON_LINEAR,
+  GIMP_PRECISION_U32_GAMMA = GIMP_PRECISION_U32_NON_LINEAR,
+  GIMP_PRECISION_HALF_GAMMA = GIMP_PRECISION_HALF_NON_LINEAR,
+  GIMP_PRECISION_FLOAT_GAMMA = GIMP_PRECISION_FLOAT_NON_LINEAR,
+  GIMP_PRECISION_DOUBLE_GAMMA = GIMP_PRECISION_DOUBLE_NON_LINEAR
 #endif
 } GimpPrecision;
-
 
 /**
  * GimpProgressCommand:
@@ -950,20 +890,18 @@ typedef enum
  *
  * Commands for the progress API.
  **/
-#define GIMP_TYPE_PROGRESS_COMMAND (gimp_progress_command_get_type ())
+#define GIMP_TYPE_PROGRESS_COMMAND (gimp_progress_command_get_type())
 
-GType gimp_progress_command_get_type (void) G_GNUC_CONST;
+GType gimp_progress_command_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PROGRESS_COMMAND_START,
-	GIMP_PROGRESS_COMMAND_END,
-	GIMP_PROGRESS_COMMAND_SET_TEXT,
-	GIMP_PROGRESS_COMMAND_SET_VALUE,
-	GIMP_PROGRESS_COMMAND_PULSE,
-	GIMP_PROGRESS_COMMAND_GET_WINDOW
+typedef enum {
+  GIMP_PROGRESS_COMMAND_START,
+  GIMP_PROGRESS_COMMAND_END,
+  GIMP_PROGRESS_COMMAND_SET_TEXT,
+  GIMP_PROGRESS_COMMAND_SET_VALUE,
+  GIMP_PROGRESS_COMMAND_PULSE,
+  GIMP_PROGRESS_COMMAND_GET_WINDOW
 } GimpProgressCommand;
-
 
 /**
  * GimpRepeatMode:
@@ -974,18 +912,16 @@ typedef enum
  *
  * Repeat modes for example for gradients.
  **/
-#define GIMP_TYPE_REPEAT_MODE (gimp_repeat_mode_get_type ())
+#define GIMP_TYPE_REPEAT_MODE (gimp_repeat_mode_get_type())
 
-GType gimp_repeat_mode_get_type (void) G_GNUC_CONST;
+GType gimp_repeat_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_REPEAT_NONE,   /*< desc="None (extend)"   >*/
-	GIMP_REPEAT_SAWTOOTH, /*< desc="Sawtooth wave"   >*/
-	GIMP_REPEAT_TRIANGULAR, /*< desc="Triangular wave" >*/
-	GIMP_REPEAT_TRUNCATE /*< desc="Truncate"        >*/
+typedef enum {
+  GIMP_REPEAT_NONE,       /*< desc="None (extend)"   >*/
+  GIMP_REPEAT_SAWTOOTH,   /*< desc="Sawtooth wave"   >*/
+  GIMP_REPEAT_TRIANGULAR, /*< desc="Triangular wave" >*/
+  GIMP_REPEAT_TRUNCATE    /*< desc="Truncate"        >*/
 } GimpRepeatMode;
-
 
 /**
  * GimpRotationType:
@@ -995,17 +931,15 @@ typedef enum
  *
  * Types of simple rotations.
  **/
-#define GIMP_TYPE_ROTATION_TYPE (gimp_rotation_type_get_type ())
+#define GIMP_TYPE_ROTATION_TYPE (gimp_rotation_type_get_type())
 
-GType gimp_rotation_type_get_type (void) G_GNUC_CONST;
+GType gimp_rotation_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_ROTATE_90,
-	GIMP_ROTATE_180,
-	GIMP_ROTATE_270
+typedef enum {
+  GIMP_ROTATE_90,
+  GIMP_ROTATE_180,
+  GIMP_ROTATE_270
 } GimpRotationType;
-
 
 /**
  * GimpRunMode:
@@ -1015,17 +949,15 @@ typedef enum
  *
  * Run modes for plug-ins.
  **/
-#define GIMP_TYPE_RUN_MODE (gimp_run_mode_get_type ())
+#define GIMP_TYPE_RUN_MODE (gimp_run_mode_get_type())
 
-GType gimp_run_mode_get_type (void) G_GNUC_CONST;
+GType gimp_run_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_RUN_INTERACTIVE, /*< desc="Run interactively"         >*/
-	GIMP_RUN_NONINTERACTIVE, /*< desc="Run non-interactively"     >*/
-	GIMP_RUN_WITH_LAST_VALS /*< desc="Run with last used values" >*/
+typedef enum {
+  GIMP_RUN_INTERACTIVE,    /*< desc="Run interactively"         >*/
+  GIMP_RUN_NONINTERACTIVE, /*< desc="Run non-interactively"     >*/
+  GIMP_RUN_WITH_LAST_VALS  /*< desc="Run with last used values" >*/
 } GimpRunMode;
-
 
 /**
  * GimpSelectCriterion:
@@ -1043,25 +975,23 @@ typedef enum
  *
  * Criterions for color similarity.
  **/
-#define GIMP_TYPE_SELECT_CRITERION (gimp_select_criterion_get_type ())
+#define GIMP_TYPE_SELECT_CRITERION (gimp_select_criterion_get_type())
 
-GType gimp_select_criterion_get_type (void) G_GNUC_CONST;
+GType gimp_select_criterion_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_SELECT_CRITERION_COMPOSITE,  /*< desc="Composite"      >*/
-	GIMP_SELECT_CRITERION_RGB_RED,    /*< desc="Red"            >*/
-	GIMP_SELECT_CRITERION_RGB_GREEN,  /*< desc="Green"          >*/
-	GIMP_SELECT_CRITERION_RGB_BLUE,   /*< desc="Blue"           >*/
-	GIMP_SELECT_CRITERION_HSV_HUE,    /*< desc="HSV Hue"        >*/
-	GIMP_SELECT_CRITERION_HSV_SATURATION, /*< desc="HSV Saturation" >*/
-	GIMP_SELECT_CRITERION_HSV_VALUE,  /*< desc="HSV Value"      >*/
-	GIMP_SELECT_CRITERION_LCH_LIGHTNESS, /*< desc="LCh Lightness"  >*/
-	GIMP_SELECT_CRITERION_LCH_CHROMA, /*< desc="LCh Chroma"     >*/
-	GIMP_SELECT_CRITERION_LCH_HUE,    /*< desc="LCh Hue"        >*/
-	GIMP_SELECT_CRITERION_ALPHA,      /*< desc="Alpha"          >*/
+typedef enum {
+  GIMP_SELECT_CRITERION_COMPOSITE,      /*< desc="Composite"      >*/
+  GIMP_SELECT_CRITERION_RGB_RED,        /*< desc="Red"            >*/
+  GIMP_SELECT_CRITERION_RGB_GREEN,      /*< desc="Green"          >*/
+  GIMP_SELECT_CRITERION_RGB_BLUE,       /*< desc="Blue"           >*/
+  GIMP_SELECT_CRITERION_HSV_HUE,        /*< desc="HSV Hue"        >*/
+  GIMP_SELECT_CRITERION_HSV_SATURATION, /*< desc="HSV Saturation" >*/
+  GIMP_SELECT_CRITERION_HSV_VALUE,      /*< desc="HSV Value"      >*/
+  GIMP_SELECT_CRITERION_LCH_LIGHTNESS,  /*< desc="LCh Lightness"  >*/
+  GIMP_SELECT_CRITERION_LCH_CHROMA,     /*< desc="LCh Chroma"     >*/
+  GIMP_SELECT_CRITERION_LCH_HUE,        /*< desc="LCh Hue"        >*/
+  GIMP_SELECT_CRITERION_ALPHA,          /*< desc="Alpha"          >*/
 } GimpSelectCriterion;
-
 
 /**
  * GimpSizeType:
@@ -1070,16 +1000,14 @@ typedef enum
  *
  * Size types for the old-style text API.
  **/
-#define GIMP_TYPE_SIZE_TYPE (gimp_size_type_get_type ())
+#define GIMP_TYPE_SIZE_TYPE (gimp_size_type_get_type())
 
-GType gimp_size_type_get_type (void) G_GNUC_CONST;
+GType gimp_size_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_PIXELS, /*< desc="Pixels" >*/
-	GIMP_POINTS /*< desc="Points" >*/
+typedef enum {
+  GIMP_PIXELS, /*< desc="Pixels" >*/
+  GIMP_POINTS  /*< desc="Points" >*/
 } GimpSizeType;
-
 
 /**
  * GimpStackTraceMode:
@@ -1089,17 +1017,15 @@ typedef enum
  *
  * When to generate stack traces in case of an error.
  **/
-#define GIMP_TYPE_STACK_TRACE_MODE (gimp_stack_trace_mode_get_type ())
+#define GIMP_TYPE_STACK_TRACE_MODE (gimp_stack_trace_mode_get_type())
 
-GType gimp_stack_trace_mode_get_type (void) G_GNUC_CONST;
+GType gimp_stack_trace_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_STACK_TRACE_NEVER,
-	GIMP_STACK_TRACE_QUERY,
-	GIMP_STACK_TRACE_ALWAYS
+typedef enum {
+  GIMP_STACK_TRACE_NEVER,
+  GIMP_STACK_TRACE_QUERY,
+  GIMP_STACK_TRACE_ALWAYS
 } GimpStackTraceMode;
-
 
 /**
  * GimpStrokeMethod:
@@ -1108,42 +1034,46 @@ typedef enum
  *
  * Methods of stroking selections and paths.
  **/
-#define GIMP_TYPE_STROKE_METHOD (gimp_stroke_method_get_type ())
+#define GIMP_TYPE_STROKE_METHOD (gimp_stroke_method_get_type())
 
-GType gimp_stroke_method_get_type (void) G_GNUC_CONST;
+GType gimp_stroke_method_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_STROKE_LINE,     /*< desc="Stroke line"              >*/
-	GIMP_STROKE_PAINT_METHOD /*< desc="Stroke with a paint tool" >*/
+typedef enum {
+  GIMP_STROKE_LINE,        /*< desc="Stroke line"              >*/
+  GIMP_STROKE_PAINT_METHOD /*< desc="Stroke with a paint tool" >*/
 } GimpStrokeMethod;
-
 
 /**
  * GimpTextDirection:
  * @GIMP_TEXT_DIRECTION_LTR: From left to right
  * @GIMP_TEXT_DIRECTION_RTL: From right to left
- * @GIMP_TEXT_DIRECTION_TTB_RTL: Characters are from top to bottom, Lines are from right to left
- * @GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT: Upright characters are from top to bottom, Lines are from right to left
- * @GIMP_TEXT_DIRECTION_TTB_LTR: Characters are from top to bottom, Lines are from left to right
- * @GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT: Upright characters are from top to bottom, Lines are from left to right
+ * @GIMP_TEXT_DIRECTION_TTB_RTL: Characters are from top to bottom, Lines are
+ *from right to left
+ * @GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT: Upright characters are from top to
+ *bottom, Lines are from right to left
+ * @GIMP_TEXT_DIRECTION_TTB_LTR: Characters are from top to bottom, Lines are
+ *from left to right
+ * @GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT: Upright characters are from top to
+ *bottom, Lines are from left to right
  *
  * Text directions.
  **/
-#define GIMP_TYPE_TEXT_DIRECTION (gimp_text_direction_get_type ())
+#define GIMP_TYPE_TEXT_DIRECTION (gimp_text_direction_get_type())
 
-GType gimp_text_direction_get_type (void) G_GNUC_CONST;
+GType gimp_text_direction_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_TEXT_DIRECTION_LTR,          /*< desc="From left to right"                                     >*/
-	GIMP_TEXT_DIRECTION_RTL,          /*< desc="From right to left"                                     >*/
-	GIMP_TEXT_DIRECTION_TTB_RTL,      /*< desc="Vertical, right to left (mixed orientation)"  >*/
-	GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT, /*< desc="Vertical, right to left (upright orientation)" >*/
-	GIMP_TEXT_DIRECTION_TTB_LTR,      /*< desc="Vertical, left to right (mixed orientation)"  >*/
-	GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT /*< desc="Vertical, left to right (upright orientation)" >*/
+typedef enum {
+  GIMP_TEXT_DIRECTION_LTR,             /*< desc="From left to right"             >*/
+  GIMP_TEXT_DIRECTION_RTL,             /*< desc="From right to left"             >*/
+  GIMP_TEXT_DIRECTION_TTB_RTL,         /*< desc="Vertical, right to left (mixed
+                                          orientation)"  >*/
+  GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT, /*< desc="Vertical, right to left
+                                          (upright orientation)" >*/
+  GIMP_TEXT_DIRECTION_TTB_LTR,         /*< desc="Vertical, left to right (mixed
+                                          orientation)"  >*/
+  GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT /*< desc="Vertical, left to right (upright
+                                         orientation)" >*/
 } GimpTextDirection;
-
 
 /**
  * GimpTextHintStyle:
@@ -1154,18 +1084,16 @@ typedef enum
  *
  * Text hint strengths.
  **/
-#define GIMP_TYPE_TEXT_HINT_STYLE (gimp_text_hint_style_get_type ())
+#define GIMP_TYPE_TEXT_HINT_STYLE (gimp_text_hint_style_get_type())
 
-GType gimp_text_hint_style_get_type (void) G_GNUC_CONST;
+GType gimp_text_hint_style_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_TEXT_HINT_STYLE_NONE, /*< desc="None"   >*/
-	GIMP_TEXT_HINT_STYLE_SLIGHT, /*< desc="Slight" >*/
-	GIMP_TEXT_HINT_STYLE_MEDIUM, /*< desc="Medium" >*/
-	GIMP_TEXT_HINT_STYLE_FULL  /*< desc="Full"   >*/
+typedef enum {
+  GIMP_TEXT_HINT_STYLE_NONE,   /*< desc="None"   >*/
+  GIMP_TEXT_HINT_STYLE_SLIGHT, /*< desc="Slight" >*/
+  GIMP_TEXT_HINT_STYLE_MEDIUM, /*< desc="Medium" >*/
+  GIMP_TEXT_HINT_STYLE_FULL    /*< desc="Full"   >*/
 } GimpTextHintStyle;
-
 
 /**
  * GimpTextJustification:
@@ -1176,18 +1104,16 @@ typedef enum
  *
  * Text justifications.
  **/
-#define GIMP_TYPE_TEXT_JUSTIFICATION (gimp_text_justification_get_type ())
+#define GIMP_TYPE_TEXT_JUSTIFICATION (gimp_text_justification_get_type())
 
-GType gimp_text_justification_get_type (void) G_GNUC_CONST;
+GType gimp_text_justification_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_TEXT_JUSTIFY_LEFT, /*< desc="Left justified"  >*/
-	GIMP_TEXT_JUSTIFY_RIGHT, /*< desc="Right justified" >*/
-	GIMP_TEXT_JUSTIFY_CENTER, /*< desc="Centered"        >*/
-	GIMP_TEXT_JUSTIFY_FILL /*< desc="Filled"          >*/
+typedef enum {
+  GIMP_TEXT_JUSTIFY_LEFT,   /*< desc="Left justified"  >*/
+  GIMP_TEXT_JUSTIFY_RIGHT,  /*< desc="Right justified" >*/
+  GIMP_TEXT_JUSTIFY_CENTER, /*< desc="Centered"        >*/
+  GIMP_TEXT_JUSTIFY_FILL    /*< desc="Filled"          >*/
 } GimpTextJustification;
-
 
 /**
  * GimpTransferMode:
@@ -1197,17 +1123,15 @@ typedef enum
  *
  * For choosing which brightness ranges to transform.
  **/
-#define GIMP_TYPE_TRANSFER_MODE (gimp_transfer_mode_get_type ())
+#define GIMP_TYPE_TRANSFER_MODE (gimp_transfer_mode_get_type())
 
-GType gimp_transfer_mode_get_type (void) G_GNUC_CONST;
+GType gimp_transfer_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_TRANSFER_SHADOWS, /*< desc="Shadows"    >*/
-	GIMP_TRANSFER_MIDTONES, /*< desc="Midtones"   >*/
-	GIMP_TRANSFER_HIGHLIGHTS /*< desc="Highlights" >*/
+typedef enum {
+  GIMP_TRANSFER_SHADOWS,   /*< desc="Shadows"    >*/
+  GIMP_TRANSFER_MIDTONES,  /*< desc="Midtones"   >*/
+  GIMP_TRANSFER_HIGHLIGHTS /*< desc="Highlights" >*/
 } GimpTransferMode;
-
 
 /**
  * GimpTransformDirection:
@@ -1216,16 +1140,14 @@ typedef enum
  *
  * Transform directions.
  **/
-#define GIMP_TYPE_TRANSFORM_DIRECTION (gimp_transform_direction_get_type ())
+#define GIMP_TYPE_TRANSFORM_DIRECTION (gimp_transform_direction_get_type())
 
-GType gimp_transform_direction_get_type (void) G_GNUC_CONST;
+GType gimp_transform_direction_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_TRANSFORM_FORWARD, /*< desc="Normal (Forward)" >*/
-	GIMP_TRANSFORM_BACKWARD /*< desc="Corrective (Backward)" >*/
+typedef enum {
+  GIMP_TRANSFORM_FORWARD, /*< desc="Normal (Forward)" >*/
+  GIMP_TRANSFORM_BACKWARD /*< desc="Corrective (Backward)" >*/
 } GimpTransformDirection;
-
 
 /**
  * GimpTransformResize:
@@ -1236,18 +1158,16 @@ typedef enum
  *
  * Ways of clipping the result when transforming drawables.
  **/
-#define GIMP_TYPE_TRANSFORM_RESIZE (gimp_transform_resize_get_type ())
+#define GIMP_TYPE_TRANSFORM_RESIZE (gimp_transform_resize_get_type())
 
-GType gimp_transform_resize_get_type (void) G_GNUC_CONST;
+GType gimp_transform_resize_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_TRANSFORM_RESIZE_ADJUST,       /*< desc="Adjust"           >*/
-	GIMP_TRANSFORM_RESIZE_CLIP,         /*< desc="Clip"             >*/
-	GIMP_TRANSFORM_RESIZE_CROP,         /*< desc="Crop to result"   >*/
-	GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT /*< desc="Crop with aspect" >*/
+typedef enum {
+  GIMP_TRANSFORM_RESIZE_ADJUST,          /*< desc="Adjust"           >*/
+  GIMP_TRANSFORM_RESIZE_CLIP,            /*< desc="Clip"             >*/
+  GIMP_TRANSFORM_RESIZE_CROP,            /*< desc="Crop to result"   >*/
+  GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT /*< desc="Crop with aspect" >*/
 } GimpTransformResize;
-
 
 /**
  * GimpUnit:
@@ -1262,19 +1182,17 @@ typedef enum
  * Units used for dimensions in images.
  **/
 typedef enum /*< skip >*/
-{
-	GIMP_UNIT_PIXEL   = 0,
+{ GIMP_UNIT_PIXEL = 0,
 
-	GIMP_UNIT_INCH    = 1,
-	GIMP_UNIT_MM      = 2,
-	GIMP_UNIT_POINT   = 3,
-	GIMP_UNIT_PICA    = 4,
+  GIMP_UNIT_INCH = 1,
+  GIMP_UNIT_MM = 2,
+  GIMP_UNIT_POINT = 3,
+  GIMP_UNIT_PICA = 4,
 
-	GIMP_UNIT_END     = 5,
+  GIMP_UNIT_END = 5,
 
-	GIMP_UNIT_PERCENT = 65536 /*< pdb-skip >*/
+  GIMP_UNIT_PERCENT = 65536 /*< pdb-skip >*/
 } GimpUnit;
-
 
 /**
  * GimpVectorsStrokeType:
@@ -1282,15 +1200,12 @@ typedef enum /*< skip >*/
  *
  * Possible type of strokes in vectors objects.
  **/
-#define GIMP_TYPE_VECTORS_STROKE_TYPE (gimp_vectors_stroke_type_get_type ())
+#define GIMP_TYPE_VECTORS_STROKE_TYPE (gimp_vectors_stroke_type_get_type())
 
-GType gimp_vectors_stroke_type_get_type (void) G_GNUC_CONST;
+GType gimp_vectors_stroke_type_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_VECTORS_STROKE_TYPE_BEZIER
-} GimpVectorsStrokeType;
+typedef enum { GIMP_VECTORS_STROKE_TYPE_BEZIER } GimpVectorsStrokeType;
 
 G_END_DECLS
 
-#endif  /* __GIMP_BASE_ENUMS_H__ */
+#endif /* __GIMP_BASE_ENUMS_H__ */

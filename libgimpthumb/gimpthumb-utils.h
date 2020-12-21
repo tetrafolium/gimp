@@ -22,7 +22,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_THUMB_H_INSIDE__) && !defined (GIMP_THUMB_COMPILATION)
+#if !defined(__GIMP_THUMB_H_INSIDE__) && !defined(GIMP_THUMB_COMPILATION)
 #error "Only <libgimpthumb/gimpthumb.h> can be included directly."
 #endif
 
@@ -31,42 +31,34 @@
 
 G_BEGIN_DECLS
 
+gboolean gimp_thumb_init(const gchar *creator, const gchar *thumb_basedir);
 
-gboolean            gimp_thumb_init                   (const gchar    *creator,
-                                                       const gchar    *thumb_basedir);
+const gchar *gimp_thumb_get_thumb_base_dir(void);
 
-const gchar       * gimp_thumb_get_thumb_base_dir     (void);
+gchar *gimp_thumb_find_thumb(const gchar *uri,
+                             GimpThumbSize *size) G_GNUC_MALLOC;
 
-gchar             * gimp_thumb_find_thumb             (const gchar    *uri,
-                                                       GimpThumbSize  *size) G_GNUC_MALLOC;
+GimpThumbFileType gimp_thumb_file_test(const gchar *filename, gint64 *mtime,
+                                       gint64 *size, gint *err_no);
 
-GimpThumbFileType   gimp_thumb_file_test              (const gchar    *filename,
-                                                       gint64         *mtime,
-                                                       gint64         *size,
-                                                       gint           *err_no);
+gchar *gimp_thumb_name_from_uri(const gchar *uri,
+                                GimpThumbSize size) G_GNUC_MALLOC;
+const gchar *gimp_thumb_get_thumb_dir(GimpThumbSize size);
+gboolean gimp_thumb_ensure_thumb_dir(GimpThumbSize size, GError **error);
+void gimp_thumbs_delete_for_uri(const gchar *uri);
 
-gchar             * gimp_thumb_name_from_uri          (const gchar    *uri,
-                                                       GimpThumbSize size) G_GNUC_MALLOC;
-const gchar       * gimp_thumb_get_thumb_dir          (GimpThumbSize size);
-gboolean            gimp_thumb_ensure_thumb_dir       (GimpThumbSize size,
-                                                       GError        **error);
-void                gimp_thumbs_delete_for_uri        (const gchar    *uri);
-
-gchar             * gimp_thumb_name_from_uri_local    (const gchar    *uri,
-                                                       GimpThumbSize size) G_GNUC_MALLOC;
-gchar             * gimp_thumb_get_thumb_dir_local    (const gchar    *dirname,
-                                                       GimpThumbSize size) G_GNUC_MALLOC;
-gboolean            gimp_thumb_ensure_thumb_dir_local (const gchar    *dirname,
-                                                       GimpThumbSize size,
-                                                       GError        **error);
-void                gimp_thumbs_delete_for_uri_local  (const gchar    *uri);
-
+gchar *gimp_thumb_name_from_uri_local(const gchar *uri,
+                                      GimpThumbSize size) G_GNUC_MALLOC;
+gchar *gimp_thumb_get_thumb_dir_local(const gchar *dirname,
+                                      GimpThumbSize size) G_GNUC_MALLOC;
+gboolean gimp_thumb_ensure_thumb_dir_local(const gchar *dirname,
+                                           GimpThumbSize size, GError **error);
+void gimp_thumbs_delete_for_uri_local(const gchar *uri);
 
 /*  for internal use only   */
-G_GNUC_INTERNAL void    _gimp_thumbs_delete_others    (const gchar    *uri,
-                                                       GimpThumbSize size);
-G_GNUC_INTERNAL gchar * _gimp_thumb_filename_from_uri (const gchar    *uri);
-
+G_GNUC_INTERNAL void _gimp_thumbs_delete_others(const gchar *uri,
+                                                GimpThumbSize size);
+G_GNUC_INTERNAL gchar *_gimp_thumb_filename_from_uri(const gchar *uri);
 
 G_END_DECLS
 

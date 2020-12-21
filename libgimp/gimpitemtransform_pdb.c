@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpitemtransform
  * @title: gimpitemtransform
@@ -32,7 +31,6 @@
  *
  * Functions to perform transformations on items.
  **/
-
 
 /**
  * gimp_item_transform_translate:
@@ -56,39 +54,34 @@
  *
  * Since: 2.10
  **/
-GimpItem *
-gimp_item_transform_translate (GimpItem *item,
-                               gdouble off_x,
-                               gdouble off_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_translate(GimpItem *item, gdouble off_x,
+                                        gdouble off_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, off_x,
-	                                        G_TYPE_DOUBLE, off_y,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, GIMP_TYPE_ITEM, item, G_TYPE_DOUBLE,
+                                      off_x, G_TYPE_DOUBLE, off_y, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-translate",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-item-transform-translate", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
  * gimp_item_transform_flip_simple:
  * @item: The affected item.
  * @flip_type: Type of flip.
- * @auto_center: Whether to automatically position the axis in the selection center.
+ * @auto_center: Whether to automatically position the axis in the selection
+ *center.
  * @axis: coord. of flip axis.
  *
  * Flip the specified item either vertically or horizontally.
@@ -117,34 +110,27 @@ gimp_item_transform_translate (GimpItem *item,
  *
  * Since: 2.2
  **/
-GimpItem *
-gimp_item_transform_flip_simple (GimpItem            *item,
-                                 GimpOrientationType flip_type,
-                                 gboolean auto_center,
-                                 gdouble axis)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_flip_simple(GimpItem *item,
+                                          GimpOrientationType flip_type,
+                                          gboolean auto_center, gdouble axis) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        GIMP_TYPE_ORIENTATION_TYPE, flip_type,
-	                                        G_TYPE_BOOLEAN, auto_center,
-	                                        G_TYPE_DOUBLE, axis,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, GIMP_TYPE_ORIENTATION_TYPE, flip_type,
+      G_TYPE_BOOLEAN, auto_center, G_TYPE_DOUBLE, axis, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-flip-simple",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-item-transform-flip-simple", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -181,36 +167,26 @@ gimp_item_transform_flip_simple (GimpItem            *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_flip (GimpItem *item,
-                          gdouble x0,
-                          gdouble y0,
-                          gdouble x1,
-                          gdouble y1)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_flip(GimpItem *item, gdouble x0, gdouble y0,
+                                   gdouble x1, gdouble y1) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, x0,
-	                                        G_TYPE_DOUBLE, y0,
-	                                        G_TYPE_DOUBLE, x1,
-	                                        G_TYPE_DOUBLE, y1,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, G_TYPE_DOUBLE, x0, G_TYPE_DOUBLE, y0,
+      G_TYPE_DOUBLE, x1, G_TYPE_DOUBLE, y1, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-flip",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-item-transform-flip", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -260,44 +236,29 @@ gimp_item_transform_flip (GimpItem *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_perspective (GimpItem *item,
-                                 gdouble x0,
-                                 gdouble y0,
-                                 gdouble x1,
-                                 gdouble y1,
-                                 gdouble x2,
-                                 gdouble y2,
-                                 gdouble x3,
-                                 gdouble y3)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_perspective(GimpItem *item, gdouble x0,
+                                          gdouble y0, gdouble x1, gdouble y1,
+                                          gdouble x2, gdouble y2, gdouble x3,
+                                          gdouble y3) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, x0,
-	                                        G_TYPE_DOUBLE, y0,
-	                                        G_TYPE_DOUBLE, x1,
-	                                        G_TYPE_DOUBLE, y1,
-	                                        G_TYPE_DOUBLE, x2,
-	                                        G_TYPE_DOUBLE, y2,
-	                                        G_TYPE_DOUBLE, x3,
-	                                        G_TYPE_DOUBLE, y3,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, G_TYPE_DOUBLE, x0, G_TYPE_DOUBLE, y0,
+      G_TYPE_DOUBLE, x1, G_TYPE_DOUBLE, y1, G_TYPE_DOUBLE, x2, G_TYPE_DOUBLE,
+      y2, G_TYPE_DOUBLE, x3, G_TYPE_DOUBLE, y3, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-perspective",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-item-transform-perspective", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -337,36 +298,30 @@ gimp_item_transform_perspective (GimpItem *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_rotate_simple (GimpItem         *item,
-                                   GimpRotationType rotate_type,
-                                   gboolean auto_center,
-                                   gdouble center_x,
-                                   gdouble center_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_rotate_simple(GimpItem *item,
+                                            GimpRotationType rotate_type,
+                                            gboolean auto_center,
+                                            gdouble center_x,
+                                            gdouble center_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        GIMP_TYPE_ROTATION_TYPE, rotate_type,
-	                                        G_TYPE_BOOLEAN, auto_center,
-	                                        G_TYPE_DOUBLE, center_x,
-	                                        G_TYPE_DOUBLE, center_y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, GIMP_TYPE_ROTATION_TYPE, rotate_type,
+      G_TYPE_BOOLEAN, auto_center, G_TYPE_DOUBLE, center_x, G_TYPE_DOUBLE,
+      center_y, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-rotate-simple",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-item-transform-rotate-simple", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -408,36 +363,28 @@ gimp_item_transform_rotate_simple (GimpItem         *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_rotate (GimpItem *item,
-                            gdouble angle,
-                            gboolean auto_center,
-                            gdouble center_x,
-                            gdouble center_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_rotate(GimpItem *item, gdouble angle,
+                                     gboolean auto_center, gdouble center_x,
+                                     gdouble center_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, angle,
-	                                        G_TYPE_BOOLEAN, auto_center,
-	                                        G_TYPE_DOUBLE, center_x,
-	                                        G_TYPE_DOUBLE, center_y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_ITEM, item,
+                                         G_TYPE_DOUBLE, angle, G_TYPE_BOOLEAN,
+                                         auto_center, G_TYPE_DOUBLE, center_x,
+                                         G_TYPE_DOUBLE, center_y, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-rotate",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-item-transform-rotate", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -476,36 +423,26 @@ gimp_item_transform_rotate (GimpItem *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_scale (GimpItem *item,
-                           gdouble x0,
-                           gdouble y0,
-                           gdouble x1,
-                           gdouble y1)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_scale(GimpItem *item, gdouble x0, gdouble y0,
+                                    gdouble x1, gdouble y1) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, x0,
-	                                        G_TYPE_DOUBLE, y0,
-	                                        G_TYPE_DOUBLE, x1,
-	                                        G_TYPE_DOUBLE, y1,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, G_TYPE_DOUBLE, x0, G_TYPE_DOUBLE, y0,
+      G_TYPE_DOUBLE, x1, G_TYPE_DOUBLE, y1, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-scale",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-item-transform-scale", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -544,32 +481,27 @@ gimp_item_transform_scale (GimpItem *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_shear (GimpItem            *item,
-                           GimpOrientationType shear_type,
-                           gdouble magnitude)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_shear(GimpItem *item,
+                                    GimpOrientationType shear_type,
+                                    gdouble magnitude) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        GIMP_TYPE_ORIENTATION_TYPE, shear_type,
-	                                        G_TYPE_DOUBLE, magnitude,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_ITEM, item,
+                                         GIMP_TYPE_ORIENTATION_TYPE, shear_type,
+                                         G_TYPE_DOUBLE, magnitude, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-shear",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-item-transform-shear", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -614,42 +546,29 @@ gimp_item_transform_shear (GimpItem            *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_2d (GimpItem *item,
-                        gdouble source_x,
-                        gdouble source_y,
-                        gdouble scale_x,
-                        gdouble scale_y,
-                        gdouble angle,
-                        gdouble dest_x,
-                        gdouble dest_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_2d(GimpItem *item, gdouble source_x,
+                                 gdouble source_y, gdouble scale_x,
+                                 gdouble scale_y, gdouble angle, gdouble dest_x,
+                                 gdouble dest_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, source_x,
-	                                        G_TYPE_DOUBLE, source_y,
-	                                        G_TYPE_DOUBLE, scale_x,
-	                                        G_TYPE_DOUBLE, scale_y,
-	                                        G_TYPE_DOUBLE, angle,
-	                                        G_TYPE_DOUBLE, dest_x,
-	                                        G_TYPE_DOUBLE, dest_y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, G_TYPE_DOUBLE, source_x, G_TYPE_DOUBLE,
+      source_y, G_TYPE_DOUBLE, scale_x, G_TYPE_DOUBLE, scale_y, G_TYPE_DOUBLE,
+      angle, G_TYPE_DOUBLE, dest_x, G_TYPE_DOUBLE, dest_y, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-2d",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-item-transform-2d", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }
 
 /**
@@ -694,44 +613,30 @@ gimp_item_transform_2d (GimpItem *item,
  *
  * Since: 2.8
  **/
-GimpItem *
-gimp_item_transform_matrix (GimpItem *item,
-                            gdouble coeff_0_0,
-                            gdouble coeff_0_1,
-                            gdouble coeff_0_2,
-                            gdouble coeff_1_0,
-                            gdouble coeff_1_1,
-                            gdouble coeff_1_2,
-                            gdouble coeff_2_0,
-                            gdouble coeff_2_1,
-                            gdouble coeff_2_2)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpItem *ret_item = NULL;
+GimpItem *gimp_item_transform_matrix(GimpItem *item, gdouble coeff_0_0,
+                                     gdouble coeff_0_1, gdouble coeff_0_2,
+                                     gdouble coeff_1_0, gdouble coeff_1_1,
+                                     gdouble coeff_1_2, gdouble coeff_2_0,
+                                     gdouble coeff_2_1, gdouble coeff_2_2) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpItem *ret_item = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_DOUBLE, coeff_0_0,
-	                                        G_TYPE_DOUBLE, coeff_0_1,
-	                                        G_TYPE_DOUBLE, coeff_0_2,
-	                                        G_TYPE_DOUBLE, coeff_1_0,
-	                                        G_TYPE_DOUBLE, coeff_1_1,
-	                                        G_TYPE_DOUBLE, coeff_1_2,
-	                                        G_TYPE_DOUBLE, coeff_2_0,
-	                                        G_TYPE_DOUBLE, coeff_2_1,
-	                                        G_TYPE_DOUBLE, coeff_2_2,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_ITEM, item, G_TYPE_DOUBLE, coeff_0_0, G_TYPE_DOUBLE,
+      coeff_0_1, G_TYPE_DOUBLE, coeff_0_2, G_TYPE_DOUBLE, coeff_1_0,
+      G_TYPE_DOUBLE, coeff_1_1, G_TYPE_DOUBLE, coeff_1_2, G_TYPE_DOUBLE,
+      coeff_2_0, G_TYPE_DOUBLE, coeff_2_1, G_TYPE_DOUBLE, coeff_2_2,
+      G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-item-transform-matrix",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-item-transform-matrix", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		ret_item = GIMP_VALUES_GET_ITEM (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    ret_item = GIMP_VALUES_GET_ITEM(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return ret_item;
+  return ret_item;
 }

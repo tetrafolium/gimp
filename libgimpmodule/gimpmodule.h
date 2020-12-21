@@ -35,7 +35,6 @@
 
 G_BEGIN_DECLS
 
-
 /**
  * GIMP_MODULE_ABI_VERSION:
  *
@@ -54,7 +53,6 @@ G_BEGIN_DECLS
  **/
 #define GIMP_MODULE_ABI_VERSION 0x0005
 
-
 /**
  * GimpModuleState:
  * @GIMP_MODULE_STATE_ERROR:       Missing gimp_module_register() function
@@ -67,18 +65,16 @@ G_BEGIN_DECLS
  *
  * The possible states a #GimpModule can be in.
  **/
-typedef enum
-{
-	GIMP_MODULE_STATE_ERROR,
-	GIMP_MODULE_STATE_LOADED,
-	GIMP_MODULE_STATE_LOAD_FAILED,
-	GIMP_MODULE_STATE_NOT_LOADED
+typedef enum {
+  GIMP_MODULE_STATE_ERROR,
+  GIMP_MODULE_STATE_LOADED,
+  GIMP_MODULE_STATE_LOAD_FAILED,
+  GIMP_MODULE_STATE_NOT_LOADED
 } GimpModuleState;
 
+#define GIMP_MODULE_ERROR (gimp_module_error_quark())
 
-#define GIMP_MODULE_ERROR (gimp_module_error_quark ())
-
-GQuark  gimp_module_error_quark (void) G_GNUC_CONST;
+GQuark gimp_module_error_quark(void) G_GNUC_CONST;
 
 /**
  * GimpModuleError:
@@ -86,11 +82,7 @@ GQuark  gimp_module_error_quark (void) G_GNUC_CONST;
  *
  * Types of errors returned by modules
  **/
-typedef enum
-{
-	GIMP_MODULE_FAILED
-} GimpModuleError;
-
+typedef enum { GIMP_MODULE_FAILED } GimpModuleError;
 
 /**
  * GimpModuleInfo:
@@ -103,16 +95,14 @@ typedef enum
  *
  * This structure contains information about a loadable module.
  **/
-struct _GimpModuleInfo
-{
-	guint32 abi_version;
-	gchar   *purpose;
-	gchar   *author;
-	gchar   *version;
-	gchar   *copyright;
-	gchar   *date;
+struct _GimpModuleInfo {
+  guint32 abi_version;
+  gchar *purpose;
+  gchar *author;
+  gchar *version;
+  gchar *copyright;
+  gchar *date;
 };
-
 
 /**
  * GimpModuleQueryFunc:
@@ -128,7 +118,7 @@ struct _GimpModuleInfo
  * cases the module will just return a pointer to a constant
  * structure).
  **/
-typedef const GimpModuleInfo * (* GimpModuleQueryFunc)    (GTypeModule *module);
+typedef const GimpModuleInfo *(*GimpModuleQueryFunc)(GTypeModule *module);
 
 /**
  * GimpModuleRegisterFunc:
@@ -142,72 +132,67 @@ typedef const GimpModuleInfo * (* GimpModuleQueryFunc)    (GTypeModule *module);
  * When this function is called, the module should register all the types
  * it implements with the passed @module.
  **/
-typedef gboolean (* GimpModuleRegisterFunc) (GTypeModule *module);
-
+typedef gboolean (*GimpModuleRegisterFunc)(GTypeModule *module);
 
 /* GimpModules have to implement these */
-G_MODULE_EXPORT const GimpModuleInfo * gimp_module_query    (GTypeModule *module);
-G_MODULE_EXPORT gboolean               gimp_module_register (GTypeModule *module);
+G_MODULE_EXPORT const GimpModuleInfo *gimp_module_query(GTypeModule *module);
+G_MODULE_EXPORT gboolean gimp_module_register(GTypeModule *module);
 
-
-#define GIMP_TYPE_MODULE            (gimp_module_get_type ())
-#define GIMP_MODULE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MODULE, GimpModule))
-#define GIMP_MODULE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MODULE, GimpModuleClass))
-#define GIMP_IS_MODULE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MODULE))
-#define GIMP_IS_MODULE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MODULE))
-#define GIMP_MODULE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MODULE, GimpModuleClass))
-
+#define GIMP_TYPE_MODULE (gimp_module_get_type())
+#define GIMP_MODULE(obj)                                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MODULE, GimpModule))
+#define GIMP_MODULE_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MODULE, GimpModuleClass))
+#define GIMP_IS_MODULE(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MODULE))
+#define GIMP_IS_MODULE_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MODULE))
+#define GIMP_MODULE_GET_CLASS(obj)                                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MODULE, GimpModuleClass))
 
 typedef struct _GimpModulePrivate GimpModulePrivate;
 typedef struct _GimpModuleClass GimpModuleClass;
 
-struct _GimpModule
-{
-	GTypeModule parent_instance;
+struct _GimpModule {
+  GTypeModule parent_instance;
 
-	GimpModulePrivate *priv;
+  GimpModulePrivate *priv;
 };
 
-struct _GimpModuleClass
-{
-	GTypeModuleClass parent_class;
+struct _GimpModuleClass {
+  GTypeModuleClass parent_class;
 
-	void (* modified) (GimpModule *module);
+  void (*modified)(GimpModule *module);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_module_get_type(void) G_GNUC_CONST;
 
-GType                  gimp_module_get_type       (void) G_GNUC_CONST;
+GimpModule *gimp_module_new(GFile *file, gboolean auto_load, gboolean verbose);
 
-GimpModule           * gimp_module_new            (GFile           *file,
-                                                   gboolean auto_load,
-                                                   gboolean verbose);
+GFile *gimp_module_get_file(GimpModule *module);
 
-GFile                * gimp_module_get_file       (GimpModule      *module);
+void gimp_module_set_auto_load(GimpModule *module, gboolean auto_load);
+gboolean gimp_module_get_auto_load(GimpModule *module);
 
-void                   gimp_module_set_auto_load  (GimpModule      *module,
-                                                   gboolean auto_load);
-gboolean               gimp_module_get_auto_load  (GimpModule      *module);
+gboolean gimp_module_is_on_disk(GimpModule *module);
+gboolean gimp_module_is_loaded(GimpModule *module);
 
-gboolean               gimp_module_is_on_disk     (GimpModule      *module);
-gboolean               gimp_module_is_loaded      (GimpModule      *module);
+const GimpModuleInfo *gimp_module_get_info(GimpModule *module);
+GimpModuleState gimp_module_get_state(GimpModule *module);
+const gchar *gimp_module_get_last_error(GimpModule *module);
 
-const GimpModuleInfo * gimp_module_get_info       (GimpModule      *module);
-GimpModuleState        gimp_module_get_state      (GimpModule      *module);
-const gchar          * gimp_module_get_last_error (GimpModule      *module);
-
-gboolean               gimp_module_query_module   (GimpModule      *module);
-
+gboolean gimp_module_query_module(GimpModule *module);
 
 G_END_DECLS
 
-#endif  /* __GIMP_MODULE_H__ */
+#endif /* __GIMP_MODULE_H__ */

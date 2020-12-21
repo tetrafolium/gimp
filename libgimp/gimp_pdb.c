@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimp
  * @title: gimp
@@ -37,7 +36,6 @@
  * other category.
  **/
 
-
 /**
  * gimp_version:
  *
@@ -49,27 +47,23 @@
  * Returns: (transfer full): GIMP version number.
  *          The returned value must be freed with g_free().
  **/
-gchar *
-gimp_version (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar *version = NULL;
+gchar *gimp_version(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar *version = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-version",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-version", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		version = GIMP_VALUES_DUP_STRING (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    version = GIMP_VALUES_DUP_STRING(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return version;
+  return version;
 }
 
 /**
@@ -83,27 +77,23 @@ gimp_version (void)
  *
  * Since: 2.4
  **/
-gint
-gimp_getpid (void)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gint pid = 0;
+gint gimp_getpid(void) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gint pid = 0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-getpid",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-getpid", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		pid = GIMP_VALUES_GET_INT (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    pid = GIMP_VALUES_GET_INT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return pid;
+  return pid;
 }
 
 /**
@@ -118,27 +108,23 @@ gimp_getpid (void)
  *
  * Since: 2.8
  **/
-gboolean
-gimp_attach_parasite (const GimpParasite *parasite)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_attach_parasite(const GimpParasite *parasite) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_PARASITE, parasite,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_PARASITE, parasite,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-attach-parasite",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-attach-parasite", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -154,27 +140,23 @@ gimp_attach_parasite (const GimpParasite *parasite)
  *
  * Since: 2.8
  **/
-gboolean
-gimp_detach_parasite (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_detach_parasite(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-detach-parasite",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-detach-parasite", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -189,28 +171,24 @@ gimp_detach_parasite (const gchar *name)
  *
  * Since: 2.8
  **/
-GimpParasite *
-gimp_get_parasite (const gchar *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpParasite *parasite = NULL;
+GimpParasite *gimp_get_parasite(const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpParasite *parasite = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-get-parasite",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-get-parasite", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		parasite = GIMP_VALUES_DUP_PARASITE (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    parasite = GIMP_VALUES_DUP_PARASITE(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return parasite;
+  return parasite;
 }
 
 /**
@@ -227,32 +205,27 @@ gimp_get_parasite (const gchar *name)
  *
  * Since: 2.8
  **/
-gchar **
-gimp_get_parasite_list (gint *num_parasites)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gchar **parasites = NULL;
+gchar **gimp_get_parasite_list(gint *num_parasites) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gchar **parasites = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-get-parasite-list",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-get-parasite-list", args);
+  gimp_value_array_unref(args);
 
-	*num_parasites = 0;
+  *num_parasites = 0;
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-	{
-		*num_parasites = GIMP_VALUES_GET_INT (return_vals, 1);
-		parasites = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
-	}
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS) {
+    *num_parasites = GIMP_VALUES_GET_INT(return_vals, 1);
+    parasites = GIMP_VALUES_DUP_STRING_ARRAY(return_vals, 2);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return parasites;
+  return parasites;
 }
 
 /**
@@ -266,26 +239,22 @@ gimp_get_parasite_list (gint *num_parasites)
  *
  * Returns: (transfer full): The new temp file.
  **/
-GFile *
-gimp_temp_file (const gchar *extension)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GFile *file = NULL;
+GFile *gimp_temp_file(const gchar *extension) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GFile *file = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, extension,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, extension,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-temp-file",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-temp-file", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		file = GIMP_VALUES_DUP_FILE (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    file = GIMP_VALUES_DUP_FILE(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return file;
+  return file;
 }

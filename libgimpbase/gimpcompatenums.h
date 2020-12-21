@@ -19,20 +19,18 @@
 #ifndef __GIMP_COMPAT_ENUMS_H__
 #define __GIMP_COMPAT_ENUMS_H__
 
-
 G_BEGIN_DECLS
 
 /*  These enums exist only for compatibility, their nicks are needed
  *  for config file parsing; they are registered in gimp_base_init().
  */
 
-
 #if 0
 /*  Leave one enum here for documentation purposes, remove it as
  *  soon as we need a real compat enum again, also don't have
  *  that "skip" on the compat enum...
  */
-#define GIMP_TYPE_ADD_MASK_TYPE_COMPAT (gimp_add_mask_type_compat_get_type ())
+#define GIMP_TYPE_ADD_MASK_TYPE_COMPAT (gimp_add_mask_type_compat_get_type())
 
 GType gimp_add_mask_type_compat_get_type (void) G_GNUC_CONST;
 
@@ -48,7 +46,6 @@ typedef enum /*< skip >*/
 } GimpAddMaskTypeCompat;
 #endif
 
-
 G_END_DECLS
 
-#endif  /* __GIMP_COMPAT_ENUMS_H__ */
+#endif /* __GIMP_COMPAT_ENUMS_H__ */

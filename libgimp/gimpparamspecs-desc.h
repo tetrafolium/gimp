@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -27,13 +27,10 @@
 
 G_BEGIN_DECLS
 
-
 /* For information look into the C source or the html documentation */
 
-
-gchar * gimp_param_spec_get_desc (GParamSpec *pspec);
-
+gchar *gimp_param_spec_get_desc(GParamSpec *pspec);
 
 G_END_DECLS
 
-#endif  /*  __GIMP_PARAM_SPECS_DESC_H__  */
+#endif /*  __GIMP_PARAM_SPECS_DESC_H__  */

@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
@@ -27,22 +27,16 @@
 
 G_BEGIN_DECLS
 
+typedef void (*GimpRunGradientCallback)(const gchar *gradient_name, gint width,
+                                        const gdouble *grad_data,
+                                        gboolean dialog_closing,
+                                        gpointer user_data);
 
-typedef void (* GimpRunGradientCallback)   (const gchar   *gradient_name,
-                                            gint width,
-                                            const gdouble *grad_data,
-                                            gboolean dialog_closing,
-                                            gpointer user_data);
-
-
-const gchar * gimp_gradient_select_new     (const gchar             *title,
-                                            const gchar             *gradient_name,
-                                            gint sample_size,
-                                            GimpRunGradientCallback callback,
-                                            gpointer data,
-                                            GDestroyNotify data_destroy);
-void          gimp_gradient_select_destroy (const gchar             *gradient_callback);
-
+const gchar *
+gimp_gradient_select_new(const gchar *title, const gchar *gradient_name,
+                         gint sample_size, GimpRunGradientCallback callback,
+                         gpointer data, GDestroyNotify data_destroy);
+void gimp_gradient_select_destroy(const gchar *gradient_callback);
 
 G_END_DECLS
 

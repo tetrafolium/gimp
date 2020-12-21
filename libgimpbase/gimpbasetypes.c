@@ -25,7 +25,6 @@
 
 #include "gimpbasetypes.h"
 
-
 /**
  * SECTION: gimpbasetypes
  * @title: gimpbasetypes
@@ -36,11 +35,9 @@
  * GType.
  **/
 
-
-static GQuark  gimp_translation_domain_quark  (void) G_GNUC_CONST;
-static GQuark  gimp_translation_context_quark (void) G_GNUC_CONST;
-static GQuark  gimp_value_descriptions_quark  (void) G_GNUC_CONST;
-
+static GQuark gimp_translation_domain_quark(void) G_GNUC_CONST;
+static GQuark gimp_translation_context_quark(void) G_GNUC_CONST;
+static GQuark gimp_value_descriptions_quark(void) G_GNUC_CONST;
 
 /**
  * gimp_type_set_translation_domain:
@@ -54,12 +51,8 @@ static GQuark  gimp_value_descriptions_quark  (void) G_GNUC_CONST;
  *
  * Since: 2.2
  **/
-void
-gimp_type_set_translation_domain (GType type,
-                                  const gchar *domain)
-{
-	g_type_set_qdata (type,
-	                  gimp_translation_domain_quark (), (gpointer) domain);
+void gimp_type_set_translation_domain(GType type, const gchar *domain) {
+  g_type_set_qdata(type, gimp_translation_domain_quark(), (gpointer)domain);
 }
 
 /**
@@ -76,11 +69,8 @@ gimp_type_set_translation_domain (GType type,
  *
  * Since: 2.2
  **/
-const gchar *
-gimp_type_get_translation_domain (GType type)
-{
-	return (const gchar *) g_type_get_qdata (type,
-	                                         gimp_translation_domain_quark ());
+const gchar *gimp_type_get_translation_domain(GType type) {
+  return (const gchar *)g_type_get_qdata(type, gimp_translation_domain_quark());
 }
 
 /**
@@ -94,12 +84,8 @@ gimp_type_get_translation_domain (GType type)
  *
  * Since: 2.8
  **/
-void
-gimp_type_set_translation_context (GType type,
-                                   const gchar *context)
-{
-	g_type_set_qdata (type,
-	                  gimp_translation_context_quark (), (gpointer) context);
+void gimp_type_set_translation_context(GType type, const gchar *context) {
+  g_type_set_qdata(type, gimp_translation_context_quark(), (gpointer)context);
 }
 
 /**
@@ -116,11 +102,9 @@ gimp_type_set_translation_context (GType type,
  *
  * Since: 2.8
  **/
-const gchar *
-gimp_type_get_translation_context (GType type)
-{
-	return (const gchar *) g_type_get_qdata (type,
-	                                         gimp_translation_context_quark ());
+const gchar *gimp_type_get_translation_context(GType type) {
+  return (const gchar *)g_type_get_qdata(type,
+                                         gimp_translation_context_quark());
 }
 
 /**
@@ -133,16 +117,13 @@ gimp_type_get_translation_context (GType type)
  *
  * Since: 2.2
  **/
-void
-gimp_enum_set_value_descriptions (GType enum_type,
-                                  const GimpEnumDesc *descriptions)
-{
-	g_return_if_fail (g_type_is_a (enum_type, G_TYPE_ENUM));
-	g_return_if_fail (descriptions != NULL);
+void gimp_enum_set_value_descriptions(GType enum_type,
+                                      const GimpEnumDesc *descriptions) {
+  g_return_if_fail(g_type_is_a(enum_type, G_TYPE_ENUM));
+  g_return_if_fail(descriptions != NULL);
 
-	g_type_set_qdata (enum_type,
-	                  gimp_value_descriptions_quark (),
-	                  (gpointer) descriptions);
+  g_type_set_qdata(enum_type, gimp_value_descriptions_quark(),
+                   (gpointer)descriptions);
 }
 
 /**
@@ -156,13 +137,11 @@ gimp_enum_set_value_descriptions (GType enum_type,
  *
  * Since: 2.2
  **/
-const GimpEnumDesc *
-gimp_enum_get_value_descriptions (GType enum_type)
-{
-	g_return_val_if_fail (g_type_is_a (enum_type, G_TYPE_ENUM), NULL);
+const GimpEnumDesc *gimp_enum_get_value_descriptions(GType enum_type) {
+  g_return_val_if_fail(g_type_is_a(enum_type, G_TYPE_ENUM), NULL);
 
-	return (const GimpEnumDesc *)
-	       g_type_get_qdata (enum_type, gimp_value_descriptions_quark ());
+  return (const GimpEnumDesc *)g_type_get_qdata(
+      enum_type, gimp_value_descriptions_quark());
 }
 
 /**
@@ -175,16 +154,13 @@ gimp_enum_get_value_descriptions (GType enum_type)
  *
  * Since: 2.2
  **/
-void
-gimp_flags_set_value_descriptions (GType flags_type,
-                                   const GimpFlagsDesc *descriptions)
-{
-	g_return_if_fail (g_type_is_a (flags_type, G_TYPE_FLAGS));
-	g_return_if_fail (descriptions != NULL);
+void gimp_flags_set_value_descriptions(GType flags_type,
+                                       const GimpFlagsDesc *descriptions) {
+  g_return_if_fail(g_type_is_a(flags_type, G_TYPE_FLAGS));
+  g_return_if_fail(descriptions != NULL);
 
-	g_type_set_qdata (flags_type,
-	                  gimp_value_descriptions_quark (),
-	                  (gpointer) descriptions);
+  g_type_set_qdata(flags_type, gimp_value_descriptions_quark(),
+                   (gpointer)descriptions);
 }
 
 /**
@@ -198,47 +174,38 @@ gimp_flags_set_value_descriptions (GType flags_type,
  *
  * Since: 2.2
  **/
-const GimpFlagsDesc *
-gimp_flags_get_value_descriptions (GType flags_type)
-{
-	g_return_val_if_fail (g_type_is_a (flags_type, G_TYPE_FLAGS), NULL);
+const GimpFlagsDesc *gimp_flags_get_value_descriptions(GType flags_type) {
+  g_return_val_if_fail(g_type_is_a(flags_type, G_TYPE_FLAGS), NULL);
 
-	return (const GimpFlagsDesc *)
-	       g_type_get_qdata (flags_type, gimp_value_descriptions_quark ());
+  return (const GimpFlagsDesc *)g_type_get_qdata(
+      flags_type, gimp_value_descriptions_quark());
 }
-
 
 /*  private functions  */
 
-static GQuark
-gimp_translation_domain_quark (void)
-{
-	static GQuark quark = 0;
+static GQuark gimp_translation_domain_quark(void) {
+  static GQuark quark = 0;
 
-	if (!quark)
-		quark = g_quark_from_static_string ("gimp-translation-domain-quark");
+  if (!quark)
+    quark = g_quark_from_static_string("gimp-translation-domain-quark");
 
-	return quark;
+  return quark;
 }
 
-static GQuark
-gimp_translation_context_quark (void)
-{
-	static GQuark quark = 0;
+static GQuark gimp_translation_context_quark(void) {
+  static GQuark quark = 0;
 
-	if (!quark)
-		quark = g_quark_from_static_string ("gimp-translation-context-quark");
+  if (!quark)
+    quark = g_quark_from_static_string("gimp-translation-context-quark");
 
-	return quark;
+  return quark;
 }
 
-static GQuark
-gimp_value_descriptions_quark (void)
-{
-	static GQuark quark = 0;
+static GQuark gimp_value_descriptions_quark(void) {
+  static GQuark quark = 0;
 
-	if (!quark)
-		quark = g_quark_from_static_string ("gimp-value-descriptions-quark");
+  if (!quark)
+    quark = g_quark_from_static_string("gimp-value-descriptions-quark");
 
-	return quark;
+  return quark;
 }

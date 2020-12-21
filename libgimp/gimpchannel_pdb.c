@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpchannel
  * @title: gimpchannel
@@ -32,7 +31,6 @@
  *
  * Functions for manipulating channels.
  **/
-
 
 /**
  * _gimp_channel_new:
@@ -55,38 +53,28 @@
  *
  * Returns: (transfer none): The newly created channel.
  **/
-GimpChannel *
-_gimp_channel_new (GimpImage     *image,
-                   gint width,
-                   gint height,
-                   const gchar   *name,
-                   gdouble opacity,
-                   const GimpRGB *color)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpChannel *channel = NULL;
+GimpChannel *_gimp_channel_new(GimpImage *image, gint width, gint height,
+                               const gchar *name, gdouble opacity,
+                               const GimpRGB *color) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpChannel *channel = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, width,
-	                                        G_TYPE_INT, height,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_DOUBLE, opacity,
-	                                        GIMP_TYPE_RGB, color,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, G_TYPE_INT, width, G_TYPE_INT, height,
+      G_TYPE_STRING, name, G_TYPE_DOUBLE, opacity, GIMP_TYPE_RGB, color,
+      G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-new",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-channel-new", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		channel = GIMP_VALUES_GET_CHANNEL (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    channel = GIMP_VALUES_GET_CHANNEL(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return channel;
+  return channel;
 }
 
 /**
@@ -107,32 +95,27 @@ _gimp_channel_new (GimpImage     *image,
  *
  * Since: 2.4
  **/
-GimpChannel *
-gimp_channel_new_from_component (GimpImage       *image,
-                                 GimpChannelType component,
-                                 const gchar     *name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpChannel *channel = NULL;
+GimpChannel *gimp_channel_new_from_component(GimpImage *image,
+                                             GimpChannelType component,
+                                             const gchar *name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpChannel *channel = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_TYPE, component,
-	                                        G_TYPE_STRING, name,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         GIMP_TYPE_CHANNEL_TYPE, component,
+                                         G_TYPE_STRING, name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-new-from-component",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-channel-new-from-component", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		channel = GIMP_VALUES_GET_CHANNEL (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    channel = GIMP_VALUES_GET_CHANNEL(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return channel;
+  return channel;
 }
 
 /**
@@ -147,28 +130,24 @@ gimp_channel_new_from_component (GimpImage       *image,
  *
  * Returns: (transfer none): The newly copied channel.
  **/
-GimpChannel *
-gimp_channel_copy (GimpChannel *channel)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	GimpChannel *channel_copy = NULL;
+GimpChannel *gimp_channel_copy(GimpChannel *channel) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  GimpChannel *channel_copy = NULL;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-copy",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-channel-copy", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		channel_copy = GIMP_VALUES_GET_CHANNEL (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    channel_copy = GIMP_VALUES_GET_CHANNEL(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return channel_copy;
+  return channel_copy;
 }
 
 /**
@@ -186,35 +165,28 @@ gimp_channel_copy (GimpChannel *channel)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_channel_combine_masks (GimpChannel    *channel1,
-                            GimpChannel    *channel2,
-                            GimpChannelOps operation,
-                            gint offx,
-                            gint offy)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_channel_combine_masks(GimpChannel *channel1,
+                                    GimpChannel *channel2,
+                                    GimpChannelOps operation, gint offx,
+                                    gint offy) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel1,
-	                                        GIMP_TYPE_CHANNEL, channel2,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        G_TYPE_INT, offx,
-	                                        G_TYPE_INT, offy,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_CHANNEL, channel1, GIMP_TYPE_CHANNEL, channel2,
+      GIMP_TYPE_CHANNEL_OPS, operation, G_TYPE_INT, offx, G_TYPE_INT, offy,
+      G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-combine-masks",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-channel-combine-masks", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -229,28 +201,24 @@ gimp_channel_combine_masks (GimpChannel    *channel1,
  *
  * Returns: The channel composite method.
  **/
-gboolean
-gimp_channel_get_show_masked (GimpChannel *channel)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean show_masked = FALSE;
+gboolean gimp_channel_get_show_masked(GimpChannel *channel) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean show_masked = FALSE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-get-show-masked",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-channel-get-show-masked", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		show_masked = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    show_masked = GIMP_VALUES_GET_BOOLEAN(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return show_masked;
+  return show_masked;
 }
 
 /**
@@ -266,29 +234,25 @@ gimp_channel_get_show_masked (GimpChannel *channel)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_channel_set_show_masked (GimpChannel *channel,
-                              gboolean show_masked)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_channel_set_show_masked(GimpChannel *channel,
+                                      gboolean show_masked) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        G_TYPE_BOOLEAN, show_masked,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                      G_TYPE_BOOLEAN, show_masked, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-set-show-masked",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-channel-set-show-masked", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -301,28 +265,24 @@ gimp_channel_set_show_masked (GimpChannel *channel,
  *
  * Returns: The channel opacity.
  **/
-gdouble
-gimp_channel_get_opacity (GimpChannel *channel)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gdouble opacity = 0.0;
+gdouble gimp_channel_get_opacity(GimpChannel *channel) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gdouble opacity = 0.0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-get-opacity",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-channel-get-opacity", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		opacity = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    opacity = GIMP_VALUES_GET_DOUBLE(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return opacity;
+  return opacity;
 }
 
 /**
@@ -336,29 +296,23 @@ gimp_channel_get_opacity (GimpChannel *channel)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_channel_set_opacity (GimpChannel *channel,
-                          gdouble opacity)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_channel_set_opacity(GimpChannel *channel, gdouble opacity) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        G_TYPE_DOUBLE, opacity,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                         G_TYPE_DOUBLE, opacity, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-set-opacity",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-channel-set-opacity", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -372,31 +326,26 @@ gimp_channel_set_opacity (GimpChannel *channel,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_channel_get_color (GimpChannel *channel,
-                        GimpRGB     *color)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_channel_get_color(GimpChannel *channel, GimpRGB *color) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-get-color",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-channel-get-color", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	if (success)
-		GIMP_VALUES_GET_RGB (return_vals, 1, &*color);
+  if (success)
+    GIMP_VALUES_GET_RGB(return_vals, 1, &*color);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -410,27 +359,21 @@ gimp_channel_get_color (GimpChannel *channel,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_channel_set_color (GimpChannel   *channel,
-                        const GimpRGB *color)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_channel_set_color(GimpChannel *channel, const GimpRGB *color) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_CHANNEL, channel,
-	                                        GIMP_TYPE_RGB, color,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_CHANNEL, channel,
+                                         GIMP_TYPE_RGB, color, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-channel-set-color",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-channel-set-color", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }

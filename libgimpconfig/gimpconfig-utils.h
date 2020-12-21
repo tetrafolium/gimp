@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_CONFIG_H_INSIDE__) && !defined (GIMP_CONFIG_COMPILATION)
+#if !defined(__GIMP_CONFIG_H_INSIDE__) && !defined(GIMP_CONFIG_COMPILATION)
 #error "Only <libgimpconfig/gimpconfig.h> can be included directly."
 #endif
 
@@ -30,23 +30,15 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
+GList *gimp_config_diff(GObject *a, GObject *b, GParamFlags flags);
 
-GList    * gimp_config_diff                  (GObject      *a,
-                                              GObject      *b,
-                                              GParamFlags flags);
+gboolean gimp_config_sync(GObject *src, GObject *dest, GParamFlags flags);
 
-gboolean   gimp_config_sync                  (GObject      *src,
-                                              GObject      *dest,
-                                              GParamFlags flags);
+void gimp_config_reset_properties(GObject *object);
+void gimp_config_reset_property(GObject *object, const gchar *property_name);
 
-void       gimp_config_reset_properties      (GObject      *object);
-void       gimp_config_reset_property        (GObject      *object,
-                                              const gchar  *property_name);
-
-void       gimp_config_string_append_escaped (GString      *string,
-                                              const gchar  *val);
-
+void gimp_config_string_append_escaped(GString *string, const gchar *val);
 
 G_END_DECLS
 
-#endif  /* __GIMP_CONFIG_UTILS_H__ */
+#endif /* __GIMP_CONFIG_UTILS_H__ */

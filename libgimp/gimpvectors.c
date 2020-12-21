@@ -23,27 +23,18 @@
 
 #include "gimp.h"
 
-
-struct _GimpVectorsPrivate
-{
-	gpointer unused;
+struct _GimpVectorsPrivate {
+  gpointer unused;
 };
 
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpVectors, gimp_vectors, GIMP_TYPE_ITEM)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpVectors, gimp_vectors, GIMP_TYPE_ITEM)
 
 #define parent_class gimp_vectors_parent_class
 
+static void gimp_vectors_class_init(GimpVectorsClass *klass) {}
 
-static void
-gimp_vectors_class_init (GimpVectorsClass *klass)
-{
-}
-
-static void
-gimp_vectors_init (GimpVectors *vectors)
-{
-	vectors->priv = gimp_vectors_get_instance_private (vectors);
+static void gimp_vectors_init(GimpVectors *vectors) {
+  vectors->priv = gimp_vectors_get_instance_private(vectors);
 }
 
 /**
@@ -61,13 +52,11 @@ gimp_vectors_init (GimpVectors *vectors)
  *
  * Since: 3.0
  **/
-GimpVectors *
-gimp_vectors_get_by_id (gint32 vectors_id)
-{
-	GimpItem *item = gimp_item_get_by_id (vectors_id);
+GimpVectors *gimp_vectors_get_by_id(gint32 vectors_id) {
+  GimpItem *item = gimp_item_get_by_id(vectors_id);
 
-	if (GIMP_IS_VECTORS (item))
-		return (GimpVectors *) item;
+  if (GIMP_IS_VECTORS(item))
+    return (GimpVectors *)item;
 
-	return NULL;
+  return NULL;
 }

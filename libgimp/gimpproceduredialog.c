@@ -33,336 +33,292 @@
 
 #include "libgimp-intl.h"
 
-
-enum
-{
-	PROP_0,
-	PROP_PROCEDURE,
-	PROP_CONFIG,
-	N_PROPS
-};
+enum { PROP_0, PROP_PROCEDURE, PROP_CONFIG, N_PROPS };
 
 #define RESPONSE_RESET 1
 
+struct _GimpProcedureDialogPrivate {
+  GimpProcedure *procedure;
+  GimpProcedureConfig *config;
+  GimpProcedureConfig *initial_config;
 
-struct _GimpProcedureDialogPrivate
-{
-	GimpProcedure       *procedure;
-	GimpProcedureConfig *config;
-	GimpProcedureConfig *initial_config;
+  GtkWidget *reset_popover;
 
-	GtkWidget           *reset_popover;
-
-	GHashTable          *widgets;
-	GHashTable          *mnemonics;
-	GHashTable          *core_mnemonics;
-	GtkSizeGroup        *label_group;
+  GHashTable *widgets;
+  GHashTable *mnemonics;
+  GHashTable *core_mnemonics;
+  GtkSizeGroup *label_group;
 };
 
+static void gimp_procedure_dialog_constructed(GObject *object);
+static void gimp_procedure_dialog_dispose(GObject *object);
+static void gimp_procedure_dialog_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec);
+static void gimp_procedure_dialog_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec);
 
-static void   gimp_procedure_dialog_constructed   (GObject      *object);
-static void   gimp_procedure_dialog_dispose       (GObject      *object);
-static void   gimp_procedure_dialog_set_property  (GObject      *object,
-                                                   guint property_id,
-                                                   const GValue *value,
-                                                   GParamSpec   *pspec);
-static void   gimp_procedure_dialog_get_property  (GObject      *object,
-                                                   guint property_id,
-                                                   GValue       *value,
-                                                   GParamSpec   *pspec);
+static void gimp_procedure_dialog_real_fill_list(GimpProcedureDialog *dialog,
+                                                 GimpProcedure *procedure,
+                                                 GimpProcedureConfig *config,
+                                                 GList *properties);
 
-static void  gimp_procedure_dialog_real_fill_list (GimpProcedureDialog *dialog,
-                                                   GimpProcedure       *procedure,
-                                                   GimpProcedureConfig *config,
-                                                   GList               *properties);
+static void gimp_procedure_dialog_reset_initial(GtkWidget *button,
+                                                GimpProcedureDialog *dialog);
+static void gimp_procedure_dialog_reset_factory(GtkWidget *button,
+                                                GimpProcedureDialog *dialog);
+static void gimp_procedure_dialog_load_defaults(GtkWidget *button,
+                                                GimpProcedureDialog *dialog);
+static void gimp_procedure_dialog_save_defaults(GtkWidget *button,
+                                                GimpProcedureDialog *dialog);
 
-static void   gimp_procedure_dialog_reset_initial (GtkWidget           *button,
-                                                   GimpProcedureDialog *dialog);
-static void   gimp_procedure_dialog_reset_factory (GtkWidget           *button,
-                                                   GimpProcedureDialog *dialog);
-static void   gimp_procedure_dialog_load_defaults (GtkWidget           *button,
-                                                   GimpProcedureDialog *dialog);
-static void   gimp_procedure_dialog_save_defaults (GtkWidget           *button,
-                                                   GimpProcedureDialog *dialog);
+static gboolean
+gimp_procedure_dialog_check_mnemonic(GimpProcedureDialog *dialog,
+                                     GtkWidget *widget, const gchar *id,
+                                     const gchar *core_id);
+static GtkWidget *gimp_procedure_dialog_fill_container_list(
+    GimpProcedureDialog *dialog, const gchar *container_id,
+    GtkContainer *container, GList *properties);
 
-static gboolean gimp_procedure_dialog_check_mnemonic    (GimpProcedureDialog *dialog,
-                                                         GtkWidget           *widget,
-                                                         const gchar         *id,
-                                                         const gchar         *core_id);
-static GtkWidget *
-gimp_procedure_dialog_fill_container_list (GimpProcedureDialog *dialog,
-                                           const gchar         *container_id,
-                                           GtkContainer        *container,
-                                           GList               *properties);
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpProcedureDialog, gimp_procedure_dialog,
-                            GIMP_TYPE_DIALOG)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpProcedureDialog, gimp_procedure_dialog,
+                           GIMP_TYPE_DIALOG)
 
 #define parent_class gimp_procedure_dialog_parent_class
 
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[N_PROPS] = {
+    NULL,
+};
 
+static void gimp_procedure_dialog_class_init(GimpProcedureDialogClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void
-gimp_procedure_dialog_class_init (GimpProcedureDialogClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->constructed = gimp_procedure_dialog_constructed;
+  object_class->dispose = gimp_procedure_dialog_dispose;
+  object_class->get_property = gimp_procedure_dialog_get_property;
+  object_class->set_property = gimp_procedure_dialog_set_property;
 
-	object_class->constructed  = gimp_procedure_dialog_constructed;
-	object_class->dispose      = gimp_procedure_dialog_dispose;
-	object_class->get_property = gimp_procedure_dialog_get_property;
-	object_class->set_property = gimp_procedure_dialog_set_property;
+  klass->fill_list = gimp_procedure_dialog_real_fill_list;
 
-	klass->fill_list           = gimp_procedure_dialog_real_fill_list;
+  props[PROP_PROCEDURE] = g_param_spec_object(
+      "procedure", "Procedure", "The GimpProcedure this dialog is used with",
+      GIMP_TYPE_PROCEDURE, GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-	props[PROP_PROCEDURE] =
-		g_param_spec_object ("procedure",
-		                     "Procedure",
-		                     "The GimpProcedure this dialog is used with",
-		                     GIMP_TYPE_PROCEDURE,
-		                     GIMP_PARAM_READWRITE |
-		                     G_PARAM_CONSTRUCT);
+  props[PROP_CONFIG] = g_param_spec_object(
+      "config", "Config", "The GimpProcedureConfig this dialog is editing",
+      GIMP_TYPE_PROCEDURE_CONFIG, GIMP_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-	props[PROP_CONFIG] =
-		g_param_spec_object ("config",
-		                     "Config",
-		                     "The GimpProcedureConfig this dialog is editing",
-		                     GIMP_TYPE_PROCEDURE_CONFIG,
-		                     GIMP_PARAM_READWRITE |
-		                     G_PARAM_CONSTRUCT);
-
-	g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties(object_class, N_PROPS, props);
 }
 
-static void
-gimp_procedure_dialog_init (GimpProcedureDialog *dialog)
-{
-	dialog->priv = gimp_procedure_dialog_get_instance_private (dialog);
+static void gimp_procedure_dialog_init(GimpProcedureDialog *dialog) {
+  dialog->priv = gimp_procedure_dialog_get_instance_private(dialog);
 
-	dialog->priv->widgets     = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
-	dialog->priv->mnemonics   = g_hash_table_new_full (g_direct_hash, NULL, NULL, g_free);
-	dialog->priv->core_mnemonics = g_hash_table_new_full (g_direct_hash, NULL, NULL, g_free);
-	dialog->priv->label_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+  dialog->priv->widgets =
+      g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_object_unref);
+  dialog->priv->mnemonics =
+      g_hash_table_new_full(g_direct_hash, NULL, NULL, g_free);
+  dialog->priv->core_mnemonics =
+      g_hash_table_new_full(g_direct_hash, NULL, NULL, g_free);
+  dialog->priv->label_group = gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL);
 }
 
-static void
-gimp_procedure_dialog_constructed (GObject *object)
-{
-	GimpProcedureDialog *dialog;
-	GimpProcedure       *procedure;
-	const gchar         *ok_label;
-	GtkWidget           *hbox;
-	GtkWidget           *button;
-	GtkWidget           *content_area;
-	gchar               *role;
+static void gimp_procedure_dialog_constructed(GObject *object) {
+  GimpProcedureDialog *dialog;
+  GimpProcedure *procedure;
+  const gchar *ok_label;
+  GtkWidget *hbox;
+  GtkWidget *button;
+  GtkWidget *content_area;
+  gchar *role;
 
-	G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS(parent_class)->constructed(object);
 
-	dialog = GIMP_PROCEDURE_DIALOG (object);
-	procedure = dialog->priv->procedure;
+  dialog = GIMP_PROCEDURE_DIALOG(object);
+  procedure = dialog->priv->procedure;
 
-	role = g_strdup_printf ("gimp-%s", gimp_procedure_get_name (procedure));
-	g_object_set (object,
-	              "role", role,
-	              NULL);
-	g_free (role);
+  role = g_strdup_printf("gimp-%s", gimp_procedure_get_name(procedure));
+  g_object_set(object, "role", role, NULL);
+  g_free(role);
 
-	if (GIMP_IS_LOAD_PROCEDURE (procedure))
-		ok_label = _("_Open");
-	else if (GIMP_IS_SAVE_PROCEDURE (procedure))
-		ok_label = _("_Export");
-	else
-		ok_label = _("_OK");
+  if (GIMP_IS_LOAD_PROCEDURE(procedure))
+    ok_label = _("_Open");
+  else if (GIMP_IS_SAVE_PROCEDURE(procedure))
+    ok_label = _("_Export");
+  else
+    ok_label = _("_OK");
 
-	button = gimp_dialog_add_button (GIMP_DIALOG (dialog),
-	                                 _("_Reset"), RESPONSE_RESET);
-	gimp_procedure_dialog_check_mnemonic (GIMP_PROCEDURE_DIALOG (dialog), button, NULL, "reset");
-	button = gimp_dialog_add_button (GIMP_DIALOG (dialog),
-	                                 _("_Cancel"), GTK_RESPONSE_CANCEL);
-	gimp_procedure_dialog_check_mnemonic (GIMP_PROCEDURE_DIALOG (dialog), button, NULL, "cancel");
-	button = gimp_dialog_add_button (GIMP_DIALOG (dialog),
-	                                 ok_label, GTK_RESPONSE_OK);
-	gimp_procedure_dialog_check_mnemonic (GIMP_PROCEDURE_DIALOG (dialog), button, NULL, "ok");
-	/* OK button is the default action and has focus from start.
-	 * This allows to just accept quickly whatever default values.
-	 */
-	gtk_widget_set_can_default (button, TRUE);
-	gtk_widget_grab_focus (button);
-	gtk_widget_grab_default (button);
+  button =
+      gimp_dialog_add_button(GIMP_DIALOG(dialog), _("_Reset"), RESPONSE_RESET);
+  gimp_procedure_dialog_check_mnemonic(GIMP_PROCEDURE_DIALOG(dialog), button,
+                                       NULL, "reset");
+  button = gimp_dialog_add_button(GIMP_DIALOG(dialog), _("_Cancel"),
+                                  GTK_RESPONSE_CANCEL);
+  gimp_procedure_dialog_check_mnemonic(GIMP_PROCEDURE_DIALOG(dialog), button,
+                                       NULL, "cancel");
+  button =
+      gimp_dialog_add_button(GIMP_DIALOG(dialog), ok_label, GTK_RESPONSE_OK);
+  gimp_procedure_dialog_check_mnemonic(GIMP_PROCEDURE_DIALOG(dialog), button,
+                                       NULL, "ok");
+  /* OK button is the default action and has focus from start.
+   * This allows to just accept quickly whatever default values.
+   */
+  gtk_widget_set_can_default(button, TRUE);
+  gtk_widget_grab_focus(button);
+  gtk_widget_grab_default(button);
 
-	gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-	                                          GTK_RESPONSE_OK,
-	                                          RESPONSE_RESET,
-	                                          GTK_RESPONSE_CANCEL,
-	                                          -1);
+  gimp_dialog_set_alternative_button_order(GTK_DIALOG(dialog), GTK_RESPONSE_OK,
+                                           RESPONSE_RESET, GTK_RESPONSE_CANCEL,
+                                           -1);
 
-	gimp_window_set_transient (GTK_WINDOW (dialog));
+  gimp_window_set_transient(GTK_WINDOW(dialog));
 
-	/* Main content area. */
-	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	gtk_container_set_border_width (GTK_CONTAINER (content_area), 12);
-	gtk_box_set_spacing (GTK_BOX (content_area), 3);
+  /* Main content area. */
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+  gtk_container_set_border_width(GTK_CONTAINER(content_area), 12);
+  gtk_box_set_spacing(GTK_BOX(content_area), 3);
 
-	/* Bottom box buttons with small additional padding. */
-	hbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
-	gtk_box_set_spacing (GTK_BOX (hbox), 6);
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
-	gtk_box_pack_end (GTK_BOX (content_area), hbox, FALSE, FALSE, 0);
-	gtk_container_child_set (GTK_CONTAINER (content_area), hbox,
-	                         "padding", 3, NULL);
-	gtk_widget_show (hbox);
+  /* Bottom box buttons with small additional padding. */
+  hbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
+  gtk_box_set_spacing(GTK_BOX(hbox), 6);
+  gtk_button_box_set_layout(GTK_BUTTON_BOX(hbox), GTK_BUTTONBOX_START);
+  gtk_box_pack_end(GTK_BOX(content_area), hbox, FALSE, FALSE, 0);
+  gtk_container_child_set(GTK_CONTAINER(content_area), hbox, "padding", 3,
+                          NULL);
+  gtk_widget_show(hbox);
 
-	button = gtk_button_new_with_mnemonic (_("_Load Defaults"));
-	gimp_procedure_dialog_check_mnemonic (GIMP_PROCEDURE_DIALOG (dialog), button, NULL, "load-defaults");
-	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-	gtk_widget_show (button);
+  button = gtk_button_new_with_mnemonic(_("_Load Defaults"));
+  gimp_procedure_dialog_check_mnemonic(GIMP_PROCEDURE_DIALOG(dialog), button,
+                                       NULL, "load-defaults");
+  gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show(button);
 
-	g_signal_connect (button, "clicked",
-	                  G_CALLBACK (gimp_procedure_dialog_load_defaults),
-	                  dialog);
+  g_signal_connect(button, "clicked",
+                   G_CALLBACK(gimp_procedure_dialog_load_defaults), dialog);
 
-	button = gtk_button_new_with_mnemonic (_("_Save Defaults"));
-	gimp_procedure_dialog_check_mnemonic (GIMP_PROCEDURE_DIALOG (dialog), button, NULL, "save-defaults");
-	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-	gtk_widget_show (button);
+  button = gtk_button_new_with_mnemonic(_("_Save Defaults"));
+  gimp_procedure_dialog_check_mnemonic(GIMP_PROCEDURE_DIALOG(dialog), button,
+                                       NULL, "save-defaults");
+  gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show(button);
 
-	g_signal_connect (button, "clicked",
-	                  G_CALLBACK (gimp_procedure_dialog_save_defaults),
-	                  dialog);
+  g_signal_connect(button, "clicked",
+                   G_CALLBACK(gimp_procedure_dialog_save_defaults), dialog);
 }
 
-static void
-gimp_procedure_dialog_dispose (GObject *object)
-{
-	GimpProcedureDialog *dialog = GIMP_PROCEDURE_DIALOG (object);
+static void gimp_procedure_dialog_dispose(GObject *object) {
+  GimpProcedureDialog *dialog = GIMP_PROCEDURE_DIALOG(object);
 
-	g_clear_object (&dialog->priv->procedure);
-	g_clear_object (&dialog->priv->config);
-	g_clear_object (&dialog->priv->initial_config);
+  g_clear_object(&dialog->priv->procedure);
+  g_clear_object(&dialog->priv->config);
+  g_clear_object(&dialog->priv->initial_config);
 
-	g_clear_pointer (&dialog->priv->reset_popover, gtk_widget_destroy);
+  g_clear_pointer(&dialog->priv->reset_popover, gtk_widget_destroy);
 
-	g_clear_pointer (&dialog->priv->widgets, g_hash_table_destroy);
-	g_clear_pointer (&dialog->priv->mnemonics, g_hash_table_destroy);
-	g_clear_pointer (&dialog->priv->core_mnemonics, g_hash_table_destroy);
+  g_clear_pointer(&dialog->priv->widgets, g_hash_table_destroy);
+  g_clear_pointer(&dialog->priv->mnemonics, g_hash_table_destroy);
+  g_clear_pointer(&dialog->priv->core_mnemonics, g_hash_table_destroy);
 
-	g_clear_object (&dialog->priv->label_group);
+  g_clear_object(&dialog->priv->label_group);
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+  G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
-static void
-gimp_procedure_dialog_set_property (GObject      *object,
-                                    guint property_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
-{
-	GimpProcedureDialog *dialog = GIMP_PROCEDURE_DIALOG (object);
+static void gimp_procedure_dialog_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec) {
+  GimpProcedureDialog *dialog = GIMP_PROCEDURE_DIALOG(object);
 
-	switch (property_id)
-	{
-	case PROP_PROCEDURE:
-		dialog->priv->procedure = g_value_dup_object (value);
-		break;
+  switch (property_id) {
+  case PROP_PROCEDURE:
+    dialog->priv->procedure = g_value_dup_object(value);
+    break;
 
-	case PROP_CONFIG:
-		dialog->priv->config = g_value_dup_object (value);
+  case PROP_CONFIG:
+    dialog->priv->config = g_value_dup_object(value);
 
-		if (dialog->priv->config)
-			dialog->priv->initial_config =
-				gimp_config_duplicate (GIMP_CONFIG (dialog->priv->config));
-		break;
+    if (dialog->priv->config)
+      dialog->priv->initial_config =
+          gimp_config_duplicate(GIMP_CONFIG(dialog->priv->config));
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_procedure_dialog_get_property (GObject    *object,
-                                    guint property_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
-{
-	GimpProcedureDialog *dialog = GIMP_PROCEDURE_DIALOG (object);
+static void gimp_procedure_dialog_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec) {
+  GimpProcedureDialog *dialog = GIMP_PROCEDURE_DIALOG(object);
 
-	switch (property_id)
-	{
-	case PROP_PROCEDURE:
-		g_value_set_object (value, dialog->priv->procedure);
-		break;
+  switch (property_id) {
+  case PROP_PROCEDURE:
+    g_value_set_object(value, dialog->priv->procedure);
+    break;
 
-	case PROP_CONFIG:
-		g_value_set_object (value, dialog->priv->config);
-		break;
+  case PROP_CONFIG:
+    g_value_set_object(value, dialog->priv->config);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_procedure_dialog_real_fill_list (GimpProcedureDialog *dialog,
-                                      GimpProcedure       *procedure,
-                                      GimpProcedureConfig *config,
-                                      GList               *properties)
-{
-	GtkWidget *content_area;
-	GList     *iter;
+static void gimp_procedure_dialog_real_fill_list(GimpProcedureDialog *dialog,
+                                                 GimpProcedure *procedure,
+                                                 GimpProcedureConfig *config,
+                                                 GList *properties) {
+  GtkWidget *content_area;
+  GList *iter;
 
-	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	for (iter = properties; iter; iter = iter->next)
-	{
-		GtkWidget *widget;
+  for (iter = properties; iter; iter = iter->next) {
+    GtkWidget *widget;
 
-		widget = gimp_procedure_dialog_get_widget (dialog, iter->data, G_TYPE_NONE);
-		if (widget)
-		{
-			/* Reference the widget because the hash table will
-			 * unreference it anyway when getting destroyed so we don't
-			 * want to give the only reference to the parent widget.
-			 */
-			g_object_ref (widget);
-			gtk_box_pack_start (GTK_BOX (content_area), widget, TRUE, TRUE, 0);
-			gtk_widget_show (widget);
-		}
-	}
+    widget = gimp_procedure_dialog_get_widget(dialog, iter->data, G_TYPE_NONE);
+    if (widget) {
+      /* Reference the widget because the hash table will
+       * unreference it anyway when getting destroyed so we don't
+       * want to give the only reference to the parent widget.
+       */
+      g_object_ref(widget);
+      gtk_box_pack_start(GTK_BOX(content_area), widget, TRUE, TRUE, 0);
+      gtk_widget_show(widget);
+    }
+  }
 }
 
-GtkWidget *
-gimp_procedure_dialog_new (GimpProcedure       *procedure,
-                           GimpProcedureConfig *config,
-                           const gchar         *title)
-{
-	GtkWidget   *dialog;
-	const gchar *help_id;
-	gboolean use_header_bar;
+GtkWidget *gimp_procedure_dialog_new(GimpProcedure *procedure,
+                                     GimpProcedureConfig *config,
+                                     const gchar *title) {
+  GtkWidget *dialog;
+  const gchar *help_id;
+  gboolean use_header_bar;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE (procedure), NULL);
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_CONFIG (config), NULL);
-	g_return_val_if_fail (gimp_procedure_config_get_procedure (config) ==
-	                      procedure, NULL);
-	g_return_val_if_fail (title != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE(procedure), NULL);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_CONFIG(config), NULL);
+  g_return_val_if_fail(gimp_procedure_config_get_procedure(config) == procedure,
+                       NULL);
+  g_return_val_if_fail(title != NULL, NULL);
 
-	help_id = gimp_procedure_get_help_id (procedure);
+  help_id = gimp_procedure_get_help_id(procedure);
 
-	g_object_get (gtk_settings_get_default (),
-	              "gtk-dialogs-use-header", &use_header_bar,
-	              NULL);
+  g_object_get(gtk_settings_get_default(), "gtk-dialogs-use-header",
+               &use_header_bar, NULL);
 
-	dialog = g_object_new (GIMP_TYPE_PROCEDURE_DIALOG,
-	                       "procedure",      procedure,
-	                       "config",         config,
-	                       "title",          title,
-	                       "help-func",      gimp_standard_help_func,
-	                       "help-id",        help_id,
-	                       "use-header-bar", use_header_bar,
-	                       NULL);
+  dialog =
+      g_object_new(GIMP_TYPE_PROCEDURE_DIALOG, "procedure", procedure, "config",
+                   config, "title", title, "help-func", gimp_standard_help_func,
+                   "help-id", help_id, "use-header-bar", use_header_bar, NULL);
 
-	return GTK_WIDGET (dialog);
+  return GTK_WIDGET(dialog);
 }
 
 /**
@@ -395,140 +351,114 @@ gimp_procedure_dialog_new (GimpProcedure       *procedure,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_get_widget (GimpProcedureDialog *dialog,
-                                  const gchar         *property,
-                                  GType widget_type)
-{
-	GtkWidget  *widget = NULL;
-	GtkWidget  *label  = NULL;
-	GParamSpec *pspec;
+GtkWidget *gimp_procedure_dialog_get_widget(GimpProcedureDialog *dialog,
+                                            const gchar *property,
+                                            GType widget_type) {
+  GtkWidget *widget = NULL;
+  GtkWidget *label = NULL;
+  GParamSpec *pspec;
 
-	g_return_val_if_fail (property != NULL, NULL);
+  g_return_val_if_fail(property != NULL, NULL);
 
-	/* First check if it already exists. */
-	widget = g_hash_table_lookup (dialog->priv->widgets, property);
+  /* First check if it already exists. */
+  widget = g_hash_table_lookup(dialog->priv->widgets, property);
 
-	if (widget)
-		return widget;
+  if (widget)
+    return widget;
 
-	pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (dialog->priv->config),
-	                                      property);
-	if (!pspec)
-	{
-		g_warning ("%s: parameter %s does not exist.",
-		           G_STRFUNC, property);
-		return NULL;
-	}
+  pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(dialog->priv->config),
+                                       property);
+  if (!pspec) {
+    g_warning("%s: parameter %s does not exist.", G_STRFUNC, property);
+    return NULL;
+  }
 
-	if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_BOOLEAN)
-	{
-		if (widget_type == G_TYPE_NONE || widget_type == GTK_TYPE_CHECK_BUTTON)
-			widget = gimp_prop_check_button_new (G_OBJECT (dialog->priv->config),
-			                                     property,
-			                                     _(g_param_spec_get_nick (pspec)));
-		else if (widget_type == GTK_TYPE_SWITCH)
-			widget = gimp_prop_switch_new (G_OBJECT (dialog->priv->config),
-			                               property,
-			                               _(g_param_spec_get_nick (pspec)),
-			                               &label, NULL);
-	}
-	else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT ||
-	         G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_DOUBLE)
-	{
-		gdouble minimum;
-		gdouble maximum;
-		gdouble step   = 0.0;
-		gdouble page   = 0.0;
-		gint digits = 0;
+  if (G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_BOOLEAN) {
+    if (widget_type == G_TYPE_NONE || widget_type == GTK_TYPE_CHECK_BUTTON)
+      widget =
+          gimp_prop_check_button_new(G_OBJECT(dialog->priv->config), property,
+                                     _(g_param_spec_get_nick(pspec)));
+    else if (widget_type == GTK_TYPE_SWITCH)
+      widget =
+          gimp_prop_switch_new(G_OBJECT(dialog->priv->config), property,
+                               _(g_param_spec_get_nick(pspec)), &label, NULL);
+  } else if (G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_INT ||
+             G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_DOUBLE) {
+    gdouble minimum;
+    gdouble maximum;
+    gdouble step = 0.0;
+    gdouble page = 0.0;
+    gint digits = 0;
 
-		if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT)
-		{
-			GParamSpecInt *pspecint = (GParamSpecInt *) pspec;
+    if (G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_INT) {
+      GParamSpecInt *pspecint = (GParamSpecInt *)pspec;
 
-			minimum = (gdouble) pspecint->minimum;
-			maximum = (gdouble) pspecint->maximum;
-		}
-		else /* G_TYPE_PARAM_DOUBLE */
-		{
-			GParamSpecDouble *pspecdouble = (GParamSpecDouble *) pspec;
+      minimum = (gdouble)pspecint->minimum;
+      maximum = (gdouble)pspecint->maximum;
+    } else /* G_TYPE_PARAM_DOUBLE */
+    {
+      GParamSpecDouble *pspecdouble = (GParamSpecDouble *)pspec;
 
-			minimum = pspecdouble->minimum;
-			maximum = pspecdouble->maximum;
-		}
-		gimp_range_estimate_settings (minimum, maximum, &step, &page, &digits);
+      minimum = pspecdouble->minimum;
+      maximum = pspecdouble->maximum;
+    }
+    gimp_range_estimate_settings(minimum, maximum, &step, &page, &digits);
 
-		if (widget_type == G_TYPE_NONE || widget_type == GIMP_TYPE_LABEL_SPIN)
-		{
-			widget = gimp_prop_label_spin_new (G_OBJECT (dialog->priv->config),
-			                                   property, digits);
-		}
-		else if (widget_type == GIMP_TYPE_SCALE_ENTRY)
-		{
-			widget = gimp_prop_scale_entry_new (G_OBJECT (dialog->priv->config),
-			                                    property,
-			                                    _(g_param_spec_get_nick (pspec)),
-			                                    1.0, FALSE, 0.0, 0.0);
-		}
-		else if (widget_type == GIMP_TYPE_SPIN_BUTTON)
-		{
-			/* Just some spin button without label. */
-			widget = gimp_prop_spin_button_new (G_OBJECT (dialog->priv->config),
-			                                    property, step, page, digits);
-		}
-	}
-	else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_STRING)
-	{
-		if (widget_type == G_TYPE_NONE || widget_type == GTK_TYPE_TEXT_VIEW)
-		{
-			GtkTextBuffer *buffer;
-			const gchar   *tooltip;
+    if (widget_type == G_TYPE_NONE || widget_type == GIMP_TYPE_LABEL_SPIN) {
+      widget = gimp_prop_label_spin_new(G_OBJECT(dialog->priv->config),
+                                        property, digits);
+    } else if (widget_type == GIMP_TYPE_SCALE_ENTRY) {
+      widget = gimp_prop_scale_entry_new(
+          G_OBJECT(dialog->priv->config), property,
+          _(g_param_spec_get_nick(pspec)), 1.0, FALSE, 0.0, 0.0);
+    } else if (widget_type == GIMP_TYPE_SPIN_BUTTON) {
+      /* Just some spin button without label. */
+      widget = gimp_prop_spin_button_new(G_OBJECT(dialog->priv->config),
+                                         property, step, page, digits);
+    }
+  } else if (G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_STRING) {
+    if (widget_type == G_TYPE_NONE || widget_type == GTK_TYPE_TEXT_VIEW) {
+      GtkTextBuffer *buffer;
+      const gchar *tooltip;
 
-			buffer = gimp_prop_text_buffer_new (G_OBJECT (dialog->priv->config),
-			                                    property, -1);
-			widget = gtk_text_view_new_with_buffer (buffer);
-			gtk_text_view_set_top_margin (GTK_TEXT_VIEW (widget), 3);
-			gtk_text_view_set_bottom_margin (GTK_TEXT_VIEW (widget), 3);
-			gtk_text_view_set_left_margin (GTK_TEXT_VIEW (widget), 3);
-			gtk_text_view_set_right_margin (GTK_TEXT_VIEW (widget), 3);
-			g_object_unref (buffer);
+      buffer = gimp_prop_text_buffer_new(G_OBJECT(dialog->priv->config),
+                                         property, -1);
+      widget = gtk_text_view_new_with_buffer(buffer);
+      gtk_text_view_set_top_margin(GTK_TEXT_VIEW(widget), 3);
+      gtk_text_view_set_bottom_margin(GTK_TEXT_VIEW(widget), 3);
+      gtk_text_view_set_left_margin(GTK_TEXT_VIEW(widget), 3);
+      gtk_text_view_set_right_margin(GTK_TEXT_VIEW(widget), 3);
+      g_object_unref(buffer);
 
-			tooltip = g_param_spec_get_blurb (pspec);
-			if (tooltip)
-				gimp_help_set_help_data (widget, tooltip, NULL);
-		}
-		else if (widget_type == GTK_TYPE_ENTRY)
-		{
-			widget = gimp_prop_entry_new (G_OBJECT (dialog->priv->config),
-			                              property, -1);
-		}
-	}
-	else
-	{
-		g_warning ("%s: parameter %s has non supported type %s",
-		           G_STRFUNC, property, G_PARAM_SPEC_TYPE_NAME (pspec));
-		return NULL;
-	}
+      tooltip = g_param_spec_get_blurb(pspec);
+      if (tooltip)
+        gimp_help_set_help_data(widget, tooltip, NULL);
+    } else if (widget_type == GTK_TYPE_ENTRY) {
+      widget =
+          gimp_prop_entry_new(G_OBJECT(dialog->priv->config), property, -1);
+    }
+  } else {
+    g_warning("%s: parameter %s has non supported type %s", G_STRFUNC, property,
+              G_PARAM_SPEC_TYPE_NAME(pspec));
+    return NULL;
+  }
 
-	if (!widget)
-	{
-		g_warning ("%s: widget type %s not supported for parameter '%s' of type %s",
-		           G_STRFUNC, g_type_name (widget_type),
-		           property, G_PARAM_SPEC_TYPE_NAME (pspec));
-		return NULL;
-	}
-	else if (GIMP_IS_LABELED (widget) || label)
-	{
-		if (!label)
-			label = gimp_labeled_get_label (GIMP_LABELED (widget));
+  if (!widget) {
+    g_warning("%s: widget type %s not supported for parameter '%s' of type %s",
+              G_STRFUNC, g_type_name(widget_type), property,
+              G_PARAM_SPEC_TYPE_NAME(pspec));
+    return NULL;
+  } else if (GIMP_IS_LABELED(widget) || label) {
+    if (!label)
+      label = gimp_labeled_get_label(GIMP_LABELED(widget));
 
-		gtk_size_group_add_widget (dialog->priv->label_group, label);
-	}
+    gtk_size_group_add_widget(dialog->priv->label_group, label);
+  }
 
-	gimp_procedure_dialog_check_mnemonic (dialog, widget, property, NULL);
-	g_hash_table_insert (dialog->priv->widgets, g_strdup (property), widget);
+  gimp_procedure_dialog_check_mnemonic(dialog, widget, property, NULL);
+  g_hash_table_insert(dialog->priv->widgets, g_strdup(property), widget);
 
-	return widget;
+  return widget;
 }
 
 /**
@@ -551,59 +481,50 @@ gimp_procedure_dialog_get_widget (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_get_int_combo (GimpProcedureDialog *dialog,
-                                     const gchar         *property,
-                                     GimpIntStore        *store)
-{
-	GtkWidget  *widget = NULL;
-	GParamSpec *pspec;
+GtkWidget *gimp_procedure_dialog_get_int_combo(GimpProcedureDialog *dialog,
+                                               const gchar *property,
+                                               GimpIntStore *store) {
+  GtkWidget *widget = NULL;
+  GParamSpec *pspec;
 
-	g_return_val_if_fail (property != NULL, NULL);
+  g_return_val_if_fail(property != NULL, NULL);
 
-	/* First check if it already exists. */
-	widget = g_hash_table_lookup (dialog->priv->widgets, property);
+  /* First check if it already exists. */
+  widget = g_hash_table_lookup(dialog->priv->widgets, property);
 
-	if (widget)
-		return widget;
+  if (widget)
+    return widget;
 
-	pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (dialog->priv->config),
-	                                      property);
-	if (!pspec)
-	{
-		g_warning ("%s: parameter %s does not exist.",
-		           G_STRFUNC, property);
-		return NULL;
-	}
+  pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(dialog->priv->config),
+                                       property);
+  if (!pspec) {
+    g_warning("%s: parameter %s does not exist.", G_STRFUNC, property);
+    return NULL;
+  }
 
-	if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_BOOLEAN ||
-	    G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT)
-	{
-		widget = gimp_prop_int_combo_box_new (G_OBJECT (dialog->priv->config),
-		                                      property, store);
-		gtk_widget_set_vexpand (widget, FALSE);
-		gtk_widget_set_hexpand (widget, TRUE);
-		widget = gimp_label_int_widget_new (_(g_param_spec_get_nick (pspec)),
-		                                    widget);
-	}
+  if (G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_BOOLEAN ||
+      G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_INT) {
+    widget = gimp_prop_int_combo_box_new(G_OBJECT(dialog->priv->config),
+                                         property, store);
+    gtk_widget_set_vexpand(widget, FALSE);
+    gtk_widget_set_hexpand(widget, TRUE);
+    widget = gimp_label_int_widget_new(_(g_param_spec_get_nick(pspec)), widget);
+  }
 
-	if (!widget)
-	{
-		g_warning ("%s: parameter '%s' of type %s not suitable as GimpIntComboBox",
-		           G_STRFUNC, property, G_PARAM_SPEC_TYPE_NAME (pspec));
-		return NULL;
-	}
-	else if (GIMP_IS_LABELED (widget))
-	{
-		GtkWidget *label = gimp_labeled_get_label (GIMP_LABELED (widget));
+  if (!widget) {
+    g_warning("%s: parameter '%s' of type %s not suitable as GimpIntComboBox",
+              G_STRFUNC, property, G_PARAM_SPEC_TYPE_NAME(pspec));
+    return NULL;
+  } else if (GIMP_IS_LABELED(widget)) {
+    GtkWidget *label = gimp_labeled_get_label(GIMP_LABELED(widget));
 
-		gtk_size_group_add_widget (dialog->priv->label_group, label);
-	}
+    gtk_size_group_add_widget(dialog->priv->label_group, label);
+  }
 
-	gimp_procedure_dialog_check_mnemonic (dialog, widget, property, NULL);
-	g_hash_table_insert (dialog->priv->widgets, g_strdup (property), widget);
+  gimp_procedure_dialog_check_mnemonic(dialog, widget, property, NULL);
+  g_hash_table_insert(dialog->priv->widgets, g_strdup(property), widget);
 
-	return widget;
+  return widget;
 }
 
 /**
@@ -627,48 +548,44 @@ gimp_procedure_dialog_get_int_combo (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_get_scale_entry (GimpProcedureDialog *dialog,
-                                       const gchar         *property,
-                                       gdouble factor)
-{
-	GtkWidget  *widget = NULL;
-	GParamSpec *pspec;
+GtkWidget *gimp_procedure_dialog_get_scale_entry(GimpProcedureDialog *dialog,
+                                                 const gchar *property,
+                                                 gdouble factor) {
+  GtkWidget *widget = NULL;
+  GParamSpec *pspec;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_DIALOG (dialog), NULL);
-	g_return_val_if_fail (property != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_DIALOG(dialog), NULL);
+  g_return_val_if_fail(property != NULL, NULL);
 
-	pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (dialog->priv->config),
-	                                      property);
+  pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(dialog->priv->config),
+                                       property);
 
-	if (!pspec)
-	{
-		g_warning ("%s: parameter %s does not exist.",
-		           G_STRFUNC, property);
-		return NULL;
-	}
+  if (!pspec) {
+    g_warning("%s: parameter %s does not exist.", G_STRFUNC, property);
+    return NULL;
+  }
 
-	g_return_val_if_fail (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT ||
-	                      G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_DOUBLE, NULL);
+  g_return_val_if_fail(G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_INT ||
+                           G_PARAM_SPEC_TYPE(pspec) == G_TYPE_PARAM_DOUBLE,
+                       NULL);
 
-	/* First check if it already exists. */
-	widget = g_hash_table_lookup (dialog->priv->widgets, property);
+  /* First check if it already exists. */
+  widget = g_hash_table_lookup(dialog->priv->widgets, property);
 
-	if (widget)
-		return widget;
+  if (widget)
+    return widget;
 
-	widget = gimp_prop_scale_entry_new (G_OBJECT (dialog->priv->config),
-	                                    property,
-	                                    _(g_param_spec_get_nick (pspec)),
-	                                    factor, FALSE, 0.0, 0.0);
+  widget = gimp_prop_scale_entry_new(G_OBJECT(dialog->priv->config), property,
+                                     _(g_param_spec_get_nick(pspec)), factor,
+                                     FALSE, 0.0, 0.0);
 
-	gtk_size_group_add_widget (dialog->priv->label_group,
-	                           gimp_labeled_get_label (GIMP_LABELED (widget)));
+  gtk_size_group_add_widget(dialog->priv->label_group,
+                            gimp_labeled_get_label(GIMP_LABELED(widget)));
 
-	gimp_procedure_dialog_check_mnemonic (dialog, widget, property, NULL);
-	g_hash_table_insert (dialog->priv->widgets, g_strdup (property), widget);
+  gimp_procedure_dialog_check_mnemonic(dialog, widget, property, NULL);
+  g_hash_table_insert(dialog->priv->widgets, g_strdup(property), widget);
 
-	return widget;
+  return widget;
 }
 
 /**
@@ -690,34 +607,30 @@ gimp_procedure_dialog_get_scale_entry (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_get_label (GimpProcedureDialog *dialog,
-                                 const gchar         *label_id,
-                                 const gchar         *text)
-{
-	GtkWidget *label;
+GtkWidget *gimp_procedure_dialog_get_label(GimpProcedureDialog *dialog,
+                                           const gchar *label_id,
+                                           const gchar *text) {
+  GtkWidget *label;
 
-	g_return_val_if_fail (label_id != NULL, NULL);
+  g_return_val_if_fail(label_id != NULL, NULL);
 
-	if (g_object_class_find_property (G_OBJECT_GET_CLASS (dialog->priv->config),
-	                                  label_id))
-	{
-		g_warning ("%s: label identifier '%s' cannot be an existing property name.",
-		           G_STRFUNC, label_id);
-		return NULL;
-	}
+  if (g_object_class_find_property(G_OBJECT_GET_CLASS(dialog->priv->config),
+                                   label_id)) {
+    g_warning("%s: label identifier '%s' cannot be an existing property name.",
+              G_STRFUNC, label_id);
+    return NULL;
+  }
 
-	if ((label = g_hash_table_lookup (dialog->priv->widgets, label_id)))
-	{
-		g_warning ("%s: label identifier '%s' was already configured.",
-		           G_STRFUNC, label_id);
-		return label;
-	}
+  if ((label = g_hash_table_lookup(dialog->priv->widgets, label_id))) {
+    g_warning("%s: label identifier '%s' was already configured.", G_STRFUNC,
+              label_id);
+    return label;
+  }
 
-	label = gtk_label_new (text);
-	g_hash_table_insert (dialog->priv->widgets, g_strdup (label_id), label);
+  label = gtk_label_new(text);
+  g_hash_table_insert(dialog->priv->widgets, g_strdup(label_id), label);
 
-	return label;
+  return label;
 }
 
 /**
@@ -746,32 +659,28 @@ gimp_procedure_dialog_get_label (GimpProcedureDialog *dialog,
  * each property will get a default representation according to its
  * type.
  */
-void
-gimp_procedure_dialog_fill (GimpProcedureDialog *dialog,
-                            const gchar         *first_property,
-                            ...)
-{
-	const gchar *prop_name = first_property;
-	GList       *list      = NULL;
-	va_list va_args;
+void gimp_procedure_dialog_fill(GimpProcedureDialog *dialog,
+                                const gchar *first_property, ...) {
+  const gchar *prop_name = first_property;
+  GList *list = NULL;
+  va_list va_args;
 
-	g_return_if_fail (GIMP_IS_PROCEDURE_DIALOG (dialog));
+  g_return_if_fail(GIMP_IS_PROCEDURE_DIALOG(dialog));
 
-	if (first_property)
-	{
-		va_start (va_args, first_property);
+  if (first_property) {
+    va_start(va_args, first_property);
 
-		do
-			list = g_list_prepend (list, (gpointer) prop_name);
-		while ((prop_name = va_arg (va_args, const gchar *)));
+    do
+      list = g_list_prepend(list, (gpointer)prop_name);
+    while ((prop_name = va_arg(va_args, const gchar *)));
 
-		va_end (va_args);
-	}
+    va_end(va_args);
+  }
 
-	list = g_list_reverse (list);
-	gimp_procedure_dialog_fill_list (dialog, list);
-	if (list)
-		g_list_free (list);
+  list = g_list_reverse(list);
+  gimp_procedure_dialog_fill_list(dialog, list);
+  if (list)
+    g_list_free(list);
 }
 
 /**
@@ -799,47 +708,41 @@ gimp_procedure_dialog_fill (GimpProcedureDialog *dialog,
  * each property will get a default representation according to its
  * type.
  */
-void
-gimp_procedure_dialog_fill_list (GimpProcedureDialog *dialog,
-                                 GList               *properties)
-{
-	gboolean free_properties = FALSE;
+void gimp_procedure_dialog_fill_list(GimpProcedureDialog *dialog,
+                                     GList *properties) {
+  gboolean free_properties = FALSE;
 
-	if (!properties)
-	{
-		GParamSpec **pspecs;
-		guint n_pspecs;
-		gint i;
+  if (!properties) {
+    GParamSpec **pspecs;
+    guint n_pspecs;
+    gint i;
 
-		pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (dialog->priv->config),
-		                                         &n_pspecs);
+    pspecs = g_object_class_list_properties(
+        G_OBJECT_GET_CLASS(dialog->priv->config), &n_pspecs);
 
-		for (i = 0; i < n_pspecs; i++)
-		{
-			const gchar *prop_name;
-			GParamSpec  *pspec = pspecs[i];
+    for (i = 0; i < n_pspecs; i++) {
+      const gchar *prop_name;
+      GParamSpec *pspec = pspecs[i];
 
-			/*  skip our own properties  */
-			if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
-				continue;
+      /*  skip our own properties  */
+      if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
+        continue;
 
-			prop_name  = g_param_spec_get_name (pspec);
-			properties = g_list_prepend (properties, (gpointer) prop_name);
-		}
+      prop_name = g_param_spec_get_name(pspec);
+      properties = g_list_prepend(properties, (gpointer)prop_name);
+    }
 
-		properties = g_list_reverse (properties);
+    properties = g_list_reverse(properties);
 
-		if (properties)
-			free_properties = TRUE;
-	}
+    if (properties)
+      free_properties = TRUE;
+  }
 
-	GIMP_PROCEDURE_DIALOG_GET_CLASS (dialog)->fill_list (dialog,
-	                                                     dialog->priv->procedure,
-	                                                     dialog->priv->config,
-	                                                     properties);
+  GIMP_PROCEDURE_DIALOG_GET_CLASS(dialog)->fill_list(
+      dialog, dialog->priv->procedure, dialog->priv->config, properties);
 
-	if (free_properties)
-		g_list_free (properties);
+  if (free_properties)
+    g_list_free(properties);
 }
 
 /**
@@ -866,41 +769,38 @@ gimp_procedure_dialog_fill_list (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_fill_box (GimpProcedureDialog *dialog,
-                                const gchar         *container_id,
-                                const gchar         *first_property,
-                                ...)
-{
-	const gchar *prop_name = first_property;
-	GtkWidget   *box;
-	GList       *list      = NULL;
-	va_list va_args;
+GtkWidget *gimp_procedure_dialog_fill_box(GimpProcedureDialog *dialog,
+                                          const gchar *container_id,
+                                          const gchar *first_property, ...) {
+  const gchar *prop_name = first_property;
+  GtkWidget *box;
+  GList *list = NULL;
+  va_list va_args;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_DIALOG (dialog), NULL);
-	g_return_val_if_fail (container_id != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_DIALOG(dialog), NULL);
+  g_return_val_if_fail(container_id != NULL, NULL);
 
-	if (first_property)
-	{
-		va_start (va_args, first_property);
+  if (first_property) {
+    va_start(va_args, first_property);
 
-		do
-			list = g_list_prepend (list, (gpointer) prop_name);
-		while ((prop_name = va_arg (va_args, const gchar *)));
+    do
+      list = g_list_prepend(list, (gpointer)prop_name);
+    while ((prop_name = va_arg(va_args, const gchar *)));
 
-		va_end (va_args);
-	}
+    va_end(va_args);
+  }
 
-	list = g_list_reverse (list);
-	box = gimp_procedure_dialog_fill_box_list (dialog, container_id, list);
-	if (list)
-		g_list_free (list);
+  list = g_list_reverse(list);
+  box = gimp_procedure_dialog_fill_box_list(dialog, container_id, list);
+  if (list)
+    g_list_free(list);
 
-	return box;
+  return box;
 }
 
 /**
- * gimp_procedure_dialog_fill_box_list: (rename-to gimp_procedure_dialog_fill_box)
+ * gimp_procedure_dialog_fill_box_list: (rename-to
+ * gimp_procedure_dialog_fill_box)
  * @dialog:        the #GimpProcedureDialog.
  * @container_id:  a container identifier.
  * @properties: (nullable) (element-type gchar*): the list of property names.
@@ -922,16 +822,14 @@ gimp_procedure_dialog_fill_box (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_fill_box_list (GimpProcedureDialog *dialog,
-                                     const gchar         *container_id,
-                                     GList               *properties)
-{
-	g_return_val_if_fail (container_id != NULL, NULL);
+GtkWidget *gimp_procedure_dialog_fill_box_list(GimpProcedureDialog *dialog,
+                                               const gchar *container_id,
+                                               GList *properties) {
+  g_return_val_if_fail(container_id != NULL, NULL);
 
-	return gimp_procedure_dialog_fill_container_list (dialog, container_id,
-	                                                  GTK_CONTAINER (gtk_box_new (GTK_ORIENTATION_VERTICAL, 2)),
-	                                                  properties);
+  return gimp_procedure_dialog_fill_container_list(
+      dialog, container_id,
+      GTK_CONTAINER(gtk_box_new(GTK_ORIENTATION_VERTICAL, 2)), properties);
 }
 
 /**
@@ -958,41 +856,39 @@ gimp_procedure_dialog_fill_box_list (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_fill_flowbox (GimpProcedureDialog *dialog,
-                                    const gchar         *container_id,
-                                    const gchar         *first_property,
-                                    ...)
-{
-	const gchar *prop_name = first_property;
-	GtkWidget   *flowbox;
-	GList       *list      = NULL;
-	va_list va_args;
+GtkWidget *gimp_procedure_dialog_fill_flowbox(GimpProcedureDialog *dialog,
+                                              const gchar *container_id,
+                                              const gchar *first_property,
+                                              ...) {
+  const gchar *prop_name = first_property;
+  GtkWidget *flowbox;
+  GList *list = NULL;
+  va_list va_args;
 
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_DIALOG (dialog), NULL);
-	g_return_val_if_fail (container_id != NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_DIALOG(dialog), NULL);
+  g_return_val_if_fail(container_id != NULL, NULL);
 
-	if (first_property)
-	{
-		va_start (va_args, first_property);
+  if (first_property) {
+    va_start(va_args, first_property);
 
-		do
-			list = g_list_prepend (list, (gpointer) prop_name);
-		while ((prop_name = va_arg (va_args, const gchar *)));
+    do
+      list = g_list_prepend(list, (gpointer)prop_name);
+    while ((prop_name = va_arg(va_args, const gchar *)));
 
-		va_end (va_args);
-	}
+    va_end(va_args);
+  }
 
-	list = g_list_reverse (list);
-	flowbox = gimp_procedure_dialog_fill_flowbox_list (dialog, container_id, list);
-	if (list)
-		g_list_free (list);
+  list = g_list_reverse(list);
+  flowbox = gimp_procedure_dialog_fill_flowbox_list(dialog, container_id, list);
+  if (list)
+    g_list_free(list);
 
-	return flowbox;
+  return flowbox;
 }
 
 /**
- * gimp_procedure_dialog_fill_flowbox_list: (rename-to gimp_procedure_dialog_fill_flowbox)
+ * gimp_procedure_dialog_fill_flowbox_list: (rename-to
+ * gimp_procedure_dialog_fill_flowbox)
  * @dialog:        the #GimpProcedureDialog.
  * @container_id:  a container identifier.
  * @properties: (nullable) (element-type gchar*): the list of property names.
@@ -1014,18 +910,14 @@ gimp_procedure_dialog_fill_flowbox (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_fill_flowbox_list (GimpProcedureDialog *dialog,
-                                         const gchar         *container_id,
-                                         GList               *properties)
-{
-	g_return_val_if_fail (container_id != NULL, NULL);
+GtkWidget *gimp_procedure_dialog_fill_flowbox_list(GimpProcedureDialog *dialog,
+                                                   const gchar *container_id,
+                                                   GList *properties) {
+  g_return_val_if_fail(container_id != NULL, NULL);
 
-	return gimp_procedure_dialog_fill_container_list (dialog, container_id,
-	                                                  GTK_CONTAINER (gtk_flow_box_new ()),
-	                                                  properties);
+  return gimp_procedure_dialog_fill_container_list(
+      dialog, container_id, GTK_CONTAINER(gtk_flow_box_new()), properties);
 }
-
 
 /**
  * gimp_procedure_dialog_fill_frame:
@@ -1052,81 +944,71 @@ gimp_procedure_dialog_fill_flowbox_list (GimpProcedureDialog *dialog,
  *                           object belongs to @dialog and must not be
  *                           freed.
  */
-GtkWidget *
-gimp_procedure_dialog_fill_frame (GimpProcedureDialog *dialog,
-                                  const gchar         *container_id,
-                                  const gchar         *title_id,
-                                  gboolean invert_title,
-                                  const gchar         *contents_id)
-{
-	GtkWidget *frame;
-	GtkWidget *contents = NULL;
-	GtkWidget *title    = NULL;
+GtkWidget *gimp_procedure_dialog_fill_frame(GimpProcedureDialog *dialog,
+                                            const gchar *container_id,
+                                            const gchar *title_id,
+                                            gboolean invert_title,
+                                            const gchar *contents_id) {
+  GtkWidget *frame;
+  GtkWidget *contents = NULL;
+  GtkWidget *title = NULL;
 
-	g_return_val_if_fail (container_id != NULL, NULL);
+  g_return_val_if_fail(container_id != NULL, NULL);
 
-	if (g_object_class_find_property (G_OBJECT_GET_CLASS (dialog->priv->config),
-	                                  container_id))
-	{
-		g_warning ("%s: frame identifier '%s' cannot be an existing property name.",
-		           G_STRFUNC, container_id);
-		return NULL;
-	}
+  if (g_object_class_find_property(G_OBJECT_GET_CLASS(dialog->priv->config),
+                                   container_id)) {
+    g_warning("%s: frame identifier '%s' cannot be an existing property name.",
+              G_STRFUNC, container_id);
+    return NULL;
+  }
 
-	if ((frame = g_hash_table_lookup (dialog->priv->widgets, container_id)))
-	{
-		g_warning ("%s: frame identifier '%s' was already configured.",
-		           G_STRFUNC, container_id);
-		return frame;
-	}
+  if ((frame = g_hash_table_lookup(dialog->priv->widgets, container_id))) {
+    g_warning("%s: frame identifier '%s' was already configured.", G_STRFUNC,
+              container_id);
+    return frame;
+  }
 
-	frame = gimp_frame_new (NULL);
+  frame = gimp_frame_new(NULL);
 
-	if (contents_id)
-	{
-		contents = gimp_procedure_dialog_get_widget (dialog, contents_id, G_TYPE_NONE);
-		if (!contents)
-		{
-			g_warning ("%s: no property or configured widget with identifier '%s'.",
-			           G_STRFUNC, contents_id);
-			return frame;
-		}
+  if (contents_id) {
+    contents =
+        gimp_procedure_dialog_get_widget(dialog, contents_id, G_TYPE_NONE);
+    if (!contents) {
+      g_warning("%s: no property or configured widget with identifier '%s'.",
+                G_STRFUNC, contents_id);
+      return frame;
+    }
 
-		g_object_ref (contents);
-		gtk_container_add (GTK_CONTAINER (frame), contents);
-		gtk_widget_show (contents);
-	}
+    g_object_ref(contents);
+    gtk_container_add(GTK_CONTAINER(frame), contents);
+    gtk_widget_show(contents);
+  }
 
-	if (title_id)
-	{
-		title = gimp_procedure_dialog_get_widget (dialog, title_id, G_TYPE_NONE);
-		if (!title)
-		{
-			g_warning ("%s: no property or configured widget with identifier '%s'.",
-			           G_STRFUNC, title_id);
-			return frame;
-		}
+  if (title_id) {
+    title = gimp_procedure_dialog_get_widget(dialog, title_id, G_TYPE_NONE);
+    if (!title) {
+      g_warning("%s: no property or configured widget with identifier '%s'.",
+                G_STRFUNC, title_id);
+      return frame;
+    }
 
-		g_object_ref (title);
-		gtk_frame_set_label_widget (GTK_FRAME (frame), title);
-		gtk_widget_show (title);
+    g_object_ref(title);
+    gtk_frame_set_label_widget(GTK_FRAME(frame), title);
+    gtk_widget_show(title);
 
-		if (contents && (GTK_IS_CHECK_BUTTON (title) || GTK_IS_SWITCH (title)))
-		{
-			GBindingFlags flags = G_BINDING_SYNC_CREATE;
+    if (contents && (GTK_IS_CHECK_BUTTON(title) || GTK_IS_SWITCH(title))) {
+      GBindingFlags flags = G_BINDING_SYNC_CREATE;
 
-			if (invert_title)
-				flags |= G_BINDING_INVERT_BOOLEAN;
+      if (invert_title)
+        flags |= G_BINDING_INVERT_BOOLEAN;
 
-			g_object_bind_property (title,    "active",
-			                        contents, "sensitive",
-			                        flags);
-		}
-	}
+      g_object_bind_property(title, "active", contents, "sensitive", flags);
+    }
+  }
 
-	g_hash_table_insert (dialog->priv->widgets, g_strdup (container_id), frame);
+  g_hash_table_insert(dialog->priv->widgets, g_strdup(container_id), frame);
 
-	return frame;
+  return frame;
 }
 
 /**
@@ -1138,187 +1020,153 @@ gimp_procedure_dialog_fill_frame (GimpProcedureDialog *dialog,
  *
  * Returns: %TRUE if the dialog was validated, %FALSE otherwise.
  */
-gboolean
-gimp_procedure_dialog_run (GimpProcedureDialog *dialog)
-{
-	g_return_val_if_fail (GIMP_IS_PROCEDURE_DIALOG (dialog), FALSE);
+gboolean gimp_procedure_dialog_run(GimpProcedureDialog *dialog) {
+  g_return_val_if_fail(GIMP_IS_PROCEDURE_DIALOG(dialog), FALSE);
 
-	while (TRUE)
-	{
-		gint response = gimp_dialog_run (GIMP_DIALOG (dialog));
+  while (TRUE) {
+    gint response = gimp_dialog_run(GIMP_DIALOG(dialog));
 
-		if (response == RESPONSE_RESET)
-		{
-			if (!dialog->priv->reset_popover)
-			{
-				GtkWidget *button;
-				GtkWidget *vbox;
+    if (response == RESPONSE_RESET) {
+      if (!dialog->priv->reset_popover) {
+        GtkWidget *button;
+        GtkWidget *vbox;
 
-				button = gtk_dialog_get_widget_for_response (GTK_DIALOG (dialog),
-				                                             response);
+        button =
+            gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), response);
 
-				dialog->priv->reset_popover = gtk_popover_new (button);
+        dialog->priv->reset_popover = gtk_popover_new(button);
 
-				vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
-				gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
-				gtk_container_add (GTK_CONTAINER (dialog->priv->reset_popover),
-				                   vbox);
-				gtk_widget_show (vbox);
+        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
+        gtk_container_set_border_width(GTK_CONTAINER(vbox), 4);
+        gtk_container_add(GTK_CONTAINER(dialog->priv->reset_popover), vbox);
+        gtk_widget_show(vbox);
 
-				button = gtk_button_new_with_mnemonic (_("Reset to _Initial "
-				                                         "Values"));
-				gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-				gtk_widget_show (button);
+        button = gtk_button_new_with_mnemonic(_("Reset to _Initial "
+                                                "Values"));
+        gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+        gtk_widget_show(button);
 
-				g_signal_connect (button, "clicked",
-				                  G_CALLBACK (gimp_procedure_dialog_reset_initial),
-				                  dialog);
+        g_signal_connect(button, "clicked",
+                         G_CALLBACK(gimp_procedure_dialog_reset_initial),
+                         dialog);
 
-				button = gtk_button_new_with_mnemonic (_("Reset to _Factory "
-				                                         "Defaults"));
-				gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-				gtk_widget_show (button);
+        button = gtk_button_new_with_mnemonic(_("Reset to _Factory "
+                                                "Defaults"));
+        gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+        gtk_widget_show(button);
 
-				g_signal_connect (button, "clicked",
-				                  G_CALLBACK (gimp_procedure_dialog_reset_factory),
-				                  dialog);
-			}
+        g_signal_connect(button, "clicked",
+                         G_CALLBACK(gimp_procedure_dialog_reset_factory),
+                         dialog);
+      }
 
-			gtk_popover_popup (GTK_POPOVER (dialog->priv->reset_popover));
-		}
-		else
-		{
-			return response == GTK_RESPONSE_OK;
-		}
-	}
+      gtk_popover_popup(GTK_POPOVER(dialog->priv->reset_popover));
+    } else {
+      return response == GTK_RESPONSE_OK;
+    }
+  }
 }
-
 
 /*  private functions  */
 
-static void
-gimp_procedure_dialog_reset_initial (GtkWidget           *button,
-                                     GimpProcedureDialog *dialog)
-{
-	gimp_config_copy (GIMP_CONFIG (dialog->priv->initial_config),
-	                  GIMP_CONFIG (dialog->priv->config),
-	                  0);
+static void gimp_procedure_dialog_reset_initial(GtkWidget *button,
+                                                GimpProcedureDialog *dialog) {
+  gimp_config_copy(GIMP_CONFIG(dialog->priv->initial_config),
+                   GIMP_CONFIG(dialog->priv->config), 0);
 
-	gtk_popover_popdown (GTK_POPOVER (dialog->priv->reset_popover));
+  gtk_popover_popdown(GTK_POPOVER(dialog->priv->reset_popover));
 }
 
-static void
-gimp_procedure_dialog_reset_factory (GtkWidget           *button,
-                                     GimpProcedureDialog *dialog)
-{
-	gimp_config_reset (GIMP_CONFIG (dialog->priv->config));
+static void gimp_procedure_dialog_reset_factory(GtkWidget *button,
+                                                GimpProcedureDialog *dialog) {
+  gimp_config_reset(GIMP_CONFIG(dialog->priv->config));
 
-	gtk_popover_popdown (GTK_POPOVER (dialog->priv->reset_popover));
+  gtk_popover_popdown(GTK_POPOVER(dialog->priv->reset_popover));
 }
 
-static void
-gimp_procedure_dialog_load_defaults (GtkWidget           *button,
-                                     GimpProcedureDialog *dialog)
-{
-	GError *error = NULL;
+static void gimp_procedure_dialog_load_defaults(GtkWidget *button,
+                                                GimpProcedureDialog *dialog) {
+  GError *error = NULL;
 
-	if (!gimp_procedure_config_load_default (dialog->priv->config, &error))
-	{
-		if (error)
-		{
-			g_printerr ("Loading default values from disk failed: %s\n",
-			            error->message);
-			g_clear_error (&error);
-		}
-		else
-		{
-			g_printerr ("No default values found on disk\n");
-		}
-	}
+  if (!gimp_procedure_config_load_default(dialog->priv->config, &error)) {
+    if (error) {
+      g_printerr("Loading default values from disk failed: %s\n",
+                 error->message);
+      g_clear_error(&error);
+    } else {
+      g_printerr("No default values found on disk\n");
+    }
+  }
 }
 
-static void
-gimp_procedure_dialog_save_defaults (GtkWidget           *button,
-                                     GimpProcedureDialog *dialog)
-{
-	GError *error = NULL;
+static void gimp_procedure_dialog_save_defaults(GtkWidget *button,
+                                                GimpProcedureDialog *dialog) {
+  GError *error = NULL;
 
-	if (!gimp_procedure_config_save_default (dialog->priv->config, &error))
-	{
-		g_printerr ("Saving default values to disk failed: %s\n",
-		            error->message);
-		g_clear_error (&error);
-	}
+  if (!gimp_procedure_config_save_default(dialog->priv->config, &error)) {
+    g_printerr("Saving default values to disk failed: %s\n", error->message);
+    g_clear_error(&error);
+  }
 }
 
 static gboolean
-gimp_procedure_dialog_check_mnemonic (GimpProcedureDialog *dialog,
-                                      GtkWidget           *widget,
-                                      const gchar         *id,
-                                      const gchar         *core_id)
-{
-	GtkWidget *label    = NULL;
-	gchar     *duplicate;
-	gboolean success  = TRUE;
-	guint mnemonic = GDK_KEY_VoidSymbol;
+gimp_procedure_dialog_check_mnemonic(GimpProcedureDialog *dialog,
+                                     GtkWidget *widget, const gchar *id,
+                                     const gchar *core_id) {
+  GtkWidget *label = NULL;
+  gchar *duplicate;
+  gboolean success = TRUE;
+  guint mnemonic = GDK_KEY_VoidSymbol;
 
-	g_return_val_if_fail ((id && !core_id) || (core_id && !id), FALSE);
+  g_return_val_if_fail((id && !core_id) || (core_id && !id), FALSE);
 
-	if (GIMP_IS_LABELED (widget))
-	{
-		label = gimp_labeled_get_label (GIMP_LABELED (widget));
-	}
-	else if (g_type_is_a (G_OBJECT_TYPE (widget), GTK_TYPE_LABEL))
-	{
-		label = widget;
-	}
-	else if (g_type_is_a (G_OBJECT_TYPE (widget), GTK_TYPE_BUTTON))
-	{
-		label = gtk_bin_get_child (GTK_BIN (widget));
-		if (!label || !g_type_is_a (G_OBJECT_TYPE (label), GTK_TYPE_LABEL))
-			label = NULL;
-	}
+  if (GIMP_IS_LABELED(widget)) {
+    label = gimp_labeled_get_label(GIMP_LABELED(widget));
+  } else if (g_type_is_a(G_OBJECT_TYPE(widget), GTK_TYPE_LABEL)) {
+    label = widget;
+  } else if (g_type_is_a(G_OBJECT_TYPE(widget), GTK_TYPE_BUTTON)) {
+    label = gtk_bin_get_child(GTK_BIN(widget));
+    if (!label || !g_type_is_a(G_OBJECT_TYPE(label), GTK_TYPE_LABEL))
+      label = NULL;
+  }
 
-	if (label                                                          &&
-	    (mnemonic = gtk_label_get_mnemonic_keyval (GTK_LABEL (label))) &&
-	    mnemonic != GDK_KEY_VoidSymbol)
-	{
-		duplicate = g_hash_table_lookup (dialog->priv->core_mnemonics, GINT_TO_POINTER (mnemonic));
-		if (duplicate && g_strcmp0 (duplicate, id ? id : core_id) != 0)
-		{
-			g_printerr ("Procedure '%s': duplicate mnemonic %s for label of property %s and dialog button %s\n",
-			            gimp_procedure_get_name (dialog->priv->procedure),
-			            gdk_keyval_name (mnemonic), id, duplicate);
-			success = FALSE;
-		}
+  if (label && (mnemonic = gtk_label_get_mnemonic_keyval(GTK_LABEL(label))) &&
+      mnemonic != GDK_KEY_VoidSymbol) {
+    duplicate = g_hash_table_lookup(dialog->priv->core_mnemonics,
+                                    GINT_TO_POINTER(mnemonic));
+    if (duplicate && g_strcmp0(duplicate, id ? id : core_id) != 0) {
+      g_printerr("Procedure '%s': duplicate mnemonic %s for label of property "
+                 "%s and dialog button %s\n",
+                 gimp_procedure_get_name(dialog->priv->procedure),
+                 gdk_keyval_name(mnemonic), id, duplicate);
+      success = FALSE;
+    }
 
-		if (success)
-		{
-			duplicate = g_hash_table_lookup (dialog->priv->mnemonics, GINT_TO_POINTER (mnemonic));
-			if (duplicate && g_strcmp0 (duplicate, id ? id : core_id) != 0)
-			{
-				g_printerr ("Procedure '%s': duplicate mnemonic %s for label of properties %s and %s\n",
-				            gimp_procedure_get_name (dialog->priv->procedure),
-				            gdk_keyval_name (mnemonic), id, duplicate);
-				success = FALSE;
-			}
-			else if (!duplicate)
-			{
-				if (id)
-					g_hash_table_insert (dialog->priv->mnemonics, GINT_TO_POINTER (mnemonic), g_strdup (id));
-				else
-					g_hash_table_insert (dialog->priv->core_mnemonics, GINT_TO_POINTER (mnemonic), g_strdup (core_id));
-			}
-		}
-	}
-	else
-	{
-		g_printerr ("Procedure '%s': no mnemonic for property %s\n",
-		            gimp_procedure_get_name (dialog->priv->procedure), id);
-		success = FALSE;
-	}
+    if (success) {
+      duplicate = g_hash_table_lookup(dialog->priv->mnemonics,
+                                      GINT_TO_POINTER(mnemonic));
+      if (duplicate && g_strcmp0(duplicate, id ? id : core_id) != 0) {
+        g_printerr("Procedure '%s': duplicate mnemonic %s for label of "
+                   "properties %s and %s\n",
+                   gimp_procedure_get_name(dialog->priv->procedure),
+                   gdk_keyval_name(mnemonic), id, duplicate);
+        success = FALSE;
+      } else if (!duplicate) {
+        if (id)
+          g_hash_table_insert(dialog->priv->mnemonics,
+                              GINT_TO_POINTER(mnemonic), g_strdup(id));
+        else
+          g_hash_table_insert(dialog->priv->core_mnemonics,
+                              GINT_TO_POINTER(mnemonic), g_strdup(core_id));
+      }
+    }
+  } else {
+    g_printerr("Procedure '%s': no mnemonic for property %s\n",
+               gimp_procedure_get_name(dialog->priv->procedure), id);
+    success = FALSE;
+  }
 
-	return success;
+  return success;
 }
 
 /**
@@ -1338,86 +1186,78 @@ gimp_procedure_dialog_check_mnemonic (GimpProcedureDialog *dialog,
  * of freeing @container. Calling code must therefore not reuse the
  * pointer anymore.
  */
-static GtkWidget *
-gimp_procedure_dialog_fill_container_list (GimpProcedureDialog *dialog,
-                                           const gchar         *container_id,
-                                           GtkContainer        *container,
-                                           GList               *properties)
-{
-	GList    *iter;
-	gboolean free_properties = FALSE;
+static GtkWidget *gimp_procedure_dialog_fill_container_list(
+    GimpProcedureDialog *dialog, const gchar *container_id,
+    GtkContainer *container, GList *properties) {
+  GList *iter;
+  gboolean free_properties = FALSE;
 
-	g_return_val_if_fail (container_id != NULL, NULL);
-	g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
-	g_return_val_if_fail (g_object_is_floating (G_OBJECT (container)), NULL);
+  g_return_val_if_fail(container_id != NULL, NULL);
+  g_return_val_if_fail(GTK_IS_CONTAINER(container), NULL);
+  g_return_val_if_fail(g_object_is_floating(G_OBJECT(container)), NULL);
 
-	g_object_ref_sink (container);
-	if (g_object_class_find_property (G_OBJECT_GET_CLASS (dialog->priv->config),
-	                                  container_id))
-	{
-		g_warning ("%s: container identifier '%s' cannot be an existing property name.",
-		           G_STRFUNC, container_id);
-		g_object_unref (container);
-		return NULL;
-	}
+  g_object_ref_sink(container);
+  if (g_object_class_find_property(G_OBJECT_GET_CLASS(dialog->priv->config),
+                                   container_id)) {
+    g_warning(
+        "%s: container identifier '%s' cannot be an existing property name.",
+        G_STRFUNC, container_id);
+    g_object_unref(container);
+    return NULL;
+  }
 
-	if (g_hash_table_lookup (dialog->priv->widgets, container_id))
-	{
-		g_warning ("%s: container identifier '%s' was already configured.",
-		           G_STRFUNC, container_id);
-		g_object_unref (container);
-		return g_hash_table_lookup (dialog->priv->widgets, container_id);
-	}
+  if (g_hash_table_lookup(dialog->priv->widgets, container_id)) {
+    g_warning("%s: container identifier '%s' was already configured.",
+              G_STRFUNC, container_id);
+    g_object_unref(container);
+    return g_hash_table_lookup(dialog->priv->widgets, container_id);
+  }
 
-	if (!properties)
-	{
-		GParamSpec **pspecs;
-		guint n_pspecs;
-		gint i;
+  if (!properties) {
+    GParamSpec **pspecs;
+    guint n_pspecs;
+    gint i;
 
-		pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (dialog->priv->config),
-		                                         &n_pspecs);
+    pspecs = g_object_class_list_properties(
+        G_OBJECT_GET_CLASS(dialog->priv->config), &n_pspecs);
 
-		for (i = 0; i < n_pspecs; i++)
-		{
-			const gchar *prop_name;
-			GParamSpec  *pspec = pspecs[i];
+    for (i = 0; i < n_pspecs; i++) {
+      const gchar *prop_name;
+      GParamSpec *pspec = pspecs[i];
 
-			/*  skip our own properties  */
-			if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
-				continue;
+      /*  skip our own properties  */
+      if (pspec->owner_type == GIMP_TYPE_PROCEDURE_CONFIG)
+        continue;
 
-			prop_name  = g_param_spec_get_name (pspec);
-			properties = g_list_prepend (properties, (gpointer) prop_name);
-		}
+      prop_name = g_param_spec_get_name(pspec);
+      properties = g_list_prepend(properties, (gpointer)prop_name);
+    }
 
-		properties = g_list_reverse (properties);
+    properties = g_list_reverse(properties);
 
-		if (properties)
-			free_properties = TRUE;
-	}
+    if (properties)
+      free_properties = TRUE;
+  }
 
-	for (iter = properties; iter; iter = iter->next)
-	{
-		GtkWidget *widget;
+  for (iter = properties; iter; iter = iter->next) {
+    GtkWidget *widget;
 
-		widget = gimp_procedure_dialog_get_widget (dialog, iter->data, G_TYPE_NONE);
-		if (widget)
-		{
-			/* Reference the widget because the hash table will
-			 * unreference it anyway when getting destroyed so we don't
-			 * want to give the only reference to the parent widget.
-			 */
-			g_object_ref (widget);
-			gtk_container_add (container, widget);
-			gtk_widget_show (widget);
-		}
-	}
+    widget = gimp_procedure_dialog_get_widget(dialog, iter->data, G_TYPE_NONE);
+    if (widget) {
+      /* Reference the widget because the hash table will
+       * unreference it anyway when getting destroyed so we don't
+       * want to give the only reference to the parent widget.
+       */
+      g_object_ref(widget);
+      gtk_container_add(container, widget);
+      gtk_widget_show(widget);
+    }
+  }
 
-	if (free_properties)
-		g_list_free (properties);
+  if (free_properties)
+    g_list_free(properties);
 
-	g_hash_table_insert (dialog->priv->widgets, g_strdup (container_id), container);
+  g_hash_table_insert(dialog->priv->widgets, g_strdup(container_id), container);
 
-	return GTK_WIDGET (container);
+  return GTK_WIDGET(container);
 }

@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,46 +30,43 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-#define GIMP_TYPE_SPIN_BUTTON            (gimp_spin_button_get_type ())
-#define GIMP_SPIN_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SPIN_BUTTON, GimpSpinButton))
-#define GIMP_SPIN_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SPIN_BUTTON, GimpSpinButtonClass))
-#define GIMP_IS_SPIN_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SPIN_BUTTON))
-#define GIMP_IS_SPIN_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SPIN_BUTTON))
-#define GIMP_SPIN_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SPIN_BUTTON, GimpSpinButtonClass))
-
+#define GIMP_TYPE_SPIN_BUTTON (gimp_spin_button_get_type())
+#define GIMP_SPIN_BUTTON(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SPIN_BUTTON, GimpSpinButton))
+#define GIMP_SPIN_BUTTON_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SPIN_BUTTON, GimpSpinButtonClass))
+#define GIMP_IS_SPIN_BUTTON(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SPIN_BUTTON))
+#define GIMP_IS_SPIN_BUTTON_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SPIN_BUTTON))
+#define GIMP_SPIN_BUTTON_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SPIN_BUTTON, GimpSpinButtonClass))
 
 typedef struct _GimpSpinButtonPrivate GimpSpinButtonPrivate;
 typedef struct _GimpSpinButtonClass GimpSpinButtonClass;
 
-struct _GimpSpinButton
-{
-	GtkSpinButton parent_instance;
+struct _GimpSpinButton {
+  GtkSpinButton parent_instance;
 
-	GimpSpinButtonPrivate *priv;
+  GimpSpinButtonPrivate *priv;
 };
 
-struct _GimpSpinButtonClass
-{
-	GtkSpinButtonClass parent_class;
+struct _GimpSpinButtonClass {
+  GtkSpinButtonClass parent_class;
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
 };
 
+GType gimp_spin_button_get_type(void) G_GNUC_CONST;
 
-GType       gimp_spin_button_get_type       (void) G_GNUC_CONST;
-
-GtkWidget * gimp_spin_button_new            (GtkAdjustment *adjustment,
-                                             gdouble climb_rate,
-                                             guint digits);
-GtkWidget * gimp_spin_button_new_with_range (gdouble min,
-                                             gdouble max,
-                                             gdouble step);
-
+GtkWidget *gimp_spin_button_new(GtkAdjustment *adjustment, gdouble climb_rate,
+                                guint digits);
+GtkWidget *gimp_spin_button_new_with_range(gdouble min, gdouble max,
+                                           gdouble step);
 
 G_END_DECLS
 

@@ -24,7 +24,6 @@
 
 #include "gimphsv.h"
 
-
 /**
  * SECTION: gimphsv
  * @title: GimpHSV
@@ -33,64 +32,46 @@
  * Definitions and Functions relating to HSV colors.
  **/
 
-
 /*
  * GIMP_TYPE_HSV
  */
 
-static GimpHSV * gimp_hsv_copy (const GimpHSV *hsv);
+static GimpHSV *gimp_hsv_copy(const GimpHSV *hsv);
 
+G_DEFINE_BOXED_TYPE(GimpHSV, gimp_hsv, gimp_hsv_copy, g_free)
 
-G_DEFINE_BOXED_TYPE (GimpHSV, gimp_hsv, gimp_hsv_copy, g_free)
-
-static GimpHSV *
-gimp_hsv_copy (const GimpHSV *hsv)
-{
-	return g_memdup (hsv, sizeof (GimpHSV));
+static GimpHSV *gimp_hsv_copy(const GimpHSV *hsv) {
+  return g_memdup(hsv, sizeof(GimpHSV));
 }
-
 
 /*  HSV functions  */
 
-void
-gimp_hsv_set (GimpHSV *hsv,
-              gdouble h,
-              gdouble s,
-              gdouble v)
-{
-	g_return_if_fail (hsv != NULL);
+void gimp_hsv_set(GimpHSV *hsv, gdouble h, gdouble s, gdouble v) {
+  g_return_if_fail(hsv != NULL);
 
-	hsv->h = h;
-	hsv->s = s;
-	hsv->v = v;
+  hsv->h = h;
+  hsv->s = s;
+  hsv->v = v;
 }
 
-void
-gimp_hsv_clamp (GimpHSV *hsv)
-{
-	g_return_if_fail (hsv != NULL);
+void gimp_hsv_clamp(GimpHSV *hsv) {
+  g_return_if_fail(hsv != NULL);
 
-	hsv->h -= (gint) hsv->h;
+  hsv->h -= (gint)hsv->h;
 
-	if (hsv->h < 0)
-		hsv->h += 1.0;
+  if (hsv->h < 0)
+    hsv->h += 1.0;
 
-	hsv->s = CLAMP (hsv->s, 0.0, 1.0);
-	hsv->v = CLAMP (hsv->v, 0.0, 1.0);
-	hsv->a = CLAMP (hsv->a, 0.0, 1.0);
+  hsv->s = CLAMP(hsv->s, 0.0, 1.0);
+  hsv->v = CLAMP(hsv->v, 0.0, 1.0);
+  hsv->a = CLAMP(hsv->a, 0.0, 1.0);
 }
 
-void
-gimp_hsva_set (GimpHSV *hsva,
-               gdouble h,
-               gdouble s,
-               gdouble v,
-               gdouble a)
-{
-	g_return_if_fail (hsva != NULL);
+void gimp_hsva_set(GimpHSV *hsva, gdouble h, gdouble s, gdouble v, gdouble a) {
+  g_return_if_fail(hsva != NULL);
 
-	hsva->h = h;
-	hsva->s = s;
-	hsva->v = v;
-	hsva->a = a;
+  hsva->h = h;
+  hsva->s = s;
+  hsva->v = v;
+  hsva->a = a;
 }

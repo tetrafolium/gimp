@@ -25,18 +25,15 @@
 
 G_BEGIN_DECLS
 
-
 /**
  * GimpEevlQuantity:
  * @value:     In reference units.
  * @dimension: in has a dimension of 1, in^2 has a dimension of 2 etc
  */
-typedef struct
-{
-	gdouble value;
-	gint dimension;
+typedef struct {
+  gdouble value;
+  gint dimension;
 } GimpEevlQuantity;
-
 
 /**
  * GimpEevlUnitResolverProc:
@@ -51,11 +48,9 @@ typedef struct
  * Returns: If the unit was successfully resolved or not.
  *
  */
-typedef gboolean (* GimpEevlUnitResolverProc) (const gchar      *identifier,
-                                               GimpEevlQuantity *factor,
-                                               gdouble          *offset,
-                                               gpointer data);
-
+typedef gboolean (*GimpEevlUnitResolverProc)(const gchar *identifier,
+                                             GimpEevlQuantity *factor,
+                                             gdouble *offset, gpointer data);
 
 /**
  * GimpEevlOptions:
@@ -65,34 +60,26 @@ typedef gboolean (* GimpEevlUnitResolverProc) (const gchar      *identifier,
  * @ratio_invert:       Invert ratios
  * @ratio_quantity:     Quantity to multiply ratios by
  */
-typedef struct
-{
-	GimpEevlUnitResolverProc unit_resolver_proc;
-	gpointer data;
+typedef struct {
+  GimpEevlUnitResolverProc unit_resolver_proc;
+  gpointer data;
 
-	gboolean ratio_expressions;
-	gboolean ratio_invert;
-	GimpEevlQuantity ratio_quantity;
+  gboolean ratio_expressions;
+  gboolean ratio_invert;
+  GimpEevlQuantity ratio_quantity;
 } GimpEevlOptions;
 
 #define GIMP_EEVL_OPTIONS_INIT                                                 \
-	((const GimpEevlOptions)                                                     \
-	{                                                                            \
-		.unit_resolver_proc = NULL,                                                \
-		.data               = NULL,                                                \
+  ((const GimpEevlOptions){.unit_resolver_proc = NULL,                         \
+                           .data = NULL,                                       \
                                                                                \
-		.ratio_expressions  = FALSE,                                               \
-		.ratio_invert       = FALSE,                                               \
-		.ratio_quantity     = {0.0, 0}                                             \
-	})
+                           .ratio_expressions = FALSE,                         \
+                           .ratio_invert = FALSE,                              \
+                           .ratio_quantity = {0.0, 0}})
 
-
-gboolean gimp_eevl_evaluate (const gchar            *string,
-                             const GimpEevlOptions  *options,
-                             GimpEevlQuantity       *result,
-                             const gchar           **error_pos,
-                             GError                **error);
-
+gboolean gimp_eevl_evaluate(const gchar *string, const GimpEevlOptions *options,
+                            GimpEevlQuantity *result, const gchar **error_pos,
+                            GError **error);
 
 G_END_DECLS
 

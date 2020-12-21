@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_CONFIG_H_INSIDE__) && !defined (GIMP_CONFIG_COMPILATION)
+#if !defined(__GIMP_CONFIG_H_INSIDE__) && !defined(GIMP_CONFIG_COMPILATION)
 #error "Only <libgimpconfig/gimpconfig.h> can be included directly."
 #endif
 
@@ -30,14 +30,10 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
-gboolean    gimp_config_deserialize_properties (GimpConfig *config,
-                                                GScanner   *scanner,
-                                                gint nest_level);
-GTokenType  gimp_config_deserialize_property   (GimpConfig *config,
-                                                GScanner   *scanner,
-                                                gint nest_level);
-
+gboolean gimp_config_deserialize_properties(GimpConfig *config,
+                                            GScanner *scanner, gint nest_level);
+GTokenType gimp_config_deserialize_property(GimpConfig *config,
+                                            GScanner *scanner, gint nest_level);
 
 G_END_DECLS
 

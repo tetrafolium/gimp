@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,32 +30,26 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /*  the standard gimp help function
  */
-void   gimp_standard_help_func             (const gchar    *help_id,
-                                            gpointer help_data);
+void gimp_standard_help_func(const gchar *help_id, gpointer help_data);
 
 /*  connect the help callback of a window  */
-void   gimp_help_connect                   (GtkWidget      *widget,
-                                            GimpHelpFunc help_func,
-                                            const gchar    *help_id,
-                                            gpointer help_data,
-                                            GDestroyNotify help_data_destroy);
+void gimp_help_connect(GtkWidget *widget, GimpHelpFunc help_func,
+                       const gchar *help_id, gpointer help_data,
+                       GDestroyNotify help_data_destroy);
 
 /*  set help data for non-window widgets  */
-void   gimp_help_set_help_data             (GtkWidget      *widget,
-                                            const gchar    *tooltip,
-                                            const gchar    *help_id);
+void gimp_help_set_help_data(GtkWidget *widget, const gchar *tooltip,
+                             const gchar *help_id);
 
 /*  set help data with markup for non-window widgets  */
-void   gimp_help_set_help_data_with_markup (GtkWidget      *widget,
-                                            const gchar    *tooltip,
-                                            const gchar    *help_id);
+void gimp_help_set_help_data_with_markup(GtkWidget *widget,
+                                         const gchar *tooltip,
+                                         const gchar *help_id);
 
 /*  activate the context help inspector  */
-void   gimp_context_help                   (GtkWidget      *widget);
-
+void gimp_context_help(GtkWidget *widget);
 
 /**
  * GIMP_HELP_ID:
@@ -64,10 +58,9 @@ void   gimp_context_help                   (GtkWidget      *widget);
  *
  * Since: 2.2
  **/
-#define GIMP_HELP_ID (gimp_help_id_quark ())
+#define GIMP_HELP_ID (gimp_help_id_quark())
 
-GQuark gimp_help_id_quark           (void) G_GNUC_CONST;
-
+GQuark gimp_help_id_quark(void) G_GNUC_CONST;
 
 G_END_DECLS
 

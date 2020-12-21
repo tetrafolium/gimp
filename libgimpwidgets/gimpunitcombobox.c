@@ -28,7 +28,6 @@
 #include "gimpunitcombobox.h"
 #include "gimpunitstore.h"
 
-
 /**
  * SECTION: gimpunitcombobox
  * @title: GimpUnitComboBox
@@ -38,103 +37,80 @@
  * #GimpUnitComboBox selects units stored in a #GimpUnitStore.
  **/
 
+static void gimp_unit_combo_box_style_updated(GtkWidget *widget);
+static void gimp_unit_combo_box_popup_shown(GtkWidget *widget,
+                                            const GParamSpec *pspec);
 
-static void   gimp_unit_combo_box_style_updated (GtkWidget        *widget);
-static void   gimp_unit_combo_box_popup_shown   (GtkWidget        *widget,
-                                                 const GParamSpec *pspec);
-
-
-G_DEFINE_TYPE (GimpUnitComboBox, gimp_unit_combo_box, GTK_TYPE_COMBO_BOX)
+G_DEFINE_TYPE(GimpUnitComboBox, gimp_unit_combo_box, GTK_TYPE_COMBO_BOX)
 
 #define parent_class gimp_unit_combo_box_parent_class
 
+static void gimp_unit_combo_box_class_init(GimpUnitComboBoxClass *klass) {
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
 
-static void
-gimp_unit_combo_box_class_init (GimpUnitComboBoxClass *klass)
-{
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-	widget_class->style_updated = gimp_unit_combo_box_style_updated;
+  widget_class->style_updated = gimp_unit_combo_box_style_updated;
 }
 
-static void
-gimp_unit_combo_box_init (GimpUnitComboBox *combo)
-{
-	GtkCellLayout   *layout = GTK_CELL_LAYOUT (combo);
-	GtkCellRenderer *cell;
+static void gimp_unit_combo_box_init(GimpUnitComboBox *combo) {
+  GtkCellLayout *layout = GTK_CELL_LAYOUT(combo);
+  GtkCellRenderer *cell;
 
-	cell = gtk_cell_renderer_text_new ();
-	gtk_cell_layout_pack_start (layout, cell, TRUE);
-	gtk_cell_layout_set_attributes (layout, cell,
-	                                "text", GIMP_UNIT_STORE_UNIT_LONG_FORMAT,
-	                                NULL);
+  cell = gtk_cell_renderer_text_new();
+  gtk_cell_layout_pack_start(layout, cell, TRUE);
+  gtk_cell_layout_set_attributes(layout, cell, "text",
+                                 GIMP_UNIT_STORE_UNIT_LONG_FORMAT, NULL);
 
-	g_signal_connect (combo, "notify::popup-shown",
-	                  G_CALLBACK (gimp_unit_combo_box_popup_shown),
-	                  NULL);
+  g_signal_connect(combo, "notify::popup-shown",
+                   G_CALLBACK(gimp_unit_combo_box_popup_shown), NULL);
 }
 
-static void
-gimp_unit_combo_box_style_updated (GtkWidget *widget)
-{
-	GtkCellLayout   *layout;
-	GtkCellRenderer *cell;
+static void gimp_unit_combo_box_style_updated(GtkWidget *widget) {
+  GtkCellLayout *layout;
+  GtkCellRenderer *cell;
 
-	/*  hackedehack ...  */
-	layout = GTK_CELL_LAYOUT (gtk_bin_get_child (GTK_BIN (widget)));
-	gtk_cell_layout_clear (layout);
+  /*  hackedehack ...  */
+  layout = GTK_CELL_LAYOUT(gtk_bin_get_child(GTK_BIN(widget)));
+  gtk_cell_layout_clear(layout);
 
-	cell = gtk_cell_renderer_text_new ();
-	gtk_cell_layout_pack_start (layout, cell, TRUE);
-	gtk_cell_layout_set_attributes (layout, cell,
-	                                "text",  GIMP_UNIT_STORE_UNIT_SHORT_FORMAT,
-	                                NULL);
+  cell = gtk_cell_renderer_text_new();
+  gtk_cell_layout_pack_start(layout, cell, TRUE);
+  gtk_cell_layout_set_attributes(layout, cell, "text",
+                                 GIMP_UNIT_STORE_UNIT_SHORT_FORMAT, NULL);
 
-	GTK_WIDGET_CLASS (parent_class)->style_updated (widget);
+  GTK_WIDGET_CLASS(parent_class)->style_updated(widget);
 }
 
-static void
-gimp_unit_combo_box_popup_shown (GtkWidget        *widget,
-                                 const GParamSpec *pspec)
-{
-	GimpUnitStore *store;
-	gboolean shown;
+static void gimp_unit_combo_box_popup_shown(GtkWidget *widget,
+                                            const GParamSpec *pspec) {
+  GimpUnitStore *store;
+  gboolean shown;
 
-	g_object_get (widget,
-	              "model",       &store,
-	              "popup-shown", &shown,
-	              NULL);
+  g_object_get(widget, "model", &store, "popup-shown", &shown, NULL);
 
-	if (store)
-	{
-		if (shown)
-			_gimp_unit_store_sync_units (store);
+  if (store) {
+    if (shown)
+      _gimp_unit_store_sync_units(store);
 
-		g_object_unref (store);
-	}
+    g_object_unref(store);
+  }
 }
-
 
 /**
  * gimp_unit_combo_box_new:
  *
  * Returns: a new #GimpUnitComboBox.
  **/
-GtkWidget *
-gimp_unit_combo_box_new (void)
-{
-	GtkWidget     *combo_box;
-	GimpUnitStore *store;
+GtkWidget *gimp_unit_combo_box_new(void) {
+  GtkWidget *combo_box;
+  GimpUnitStore *store;
 
-	store = gimp_unit_store_new (0);
+  store = gimp_unit_store_new(0);
 
-	combo_box = g_object_new (GIMP_TYPE_UNIT_COMBO_BOX,
-	                          "model", store,
-	                          NULL);
+  combo_box = g_object_new(GIMP_TYPE_UNIT_COMBO_BOX, "model", store, NULL);
 
-	g_object_unref (store);
+  g_object_unref(store);
 
-	return combo_box;
+  return combo_box;
 }
 
 /**
@@ -143,12 +119,8 @@ gimp_unit_combo_box_new (void)
  *
  * Returns: a new #GimpUnitComboBox.
  **/
-GtkWidget *
-gimp_unit_combo_box_new_with_model (GimpUnitStore *model)
-{
-	return g_object_new (GIMP_TYPE_UNIT_COMBO_BOX,
-	                     "model", model,
-	                     NULL);
+GtkWidget *gimp_unit_combo_box_new_with_model(GimpUnitStore *model) {
+  return g_object_new(GIMP_TYPE_UNIT_COMBO_BOX, "model", model, NULL);
 }
 
 /**
@@ -159,21 +131,18 @@ gimp_unit_combo_box_new_with_model (GimpUnitStore *model)
  *
  * Returns: (transfer none): The selected #GimpUnit.
  **/
-GimpUnit
-gimp_unit_combo_box_get_active (GimpUnitComboBox *combo)
-{
-	GtkTreeIter iter;
-	gint unit;
+GimpUnit gimp_unit_combo_box_get_active(GimpUnitComboBox *combo) {
+  GtkTreeIter iter;
+  gint unit;
 
-	g_return_val_if_fail (GIMP_IS_UNIT_COMBO_BOX (combo), -1);
+  g_return_val_if_fail(GIMP_IS_UNIT_COMBO_BOX(combo), -1);
 
-	gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo), &iter);
+  gtk_combo_box_get_active_iter(GTK_COMBO_BOX(combo), &iter);
 
-	gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (combo)), &iter,
-	                    GIMP_UNIT_STORE_UNIT, &unit,
-	                    -1);
+  gtk_tree_model_get(gtk_combo_box_get_model(GTK_COMBO_BOX(combo)), &iter,
+                     GIMP_UNIT_STORE_UNIT, &unit, -1);
 
-	return (GimpUnit) unit;
+  return (GimpUnit)unit;
 }
 
 /**
@@ -183,34 +152,26 @@ gimp_unit_combo_box_get_active (GimpUnitComboBox *combo)
  *
  * Sets @unit as the currently selected #GimpUnit on @combo.
  **/
-void
-gimp_unit_combo_box_set_active (GimpUnitComboBox *combo,
-                                GimpUnit unit)
-{
-	GtkTreeModel *model;
-	GtkTreeIter iter;
-	gboolean iter_valid;
+void gimp_unit_combo_box_set_active(GimpUnitComboBox *combo, GimpUnit unit) {
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  gboolean iter_valid;
 
-	g_return_if_fail (GIMP_IS_UNIT_COMBO_BOX (combo));
+  g_return_if_fail(GIMP_IS_UNIT_COMBO_BOX(combo));
 
-	model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
+  model = gtk_combo_box_get_model(GTK_COMBO_BOX(combo));
 
-	_gimp_unit_store_sync_units (GIMP_UNIT_STORE (model));
+  _gimp_unit_store_sync_units(GIMP_UNIT_STORE(model));
 
-	for (iter_valid = gtk_tree_model_get_iter_first (model, &iter);
-	     iter_valid;
-	     iter_valid = gtk_tree_model_iter_next (model, &iter))
-	{
-		gint iter_unit;
+  for (iter_valid = gtk_tree_model_get_iter_first(model, &iter); iter_valid;
+       iter_valid = gtk_tree_model_iter_next(model, &iter)) {
+    gint iter_unit;
 
-		gtk_tree_model_get (model, &iter,
-		                    GIMP_UNIT_STORE_UNIT, &iter_unit,
-		                    -1);
+    gtk_tree_model_get(model, &iter, GIMP_UNIT_STORE_UNIT, &iter_unit, -1);
 
-		if (unit == (GimpUnit) iter_unit)
-		{
-			gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo), &iter);
-			break;
-		}
-	}
+    if (unit == (GimpUnit)iter_unit) {
+      gtk_combo_box_set_active_iter(GTK_COMBO_BOX(combo), &iter);
+      break;
+    }
+  }
 }

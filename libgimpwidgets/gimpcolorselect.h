@@ -27,14 +27,13 @@
 
 G_BEGIN_DECLS
 
+#define GIMP_TYPE_COLOR_SELECT (gimp_color_select_get_type())
+#define GIMP_COLOR_SELECT(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_SELECT, GimpColorSelect))
+#define GIMP_IS_COLOR_SELECT(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_SELECT))
 
-#define GIMP_TYPE_COLOR_SELECT            (gimp_color_select_get_type ())
-#define GIMP_COLOR_SELECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_SELECT, GimpColorSelect))
-#define GIMP_IS_COLOR_SELECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_SELECT))
-
-
-GType   gimp_color_select_get_type (void) G_GNUC_CONST;
-
+GType gimp_color_select_get_type(void) G_GNUC_CONST;
 
 G_END_DECLS
 

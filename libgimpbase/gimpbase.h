@@ -34,8 +34,8 @@
 #include <libgimpbase/gimprectangle.h>
 #include <libgimpbase/gimpunit.h>
 #include <libgimpbase/gimputils.h>
-#include <libgimpbase/gimpversion.h>
 #include <libgimpbase/gimpvaluearray.h>
+#include <libgimpbase/gimpversion.h>
 
 #ifndef G_OS_WIN32
 #include <libgimpbase/gimpsignal.h>
@@ -43,4 +43,4 @@
 
 #undef __GIMP_BASE_H_INSIDE__
 
-#endif  /* __GIMP_BASE_H__ */
+#endif /* __GIMP_BASE_H__ */

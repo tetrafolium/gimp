@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -28,49 +28,46 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_ENUM_LABEL            (gimp_enum_label_get_type ())
-#define GIMP_ENUM_LABEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ENUM_LABEL, GimpEnumLabel))
-#define GIMP_ENUM_LABEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ENUM_LABEL, GimpEnumLabelClass))
-#define GIMP_IS_ENUM_LABEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ENUM_LABEL))
-#define GIMP_IS_ENUM_LABEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ENUM_LABEL))
-#define GIMP_ENUM_LABEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ENUM_LABEL, GimpEnumLabelClass))
-
+#define GIMP_TYPE_ENUM_LABEL (gimp_enum_label_get_type())
+#define GIMP_ENUM_LABEL(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ENUM_LABEL, GimpEnumLabel))
+#define GIMP_ENUM_LABEL_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ENUM_LABEL, GimpEnumLabelClass))
+#define GIMP_IS_ENUM_LABEL(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ENUM_LABEL))
+#define GIMP_IS_ENUM_LABEL_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ENUM_LABEL))
+#define GIMP_ENUM_LABEL_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ENUM_LABEL, GimpEnumLabelClass))
 
 typedef struct _GimpEnumLabelPrivate GimpEnumLabelPrivate;
 typedef struct _GimpEnumLabelClass GimpEnumLabelClass;
 
-struct _GimpEnumLabel
-{
-	GtkLabel parent_instance;
+struct _GimpEnumLabel {
+  GtkLabel parent_instance;
 
-	GimpEnumLabelPrivate *priv;
+  GimpEnumLabelPrivate *priv;
 };
 
-struct _GimpEnumLabelClass
-{
-	GtkLabelClass parent_class;
+struct _GimpEnumLabelClass {
+  GtkLabelClass parent_class;
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_enum_label_get_type(void) G_GNUC_CONST;
 
-GType       gimp_enum_label_get_type         (void) G_GNUC_CONST;
-
-GtkWidget * gimp_enum_label_new              (GType enum_type,
-                                              gint value);
-void        gimp_enum_label_set_value        (GimpEnumLabel *label,
-                                              gint value);
-
+GtkWidget *gimp_enum_label_new(GType enum_type, gint value);
+void gimp_enum_label_set_value(GimpEnumLabel *label, gint value);
 
 G_END_DECLS
 
-#endif  /* __GIMP_ENUM_LABEL_H__ */
+#endif /* __GIMP_ENUM_LABEL_H__ */

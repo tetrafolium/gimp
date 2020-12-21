@@ -24,12 +24,11 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
-#include "libgimpbase/gimpbase.h"
 
 #include "gimpwidgets.h"
-
 
 /**
  * SECTION: gimpcolorscaleentry
@@ -41,44 +40,38 @@
  * #GimpColorScale instead of a #GtkScale.
  **/
 
-struct _GimpColorScaleEntry
-{
-	GimpScaleEntry parent_instance;
+struct _GimpColorScaleEntry {
+  GimpScaleEntry parent_instance;
 };
 
-static GtkWidget * gimp_color_scale_entry_new_range_widget (GtkAdjustment  *adjustment);
+static GtkWidget *
+gimp_color_scale_entry_new_range_widget(GtkAdjustment *adjustment);
 
-G_DEFINE_TYPE (GimpColorScaleEntry, gimp_color_scale_entry, GIMP_TYPE_SCALE_ENTRY)
+G_DEFINE_TYPE(GimpColorScaleEntry, gimp_color_scale_entry,
+              GIMP_TYPE_SCALE_ENTRY)
 
 #define parent_class gimp_color_scale_entry_parent_class
 
+static void gimp_color_scale_entry_class_init(GimpColorScaleEntryClass *klass) {
+  GimpScaleEntryClass *entry_class = GIMP_SCALE_ENTRY_CLASS(klass);
 
-static void
-gimp_color_scale_entry_class_init (GimpColorScaleEntryClass *klass)
-{
-	GimpScaleEntryClass *entry_class = GIMP_SCALE_ENTRY_CLASS (klass);
-
-	entry_class->new_range_widget = gimp_color_scale_entry_new_range_widget;
+  entry_class->new_range_widget = gimp_color_scale_entry_new_range_widget;
 }
 
-static void
-gimp_color_scale_entry_init (GimpColorScaleEntry *entry)
-{
-}
+static void gimp_color_scale_entry_init(GimpColorScaleEntry *entry) {}
 
 static GtkWidget *
-gimp_color_scale_entry_new_range_widget (GtkAdjustment  *adjustment)
-{
-	GtkWidget *scale;
+gimp_color_scale_entry_new_range_widget(GtkAdjustment *adjustment) {
+  GtkWidget *scale;
 
-	g_return_val_if_fail (GTK_IS_ADJUSTMENT (adjustment), NULL);
+  g_return_val_if_fail(GTK_IS_ADJUSTMENT(adjustment), NULL);
 
-	scale = gimp_color_scale_new (GTK_ORIENTATION_HORIZONTAL,
-	                              GIMP_COLOR_SELECTOR_VALUE);
+  scale = gimp_color_scale_new(GTK_ORIENTATION_HORIZONTAL,
+                               GIMP_COLOR_SELECTOR_VALUE);
 
-	gtk_range_set_adjustment (GTK_RANGE (scale), adjustment);
+  gtk_range_set_adjustment(GTK_RANGE(scale), adjustment);
 
-	return scale;
+  return scale;
 }
 
 /**
@@ -91,22 +84,14 @@ gimp_color_scale_entry_new_range_widget (GtkAdjustment  *adjustment)
  *
  * Returns: (transfer full): The new #GimpColorScale widget.
  **/
-GtkWidget *
-gimp_color_scale_entry_new (const gchar *text,
-                            gdouble value,
-                            gdouble lower,
-                            gdouble upper,
-                            guint digits)
-{
-	GtkWidget *entry;
+GtkWidget *gimp_color_scale_entry_new(const gchar *text, gdouble value,
+                                      gdouble lower, gdouble upper,
+                                      guint digits) {
+  GtkWidget *entry;
 
-	entry = g_object_new (GIMP_TYPE_COLOR_SCALE_ENTRY,
-	                      "label",          text,
-	                      "value",          value,
-	                      "lower",          lower,
-	                      "upper",          upper,
-	                      "digits",         digits,
-	                      NULL);
+  entry =
+      g_object_new(GIMP_TYPE_COLOR_SCALE_ENTRY, "label", text, "value", value,
+                   "lower", lower, "upper", upper, "digits", digits, NULL);
 
-	return entry;
+  return entry;
 }

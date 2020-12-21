@@ -28,7 +28,6 @@
 
 #include "gimpthumb-error.h"
 
-
 /**
  * SECTION: gimpthumb-error
  * @title: GimpThumb-error
@@ -37,7 +36,6 @@
  * Error codes used by libgimpthumb
  **/
 
-
 /**
  * gimp_thumb_error_quark:
  *
@@ -45,8 +43,6 @@
  *
  * Returns: the #GQuark that defines the GimpThumb error domain.
  **/
-GQuark
-gimp_thumb_error_quark (void)
-{
-	return g_quark_from_static_string ("gimp-thumb-error-quark");
+GQuark gimp_thumb_error_quark(void) {
+  return g_quark_from_static_string("gimp-thumb-error-quark");
 }

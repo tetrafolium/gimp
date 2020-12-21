@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -30,44 +30,38 @@
 
 G_BEGIN_DECLS
 
-#define GIMP_TYPE_LABEL_SPIN (gimp_label_spin_get_type ())
-G_DECLARE_DERIVABLE_TYPE (GimpLabelSpin, gimp_label_spin, GIMP, LABEL_SPIN, GimpLabeled)
+#define GIMP_TYPE_LABEL_SPIN (gimp_label_spin_get_type())
+G_DECLARE_DERIVABLE_TYPE(GimpLabelSpin, gimp_label_spin, GIMP, LABEL_SPIN,
+                         GimpLabeled)
 
-struct _GimpLabelSpinClass
-{
-	GimpLabeledClass parent_class;
+struct _GimpLabelSpinClass {
+  GimpLabeledClass parent_class;
 
-	/*  Signals */
-	void (* value_changed)    (GimpLabelSpin *spin);
+  /*  Signals */
+  void (*value_changed)(GimpLabelSpin *spin);
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
-GtkWidget  * gimp_label_spin_new             (const gchar   *text,
-                                              gdouble value,
-                                              gdouble lower,
-                                              gdouble upper,
-                                              gint digits);
+GtkWidget *gimp_label_spin_new(const gchar *text, gdouble value, gdouble lower,
+                               gdouble upper, gint digits);
 
-void         gimp_label_spin_set_value       (GimpLabelSpin *spin,
-                                              gdouble value);
-gdouble      gimp_label_spin_get_value       (GimpLabelSpin *spin);
+void gimp_label_spin_set_value(GimpLabelSpin *spin, gdouble value);
+gdouble gimp_label_spin_get_value(GimpLabelSpin *spin);
 
-void         gimp_label_spin_set_increments  (GimpLabelSpin *spin,
-                                              gdouble step,
-                                              gdouble page);
-void         gimp_label_spin_set_digits      (GimpLabelSpin *spin,
-                                              gint digits);
+void gimp_label_spin_set_increments(GimpLabelSpin *spin, gdouble step,
+                                    gdouble page);
+void gimp_label_spin_set_digits(GimpLabelSpin *spin, gint digits);
 
-GtkWidget  * gimp_label_spin_get_spin_button (GimpLabelSpin *spin);
+GtkWidget *gimp_label_spin_get_spin_button(GimpLabelSpin *spin);
 
 G_END_DECLS
 

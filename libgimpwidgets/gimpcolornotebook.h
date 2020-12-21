@@ -22,7 +22,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
@@ -33,51 +33,53 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_COLOR_NOTEBOOK            (gimp_color_notebook_get_type ())
-#define GIMP_COLOR_NOTEBOOK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_NOTEBOOK, GimpColorNotebook))
-#define GIMP_COLOR_NOTEBOOK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_NOTEBOOK, GimpColorNotebookClass))
-#define GIMP_IS_COLOR_NOTEBOOK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_NOTEBOOK))
-#define GIMP_IS_COLOR_NOTEBOOK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_NOTEBOOK))
-#define GIMP_COLOR_NOTEBOOK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_NOTEBOOK, GimpColorNotebookClass))
-
+#define GIMP_TYPE_COLOR_NOTEBOOK (gimp_color_notebook_get_type())
+#define GIMP_COLOR_NOTEBOOK(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_NOTEBOOK,                 \
+                              GimpColorNotebook))
+#define GIMP_COLOR_NOTEBOOK_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_NOTEBOOK,                  \
+                           GimpColorNotebookClass))
+#define GIMP_IS_COLOR_NOTEBOOK(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_NOTEBOOK))
+#define GIMP_IS_COLOR_NOTEBOOK_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_NOTEBOOK))
+#define GIMP_COLOR_NOTEBOOK_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_NOTEBOOK,                  \
+                             GimpColorNotebookClass))
 
 typedef struct _GimpColorNotebookPrivate GimpColorNotebookPrivate;
 typedef struct _GimpColorNotebookClass GimpColorNotebookClass;
 
-struct _GimpColorNotebook
-{
-	GimpColorSelector parent_instance;
+struct _GimpColorNotebook {
+  GimpColorSelector parent_instance;
 
-	GimpColorNotebookPrivate *priv;
+  GimpColorNotebookPrivate *priv;
 };
 
-struct _GimpColorNotebookClass
-{
-	GimpColorSelectorClass parent_class;
+struct _GimpColorNotebookClass {
+  GimpColorSelectorClass parent_class;
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
-	void (* _gimp_reserved5) (void);
-	void (* _gimp_reserved6) (void);
-	void (* _gimp_reserved7) (void);
-	void (* _gimp_reserved8) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
+  void (*_gimp_reserved5)(void);
+  void (*_gimp_reserved6)(void);
+  void (*_gimp_reserved7)(void);
+  void (*_gimp_reserved8)(void);
 };
 
+GType gimp_color_notebook_get_type(void) G_GNUC_CONST;
 
-GType               gimp_color_notebook_get_type             (void) G_GNUC_CONST;
+GtkWidget *gimp_color_notebook_set_has_page(GimpColorNotebook *notebook,
+                                            GType page_type, gboolean has_page);
 
-GtkWidget         * gimp_color_notebook_set_has_page         (GimpColorNotebook *notebook,
-                                                              GType page_type,
-                                                              gboolean has_page);
-
-GtkWidget         * gimp_color_notebook_get_notebook         (GimpColorNotebook *notebook);
-GList             * gimp_color_notebook_get_selectors        (GimpColorNotebook *notebook);
-GimpColorSelector * gimp_color_notebook_get_current_selector (GimpColorNotebook *notebook);
-
+GtkWidget *gimp_color_notebook_get_notebook(GimpColorNotebook *notebook);
+GList *gimp_color_notebook_get_selectors(GimpColorNotebook *notebook);
+GimpColorSelector *
+gimp_color_notebook_get_current_selector(GimpColorNotebook *notebook);
 
 G_END_DECLS
 

@@ -18,8 +18,7 @@
 #ifndef __GIMP_PICK_BUTTON_KWIN_H__
 #define __GIMP_PICK_BUTTON_KWIN_H__
 
-gboolean _gimp_pick_button_kwin_available (void);
-void     _gimp_pick_button_kwin_pick      (GimpPickButton *button);
+gboolean _gimp_pick_button_kwin_available(void);
+void _gimp_pick_button_kwin_pick(GimpPickButton *button);
 
 #endif /* __GIMP_PICK_BUTTON_KWIN_H__ */
-

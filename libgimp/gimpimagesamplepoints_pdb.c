@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpimagesamplepoints
  * @title: gimpimagesamplepoints
@@ -32,7 +31,6 @@
  *
  * Functions for manipulating an image's sample points.
  **/
-
 
 /**
  * gimp_image_add_sample_point:
@@ -50,32 +48,26 @@
  *
  * Since: 2.10
  **/
-guint
-gimp_image_add_sample_point (GimpImage *image,
-                             gint position_x,
-                             gint position_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	guint sample_point = 0;
+guint gimp_image_add_sample_point(GimpImage *image, gint position_x,
+                                  gint position_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  guint sample_point = 0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_INT, position_x,
-	                                        G_TYPE_INT, position_y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         G_TYPE_INT, position_x, G_TYPE_INT,
+                                         position_y, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-add-sample-point",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-add-sample-point", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		sample_point = GIMP_VALUES_GET_UINT (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    sample_point = GIMP_VALUES_GET_UINT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return sample_point;
+  return sample_point;
 }
 
 /**
@@ -92,29 +84,23 @@ gimp_image_add_sample_point (GimpImage *image,
  *
  * Since: 2.10
  **/
-gboolean
-gimp_image_delete_sample_point (GimpImage *image,
-                                guint sample_point)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_delete_sample_point(GimpImage *image, guint sample_point) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_UINT, sample_point,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, G_TYPE_UINT, sample_point, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-delete-sample-point",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-delete-sample-point", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -135,30 +121,24 @@ gimp_image_delete_sample_point (GimpImage *image,
  *
  * Since: 2.10
  **/
-guint
-gimp_image_find_next_sample_point (GimpImage *image,
-                                   guint sample_point)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	guint next_sample_point = 0;
+guint gimp_image_find_next_sample_point(GimpImage *image, guint sample_point) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  guint next_sample_point = 0;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_UINT, sample_point,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, G_TYPE_UINT, sample_point, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-find-next-sample-point",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-find-next-sample-point", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-		next_sample_point = GIMP_VALUES_GET_UINT (return_vals, 1);
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS)
+    next_sample_point = GIMP_VALUES_GET_UINT(return_vals, 1);
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return next_sample_point;
+  return next_sample_point;
 }
 
 /**
@@ -177,32 +157,25 @@ gimp_image_find_next_sample_point (GimpImage *image,
  *
  * Since: 2.10
  **/
-gint
-gimp_image_get_sample_point_position (GimpImage *image,
-                                      guint sample_point,
-                                      gint      *position_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gint position_x = G_MININT;
+gint gimp_image_get_sample_point_position(GimpImage *image, guint sample_point,
+                                          gint *position_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gint position_x = G_MININT;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        G_TYPE_UINT, sample_point,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, G_TYPE_UINT, sample_point, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-get-sample-point-position",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-get-sample-point-position", args);
+  gimp_value_array_unref(args);
 
-	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-	{
-		position_x = GIMP_VALUES_GET_INT (return_vals, 1);
-		*position_y = GIMP_VALUES_GET_INT (return_vals, 2);
-	}
+  if (GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS) {
+    position_x = GIMP_VALUES_GET_INT(return_vals, 1);
+    *position_y = GIMP_VALUES_GET_INT(return_vals, 2);
+  }
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return position_x;
+  return position_x;
 }

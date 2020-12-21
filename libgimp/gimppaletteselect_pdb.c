@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimppaletteselect
  * @title: gimppaletteselect
@@ -33,10 +32,10 @@
  * Functions providing a palette selection dialog.
  **/
 
-
 /**
  * gimp_palettes_popup:
- * @palette_callback: The callback PDB proc to call when palette selection is made.
+ * @palette_callback: The callback PDB proc to call when palette selection is
+ *made.
  * @popup_title: Title of the palette selection dialog.
  * @initial_palette: The name of the palette to set as the first selected.
  *
@@ -46,31 +45,26 @@
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_palettes_popup (const gchar *palette_callback,
-                     const gchar *popup_title,
-                     const gchar *initial_palette)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palettes_popup(const gchar *palette_callback,
+                             const gchar *popup_title,
+                             const gchar *initial_palette) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, palette_callback,
-	                                        G_TYPE_STRING, popup_title,
-	                                        G_TYPE_STRING, initial_palette,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, G_TYPE_STRING, palette_callback, G_TYPE_STRING, popup_title,
+      G_TYPE_STRING, initial_palette, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palettes-popup",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals =
+      gimp_pdb_run_procedure_array(gimp_get_pdb(), "gimp-palettes-popup", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -83,27 +77,23 @@ gimp_palettes_popup (const gchar *palette_callback,
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_palettes_close_popup (const gchar *palette_callback)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palettes_close_popup(const gchar *palette_callback) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, palette_callback,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, G_TYPE_STRING, palette_callback,
+                                         G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palettes-close-popup",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palettes-close-popup", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -117,27 +107,23 @@ gimp_palettes_close_popup (const gchar *palette_callback)
  *
  * Returns: TRUE on success.
  **/
-gboolean
-gimp_palettes_set_popup (const gchar *palette_callback,
-                         const gchar *palette_name)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_palettes_set_popup(const gchar *palette_callback,
+                                 const gchar *palette_name) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        G_TYPE_STRING, palette_callback,
-	                                        G_TYPE_STRING, palette_name,
-	                                        G_TYPE_NONE);
+  args =
+      gimp_value_array_new_from_types(NULL, G_TYPE_STRING, palette_callback,
+                                      G_TYPE_STRING, palette_name, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-palettes-set-popup",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-palettes-set-popup", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }

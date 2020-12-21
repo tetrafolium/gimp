@@ -19,18 +19,15 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#if !defined(__GIMP_WIDGETS_H_INSIDE__) && !defined(GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
 #endif
 
 #ifndef __GIMP_CAIRO_UTILS_H__
 #define __GIMP_CAIRO_UTILS_H__
 
+gboolean gimp_cairo_set_focus_line_pattern(cairo_t *cr, GtkWidget *widget);
 
-gboolean          gimp_cairo_set_focus_line_pattern     (cairo_t       *cr,
-                                                         GtkWidget     *widget);
-
-cairo_surface_t * gimp_cairo_surface_create_from_pixbuf (GdkPixbuf     *pixbuf);
-
+cairo_surface_t *gimp_cairo_surface_create_from_pixbuf(GdkPixbuf *pixbuf);
 
 #endif /* __GIMP_CAIRO_UTILS_H__ */

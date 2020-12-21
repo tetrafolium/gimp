@@ -31,7 +31,6 @@
 
 #include "gimpcairo-utils.h"
 
-
 /**
  * SECTION: gimpcairo-utils
  * @title: GimpCairo-utils
@@ -40,7 +39,6 @@
  * Utility functions that make cairo easier to use with common
  * GIMP data types.
  **/
-
 
 /**
  * gimp_cairo_set_focus_line_pattern:
@@ -55,45 +53,38 @@
  *
  * Since: 2.6
  **/
-gboolean
-gimp_cairo_set_focus_line_pattern (cairo_t   *cr,
-                                   GtkWidget *widget)
-{
-	gint8    *dash_list;
-	gboolean retval = FALSE;
+gboolean gimp_cairo_set_focus_line_pattern(cairo_t *cr, GtkWidget *widget) {
+  gint8 *dash_list;
+  gboolean retval = FALSE;
 
-	g_return_val_if_fail (cr != NULL, FALSE);
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail(cr != NULL, FALSE);
+  g_return_val_if_fail(GTK_IS_WIDGET(widget), FALSE);
 
-	gtk_widget_style_get (widget,
-	                      "focus-line-pattern", (gchar *) &dash_list,
-	                      NULL);
+  gtk_widget_style_get(widget, "focus-line-pattern", (gchar *)&dash_list, NULL);
 
-	if (dash_list[0])
-	{
-		/* Taken straight from gtk_default_draw_focus()
-		 */
-		gint n_dashes     = strlen ((const gchar *) dash_list);
-		gdouble *dashes       = g_new (gdouble, n_dashes);
-		gdouble total_length = 0;
-		gint i;
+  if (dash_list[0]) {
+    /* Taken straight from gtk_default_draw_focus()
+     */
+    gint n_dashes = strlen((const gchar *)dash_list);
+    gdouble *dashes = g_new(gdouble, n_dashes);
+    gdouble total_length = 0;
+    gint i;
 
-		for (i = 0; i < n_dashes; i++)
-		{
-			dashes[i] = dash_list[i];
-			total_length += dash_list[i];
-		}
+    for (i = 0; i < n_dashes; i++) {
+      dashes[i] = dash_list[i];
+      total_length += dash_list[i];
+    }
 
-		cairo_set_dash (cr, dashes, n_dashes, 0.5);
+    cairo_set_dash(cr, dashes, n_dashes, 0.5);
 
-		g_free (dashes);
+    g_free(dashes);
 
-		retval = TRUE;
-	}
+    retval = TRUE;
+  }
 
-	g_free (dash_list);
+  g_free(dash_list);
 
-	return retval;
+  return retval;
 }
 
 /**
@@ -109,94 +100,86 @@ gimp_cairo_set_focus_line_pattern (cairo_t   *cr,
  *
  * Since: 2.6
  **/
-cairo_surface_t *
-gimp_cairo_surface_create_from_pixbuf (GdkPixbuf *pixbuf)
-{
-	cairo_surface_t *surface;
-	cairo_format_t format;
-	guchar          *dest;
-	const guchar    *src;
-	gint width;
-	gint height;
-	gint src_stride;
-	gint dest_stride;
-	gint y;
+cairo_surface_t *gimp_cairo_surface_create_from_pixbuf(GdkPixbuf *pixbuf) {
+  cairo_surface_t *surface;
+  cairo_format_t format;
+  guchar *dest;
+  const guchar *src;
+  gint width;
+  gint height;
+  gint src_stride;
+  gint dest_stride;
+  gint y;
 
-	g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+  g_return_val_if_fail(GDK_IS_PIXBUF(pixbuf), NULL);
 
-	width  = gdk_pixbuf_get_width (pixbuf);
-	height = gdk_pixbuf_get_height (pixbuf);
+  width = gdk_pixbuf_get_width(pixbuf);
+  height = gdk_pixbuf_get_height(pixbuf);
 
-	switch (gdk_pixbuf_get_n_channels (pixbuf))
-	{
-	case 3:
-		format = CAIRO_FORMAT_RGB24;
-		break;
-	case 4:
-		format = CAIRO_FORMAT_ARGB32;
-		break;
-	default:
-		g_assert_not_reached ();
-		break;
-	}
+  switch (gdk_pixbuf_get_n_channels(pixbuf)) {
+  case 3:
+    format = CAIRO_FORMAT_RGB24;
+    break;
+  case 4:
+    format = CAIRO_FORMAT_ARGB32;
+    break;
+  default:
+    g_assert_not_reached();
+    break;
+  }
 
-	surface = cairo_image_surface_create (format, width, height);
+  surface = cairo_image_surface_create(format, width, height);
 
-	cairo_surface_flush (surface);
+  cairo_surface_flush(surface);
 
-	src         = gdk_pixbuf_get_pixels (pixbuf);
-	src_stride  = gdk_pixbuf_get_rowstride (pixbuf);
+  src = gdk_pixbuf_get_pixels(pixbuf);
+  src_stride = gdk_pixbuf_get_rowstride(pixbuf);
 
-	dest        = cairo_image_surface_get_data (surface);
-	dest_stride = cairo_image_surface_get_stride (surface);
+  dest = cairo_image_surface_get_data(surface);
+  dest_stride = cairo_image_surface_get_stride(surface);
 
-	switch (format)
-	{
-	case CAIRO_FORMAT_RGB24:
-		for (y = 0; y < height; y++)
-		{
-			const guchar *s = src;
-			guchar       *d = dest;
-			gint w = width;
+  switch (format) {
+  case CAIRO_FORMAT_RGB24:
+    for (y = 0; y < height; y++) {
+      const guchar *s = src;
+      guchar *d = dest;
+      gint w = width;
 
-			while (w--)
-			{
-				GIMP_CAIRO_RGB24_SET_PIXEL (d, s[0], s[1], s[2]);
+      while (w--) {
+        GIMP_CAIRO_RGB24_SET_PIXEL(d, s[0], s[1], s[2]);
 
-				s += 3;
-				d += 4;
-			}
+        s += 3;
+        d += 4;
+      }
 
-			src  += src_stride;
-			dest += dest_stride;
-		}
-		break;
+      src += src_stride;
+      dest += dest_stride;
+    }
+    break;
 
-	case CAIRO_FORMAT_ARGB32:
-		for (y = 0; y < height; y++)
-		{
-			const guchar *s = src;
-			guchar       *d = dest;
-			gint w = width;
+  case CAIRO_FORMAT_ARGB32:
+    for (y = 0; y < height; y++) {
+      const guchar *s = src;
+      guchar *d = dest;
+      gint w = width;
 
-			while (w--)
-			{
-				GIMP_CAIRO_ARGB32_SET_PIXEL (d, s[0], s[1], s[2], s[3]);
+      while (w--) {
+        GIMP_CAIRO_ARGB32_SET_PIXEL(d, s[0], s[1], s[2], s[3]);
 
-				s += 4;
-				d += 4;
-			}
+        s += 4;
+        d += 4;
+      }
 
-			src  += src_stride;
-			dest += dest_stride;
-		}
-		break;
+      src += src_stride;
+      dest += dest_stride;
+    }
+    break;
 
-	default:
-		break;
-	}
+  default:
+    break;
+  }
 
-	cairo_surface_mark_dirty (surface);
+  cairo_surface_mark_dirty(surface);
 
-	return surface;
+  return surface;
 }

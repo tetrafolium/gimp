@@ -24,7 +24,6 @@
 
 #include "gimp.h"
 
-
 /**
  * SECTION: gimpimageselect
  * @title: gimpimageselect
@@ -32,7 +31,6 @@
  *
  * Functions to modify the image's selection.
  **/
-
 
 /**
  * gimp_image_select_color:
@@ -65,33 +63,25 @@
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_color (GimpImage      *image,
-                         GimpChannelOps operation,
-                         GimpDrawable   *drawable,
-                         const GimpRGB  *color)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_color(GimpImage *image, GimpChannelOps operation,
+                                 GimpDrawable *drawable, const GimpRGB *color) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        GIMP_TYPE_DRAWABLE, drawable,
-	                                        GIMP_TYPE_RGB, color,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, GIMP_TYPE_CHANNEL_OPS, operation,
+      GIMP_TYPE_DRAWABLE, drawable, GIMP_TYPE_RGB, color, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-color",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-image-select-color", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -135,35 +125,28 @@ gimp_image_select_color (GimpImage      *image,
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_contiguous_color (GimpImage      *image,
-                                    GimpChannelOps operation,
-                                    GimpDrawable   *drawable,
-                                    gdouble x,
-                                    gdouble y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_contiguous_color(GimpImage *image,
+                                            GimpChannelOps operation,
+                                            GimpDrawable *drawable, gdouble x,
+                                            gdouble y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        GIMP_TYPE_DRAWABLE, drawable,
-	                                        G_TYPE_DOUBLE, x,
-	                                        G_TYPE_DOUBLE, y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, GIMP_TYPE_CHANNEL_OPS, operation,
+      GIMP_TYPE_DRAWABLE, drawable, G_TYPE_DOUBLE, x, G_TYPE_DOUBLE, y,
+      G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-contiguous-color",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-select-contiguous-color", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -188,37 +171,27 @@ gimp_image_select_contiguous_color (GimpImage      *image,
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_rectangle (GimpImage      *image,
-                             GimpChannelOps operation,
-                             gdouble x,
-                             gdouble y,
-                             gdouble width,
-                             gdouble height)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_rectangle(GimpImage *image, GimpChannelOps operation,
+                                     gdouble x, gdouble y, gdouble width,
+                                     gdouble height) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        G_TYPE_DOUBLE, x,
-	                                        G_TYPE_DOUBLE, y,
-	                                        G_TYPE_DOUBLE, width,
-	                                        G_TYPE_DOUBLE, height,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, GIMP_TYPE_CHANNEL_OPS, operation,
+      G_TYPE_DOUBLE, x, G_TYPE_DOUBLE, y, G_TYPE_DOUBLE, width, G_TYPE_DOUBLE,
+      height, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-rectangle",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-select-rectangle", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -248,41 +221,31 @@ gimp_image_select_rectangle (GimpImage      *image,
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_round_rectangle (GimpImage      *image,
-                                   GimpChannelOps operation,
-                                   gdouble x,
-                                   gdouble y,
-                                   gdouble width,
-                                   gdouble height,
-                                   gdouble corner_radius_x,
-                                   gdouble corner_radius_y)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_round_rectangle(GimpImage *image,
+                                           GimpChannelOps operation, gdouble x,
+                                           gdouble y, gdouble width,
+                                           gdouble height,
+                                           gdouble corner_radius_x,
+                                           gdouble corner_radius_y) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        G_TYPE_DOUBLE, x,
-	                                        G_TYPE_DOUBLE, y,
-	                                        G_TYPE_DOUBLE, width,
-	                                        G_TYPE_DOUBLE, height,
-	                                        G_TYPE_DOUBLE, corner_radius_x,
-	                                        G_TYPE_DOUBLE, corner_radius_y,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, GIMP_TYPE_CHANNEL_OPS, operation,
+      G_TYPE_DOUBLE, x, G_TYPE_DOUBLE, y, G_TYPE_DOUBLE, width, G_TYPE_DOUBLE,
+      height, G_TYPE_DOUBLE, corner_radius_x, G_TYPE_DOUBLE, corner_radius_y,
+      G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-round-rectangle",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(
+      gimp_get_pdb(), "gimp-image-select-round-rectangle", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -308,37 +271,27 @@ gimp_image_select_round_rectangle (GimpImage      *image,
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_ellipse (GimpImage      *image,
-                           GimpChannelOps operation,
-                           gdouble x,
-                           gdouble y,
-                           gdouble width,
-                           gdouble height)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_ellipse(GimpImage *image, GimpChannelOps operation,
+                                   gdouble x, gdouble y, gdouble width,
+                                   gdouble height) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        G_TYPE_DOUBLE, x,
-	                                        G_TYPE_DOUBLE, y,
-	                                        G_TYPE_DOUBLE, width,
-	                                        G_TYPE_DOUBLE, height,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, GIMP_TYPE_CHANNEL_OPS, operation,
+      G_TYPE_DOUBLE, x, G_TYPE_DOUBLE, y, G_TYPE_DOUBLE, width, G_TYPE_DOUBLE,
+      height, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-ellipse",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-image-select-ellipse", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -346,7 +299,8 @@ gimp_image_select_ellipse (GimpImage      *image,
  * @image: The image.
  * @operation: The selection operation.
  * @num_segs: Number of points (count 1 coordinate as two points).
- * @segs: (array length=num_segs) (element-type gdouble): Array of points: { p1.x, p1.y, p2.x, p2.y, ..., pn.x, pn.y}.
+ * @segs: (array length=num_segs) (element-type gdouble): Array of points: {
+ *p1.x, p1.y, p2.x, p2.y, ..., pn.x, pn.y}.
  *
  * Create a polygonal selection over the specified image.
  *
@@ -367,34 +321,26 @@ gimp_image_select_ellipse (GimpImage      *image,
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_polygon (GimpImage      *image,
-                           GimpChannelOps operation,
-                           gint num_segs,
-                           const gdouble  *segs)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_polygon(GimpImage *image, GimpChannelOps operation,
+                                   gint num_segs, const gdouble *segs) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        G_TYPE_INT, num_segs,
-	                                        GIMP_TYPE_FLOAT_ARRAY, NULL,
-	                                        G_TYPE_NONE);
-	gimp_value_set_float_array (gimp_value_array_index (args, 3), segs, num_segs);
+  args = gimp_value_array_new_from_types(
+      NULL, GIMP_TYPE_IMAGE, image, GIMP_TYPE_CHANNEL_OPS, operation,
+      G_TYPE_INT, num_segs, GIMP_TYPE_FLOAT_ARRAY, NULL, G_TYPE_NONE);
+  gimp_value_set_float_array(gimp_value_array_index(args, 3), segs, num_segs);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-polygon",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-image-select-polygon", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }
 
 /**
@@ -418,29 +364,23 @@ gimp_image_select_polygon (GimpImage      *image,
  *
  * Since: 2.8
  **/
-gboolean
-gimp_image_select_item (GimpImage      *image,
-                        GimpChannelOps operation,
-                        GimpItem       *item)
-{
-	GimpValueArray *args;
-	GimpValueArray *return_vals;
-	gboolean success = TRUE;
+gboolean gimp_image_select_item(GimpImage *image, GimpChannelOps operation,
+                                GimpItem *item) {
+  GimpValueArray *args;
+  GimpValueArray *return_vals;
+  gboolean success = TRUE;
 
-	args = gimp_value_array_new_from_types (NULL,
-	                                        GIMP_TYPE_IMAGE, image,
-	                                        GIMP_TYPE_CHANNEL_OPS, operation,
-	                                        GIMP_TYPE_ITEM, item,
-	                                        G_TYPE_NONE);
+  args = gimp_value_array_new_from_types(NULL, GIMP_TYPE_IMAGE, image,
+                                         GIMP_TYPE_CHANNEL_OPS, operation,
+                                         GIMP_TYPE_ITEM, item, G_TYPE_NONE);
 
-	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-	                                            "gimp-image-select-item",
-	                                            args);
-	gimp_value_array_unref (args);
+  return_vals = gimp_pdb_run_procedure_array(gimp_get_pdb(),
+                                             "gimp-image-select-item", args);
+  gimp_value_array_unref(args);
 
-	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+  success = GIMP_VALUES_GET_ENUM(return_vals, 0) == GIMP_PDB_SUCCESS;
 
-	gimp_value_array_unref (return_vals);
+  gimp_value_array_unref(return_vals);
 
-	return success;
+  return success;
 }

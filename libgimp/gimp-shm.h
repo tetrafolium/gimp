@@ -23,12 +23,10 @@
 
 G_BEGIN_DECLS
 
+guchar *_gimp_shm_addr(void);
 
-guchar * _gimp_shm_addr  (void);
-
-void     _gimp_shm_open  (gint shm_ID);
-void     _gimp_shm_close (void);
-
+void _gimp_shm_open(gint shm_ID);
+void _gimp_shm_close(void);
 
 G_END_DECLS
 

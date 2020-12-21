@@ -19,7 +19,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#if !defined (__GIMP_UI_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#if !defined(__GIMP_UI_H_INSIDE__) && !defined(GIMP_COMPILATION)
 #error "Only <libgimp/gimpui.h> can be included directly."
 #endif
 
@@ -28,41 +28,42 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_PROGRESS_BAR            (gimp_progress_bar_get_type ())
-#define GIMP_PROGRESS_BAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PROGRESS_BAR, GimpProgressBar))
-#define GIMP_PROGRESS_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PROGRESS_BAR, GimpProgressBarClass))
-#define GIMP_IS_PROGRESS_BAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PROGRESS_BAR))
-#define GIMP_IS_PROGRESS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PROGRESS_BAR))
-#define GIMP_PROGRESS_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PROGRESS_BAR, GimpProgressBarClass))
-
+#define GIMP_TYPE_PROGRESS_BAR (gimp_progress_bar_get_type())
+#define GIMP_PROGRESS_BAR(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PROGRESS_BAR, GimpProgressBar))
+#define GIMP_PROGRESS_BAR_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PROGRESS_BAR,                    \
+                           GimpProgressBarClass))
+#define GIMP_IS_PROGRESS_BAR(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PROGRESS_BAR))
+#define GIMP_IS_PROGRESS_BAR_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PROGRESS_BAR))
+#define GIMP_PROGRESS_BAR_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PROGRESS_BAR,                    \
+                             GimpProgressBarClass))
 
 typedef struct _GimpProgressBarClass GimpProgressBarClass;
 
-struct _GimpProgressBar
-{
-	GtkProgressBar parent_instance;
+struct _GimpProgressBar {
+  GtkProgressBar parent_instance;
 
-	const gchar    *progress_callback;
-	gboolean cancelable;
+  const gchar *progress_callback;
+  gboolean cancelable;
 };
 
-struct _GimpProgressBarClass
-{
-	GtkProgressBarClass parent_class;
+struct _GimpProgressBarClass {
+  GtkProgressBarClass parent_class;
 
-	/* Padding for future expansion */
-	void (* _gimp_reserved1) (void);
-	void (* _gimp_reserved2) (void);
-	void (* _gimp_reserved3) (void);
-	void (* _gimp_reserved4) (void);
+  /* Padding for future expansion */
+  void (*_gimp_reserved1)(void);
+  void (*_gimp_reserved2)(void);
+  void (*_gimp_reserved3)(void);
+  void (*_gimp_reserved4)(void);
 };
 
+GType gimp_progress_bar_get_type(void) G_GNUC_CONST;
 
-GType       gimp_progress_bar_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_progress_bar_new      (void);
-
+GtkWidget *gimp_progress_bar_new(void);
 
 G_END_DECLS
 

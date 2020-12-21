@@ -25,7 +25,6 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-
 /**
  * GimpSignalHandlerFunc:
  * @signum: The number of the signal. Useful if different signals are
@@ -36,12 +35,10 @@ G_BEGIN_DECLS
  * also accepts or may return special values defined by your system's
  * signal.h header file (like @SIG_DFL or @SIG_IGN).
  **/
-typedef void (* GimpSignalHandlerFunc) (gint signum);
+typedef void (*GimpSignalHandlerFunc)(gint signum);
 
-GimpSignalHandlerFunc  gimp_signal_private (gint signum,
-                                            GimpSignalHandlerFunc handler,
-                                            gint flags);
-
+GimpSignalHandlerFunc
+gimp_signal_private(gint signum, GimpSignalHandlerFunc handler, gint flags);
 
 G_END_DECLS
 

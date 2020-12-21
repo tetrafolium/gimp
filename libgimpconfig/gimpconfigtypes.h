@@ -22,18 +22,15 @@
 #ifndef __GIMP_CONFIG_TYPES_H__
 #define __GIMP_CONFIG_TYPES_H__
 
-
 #include <libgimpbase/gimpbasetypes.h>
 
-
-typedef struct _GimpConfig GimpConfig;        /* dummy typedef */
+typedef struct _GimpConfig GimpConfig; /* dummy typedef */
 typedef struct _GimpConfigWriter GimpConfigWriter;
-typedef gchar *                   GimpConfigPath; /* to satisfy docs */
+typedef gchar *GimpConfigPath; /* to satisfy docs */
 typedef struct _GScanner GimpScanner;
 
 typedef struct _GimpColorConfig GimpColorConfig;
 
 #include <libgimpconfig/gimpconfigenums.h>
 
-
-#endif  /* __GIMP_CONFIG_TYPES_H__ */
+#endif /* __GIMP_CONFIG_TYPES_H__ */

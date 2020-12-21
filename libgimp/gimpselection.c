@@ -22,27 +22,18 @@
 
 #include "gimp.h"
 
-
-struct _GimpSelectionPrivate
-{
-	gpointer unused;
+struct _GimpSelectionPrivate {
+  gpointer unused;
 };
 
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpSelection, gimp_selection, GIMP_TYPE_CHANNEL)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpSelection, gimp_selection, GIMP_TYPE_CHANNEL)
 
 #define parent_class gimp_selection_parent_class
 
+static void gimp_selection_class_init(GimpSelectionClass *klass) {}
 
-static void
-gimp_selection_class_init (GimpSelectionClass *klass)
-{
-}
-
-static void
-gimp_selection_init (GimpSelection *selection)
-{
-	selection->priv = gimp_selection_get_instance_private (selection);
+static void gimp_selection_init(GimpSelection *selection) {
+  selection->priv = gimp_selection_get_instance_private(selection);
 }
 
 /**
@@ -60,15 +51,13 @@ gimp_selection_init (GimpSelection *selection)
  *
  * Since: 3.0
  **/
-GimpSelection *
-gimp_selection_get_by_id (gint32 selection_id)
-{
-	GimpItem *item = gimp_item_get_by_id (selection_id);
+GimpSelection *gimp_selection_get_by_id(gint32 selection_id) {
+  GimpItem *item = gimp_item_get_by_id(selection_id);
 
-	if (GIMP_IS_SELECTION (item))
-		return (GimpSelection *) item;
+  if (GIMP_IS_SELECTION(item))
+    return (GimpSelection *)item;
 
-	return NULL;
+  return NULL;
 }
 
 /**
@@ -91,15 +80,9 @@ gimp_selection_get_by_id (gint32 selection_id)
  *
  * Returns: (transfer none): The floated layer.
  */
-GimpLayer *
-gimp_selection_float (GimpImage     *image,
-                      gint n_drawables,
-                      GimpDrawable **drawables,
-                      gint offx,
-                      gint offy)
-{
-	return _gimp_selection_float (n_drawables,
-	                              (const GimpItem **) drawables,
-	                              offx,
-	                              offy);
+GimpLayer *gimp_selection_float(GimpImage *image, gint n_drawables,
+                                GimpDrawable **drawables, gint offx,
+                                gint offy) {
+  return _gimp_selection_float(n_drawables, (const GimpItem **)drawables, offx,
+                               offy);
 }

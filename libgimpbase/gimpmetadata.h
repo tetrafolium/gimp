@@ -24,13 +24,17 @@
 
 G_BEGIN_DECLS
 
-#define GIMP_TYPE_METADATA            (gimp_metadata_get_type ())
-#define GIMP_METADATA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_METADATA, GimpMetadata))
-#define GIMP_METADATA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_METADATA, GimpMetadataClass))
-#define GIMP_IS_METADATA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_METADATA))
-#define GIMP_IS_METADATA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_METADATA))
-#define GIMP_METADATA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_METADATA, GimpMetadataClass))
-
+#define GIMP_TYPE_METADATA (gimp_metadata_get_type())
+#define GIMP_METADATA(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_METADATA, GimpMetadata))
+#define GIMP_METADATA_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_METADATA, GimpMetadataClass))
+#define GIMP_IS_METADATA(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_METADATA))
+#define GIMP_IS_METADATA_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_METADATA))
+#define GIMP_METADATA_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_METADATA, GimpMetadataClass))
 
 /**
  * GimpMetadataLoadFlags:
@@ -42,16 +46,14 @@ G_BEGIN_DECLS
  *
  * What metadata to load when importing images.
  **/
-typedef enum
-{
-	GIMP_METADATA_LOAD_COMMENT     = 1 << 0,
-	GIMP_METADATA_LOAD_RESOLUTION  = 1 << 1,
-	GIMP_METADATA_LOAD_ORIENTATION = 1 << 2,
-	GIMP_METADATA_LOAD_COLORSPACE  = 1 << 3,
+typedef enum {
+  GIMP_METADATA_LOAD_COMMENT = 1 << 0,
+  GIMP_METADATA_LOAD_RESOLUTION = 1 << 1,
+  GIMP_METADATA_LOAD_ORIENTATION = 1 << 2,
+  GIMP_METADATA_LOAD_COLORSPACE = 1 << 3,
 
-	GIMP_METADATA_LOAD_ALL         = 0xffffffff
+  GIMP_METADATA_LOAD_ALL = 0xffffffff
 } GimpMetadataLoadFlags;
-
 
 /**
  * GimpMetadataSaveFlags:
@@ -67,18 +69,16 @@ typedef enum
  *
  * What kinds of metadata to save when exporting images.
  **/
-typedef enum
-{
-	GIMP_METADATA_SAVE_EXIF          = 1 << 0,
-	GIMP_METADATA_SAVE_XMP           = 1 << 1,
-	GIMP_METADATA_SAVE_IPTC          = 1 << 2,
-	GIMP_METADATA_SAVE_THUMBNAIL     = 1 << 3,
-	GIMP_METADATA_SAVE_COLOR_PROFILE = 1 << 4,
-	GIMP_METADATA_SAVE_COMMENT       = 1 << 5,
+typedef enum {
+  GIMP_METADATA_SAVE_EXIF = 1 << 0,
+  GIMP_METADATA_SAVE_XMP = 1 << 1,
+  GIMP_METADATA_SAVE_IPTC = 1 << 2,
+  GIMP_METADATA_SAVE_THUMBNAIL = 1 << 3,
+  GIMP_METADATA_SAVE_COLOR_PROFILE = 1 << 4,
+  GIMP_METADATA_SAVE_COMMENT = 1 << 5,
 
-	GIMP_METADATA_SAVE_ALL       = 0xffffffff
+  GIMP_METADATA_SAVE_ALL = 0xffffffff
 } GimpMetadataSaveFlags;
-
 
 /**
  * GimpMetadataColorspace:
@@ -89,68 +89,54 @@ typedef enum
  *
  * Well-defined colorspace information available from metadata
  **/
-typedef enum
-{
-	GIMP_METADATA_COLORSPACE_UNSPECIFIED,
-	GIMP_METADATA_COLORSPACE_UNCALIBRATED,
-	GIMP_METADATA_COLORSPACE_SRGB,
-	GIMP_METADATA_COLORSPACE_ADOBERGB
+typedef enum {
+  GIMP_METADATA_COLORSPACE_UNSPECIFIED,
+  GIMP_METADATA_COLORSPACE_UNCALIBRATED,
+  GIMP_METADATA_COLORSPACE_SRGB,
+  GIMP_METADATA_COLORSPACE_ADOBERGB
 } GimpMetadataColorspace;
 
+GType gimp_metadata_get_type(void) G_GNUC_CONST;
 
-GType          gimp_metadata_get_type            (void) G_GNUC_CONST;
+GimpMetadata *gimp_metadata_new(void);
+GimpMetadata *gimp_metadata_duplicate(GimpMetadata *metadata);
 
-GimpMetadata * gimp_metadata_new                 (void);
-GimpMetadata * gimp_metadata_duplicate           (GimpMetadata           *metadata);
+GimpMetadata *gimp_metadata_deserialize(const gchar *metadata_xml);
+gchar *gimp_metadata_serialize(GimpMetadata *metadata);
+gchar *gimp_metadata_get_guid(void);
 
-GimpMetadata * gimp_metadata_deserialize         (const gchar            *metadata_xml);
-gchar        * gimp_metadata_serialize           (GimpMetadata           *metadata);
-gchar        * gimp_metadata_get_guid            (void);
+void gimp_metadata_add_xmp_history(GimpMetadata *metadata, gchar *state_status);
 
-void           gimp_metadata_add_xmp_history     (GimpMetadata           *metadata,
-                                                  gchar                  *state_status);
+GimpMetadata *gimp_metadata_load_from_file(GFile *file, GError **error);
+gboolean gimp_metadata_save_to_file(GimpMetadata *metadata, GFile *file,
+                                    GError **error);
 
-GimpMetadata * gimp_metadata_load_from_file      (GFile                  *file,
-                                                  GError                **error);
-gboolean       gimp_metadata_save_to_file        (GimpMetadata           *metadata,
-                                                  GFile                  *file,
-                                                  GError                **error);
+gboolean gimp_metadata_set_from_exif(GimpMetadata *metadata,
+                                     const guchar *exif_data,
+                                     gint exif_data_length, GError **error);
+gboolean gimp_metadata_set_from_iptc(GimpMetadata *metadata,
+                                     const guchar *iptc_data,
+                                     gint iptc_data_length, GError **error);
+gboolean gimp_metadata_set_from_xmp(GimpMetadata *metadata,
+                                    const guchar *xmp_data,
+                                    gint xmp_data_length, GError **error);
 
-gboolean       gimp_metadata_set_from_exif       (GimpMetadata           *metadata,
-                                                  const guchar           *exif_data,
-                                                  gint exif_data_length,
-                                                  GError                **error);
-gboolean       gimp_metadata_set_from_iptc       (GimpMetadata           *metadata,
-                                                  const guchar           *iptc_data,
-                                                  gint iptc_data_length,
-                                                  GError                **error);
-gboolean       gimp_metadata_set_from_xmp        (GimpMetadata           *metadata,
-                                                  const guchar           *xmp_data,
-                                                  gint xmp_data_length,
-                                                  GError                **error);
+void gimp_metadata_set_pixel_size(GimpMetadata *metadata, gint width,
+                                  gint height);
+void gimp_metadata_set_bits_per_sample(GimpMetadata *metadata,
+                                       gint bits_per_sample);
 
-void           gimp_metadata_set_pixel_size      (GimpMetadata           *metadata,
-                                                  gint width,
-                                                  gint height);
-void           gimp_metadata_set_bits_per_sample (GimpMetadata           *metadata,
-                                                  gint bits_per_sample);
+gboolean gimp_metadata_get_resolution(GimpMetadata *metadata, gdouble *xres,
+                                      gdouble *yres, GimpUnit *unit);
+void gimp_metadata_set_resolution(GimpMetadata *metadata, gdouble xres,
+                                  gdouble yres, GimpUnit unit);
 
-gboolean       gimp_metadata_get_resolution      (GimpMetadata           *metadata,
-                                                  gdouble                *xres,
-                                                  gdouble                *yres,
-                                                  GimpUnit               *unit);
-void           gimp_metadata_set_resolution      (GimpMetadata           *metadata,
-                                                  gdouble xres,
-                                                  gdouble yres,
-                                                  GimpUnit unit);
+GimpMetadataColorspace gimp_metadata_get_colorspace(GimpMetadata *metadata);
+void gimp_metadata_set_colorspace(GimpMetadata *metadata,
+                                  GimpMetadataColorspace colorspace);
 
-GimpMetadataColorspace
-gimp_metadata_get_colorspace      (GimpMetadata           *metadata);
-void           gimp_metadata_set_colorspace      (GimpMetadata           *metadata,
-                                                  GimpMetadataColorspace colorspace);
-
-gboolean       gimp_metadata_is_tag_supported    (const gchar            *tag,
-                                                  const gchar            *mime_type);
+gboolean gimp_metadata_is_tag_supported(const gchar *tag,
+                                        const gchar *mime_type);
 
 G_END_DECLS
 

@@ -22,21 +22,20 @@
 #ifndef __GIMP_WIN32_IO_H__
 #define __GIMP_WIN32_IO_H__
 
-#include <io.h>
 #include <direct.h>
+#include <io.h>
 
 G_BEGIN_DECLS
 
-
-#define mkdir(n,a)  _mkdir(n)
-#define chmod(n,f)  _chmod(n,f)
-#define access(f,p) _access(f,p)
+#define mkdir(n, a) _mkdir(n)
+#define chmod(n, f) _chmod(n, f)
+#define access(f, p) _access(f, p)
 
 #ifndef S_ISREG
-#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#define S_ISREG(m) (((m)&_S_IFMT) == _S_IFREG)
 #endif
 #ifndef S_ISDIR
-#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#define S_ISDIR(m) (((m)&_S_IFMT) == _S_IFDIR)
 #endif
 
 #ifndef S_IRUSR
@@ -91,7 +90,7 @@ G_BEGIN_DECLS
  */
 /* needs coorection for msvc though ;( */
 #ifdef _MSC_VER
-#define ftruncate(f,s) g_win32_ftruncate(f,s)
+#define ftruncate(f, s) g_win32_ftruncate(f, s)
 #endif
 
 G_END_DECLS
