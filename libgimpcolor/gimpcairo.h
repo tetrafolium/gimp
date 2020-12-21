@@ -25,14 +25,14 @@
 
 
 void              gimp_cairo_set_source_rgb        (cairo_t         *cr,
-                                                    const GimpRGB   *color);
+        const GimpRGB   *color);
 void              gimp_cairo_set_source_rgba       (cairo_t         *cr,
-                                                    const GimpRGB   *color);
+        const GimpRGB   *color);
 
 cairo_pattern_t * gimp_cairo_checkerboard_create   (cairo_t         *cr,
-                                                    gint             size,
-                                                    const GimpRGB   *light,
-                                                    const GimpRGB   *dark);
+        gint             size,
+        const GimpRGB   *light,
+        const GimpRGB   *dark);
 
 const Babl      * gimp_cairo_surface_get_format    (cairo_surface_t *surface);
 GeglBuffer      * gimp_cairo_surface_create_buffer (cairo_surface_t *surface);

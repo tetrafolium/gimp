@@ -111,22 +111,22 @@ typedef struct _CompressorEntry CompressorEntry;
 
 struct _CompressorEntry
 {
-  const gchar *file_type;
-  const gchar *mime_type;
-  const gchar *extensions;
-  const gchar *magic;
-  const gchar *xcf_extension;
-  const gchar *generic_extension;
+    const gchar *file_type;
+    const gchar *mime_type;
+    const gchar *extensions;
+    const gchar *magic;
+    const gchar *xcf_extension;
+    const gchar *generic_extension;
 
-  const gchar *load_proc;
-  const gchar *load_blurb;
-  const gchar *load_help;
-  LoadFn       load_fn;
+    const gchar *load_proc;
+    const gchar *load_blurb;
+    const gchar *load_help;
+    LoadFn       load_fn;
 
-  const gchar *save_proc;
-  const gchar *save_blurb;
-  const gchar *save_help;
-  SaveFn       save_fn;
+    const gchar *save_proc;
+    const gchar *save_blurb;
+    const gchar *save_help;
+    SaveFn       save_fn;
 };
 
 
@@ -135,12 +135,12 @@ typedef struct _CompressorClass CompressorClass;
 
 struct _Compressor
 {
-  GimpPlugIn      parent_instance;
+    GimpPlugIn      parent_instance;
 };
 
 struct _CompressorClass
 {
-  GimpPlugInClass parent_class;
+    GimpPlugInClass parent_class;
 };
 
 
@@ -151,53 +151,53 @@ GType                   compressor_get_type         (void) G_GNUC_CONST;
 
 static GList          * compressor_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * compressor_create_procedure (GimpPlugIn           *plug_in,
-                                                     const gchar          *name);
+        const gchar          *name);
 
 static GimpValueArray * compressor_save             (GimpProcedure        *procedure,
-                                                     GimpRunMode           run_mode,
-                                                     GimpImage            *image,
-                                                     gint                  n_drawables,
-                                                     GimpDrawable        **drawables,
-                                                     GFile                *file,
-                                                     const GimpValueArray *args,
-                                                     gpointer              run_data);
+        GimpRunMode           run_mode,
+        GimpImage            *image,
+        gint                  n_drawables,
+        GimpDrawable        **drawables,
+        GFile                *file,
+        const GimpValueArray *args,
+        gpointer              run_data);
 static GimpValueArray * compressor_load             (GimpProcedure        *procedure,
-                                                     GimpRunMode           run_mode,
-                                                     GFile                *file,
-                                                     const GimpValueArray *args,
-                                                     gpointer              run_data);
+        GimpRunMode           run_mode,
+        GFile                *file,
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 static GimpImage         * load_image     (const CompressorEntry *compressor,
-                                           GFile                 *file,
-                                           gint32                 run_mode,
-                                           GimpPDBStatusType     *status,
-                                           GError               **error);
+        GFile                 *file,
+        gint32                 run_mode,
+        GimpPDBStatusType     *status,
+        GError               **error);
 static GimpPDBStatusType   save_image     (const CompressorEntry *compressor,
-                                           GFile                 *file,
-                                           GimpImage             *image,
-                                           gint                   n_drawables,
-                                           GimpDrawable         **drawables,
-                                           gint32                 run_mode,
-                                           GError               **error);
+        GFile                 *file,
+        GimpImage             *image,
+        gint                   n_drawables,
+        GimpDrawable         **drawables,
+        gint32                 run_mode,
+        GError               **error);
 
 static gboolean            valid_file     (GFile                 *file);
 static const gchar       * find_extension (const CompressorEntry *compressor,
-                                           const gchar           *filename);
+        const gchar           *filename);
 
 static gboolean            gzip_load      (GFile                 *infile,
-                                           GFile                 *outfile);
+        GFile                 *outfile);
 static gboolean            gzip_save      (GFile                 *infile,
-                                           GFile                 *outfile);
+        GFile                 *outfile);
 
 static gboolean            bzip2_load     (GFile                 *infile,
-                                           GFile                 *outfile);
+        GFile                 *outfile);
 static gboolean            bzip2_save     (GFile                 *infile,
-                                           GFile                 *outfile);
+        GFile                 *outfile);
 
 static gboolean            xz_load        (GFile                 *infile,
-                                           GFile                 *outfile);
+        GFile                 *outfile);
 static gboolean            xz_save        (GFile                 *infile,
-                                           GFile                 *outfile);
+        GFile                 *outfile);
 static goffset             get_file_info  (GFile                 *file);
 
 
@@ -208,72 +208,72 @@ GIMP_MAIN (COMPRESSOR_TYPE)
 
 static const CompressorEntry compressors[] =
 {
-  {
-    N_("gzip archive"),
-    "application/x-gzip",
-    "xcf.gz,xcfgz", /* FIXME "xcf.gz,gz,xcfgz" */
-    "0,string,\037\213",
-    ".xcfgz",
-    ".gz",
+    {
+        N_("gzip archive"),
+        "application/x-gzip",
+        "xcf.gz,xcfgz", /* FIXME "xcf.gz,gz,xcfgz" */
+        "0,string,\037\213",
+        ".xcfgz",
+        ".gz",
 
-    "file-gz-load",
-    "loads files compressed with gzip",
-    "This procedure loads files in the gzip compressed format.",
-    gzip_load,
+        "file-gz-load",
+        "loads files compressed with gzip",
+        "This procedure loads files in the gzip compressed format.",
+        gzip_load,
 
-    "file-gz-save",
-    "saves files compressed with gzip",
-    "This procedure saves files in the gzip compressed format.",
-    gzip_save
-  },
+        "file-gz-save",
+        "saves files compressed with gzip",
+        "This procedure saves files in the gzip compressed format.",
+        gzip_save
+    },
 
-  {
-    N_("bzip archive"),
-    "application/x-bzip",
-    "xcf.bz2,xcfbz2", /* FIXME "xcf.bz2,bz2,xcfbz2" */
-    "0,string,BZh",
-    ".xcfbz2",
-    ".bz2",
+    {
+        N_("bzip archive"),
+        "application/x-bzip",
+        "xcf.bz2,xcfbz2", /* FIXME "xcf.bz2,bz2,xcfbz2" */
+        "0,string,BZh",
+        ".xcfbz2",
+        ".bz2",
 
-    "file-bz2-load",
-    "loads files compressed with bzip2",
-    "This procedure loads files in the bzip2 compressed format.",
-    bzip2_load,
+        "file-bz2-load",
+        "loads files compressed with bzip2",
+        "This procedure loads files in the bzip2 compressed format.",
+        bzip2_load,
 
-    "file-bz2-save",
-    "saves files compressed with bzip2",
-    "This procedure saves files in the bzip2 compressed format.",
-    bzip2_save
-  },
+        "file-bz2-save",
+        "saves files compressed with bzip2",
+        "This procedure saves files in the bzip2 compressed format.",
+        bzip2_save
+    },
 
-  {
-    N_("xz archive"),
-    "application/x-xz",
-    "xcf.xz,xcfxz", /* FIXME "xcf.xz,xz,xcfxz" */
-    "0,string,\3757zXZ\x00",
-    ".xcfxz",
-    ".xz",
+    {
+        N_("xz archive"),
+        "application/x-xz",
+        "xcf.xz,xcfxz", /* FIXME "xcf.xz,xz,xcfxz" */
+        "0,string,\3757zXZ\x00",
+        ".xcfxz",
+        ".xz",
 
-    "file-xz-load",
-    "loads files compressed with xz",
-    "This procedure loads files in the xz compressed format.",
-    xz_load,
+        "file-xz-load",
+        "loads files compressed with xz",
+        "This procedure loads files in the xz compressed format.",
+        xz_load,
 
-    "file-xz-save",
-    "saves files compressed with xz",
-    "This procedure saves files in the xz compressed format.",
-    xz_save
-  }
+        "file-xz-save",
+        "saves files compressed with xz",
+        "This procedure saves files in the xz compressed format.",
+        xz_save
+    }
 };
 
 
 static void
 compressor_class_init (CompressorClass *klass)
 {
-  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-  plug_in_class->query_procedures = compressor_query_procedures;
-  plug_in_class->create_procedure = compressor_create_procedure;
+    plug_in_class->query_procedures = compressor_query_procedures;
+    plug_in_class->create_procedure = compressor_create_procedure;
 }
 
 static void
@@ -284,81 +284,81 @@ compressor_init (Compressor *compressor)
 static GList *
 compressor_query_procedures (GimpPlugIn *plug_in)
 {
-  GList *list = NULL;
-  gint   i;
+    GList *list = NULL;
+    gint   i;
 
-  for (i = 0; i < G_N_ELEMENTS (compressors); i++)
+    for (i = 0; i < G_N_ELEMENTS (compressors); i++)
     {
-      const CompressorEntry *compressor = &compressors[i];
+        const CompressorEntry *compressor = &compressors[i];
 
-      list = g_list_append (list, g_strdup (compressor->load_proc));
-      list = g_list_append (list, g_strdup (compressor->save_proc));
+        list = g_list_append (list, g_strdup (compressor->load_proc));
+        list = g_list_append (list, g_strdup (compressor->save_proc));
     }
 
-  return list;
+    return list;
 }
 
 static GimpProcedure *
 compressor_create_procedure (GimpPlugIn  *plug_in,
                              const gchar *name)
 {
-  GimpProcedure *procedure = NULL;
-  gint           i;
+    GimpProcedure *procedure = NULL;
+    gint           i;
 
-  for (i = 0; i < G_N_ELEMENTS (compressors); i++)
+    for (i = 0; i < G_N_ELEMENTS (compressors); i++)
     {
-      const CompressorEntry *compressor = &compressors[i];
+        const CompressorEntry *compressor = &compressors[i];
 
-      if (! strcmp (name, compressor->load_proc))
+        if (! strcmp (name, compressor->load_proc))
         {
-          procedure = gimp_load_procedure_new (plug_in, name,
-                                               GIMP_PDB_PROC_TYPE_PLUGIN,
-                                               compressor_load,
-                                               (gpointer) compressor, NULL);
+            procedure = gimp_load_procedure_new (plug_in, name,
+                                                 GIMP_PDB_PROC_TYPE_PLUGIN,
+                                                 compressor_load,
+                                                 (gpointer) compressor, NULL);
 
-          gimp_procedure_set_documentation (procedure,
-                                            compressor->load_blurb,
-                                            compressor->load_help,
-                                            name);
+            gimp_procedure_set_documentation (procedure,
+                                              compressor->load_blurb,
+                                              compressor->load_help,
+                                              name);
 
-          gimp_file_procedure_set_magics (GIMP_FILE_PROCEDURE (procedure),
-                                          compressor->magic);
+            gimp_file_procedure_set_magics (GIMP_FILE_PROCEDURE (procedure),
+                                            compressor->magic);
         }
-      else if (! strcmp (name, compressor->save_proc))
+        else if (! strcmp (name, compressor->save_proc))
         {
-          procedure = gimp_save_procedure_new (plug_in, name,
-                                               GIMP_PDB_PROC_TYPE_PLUGIN,
-                                               compressor_save,
-                                               (gpointer) compressor, NULL);
+            procedure = gimp_save_procedure_new (plug_in, name,
+                                                 GIMP_PDB_PROC_TYPE_PLUGIN,
+                                                 compressor_save,
+                                                 (gpointer) compressor, NULL);
 
-          gimp_procedure_set_image_types (procedure, "RGB*, GRAY*, INDEXED*");
+            gimp_procedure_set_image_types (procedure, "RGB*, GRAY*, INDEXED*");
 
-          gimp_procedure_set_documentation (procedure,
-                                            compressor->save_blurb,
-                                            compressor->save_help,
-                                            name);
+            gimp_procedure_set_documentation (procedure,
+                                              compressor->save_blurb,
+                                              compressor->save_help,
+                                              name);
         }
 
-      if (procedure)
+        if (procedure)
         {
-          gimp_procedure_set_menu_label (procedure, compressor->file_type);
+            gimp_procedure_set_menu_label (procedure, compressor->file_type);
 
-          gimp_procedure_set_attribution (procedure,
-                                          "Daniel Risacher",
-                                          "Daniel Risacher, Spencer Kimball "
-                                          "and Peter Mattis",
-                                          "1995-1997");
+            gimp_procedure_set_attribution (procedure,
+                                            "Daniel Risacher",
+                                            "Daniel Risacher, Spencer Kimball "
+                                            "and Peter Mattis",
+                                            "1995-1997");
 
-          gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
-                                              compressor->mime_type);
-          gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
-                                              compressor->extensions);
+            gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
+                                                compressor->mime_type);
+            gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
+                                                compressor->extensions);
 
-          return procedure;
+            return procedure;
         }
     }
 
-  return NULL;
+    return NULL;
 }
 
 static GimpValueArray *
@@ -368,27 +368,27 @@ compressor_load (GimpProcedure        *procedure,
                  const GimpValueArray *args,
                  gpointer              run_data)
 {
-  const CompressorEntry *compressor = run_data;
-  GimpValueArray        *return_vals;
-  GimpPDBStatusType      status;
-  GimpImage             *image;
-  GError                *error = NULL;
+    const CompressorEntry *compressor = run_data;
+    GimpValueArray        *return_vals;
+    GimpPDBStatusType      status;
+    GimpImage             *image;
+    GError                *error = NULL;
 
-  /*  We handle PDB errors by forwarding them to the caller in
-   *  our return values.
-   */
-  gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
-                                      GIMP_PDB_ERROR_HANDLER_PLUGIN);
+    /*  We handle PDB errors by forwarding them to the caller in
+     *  our return values.
+     */
+    gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
+                                        GIMP_PDB_ERROR_HANDLER_PLUGIN);
 
-  image = load_image (compressor, file, run_mode,
-                      &status, &error);
+    image = load_image (compressor, file, run_mode,
+                        &status, &error);
 
-  return_vals = gimp_procedure_new_return_values (procedure, status, error);
+    return_vals = gimp_procedure_new_return_values (procedure, status, error);
 
-  if (image && status == GIMP_PDB_SUCCESS)
-    GIMP_VALUES_SET_IMAGE (return_vals, 1, image);
+    if (image && status == GIMP_PDB_SUCCESS)
+        GIMP_VALUES_SET_IMAGE (return_vals, 1, image);
 
-  return return_vals;
+    return return_vals;
 }
 
 static GimpValueArray *
@@ -401,20 +401,20 @@ compressor_save (GimpProcedure        *procedure,
                  const GimpValueArray *args,
                  gpointer              run_data)
 {
-  const CompressorEntry *compressor = run_data;
-  GimpPDBStatusType      status;
-  GError                *error = NULL;
+    const CompressorEntry *compressor = run_data;
+    GimpPDBStatusType      status;
+    GError                *error = NULL;
 
-  /*  We handle PDB errors by forwarding them to the caller in
-   *  our return values.
-   */
-  gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
-                                      GIMP_PDB_ERROR_HANDLER_PLUGIN);
+    /*  We handle PDB errors by forwarding them to the caller in
+     *  our return values.
+     */
+    gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
+                                        GIMP_PDB_ERROR_HANDLER_PLUGIN);
 
-  status = save_image (compressor, file, image, n_drawables, drawables,
-                       run_mode, &error);
+    status = save_image (compressor, file, image, n_drawables, drawables,
+                         run_mode, &error);
 
-  return gimp_procedure_new_return_values (procedure, status, error);
+    return gimp_procedure_new_return_values (procedure, status, error);
 }
 
 static GimpPDBStatusType
@@ -426,63 +426,63 @@ save_image (const CompressorEntry  *compressor,
             gint32                  run_mode,
             GError                **error)
 {
-  gchar       *filename = g_file_get_path (file);
-  const gchar *ext;
-  GFile       *tmp_file;
+    gchar       *filename = g_file_get_path (file);
+    const gchar *ext;
+    GFile       *tmp_file;
 
-  ext = find_extension (compressor, filename);
+    ext = find_extension (compressor, filename);
 
-  if (! ext)
+    if (! ext)
     {
-      g_message (_("No sensible file extension, saving as compressed XCF."));
-      ext = ".xcf";
+        g_message (_("No sensible file extension, saving as compressed XCF."));
+        ext = ".xcf";
     }
 
-  /* get a temp name with the right extension and save into it. */
+    /* get a temp name with the right extension and save into it. */
 
-  tmp_file = gimp_temp_file (ext + 1);
+    tmp_file = gimp_temp_file (ext + 1);
 
-  if (! (gimp_file_save (run_mode,
-                         image,
-                         n_drawables,
-                         (const GimpItem **) drawables,
-                         tmp_file) &&
-         valid_file (tmp_file)))
+    if (! (gimp_file_save (run_mode,
+                           image,
+                           n_drawables,
+                           (const GimpItem **) drawables,
+                           tmp_file) &&
+            valid_file (tmp_file)))
     {
-      g_file_delete (tmp_file, NULL, NULL);
-      g_object_unref (tmp_file);
-      g_free (filename);
+        g_file_delete (tmp_file, NULL, NULL);
+        g_object_unref (tmp_file);
+        g_free (filename);
 
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   "%s", gimp_pdb_get_last_error (gimp_get_pdb ()));
+        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                     "%s", gimp_pdb_get_last_error (gimp_get_pdb ()));
 
-      return GIMP_PDB_EXECUTION_ERROR;
+        return GIMP_PDB_EXECUTION_ERROR;
     }
 
-  gimp_progress_init_printf (_("Compressing '%s'"),
-                             gimp_file_get_utf8_name  (file));
+    gimp_progress_init_printf (_("Compressing '%s'"),
+                               gimp_file_get_utf8_name  (file));
 
-  if (! compressor->save_fn (tmp_file, file))
+    if (! compressor->save_fn (tmp_file, file))
     {
-      g_file_delete (tmp_file, NULL, NULL);
-      g_object_unref (tmp_file);
-      g_free (filename);
+        g_file_delete (tmp_file, NULL, NULL);
+        g_object_unref (tmp_file);
+        g_free (filename);
 
-      return GIMP_PDB_EXECUTION_ERROR;
+        return GIMP_PDB_EXECUTION_ERROR;
     }
 
-  g_file_delete (tmp_file, NULL, NULL);
-  g_object_unref (tmp_file);
+    g_file_delete (tmp_file, NULL, NULL);
+    g_object_unref (tmp_file);
 
-  gimp_progress_update (1.0);
+    gimp_progress_update (1.0);
 
-  /* ask the core to save a thumbnail for compressed XCF files */
-  if (strcmp (ext, ".xcf") == 0)
-    gimp_file_save_thumbnail (image, file);
+    /* ask the core to save a thumbnail for compressed XCF files */
+    if (strcmp (ext, ".xcf") == 0)
+        gimp_file_save_thumbnail (image, file);
 
-  g_free (filename);
+    g_free (filename);
 
-  return GIMP_PDB_SUCCESS;
+    return GIMP_PDB_SUCCESS;
 }
 
 static GimpImage *
@@ -492,109 +492,109 @@ load_image (const CompressorEntry  *compressor,
             GimpPDBStatusType      *status,
             GError                **error)
 {
-  GimpImage   *image;
-  gchar       *filename;
-  const gchar *ext;
-  GFile       *tmp_file;
+    GimpImage   *image;
+    gchar       *filename;
+    const gchar *ext;
+    GFile       *tmp_file;
 
-  filename = g_file_get_path (file);
+    filename = g_file_get_path (file);
 
-  ext = find_extension (compressor, filename);
+    ext = find_extension (compressor, filename);
 
-  if (! ext)
+    if (! ext)
     {
-      g_message (_("No sensible file extension, "
-                   "attempting to load with file magic."));
-      ext = ".foo";
+        g_message (_("No sensible file extension, "
+                     "attempting to load with file magic."));
+        ext = ".foo";
     }
 
-  /* find a temp name */
-  tmp_file = gimp_temp_file (ext + 1);
+    /* find a temp name */
+    tmp_file = gimp_temp_file (ext + 1);
 
-  if (! compressor->load_fn (file, tmp_file))
+    if (! compressor->load_fn (file, tmp_file))
     {
-      g_object_unref (tmp_file);
-      g_free (filename);
-      *status = GIMP_PDB_EXECUTION_ERROR;
-      return NULL;
+        g_object_unref (tmp_file);
+        g_free (filename);
+        *status = GIMP_PDB_EXECUTION_ERROR;
+        return NULL;
     }
 
-  g_free (filename);
+    g_free (filename);
 
-  /* now that we uncompressed it, load the temp file */
+    /* now that we uncompressed it, load the temp file */
 
-  image = gimp_file_load (run_mode, tmp_file);
+    image = gimp_file_load (run_mode, tmp_file);
 
-  g_file_delete (tmp_file, NULL, NULL);
-  g_object_unref (tmp_file);
+    g_file_delete (tmp_file, NULL, NULL);
+    g_object_unref (tmp_file);
 
-  if (image)
+    if (image)
     {
-      *status = GIMP_PDB_SUCCESS;
+        *status = GIMP_PDB_SUCCESS;
 
-      gimp_image_set_file (image, file);
+        gimp_image_set_file (image, file);
     }
-  else
+    else
     {
-      /* Forward the return status of the underlining plug-in for the
-       * given format.
-       */
-      *status = gimp_pdb_get_last_status (gimp_get_pdb ());
+        /* Forward the return status of the underlining plug-in for the
+         * given format.
+         */
+        *status = gimp_pdb_get_last_status (gimp_get_pdb ());
 
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   "%s", gimp_pdb_get_last_error (gimp_get_pdb ()));
+        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                     "%s", gimp_pdb_get_last_error (gimp_get_pdb ()));
     }
 
-  return image;
+    return image;
 }
 
 static gboolean
 valid_file (GFile *file)
 {
-  gchar    *filename;
-  GStatBuf  buf;
-  gboolean  valid;
+    gchar    *filename;
+    GStatBuf  buf;
+    gboolean  valid;
 
-  filename = g_file_get_path (file);
-  valid = g_stat (filename, &buf) == 0 && buf.st_size > 0;
-  g_free (filename);
+    filename = g_file_get_path (file);
+    valid = g_stat (filename, &buf) == 0 && buf.st_size > 0;
+    g_free (filename);
 
-  return valid;
+    return valid;
 }
 
 static const gchar *
 find_extension (const CompressorEntry *compressor,
                 const gchar           *filename)
 {
-  gchar *filename_copy;
-  gchar *ext;
+    gchar *filename_copy;
+    gchar *ext;
 
-  /* we never free this copy - aren't we evil! */
-  filename_copy = g_strdup (filename);
+    /* we never free this copy - aren't we evil! */
+    filename_copy = g_strdup (filename);
 
-  /* find the extension, boy! */
-  ext = strrchr (filename_copy, '.');
+    /* find the extension, boy! */
+    ext = strrchr (filename_copy, '.');
 
-  while (TRUE)
+    while (TRUE)
     {
-      if (!ext || ext[1] == '\0' || strchr (ext, G_DIR_SEPARATOR))
+        if (!ext || ext[1] == '\0' || strchr (ext, G_DIR_SEPARATOR))
         {
-          return NULL;
+            return NULL;
         }
 
-      if (0 == g_ascii_strcasecmp (ext, compressor->xcf_extension))
+        if (0 == g_ascii_strcasecmp (ext, compressor->xcf_extension))
         {
-          return ".xcf";  /* we've found it */
+            return ".xcf";  /* we've found it */
         }
-      if (0 != g_ascii_strcasecmp (ext, compressor->generic_extension))
+        if (0 != g_ascii_strcasecmp (ext, compressor->generic_extension))
         {
-          return ext;
+            return ext;
         }
-      else
+        else
         {
-          /* we found ".gz" so strip it, loop back, and look again */
-          *ext = '\0';
-          ext = strrchr (filename_copy, '.');
+            /* we found ".gz" so strip it, loop back, and look again */
+            *ext = '\0';
+            ext = strrchr (filename_copy, '.');
         }
     }
 }
@@ -603,473 +603,473 @@ static gboolean
 gzip_load (GFile *infile,
            GFile *outfile)
 {
-  gchar    *in_filename  = g_file_get_path (infile);
-  gchar    *out_filename = g_file_get_path (outfile);
-  gboolean  ret;
-  int       fd;
-  gzFile    in;
-  FILE     *out;
-  char      buf[16384];
-  int       len;
+    gchar    *in_filename  = g_file_get_path (infile);
+    gchar    *out_filename = g_file_get_path (outfile);
+    gboolean  ret;
+    int       fd;
+    gzFile    in;
+    FILE     *out;
+    char      buf[16384];
+    int       len;
 
-  ret = FALSE;
-  in = NULL;
-  out = NULL;
+    ret = FALSE;
+    in = NULL;
+    out = NULL;
 
-  fd = g_open (in_filename, O_RDONLY | _O_BINARY, 0);
-  if (fd == -1)
-    goto out;
+    fd = g_open (in_filename, O_RDONLY | _O_BINARY, 0);
+    if (fd == -1)
+        goto out;
 
-  in = gzdopen (fd, "rb");
-  if (! in)
+    in = gzdopen (fd, "rb");
+    if (! in)
     {
-      close (fd);
-      goto out;
+        close (fd);
+        goto out;
     }
 
-  out = g_fopen (out_filename, "wb");
-  if (! out)
-    goto out;
+    out = g_fopen (out_filename, "wb");
+    if (! out)
+        goto out;
 
-  while (TRUE)
+    while (TRUE)
     {
-      len = gzread (in, buf, sizeof buf);
+        len = gzread (in, buf, sizeof buf);
 
-      if (len < 0)
-        break;
-      else if (len == 0)
+        if (len < 0)
+            break;
+        else if (len == 0)
         {
-          ret = TRUE;
-          break;
+            ret = TRUE;
+            break;
         }
 
-      if (fwrite(buf, 1, len, out) != len)
-        break;
+        if (fwrite(buf, 1, len, out) != len)
+            break;
     }
 
- out:
-  /* There is no need to close(fd) as it is closed by gzclose(). */
-  if (in)
-    if (gzclose (in) != Z_OK)
-      ret = FALSE;
+out:
+    /* There is no need to close(fd) as it is closed by gzclose(). */
+    if (in)
+        if (gzclose (in) != Z_OK)
+            ret = FALSE;
 
-  if (out)
-    fclose (out);
+    if (out)
+        fclose (out);
 
-  g_free (in_filename);
-  g_free (out_filename);
+    g_free (in_filename);
+    g_free (out_filename);
 
-  return ret;
+    return ret;
 }
 
 static gboolean
 gzip_save (GFile *infile,
            GFile *outfile)
 {
-  gchar    *in_filename  = g_file_get_path (infile);
-  gchar    *out_filename = g_file_get_path (outfile);
-  gboolean  ret;
-  FILE     *in;
-  int       fd;
-  gzFile    out;
-  char      buf[16384];
-  int       len;
-  goffset   tot = 0, file_size;
+    gchar    *in_filename  = g_file_get_path (infile);
+    gchar    *out_filename = g_file_get_path (outfile);
+    gboolean  ret;
+    FILE     *in;
+    int       fd;
+    gzFile    out;
+    char      buf[16384];
+    int       len;
+    goffset   tot = 0, file_size;
 
-  ret = FALSE;
-  in = NULL;
-  out = NULL;
+    ret = FALSE;
+    in = NULL;
+    out = NULL;
 
-  in = g_fopen (in_filename, "rb");
-  if (! in)
-    goto out;
+    in = g_fopen (in_filename, "rb");
+    if (! in)
+        goto out;
 
-  fd = g_open (out_filename, O_CREAT | O_WRONLY | O_TRUNC | _O_BINARY, 0664);
-  if (fd == -1)
-    goto out;
+    fd = g_open (out_filename, O_CREAT | O_WRONLY | O_TRUNC | _O_BINARY, 0664);
+    if (fd == -1)
+        goto out;
 
-  out = gzdopen (fd, "wb");
-  if (! out)
+    out = gzdopen (fd, "wb");
+    if (! out)
     {
-      close (fd);
-      goto out;
+        close (fd);
+        goto out;
     }
 
-  file_size = get_file_info (infile);
-  while (TRUE)
+    file_size = get_file_info (infile);
+    while (TRUE)
     {
-      len = fread (buf, 1, sizeof buf, in);
-      if (ferror (in))
-        break;
+        len = fread (buf, 1, sizeof buf, in);
+        if (ferror (in))
+            break;
 
-      if (len < 0)
-        break;
-      else if (len == 0)
+        if (len < 0)
+            break;
+        else if (len == 0)
         {
-          ret = TRUE;
-          break;
+            ret = TRUE;
+            break;
         }
 
-      if (gzwrite (out, buf, len) != len)
-        break;
+        if (gzwrite (out, buf, len) != len)
+            break;
 
-      gimp_progress_update ((tot += len) * 1.0 / file_size);
+        gimp_progress_update ((tot += len) * 1.0 / file_size);
     }
 
- out:
-  if (in)
-    fclose (in);
+out:
+    if (in)
+        fclose (in);
 
-  /* There is no need to close(fd) as it is closed by gzclose(). */
-  if (out)
-    if (gzclose (out) != Z_OK)
-      ret = FALSE;
+    /* There is no need to close(fd) as it is closed by gzclose(). */
+    if (out)
+        if (gzclose (out) != Z_OK)
+            ret = FALSE;
 
-  return ret;
+    return ret;
 }
 
 static gboolean
 bzip2_load (GFile *infile,
-           GFile  *outfile)
+            GFile  *outfile)
 {
-  gchar    *in_filename  = g_file_get_path (infile);
-  gchar    *out_filename = g_file_get_path (outfile);
-  gboolean  ret;
-  int       fd;
-  BZFILE   *in;
-  FILE     *out;
-  char      buf[16384];
-  int       len;
+    gchar    *in_filename  = g_file_get_path (infile);
+    gchar    *out_filename = g_file_get_path (outfile);
+    gboolean  ret;
+    int       fd;
+    BZFILE   *in;
+    FILE     *out;
+    char      buf[16384];
+    int       len;
 
-  ret = FALSE;
-  in = NULL;
-  out = NULL;
+    ret = FALSE;
+    in = NULL;
+    out = NULL;
 
-  fd = g_open (in_filename, O_RDONLY | _O_BINARY, 0);
-  if (fd == -1)
-    goto out;
+    fd = g_open (in_filename, O_RDONLY | _O_BINARY, 0);
+    if (fd == -1)
+        goto out;
 
-  in = BZ2_bzdopen (fd, "rb");
-  if (!in)
+    in = BZ2_bzdopen (fd, "rb");
+    if (!in)
     {
-      close (fd);
-      goto out;
+        close (fd);
+        goto out;
     }
 
-  out = g_fopen (out_filename, "wb");
-  if (!out)
-    goto out;
+    out = g_fopen (out_filename, "wb");
+    if (!out)
+        goto out;
 
-  while (TRUE)
+    while (TRUE)
     {
-      len = BZ2_bzread (in, buf, sizeof buf);
+        len = BZ2_bzread (in, buf, sizeof buf);
 
-      if (len < 0)
-        break;
-      else if (len == 0)
+        if (len < 0)
+            break;
+        else if (len == 0)
         {
-          ret = TRUE;
-          break;
+            ret = TRUE;
+            break;
         }
 
-      if (fwrite(buf, 1, len, out) != len)
-        break;
+        if (fwrite(buf, 1, len, out) != len)
+            break;
     }
 
- out:
-  /* TODO: Check this in the case of BZ2_bzclose(): */
-  /* There is no need to close(fd) as it is closed by BZ2_bzclose(). */
-  if (in)
-    BZ2_bzclose (in);
+out:
+    /* TODO: Check this in the case of BZ2_bzclose(): */
+    /* There is no need to close(fd) as it is closed by BZ2_bzclose(). */
+    if (in)
+        BZ2_bzclose (in);
 
-  if (out)
-    fclose (out);
+    if (out)
+        fclose (out);
 
-  g_free (in_filename);
-  g_free (out_filename);
+    g_free (in_filename);
+    g_free (out_filename);
 
-  return ret;
+    return ret;
 }
 
 static gboolean
 bzip2_save (GFile *infile,
             GFile *outfile)
 {
-  gchar    *in_filename  = g_file_get_path (infile);
-  gchar    *out_filename = g_file_get_path (outfile);
-  gboolean  ret;
-  FILE     *in;
-  int       fd;
-  BZFILE   *out;
-  char      buf[16384];
-  int       len;
-  goffset   tot = 0, file_size;
+    gchar    *in_filename  = g_file_get_path (infile);
+    gchar    *out_filename = g_file_get_path (outfile);
+    gboolean  ret;
+    FILE     *in;
+    int       fd;
+    BZFILE   *out;
+    char      buf[16384];
+    int       len;
+    goffset   tot = 0, file_size;
 
-  ret = FALSE;
-  in = NULL;
-  out = NULL;
+    ret = FALSE;
+    in = NULL;
+    out = NULL;
 
-  in = g_fopen (in_filename, "rb");
-  if (!in)
-    goto out;
+    in = g_fopen (in_filename, "rb");
+    if (!in)
+        goto out;
 
-  fd = g_open (out_filename, O_CREAT | O_WRONLY | O_TRUNC | _O_BINARY, 0664);
-  if (fd == -1)
-    goto out;
+    fd = g_open (out_filename, O_CREAT | O_WRONLY | O_TRUNC | _O_BINARY, 0664);
+    if (fd == -1)
+        goto out;
 
-  out = BZ2_bzdopen (fd, "wb");
-  if (!out)
+    out = BZ2_bzdopen (fd, "wb");
+    if (!out)
     {
-      close (fd);
-      goto out;
+        close (fd);
+        goto out;
     }
 
-  file_size = get_file_info (infile);
-  while (TRUE)
+    file_size = get_file_info (infile);
+    while (TRUE)
     {
-      len = fread (buf, 1, sizeof buf, in);
-      if (ferror (in))
-        break;
+        len = fread (buf, 1, sizeof buf, in);
+        if (ferror (in))
+            break;
 
-      if (len < 0)
-        break;
-      else if (len == 0)
+        if (len < 0)
+            break;
+        else if (len == 0)
         {
-          ret = TRUE;
-          break;
+            ret = TRUE;
+            break;
         }
 
-      if (BZ2_bzwrite (out, buf, len) != len)
-        break;
+        if (BZ2_bzwrite (out, buf, len) != len)
+            break;
 
-      gimp_progress_update ((tot += len) * 1.0 / file_size);
+        gimp_progress_update ((tot += len) * 1.0 / file_size);
     }
 
- out:
-  if (in)
-    fclose (in);
+out:
+    if (in)
+        fclose (in);
 
-  /* TODO: Check this in the case of BZ2_bzclose(): */
-  /* There is no need to close(fd) as it is closed by BZ2_bzclose(). */
-  if (out)
-    BZ2_bzclose (out);
+    /* TODO: Check this in the case of BZ2_bzclose(): */
+    /* There is no need to close(fd) as it is closed by BZ2_bzclose(). */
+    if (out)
+        BZ2_bzclose (out);
 
-  g_free (in_filename);
-  g_free (out_filename);
+    g_free (in_filename);
+    g_free (out_filename);
 
-  return ret;
+    return ret;
 }
 
 static gboolean
 xz_load (GFile *infile,
          GFile *outfile)
 {
-  gchar       *in_filename  = g_file_get_path (infile);
-  gchar       *out_filename = g_file_get_path (outfile);
-  gboolean     ret;
-  FILE        *in;
-  FILE        *out;
-  lzma_stream  strm = LZMA_STREAM_INIT;
-  lzma_action  action;
-  guint8       inbuf[BUFSIZ];
-  guint8       outbuf[BUFSIZ];
-  lzma_ret     status;
+    gchar       *in_filename  = g_file_get_path (infile);
+    gchar       *out_filename = g_file_get_path (outfile);
+    gboolean     ret;
+    FILE        *in;
+    FILE        *out;
+    lzma_stream  strm = LZMA_STREAM_INIT;
+    lzma_action  action;
+    guint8       inbuf[BUFSIZ];
+    guint8       outbuf[BUFSIZ];
+    lzma_ret     status;
 
-  ret = FALSE;
-  in = NULL;
-  out = NULL;
+    ret = FALSE;
+    in = NULL;
+    out = NULL;
 
-  in = g_fopen (in_filename, "rb");
-  if (!in)
-    goto out;
+    in = g_fopen (in_filename, "rb");
+    if (!in)
+        goto out;
 
-  out = g_fopen (out_filename, "wb");
-  if (!out)
-    goto out;
+    out = g_fopen (out_filename, "wb");
+    if (!out)
+        goto out;
 
-  if (lzma_stream_decoder (&strm, UINT64_MAX, 0) != LZMA_OK)
-    goto out;
+    if (lzma_stream_decoder (&strm, UINT64_MAX, 0) != LZMA_OK)
+        goto out;
 
-  strm.next_in = NULL;
-  strm.avail_in = 0;
-  strm.next_out = outbuf;
-  strm.avail_out = sizeof outbuf;
+    strm.next_in = NULL;
+    strm.avail_in = 0;
+    strm.next_out = outbuf;
+    strm.avail_out = sizeof outbuf;
 
-  action = LZMA_RUN;
-  status = LZMA_OK;
+    action = LZMA_RUN;
+    status = LZMA_OK;
 
-  while (status == LZMA_OK)
+    while (status == LZMA_OK)
     {
-      /* Fill the input buffer if it is empty. */
-      if ((strm.avail_in == 0) && (!feof(in)))
+        /* Fill the input buffer if it is empty. */
+        if ((strm.avail_in == 0) && (!feof(in)))
         {
-          strm.next_in = inbuf;
-          strm.avail_in = fread (inbuf, 1, sizeof inbuf, in);
+            strm.next_in = inbuf;
+            strm.avail_in = fread (inbuf, 1, sizeof inbuf, in);
 
-          if (ferror (in))
-            goto out;
+            if (ferror (in))
+                goto out;
 
-          /* Once the end of the input file has been reached, we need to
-             tell lzma_code() that no more input will be coming and that
-             it should finish the encoding. */
-          if (feof (in))
-            action = LZMA_FINISH;
+            /* Once the end of the input file has been reached, we need to
+               tell lzma_code() that no more input will be coming and that
+               it should finish the encoding. */
+            if (feof (in))
+                action = LZMA_FINISH;
         }
 
-      status = lzma_code (&strm, action);
+        status = lzma_code (&strm, action);
 
-      if ((strm.avail_out == 0) || (status == LZMA_STREAM_END))
+        if ((strm.avail_out == 0) || (status == LZMA_STREAM_END))
         {
-          /* When lzma_code() has returned LZMA_STREAM_END, the output
-             buffer is likely to be only partially full. Calculate how
-             much new data there is to be written to the output file. */
-          size_t write_size = sizeof outbuf - strm.avail_out;
+            /* When lzma_code() has returned LZMA_STREAM_END, the output
+               buffer is likely to be only partially full. Calculate how
+               much new data there is to be written to the output file. */
+            size_t write_size = sizeof outbuf - strm.avail_out;
 
-          if (fwrite (outbuf, 1, write_size, out) != write_size)
-            goto out;
+            if (fwrite (outbuf, 1, write_size, out) != write_size)
+                goto out;
 
-          /* Reset next_out and avail_out. */
-          strm.next_out = outbuf;
-          strm.avail_out = sizeof outbuf;
+            /* Reset next_out and avail_out. */
+            strm.next_out = outbuf;
+            strm.avail_out = sizeof outbuf;
         }
     }
 
-  if (status != LZMA_STREAM_END)
-    goto out;
+    if (status != LZMA_STREAM_END)
+        goto out;
 
-  lzma_end (&strm);
-  ret = TRUE;
+    lzma_end (&strm);
+    ret = TRUE;
 
- out:
-  if (in)
-    fclose (in);
+out:
+    if (in)
+        fclose (in);
 
-  if (out)
-    fclose (out);
+    if (out)
+        fclose (out);
 
-  g_free (in_filename);
-  g_free (out_filename);
+    g_free (in_filename);
+    g_free (out_filename);
 
-  return ret;
+    return ret;
 }
 
 static gboolean
 xz_save (GFile *infile,
          GFile *outfile)
 {
-  gchar       *in_filename  = g_file_get_path (infile);
-  gchar       *out_filename = g_file_get_path (outfile);
-  gboolean     ret;
-  FILE        *in;
-  FILE        *out;
-  lzma_stream  strm = LZMA_STREAM_INIT;
-  lzma_action  action;
-  guint8       inbuf[BUFSIZ];
-  guint8       outbuf[BUFSIZ];
-  lzma_ret     status;
-  goffset      tot = 0, file_size;
+    gchar       *in_filename  = g_file_get_path (infile);
+    gchar       *out_filename = g_file_get_path (outfile);
+    gboolean     ret;
+    FILE        *in;
+    FILE        *out;
+    lzma_stream  strm = LZMA_STREAM_INIT;
+    lzma_action  action;
+    guint8       inbuf[BUFSIZ];
+    guint8       outbuf[BUFSIZ];
+    lzma_ret     status;
+    goffset      tot = 0, file_size;
 
-  ret = FALSE;
-  in = NULL;
-  out = NULL;
+    ret = FALSE;
+    in = NULL;
+    out = NULL;
 
-  in = g_fopen (in_filename, "rb");
-  if (!in)
-    goto out;
+    in = g_fopen (in_filename, "rb");
+    if (!in)
+        goto out;
 
-  file_size = get_file_info (infile);
-  out = g_fopen (out_filename, "wb");
-  if (!out)
-    goto out;
+    file_size = get_file_info (infile);
+    out = g_fopen (out_filename, "wb");
+    if (!out)
+        goto out;
 
-  if (lzma_easy_encoder (&strm,
-                         LZMA_PRESET_DEFAULT,
-                         LZMA_CHECK_CRC64) != LZMA_OK)
-    goto out;
+    if (lzma_easy_encoder (&strm,
+                           LZMA_PRESET_DEFAULT,
+                           LZMA_CHECK_CRC64) != LZMA_OK)
+        goto out;
 
-  strm.next_in = NULL;
-  strm.avail_in = 0;
-  strm.next_out = outbuf;
-  strm.avail_out = sizeof outbuf;
+    strm.next_in = NULL;
+    strm.avail_in = 0;
+    strm.next_out = outbuf;
+    strm.avail_out = sizeof outbuf;
 
-  action = LZMA_RUN;
-  status = LZMA_OK;
+    action = LZMA_RUN;
+    status = LZMA_OK;
 
-  while (status == LZMA_OK)
+    while (status == LZMA_OK)
     {
-      /* Fill the input buffer if it is empty. */
-      if ((strm.avail_in == 0) && (!feof(in)))
+        /* Fill the input buffer if it is empty. */
+        if ((strm.avail_in == 0) && (!feof(in)))
         {
-          strm.next_in = inbuf;
-          strm.avail_in = fread (inbuf, 1, sizeof inbuf, in);
+            strm.next_in = inbuf;
+            strm.avail_in = fread (inbuf, 1, sizeof inbuf, in);
 
-          if (ferror (in))
-            goto out;
+            if (ferror (in))
+                goto out;
 
-          /* Once the end of the input file has been reached, we need to
-             tell lzma_code() that no more input will be coming and that
-             it should finish the encoding. */
-          if (feof (in))
-            action = LZMA_FINISH;
+            /* Once the end of the input file has been reached, we need to
+               tell lzma_code() that no more input will be coming and that
+               it should finish the encoding. */
+            if (feof (in))
+                action = LZMA_FINISH;
 
-          gimp_progress_update ((tot += strm.avail_in) * 1.0 / file_size);
+            gimp_progress_update ((tot += strm.avail_in) * 1.0 / file_size);
         }
 
-      status = lzma_code (&strm, action);
+        status = lzma_code (&strm, action);
 
-      if ((strm.avail_out == 0) || (status == LZMA_STREAM_END))
+        if ((strm.avail_out == 0) || (status == LZMA_STREAM_END))
         {
-          /* When lzma_code() has returned LZMA_STREAM_END, the output
-             buffer is likely to be only partially full. Calculate how
-             much new data there is to be written to the output file. */
-          size_t write_size = sizeof outbuf - strm.avail_out;
+            /* When lzma_code() has returned LZMA_STREAM_END, the output
+               buffer is likely to be only partially full. Calculate how
+               much new data there is to be written to the output file. */
+            size_t write_size = sizeof outbuf - strm.avail_out;
 
-          if (fwrite (outbuf, 1, write_size, out) != write_size)
-            goto out;
+            if (fwrite (outbuf, 1, write_size, out) != write_size)
+                goto out;
 
-          /* Reset next_out and avail_out. */
-          strm.next_out = outbuf;
-          strm.avail_out = sizeof outbuf;
+            /* Reset next_out and avail_out. */
+            strm.next_out = outbuf;
+            strm.avail_out = sizeof outbuf;
         }
     }
 
-  if (status != LZMA_STREAM_END)
-    goto out;
+    if (status != LZMA_STREAM_END)
+        goto out;
 
-  lzma_end (&strm);
-  ret = TRUE;
+    lzma_end (&strm);
+    ret = TRUE;
 
- out:
-  if (in)
-    fclose (in);
+out:
+    if (in)
+        fclose (in);
 
-  if (out)
-    fclose (out);
+    if (out)
+        fclose (out);
 
-  g_free (in_filename);
-  g_free (out_filename);
+    g_free (in_filename);
+    g_free (out_filename);
 
-  return ret;
+    return ret;
 }
 
 /* get file size from a filename */
 static goffset
 get_file_info (GFile *file)
 {
-  GFileInfo *info;
-  goffset    size = 1;
+    GFileInfo *info;
+    goffset    size = 1;
 
-  info = g_file_query_info (file,
-                            G_FILE_ATTRIBUTE_STANDARD_SIZE,
-                            G_FILE_QUERY_INFO_NONE,
-                            NULL, NULL);
+    info = g_file_query_info (file,
+                              G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                              G_FILE_QUERY_INFO_NONE,
+                              NULL, NULL);
 
-  if (info)
+    if (info)
     {
-      size = g_file_info_get_size (info);
+        size = g_file_info_get_size (info);
 
-      g_object_unref (info);
+        g_object_unref (info);
     }
 
-  return size;
+    return size;
 }

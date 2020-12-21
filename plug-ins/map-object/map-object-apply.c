@@ -30,11 +30,11 @@ static gfloat a[16], b[16];
 void
 init_compute (void)
 {
-  gint i;
+    gint i;
 
-  switch (mapvals.maptype)
+    switch (mapvals.maptype)
     {
-      case MAP_SPHERE:
+    case MAP_SPHERE:
 
         /* Rotate the equator/northpole axis */
         /* ================================= */
@@ -60,7 +60,7 @@ init_compute (void)
 
         break;
 
-      case MAP_PLANE:
+    case MAP_PLANE:
 
         /* Rotate the plane axis */
         /* ===================== */
@@ -79,10 +79,10 @@ init_compute (void)
                              gimp_deg_to_rad (mapvals.gamma));
 
         mapvals.normal = gimp_vector3_cross_product (&mapvals.firstaxis,
-                                                     &mapvals.secondaxis);
+                         &mapvals.secondaxis);
 
         if (mapvals.normal.z < 0.0)
-          gimp_vector3_mul (&mapvals.normal, -1.0);
+            gimp_vector3_mul (&mapvals.normal, -1.0);
 
         /* Initialize intersection matrix */
         /* ============================== */
@@ -103,7 +103,7 @@ init_compute (void)
 
         break;
 
-      case MAP_BOX:
+    case MAP_BOX:
         get_ray_color = get_ray_color_box;
 
         gimp_vector3_set (&mapvals.firstaxis,  1.0, 0.0, 0.0);
@@ -132,15 +132,15 @@ init_compute (void)
         /* ============================================ */
 
         for (i = 0; i < 6; i++)
-          {
+        {
             box_drawables[i] = gimp_drawable_get_by_id (mapvals.boxmap_id[i]);
 
             box_buffers[i] = gimp_drawable_get_buffer (box_drawables[i]);
-          }
+        }
 
         break;
 
-      case MAP_CYLINDER:
+    case MAP_CYLINDER:
         get_ray_color = get_ray_color_cylinder;
 
         gimp_vector3_set (&mapvals.firstaxis,  1.0, 0.0, 0.0);
@@ -169,15 +169,15 @@ init_compute (void)
         /* ================================================ */
 
         for (i = 0; i < 2; i++)
-          {
+        {
             cylinder_drawables[i] = gimp_drawable_get_by_id (mapvals.cylindermap_id[i]);;
 
             cylinder_buffers[i] = gimp_drawable_get_buffer (cylinder_drawables[i]);
-          }
+        }
         break;
     }
 
-  max_depth = (gint) mapvals.maxdepth;
+    max_depth = (gint) mapvals.maxdepth;
 }
 
 static void
@@ -186,13 +186,13 @@ render (gdouble   x,
         GimpRGB  *col,
         gpointer  data)
 {
-  GimpVector3 pos;
+    GimpVector3 pos;
 
-  pos.x = x / (gdouble) width;
-  pos.y = y / (gdouble) height;
-  pos.z = 0.0;
+    pos.x = x / (gdouble) width;
+    pos.y = y / (gdouble) height;
+    pos.z = 0.0;
 
-  *col = get_ray_color (&pos);
+    *col = get_ray_color (&pos);
 }
 
 static void
@@ -201,7 +201,7 @@ show_progress (gint     min,
                gint     curr,
                gpointer data)
 {
-  gimp_progress_update ((gdouble) curr / (gdouble) max);
+    gimp_progress_update ((gdouble) curr / (gdouble) max);
 }
 
 /**************************************************/
@@ -212,117 +212,118 @@ show_progress (gint     min,
 void
 compute_image (void)
 {
-  gint         xcount, ycount;
-  GimpRGB      color;
-  glong        progress_counter = 0;
-  GimpVector3  p;
-  GimpImage   *new_image    = NULL;
-  GimpLayer   *new_layer    = NULL;
-  gboolean     insert_layer = FALSE;
+    gint         xcount, ycount;
+    GimpRGB      color;
+    glong        progress_counter = 0;
+    GimpVector3  p;
+    GimpImage   *new_image    = NULL;
+    GimpLayer   *new_layer    = NULL;
+    gboolean     insert_layer = FALSE;
 
-  init_compute ();
+    init_compute ();
 
-  if (mapvals.create_new_image)
+    if (mapvals.create_new_image)
     {
-      new_image = gimp_image_new (width, height, GIMP_RGB);
+        new_image = gimp_image_new (width, height, GIMP_RGB);
     }
-  else
+    else
     {
-      new_image = image;
-    }
-
-  gimp_image_undo_group_start (new_image);
-
-  if (mapvals.create_new_image ||
-      mapvals.create_new_layer ||
-      (mapvals.transparent_background &&
-       ! gimp_drawable_has_alpha (output_drawable)))
-    {
-      gchar *layername[] = {_("Map to plane"),
-                            _("Map to sphere"),
-                            _("Map to box"),
-                            _("Map to cylinder"),
-                            _("Background")};
-
-      new_layer = gimp_layer_new (new_image,
-                                  layername[mapvals.create_new_image ? 4 :
-                                            mapvals.maptype],
-                                  width, height,
-                                  mapvals.transparent_background ?
-                                  GIMP_RGBA_IMAGE :
-                                  GIMP_RGB_IMAGE,
-                                  100.0,
-                                  gimp_image_get_default_new_layer_mode (new_image));
-
-      insert_layer = TRUE;
-      output_drawable = GIMP_DRAWABLE (new_layer);
+        new_image = image;
     }
 
-  dest_buffer = gimp_drawable_get_shadow_buffer (output_drawable);
+    gimp_image_undo_group_start (new_image);
 
-  switch (mapvals.maptype)
+    if (mapvals.create_new_image ||
+            mapvals.create_new_layer ||
+            (mapvals.transparent_background &&
+             ! gimp_drawable_has_alpha (output_drawable)))
+    {
+        gchar *layername[] = {_("Map to plane"),
+                              _("Map to sphere"),
+                              _("Map to box"),
+                              _("Map to cylinder"),
+                              _("Background")
+                             };
+
+        new_layer = gimp_layer_new (new_image,
+                                    layername[mapvals.create_new_image ? 4 :
+                                                                       mapvals.maptype],
+                                    width, height,
+                                    mapvals.transparent_background ?
+                                    GIMP_RGBA_IMAGE :
+                                    GIMP_RGB_IMAGE,
+                                    100.0,
+                                    gimp_image_get_default_new_layer_mode (new_image));
+
+        insert_layer = TRUE;
+        output_drawable = GIMP_DRAWABLE (new_layer);
+    }
+
+    dest_buffer = gimp_drawable_get_shadow_buffer (output_drawable);
+
+    switch (mapvals.maptype)
     {
     case MAP_PLANE:
-      gimp_progress_init (_("Map to plane"));
-      break;
+        gimp_progress_init (_("Map to plane"));
+        break;
     case MAP_SPHERE:
-      gimp_progress_init (_("Map to sphere"));
-      break;
+        gimp_progress_init (_("Map to sphere"));
+        break;
     case MAP_BOX:
-      gimp_progress_init (_("Map to box"));
-      break;
+        gimp_progress_init (_("Map to box"));
+        break;
     case MAP_CYLINDER:
-      gimp_progress_init (_("Map to cylinder"));
-      break;
+        gimp_progress_init (_("Map to cylinder"));
+        break;
     }
 
-  if (! mapvals.antialiasing)
+    if (! mapvals.antialiasing)
     {
-      for (ycount = 0; ycount < height; ycount++)
+        for (ycount = 0; ycount < height; ycount++)
         {
-          for (xcount = 0; xcount < width; xcount++)
+            for (xcount = 0; xcount < width; xcount++)
             {
-              p = int_to_pos (xcount, ycount);
-              color = (* get_ray_color) (&p);
-              poke (xcount, ycount, &color, NULL);
+                p = int_to_pos (xcount, ycount);
+                color = (* get_ray_color) (&p);
+                poke (xcount, ycount, &color, NULL);
 
-              progress_counter++;
+                progress_counter++;
             }
 
-          gimp_progress_update ((gdouble) progress_counter /
-                                (gdouble) maxcounter);
+            gimp_progress_update ((gdouble) progress_counter /
+                                  (gdouble) maxcounter);
         }
     }
-  else
+    else
     {
-      gimp_adaptive_supersample_area (0, 0,
-                                      width - 1, height - 1,
-                                      max_depth,
-                                      mapvals.pixelthreshold,
-                                      render,
-                                      NULL,
-                                      poke,
-                                      NULL,
-                                      show_progress,
-                                      NULL);
+        gimp_adaptive_supersample_area (0, 0,
+                                        width - 1, height - 1,
+                                        max_depth,
+                                        mapvals.pixelthreshold,
+                                        render,
+                                        NULL,
+                                        poke,
+                                        NULL,
+                                        show_progress,
+                                        NULL);
     }
 
-  gimp_progress_update (1.0);
+    gimp_progress_update (1.0);
 
-  g_object_unref (source_buffer);
-  g_object_unref (dest_buffer);
+    g_object_unref (source_buffer);
+    g_object_unref (dest_buffer);
 
-  if (insert_layer)
-    gimp_image_insert_layer (new_image, new_layer, NULL, 0);
+    if (insert_layer)
+        gimp_image_insert_layer (new_image, new_layer, NULL, 0);
 
-  gimp_drawable_merge_shadow (output_drawable, TRUE);
-  gimp_drawable_update (output_drawable, 0, 0, width, height);
+    gimp_drawable_merge_shadow (output_drawable, TRUE);
+    gimp_drawable_update (output_drawable, 0, 0, width, height);
 
-  if (new_image != image)
+    if (new_image != image)
     {
-      gimp_display_new (new_image);
-      gimp_displays_flush ();
+        gimp_display_new (new_image);
+        gimp_displays_flush ();
     }
 
-  gimp_image_undo_group_end (new_image);
+    gimp_image_undo_group_end (new_image);
 }

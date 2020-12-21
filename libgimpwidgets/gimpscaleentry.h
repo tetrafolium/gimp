@@ -37,40 +37,40 @@ G_DECLARE_DERIVABLE_TYPE (GimpScaleEntry, gimp_scale_entry, GIMP, SCALE_ENTRY, G
 
 struct _GimpScaleEntryClass
 {
-  GimpLabelSpinClass parent_class;
+    GimpLabelSpinClass parent_class;
 
-  /*  Signals        */
-  void            (* value_changed)    (GimpScaleEntry *entry);
+    /*  Signals        */
+    void            (* value_changed)    (GimpScaleEntry *entry);
 
-  /*  Class methods  */
-  GtkWidget     * (* new_range_widget) (GtkAdjustment  *adjustment);
+    /*  Class methods  */
+    GtkWidget     * (* new_range_widget) (GtkAdjustment  *adjustment);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 GtkWidget     * gimp_scale_entry_new             (const gchar *text,
-                                                  gdouble      value,
-                                                  gdouble      lower,
-                                                  gdouble      upper,
-                                                  guint        digits);
+        gdouble      value,
+        gdouble      lower,
+        gdouble      upper,
+        guint        digits);
 
 GtkWidget     * gimp_scale_entry_get_range       (GimpScaleEntry *entry);
 
 void            gimp_scale_entry_set_bounds      (GimpScaleEntry *entry,
-                                                  gdouble         lower,
-                                                  gdouble         upper,
-                                                  gboolean        limit_scale);
+        gdouble         lower,
+        gdouble         upper,
+        gboolean        limit_scale);
 
 void            gimp_scale_entry_set_logarithmic (GimpScaleEntry *entry,
-                                                  gboolean        logarithmic);
+        gboolean        logarithmic);
 gboolean        gimp_scale_entry_get_logarithmic (GimpScaleEntry *entry);
 
 

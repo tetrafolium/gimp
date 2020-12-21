@@ -43,39 +43,39 @@ typedef struct _GimpColorScaleClass   GimpColorScaleClass;
 
 struct _GimpColorScale
 {
-  GtkScale               parent_instance;
+    GtkScale               parent_instance;
 
-  GimpColorScalePrivate *priv;
+    GimpColorScalePrivate *priv;
 };
 
 struct _GimpColorScaleClass
 {
-  GtkScaleClass  parent_class;
+    GtkScaleClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_color_scale_get_type         (void) G_GNUC_CONST;
 GtkWidget * gimp_color_scale_new              (GtkOrientation            orientation,
-                                               GimpColorSelectorChannel  channel);
+        GimpColorSelectorChannel  channel);
 
 void        gimp_color_scale_set_channel      (GimpColorScale           *scale,
-                                               GimpColorSelectorChannel  channel);
+        GimpColorSelectorChannel  channel);
 void        gimp_color_scale_set_color        (GimpColorScale           *scale,
-                                               const GimpRGB            *rgb,
-                                               const GimpHSV            *hsv);
+        const GimpRGB            *rgb,
+        const GimpHSV            *hsv);
 
 void        gimp_color_scale_set_color_config (GimpColorScale           *scale,
-                                               GimpColorConfig          *config);
+        GimpColorConfig          *config);
 
 
 G_END_DECLS

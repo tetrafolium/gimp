@@ -47,32 +47,32 @@ typedef struct _GimpColorNotebookClass   GimpColorNotebookClass;
 
 struct _GimpColorNotebook
 {
-  GimpColorSelector         parent_instance;
+    GimpColorSelector         parent_instance;
 
-  GimpColorNotebookPrivate *priv;
+    GimpColorNotebookPrivate *priv;
 };
 
 struct _GimpColorNotebookClass
 {
-  GimpColorSelectorClass  parent_class;
+    GimpColorSelectorClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType               gimp_color_notebook_get_type             (void) G_GNUC_CONST;
 
 GtkWidget         * gimp_color_notebook_set_has_page         (GimpColorNotebook *notebook,
-                                                              GType              page_type,
-                                                              gboolean           has_page);
+        GType              page_type,
+        gboolean           has_page);
 
 GtkWidget         * gimp_color_notebook_get_notebook         (GimpColorNotebook *notebook);
 GList             * gimp_color_notebook_get_selectors        (GimpColorNotebook *notebook);

@@ -51,23 +51,23 @@
 
 enum
 {
-  C_XMP_TAG = 0,
-  C_XMP_VALUE,
-  NUM_XMP_COLS
+    C_XMP_TAG = 0,
+    C_XMP_VALUE,
+    NUM_XMP_COLS
 };
 
 enum
 {
-  C_EXIF_TAG = 0,
-  C_EXIF_VALUE,
-  NUM_EXIF_COLS
+    C_EXIF_TAG = 0,
+    C_EXIF_VALUE,
+    NUM_EXIF_COLS
 };
 
 enum
 {
-  C_IPTC_TAG = 0,
-  C_IPTC_VALUE,
-  NUM_IPTC_COLS
+    C_IPTC_TAG = 0,
+    C_IPTC_VALUE,
+    NUM_IPTC_COLS
 };
 
 
@@ -76,12 +76,12 @@ typedef struct _MetadataClass MetadataClass;
 
 struct _Metadata
 {
-  GimpPlugIn parent_instance;
+    GimpPlugIn parent_instance;
 };
 
 struct _MetadataClass
 {
-  GimpPlugInClass parent_class;
+    GimpPlugInClass parent_class;
 };
 
 
@@ -92,40 +92,40 @@ GType                   metadata_get_type         (void) G_GNUC_CONST;
 
 static GList          * metadata_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * metadata_create_procedure (GimpPlugIn           *plug_in,
-                                                   const gchar          *name);
+        const gchar          *name);
 
 static GimpValueArray * metadata_run              (GimpProcedure        *procedure,
-                                                   const GimpValueArray *args,
-                                                   gpointer              run_data);
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 static gboolean  metadata_viewer_dialog           (GimpImage      *image,
-                                                   GimpMetadata   *g_metadata,
-                                                   GError        **error);
+        GimpMetadata   *g_metadata,
+        GError        **error);
 static void      metadata_dialog_set_metadata     (GExiv2Metadata *metadata,
-                                                   GtkBuilder     *builder);
+        GtkBuilder     *builder);
 static void      metadata_dialog_append_tags      (GExiv2Metadata  *metadata,
-                                                   gchar          **tags,
-                                                   GtkListStore    *store,
-                                                   gint             tag_column,
-                                                   gint             value_column,
-                                                   gboolean         load_iptc);
+        gchar          **tags,
+        GtkListStore    *store,
+        gint             tag_column,
+        gint             value_column,
+        gboolean         load_iptc);
 static void metadata_dialog_add_tag               (GtkListStore    *store,
-                                                   GtkTreeIter      iter,
-                                                   gint             tag_column,
-                                                   gint             value_column,
-                                                   const gchar     *tag,
-                                                   const gchar     *value);
+        GtkTreeIter      iter,
+        gint             tag_column,
+        gint             value_column,
+        const gchar     *tag,
+        const gchar     *value);
 static void metadata_dialog_add_translated_tag    (GExiv2Metadata  *metadata,
-                                                   GtkListStore    *store,
-                                                   GtkTreeIter      iter,
-                                                   gint             tag_column,
-                                                   gint             value_column,
-                                                   const gchar     *tag);
+        GtkListStore    *store,
+        GtkTreeIter      iter,
+        gint             tag_column,
+        gint             value_column,
+        const gchar     *tag);
 static gchar   * metadata_dialog_format_tag_value (GExiv2Metadata  *metadata,
-                                                   const gchar     *tag,
-                                                   gboolean         truncate);
+        const gchar     *tag,
+        gboolean         truncate);
 static gchar   * metadata_format_string_value     (const gchar     *value,
-                                                   gboolean         truncate);
+        gboolean         truncate);
 static inline gboolean metadata_tag_is_string     (const gchar     *tag);
 
 
@@ -137,10 +137,10 @@ GIMP_MAIN (METADATA_TYPE)
 static void
 metadata_class_init (MetadataClass *klass)
 {
-  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-  plug_in_class->query_procedures = metadata_query_procedures;
-  plug_in_class->create_procedure = metadata_create_procedure;
+    plug_in_class->query_procedures = metadata_query_procedures;
+    plug_in_class->create_procedure = metadata_create_procedure;
 }
 
 static void
@@ -151,55 +151,55 @@ metadata_init (Metadata *metadata)
 static GList *
 metadata_query_procedures (GimpPlugIn *plug_in)
 {
-  return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 metadata_create_procedure (GimpPlugIn  *plug_in,
                            const gchar *name)
 {
-  GimpProcedure *procedure = NULL;
+    GimpProcedure *procedure = NULL;
 
-  if (! strcmp (name, PLUG_IN_PROC))
+    if (! strcmp (name, PLUG_IN_PROC))
     {
-      procedure = gimp_procedure_new (plug_in, name,
-                                      GIMP_PDB_PROC_TYPE_PLUGIN,
-                                      metadata_run, NULL, NULL);
+        procedure = gimp_procedure_new (plug_in, name,
+                                        GIMP_PDB_PROC_TYPE_PLUGIN,
+                                        metadata_run, NULL, NULL);
 
-      gimp_procedure_set_image_types (procedure, "*");
+        gimp_procedure_set_image_types (procedure, "*");
 
-      gimp_procedure_set_menu_label (procedure, N_("_View Metadata"));
-      gimp_procedure_add_menu_path (procedure, "<Image>/Image/Metadata");
+        gimp_procedure_set_menu_label (procedure, N_("_View Metadata"));
+        gimp_procedure_add_menu_path (procedure, "<Image>/Image/Metadata");
 
-      gimp_procedure_set_documentation (procedure,
-                                        N_("View metadata (Exif, IPTC, XMP)"),
-                                        "View metadata information attached "
-                                        "to the current image. This can "
-                                        "include Exif, IPTC and/or XMP "
-                                        "information.",
-                                        name);
-      gimp_procedure_set_attribution (procedure,
-                                      "Hartmut Kuhse, Michael Natterer, "
-                                      "Ben Touchette",
-                                      "Hartmut Kuhse, Michael Natterer, "
-                                      "Ben Touchette",
-                                      "2013, 2017");
+        gimp_procedure_set_documentation (procedure,
+                                          N_("View metadata (Exif, IPTC, XMP)"),
+                                          "View metadata information attached "
+                                          "to the current image. This can "
+                                          "include Exif, IPTC and/or XMP "
+                                          "information.",
+                                          name);
+        gimp_procedure_set_attribution (procedure,
+                                        "Hartmut Kuhse, Michael Natterer, "
+                                        "Ben Touchette",
+                                        "Hartmut Kuhse, Michael Natterer, "
+                                        "Ben Touchette",
+                                        "2013, 2017");
 
-      GIMP_PROC_ARG_ENUM (procedure, "run-mode",
-                          "Run mode",
-                          "The run mode",
-                          GIMP_TYPE_RUN_MODE,
-                          GIMP_RUN_INTERACTIVE,
-                          G_PARAM_READWRITE);
+        GIMP_PROC_ARG_ENUM (procedure, "run-mode",
+                            "Run mode",
+                            "The run mode",
+                            GIMP_TYPE_RUN_MODE,
+                            GIMP_RUN_INTERACTIVE,
+                            G_PARAM_READWRITE);
 
-      GIMP_PROC_ARG_IMAGE (procedure, "image",
-                           "Image",
-                           "The input image",
-                           FALSE,
-                           G_PARAM_READWRITE);
+        GIMP_PROC_ARG_IMAGE (procedure, "image",
+                             "Image",
+                             "The input image",
+                             FALSE,
+                             G_PARAM_READWRITE);
     }
 
-  return procedure;
+    return procedure;
 }
 
 static GimpValueArray *
@@ -207,33 +207,33 @@ metadata_run (GimpProcedure        *procedure,
               const GimpValueArray *args,
               gpointer              run_data)
 {
-  GimpImage    *image;
-  GimpMetadata *metadata;
-  GError       *error  = NULL;
+    GimpImage    *image;
+    GimpMetadata *metadata;
+    GError       *error  = NULL;
 
-  INIT_I18N ();
+    INIT_I18N ();
 
-  gimp_ui_init (PLUG_IN_BINARY);
+    gimp_ui_init (PLUG_IN_BINARY);
 
-  image = GIMP_VALUES_GET_IMAGE (args, 1);
+    image = GIMP_VALUES_GET_IMAGE (args, 1);
 
-  metadata = gimp_image_get_metadata (image);
+    metadata = gimp_image_get_metadata (image);
 
-  /* Always show metadata dialog so we can add appropriate iptc data
-   * as needed. Sometimes license data needs to be added after the
-   * fact and the image may not contain metadata but should have it
-   * added as needed.
-   */
-  if (! metadata)
+    /* Always show metadata dialog so we can add appropriate iptc data
+     * as needed. Sometimes license data needs to be added after the
+     * fact and the image may not contain metadata but should have it
+     * added as needed.
+     */
+    if (! metadata)
     {
-      metadata = gimp_metadata_new ();
-      gimp_image_set_metadata (image, metadata);
+        metadata = gimp_metadata_new ();
+        gimp_image_set_metadata (image, metadata);
     }
 
-  if (metadata_viewer_dialog (image, metadata, &error))
-    return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
-  else
-    return gimp_procedure_new_return_values (procedure, GIMP_PDB_EXECUTION_ERROR, error);
+    if (metadata_viewer_dialog (image, metadata, &error))
+        return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
+    else
+        return gimp_procedure_new_return_values (procedure, GIMP_PDB_EXECUTION_ERROR, error);
 }
 
 static gboolean
@@ -241,68 +241,68 @@ metadata_viewer_dialog (GimpImage     *image,
                         GimpMetadata  *g_metadata,
                         GError       **error)
 {
-  GtkBuilder     *builder;
-  GtkWidget      *dialog;
-  GtkWidget      *metadata_vbox;
-  GtkWidget      *content_area;
-  gchar          *ui_file;
-  gchar          *title;
-  gchar          *name;
-  GError         *local_error = NULL;
-  GExiv2Metadata *metadata;
+    GtkBuilder     *builder;
+    GtkWidget      *dialog;
+    GtkWidget      *metadata_vbox;
+    GtkWidget      *content_area;
+    gchar          *ui_file;
+    gchar          *title;
+    gchar          *name;
+    GError         *local_error = NULL;
+    GExiv2Metadata *metadata;
 
-  metadata = GEXIV2_METADATA(g_metadata);
+    metadata = GEXIV2_METADATA(g_metadata);
 
-  builder = gtk_builder_new ();
+    builder = gtk_builder_new ();
 
-  ui_file = g_build_filename (gimp_data_directory (),
-                              "ui", "plug-ins", "plug-in-metadata-viewer.ui", NULL);
+    ui_file = g_build_filename (gimp_data_directory (),
+                                "ui", "plug-ins", "plug-in-metadata-viewer.ui", NULL);
 
-  if (! gtk_builder_add_from_file (builder, ui_file, &local_error))
+    if (! gtk_builder_add_from_file (builder, ui_file, &local_error))
     {
-      if (! local_error)
-        local_error = g_error_new_literal (G_FILE_ERROR, 0,
-                                           _("Error loading metadata-viewer dialog."));
-      g_propagate_error (error, local_error);
+        if (! local_error)
+            local_error = g_error_new_literal (G_FILE_ERROR, 0,
+                                               _("Error loading metadata-viewer dialog."));
+        g_propagate_error (error, local_error);
 
-      g_free (ui_file);
-      g_object_unref (builder);
-      return FALSE;
+        g_free (ui_file);
+        g_object_unref (builder);
+        return FALSE;
     }
 
-  g_free (ui_file);
+    g_free (ui_file);
 
-  name = gimp_image_get_name (image);
-  title = g_strdup_printf (_("Metadata Viewer: %s"), name);
-  g_free (name);
+    name = gimp_image_get_name (image);
+    title = g_strdup_printf (_("Metadata Viewer: %s"), name);
+    g_free (name);
 
-  dialog = gimp_dialog_new (title,
-                            "gimp-metadata-viewer-dialog",
-                            NULL, 0,
-                            gimp_standard_help_func, PLUG_IN_PROC,
-                            _("_Close"), GTK_RESPONSE_CLOSE,
-                            NULL);
+    dialog = gimp_dialog_new (title,
+                              "gimp-metadata-viewer-dialog",
+                              NULL, 0,
+                              gimp_standard_help_func, PLUG_IN_PROC,
+                              _("_Close"), GTK_RESPONSE_CLOSE,
+                              NULL);
 
-  gtk_widget_set_size_request(dialog, 460, 340);
+    gtk_widget_set_size_request(dialog, 460, 340);
 
-  g_free (title);
+    g_free (title);
 
-  gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_CLOSE,
-                                           -1);
+    gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+            GTK_RESPONSE_CLOSE,
+            -1);
 
-  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+    content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 
-  metadata_vbox = GTK_WIDGET (gtk_builder_get_object (builder,
-                                                      "metadata-vbox"));
-  gtk_container_set_border_width (GTK_CONTAINER (metadata_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (content_area), metadata_vbox, TRUE, TRUE, 0);
+    metadata_vbox = GTK_WIDGET (gtk_builder_get_object (builder,
+                                "metadata-vbox"));
+    gtk_container_set_border_width (GTK_CONTAINER (metadata_vbox), 12);
+    gtk_box_pack_start (GTK_BOX (content_area), metadata_vbox, TRUE, TRUE, 0);
 
-  metadata_dialog_set_metadata (metadata, builder);
+    metadata_dialog_set_metadata (metadata, builder);
 
-  gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_dialog_run (GTK_DIALOG (dialog));
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -312,77 +312,77 @@ static void
 metadata_dialog_set_metadata (GExiv2Metadata *metadata,
                               GtkBuilder     *builder)
 {
-  gchar        **tags;
-  GtkListStore  *store;
+    gchar        **tags;
+    GtkListStore  *store;
 
-  /* load exif tags */
-  tags  = gexiv2_metadata_get_exif_tags (metadata);
-  store = GTK_LIST_STORE (gtk_builder_get_object (builder, "exif-liststore"));
+    /* load exif tags */
+    tags  = gexiv2_metadata_get_exif_tags (metadata);
+    store = GTK_LIST_STORE (gtk_builder_get_object (builder, "exif-liststore"));
 
-  metadata_dialog_append_tags (metadata, tags, store, C_EXIF_TAG, C_EXIF_VALUE, FALSE);
+    metadata_dialog_append_tags (metadata, tags, store, C_EXIF_TAG, C_EXIF_VALUE, FALSE);
 
-  g_strfreev (tags);
+    g_strfreev (tags);
 
-  /* load xmp tags */
-  tags  = gexiv2_metadata_get_xmp_tags (metadata);
-  store = GTK_LIST_STORE (gtk_builder_get_object (builder, "xmp-liststore"));
+    /* load xmp tags */
+    tags  = gexiv2_metadata_get_xmp_tags (metadata);
+    store = GTK_LIST_STORE (gtk_builder_get_object (builder, "xmp-liststore"));
 
-  metadata_dialog_append_tags (metadata, tags, store, C_XMP_TAG, C_XMP_VALUE, FALSE);
+    metadata_dialog_append_tags (metadata, tags, store, C_XMP_TAG, C_XMP_VALUE, FALSE);
 
-  g_strfreev (tags);
+    g_strfreev (tags);
 
-  /* load iptc tags */
-  tags  = gexiv2_metadata_get_iptc_tags (metadata);
-  store = GTK_LIST_STORE (gtk_builder_get_object (builder, "iptc-liststore"));
+    /* load iptc tags */
+    tags  = gexiv2_metadata_get_iptc_tags (metadata);
+    store = GTK_LIST_STORE (gtk_builder_get_object (builder, "iptc-liststore"));
 
-  metadata_dialog_append_tags (metadata, tags, store, C_IPTC_TAG, C_IPTC_VALUE, TRUE);
+    metadata_dialog_append_tags (metadata, tags, store, C_IPTC_TAG, C_IPTC_VALUE, TRUE);
 
-  g_strfreev (tags);
+    g_strfreev (tags);
 }
 
 static gchar *
 metadata_format_string_value (const gchar *value,
                               gboolean     truncate)
 {
-  glong  size;
-  gchar *result;
+    glong  size;
+    gchar *result;
 
-  size = g_utf8_strlen (value, -1);
+    size = g_utf8_strlen (value, -1);
 
-  if (! truncate || size <= TAG_VALUE_MAX_SIZE)
+    if (! truncate || size <= TAG_VALUE_MAX_SIZE)
     {
-      result = g_strdup(value);
+        result = g_strdup(value);
     }
-  else
+    else
     {
-      gchar   *value_utf8_trunc;
-      GString *str;
+        gchar   *value_utf8_trunc;
+        GString *str;
 
-      value_utf8_trunc = g_utf8_substring (value, 0, TAG_VALUE_MAX_SIZE);
-      str = g_string_new (value_utf8_trunc);
+        value_utf8_trunc = g_utf8_substring (value, 0, TAG_VALUE_MAX_SIZE);
+        str = g_string_new (value_utf8_trunc);
 
-      g_free (value_utf8_trunc);
+        g_free (value_utf8_trunc);
 
-      g_string_append (str, "... ");
-      g_string_append_printf (str,
-                              _("(%lu more character(s))"),
-                              size - TAG_VALUE_MAX_SIZE);
+        g_string_append (str, "... ");
+        g_string_append_printf (str,
+                                _("(%lu more character(s))"),
+                                size - TAG_VALUE_MAX_SIZE);
 
-      result = g_string_free (str, FALSE);
+        result = g_string_free (str, FALSE);
     }
-  return result;
+    return result;
 }
 
 static inline gboolean
 metadata_tag_is_string (const gchar *tag)
 {
-  const gchar *tag_type;
+    const gchar *tag_type;
 
-  tag_type = gexiv2_metadata_get_tag_type (tag);
+    tag_type = gexiv2_metadata_get_tag_type (tag);
 
-  return (g_strcmp0 (tag_type, "Byte")      != 0 &&
-          g_strcmp0 (tag_type, "Undefined") != 0 &&
-          g_strcmp0 (tag_type, NULL)        != 0);
+    return (g_strcmp0 (tag_type, "Byte")      != 0 &&
+            g_strcmp0 (tag_type, "Undefined") != 0 &&
+            g_strcmp0 (tag_type, NULL)        != 0);
 }
 
 static void
@@ -393,13 +393,13 @@ metadata_dialog_add_tag (GtkListStore    *store,
                          const gchar     *tag,
                          const gchar     *value)
 {
-  if (value)
+    if (value)
     {
-      gtk_list_store_append (store, &iter);
-      gtk_list_store_set (store, &iter,
-                          tag_column,   tag,
-                          value_column, value,
-                          -1);
+        gtk_list_store_append (store, &iter);
+        gtk_list_store_set (store, &iter,
+                            tag_column,   tag,
+                            value_column, value,
+                            -1);
     }
 }
 
@@ -411,12 +411,12 @@ metadata_dialog_add_translated_tag (GExiv2Metadata  *metadata,
                                     gint             value_column,
                                     const gchar     *tag)
 {
-  gchar *value;
+    gchar *value;
 
-  value = gexiv2_metadata_get_tag_interpreted_string (metadata, tag);
-  metadata_dialog_add_tag (store, iter, tag_column, value_column,
-                           tag, gettext (value));
-  g_free (value);
+    value = gexiv2_metadata_get_tag_interpreted_string (metadata, tag);
+    metadata_dialog_add_tag (store, iter, tag_column, value_column,
+                             tag, gettext (value));
+    g_free (value);
 }
 
 static void
@@ -427,144 +427,144 @@ metadata_dialog_append_tags (GExiv2Metadata  *metadata,
                              gint             value_column,
                              gboolean         load_iptc)
 {
-  GtkTreeIter  iter;
-  const gchar *tag;
-  const gchar *last_tag = NULL;
-  gboolean     gps_done = FALSE;
+    GtkTreeIter  iter;
+    const gchar *tag;
+    const gchar *last_tag = NULL;
+    gboolean     gps_done = FALSE;
 
-  while ((tag = *tags++))
+    while ((tag = *tags++))
     {
-      gchar  *value;
-      gchar **values;
+        gchar  *value;
+        gchar **values;
 
-      /* We need special handling for iptc tags like "Keywords" which
-       * can appear multiple times. For now assuming that this can
-       * only happen for iptc tags of String and related types.
-       * See also: https://exiv2.org/iptc.html which only lists
-       * one Date type as repeatable (Iptc.Application2.ReferenceDate),
-       * and Date is handled here as string.
-       */
-      if (load_iptc && metadata_tag_is_string (tag))
+        /* We need special handling for iptc tags like "Keywords" which
+         * can appear multiple times. For now assuming that this can
+         * only happen for iptc tags of String and related types.
+         * See also: https://exiv2.org/iptc.html which only lists
+         * one Date type as repeatable (Iptc.Application2.ReferenceDate),
+         * and Date is handled here as string.
+         */
+        if (load_iptc && metadata_tag_is_string (tag))
         {
-          if (last_tag && ! strcmp (tag, last_tag))
+            if (last_tag && ! strcmp (tag, last_tag))
             {
-              continue;
+                continue;
             }
-          last_tag = tag;
+            last_tag = tag;
 
-          values = gexiv2_metadata_get_tag_multiple (GEXIV2_METADATA (metadata),
-                                                     tag);
+            values = gexiv2_metadata_get_tag_multiple (GEXIV2_METADATA (metadata),
+                     tag);
 
-          if (values)
+            if (values)
             {
-              gint i;
+                gint i;
 
-              for (i = 0; values[i] != NULL; i++)
+                for (i = 0; values[i] != NULL; i++)
                 {
-                  gtk_list_store_append (store, &iter);
+                    gtk_list_store_append (store, &iter);
 
-                  value = metadata_format_string_value (values[i], /* truncate = */ TRUE);
+                    value = metadata_format_string_value (values[i], /* truncate = */ TRUE);
 
-                  gtk_list_store_set (store, &iter,
-                                      tag_column,   tag,
-                                      value_column, value,
-                                      -1);
+                    gtk_list_store_set (store, &iter,
+                                        tag_column,   tag,
+                                        value_column, value,
+                                        -1);
 
-                  g_free (value);
+                    g_free (value);
                 }
 
-              g_strfreev (values);
+                g_strfreev (values);
             }
         }
-      else if (! strcmp ("Exif.GPSInfo.GPSLongitude",    tag) ||
-               ! strcmp ("Exif.GPSInfo.GPSLongitudeRef", tag) ||
-               ! strcmp ("Exif.GPSInfo.GPSLatitude",     tag) ||
-               ! strcmp ("Exif.GPSInfo.GPSLatitudeRef",  tag) ||
-               ! strcmp ("Exif.GPSInfo.GPSAltitude",     tag) ||
-               ! strcmp ("Exif.GPSInfo.GPSAltitudeRef",  tag))
+        else if (! strcmp ("Exif.GPSInfo.GPSLongitude",    tag) ||
+                 ! strcmp ("Exif.GPSInfo.GPSLongitudeRef", tag) ||
+                 ! strcmp ("Exif.GPSInfo.GPSLatitude",     tag) ||
+                 ! strcmp ("Exif.GPSInfo.GPSLatitudeRef",  tag) ||
+                 ! strcmp ("Exif.GPSInfo.GPSAltitude",     tag) ||
+                 ! strcmp ("Exif.GPSInfo.GPSAltitudeRef",  tag))
         {
-          /* We need special handling for some of the GPS tags to
-           * be able to show better values than the default. */
-          if (! gps_done)
+            /* We need special handling for some of the GPS tags to
+             * be able to show better values than the default. */
+            if (! gps_done)
             {
-              gdouble  lng, lat, alt;
-              gchar   *str;
-              gchar  *value;
+                gdouble  lng, lat, alt;
+                gchar   *str;
+                gchar  *value;
 
-              if (gexiv2_metadata_get_gps_longitude (GEXIV2_METADATA (metadata),
-                                                     &lng))
+                if (gexiv2_metadata_get_gps_longitude (GEXIV2_METADATA (metadata),
+                                                       &lng))
                 {
-                  str = metadata_format_gps_longitude_latitude (lng);
-                  metadata_dialog_add_tag (store, iter,
-                                           tag_column, value_column,
-                                           "Exif.GPSInfo.GPSLongitude",
-                                           str);
-                  g_free (str);
+                    str = metadata_format_gps_longitude_latitude (lng);
+                    metadata_dialog_add_tag (store, iter,
+                                             tag_column, value_column,
+                                             "Exif.GPSInfo.GPSLongitude",
+                                             str);
+                    g_free (str);
                 }
-              metadata_dialog_add_translated_tag (metadata, store, iter,
-                                                  tag_column, value_column,
-                                                  "Exif.GPSInfo.GPSLongitudeRef");
+                metadata_dialog_add_translated_tag (metadata, store, iter,
+                                                    tag_column, value_column,
+                                                    "Exif.GPSInfo.GPSLongitudeRef");
 
-              if (gexiv2_metadata_get_gps_latitude (GEXIV2_METADATA (metadata),
-                                                    &lat))
+                if (gexiv2_metadata_get_gps_latitude (GEXIV2_METADATA (metadata),
+                                                      &lat))
                 {
-                  str = metadata_format_gps_longitude_latitude (lat);
-                  metadata_dialog_add_tag (store, iter,
-                                           tag_column, value_column,
-                                           "Exif.GPSInfo.GPSLatitude",
-                                           str);
-                  g_free (str);
+                    str = metadata_format_gps_longitude_latitude (lat);
+                    metadata_dialog_add_tag (store, iter,
+                                             tag_column, value_column,
+                                             "Exif.GPSInfo.GPSLatitude",
+                                             str);
+                    g_free (str);
                 }
-              metadata_dialog_add_translated_tag (metadata, store, iter,
-                                                  tag_column, value_column,
-                                                  "Exif.GPSInfo.GPSLatitudeRef");
+                metadata_dialog_add_translated_tag (metadata, store, iter,
+                                                    tag_column, value_column,
+                                                    "Exif.GPSInfo.GPSLatitudeRef");
 
-              if (gexiv2_metadata_get_gps_altitude (GEXIV2_METADATA (metadata),
-                                                    &alt))
+                if (gexiv2_metadata_get_gps_altitude (GEXIV2_METADATA (metadata),
+                                                      &alt))
                 {
-                  gchar *str2, *str3;
+                    gchar *str2, *str3;
 
-                  str  = metadata_format_gps_altitude (alt, TRUE,  _(" meter"));
-                  str2 = metadata_format_gps_altitude (alt, FALSE, _(" feet"));
-                  str3 = g_strdup_printf ("%s (%s)", str, str2);
-                  metadata_dialog_add_tag (store, iter,
-                                           tag_column, value_column,
-                                           "Exif.GPSInfo.GPSAltitude",
-                                           str3);
-                  g_free (str);
-                  g_free (str2);
-                  g_free (str3);
-                  value = gexiv2_metadata_get_tag_string (metadata,
-                                                          "Exif.GPSInfo.GPSAltitudeRef");
+                    str  = metadata_format_gps_altitude (alt, TRUE,  _(" meter"));
+                    str2 = metadata_format_gps_altitude (alt, FALSE, _(" feet"));
+                    str3 = g_strdup_printf ("%s (%s)", str, str2);
+                    metadata_dialog_add_tag (store, iter,
+                                             tag_column, value_column,
+                                             "Exif.GPSInfo.GPSAltitude",
+                                             str3);
+                    g_free (str);
+                    g_free (str2);
+                    g_free (str3);
+                    value = gexiv2_metadata_get_tag_string (metadata,
+                                                            "Exif.GPSInfo.GPSAltitudeRef");
 
-                  if (value)
+                    if (value)
                     {
-                      gint index;
+                        gint index;
 
-                      if (value[0] == '0')
-                        index = 1;
-                      else if (value[0] == '1')
-                        index = 2;
-                      else
-                        index = 0;
-                      metadata_dialog_add_tag (store, iter,
-                                              tag_column, value_column,
-                                              "Exif.GPSInfo.GPSAltitudeRef",
-                                              gettext (gpsaltref[index]));
-                      g_free (value);
+                        if (value[0] == '0')
+                            index = 1;
+                        else if (value[0] == '1')
+                            index = 2;
+                        else
+                            index = 0;
+                        metadata_dialog_add_tag (store, iter,
+                                                 tag_column, value_column,
+                                                 "Exif.GPSInfo.GPSAltitudeRef",
+                                                 gettext (gpsaltref[index]));
+                        g_free (value);
                     }
                 }
-              gps_done = TRUE;
+                gps_done = TRUE;
             }
         }
-      else
+        else
         {
-          value = metadata_dialog_format_tag_value (metadata, tag,
-                                                    /* truncate = */ TRUE);
-          metadata_dialog_add_tag (store, iter,
-                                   tag_column, value_column,
-                                   tag, value);
-          g_free (value);
+            value = metadata_dialog_format_tag_value (metadata, tag,
+                    /* truncate = */ TRUE);
+            metadata_dialog_add_tag (store, iter,
+                                     tag_column, value_column,
+                                     tag, value);
+            g_free (value);
         }
     }
 }
@@ -574,61 +574,61 @@ metadata_dialog_format_tag_value (GExiv2Metadata *metadata,
                                   const gchar    *tag,
                                   gboolean        truncate)
 {
-  gchar       *result;
+    gchar       *result;
 
-  if (metadata_tag_is_string(tag))
+    if (metadata_tag_is_string(tag))
     {
-      gchar *value;
-      gchar *value_utf8;
+        gchar *value;
+        gchar *value_utf8;
 
-      value      = gexiv2_metadata_get_tag_interpreted_string (metadata, tag);
-      if (! g_utf8_validate (value, -1, NULL))
+        value      = gexiv2_metadata_get_tag_interpreted_string (metadata, tag);
+        if (! g_utf8_validate (value, -1, NULL))
         {
-          value_utf8 = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
+            value_utf8 = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
         }
-      else
+        else
         {
-          value_utf8 = g_strdup (value);
+            value_utf8 = g_strdup (value);
         }
 
-      g_free (value);
+        g_free (value);
 
-      result = metadata_format_string_value (value_utf8, truncate);
+        result = metadata_format_string_value (value_utf8, truncate);
     }
-  else
+    else
     {
-      GBytes       *bytes;
-      const guchar *data;
-      gsize         size;
-      gsize         display_size;
-      GString      *str;
-      gint          i;
+        GBytes       *bytes;
+        const guchar *data;
+        gsize         size;
+        gsize         display_size;
+        GString      *str;
+        gint          i;
 
-      bytes = gexiv2_metadata_get_tag_raw (metadata, tag);
-      data  = g_bytes_get_data (bytes, &size);
+        bytes = gexiv2_metadata_get_tag_raw (metadata, tag);
+        data  = g_bytes_get_data (bytes, &size);
 
-      if (! truncate)
-        display_size = size;
-      else
-        display_size = MIN (size, RAW_DATA_MAX_SIZE);
+        if (! truncate)
+            display_size = size;
+        else
+            display_size = MIN (size, RAW_DATA_MAX_SIZE);
 
-      str = g_string_sized_new (3 * display_size);
+        str = g_string_sized_new (3 * display_size);
 
-      for (i = 0; i < display_size; i++)
-        g_string_append_printf (str, i == 0 ? "%02x" : " %02x", data[i]);
+        for (i = 0; i < display_size; i++)
+            g_string_append_printf (str, i == 0 ? "%02x" : " %02x", data[i]);
 
-      if (display_size < size)
+        if (display_size < size)
         {
-          g_string_append (str, " ... ");
-          g_string_append_printf (str,
-                                  _("(%llu more byte(s))"),
-                                  (unsigned long long) (size - display_size));
+            g_string_append (str, " ... ");
+            g_string_append_printf (str,
+                                    _("(%llu more byte(s))"),
+                                    (unsigned long long) (size - display_size));
         }
 
-      result = g_string_free (str, FALSE);
+        result = g_string_free (str, FALSE);
 
-      g_bytes_unref (bytes);
+        g_bytes_unref (bytes);
     }
 
-  return result;
+    return result;
 }

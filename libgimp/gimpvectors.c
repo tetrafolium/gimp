@@ -26,7 +26,7 @@
 
 struct _GimpVectorsPrivate
 {
-  gpointer unused;
+    gpointer unused;
 };
 
 
@@ -43,7 +43,7 @@ gimp_vectors_class_init (GimpVectorsClass *klass)
 static void
 gimp_vectors_init (GimpVectors *vectors)
 {
-  vectors->priv = gimp_vectors_get_instance_private (vectors);
+    vectors->priv = gimp_vectors_get_instance_private (vectors);
 }
 
 /**
@@ -64,10 +64,10 @@ gimp_vectors_init (GimpVectors *vectors)
 GimpVectors *
 gimp_vectors_get_by_id (gint32 vectors_id)
 {
-  GimpItem *item = gimp_item_get_by_id (vectors_id);
+    GimpItem *item = gimp_item_get_by_id (vectors_id);
 
-  if (GIMP_IS_VECTORS (item))
-    return (GimpVectors *) item;
+    if (GIMP_IS_VECTORS (item))
+        return (GimpVectors *) item;
 
-  return NULL;
+    return NULL;
 }

@@ -33,12 +33,12 @@ typedef struct _GlobClass GlobClass;
 
 struct _Glob
 {
-  GimpPlugIn parent_instance;
+    GimpPlugIn parent_instance;
 };
 
 struct _GlobClass
 {
-  GimpPlugInClass parent_class;
+    GimpPlugInClass parent_class;
 };
 
 
@@ -49,18 +49,18 @@ GType                   glob_get_type         (void) G_GNUC_CONST;
 
 static GList          * glob_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * glob_create_procedure (GimpPlugIn           *plug_in,
-                                               const gchar          *name);
+        const gchar          *name);
 
 static GimpValueArray * glob_run              (GimpProcedure        *procedure,
-                                               const GimpValueArray *args,
-                                               gpointer              run_data);
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 static gboolean         glob_match            (const gchar          *pattern,
-                                               gboolean              filename_encoding,
-                                               gint                 *num_matches,
-                                               gchar              ***matches);
+        gboolean              filename_encoding,
+        gint                 *num_matches,
+        gchar              ***matches);
 static gboolean         glob_fnmatch          (const gchar          *pattern,
-                                               const gchar          *string);
+        const gchar          *string);
 
 
 G_DEFINE_TYPE (Glob, glob, GIMP_TYPE_PLUG_IN)
@@ -71,10 +71,10 @@ GIMP_MAIN (GLOB_TYPE)
 static void
 glob_class_init (GlobClass *klass)
 {
-  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-  plug_in_class->query_procedures = glob_query_procedures;
-  plug_in_class->create_procedure = glob_create_procedure;
+    plug_in_class->query_procedures = glob_query_procedures;
+    plug_in_class->create_procedure = glob_create_procedure;
 }
 
 static void
@@ -85,64 +85,64 @@ glob_init (Glob *glob)
 static GList *
 glob_query_procedures (GimpPlugIn *plug_in)
 {
-  return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 glob_create_procedure (GimpPlugIn  *plug_in,
-                           const gchar *name)
+                       const gchar *name)
 {
-  GimpProcedure *procedure = NULL;
+    GimpProcedure *procedure = NULL;
 
-  if (! strcmp (name, PLUG_IN_PROC))
+    if (! strcmp (name, PLUG_IN_PROC))
     {
-      procedure = gimp_procedure_new (plug_in, name,
-                                      GIMP_PDB_PROC_TYPE_PLUGIN,
-                                      glob_run, NULL, NULL);
+        procedure = gimp_procedure_new (plug_in, name,
+                                        GIMP_PDB_PROC_TYPE_PLUGIN,
+                                        glob_run, NULL, NULL);
 
-      gimp_procedure_set_documentation (procedure,
-                                        "Returns a list of matching filenames",
-                                        "This can be useful in scripts and "
-                                        "other plug-ins (e.g., "
-                                        "batch-conversion). See the glob(7) "
-                                        "manpage for more info. Note however "
-                                        "that this isn't a full-featured glob "
-                                        "implementation. It only handles "
-                                        "simple patterns like "
-                                        "\"/home/foo/bar/*.jpg\".",
-                                        name);
-      gimp_procedure_set_attribution (procedure,
-                                      "Sven Neumann",
-                                      "Sven Neumann",
-                                      "2004");
+        gimp_procedure_set_documentation (procedure,
+                                          "Returns a list of matching filenames",
+                                          "This can be useful in scripts and "
+                                          "other plug-ins (e.g., "
+                                          "batch-conversion). See the glob(7) "
+                                          "manpage for more info. Note however "
+                                          "that this isn't a full-featured glob "
+                                          "implementation. It only handles "
+                                          "simple patterns like "
+                                          "\"/home/foo/bar/*.jpg\".",
+                                          name);
+        gimp_procedure_set_attribution (procedure,
+                                        "Sven Neumann",
+                                        "Sven Neumann",
+                                        "2004");
 
-      GIMP_PROC_ARG_STRING (procedure, "pattern",
-                            "Pattern",
-                            "The glob pattern (in UTF-8 encoding)",
-                            NULL,
-                            G_PARAM_READWRITE);
+        GIMP_PROC_ARG_STRING (procedure, "pattern",
+                              "Pattern",
+                              "The glob pattern (in UTF-8 encoding)",
+                              NULL,
+                              G_PARAM_READWRITE);
 
-      GIMP_PROC_ARG_BOOLEAN (procedure, "filename-encoding",
-                             "Filename encoding",
-                             "FALSE to return UTF-8 strings, TRUE to return "
-                             "strings in filename encoding",
-                             FALSE,
-                             G_PARAM_READWRITE);
+        GIMP_PROC_ARG_BOOLEAN (procedure, "filename-encoding",
+                               "Filename encoding",
+                               "FALSE to return UTF-8 strings, TRUE to return "
+                               "strings in filename encoding",
+                               FALSE,
+                               G_PARAM_READWRITE);
 
-      GIMP_PROC_VAL_INT (procedure, "num-files",
-                         "Num files",
-                         "Number of returned filenames",
-                         0, G_MAXINT, 0,
-                         G_PARAM_READWRITE);
+        GIMP_PROC_VAL_INT (procedure, "num-files",
+                           "Num files",
+                           "Number of returned filenames",
+                           0, G_MAXINT, 0,
+                           G_PARAM_READWRITE);
 
-      GIMP_PROC_VAL_STRING_ARRAY (procedure, "files",
-                                  "Files",
-                                  "The list of matching filenames",
-                                  G_PARAM_READWRITE |
-                                  GIMP_PARAM_NO_VALIDATE);
+        GIMP_PROC_VAL_STRING_ARRAY (procedure, "files",
+                                    "Files",
+                                    "The list of matching filenames",
+                                    G_PARAM_READWRITE |
+                                    GIMP_PARAM_NO_VALIDATE);
     }
 
-  return procedure;
+    return procedure;
 }
 
 static GimpValueArray *
@@ -150,31 +150,31 @@ glob_run (GimpProcedure        *procedure,
           const GimpValueArray *args,
           gpointer              run_data)
 {
-  GimpValueArray *return_vals;
-  const gchar    *pattern;
-  gboolean        filename_encoding;
-  gchar         **matches;
-  gint            num_matches;
+    GimpValueArray *return_vals;
+    const gchar    *pattern;
+    gboolean        filename_encoding;
+    gchar         **matches;
+    gint            num_matches;
 
-  pattern           = GIMP_VALUES_GET_STRING  (args, 0);
-  filename_encoding = GIMP_VALUES_GET_BOOLEAN (args, 1);
+    pattern           = GIMP_VALUES_GET_STRING  (args, 0);
+    filename_encoding = GIMP_VALUES_GET_BOOLEAN (args, 1);
 
-  if (! glob_match (pattern, filename_encoding,
-                    &num_matches, &matches))
+    if (! glob_match (pattern, filename_encoding,
+                      &num_matches, &matches))
     {
-      return gimp_procedure_new_return_values (procedure,
-                                               GIMP_PDB_EXECUTION_ERROR,
-                                               NULL);
+        return gimp_procedure_new_return_values (procedure,
+                GIMP_PDB_EXECUTION_ERROR,
+                NULL);
     }
 
-  return_vals = gimp_procedure_new_return_values (procedure,
-                                                  GIMP_PDB_SUCCESS,
-                                                  NULL);
+    return_vals = gimp_procedure_new_return_values (procedure,
+                  GIMP_PDB_SUCCESS,
+                  NULL);
 
-  GIMP_VALUES_SET_INT           (return_vals, 0, num_matches);
-  GIMP_VALUES_TAKE_STRING_ARRAY (return_vals, 1, matches, num_matches);
+    GIMP_VALUES_SET_INT           (return_vals, 0, num_matches);
+    GIMP_VALUES_TAKE_STRING_ARRAY (return_vals, 1, matches, num_matches);
 
-  return return_vals;
+    return return_vals;
 }
 
 static gboolean
@@ -183,89 +183,89 @@ glob_match (const gchar   *pattern,
             gint          *num_matches,
             gchar       ***matches)
 {
-  GDir        *dir;
-  GPtrArray   *array;
-  const gchar *filename;
-  gchar       *dirname;
-  gchar       *tmp;
+    GDir        *dir;
+    GPtrArray   *array;
+    const gchar *filename;
+    gchar       *dirname;
+    gchar       *tmp;
 
-  g_return_val_if_fail (pattern != NULL, FALSE);
-  g_return_val_if_fail (num_matches != NULL, FALSE);
-  g_return_val_if_fail (matches != NULL, FALSE);
+    g_return_val_if_fail (pattern != NULL, FALSE);
+    g_return_val_if_fail (num_matches != NULL, FALSE);
+    g_return_val_if_fail (matches != NULL, FALSE);
 
-  *num_matches = 0;
-  *matches     = NULL;
+    *num_matches = 0;
+    *matches     = NULL;
 
-  /*  This is not a complete glob() implementation but rather a very
-   *  simplistic approach. However it works for the most common use
-   *  case and is better than nothing.
-   */
+    /*  This is not a complete glob() implementation but rather a very
+     *  simplistic approach. However it works for the most common use
+     *  case and is better than nothing.
+     */
 
-  tmp = g_filename_from_utf8 (pattern, -1, NULL, NULL, NULL);
-  if (! tmp)
-    return FALSE;
+    tmp = g_filename_from_utf8 (pattern, -1, NULL, NULL, NULL);
+    if (! tmp)
+        return FALSE;
 
-  dirname = g_path_get_dirname (tmp);
+    dirname = g_path_get_dirname (tmp);
 
-  dir = g_dir_open (dirname, 0, NULL);
-  g_free (tmp);
+    dir = g_dir_open (dirname, 0, NULL);
+    g_free (tmp);
 
-  if (! dir)
+    if (! dir)
     {
-      g_free (dirname);
-      return TRUE;
+        g_free (dirname);
+        return TRUE;
     }
 
-  /*  check if the pattern has a directory part at all  */
-  tmp = g_path_get_basename (pattern);
-  if (strcmp (pattern, tmp) == 0)
+    /*  check if the pattern has a directory part at all  */
+    tmp = g_path_get_basename (pattern);
+    if (strcmp (pattern, tmp) == 0)
     {
-      g_free (dirname);
-      dirname = NULL;
+        g_free (dirname);
+        dirname = NULL;
     }
-  g_free (tmp);
+    g_free (tmp);
 
-  array = g_ptr_array_new ();
+    array = g_ptr_array_new ();
 
-  for (filename = g_dir_read_name (dir);
-       filename;
-       filename = g_dir_read_name (dir))
+    for (filename = g_dir_read_name (dir);
+            filename;
+            filename = g_dir_read_name (dir))
     {
-      gchar *path;
-      gchar *name;
+        gchar *path;
+        gchar *name;
 
-      if (dirname)
-        path = g_build_filename (dirname, filename, NULL);
-      else
-        path = g_strdup (filename);
+        if (dirname)
+            path = g_build_filename (dirname, filename, NULL);
+        else
+            path = g_strdup (filename);
 
-      name = g_filename_to_utf8 (path, -1, NULL, NULL, NULL);
+        name = g_filename_to_utf8 (path, -1, NULL, NULL, NULL);
 
-      if (name && glob_fnmatch (pattern, name))
+        if (name && glob_fnmatch (pattern, name))
         {
-          if (filename_encoding)
+            if (filename_encoding)
             {
-              g_ptr_array_add (array, path);
-              path = NULL;
+                g_ptr_array_add (array, path);
+                path = NULL;
             }
-          else
+            else
             {
-              g_ptr_array_add (array, name);
-              name = NULL;
+                g_ptr_array_add (array, name);
+                name = NULL;
             }
         }
 
-      g_free (path);
-      g_free (name);
+        g_free (path);
+        g_free (name);
     }
 
-  g_dir_close (dir);
-  g_free (dirname);
+    g_dir_close (dir);
+    g_free (dirname);
 
-  *num_matches = array->len;
-  *matches     = (gchar **) g_ptr_array_free (array, FALSE);
+    *num_matches = array->len;
+    *matches     = (gchar **) g_ptr_array_free (array, FALSE);
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -294,14 +294,14 @@ glob_match (const gchar   *pattern,
 static gunichar
 get_char (const char **str)
 {
-  gunichar c = g_utf8_get_char (*str);
-  *str = g_utf8_next_char (*str);
+    gunichar c = g_utf8_get_char (*str);
+    *str = g_utf8_next_char (*str);
 
 #ifdef G_PLATFORM_WIN32
-  c = g_unichar_tolower (c);
+    c = g_unichar_tolower (c);
 #endif
 
-  return c;
+    return c;
 }
 
 #if defined(G_OS_WIN32) || defined(G_WITH_CYGWIN)
@@ -314,13 +314,13 @@ static gunichar
 get_unescaped_char (const char **str,
                     gboolean    *was_escaped)
 {
-  gunichar c = get_char (str);
+    gunichar c = get_char (str);
 
-  *was_escaped = DO_ESCAPE && c == '\\';
-  if (*was_escaped)
-    c = get_char (str);
+    *was_escaped = DO_ESCAPE && c == '\\';
+    if (*was_escaped)
+        c = get_char (str);
 
-  return c;
+    return c;
 }
 
 /* Match STRING against the filename pattern PATTERN,
@@ -332,163 +332,165 @@ fnmatch_intern (const gchar *pattern,
                 gboolean     component_start,
                 gboolean     no_leading_period)
 {
-  const char *p = pattern, *n = string;
+    const char *p = pattern, *n = string;
 
-  while (*p)
+    while (*p)
     {
-      const char *last_n = n;
+        const char *last_n = n;
 
-      gunichar c = get_char (&p);
-      gunichar nc = get_char (&n);
+        gunichar c = get_char (&p);
+        gunichar nc = get_char (&n);
 
-      switch (c)
+        switch (c)
         {
         case '?':
-          if (nc == '\0')
-            return FALSE;
-          else if (nc == G_DIR_SEPARATOR)
-            return FALSE;
-          else if (nc == '.' && component_start && no_leading_period)
-            return FALSE;
-          break;
+            if (nc == '\0')
+                return FALSE;
+            else if (nc == G_DIR_SEPARATOR)
+                return FALSE;
+            else if (nc == '.' && component_start && no_leading_period)
+                return FALSE;
+            break;
         case '\\':
-          if (DO_ESCAPE)
-            c = get_char (&p);
-          if (nc != c)
-            return FALSE;
-          break;
+            if (DO_ESCAPE)
+                c = get_char (&p);
+            if (nc != c)
+                return FALSE;
+            break;
         case '*':
-          if (nc == '.' && component_start && no_leading_period)
-            return FALSE;
+            if (nc == '.' && component_start && no_leading_period)
+                return FALSE;
 
-          {
-            const char *last_p = p;
+            {
+                const char *last_p = p;
 
-            for (last_p = p, c = get_char (&p);
-                 c == '?' || c == '*';
-                 last_p = p, c = get_char (&p))
-              {
-                if (c == '?')
-                  {
-                    if (nc == '\0')
-                      return FALSE;
-                    else if (nc == G_DIR_SEPARATOR)
-                      return FALSE;
+                for (last_p = p, c = get_char (&p);
+                        c == '?' || c == '*';
+                        last_p = p, c = get_char (&p))
+                {
+                    if (c == '?')
+                    {
+                        if (nc == '\0')
+                            return FALSE;
+                        else if (nc == G_DIR_SEPARATOR)
+                            return FALSE;
+                        else
+                        {
+                            last_n = n;
+                            nc = get_char (&n);
+                        }
+                    }
+                }
+
+                /* If the pattern ends with wildcards, we have a
+                 * guaranteed match unless there is a dir separator
+                 * in the remainder of the string.
+                 */
+                if (c == '\0')
+                {
+                    if (strchr (last_n, G_DIR_SEPARATOR) != NULL)
+                        return FALSE;
                     else
-                      {
-                        last_n = n; nc = get_char (&n);
-                      }
-                  }
-              }
+                        return TRUE;
+                }
 
-            /* If the pattern ends with wildcards, we have a
-             * guaranteed match unless there is a dir separator
-             * in the remainder of the string.
-             */
-            if (c == '\0')
-              {
-                if (strchr (last_n, G_DIR_SEPARATOR) != NULL)
-                  return FALSE;
-                else
-                  return TRUE;
-              }
+                if (DO_ESCAPE && c == '\\')
+                    c = get_char (&p);
 
-            if (DO_ESCAPE && c == '\\')
-              c = get_char (&p);
+                for (p = last_p; nc != '\0';)
+                {
+                    if ((c == '[' || nc == c) &&
+                            fnmatch_intern (p, last_n,
+                                            component_start, no_leading_period))
+                        return TRUE;
 
-            for (p = last_p; nc != '\0';)
-              {
-                if ((c == '[' || nc == c) &&
-                    fnmatch_intern (p, last_n,
-                                    component_start, no_leading_period))
-                  return TRUE;
+                    component_start = (nc == G_DIR_SEPARATOR);
+                    last_n = n;
+                    nc = get_char (&n);
+                }
 
-                component_start = (nc == G_DIR_SEPARATOR);
-                last_n = n;
-                nc = get_char (&n);
-              }
-
-            return FALSE;
-          }
+                return FALSE;
+            }
 
         case '[':
-          {
+        {
             /* Nonzero if the sense of the character class is inverted.  */
             gboolean not;
             gboolean was_escaped;
 
             if (nc == '\0' || nc == G_DIR_SEPARATOR)
-              return FALSE;
+                return FALSE;
 
             if (nc == '.' && component_start && no_leading_period)
-              return FALSE;
+                return FALSE;
 
             not = (*p == '!' || *p == '^');
             if (not)
-              ++p;
+                ++p;
 
             c = get_unescaped_char (&p, &was_escaped);
             for (;;)
-              {
+            {
                 register gunichar cstart = c, cend = c;
                 if (c == '\0')
-                  /* [ (unterminated) loses.  */
-                  return FALSE;
+                    /* [ (unterminated) loses.  */
+                    return FALSE;
 
                 c = get_unescaped_char (&p, &was_escaped);
 
                 if (!was_escaped && c == '-' && *p != ']')
-                  {
+                {
                     cend = get_unescaped_char (&p, &was_escaped);
                     if (cend == '\0')
-                      return FALSE;
+                        return FALSE;
 
                     c = get_char (&p);
-                  }
+                }
 
                 if (nc >= cstart && nc <= cend)
-                  goto matched;
+                    goto matched;
 
                 if (!was_escaped && c == ']')
-                  break;
-              }
+                    break;
+            }
             if (!not)
-              return FALSE;
+                return FALSE;
             break;
 
-          matched:;
+matched:
+            ;
             /* Skip the rest of the [...] that already matched.  */
             /* XXX 1003.2d11 is unclear if was_escaped is right.  */
             while (was_escaped || c != ']')
-              {
+            {
                 if (c == '\0')
-                  /* [... (unterminated) loses.  */
-                  return FALSE;
+                    /* [... (unterminated) loses.  */
+                    return FALSE;
 
                 c = get_unescaped_char (&p, &was_escaped);
-              }
+            }
             if (not)
-              return FALSE;
-          }
-          break;
+                return FALSE;
+        }
+        break;
 
         default:
-          if (c != nc)
-            return FALSE;
+            if (c != nc)
+                return FALSE;
         }
 
-      component_start = (nc == G_DIR_SEPARATOR);
+        component_start = (nc == G_DIR_SEPARATOR);
     }
 
-  if (*n == '\0')
-    return TRUE;
+    if (*n == '\0')
+        return TRUE;
 
-  return FALSE;
+    return FALSE;
 }
 
 static gboolean
 glob_fnmatch (const gchar *pattern,
               const gchar *string)
 {
-  return fnmatch_intern (pattern, string, TRUE, TRUE);
+    return fnmatch_intern (pattern, string, TRUE, TRUE);
 }

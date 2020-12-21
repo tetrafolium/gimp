@@ -48,5 +48,5 @@
 GQuark
 gimp_thumb_error_quark (void)
 {
-  return g_quark_from_static_string ("gimp-thumb-error-quark");
+    return g_quark_from_static_string ("gimp-thumb-error-quark");
 }

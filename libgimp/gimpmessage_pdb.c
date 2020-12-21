@@ -48,24 +48,24 @@
 gboolean
 gimp_message (const gchar *message)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, message,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, message,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-message",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-message",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -82,24 +82,24 @@ gimp_message (const gchar *message)
 GimpMessageHandlerType
 gimp_message_get_handler (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  GimpMessageHandlerType handler = 0;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    GimpMessageHandlerType handler = 0;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-message-get-handler",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-message-get-handler",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    handler = GIMP_VALUES_GET_ENUM (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        handler = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return handler;
+    return handler;
 }
 
 /**
@@ -117,22 +117,22 @@ gimp_message_get_handler (void)
 gboolean
 gimp_message_set_handler (GimpMessageHandlerType handler)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_MESSAGE_HANDLER_TYPE, handler,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_MESSAGE_HANDLER_TYPE, handler,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-message-set-handler",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-message-set-handler",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }

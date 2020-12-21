@@ -45,16 +45,16 @@
 
 typedef struct
 {
-  gdouble  alpha;
-  gdouble  radius;
-  gint     filter;
+    gdouble  alpha;
+    gdouble  radius;
+    gint     filter;
 } NLFilterValues;
 
 typedef enum
 {
-  filter_alpha_trim,
-  filter_opt_est,
-  filter_edge_enhance
+    filter_alpha_trim,
+    filter_opt_est,
+    filter_edge_enhance
 } FilterType;
 
 
@@ -63,12 +63,12 @@ typedef struct _NlfilterClass NlfilterClass;
 
 struct _Nlfilter
 {
-  GimpPlugIn parent_instance;
+    GimpPlugIn parent_instance;
 };
 
 struct _NlfilterClass
 {
-  GimpPlugInClass parent_class;
+    GimpPlugInClass parent_class;
 };
 
 
@@ -79,36 +79,36 @@ GType                   nlfilter_get_type         (void) G_GNUC_CONST;
 
 static GList          * nlfilter_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * nlfilter_create_procedure (GimpPlugIn           *plug_in,
-                                                   const gchar          *name);
+        const gchar          *name);
 
 static GimpValueArray * nlfilter_run              (GimpProcedure        *procedure,
-                                                   GimpRunMode           run_mode,
-                                                   GimpImage            *image,
-                                                   GimpDrawable         *drawable,
-                                                   const GimpValueArray *args,
-                                                   gpointer              run_data);
+        GimpRunMode           run_mode,
+        GimpImage            *image,
+        GimpDrawable         *drawable,
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 static void             nlfilter                  (GimpDrawable     *drawable,
-                                                   GimpPreview      *preview);
+        GimpPreview      *preview);
 static void             nlfilter_preview          (GimpDrawable     *drawable,
-                                                   GimpPreview      *preview);
+        GimpPreview      *preview);
 
 static gboolean         nlfilter_dialog           (GimpDrawable     *drawable);
 
 static gint             nlfiltInit                (gdouble           alpha,
-                                                   gdouble           radius,
-                                                   FilterType        filter);
+        gdouble           radius,
+        FilterType        filter);
 
 static void             nlfiltRow                 (guchar           *srclast,
-                                                   guchar           *srcthis,
-                                                   guchar           *srcnext,
-                                                   guchar           *dst,
-                                                   gint              width,
-                                                   gint              bpp,
-                                                   gint              filtno);
+        guchar           *srcthis,
+        guchar           *srcnext,
+        guchar           *dst,
+        gint              width,
+        gint              bpp,
+        gint              filtno);
 
 static void    nlfilter_scale_entry_update_double (GimpLabelSpin    *entry,
-                                                   gdouble          *value);
+        gdouble          *value);
 
 
 G_DEFINE_TYPE (Nlfilter, nlfilter, GIMP_TYPE_PLUG_IN)
@@ -118,19 +118,19 @@ GIMP_MAIN (NLFILTER_TYPE)
 
 static NLFilterValues nlfvals =
 {
-  0.3,
-  1.0 / 3.0,
-  0
+    0.3,
+    1.0 / 3.0,
+    0
 };
 
 
 static void
 nlfilter_class_init (NlfilterClass *klass)
 {
-  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-  plug_in_class->query_procedures = nlfilter_query_procedures;
-  plug_in_class->create_procedure = nlfilter_create_procedure;
+    plug_in_class->query_procedures = nlfilter_query_procedures;
+    plug_in_class->create_procedure = nlfilter_create_procedure;
 }
 
 static void
@@ -141,61 +141,61 @@ nlfilter_init (Nlfilter *nlfilter)
 static GList *
 nlfilter_query_procedures (GimpPlugIn *plug_in)
 {
-  return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 nlfilter_create_procedure (GimpPlugIn  *plug_in,
-                               const gchar *name)
+                           const gchar *name)
 {
-  GimpProcedure *procedure = NULL;
+    GimpProcedure *procedure = NULL;
 
-  if (! strcmp (name, PLUG_IN_PROC))
+    if (! strcmp (name, PLUG_IN_PROC))
     {
-      procedure = gimp_image_procedure_new (plug_in, name,
-                                            GIMP_PDB_PROC_TYPE_PLUGIN,
-                                            nlfilter_run, NULL, NULL);
+        procedure = gimp_image_procedure_new (plug_in, name,
+                                              GIMP_PDB_PROC_TYPE_PLUGIN,
+                                              nlfilter_run, NULL, NULL);
 
-      gimp_procedure_set_image_types (procedure, "RGB, GRAY");
+        gimp_procedure_set_image_types (procedure, "RGB, GRAY");
 
-      gimp_procedure_set_menu_label (procedure, N_("_NL Filter..."));
-      gimp_procedure_add_menu_path (procedure,"<Image>/Filters/Enhance");
+        gimp_procedure_set_menu_label (procedure, N_("_NL Filter..."));
+        gimp_procedure_add_menu_path (procedure,"<Image>/Filters/Enhance");
 
-      gimp_procedure_set_documentation (procedure,
-                                        N_("Nonlinear swiss army knife filter"),
-                                        "This is the pnmnlfilt, in gimp's "
-                                        "clothing. See the pnmnlfilt manpage "
-                                        "for details.",
-                                        name);
-      gimp_procedure_set_attribution (procedure,
-                                      "Graeme W. Gill, gimp 0.99 plug-in "
-                                      "by Eric L. Hernes",
-                                      "Graeme W. Gill, Eric L. Hernes",
-                                      "1997");
+        gimp_procedure_set_documentation (procedure,
+                                          N_("Nonlinear swiss army knife filter"),
+                                          "This is the pnmnlfilt, in gimp's "
+                                          "clothing. See the pnmnlfilt manpage "
+                                          "for details.",
+                                          name);
+        gimp_procedure_set_attribution (procedure,
+                                        "Graeme W. Gill, gimp 0.99 plug-in "
+                                        "by Eric L. Hernes",
+                                        "Graeme W. Gill, Eric L. Hernes",
+                                        "1997");
 
-      GIMP_PROC_ARG_DOUBLE (procedure, "alpha",
-                            "Alpha",
-                            "The amount of the filter to apply",
-                            0, 1, 0.3,
-                            G_PARAM_READWRITE);
+        GIMP_PROC_ARG_DOUBLE (procedure, "alpha",
+                              "Alpha",
+                              "The amount of the filter to apply",
+                              0, 1, 0.3,
+                              G_PARAM_READWRITE);
 
-      GIMP_PROC_ARG_DOUBLE (procedure, "radius",
-                            "Radius",
-                            "The filter radius",
-                            1.0 / 3.0, 1, 1.0 / 3.0,
-                            G_PARAM_READWRITE);
+        GIMP_PROC_ARG_DOUBLE (procedure, "radius",
+                              "Radius",
+                              "The filter radius",
+                              1.0 / 3.0, 1, 1.0 / 3.0,
+                              G_PARAM_READWRITE);
 
-      GIMP_PROC_ARG_INT (procedure, "filter",
-                         "Filter",
-                         "The Filter to Run, "
-                         "0 - alpha trimmed mean; "
-                         "1 - optimal estimation (alpha controls noise variance); "
-                         "2 - edge enhancement",
-                         0, 2, 0,
-                         G_PARAM_READWRITE);
+        GIMP_PROC_ARG_INT (procedure, "filter",
+                           "Filter",
+                           "The Filter to Run, "
+                           "0 - alpha trimmed mean; "
+                           "1 - optimal estimation (alpha controls noise variance); "
+                           "2 - edge enhancement",
+                           0, 2, 0,
+                           G_PARAM_READWRITE);
     }
 
-  return procedure;
+    return procedure;
 }
 
 static GimpValueArray *
@@ -206,42 +206,42 @@ nlfilter_run (GimpProcedure        *procedure,
               const GimpValueArray *args,
               gpointer              run_data)
 {
-  INIT_I18N ();
-  gegl_init (NULL, NULL);
+    INIT_I18N ();
+    gegl_init (NULL, NULL);
 
-  switch (run_mode)
+    switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data (PLUG_IN_PROC, &nlfvals);
+        gimp_get_data (PLUG_IN_PROC, &nlfvals);
 
-      if (! nlfilter_dialog (drawable))
+        if (! nlfilter_dialog (drawable))
         {
-          return gimp_procedure_new_return_values (procedure,
-                                                   GIMP_PDB_CANCEL,
-                                                   NULL);
+            return gimp_procedure_new_return_values (procedure,
+                    GIMP_PDB_CANCEL,
+                    NULL);
         }
-      break;
+        break;
 
     case GIMP_RUN_NONINTERACTIVE:
-      nlfvals.alpha  = GIMP_VALUES_GET_DOUBLE (args, 0);
-      nlfvals.radius = GIMP_VALUES_GET_DOUBLE (args, 1);
-      nlfvals.filter = GIMP_VALUES_GET_INT    (args, 2);
-      break;
+        nlfvals.alpha  = GIMP_VALUES_GET_DOUBLE (args, 0);
+        nlfvals.radius = GIMP_VALUES_GET_DOUBLE (args, 1);
+        nlfvals.filter = GIMP_VALUES_GET_INT    (args, 2);
+        break;
 
     case GIMP_RUN_WITH_LAST_VALS :
-      gimp_get_data (PLUG_IN_PROC, &nlfvals);
-      break;
+        gimp_get_data (PLUG_IN_PROC, &nlfvals);
+        break;
     };
 
-  nlfilter (drawable, NULL);
+    nlfilter (drawable, NULL);
 
-  if (run_mode != GIMP_RUN_NONINTERACTIVE)
-    gimp_displays_flush ();
+    if (run_mode != GIMP_RUN_NONINTERACTIVE)
+        gimp_displays_flush ();
 
-  if (run_mode == GIMP_RUN_INTERACTIVE)
-    gimp_set_data (PLUG_IN_PROC, &nlfvals, sizeof (NLFilterValues));
+    if (run_mode == GIMP_RUN_INTERACTIVE)
+        gimp_set_data (PLUG_IN_PROC, &nlfvals, sizeof (NLFilterValues));
 
-  return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
+    return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
 }
 
 /* pnmnlfilt.c - 4 in 1 (2 non-linear) filter
@@ -333,12 +333,12 @@ static gint atfilt5 (gint *p);
 
 gint (*atfuncs[6])(gint *) =
 {
-  atfilt0,
-  atfilt1,
-  atfilt2,
-  atfilt3,
-  atfilt4,
-  atfilt5
+    atfilt0,
+    atfilt1,
+    atfilt2,
+    atfilt3,
+    atfilt4,
+    atfilt5
 };
 
 static gint noisevariance;
@@ -370,26 +370,26 @@ static void
 nlfiltRow (guchar *srclast, guchar *srcthis, guchar *srcnext, guchar *dst,
            gint width, gint bpp, gint filtno)
 {
-  gint    pf[9];
-  guchar *ip0, *ip1, *ip2, *or, *orend;
+    gint    pf[9];
+    guchar *ip0, *ip1, *ip2, *or, *orend;
 
-  orend = dst + width * bpp;
-  ip0 = srclast;
-  ip1 = srcthis;
-  ip2 = srcnext;
+    orend = dst + width * bpp;
+    ip0 = srclast;
+    ip1 = srcthis;
+    ip2 = srcnext;
 
-  for (or = dst; or < orend; ip0++, ip1++, ip2++, or++)
+    for (or = dst; or < orend; ip0++, ip1++, ip2++, or++)
     {
-      pf[0] = *ip1;
-      pf[1] = *(ip1 - bpp);
-      pf[2] = *(ip2 - bpp);
-      pf[3] = *(ip2);
-      pf[4] = *(ip2 + bpp);
-      pf[5] = *(ip1 + bpp);
-      pf[6] = *(ip0 + bpp);
-      pf[7] = *(ip0);
-      pf[8] = *(ip0 - bpp);
-      *or=(atfuncs[filtno])(pf);
+        pf[0] = *ip1;
+        pf[1] = *(ip1 - bpp);
+        pf[2] = *(ip2 - bpp);
+        pf[3] = *(ip2);
+        pf[4] = *(ip2 + bpp);
+        pf[5] = *(ip1 + bpp);
+        pf[6] = *(ip0 + bpp);
+        pf[7] = *(ip0);
+        pf[8] = *(ip0 - bpp);
+        *or=(atfuncs[filtno])(pf);
     }
 }
 
@@ -422,141 +422,141 @@ gint SQUARE[2 * NOCSVAL];              /* scaled square lookup table */
 static gint
 nlfiltInit (gdouble alpha, gdouble radius, FilterType filter)
 {
-   gint alpharange;                 /* alpha range value 0 - 3 */
-   gdouble meanscale;               /* scale for finding mean */
-   gdouble mmeanscale;              /* scale for finding mean - midle hex */
-   gdouble alphafraction;   /* fraction of next largest/smallest
+    gint alpharange;                 /* alpha range value 0 - 3 */
+    gdouble meanscale;               /* scale for finding mean */
+    gdouble mmeanscale;              /* scale for finding mean - midle hex */
+    gdouble alphafraction;   /* fraction of next largest/smallest
                              *  to subtract from sum
                              */
-   switch (filter)
-     {
-       case filter_alpha_trim:
-         {
-          gdouble noinmean;
-          /* alpha only makes sense in range 0.0 - 0.5 */
-          alpha /= 2.0;
-              /* number of elements (out of a possible 7) used in the mean */
-          noinmean = ((0.5 - alpha) * 12.0) + 1.0;
-          mmeanscale = meanscale = 1.0/noinmean;
-          if (alpha == 0.0) {                    /* mean filter */
-             alpharange = 0;
-             alphafraction = 0.0;            /* not used */
-          } else if (alpha < (1.0/6.0)) {    /* mean of 5 to 7 middle values */
-             alpharange = 1;
-             alphafraction = (7.0 - noinmean)/2.0;
-          } else if (alpha < (1.0/3.0)) {    /* mean of 3 to 5 middle values */
-             alpharange = 2;
-             alphafraction = (5.0 - noinmean)/2.0;
-          } else {                           /* mean of 1 to 3 middle values */
-                                             /* alpha==0.5  => median filter */
-             alpharange = 3;
-             alphafraction = (3.0 - noinmean)/2.0;
-          }
-       }
-       break;
-       case filter_opt_est: {
-          gint i;
-          gdouble noinmean = 7.0;
+    switch (filter)
+    {
+    case filter_alpha_trim:
+    {
+        gdouble noinmean;
+        /* alpha only makes sense in range 0.0 - 0.5 */
+        alpha /= 2.0;
+        /* number of elements (out of a possible 7) used in the mean */
+        noinmean = ((0.5 - alpha) * 12.0) + 1.0;
+        mmeanscale = meanscale = 1.0/noinmean;
+        if (alpha == 0.0) {                    /* mean filter */
+            alpharange = 0;
+            alphafraction = 0.0;            /* not used */
+        } else if (alpha < (1.0/6.0)) {    /* mean of 5 to 7 middle values */
+            alpharange = 1;
+            alphafraction = (7.0 - noinmean)/2.0;
+        } else if (alpha < (1.0/3.0)) {    /* mean of 3 to 5 middle values */
+            alpharange = 2;
+            alphafraction = (5.0 - noinmean)/2.0;
+        } else {                           /* mean of 1 to 3 middle values */
+            /* alpha==0.5  => median filter */
+            alpharange = 3;
+            alphafraction = (3.0 - noinmean)/2.0;
+        }
+    }
+    break;
+    case filter_opt_est: {
+        gint i;
+        gdouble noinmean = 7.0;
 
-              /* edge enhancement function */
-          alpharange = 5;
+        /* edge enhancement function */
+        alpharange = 5;
 
-              /* compute scaled hex values */
-          mmeanscale=meanscale=1.0;
+        /* compute scaled hex values */
+        mmeanscale=meanscale=1.0;
 
-              /* Set up 1:1 division lookup - not used */
-          alphafraction=1.0/noinmean;
+        /* Set up 1:1 division lookup - not used */
+        alphafraction=1.0/noinmean;
 
-              /* estimate of noise variance */
-          noisevariance = alpha * (gdouble)255;
-          noisevariance = noisevariance * noisevariance / 8.0;
+        /* estimate of noise variance */
+        noisevariance = alpha * (gdouble)255;
+        noisevariance = noisevariance * noisevariance / 8.0;
 
-              /* set yp optimal estimation specific stuff */
+        /* set yp optimal estimation specific stuff */
 
-          for (i=0;i<(7*NOCSVAL);i++) { /* divide scaled value by 7 lookup */
-             AVEDIV[i] = CSCTOSC(i)/7;       /* scaled divide by 7 */
-          }
-              /* compute square and rescale by
-               * (val >> (2 * SCALEB + 2)) table
-               */
-          for (i=0;i<(2*NOCSVAL);i++) {
-             gint val;
-                 /* NOCSVAL offset to cope with -ve input values */
-             val = CSCTOSC(i - NOCSVAL);
-             SQUARE[i] = (val * val) >> (2 * SCALEB + 2);
-          }
-       }
-       break;
-       case filter_edge_enhance: {
-          if (alpha == 1.0) alpha = 0.99;
-          alpharange = 4;
-              /* mean of 7 and scaled by -alpha/(1-alpha) */
-          meanscale = 1.0 * (-alpha/((1.0 - alpha) * 7.0));
+        for (i=0; i<(7*NOCSVAL); i++) { /* divide scaled value by 7 lookup */
+            AVEDIV[i] = CSCTOSC(i)/7;       /* scaled divide by 7 */
+        }
+        /* compute square and rescale by
+         * (val >> (2 * SCALEB + 2)) table
+         */
+        for (i=0; i<(2*NOCSVAL); i++) {
+            gint val;
+            /* NOCSVAL offset to cope with -ve input values */
+            val = CSCTOSC(i - NOCSVAL);
+            SQUARE[i] = (val * val) >> (2 * SCALEB + 2);
+        }
+    }
+    break;
+    case filter_edge_enhance: {
+        if (alpha == 1.0) alpha = 0.99;
+        alpharange = 4;
+        /* mean of 7 and scaled by -alpha/(1-alpha) */
+        meanscale = 1.0 * (-alpha/((1.0 - alpha) * 7.0));
 
-              /* middle pixel has 1/(1-alpha) as well */
-          mmeanscale = 1.0 * (1.0/(1.0 - alpha) + meanscale);
-          alphafraction = 0.0;    /* not used */
-       }
-       break;
-       default:
-         g_printerr ("unknown filter %d\n", filter);
-         return -1;
-   }
-       /*
-        * Setup pixel weighting tables -
-        * note we pre-compute mean division here too.
-        */
-   {
-      gint i;
-      gdouble hexhoff,hexvoff;
-      gdouble tabscale,mtabscale;
-      gdouble v0,v1,v2,v3,m0,m1,m2,h0,h1,h2,h3;
+        /* middle pixel has 1/(1-alpha) as well */
+        mmeanscale = 1.0 * (1.0/(1.0 - alpha) + meanscale);
+        alphafraction = 0.0;    /* not used */
+    }
+    break;
+    default:
+        g_printerr ("unknown filter %d\n", filter);
+        return -1;
+    }
+    /*
+     * Setup pixel weighting tables -
+     * note we pre-compute mean division here too.
+     */
+    {
+        gint i;
+        gdouble hexhoff,hexvoff;
+        gdouble tabscale,mtabscale;
+        gdouble v0,v1,v2,v3,m0,m1,m2,h0,h1,h2,h3;
 
-          /* horizontal offset of vertical hex centers */
-      hexhoff = radius/2;
+        /* horizontal offset of vertical hex centers */
+        hexhoff = radius/2;
 
-          /* vertical offset of vertical hex centers */
-      hexvoff = 3.0 * radius/sqrt(12.0);
+        /* vertical offset of vertical hex centers */
+        hexvoff = 3.0 * radius/sqrt(12.0);
 
-          /*
-           * scale tables to normalise by hexagon
-           * area, and number of hexes used in mean
-           */
-      tabscale = meanscale / (radius * hexvoff);
-      mtabscale = mmeanscale / (radius * hexvoff);
-      v0 = hex_area(0.0,0.0,hexhoff,hexvoff,radius) * tabscale;
-      v1 = hex_area(0.0,1.0,hexhoff,hexvoff,radius) * tabscale;
-      v2 = hex_area(1.0,1.0,hexhoff,hexvoff,radius) * tabscale;
-      v3 = hex_area(1.0,0.0,hexhoff,hexvoff,radius) * tabscale;
-      m0 = hex_area(0.0,0.0,0.0,0.0,radius) * mtabscale;
-      m1 = hex_area(0.0,1.0,0.0,0.0,radius) * mtabscale;
-      m2 = hex_area(0.0,-1.0,0.0,0.0,radius) * mtabscale;
-      h0 = hex_area(0.0,0.0,radius,0.0,radius) * tabscale;
-      h1 = hex_area(1.0,1.0,radius,0.0,radius) * tabscale;
-      h2 = hex_area(1.0,0.0,radius,0.0,radius) * tabscale;
-      h3 = hex_area(1.0,-1.0,radius,0.0,radius) * tabscale;
+        /*
+         * scale tables to normalise by hexagon
+         * area, and number of hexes used in mean
+         */
+        tabscale = meanscale / (radius * hexvoff);
+        mtabscale = mmeanscale / (radius * hexvoff);
+        v0 = hex_area(0.0,0.0,hexhoff,hexvoff,radius) * tabscale;
+        v1 = hex_area(0.0,1.0,hexhoff,hexvoff,radius) * tabscale;
+        v2 = hex_area(1.0,1.0,hexhoff,hexvoff,radius) * tabscale;
+        v3 = hex_area(1.0,0.0,hexhoff,hexvoff,radius) * tabscale;
+        m0 = hex_area(0.0,0.0,0.0,0.0,radius) * mtabscale;
+        m1 = hex_area(0.0,1.0,0.0,0.0,radius) * mtabscale;
+        m2 = hex_area(0.0,-1.0,0.0,0.0,radius) * mtabscale;
+        h0 = hex_area(0.0,0.0,radius,0.0,radius) * tabscale;
+        h1 = hex_area(1.0,1.0,radius,0.0,radius) * tabscale;
+        h2 = hex_area(1.0,0.0,radius,0.0,radius) * tabscale;
+        h3 = hex_area(1.0,-1.0,radius,0.0,radius) * tabscale;
 
-      for (i=0; i <= MXIVAL; i++) {
-         gdouble fi;
-         fi = (gdouble)i;
-         V0[i] = SROUND(fi * v0);
-         V1[i] = SROUND(fi * v1);
-         V2[i] = SROUND(fi * v2);
-         V3[i] = SROUND(fi * v3);
-         M0[i] = SROUND(fi * m0);
-         M1[i] = SROUND(fi * m1);
-         M2[i] = SROUND(fi * m2);
-         H0[i] = SROUND(fi * h0);
-         H1[i] = SROUND(fi * h1);
-         H2[i] = SROUND(fi * h2);
-         H3[i] = SROUND(fi * h3);
-      }
-          /* set up alpha fraction lookup table used on big/small */
-      for (i=0; i < (NOIVAL * 8); i++) {
-         ALFRAC[i] = SROUND((gdouble)i * alphafraction);
-      }
-   }
-   return alpharange;
+        for (i=0; i <= MXIVAL; i++) {
+            gdouble fi;
+            fi = (gdouble)i;
+            V0[i] = SROUND(fi * v0);
+            V1[i] = SROUND(fi * v1);
+            V2[i] = SROUND(fi * v2);
+            V3[i] = SROUND(fi * v3);
+            M0[i] = SROUND(fi * m0);
+            M1[i] = SROUND(fi * m1);
+            M2[i] = SROUND(fi * m2);
+            H0[i] = SROUND(fi * h0);
+            H1[i] = SROUND(fi * h1);
+            H2[i] = SROUND(fi * h2);
+            H3[i] = SROUND(fi * h3);
+        }
+        /* set up alpha fraction lookup table used on big/small */
+        for (i=0; i < (NOIVAL * 8); i++) {
+            ALFRAC[i] = SROUND((gdouble)i * alphafraction);
+        }
+    }
+    return alpharange;
 }
 
 /* Core pixel processing function - hand it 3x3 pixels and return result. */
@@ -564,73 +564,73 @@ nlfiltInit (gdouble alpha, gdouble radius, FilterType filter)
 static gint
 atfilt0(gint32 *p)
 {
-   gint retv;
-       /* map to scaled hexagon values */
-   retv = M0[p[0]] + M1[p[3]] + M2[p[7]];
-   retv += H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
-   retv += V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
-   retv += V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
-   retv += H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
-   retv += V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
-   retv += V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
-   return UNSCALE(retv);
+    gint retv;
+    /* map to scaled hexagon values */
+    retv = M0[p[0]] + M1[p[3]] + M2[p[7]];
+    retv += H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
+    retv += V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
+    retv += V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
+    retv += H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
+    retv += V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
+    retv += V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
+    return UNSCALE(retv);
 }
 
 /* Mean of 5 - 7 middle values */
 static gint
 atfilt1 (gint32 *p)
 {
-   gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
-                                    /*                  1 0 4  */
-                                    /*                   6 5   */
-   gint big,small;
-       /* map to scaled hexagon values */
-   h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
-   h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
-   h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
-   h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
-   h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
-   h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
-   h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
-       /* sum values and also discover the largest and smallest */
-   big = small = h0;
+    gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
+    /*                  1 0 4  */
+    /*                   6 5   */
+    gint big,small;
+    /* map to scaled hexagon values */
+    h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
+    h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
+    h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
+    h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
+    h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
+    h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
+    h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
+    /* sum values and also discover the largest and smallest */
+    big = small = h0;
 #define CHECK(xx) \
         h0 += xx; \
         if (xx > big) \
                 big = xx; \
         else if (xx < small) \
                 small = xx;
-        CHECK(h1)
-        CHECK(h2)
-        CHECK(h3)
-        CHECK(h4)
-        CHECK(h5)
-        CHECK(h6)
+    CHECK(h1)
+    CHECK(h2)
+    CHECK(h3)
+    CHECK(h4)
+    CHECK(h5)
+    CHECK(h6)
 #undef CHECK
-       /* Compute mean of middle 5-7 values */
-   return UNSCALE(h0 -ALFRAC[(big + small)>>SCALEB]);
+    /* Compute mean of middle 5-7 values */
+    return UNSCALE(h0 -ALFRAC[(big + small)>>SCALEB]);
 }
 
 /* Mean of 3 - 5 middle values */
 static gint
 atfilt2 (gint32 *p)
 {
-   gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
-                                    /*                  1 0 4  */
-                                    /*                   6 5   */
-   gint big0,big1,small0,small1;
-       /* map to scaled hexagon values */
-   h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
-   h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
-   h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
-   h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
-   h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
-   h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
-   h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
-       /* sum values and also discover the 2 largest and 2 smallest */
-   big0 = small0 = h0;
-   small1 = G_MAXINT;
-   big1 = 0;
+    gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
+    /*                  1 0 4  */
+    /*                   6 5   */
+    gint big0,big1,small0,small1;
+    /* map to scaled hexagon values */
+    h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
+    h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
+    h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
+    h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
+    h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
+    h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
+    h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
+    /* sum values and also discover the 2 largest and 2 smallest */
+    big0 = small0 = h0;
+    small1 = G_MAXINT;
+    big1 = 0;
 #define CHECK(xx) \
         h0 += xx; \
         if (xx > big1) \
@@ -653,15 +653,15 @@ atfilt2 (gint32 *p)
                 else \
                         small1 = xx; \
                 }
-        CHECK(h1)
-        CHECK(h2)
-        CHECK(h3)
-        CHECK(h4)
-        CHECK(h5)
-        CHECK(h6)
+    CHECK(h1)
+    CHECK(h2)
+    CHECK(h3)
+    CHECK(h4)
+    CHECK(h5)
+    CHECK(h6)
 #undef CHECK
-       /* Compute mean of middle 3-5 values */
-  return UNSCALE(h0 -big0 -small0 -ALFRAC[(big1 + small1)>>SCALEB]);
+    /* Compute mean of middle 3-5 values */
+    return UNSCALE(h0 -big0 -small0 -ALFRAC[(big1 + small1)>>SCALEB]);
 }
 
 /*
@@ -671,22 +671,22 @@ atfilt2 (gint32 *p)
 static gint32
 atfilt3(gint32 *p)
 {
-   gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
-                                   /*                  1 0 4  */
-                                   /*                   6 5   */
-   gint big0,big1,big2,small0,small1,small2;
-       /* map to scaled hexagon values */
-   h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
-   h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
-   h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
-   h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
-   h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
-   h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
-   h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
-       /* sum values and also discover the 3 largest and 3 smallest */
-   big0 = small0 = h0;
-   small1 = small2 = G_MAXINT;
-   big1 = big2 = 0;
+    gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
+    /*                  1 0 4  */
+    /*                   6 5   */
+    gint big0,big1,big2,small0,small1,small2;
+    /* map to scaled hexagon values */
+    h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
+    h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
+    h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
+    h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
+    h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
+    h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
+    h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
+    /* sum values and also discover the 3 largest and 3 smallest */
+    big0 = small0 = h0;
+    small1 = small2 = G_MAXINT;
+    big1 = big2 = 0;
 #define CHECK(xx) \
         h0 += xx; \
         if (xx > big2) \
@@ -727,36 +727,36 @@ atfilt3(gint32 *p)
                 else \
                         small2 = xx; \
                 }
-        CHECK(h1)
-        CHECK(h2)
-        CHECK(h3)
-        CHECK(h4)
-        CHECK(h5)
-        CHECK(h6)
+    CHECK(h1)
+    CHECK(h2)
+    CHECK(h3)
+    CHECK(h4)
+    CHECK(h5)
+    CHECK(h6)
 #undef CHECK
-       /* Compute mean of middle 1-3 values */
-   return  UNSCALE(h0-big0-big1-small0-small1-ALFRAC[(big2+small2)>>SCALEB]);
+    /* Compute mean of middle 1-3 values */
+    return  UNSCALE(h0-big0-big1-small0-small1-ALFRAC[(big2+small2)>>SCALEB]);
 }
 
 /* Edge enhancement */
 static gint
 atfilt4 (gint *p)
 {
-   gint hav;
-       /* map to scaled hexagon values and compute enhance value */
-   hav = M0[p[0]] + M1[p[3]] + M2[p[7]];
-   hav += H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
-   hav += V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
-   hav += V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
-   hav += H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
-   hav += V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
-   hav += V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
-   if (hav < 0)
-      hav = 0;
-   hav = UNSCALE(hav);
-   if (hav > (gdouble)255)
-      hav = (gdouble)255;
-   return hav;
+    gint hav;
+    /* map to scaled hexagon values and compute enhance value */
+    hav = M0[p[0]] + M1[p[3]] + M2[p[7]];
+    hav += H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
+    hav += V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
+    hav += V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
+    hav += H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
+    hav += V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
+    hav += V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
+    if (hav < 0)
+        hav = 0;
+    hav = UNSCALE(hav);
+    if (hav > (gdouble)255)
+        hav = (gdouble)255;
+    return hav;
 }
 
 /* Optimal estimation - do smoothing in inverse proportion */
@@ -764,44 +764,51 @@ atfilt4 (gint *p)
 /* notice we use the globals noisevariance */
 gint
 atfilt5(gint *p) {
-   gint mean,variance,temp;
-   gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
-                                   /*                  1 0 4  */
-                                   /*                   6 5   */
-       /* map to scaled hexagon values */
-   h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
-   h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
-   h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
-   h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
-   h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
-   h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
-   h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
-   mean = h0 + h1 + h2 + h3 + h4 + h5 + h6;
-       /* compute scaled mean by dividing by 7 */
-   mean = AVEDIV[SCTOCSC(mean)];
+    gint mean,variance,temp;
+    gint h0,h1,h2,h3,h4,h5,h6;       /* hexagon values    2 3   */
+    /*                  1 0 4  */
+    /*                   6 5   */
+    /* map to scaled hexagon values */
+    h0 = M0[p[0]] + M1[p[3]] + M2[p[7]];
+    h1 = H0[p[0]] + H1[p[2]] + H2[p[1]] + H3[p[8]];
+    h2 = V0[p[0]] + V1[p[3]] + V2[p[2]] + V3[p[1]];
+    h3 = V0[p[0]] + V1[p[3]] + V2[p[4]] + V3[p[5]];
+    h4 = H0[p[0]] + H1[p[4]] + H2[p[5]] + H3[p[6]];
+    h5 = V0[p[0]] + V1[p[7]] + V2[p[6]] + V3[p[5]];
+    h6 = V0[p[0]] + V1[p[7]] + V2[p[8]] + V3[p[1]];
+    mean = h0 + h1 + h2 + h3 + h4 + h5 + h6;
+    /* compute scaled mean by dividing by 7 */
+    mean = AVEDIV[SCTOCSC(mean)];
 
-       /* compute scaled variance */
-   temp = (h1 - mean); variance = SQUARE[NOCSVAL + SCTOCSC(temp)];
+    /* compute scaled variance */
+    temp = (h1 - mean);
+    variance = SQUARE[NOCSVAL + SCTOCSC(temp)];
 
-       /* and rescale to keep */
-   temp = (h2 - mean); variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
+    /* and rescale to keep */
+    temp = (h2 - mean);
+    variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
 
- /* within 32 bit limits */
-   temp = (h3 - mean); variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
-   temp = (h4 - mean); variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
-   temp = (h5 - mean); variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
-   temp = (h6 - mean); variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
-       /* (temp = h0 - mean) */
-   temp = (h0 - mean); variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
-   if (variance != 0)      /* avoid possible divide by 0 */
-          /* optimal estimate */
-      temp = mean + (variance * temp) / (variance + noisevariance);
-   else temp = h0;
-   if (temp < 0)
-      temp = 0;
-   temp = RUNSCALE(temp);
-   if (temp > (gdouble)255) temp = (gdouble)255;
-   return temp;
+    /* within 32 bit limits */
+    temp = (h3 - mean);
+    variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
+    temp = (h4 - mean);
+    variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
+    temp = (h5 - mean);
+    variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
+    temp = (h6 - mean);
+    variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
+    /* (temp = h0 - mean) */
+    temp = (h0 - mean);
+    variance += SQUARE[NOCSVAL + SCTOCSC(temp)];
+    if (variance != 0)      /* avoid possible divide by 0 */
+        /* optimal estimate */
+        temp = mean + (variance * temp) / (variance + noisevariance);
+    else temp = h0;
+    if (temp < 0)
+        temp = 0;
+    temp = RUNSCALE(temp);
+    if (temp > (gdouble)255) temp = (gdouble)255;
+    return temp;
 }
 
 
@@ -821,106 +828,108 @@ atfilt5(gint *p) {
 static gdouble
 hex_area (gdouble sx, gdouble sy, gdouble hx, gdouble hy, gdouble d)
 {
-   gdouble hx0,hx1,hx2,hy0,hy1,hy2,hy3;
-   gdouble sx0,sx1,sy0,sy1;
+    gdouble hx0,hx1,hx2,hy0,hy1,hy2,hy3;
+    gdouble sx0,sx1,sy0,sy1;
 
-       /* compute square coordinates */
-   sx0 = sx - 0.5;
-   sy0 = sy - 0.5;
-   sx1 = sx + 0.5;
-   sy1 = sy + 0.5;
-       /* compute hexagon coordinates */
-   hx0 = hx - d/2.0;
-   hx1 = hx;
-   hx2 = hx + d/2.0;
-   hy0 = hy - 0.5773502692 * d;    /* d / sqrt(3) */
-   hy1 = hy - 0.2886751346 * d;    /* d / sqrt(12) */
-   hy2 = hy + 0.2886751346 * d;    /* d / sqrt(12) */
-   hy3 = hy + 0.5773502692 * d;    /* d / sqrt(3) */
+    /* compute square coordinates */
+    sx0 = sx - 0.5;
+    sy0 = sy - 0.5;
+    sx1 = sx + 0.5;
+    sy1 = sy + 0.5;
+    /* compute hexagon coordinates */
+    hx0 = hx - d/2.0;
+    hx1 = hx;
+    hx2 = hx + d/2.0;
+    hy0 = hy - 0.5773502692 * d;    /* d / sqrt(3) */
+    hy1 = hy - 0.2886751346 * d;    /* d / sqrt(12) */
+    hy2 = hy + 0.2886751346 * d;    /* d / sqrt(12) */
+    hy3 = hy + 0.5773502692 * d;    /* d / sqrt(3) */
 
-   return
-      triang_area(sx0,sy0,sx1,sy1,hx0,hy2,hx1,hy3,NW) +
-      triang_area(sx0,sy0,sx1,sy1,hx1,hy2,hx2,hy3,NE) +
-      rectang_area(sx0,sy0,sx1,sy1,hx0,hy1,hx2,hy2) +
-      triang_area(sx0,sy0,sx1,sy1,hx0,hy0,hx1,hy1,SW) +
-      triang_area(sx0,sy0,sx1,sy1,hx1,hy0,hx2,hy1,SE);
+    return
+        triang_area(sx0,sy0,sx1,sy1,hx0,hy2,hx1,hy3,NW) +
+        triang_area(sx0,sy0,sx1,sy1,hx1,hy2,hx2,hy3,NE) +
+        rectang_area(sx0,sy0,sx1,sy1,hx0,hy1,hx2,hy2) +
+        triang_area(sx0,sy0,sx1,sy1,hx0,hy0,hx1,hy1,SW) +
+        triang_area(sx0,sy0,sx1,sy1,hx1,hy0,hx2,hy1,SE);
 }
 
 static gdouble
 triang_area (gdouble rx0, gdouble ry0, gdouble rx1, gdouble ry1, gdouble tx0,
              gdouble ty0, gdouble tx1, gdouble ty1, gint tt)
 {
-   gdouble a,b,c,d;
-   gdouble lx0,ly0,lx1,ly1;
-       /* Convert everything to a NW triangle */
-   if (tt & STH) {
-      gdouble t;
-      SWAPI(ry0,ry1);
-      SWAPI(ty0,ty1);
-   } if (tt & EST) {
-      gdouble t;
-      SWAPI(rx0,rx1);
-      SWAPI(tx0,tx1);
-   }
-       /* Compute overlapping box */
-   if (tx0 > rx0)
-      rx0 = tx0;
-   if (ty0 > ry0)
-      ry0 = ty0;
-   if (tx1 < rx1)
-      rx1 = tx1;
-   if (ty1 < ry1)
-      ry1 = ty1;
-   if (rx1 <= rx0 || ry1 <= ry0)
-      return 0.0;
-       /* Need to compute diagonal line intersection with the box */
-       /* First compute co-efficients to formulas x = a + by and y = c + dx */
-   b = (tx1 - tx0)/(ty1 - ty0);
-   a = tx0 - b * ty0;
-   d = (ty1 - ty0)/(tx1 - tx0);
-   c = ty0 - d * tx0;
+    gdouble a,b,c,d;
+    gdouble lx0,ly0,lx1,ly1;
+    /* Convert everything to a NW triangle */
+    if (tt & STH) {
+        gdouble t;
+        SWAPI(ry0,ry1);
+        SWAPI(ty0,ty1);
+    }
+    if (tt & EST) {
+        gdouble t;
+        SWAPI(rx0,rx1);
+        SWAPI(tx0,tx1);
+    }
+    /* Compute overlapping box */
+    if (tx0 > rx0)
+        rx0 = tx0;
+    if (ty0 > ry0)
+        ry0 = ty0;
+    if (tx1 < rx1)
+        rx1 = tx1;
+    if (ty1 < ry1)
+        ry1 = ty1;
+    if (rx1 <= rx0 || ry1 <= ry0)
+        return 0.0;
+    /* Need to compute diagonal line intersection with the box */
+    /* First compute co-efficients to formulas x = a + by and y = c + dx */
+    b = (tx1 - tx0)/(ty1 - ty0);
+    a = tx0 - b * ty0;
+    d = (ty1 - ty0)/(tx1 - tx0);
+    c = ty0 - d * tx0;
 
-       /* compute top or right intersection */
-   tt = 0;
-   ly1 = ry1;
-   lx1 = a + b * ly1;
-   if (lx1 <= rx0)
-      return (rx1 - rx0) * (ry1 - ry0);
-   else if (lx1 > rx1) {     /* could be right hand side */
-      lx1 = rx1;
-      ly1 = c + d * lx1;
-      if (ly1 <= ry0)
-         return (rx1 - rx0) * (ry1 - ry0);
-      tt = 1; /* right hand side intersection */
-   }
-       /* compute left or bottom intersection */
-   lx0 = rx0;
-   ly0 = c + d * lx0;
-   if (ly0 >= ry1)
-      return (rx1 - rx0) * (ry1 - ry0);
-   else if (ly0 < ry0) {    /* could be right hand side */
-      ly0 = ry0;
-      lx0 = a + b * ly0;
-      if (lx0 >= rx1)
-         return (rx1 - rx0) * (ry1 - ry0);
-      tt |= 2;        /* bottom intersection */
-   }
+    /* compute top or right intersection */
+    tt = 0;
+    ly1 = ry1;
+    lx1 = a + b * ly1;
+    if (lx1 <= rx0)
+        return (rx1 - rx0) * (ry1 - ry0);
+    else if (lx1 > rx1) {     /* could be right hand side */
+        lx1 = rx1;
+        ly1 = c + d * lx1;
+        if (ly1 <= ry0)
+            return (rx1 - rx0) * (ry1 - ry0);
+        tt = 1; /* right hand side intersection */
+    }
+    /* compute left or bottom intersection */
+    lx0 = rx0;
+    ly0 = c + d * lx0;
+    if (ly0 >= ry1)
+        return (rx1 - rx0) * (ry1 - ry0);
+    else if (ly0 < ry0) {    /* could be right hand side */
+        ly0 = ry0;
+        lx0 = a + b * ly0;
+        if (lx0 >= rx1)
+            return (rx1 - rx0) * (ry1 - ry0);
+        tt |= 2;        /* bottom intersection */
+    }
 
-   if (tt == 0) {    /* top and left intersection */
-                       /* rectangle minus triangle */
-      return ((rx1 - rx0) * (ry1 - ry0))
-         - (0.5 * (lx1 - rx0) * (ry1 - ly0));
-   }
-   else if (tt == 1) {       /* right and left intersection */
-      return ((rx1 - rx0) * (ly0 - ry0))
-         + (0.5 * (rx1 - rx0) * (ly1 - ly0));
-   } else if (tt == 2) {      /* top and bottom intersection */
-      return ((rx1 - lx1) * (ry1 - ry0))
-         + (0.5 * (lx1 - lx0) * (ry1 - ry0));
-   } else { /* tt == 3 */      /* right and bottom intersection */
-          /* triangle */
-      return (0.5 * (rx1 - lx0) * (ly1 - ry0));
-   }
+    if (tt == 0) {    /* top and left intersection */
+        /* rectangle minus triangle */
+        return ((rx1 - rx0) * (ry1 - ry0))
+               - (0.5 * (lx1 - rx0) * (ry1 - ly0));
+    }
+    else if (tt == 1) {       /* right and left intersection */
+        return ((rx1 - rx0) * (ly0 - ry0))
+               + (0.5 * (rx1 - rx0) * (ly1 - ly0));
+    } else if (tt == 2) {      /* top and bottom intersection */
+        return ((rx1 - lx1) * (ry1 - ry0))
+               + (0.5 * (lx1 - lx0) * (ry1 - ry0));
+    } else {
+        /* tt == 3 */      /* right and bottom intersection */
+        /* triangle */
+        return (0.5 * (rx1 - lx0) * (ly1 - ry0));
+    }
 }
 
 /* Compute rectangle area */
@@ -928,147 +937,149 @@ static gdouble
 rectang_area (gdouble rx0, gdouble ry0, gdouble rx1, gdouble ry1, gdouble tx0,
               gdouble ty0, gdouble tx1, gdouble ty1)
 {
-  /* Compute overlapping box */
-   if (tx0 > rx0)
-      rx0 = tx0;
-   if (ty0 > ry0)
-      ry0 = ty0;
-   if (tx1 < rx1)
-      rx1 = tx1;
-   if (ty1 < ry1)
-      ry1 = ty1;
-   if (rx1 <= rx0 || ry1 <= ry0)
-      return 0.0;
-   return (rx1 - rx0) * (ry1 - ry0);
+    /* Compute overlapping box */
+    if (tx0 > rx0)
+        rx0 = tx0;
+    if (ty0 > ry0)
+        ry0 = ty0;
+    if (tx1 < rx1)
+        rx1 = tx1;
+    if (ty1 < ry1)
+        ry1 = ty1;
+    if (rx1 <= rx0 || ry1 <= ry0)
+        return 0.0;
+    return (rx1 - rx0) * (ry1 - ry0);
 }
 
 static void
 nlfilter (GimpDrawable *drawable,
           GimpPreview  *preview)
 {
-  GeglBuffer *src_buffer;
-  GeglBuffer *dest_buffer;
-  const Babl *format;
-  guchar     *srcbuf, *dstbuf;
-  guchar     *lastrow, *thisrow, *nextrow, *temprow;
-  gint        x1, y1, y2;
-  gint        width, height, bpp;
-  gint        filtno, y, rowsize, exrowsize, p_update;
+    GeglBuffer *src_buffer;
+    GeglBuffer *dest_buffer;
+    const Babl *format;
+    guchar     *srcbuf, *dstbuf;
+    guchar     *lastrow, *thisrow, *nextrow, *temprow;
+    gint        x1, y1, y2;
+    gint        width, height, bpp;
+    gint        filtno, y, rowsize, exrowsize, p_update;
 
-  if (preview)
+    if (preview)
     {
-      gimp_preview_get_position (preview, &x1, &y1);
-      gimp_preview_get_size (preview, &width, &height);
-      y2 = y1 + height;
+        gimp_preview_get_position (preview, &x1, &y1);
+        gimp_preview_get_size (preview, &width, &height);
+        y2 = y1 + height;
     }
-  else
+    else
     {
-      if (! gimp_drawable_mask_intersect (drawable,
-                                          &x1, &y1, &width, &height))
-        return;
+        if (! gimp_drawable_mask_intersect (drawable,
+                                            &x1, &y1, &width, &height))
+            return;
 
-      y2 = y1 + height;
-    }
-
-  if (gimp_drawable_has_alpha (drawable))
-    format = babl_format ("R'G'B'A u8");
-  else
-    format = babl_format ("R'G'B' u8");
-
-  src_buffer = gimp_drawable_get_buffer (drawable);
-
-  if (preview)
-    dest_buffer = gegl_buffer_new (gegl_buffer_get_extent (src_buffer), format);
-  else
-    dest_buffer = gimp_drawable_get_shadow_buffer (drawable);
-
-  bpp = babl_format_get_bytes_per_pixel (format);
-
-  rowsize = width * bpp;
-  exrowsize = (width + 2) * bpp;
-  p_update = width / 20 + 1;
-
-  /* source buffer gives one pixel margin all around destination buffer */
-  srcbuf = g_new0 (guchar, exrowsize * 3);
-  dstbuf = g_new0 (guchar, rowsize);
-
-  /* pointers to second pixel in each source row */
-  lastrow = srcbuf + bpp;
-  thisrow = lastrow + exrowsize;
-  nextrow = thisrow + exrowsize;
-
-  filtno = nlfiltInit (nlfvals.alpha, nlfvals.radius, nlfvals.filter);
-
-  if (!preview)
-    gimp_progress_init (_("NL Filter"));
-
-  /* first row */
-  gegl_buffer_get (src_buffer, GEGL_RECTANGLE (x1, y1, width, 1), 1.0,
-                   format, thisrow,
-                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-
-  /* copy thisrow[0] to thisrow[-1], thisrow[width-1] to thisrow[width] */
-  memcpy (thisrow - bpp, thisrow, bpp);
-  memcpy (thisrow + rowsize, thisrow + rowsize - bpp, bpp);
-  /* copy whole thisrow to lastrow */
-  memcpy (lastrow - bpp, thisrow - bpp, exrowsize);
-
-  for (y = y1; y < y2 - 1; y++)
-    {
-      if (((y % p_update) == 0) && !preview)
-        gimp_progress_update ((gdouble) y / (gdouble) height);
-
-      gegl_buffer_get (src_buffer, GEGL_RECTANGLE (x1, y + 1, width, 1), 1.0,
-                       format, nextrow,
-                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-
-      memcpy (nextrow - bpp, nextrow, bpp);
-      memcpy (nextrow + rowsize, nextrow + rowsize - bpp, bpp);
-      nlfiltRow (lastrow, thisrow, nextrow, dstbuf, width, bpp, filtno);
-
-      gegl_buffer_set (dest_buffer, GEGL_RECTANGLE (x1, y, width, 1), 0,
-                       format, dstbuf,
-                       GEGL_AUTO_ROWSTRIDE);
-
-      /* rotate row buffers */
-      temprow = lastrow; lastrow = thisrow;
-      thisrow = nextrow; nextrow = temprow;
+        y2 = y1 + height;
     }
 
-  /* last row */
-  memcpy (nextrow - bpp, thisrow - bpp, exrowsize);
-  nlfiltRow (lastrow, thisrow, nextrow, dstbuf, width, bpp, filtno);
+    if (gimp_drawable_has_alpha (drawable))
+        format = babl_format ("R'G'B'A u8");
+    else
+        format = babl_format ("R'G'B' u8");
 
-  gegl_buffer_set (dest_buffer, GEGL_RECTANGLE (x1, y2 - 1, width, 1), 0,
-                   format, dstbuf,
-                   GEGL_AUTO_ROWSTRIDE);
+    src_buffer = gimp_drawable_get_buffer (drawable);
 
-  g_free (srcbuf);
-  g_free (dstbuf);
+    if (preview)
+        dest_buffer = gegl_buffer_new (gegl_buffer_get_extent (src_buffer), format);
+    else
+        dest_buffer = gimp_drawable_get_shadow_buffer (drawable);
 
-  if (preview)
+    bpp = babl_format_get_bytes_per_pixel (format);
+
+    rowsize = width * bpp;
+    exrowsize = (width + 2) * bpp;
+    p_update = width / 20 + 1;
+
+    /* source buffer gives one pixel margin all around destination buffer */
+    srcbuf = g_new0 (guchar, exrowsize * 3);
+    dstbuf = g_new0 (guchar, rowsize);
+
+    /* pointers to second pixel in each source row */
+    lastrow = srcbuf + bpp;
+    thisrow = lastrow + exrowsize;
+    nextrow = thisrow + exrowsize;
+
+    filtno = nlfiltInit (nlfvals.alpha, nlfvals.radius, nlfvals.filter);
+
+    if (!preview)
+        gimp_progress_init (_("NL Filter"));
+
+    /* first row */
+    gegl_buffer_get (src_buffer, GEGL_RECTANGLE (x1, y1, width, 1), 1.0,
+                     format, thisrow,
+                     GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
+    /* copy thisrow[0] to thisrow[-1], thisrow[width-1] to thisrow[width] */
+    memcpy (thisrow - bpp, thisrow, bpp);
+    memcpy (thisrow + rowsize, thisrow + rowsize - bpp, bpp);
+    /* copy whole thisrow to lastrow */
+    memcpy (lastrow - bpp, thisrow - bpp, exrowsize);
+
+    for (y = y1; y < y2 - 1; y++)
     {
-      guchar *buf = g_new (guchar, width * height * bpp);
+        if (((y % p_update) == 0) && !preview)
+            gimp_progress_update ((gdouble) y / (gdouble) height);
 
-      gegl_buffer_get (dest_buffer, GEGL_RECTANGLE (x1, y1, width, height), 1.0,
-                       format, buf,
-                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+        gegl_buffer_get (src_buffer, GEGL_RECTANGLE (x1, y + 1, width, 1), 1.0,
+                         format, nextrow,
+                         GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-      gimp_preview_draw_buffer (GIMP_PREVIEW (preview), buf, width * bpp);
+        memcpy (nextrow - bpp, nextrow, bpp);
+        memcpy (nextrow + rowsize, nextrow + rowsize - bpp, bpp);
+        nlfiltRow (lastrow, thisrow, nextrow, dstbuf, width, bpp, filtno);
 
-      g_free (buf);
+        gegl_buffer_set (dest_buffer, GEGL_RECTANGLE (x1, y, width, 1), 0,
+                         format, dstbuf,
+                         GEGL_AUTO_ROWSTRIDE);
+
+        /* rotate row buffers */
+        temprow = lastrow;
+        lastrow = thisrow;
+        thisrow = nextrow;
+        nextrow = temprow;
     }
 
-  g_object_unref (src_buffer);
-  g_object_unref (dest_buffer);
+    /* last row */
+    memcpy (nextrow - bpp, thisrow - bpp, exrowsize);
+    nlfiltRow (lastrow, thisrow, nextrow, dstbuf, width, bpp, filtno);
 
-  if (! preview)
+    gegl_buffer_set (dest_buffer, GEGL_RECTANGLE (x1, y2 - 1, width, 1), 0,
+                     format, dstbuf,
+                     GEGL_AUTO_ROWSTRIDE);
+
+    g_free (srcbuf);
+    g_free (dstbuf);
+
+    if (preview)
     {
-      gimp_progress_update (1.0);
+        guchar *buf = g_new (guchar, width * height * bpp);
 
-      gimp_drawable_merge_shadow (drawable, TRUE);
-      gimp_drawable_update (drawable, x1, y1, width, height);
-      gimp_displays_flush ();
+        gegl_buffer_get (dest_buffer, GEGL_RECTANGLE (x1, y1, width, height), 1.0,
+                         format, buf,
+                         GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
+        gimp_preview_draw_buffer (GIMP_PREVIEW (preview), buf, width * bpp);
+
+        g_free (buf);
+    }
+
+    g_object_unref (src_buffer);
+    g_object_unref (dest_buffer);
+
+    if (! preview)
+    {
+        gimp_progress_update (1.0);
+
+        gimp_drawable_merge_shadow (drawable, TRUE);
+        gimp_drawable_update (drawable, x1, y1, width, height);
+        gimp_displays_flush ();
     }
 }
 
@@ -1076,119 +1087,119 @@ static void
 nlfilter_preview (GimpDrawable *drawable,
                   GimpPreview  *preview)
 {
-  nlfilter (drawable, preview);
+    nlfilter (drawable, preview);
 }
 
 static gboolean
 nlfilter_dialog (GimpDrawable *drawable)
 {
-  GtkWidget *dialog;
-  GtkWidget *main_vbox;
-  GtkWidget *preview;
-  GtkWidget *frame;
-  GtkWidget *alpha_trim;
-  GtkWidget *opt_est;
-  GtkWidget *edge_enhance;
-  GtkWidget *grid;
-  GtkWidget *scale;
-  gboolean   run;
+    GtkWidget *dialog;
+    GtkWidget *main_vbox;
+    GtkWidget *preview;
+    GtkWidget *frame;
+    GtkWidget *alpha_trim;
+    GtkWidget *opt_est;
+    GtkWidget *edge_enhance;
+    GtkWidget *grid;
+    GtkWidget *scale;
+    gboolean   run;
 
-  gimp_ui_init (PLUG_IN_BINARY);
+    gimp_ui_init (PLUG_IN_BINARY);
 
-  dialog = gimp_dialog_new (_("NL Filter"), PLUG_IN_ROLE,
-                            NULL, 0,
-                            gimp_standard_help_func, PLUG_IN_PROC,
+    dialog = gimp_dialog_new (_("NL Filter"), PLUG_IN_ROLE,
+                              NULL, 0,
+                              gimp_standard_help_func, PLUG_IN_PROC,
 
-                            _("_Cancel"), GTK_RESPONSE_CANCEL,
-                            _("_OK"),     GTK_RESPONSE_OK,
+                              _("_Cancel"), GTK_RESPONSE_CANCEL,
+                              _("_OK"),     GTK_RESPONSE_OK,
 
-                            NULL);
+                              NULL);
 
-  gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
+    gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+            GTK_RESPONSE_OK,
+            GTK_RESPONSE_CANCEL,
+            -1);
 
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+    gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      main_vbox, TRUE, TRUE, 0);
-  gtk_widget_show (main_vbox);
+    main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+    gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
+    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                        main_vbox, TRUE, TRUE, 0);
+    gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new_from_drawable (drawable);
-  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
-  gtk_widget_show (preview);
+    preview = gimp_drawable_preview_new_from_drawable (drawable);
+    gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
+    gtk_widget_show (preview);
 
-  g_signal_connect_swapped (preview, "invalidated",
-                            G_CALLBACK (nlfilter_preview),
-                            drawable);
+    g_signal_connect_swapped (preview, "invalidated",
+                              G_CALLBACK (nlfilter_preview),
+                              drawable);
 
-  frame = gimp_int_radio_group_new (TRUE, _("Filter"),
-                                    G_CALLBACK (gimp_radio_button_update),
-                                    &nlfvals.filter, NULL, nlfvals.filter,
+    frame = gimp_int_radio_group_new (TRUE, _("Filter"),
+                                      G_CALLBACK (gimp_radio_button_update),
+                                      &nlfvals.filter, NULL, nlfvals.filter,
 
-                                    _("_Alpha trimmed mean"),
-                                    filter_alpha_trim, &alpha_trim,
-                                    _("Op_timal estimation"),
-                                    filter_opt_est, &opt_est,
-                                    _("_Edge enhancement"),
-                                    filter_edge_enhance, &edge_enhance,
+                                      _("_Alpha trimmed mean"),
+                                      filter_alpha_trim, &alpha_trim,
+                                      _("Op_timal estimation"),
+                                      filter_opt_est, &opt_est,
+                                      _("_Edge enhancement"),
+                                      filter_edge_enhance, &edge_enhance,
 
-                                    NULL);
+                                      NULL);
 
-  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
+    gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+    gtk_widget_show (frame);
 
-  g_signal_connect_swapped (alpha_trim, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-  g_signal_connect_swapped (opt_est, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-  g_signal_connect_swapped (edge_enhance, "toggled",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
+    g_signal_connect_swapped (alpha_trim, "toggled",
+                              G_CALLBACK (gimp_preview_invalidate),
+                              preview);
+    g_signal_connect_swapped (opt_est, "toggled",
+                              G_CALLBACK (gimp_preview_invalidate),
+                              preview);
+    g_signal_connect_swapped (edge_enhance, "toggled",
+                              G_CALLBACK (gimp_preview_invalidate),
+                              preview);
 
-  grid = gtk_grid_new ();
-  gtk_grid_set_row_spacing (GTK_GRID (grid), 6);
-  gtk_grid_set_column_spacing (GTK_GRID (grid), 6);
-  gtk_box_pack_start (GTK_BOX (main_vbox), grid, FALSE, FALSE, 0);
-  gtk_widget_show (grid);
+    grid = gtk_grid_new ();
+    gtk_grid_set_row_spacing (GTK_GRID (grid), 6);
+    gtk_grid_set_column_spacing (GTK_GRID (grid), 6);
+    gtk_box_pack_start (GTK_BOX (main_vbox), grid, FALSE, FALSE, 0);
+    gtk_widget_show (grid);
 
-  scale = gimp_scale_entry_new (_("A_lpha:"), nlfvals.alpha, 0.0, 1.0, 2);
-  g_signal_connect (scale, "value-changed",
-                    G_CALLBACK (nlfilter_scale_entry_update_double),
-                    &nlfvals.alpha);
-  g_signal_connect_swapped (scale, "value-changed",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-  gtk_grid_attach (GTK_GRID (grid), scale, 0, 0, 3, 1);
-  gtk_widget_show (scale);
+    scale = gimp_scale_entry_new (_("A_lpha:"), nlfvals.alpha, 0.0, 1.0, 2);
+    g_signal_connect (scale, "value-changed",
+                      G_CALLBACK (nlfilter_scale_entry_update_double),
+                      &nlfvals.alpha);
+    g_signal_connect_swapped (scale, "value-changed",
+                              G_CALLBACK (gimp_preview_invalidate),
+                              preview);
+    gtk_grid_attach (GTK_GRID (grid), scale, 0, 0, 3, 1);
+    gtk_widget_show (scale);
 
-  scale = gimp_scale_entry_new (_("_Radius:"), nlfvals.radius, 1.0 / 3.0, 1.0, 2);
-  g_signal_connect (scale, "value-changed",
-                    G_CALLBACK (nlfilter_scale_entry_update_double),
-                    &nlfvals.radius);
-  g_signal_connect_swapped (scale, "value-changed",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-  gtk_grid_attach (GTK_GRID (grid), scale, 0, 1, 3, 1);
-  gtk_widget_show (scale);
+    scale = gimp_scale_entry_new (_("_Radius:"), nlfvals.radius, 1.0 / 3.0, 1.0, 2);
+    g_signal_connect (scale, "value-changed",
+                      G_CALLBACK (nlfilter_scale_entry_update_double),
+                      &nlfvals.radius);
+    g_signal_connect_swapped (scale, "value-changed",
+                              G_CALLBACK (gimp_preview_invalidate),
+                              preview);
+    gtk_grid_attach (GTK_GRID (grid), scale, 0, 1, 3, 1);
+    gtk_widget_show (scale);
 
-  gtk_widget_show (dialog);
+    gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
+    run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 
-  return run;
+    return run;
 }
 
 static void
 nlfilter_scale_entry_update_double (GimpLabelSpin *entry,
                                     gdouble       *value)
 {
-  *value = gimp_label_spin_get_value (entry);
+    *value = gimp_label_spin_get_value (entry);
 }

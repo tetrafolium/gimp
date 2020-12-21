@@ -36,8 +36,8 @@
 /* The basic structure and macros to access it.  */
 typedef struct
 {
-  dimensions_type dimensions;
-  one_byte *bitmap;
+    dimensions_type dimensions;
+    one_byte *bitmap;
 } bitmap_type;
 
 /* The dimensions of the bitmap, in pixels.  */

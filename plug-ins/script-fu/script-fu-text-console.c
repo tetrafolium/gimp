@@ -35,19 +35,19 @@ GimpValueArray *
 script_fu_text_console_run (GimpProcedure        *procedure,
                             const GimpValueArray *args)
 {
-  /*  Enable Script-Fu output  */
-  ts_register_output_func (ts_stdout_output_func, NULL);
+    /*  Enable Script-Fu output  */
+    ts_register_output_func (ts_stdout_output_func, NULL);
 
-  ts_print_welcome ();
+    ts_print_welcome ();
 
-  gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
-                                      GIMP_PDB_ERROR_HANDLER_PLUGIN);
+    gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
+                                        GIMP_PDB_ERROR_HANDLER_PLUGIN);
 
-  /*  Run the interface  */
-  ts_interpret_stdin ();
+    /*  Run the interface  */
+    ts_interpret_stdin ();
 
-  gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
-                                      GIMP_PDB_ERROR_HANDLER_INTERNAL);
+    gimp_plug_in_set_pdb_error_handler (gimp_procedure_get_plug_in (procedure),
+                                        GIMP_PDB_ERROR_HANDLER_INTERNAL);
 
-  return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
+    return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
 }

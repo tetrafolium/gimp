@@ -50,15 +50,17 @@
 const Babl *
 gimp_pixbuf_get_format (GdkPixbuf *pixbuf)
 {
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+    g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
 
-  switch (gdk_pixbuf_get_n_channels (pixbuf))
+    switch (gdk_pixbuf_get_n_channels (pixbuf))
     {
-    case 3: return babl_format ("R'G'B' u8");
-    case 4: return babl_format ("R'G'B'A u8");
+    case 3:
+        return babl_format ("R'G'B' u8");
+    case 4:
+        return babl_format ("R'G'B'A u8");
     }
 
-  g_return_val_if_reached (NULL);
+    g_return_val_if_reached (NULL);
 }
 
 /**
@@ -79,39 +81,39 @@ gimp_pixbuf_get_format (GdkPixbuf *pixbuf)
 GeglBuffer *
 gimp_pixbuf_create_buffer (GdkPixbuf *pixbuf)
 {
-  gint width;
-  gint height;
-  gint rowstride;
-  gint bpp;
+    gint width;
+    gint height;
+    gint rowstride;
+    gint bpp;
 
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+    g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
 
-  width     = gdk_pixbuf_get_width (pixbuf);
-  height    = gdk_pixbuf_get_height (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  bpp       = gdk_pixbuf_get_n_channels (pixbuf);
+    width     = gdk_pixbuf_get_width (pixbuf);
+    height    = gdk_pixbuf_get_height (pixbuf);
+    rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+    bpp       = gdk_pixbuf_get_n_channels (pixbuf);
 
-  if ((rowstride % bpp) == 0)
+    if ((rowstride % bpp) == 0)
     {
-      return gegl_buffer_linear_new_from_data (gdk_pixbuf_get_pixels (pixbuf),
-                                               gimp_pixbuf_get_format (pixbuf),
-                                               GEGL_RECTANGLE (0, 0,
-                                                               width, height),
-                                               rowstride,
-                                               (GDestroyNotify) g_object_unref,
-                                               g_object_ref (pixbuf));
+        return gegl_buffer_linear_new_from_data (gdk_pixbuf_get_pixels (pixbuf),
+                gimp_pixbuf_get_format (pixbuf),
+                GEGL_RECTANGLE (0, 0,
+                                width, height),
+                rowstride,
+                (GDestroyNotify) g_object_unref,
+                g_object_ref (pixbuf));
     }
-  else
+    else
     {
-      GeglBuffer *buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
-                                                            width, height),
-                                            gimp_pixbuf_get_format (pixbuf));
+        GeglBuffer *buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                              width, height),
+                                              gimp_pixbuf_get_format (pixbuf));
 
-      gegl_buffer_set (buffer, NULL, 0, NULL,
-                       gdk_pixbuf_get_pixels (pixbuf),
-                       gdk_pixbuf_get_rowstride (pixbuf));
+        gegl_buffer_set (buffer, NULL, 0, NULL,
+                         gdk_pixbuf_get_pixels (pixbuf),
+                         gdk_pixbuf_get_rowstride (pixbuf));
 
-      return buffer;
+        return buffer;
     }
 }
 
@@ -132,21 +134,21 @@ guint8 *
 gimp_pixbuf_get_icc_profile (GdkPixbuf *pixbuf,
                              gsize     *length)
 {
-  const gchar *icc_base64;
+    const gchar *icc_base64;
 
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-  g_return_val_if_fail (length != NULL, NULL);
+    g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+    g_return_val_if_fail (length != NULL, NULL);
 
-  icc_base64 = gdk_pixbuf_get_option (pixbuf, "icc-profile");
+    icc_base64 = gdk_pixbuf_get_option (pixbuf, "icc-profile");
 
-  if (icc_base64)
+    if (icc_base64)
     {
-      guint8 *icc_data;
+        guint8 *icc_data;
 
-      icc_data = g_base64_decode (icc_base64, length);
+        icc_data = g_base64_decode (icc_base64, length);
 
-      return icc_data;
+        return icc_data;
     }
 
-  return NULL;
+    return NULL;
 }

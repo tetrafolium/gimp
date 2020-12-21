@@ -24,29 +24,29 @@
 #define _IMAP_UI_GRID_H
 
 GtkWidget *   create_spin_button_in_grid  (GtkWidget  *grid,
-                                           GtkWidget  *label,
-                                           gint        row,
-                                           gint        col,
-                                           gint        value,
-                                           gint        min,
-                                           gint        max);
+        GtkWidget  *label,
+        gint        row,
+        gint        col,
+        gint        value,
+        gint        min,
+        gint        max);
 GtkWidget *   create_check_button_in_grid (GtkWidget  *grid,
-                                           gint        row,
-                                           gint        col,
-                                           const char *text);
+        gint        row,
+        gint        col,
+        const char *text);
 GtkWidget *   create_radio_button_in_grid (GtkWidget  *grid,
-                                           GSList     *group,
-                                           gint        row,
-                                           gint        col,
-                                           const char *text);
+        GSList     *group,
+        gint        row,
+        gint        col,
+        const char *text);
 GtkWidget *   create_label_in_grid        (GtkWidget  *grid,
-                                           gint        row,
-                                           gint        col,
-                                           const char *text);
+        gint        row,
+        gint        col,
+        const char *text);
 GtkWidget *   create_entry_in_grid        (GtkWidget  *grid,
-                                           GtkWidget  *label,
-                                           gint        row,
-                                           gint        col);
+        GtkWidget  *label,
+        gint        row,
+        gint        col);
 
 #endif /* _IMAP_UI_GRID_H */
 

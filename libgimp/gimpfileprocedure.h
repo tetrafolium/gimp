@@ -43,48 +43,48 @@ typedef struct _GimpFileProcedurePrivate GimpFileProcedurePrivate;
 
 struct _GimpFileProcedure
 {
-  GimpProcedure             parent_instance;
+    GimpProcedure             parent_instance;
 
-  GimpFileProcedurePrivate *priv;
+    GimpFileProcedurePrivate *priv;
 };
 
 struct _GimpFileProcedureClass
 {
-  GimpProcedureClass parent_class;
+    GimpProcedureClass parent_class;
 };
 
 
 GType           gimp_file_procedure_get_type        (void) G_GNUC_CONST;
 
 void            gimp_file_procedure_set_format_name (GimpFileProcedure *procedure,
-                                                     const gchar       *format_name);
+        const gchar       *format_name);
 const gchar   * gimp_file_procedure_get_format_name (GimpFileProcedure *procedure);
 
 void            gimp_file_procedure_set_mime_types  (GimpFileProcedure *procedure,
-                                                     const gchar       *mime_types);
+        const gchar       *mime_types);
 const gchar   * gimp_file_procedure_get_mime_types  (GimpFileProcedure *procedure);
 
 void            gimp_file_procedure_set_extensions  (GimpFileProcedure *procedure,
-                                                     const gchar       *extensions);
+        const gchar       *extensions);
 const gchar   * gimp_file_procedure_get_extensions  (GimpFileProcedure *procedure);
 
 void            gimp_file_procedure_set_prefixes    (GimpFileProcedure *procedure,
-                                                     const gchar       *prefixes);
+        const gchar       *prefixes);
 const gchar   * gimp_file_procedure_get_prefixes    (GimpFileProcedure *procedure);
 
 void            gimp_file_procedure_set_magics      (GimpFileProcedure *procedure,
-                                                     const gchar       *magics);
+        const gchar       *magics);
 const gchar   * gimp_file_procedure_get_magics      (GimpFileProcedure *procedure);
 
 void            gimp_file_procedure_set_priority    (GimpFileProcedure *procedure,
-                                                     gint               priority);
+        gint               priority);
 gint            gimp_file_procedure_get_priority    (GimpFileProcedure *procedure);
 
 void            gimp_file_procedure_set_handles_remote
-                                                    (GimpFileProcedure *procedure,
-                                                     gboolean           handles_remote);
+(GimpFileProcedure *procedure,
+ gboolean           handles_remote);
 gboolean        gimp_file_procedure_get_handles_remote
-                                                    (GimpFileProcedure *procedure);
+(GimpFileProcedure *procedure);
 
 
 G_END_DECLS

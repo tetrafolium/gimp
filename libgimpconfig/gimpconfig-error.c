@@ -47,5 +47,5 @@
 GQuark
 gimp_config_error_quark (void)
 {
-  return g_quark_from_static_string ("gimp-config-error-quark");
+    return g_quark_from_static_string ("gimp-config-error-quark");
 }

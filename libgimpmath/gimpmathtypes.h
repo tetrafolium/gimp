@@ -39,7 +39,7 @@ typedef struct _GimpMatrix4 GimpMatrix4;
  **/
 struct _GimpMatrix2
 {
-  gdouble coeff[2][2];
+    gdouble coeff[2][2];
 };
 
 /**
@@ -50,7 +50,7 @@ struct _GimpMatrix2
  **/
 struct _GimpMatrix3
 {
-  gdouble coeff[3][3];
+    gdouble coeff[3][3];
 };
 
 /**
@@ -61,7 +61,7 @@ struct _GimpMatrix3
  **/
 struct _GimpMatrix4
 {
-  gdouble coeff[4][4];
+    gdouble coeff[4][4];
 };
 
 
@@ -78,7 +78,7 @@ typedef struct _GimpVector4 GimpVector4;
  **/
 struct _GimpVector2
 {
-  gdouble x, y;
+    gdouble x, y;
 };
 
 /**
@@ -101,7 +101,7 @@ GType gimp_vector2_get_type (void) G_GNUC_CONST;
  **/
 struct _GimpVector3
 {
-  gdouble x, y, z;
+    gdouble x, y, z;
 };
 
 /**
@@ -125,7 +125,7 @@ GType gimp_vector3_get_type (void) G_GNUC_CONST;
  **/
 struct _GimpVector4
 {
-  gdouble x, y, z, w;
+    gdouble x, y, z, w;
 };
 
 

@@ -37,24 +37,24 @@
 gint
 _gimp_unit_get_number_of_units (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gint num_units = GIMP_UNIT_END;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gint num_units = GIMP_UNIT_END;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-number-of-units",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-number-of-units",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    num_units = GIMP_VALUES_GET_INT (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        num_units = GIMP_VALUES_GET_INT (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return num_units;
+    return num_units;
 }
 
 /**
@@ -69,24 +69,24 @@ _gimp_unit_get_number_of_units (void)
 gint
 _gimp_unit_get_number_of_built_in_units (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gint num_units = GIMP_UNIT_END;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gint num_units = GIMP_UNIT_END;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-number-of-built-in-units",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-number-of-built-in-units",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    num_units = GIMP_VALUES_GET_INT (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        num_units = GIMP_VALUES_GET_INT (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return num_units;
+    return num_units;
 }
 
 /**
@@ -117,31 +117,31 @@ _gimp_unit_new (const gchar *identifier,
                 const gchar *singular,
                 const gchar *plural)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  GimpUnit unit_id = GIMP_UNIT_INCH;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    GimpUnit unit_id = GIMP_UNIT_INCH;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, identifier,
-                                          G_TYPE_DOUBLE, factor,
-                                          G_TYPE_INT, digits,
-                                          G_TYPE_STRING, symbol,
-                                          G_TYPE_STRING, abbreviation,
-                                          G_TYPE_STRING, singular,
-                                          G_TYPE_STRING, plural,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, identifier,
+                                            G_TYPE_DOUBLE, factor,
+                                            G_TYPE_INT, digits,
+                                            G_TYPE_STRING, symbol,
+                                            G_TYPE_STRING, abbreviation,
+                                            G_TYPE_STRING, singular,
+                                            G_TYPE_STRING, plural,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-new",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-new",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    unit_id = GIMP_VALUES_GET_INT (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        unit_id = GIMP_VALUES_GET_INT (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return unit_id;
+    return unit_id;
 }
 
 /**
@@ -159,25 +159,25 @@ _gimp_unit_new (const gchar *identifier,
 gboolean
 _gimp_unit_get_deletion_flag (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean deletion_flag = FALSE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean deletion_flag = FALSE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-deletion-flag",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-deletion-flag",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    deletion_flag = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        deletion_flag = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return deletion_flag;
+    return deletion_flag;
 }
 
 /**
@@ -197,25 +197,25 @@ gboolean
 _gimp_unit_set_deletion_flag (GimpUnit unit_id,
                               gboolean deletion_flag)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_BOOLEAN, deletion_flag,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_BOOLEAN, deletion_flag,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-set-deletion-flag",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-set-deletion-flag",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -234,25 +234,25 @@ _gimp_unit_set_deletion_flag (GimpUnit unit_id,
 gchar *
 _gimp_unit_get_identifier (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *identifier = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *identifier = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-identifier",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-identifier",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    identifier = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        identifier = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return identifier;
+    return identifier;
 }
 
 /**
@@ -270,25 +270,25 @@ _gimp_unit_get_identifier (GimpUnit unit_id)
 gdouble
 _gimp_unit_get_factor (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gdouble factor = 0.0;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gdouble factor = 0.0;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-factor",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-factor",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    factor = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        factor = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return factor;
+    return factor;
 }
 
 /**
@@ -307,25 +307,25 @@ _gimp_unit_get_factor (GimpUnit unit_id)
 gint
 _gimp_unit_get_digits (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gint digits = 0;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gint digits = 0;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-digits",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-digits",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    digits = GIMP_VALUES_GET_INT (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        digits = GIMP_VALUES_GET_INT (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return digits;
+    return digits;
 }
 
 /**
@@ -342,25 +342,25 @@ _gimp_unit_get_digits (GimpUnit unit_id)
 gchar *
 _gimp_unit_get_symbol (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *symbol = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *symbol = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-symbol",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-symbol",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    symbol = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        symbol = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return symbol;
+    return symbol;
 }
 
 /**
@@ -378,25 +378,25 @@ _gimp_unit_get_symbol (GimpUnit unit_id)
 gchar *
 _gimp_unit_get_abbreviation (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *abbreviation = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *abbreviation = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-abbreviation",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-abbreviation",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    abbreviation = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        abbreviation = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return abbreviation;
+    return abbreviation;
 }
 
 /**
@@ -413,25 +413,25 @@ _gimp_unit_get_abbreviation (GimpUnit unit_id)
 gchar *
 _gimp_unit_get_singular (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *singular = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *singular = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-singular",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-singular",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    singular = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        singular = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return singular;
+    return singular;
 }
 
 /**
@@ -448,23 +448,23 @@ _gimp_unit_get_singular (GimpUnit unit_id)
 gchar *
 _gimp_unit_get_plural (GimpUnit unit_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *plural = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *plural = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          GIMP_TYPE_UNIT, unit_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            GIMP_TYPE_UNIT, unit_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-unit-get-plural",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-unit-get-plural",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    plural = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        plural = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return plural;
+    return plural;
 }

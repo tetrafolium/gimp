@@ -55,7 +55,7 @@ typedef struct _GimpCMYK GimpCMYK;
  **/
 struct _GimpRGB
 {
-  gdouble r, g, b, a;
+    gdouble r, g, b, a;
 };
 
 /**
@@ -70,7 +70,7 @@ struct _GimpRGB
  **/
 struct _GimpHSV
 {
-  gdouble h, s, v, a;
+    gdouble h, s, v, a;
 };
 
 /**
@@ -85,7 +85,7 @@ struct _GimpHSV
  **/
 struct _GimpHSL
 {
-  gdouble h, s, l, a;
+    gdouble h, s, l, a;
 };
 
 /**
@@ -103,7 +103,7 @@ struct _GimpHSL
  **/
 struct _GimpCMYK
 {
-  gdouble c, m, y, k, a;
+    gdouble c, m, y, k, a;
 };
 
 

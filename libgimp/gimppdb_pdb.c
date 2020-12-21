@@ -39,24 +39,24 @@
 gchar *
 _gimp_pdb_temp_name (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *temp_name = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *temp_name = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-temp-name",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-temp-name",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    temp_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        temp_name = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return temp_name;
+    return temp_name;
 }
 
 /**
@@ -74,24 +74,24 @@ _gimp_pdb_temp_name (void)
 gboolean
 _gimp_pdb_dump (GFile *file)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_FILE, file,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_FILE, file,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-dump",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-dump",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -135,39 +135,39 @@ _gimp_pdb_query (const gchar   *name,
                  gint          *num_matches,
                  gchar       ***procedure_names)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, name,
-                                          G_TYPE_STRING, blurb,
-                                          G_TYPE_STRING, help,
-                                          G_TYPE_STRING, authors,
-                                          G_TYPE_STRING, copyright,
-                                          G_TYPE_STRING, date,
-                                          G_TYPE_STRING, proc_type,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, name,
+                                            G_TYPE_STRING, blurb,
+                                            G_TYPE_STRING, help,
+                                            G_TYPE_STRING, authors,
+                                            G_TYPE_STRING, copyright,
+                                            G_TYPE_STRING, date,
+                                            G_TYPE_STRING, proc_type,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-query",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-query",
+                  args);
+    gimp_value_array_unref (args);
 
-  *num_matches = 0;
-  *procedure_names = NULL;
+    *num_matches = 0;
+    *procedure_names = NULL;
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  if (success)
+    if (success)
     {
-      *num_matches = GIMP_VALUES_GET_INT (return_vals, 1);
-      *procedure_names = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
+        *num_matches = GIMP_VALUES_GET_INT (return_vals, 1);
+        *procedure_names = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -186,25 +186,25 @@ _gimp_pdb_query (const gchar   *name,
 gboolean
 _gimp_pdb_proc_exists (const gchar *procedure_name)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean exists = FALSE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean exists = FALSE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-proc-exists",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-proc-exists",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    exists = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        exists = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return exists;
+    return exists;
 }
 
 /**
@@ -231,35 +231,35 @@ _gimp_pdb_get_proc_info (const gchar     *procedure_name,
                          gint            *num_args,
                          gint            *num_values)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-info",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-info",
+                  args);
+    gimp_value_array_unref (args);
 
-  *proc_type = 0;
-  *num_args = 0;
-  *num_values = 0;
+    *proc_type = 0;
+    *num_args = 0;
+    *num_values = 0;
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  if (success)
+    if (success)
     {
-      *proc_type = GIMP_VALUES_GET_ENUM (return_vals, 1);
-      *num_args = GIMP_VALUES_GET_INT (return_vals, 2);
-      *num_values = GIMP_VALUES_GET_INT (return_vals, 3);
+        *proc_type = GIMP_VALUES_GET_ENUM (return_vals, 1);
+        *num_args = GIMP_VALUES_GET_INT (return_vals, 2);
+        *num_values = GIMP_VALUES_GET_INT (return_vals, 3);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -281,26 +281,26 @@ GParamSpec *
 _gimp_pdb_get_proc_argument (const gchar *procedure_name,
                              gint         arg_num)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  GParamSpec *param_spec = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    GParamSpec *param_spec = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_INT, arg_num,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_INT, arg_num,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-argument",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-argument",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    param_spec = GIMP_VALUES_DUP_PARAM (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        param_spec = GIMP_VALUES_DUP_PARAM (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return param_spec;
+    return param_spec;
 }
 
 /**
@@ -323,26 +323,26 @@ GParamSpec *
 _gimp_pdb_get_proc_return_value (const gchar *procedure_name,
                                  gint         val_num)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  GParamSpec *param_spec = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    GParamSpec *param_spec = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_INT, val_num,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_INT, val_num,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-return-value",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-return-value",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    param_spec = GIMP_VALUES_DUP_PARAM (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        param_spec = GIMP_VALUES_DUP_PARAM (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return param_spec;
+    return param_spec;
 }
 
 /**
@@ -363,25 +363,25 @@ gboolean
 _gimp_pdb_set_proc_image_types (const gchar *procedure_name,
                                 const gchar *image_types)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, image_types,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, image_types,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-proc-image-types",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-proc-image-types",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -402,25 +402,25 @@ _gimp_pdb_set_proc_image_types (const gchar *procedure_name,
 gchar *
 _gimp_pdb_get_proc_image_types (const gchar *procedure_name)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *image_types = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *image_types = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-image-types",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-image-types",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    image_types = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        image_types = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return image_types;
+    return image_types;
 }
 
 /**
@@ -440,25 +440,25 @@ gboolean
 _gimp_pdb_set_proc_menu_label (const gchar *procedure_name,
                                const gchar *menu_label)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, menu_label,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, menu_label,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-proc-menu-label",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-proc-menu-label",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -477,25 +477,25 @@ _gimp_pdb_set_proc_menu_label (const gchar *procedure_name,
 gchar *
 _gimp_pdb_get_proc_menu_label (const gchar *procedure_name)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *menu_label = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *menu_label = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-menu-label",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-menu-label",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    menu_label = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        menu_label = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return menu_label;
+    return menu_label;
 }
 
 /**
@@ -516,25 +516,25 @@ gboolean
 _gimp_pdb_add_proc_menu_path (const gchar *procedure_name,
                               const gchar *menu_path)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, menu_path,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, menu_path,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-add-proc-menu-path",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-add-proc-menu-path",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -556,30 +556,30 @@ gchar **
 _gimp_pdb_get_proc_menu_paths (const gchar *procedure_name,
                                gint        *num_menu_paths)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar **menu_paths = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar **menu_paths = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-menu-paths",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-menu-paths",
+                  args);
+    gimp_value_array_unref (args);
 
-  *num_menu_paths = 0;
+    *num_menu_paths = 0;
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
     {
-      *num_menu_paths = GIMP_VALUES_GET_INT (return_vals, 1);
-      menu_paths = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
+        *num_menu_paths = GIMP_VALUES_GET_INT (return_vals, 1);
+        menu_paths = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return menu_paths;
+    return menu_paths;
 }
 
 /**
@@ -603,28 +603,28 @@ _gimp_pdb_set_proc_icon (const gchar  *procedure_name,
                          gint          icon_data_length,
                          const guint8 *icon_data)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          GIMP_TYPE_ICON_TYPE, icon_type,
-                                          G_TYPE_INT, icon_data_length,
-                                          GIMP_TYPE_UINT8_ARRAY, NULL,
-                                          G_TYPE_NONE);
-  gimp_value_set_uint8_array (gimp_value_array_index (args, 3), icon_data, icon_data_length);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            GIMP_TYPE_ICON_TYPE, icon_type,
+                                            G_TYPE_INT, icon_data_length,
+                                            GIMP_TYPE_UINT8_ARRAY, NULL,
+                                            G_TYPE_NONE);
+    gimp_value_set_uint8_array (gimp_value_array_index (args, 3), icon_data, icon_data_length);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-proc-icon",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-proc-icon",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -648,27 +648,27 @@ _gimp_pdb_set_proc_documentation (const gchar *procedure_name,
                                   const gchar *help,
                                   const gchar *help_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, blurb,
-                                          G_TYPE_STRING, help,
-                                          G_TYPE_STRING, help_id,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, blurb,
+                                            G_TYPE_STRING, help,
+                                            G_TYPE_STRING, help_id,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-proc-documentation",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-proc-documentation",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -694,35 +694,35 @@ _gimp_pdb_get_proc_documentation (const gchar  *procedure_name,
                                   gchar       **help,
                                   gchar       **help_id)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-documentation",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-documentation",
+                  args);
+    gimp_value_array_unref (args);
 
-  *blurb = NULL;
-  *help = NULL;
-  *help_id = NULL;
+    *blurb = NULL;
+    *help = NULL;
+    *help_id = NULL;
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  if (success)
+    if (success)
     {
-      *blurb = GIMP_VALUES_DUP_STRING (return_vals, 1);
-      *help = GIMP_VALUES_DUP_STRING (return_vals, 2);
-      *help_id = GIMP_VALUES_DUP_STRING (return_vals, 3);
+        *blurb = GIMP_VALUES_DUP_STRING (return_vals, 1);
+        *help = GIMP_VALUES_DUP_STRING (return_vals, 2);
+        *help_id = GIMP_VALUES_DUP_STRING (return_vals, 3);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -746,27 +746,27 @@ _gimp_pdb_set_proc_attribution (const gchar *procedure_name,
                                 const gchar *copyright,
                                 const gchar *date)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, authors,
-                                          G_TYPE_STRING, copyright,
-                                          G_TYPE_STRING, date,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, authors,
+                                            G_TYPE_STRING, copyright,
+                                            G_TYPE_STRING, date,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-proc-attribution",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-proc-attribution",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -792,35 +792,35 @@ _gimp_pdb_get_proc_attribution (const gchar  *procedure_name,
                                 gchar       **copyright,
                                 gchar       **date)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-proc-attribution",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-proc-attribution",
+                  args);
+    gimp_value_array_unref (args);
 
-  *authors = NULL;
-  *copyright = NULL;
-  *date = NULL;
+    *authors = NULL;
+    *copyright = NULL;
+    *date = NULL;
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  if (success)
+    if (success)
     {
-      *authors = GIMP_VALUES_DUP_STRING (return_vals, 1);
-      *copyright = GIMP_VALUES_DUP_STRING (return_vals, 2);
-      *date = GIMP_VALUES_DUP_STRING (return_vals, 3);
+        *authors = GIMP_VALUES_DUP_STRING (return_vals, 1);
+        *copyright = GIMP_VALUES_DUP_STRING (return_vals, 2);
+        *date = GIMP_VALUES_DUP_STRING (return_vals, 3);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -843,27 +843,27 @@ _gimp_pdb_set_file_proc_load_handler (const gchar *procedure_name,
                                       const gchar *prefixes,
                                       const gchar *magics)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, extensions,
-                                          G_TYPE_STRING, prefixes,
-                                          G_TYPE_STRING, magics,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, extensions,
+                                            G_TYPE_STRING, prefixes,
+                                            G_TYPE_STRING, magics,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-load-handler",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-load-handler",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -884,26 +884,26 @@ _gimp_pdb_set_file_proc_save_handler (const gchar *procedure_name,
                                       const gchar *extensions,
                                       const gchar *prefixes)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, extensions,
-                                          G_TYPE_STRING, prefixes,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, extensions,
+                                            G_TYPE_STRING, prefixes,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-save-handler",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-save-handler",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -927,25 +927,25 @@ gboolean
 _gimp_pdb_set_file_proc_priority (const gchar *procedure_name,
                                   gint         priority)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_INT, priority,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_INT, priority,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-priority",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-priority",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -970,25 +970,25 @@ gboolean
 _gimp_pdb_set_file_proc_mime_types (const gchar *procedure_name,
                                     const gchar *mime_types)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_STRING, mime_types,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_STRING, mime_types,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-mime-types",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-mime-types",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -1009,24 +1009,24 @@ _gimp_pdb_set_file_proc_mime_types (const gchar *procedure_name,
 gboolean
 _gimp_pdb_set_file_proc_handles_remote (const gchar *procedure_name)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-handles-remote",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-handles-remote",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -1047,24 +1047,24 @@ _gimp_pdb_set_file_proc_handles_remote (const gchar *procedure_name)
 gboolean
 _gimp_pdb_set_file_proc_handles_raw (const gchar *procedure_name)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, procedure_name,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, procedure_name,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-handles-raw",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-handles-raw",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -1087,27 +1087,27 @@ _gimp_pdb_set_file_proc_handles_raw (const gchar *procedure_name)
  **/
 gboolean
 _gimp_pdb_set_file_proc_thumbnail_loader (const gchar *load_proc,
-                                          const gchar *thumb_proc)
+        const gchar *thumb_proc)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, load_proc,
-                                          G_TYPE_STRING, thumb_proc,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, load_proc,
+                                            G_TYPE_STRING, thumb_proc,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-file-proc-thumbnail-loader",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-file-proc-thumbnail-loader",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -1130,33 +1130,33 @@ _gimp_pdb_get_data (const gchar  *identifier,
                     gint         *bytes,
                     guint8      **data)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, identifier,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, identifier,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-data",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-data",
+                  args);
+    gimp_value_array_unref (args);
 
-  *bytes = 0;
-  *data = NULL;
+    *bytes = 0;
+    *data = NULL;
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  if (success)
+    if (success)
     {
-      *bytes = GIMP_VALUES_GET_INT (return_vals, 1);
-      *data = GIMP_VALUES_DUP_UINT8_ARRAY (return_vals, 2);
+        *bytes = GIMP_VALUES_GET_INT (return_vals, 1);
+        *data = GIMP_VALUES_DUP_UINT8_ARRAY (return_vals, 2);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -1174,25 +1174,25 @@ _gimp_pdb_get_data (const gchar  *identifier,
 gint
 _gimp_pdb_get_data_size (const gchar *identifier)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gint bytes = 0;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gint bytes = 0;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, identifier,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, identifier,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-get-data-size",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-get-data-size",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    bytes = GIMP_VALUES_GET_INT (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        bytes = GIMP_VALUES_GET_INT (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return bytes;
+    return bytes;
 }
 
 /**
@@ -1214,25 +1214,25 @@ _gimp_pdb_set_data (const gchar  *identifier,
                     gint          bytes,
                     const guint8 *data)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, identifier,
-                                          G_TYPE_INT, bytes,
-                                          GIMP_TYPE_UINT8_ARRAY, NULL,
-                                          G_TYPE_NONE);
-  gimp_value_set_uint8_array (gimp_value_array_index (args, 2), data, bytes);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, identifier,
+                                            G_TYPE_INT, bytes,
+                                            GIMP_TYPE_UINT8_ARRAY, NULL,
+                                            G_TYPE_NONE);
+    gimp_value_set_uint8_array (gimp_value_array_index (args, 2), data, bytes);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-pdb-set-data",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-pdb-set-data",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }

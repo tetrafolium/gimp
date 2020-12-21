@@ -29,18 +29,18 @@ G_BEGIN_DECLS
 
 
 typedef void (* GimpRunGradientCallback)   (const gchar   *gradient_name,
-                                            gint           width,
-                                            const gdouble *grad_data,
-                                            gboolean       dialog_closing,
-                                            gpointer       user_data);
+        gint           width,
+        const gdouble *grad_data,
+        gboolean       dialog_closing,
+        gpointer       user_data);
 
 
 const gchar * gimp_gradient_select_new     (const gchar             *title,
-                                            const gchar             *gradient_name,
-                                            gint                     sample_size,
-                                            GimpRunGradientCallback  callback,
-                                            gpointer                 data,
-                                            GDestroyNotify           data_destroy);
+        const gchar             *gradient_name,
+        gint                     sample_size,
+        GimpRunGradientCallback  callback,
+        gpointer                 data,
+        GDestroyNotify           data_destroy);
 void          gimp_gradient_select_destroy (const gchar             *gradient_callback);
 
 

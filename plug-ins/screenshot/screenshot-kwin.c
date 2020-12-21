@@ -39,45 +39,45 @@ static GDBusProxy *proxy = NULL;
 gboolean
 screenshot_kwin_available (void)
 {
-  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-                                         NULL,
-                                         "org.kde.KWin",
-                                         "/Screenshot",
-                                         "org.kde.kwin.Screenshot",
-                                         NULL, NULL);
+    proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                           G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                           NULL,
+                                           "org.kde.KWin",
+                                           "/Screenshot",
+                                           "org.kde.kwin.Screenshot",
+                                           NULL, NULL);
 
-  if (proxy)
+    if (proxy)
     {
-      GError *error = NULL;
+        GError *error = NULL;
 
-      g_dbus_proxy_call_sync (proxy, "org.freedesktop.DBus.Peer.Ping",
-                              NULL,
-                              G_DBUS_CALL_FLAGS_NONE,
-                              -1, NULL, &error);
-      if (! error)
-        return TRUE;
+        g_dbus_proxy_call_sync (proxy, "org.freedesktop.DBus.Peer.Ping",
+                                NULL,
+                                G_DBUS_CALL_FLAGS_NONE,
+                                -1, NULL, &error);
+        if (! error)
+            return TRUE;
 
-      g_clear_error (&error);
+        g_clear_error (&error);
 
-      g_object_unref (proxy);
-      proxy = NULL;
+        g_object_unref (proxy);
+        proxy = NULL;
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 ScreenshotCapabilities
 screenshot_kwin_get_capabilities (void)
 {
-  return (SCREENSHOT_CAN_SHOOT_DECORATIONS |
-          SCREENSHOT_CAN_SHOOT_POINTER     |
-          SCREENSHOT_CAN_SHOOT_WINDOW      |
-          SCREENSHOT_CAN_PICK_WINDOW);
-  /* TODO: SCREENSHOT_CAN_SHOOT_REGION.
-   * The KDE API has "screenshotArea" method but no method to get
-   * coordinates could be found. See below.
-   */
+    return (SCREENSHOT_CAN_SHOOT_DECORATIONS |
+            SCREENSHOT_CAN_SHOOT_POINTER     |
+            SCREENSHOT_CAN_SHOOT_WINDOW      |
+            SCREENSHOT_CAN_PICK_WINDOW);
+    /* TODO: SCREENSHOT_CAN_SHOOT_REGION.
+     * The KDE API has "screenshotArea" method but no method to get
+     * coordinates could be found. See below.
+     */
 }
 
 GimpPDBStatusType
@@ -86,121 +86,121 @@ screenshot_kwin_shoot (ScreenshotValues  *shootvals,
                        GimpImage        **image,
                        GError           **error)
 {
-  gchar       *filename = NULL;
-  const gchar *method   = NULL;
-  GVariant    *args     = NULL;
-  GVariant    *retval;
-  gint32       mask;
+    gchar       *filename = NULL;
+    const gchar *method   = NULL;
+    GVariant    *args     = NULL;
+    GVariant    *retval;
+    gint32       mask;
 
-  switch (shootvals->shoot_type)
+    switch (shootvals->shoot_type)
     {
     case SHOOT_ROOT:
-      if (shootvals->screenshot_delay > 0)
-        screenshot_delay (shootvals->screenshot_delay);
-      else
+        if (shootvals->screenshot_delay > 0)
+            screenshot_delay (shootvals->screenshot_delay);
+        else
         {
-          /* As an exception, I force a delay of at least 0.5 seconds
-           * for KWin. Because of windows effect slowly fading out, the
-           * screenshot plug-in GUI was constantly visible (with
-           * transparency as it is fading out) in 0s-delay screenshots.
-           */
-          g_usleep (500000);
+            /* As an exception, I force a delay of at least 0.5 seconds
+             * for KWin. Because of windows effect slowly fading out, the
+             * screenshot plug-in GUI was constantly visible (with
+             * transparency as it is fading out) in 0s-delay screenshots.
+             */
+            g_usleep (500000);
         }
 
-      method = "screenshotFullscreen";
-      args   = g_variant_new ("(b)", shootvals->show_cursor);
+        method = "screenshotFullscreen";
+        args   = g_variant_new ("(b)", shootvals->show_cursor);
 
-      /* FIXME: figure profile */
-      break;
+        /* FIXME: figure profile */
+        break;
 
     case SHOOT_REGION:
-      break;
-      /* FIXME: GNOME-shell has a "SelectArea" returning coordinates
-       * which can be fed to "ScreenshotArea". KDE has the equivalent
-       * "screenshotArea", but no "SelectArea" equivalent that I could
-       * find.
-       * Also at first, I expected "interactive" method to take care of
-       * the whole selecting-are-then-screenshotting workflow, but this
-       * is apparently only made to select interactively a specific
-       * window, not an area.
-       */
-      method = "screenshotArea";
-      args   = g_variant_new ("(iiii)",
-                              shootvals->x1,
-                              shootvals->y1,
-                              shootvals->x2 - shootvals->x1,
-                              shootvals->y2 - shootvals->y1);
-      args   = NULL;
+        break;
+        /* FIXME: GNOME-shell has a "SelectArea" returning coordinates
+         * which can be fed to "ScreenshotArea". KDE has the equivalent
+         * "screenshotArea", but no "SelectArea" equivalent that I could
+         * find.
+         * Also at first, I expected "interactive" method to take care of
+         * the whole selecting-are-then-screenshotting workflow, but this
+         * is apparently only made to select interactively a specific
+         * window, not an area.
+         */
+        method = "screenshotArea";
+        args   = g_variant_new ("(iiii)",
+                                shootvals->x1,
+                                shootvals->y1,
+                                shootvals->x2 - shootvals->x1,
+                                shootvals->y2 - shootvals->y1);
+        args   = NULL;
 
-      break;
+        break;
 
     case SHOOT_WINDOW:
-      if (shootvals->select_delay > 0)
-        screenshot_delay (shootvals->select_delay);
+        if (shootvals->select_delay > 0)
+            screenshot_delay (shootvals->select_delay);
 
-      /* XXX I expected "screenshotWindowUnderCursor" method to be the
-       * right one, but it returns nothing, nor is there a file
-       * descriptor in argument. So I don't understand how to grab the
-       * screenshot. Also "interactive" changes the cursor to a
-       * crosshair, waiting for click, which is more helpful than
-       * immediate screenshot under cursor.
-       */
-      method = "interactive";
-      mask = (shootvals->decorate ? 1 : 0) |
-             (shootvals->show_cursor ? 1 << 1 : 0);
-      args   = g_variant_new ("(i)", mask);
+        /* XXX I expected "screenshotWindowUnderCursor" method to be the
+         * right one, but it returns nothing, nor is there a file
+         * descriptor in argument. So I don't understand how to grab the
+         * screenshot. Also "interactive" changes the cursor to a
+         * crosshair, waiting for click, which is more helpful than
+         * immediate screenshot under cursor.
+         */
+        method = "interactive";
+        mask = (shootvals->decorate ? 1 : 0) |
+               (shootvals->show_cursor ? 1 << 1 : 0);
+        args   = g_variant_new ("(i)", mask);
 
-      /* FIXME: figure monitor */
-      break;
+        /* FIXME: figure monitor */
+        break;
     }
 
-  retval = g_dbus_proxy_call_sync (proxy, method, args,
-                                   G_DBUS_CALL_FLAGS_NONE,
-                                   -1, NULL, error);
-  if (! retval)
-    goto failure;
+    retval = g_dbus_proxy_call_sync (proxy, method, args,
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1, NULL, error);
+    if (! retval)
+        goto failure;
 
-  g_variant_get (retval, "(s)",
-                 &filename);
-  g_variant_unref (retval);
+    g_variant_get (retval, "(s)",
+                   &filename);
+    g_variant_unref (retval);
 
-  if (filename)
+    if (filename)
     {
-      GimpColorProfile *profile;
+        GimpColorProfile *profile;
 
-      *image = gimp_file_load (GIMP_RUN_NONINTERACTIVE,
-                               g_file_new_for_path (filename));
-      gimp_image_set_file (*image, g_file_new_for_path ("screenshot.png"));
+        *image = gimp_file_load (GIMP_RUN_NONINTERACTIVE,
+                                 g_file_new_for_path (filename));
+        gimp_image_set_file (*image, g_file_new_for_path ("screenshot.png"));
 
-      /* This is very wrong in multi-display setups since we have no
-       * idea which profile is to be used. Let's keep it anyway and
-       * assume always the monitor 0, which will still work in common
-       * cases.
-       */
-      profile = gimp_monitor_get_color_profile (monitor);
+        /* This is very wrong in multi-display setups since we have no
+         * idea which profile is to be used. Let's keep it anyway and
+         * assume always the monitor 0, which will still work in common
+         * cases.
+         */
+        profile = gimp_monitor_get_color_profile (monitor);
 
-      if (profile)
+        if (profile)
         {
-          gimp_image_set_color_profile (*image, profile);
-          g_object_unref (profile);
+            gimp_image_set_color_profile (*image, profile);
+            g_object_unref (profile);
         }
 
-      g_unlink (filename);
-      g_free (filename);
+        g_unlink (filename);
+        g_free (filename);
 
-      g_object_unref (proxy);
-      proxy = NULL;
+        g_object_unref (proxy);
+        proxy = NULL;
 
-      return GIMP_PDB_SUCCESS;
+        return GIMP_PDB_SUCCESS;
     }
 
- failure:
+failure:
 
-  if (filename)
-    g_free (filename);
+    if (filename)
+        g_free (filename);
 
-  g_object_unref (proxy);
-  proxy = NULL;
+    g_object_unref (proxy);
+    proxy = NULL;
 
-  return GIMP_PDB_EXECUTION_ERROR;
+    return GIMP_PDB_EXECUTION_ERROR;
 }

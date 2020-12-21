@@ -38,24 +38,24 @@ typedef struct _GimpRulerClass   GimpRulerClass;
 
 struct _GimpRuler
 {
-  GtkWidget         parent_instance;
+    GtkWidget         parent_instance;
 
-  GimpRulerPrivate *priv;
+    GimpRulerPrivate *priv;
 };
 
 struct _GimpRulerClass
 {
-  GtkWidgetClass  parent_class;
+    GtkWidgetClass  parent_class;
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 
@@ -64,24 +64,24 @@ GType       gimp_ruler_get_type            (void) G_GNUC_CONST;
 GtkWidget * gimp_ruler_new                 (GtkOrientation  orientation);
 
 void        gimp_ruler_add_track_widget    (GimpRuler      *ruler,
-                                            GtkWidget      *widget);
+        GtkWidget      *widget);
 void        gimp_ruler_remove_track_widget (GimpRuler      *ruler,
-                                            GtkWidget      *widget);
+        GtkWidget      *widget);
 
 void        gimp_ruler_set_unit            (GimpRuler      *ruler,
-                                            GimpUnit        unit);
+        GimpUnit        unit);
 GimpUnit    gimp_ruler_get_unit            (GimpRuler      *ruler);
 void        gimp_ruler_set_position        (GimpRuler      *ruler,
-                                            gdouble         position);
+        gdouble         position);
 gdouble     gimp_ruler_get_position        (GimpRuler      *ruler);
 void        gimp_ruler_set_range           (GimpRuler      *ruler,
-                                            gdouble         lower,
-                                            gdouble         upper,
-                                            gdouble         max_size);
+        gdouble         lower,
+        gdouble         upper,
+        gdouble         max_size);
 void        gimp_ruler_get_range           (GimpRuler      *ruler,
-                                            gdouble        *lower,
-                                            gdouble        *upper,
-                                            gdouble        *max_size);
+        gdouble        *lower,
+        gdouble        *upper,
+        gdouble        *max_size);
 
 G_END_DECLS
 

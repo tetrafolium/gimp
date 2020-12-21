@@ -35,75 +35,75 @@ G_BEGIN_DECLS
 G_GNUC_INTERNAL gchar*      _gimp_pdb_temp_name                      (void);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_dump                           (GFile             *file);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_query                          (const gchar       *name,
-                                                                      const gchar       *blurb,
-                                                                      const gchar       *help,
-                                                                      const gchar       *authors,
-                                                                      const gchar       *copyright,
-                                                                      const gchar       *date,
-                                                                      const gchar       *proc_type,
-                                                                      gint              *num_matches,
-                                                                      gchar           ***procedure_names);
+        const gchar       *blurb,
+        const gchar       *help,
+        const gchar       *authors,
+        const gchar       *copyright,
+        const gchar       *date,
+        const gchar       *proc_type,
+        gint              *num_matches,
+        gchar           ***procedure_names);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_proc_exists                    (const gchar       *procedure_name);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_get_proc_info                  (const gchar       *procedure_name,
-                                                                      GimpPDBProcType   *proc_type,
-                                                                      gint              *num_args,
-                                                                      gint              *num_values);
+        GimpPDBProcType   *proc_type,
+        gint              *num_args,
+        gint              *num_values);
 G_GNUC_INTERNAL GParamSpec* _gimp_pdb_get_proc_argument              (const gchar       *procedure_name,
-                                                                      gint               arg_num);
+        gint               arg_num);
 G_GNUC_INTERNAL GParamSpec* _gimp_pdb_get_proc_return_value          (const gchar       *procedure_name,
-                                                                      gint               val_num);
+        gint               val_num);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_proc_image_types           (const gchar       *procedure_name,
-                                                                      const gchar       *image_types);
+        const gchar       *image_types);
 G_GNUC_INTERNAL gchar*      _gimp_pdb_get_proc_image_types           (const gchar       *procedure_name);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_proc_menu_label            (const gchar       *procedure_name,
-                                                                      const gchar       *menu_label);
+        const gchar       *menu_label);
 G_GNUC_INTERNAL gchar*      _gimp_pdb_get_proc_menu_label            (const gchar       *procedure_name);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_add_proc_menu_path             (const gchar       *procedure_name,
-                                                                      const gchar       *menu_path);
+        const gchar       *menu_path);
 G_GNUC_INTERNAL gchar**     _gimp_pdb_get_proc_menu_paths            (const gchar       *procedure_name,
-                                                                      gint              *num_menu_paths);
+        gint              *num_menu_paths);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_proc_icon                  (const gchar       *procedure_name,
-                                                                      GimpIconType       icon_type,
-                                                                      gint               icon_data_length,
-                                                                      const guint8      *icon_data);
+        GimpIconType       icon_type,
+        gint               icon_data_length,
+        const guint8      *icon_data);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_proc_documentation         (const gchar       *procedure_name,
-                                                                      const gchar       *blurb,
-                                                                      const gchar       *help,
-                                                                      const gchar       *help_id);
+        const gchar       *blurb,
+        const gchar       *help,
+        const gchar       *help_id);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_get_proc_documentation         (const gchar       *procedure_name,
-                                                                      gchar            **blurb,
-                                                                      gchar            **help,
-                                                                      gchar            **help_id);
+        gchar            **blurb,
+        gchar            **help,
+        gchar            **help_id);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_proc_attribution           (const gchar       *procedure_name,
-                                                                      const gchar       *authors,
-                                                                      const gchar       *copyright,
-                                                                      const gchar       *date);
+        const gchar       *authors,
+        const gchar       *copyright,
+        const gchar       *date);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_get_proc_attribution           (const gchar       *procedure_name,
-                                                                      gchar            **authors,
-                                                                      gchar            **copyright,
-                                                                      gchar            **date);
+        gchar            **authors,
+        gchar            **copyright,
+        gchar            **date);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_load_handler     (const gchar       *procedure_name,
-                                                                      const gchar       *extensions,
-                                                                      const gchar       *prefixes,
-                                                                      const gchar       *magics);
+        const gchar       *extensions,
+        const gchar       *prefixes,
+        const gchar       *magics);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_save_handler     (const gchar       *procedure_name,
-                                                                      const gchar       *extensions,
-                                                                      const gchar       *prefixes);
+        const gchar       *extensions,
+        const gchar       *prefixes);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_priority         (const gchar       *procedure_name,
-                                                                      gint               priority);
+        gint               priority);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_mime_types       (const gchar       *procedure_name,
-                                                                      const gchar       *mime_types);
+        const gchar       *mime_types);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_handles_remote   (const gchar       *procedure_name);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_handles_raw      (const gchar       *procedure_name);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_file_proc_thumbnail_loader (const gchar       *load_proc,
-                                                                      const gchar       *thumb_proc);
+        const gchar       *thumb_proc);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_get_data                       (const gchar       *identifier,
-                                                                      gint              *bytes,
-                                                                      guint8           **data);
+        gint              *bytes,
+        guint8           **data);
 G_GNUC_INTERNAL gint        _gimp_pdb_get_data_size                  (const gchar       *identifier);
 G_GNUC_INTERNAL gboolean    _gimp_pdb_set_data                       (const gchar       *identifier,
-                                                                      gint               bytes,
-                                                                      const guint8      *data);
+        gint               bytes,
+        const guint8      *data);
 
 
 G_END_DECLS

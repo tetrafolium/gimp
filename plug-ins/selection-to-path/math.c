@@ -34,9 +34,9 @@
 boolean
 epsilon_equal (real v1, real v2)
 {
-  return
-    v1 == v2		       /* Usually they'll be exactly equal, anyway.  */
-    || fabs (v1 - v2) <= REAL_EPSILON;
+    return
+        v1 == v2		       /* Usually they'll be exactly equal, anyway.  */
+        || fabs (v1 - v2) <= REAL_EPSILON;
 }
 
 
@@ -45,7 +45,7 @@ epsilon_equal (real v1, real v2)
 real
 distance (real_coordinate_type p1, real_coordinate_type p2)
 {
-  return hypot (p1.x - p2.x, p1.y - p2.y);
+    return hypot (p1.x - p2.x, p1.y - p2.y);
 }
 
 
@@ -53,7 +53,7 @@ distance (real_coordinate_type p1, real_coordinate_type p2)
 real
 int_distance (coordinate_type p1, coordinate_type p2)
 {
-  return hypot ((double) p1.x - p2.x, (double) p1.y - p2.y);
+    return hypot ((double) p1.x - p2.x, (double) p1.y - p2.y);
 }
 
 
@@ -63,19 +63,19 @@ int_distance (coordinate_type p1, coordinate_type p2)
 real
 my_acosd (real v)
 {
-  real a;
+    real a;
 
-  if (epsilon_equal (v, 1.0))
-    v = 1.0;
-  else if (epsilon_equal (v, -1.0))
-    v = -1.0;
+    if (epsilon_equal (v, 1.0))
+        v = 1.0;
+    else if (epsilon_equal (v, -1.0))
+        v = -1.0;
 
-  errno = 0;
-  a = acos (v);
-  if (errno == ERANGE || errno == EDOM)
-    FATAL_PERROR ("acosd");
+    errno = 0;
+    a = acos (v);
+    if (errno == ERANGE || errno == EDOM)
+        FATAL_PERROR ("acosd");
 
-  return a * 180.0 / G_PI;
+    return a * 180.0 / G_PI;
 }
 
 
@@ -84,9 +84,9 @@ my_acosd (real v)
 real
 slope (real_coordinate_type coord1, real_coordinate_type coord2)
 {
-  g_assert (coord2.x - coord1.x != 0);
+    g_assert (coord2.x - coord1.x != 0);
 
-  return (coord2.y - coord1.y) / (coord2.x - coord1.x);
+    return (coord2.y - coord1.y) / (coord2.x - coord1.x);
 }
 
 
@@ -95,24 +95,24 @@ slope (real_coordinate_type coord1, real_coordinate_type coord2)
 real_coordinate_type
 int_to_real_coord (coordinate_type int_coord)
 {
-  real_coordinate_type real_coord;
+    real_coordinate_type real_coord;
 
-  real_coord.x = int_coord.x;
-  real_coord.y = int_coord.y;
+    real_coord.x = int_coord.x;
+    real_coord.y = int_coord.y;
 
-  return real_coord;
+    return real_coord;
 }
 
 
 coordinate_type
 real_to_int_coord (real_coordinate_type real_coord)
 {
-  coordinate_type int_coord;
+    coordinate_type int_coord;
 
-  int_coord.x = SROUND (real_coord.x);
-  int_coord.y = SROUND (real_coord.y);
+    int_coord.x = SROUND (real_coord.x);
+    int_coord.y = SROUND (real_coord.y);
 
-  return int_coord;
+    return int_coord;
 }
 
 
@@ -121,13 +121,13 @@ real_to_int_coord (real_coordinate_type real_coord)
 boolean
 points_adjacent_p (int row1, int col1, int row2, int col2)
 {
-  int row_diff = abs (row1 - row2);
-  int col_diff = abs (col1 - col2);
+    int row_diff = abs (row1 - row2);
+    int col_diff = abs (col1 - col2);
 
-  return
-    (row_diff == 1 && col_diff == 1)
-    || (row_diff == 0 && col_diff == 1)
-    || (row_diff == 1 && col_diff == 0);
+    return
+        (row_diff == 1 && col_diff == 1)
+        || (row_diff == 0 && col_diff == 1)
+        || (row_diff == 1 && col_diff == 0);
 }
 
 
@@ -136,21 +136,21 @@ points_adjacent_p (int row1, int col1, int row2, int col2)
 void
 find_bounds (real *values, unsigned value_count, real *min, real *max)
 {
-  unsigned this_value;
+    unsigned this_value;
 
-  /* We must use FLT_MAX and FLT_MIN, instead of the corresponding
-     values for double, because gcc uses the native atof to parse
-     floating point constants, and many atof's choke on the extremes.  */
-  *min = FLT_MAX;
-  *max = FLT_MIN;
+    /* We must use FLT_MAX and FLT_MIN, instead of the corresponding
+       values for double, because gcc uses the native atof to parse
+       floating point constants, and many atof's choke on the extremes.  */
+    *min = FLT_MAX;
+    *max = FLT_MIN;
 
-  for (this_value = 0; this_value < value_count; this_value++)
+    for (this_value = 0; this_value < value_count; this_value++)
     {
-      if (values[this_value] < *min)
-	*min = values[this_value];
+        if (values[this_value] < *min)
+            *min = values[this_value];
 
-      if (values[this_value] > *max)
-	*max = values[this_value];
+        if (values[this_value] > *max)
+            *max = values[this_value];
     }
 }
 
@@ -162,16 +162,16 @@ find_bounds (real *values, unsigned value_count, real *min, real *max)
 real *
 map_to_unit (real *values, unsigned value_count)
 {
-  real smallest, largest;
-  int this_value;
-  real *mapped_values = g_new (real, value_count);
+    real smallest, largest;
+    int this_value;
+    real *mapped_values = g_new (real, value_count);
 
-  find_bounds (values, value_count, &smallest, &largest);
+    find_bounds (values, value_count, &smallest, &largest);
 
-  largest -= smallest;		/* We never care about largest itself. */
+    largest -= smallest;		/* We never care about largest itself. */
 
-  for (this_value = 0; this_value < value_count; this_value++)
-    mapped_values[this_value] = (values[this_value] - smallest) / largest;
+    for (this_value = 0; this_value < value_count; this_value++)
+        mapped_values[this_value] = (values[this_value] - smallest) / largest;
 
-  return mapped_values;
+    return mapped_values;
 }

@@ -71,12 +71,12 @@ typedef struct _BmpClass BmpClass;
 
 struct _Bmp
 {
-  GimpPlugIn      parent_instance;
+    GimpPlugIn      parent_instance;
 };
 
 struct _BmpClass
 {
-  GimpPlugInClass parent_class;
+    GimpPlugInClass parent_class;
 };
 
 
@@ -87,21 +87,21 @@ GType                   bmp_get_type         (void) G_GNUC_CONST;
 
 static GList          * bmp_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * bmp_create_procedure (GimpPlugIn           *plug_in,
-                                              const gchar          *name);
+        const gchar          *name);
 
 static GimpValueArray * bmp_load             (GimpProcedure        *procedure,
-                                              GimpRunMode           run_mode,
-                                              GFile                *file,
-                                              const GimpValueArray *args,
-                                              gpointer              run_data);
+        GimpRunMode           run_mode,
+        GFile                *file,
+        const GimpValueArray *args,
+        gpointer              run_data);
 static GimpValueArray * bmp_save             (GimpProcedure        *procedure,
-                                              GimpRunMode           run_mode,
-                                              GimpImage            *image,
-                                              gint                  n_drawables,
-                                              GimpDrawable        **drawables,
-                                              GFile                *file,
-                                              const GimpValueArray *args,
-                                              gpointer              run_data);
+        GimpRunMode           run_mode,
+        GimpImage            *image,
+        gint                  n_drawables,
+        GimpDrawable        **drawables,
+        GFile                *file,
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 
 
@@ -113,10 +113,10 @@ GIMP_MAIN (BMP_TYPE)
 static void
 bmp_class_init (BmpClass *klass)
 {
-  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-  plug_in_class->query_procedures = bmp_query_procedures;
-  plug_in_class->create_procedure = bmp_create_procedure;
+    plug_in_class->query_procedures = bmp_query_procedures;
+    plug_in_class->create_procedure = bmp_create_procedure;
 }
 
 static void
@@ -127,89 +127,89 @@ bmp_init (Bmp *bmp)
 static GList *
 bmp_query_procedures (GimpPlugIn *plug_in)
 {
-  GList *list = NULL;
+    GList *list = NULL;
 
-  list = g_list_append (list, g_strdup (LOAD_PROC));
-  list = g_list_append (list, g_strdup (SAVE_PROC));
+    list = g_list_append (list, g_strdup (LOAD_PROC));
+    list = g_list_append (list, g_strdup (SAVE_PROC));
 
-  return list;
+    return list;
 }
 
 static GimpProcedure *
 bmp_create_procedure (GimpPlugIn  *plug_in,
                       const gchar *name)
 {
-  GimpProcedure *procedure = NULL;
+    GimpProcedure *procedure = NULL;
 
-  if (! strcmp (name, LOAD_PROC))
+    if (! strcmp (name, LOAD_PROC))
     {
-      procedure = gimp_load_procedure_new (plug_in, name,
-                                           GIMP_PDB_PROC_TYPE_PLUGIN,
-                                           bmp_load, NULL, NULL);
+        procedure = gimp_load_procedure_new (plug_in, name,
+                                             GIMP_PDB_PROC_TYPE_PLUGIN,
+                                             bmp_load, NULL, NULL);
 
-      gimp_procedure_set_menu_label (procedure, N_("Windows BMP image"));
+        gimp_procedure_set_menu_label (procedure, N_("Windows BMP image"));
 
-      gimp_procedure_set_documentation (procedure,
-                                        "Loads files of Windows BMP file format",
-                                        "Loads files of Windows BMP file format",
-                                        name);
-      gimp_procedure_set_attribution (procedure,
-                                      "Alexander Schulz",
-                                      "Alexander Schulz",
-                                      "1997");
+        gimp_procedure_set_documentation (procedure,
+                                          "Loads files of Windows BMP file format",
+                                          "Loads files of Windows BMP file format",
+                                          name);
+        gimp_procedure_set_attribution (procedure,
+                                        "Alexander Schulz",
+                                        "Alexander Schulz",
+                                        "1997");
 
-      gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
-                                          "image/bmp");
-      gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
-                                          "bmp");
-      gimp_file_procedure_set_magics (GIMP_FILE_PROCEDURE (procedure),
-                                      "0,string,BM");
+        gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
+                                            "image/bmp");
+        gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
+                                            "bmp");
+        gimp_file_procedure_set_magics (GIMP_FILE_PROCEDURE (procedure),
+                                        "0,string,BM");
     }
-  else if (! strcmp (name, SAVE_PROC))
+    else if (! strcmp (name, SAVE_PROC))
     {
-      procedure = gimp_save_procedure_new (plug_in, name,
-                                           GIMP_PDB_PROC_TYPE_PLUGIN,
-                                           bmp_save, NULL, NULL);
+        procedure = gimp_save_procedure_new (plug_in, name,
+                                             GIMP_PDB_PROC_TYPE_PLUGIN,
+                                             bmp_save, NULL, NULL);
 
-      gimp_procedure_set_image_types (procedure, "INDEXED, GRAY, RGB*");
+        gimp_procedure_set_image_types (procedure, "INDEXED, GRAY, RGB*");
 
-      gimp_procedure_set_menu_label (procedure, N_("Windows BMP image"));
+        gimp_procedure_set_menu_label (procedure, N_("Windows BMP image"));
 
-      gimp_procedure_set_documentation (procedure,
-                                        "Saves files in Windows BMP file format",
-                                        "Saves files in Windows BMP file format",
-                                        name);
-      gimp_procedure_set_attribution (procedure,
-                                      "Alexander Schulz",
-                                      "Alexander Schulz",
-                                      "1997");
+        gimp_procedure_set_documentation (procedure,
+                                          "Saves files in Windows BMP file format",
+                                          "Saves files in Windows BMP file format",
+                                          name);
+        gimp_procedure_set_attribution (procedure,
+                                        "Alexander Schulz",
+                                        "Alexander Schulz",
+                                        "1997");
 
-      gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
-                                          "image/bmp");
-      gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
-                                          "bmp");
+        gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
+                                            "image/bmp");
+        gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
+                                            "bmp");
 
-      GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "use-rle",
-                                 "Use RLE",
-                                 "Use run-lengh-encoding",
-                                 FALSE,
-                                 G_PARAM_READWRITE);
+        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "use-rle",
+                                   "Use RLE",
+                                   "Use run-lengh-encoding",
+                                   FALSE,
+                                   G_PARAM_READWRITE);
 
-      GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "write-color-space-info",
-                                 "Write color space information",
-                                 "Whether or not to write BITMAPV5HEADER "
-                                 "color space data",
-                                 TRUE,
-                                 G_PARAM_READWRITE);
+        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "write-color-space-info",
+                                   "Write color space information",
+                                   "Whether or not to write BITMAPV5HEADER "
+                                   "color space data",
+                                   TRUE,
+                                   G_PARAM_READWRITE);
 
-      GIMP_PROC_AUX_ARG_INT (procedure, "rgb-format",
-                             "RGB format",
-                             "Export format for RGB images",
-                             0, 5, 3,
-                             G_PARAM_READWRITE);
+        GIMP_PROC_AUX_ARG_INT (procedure, "rgb-format",
+                               "RGB format",
+                               "Export format for RGB images",
+                               0, 5, 3,
+                               G_PARAM_READWRITE);
     }
 
-  return procedure;
+    return procedure;
 }
 
 static GimpValueArray *
@@ -219,27 +219,27 @@ bmp_load (GimpProcedure        *procedure,
           const GimpValueArray *args,
           gpointer              run_data)
 {
-  GimpValueArray *return_vals;
-  GimpImage      *image;
-  GError         *error = NULL;
+    GimpValueArray *return_vals;
+    GimpImage      *image;
+    GError         *error = NULL;
 
-  INIT_I18N ();
-  gegl_init (NULL, NULL);
+    INIT_I18N ();
+    gegl_init (NULL, NULL);
 
-  image = load_image (file, &error);
+    image = load_image (file, &error);
 
-  if (! image)
-    return gimp_procedure_new_return_values (procedure,
-                                             GIMP_PDB_EXECUTION_ERROR,
-                                             error);
+    if (! image)
+        return gimp_procedure_new_return_values (procedure,
+                GIMP_PDB_EXECUTION_ERROR,
+                error);
 
-  return_vals = gimp_procedure_new_return_values (procedure,
-                                                  GIMP_PDB_SUCCESS,
-                                                  NULL);
+    return_vals = gimp_procedure_new_return_values (procedure,
+                  GIMP_PDB_SUCCESS,
+                  NULL);
 
-  GIMP_VALUES_SET_IMAGE (return_vals, 1, image);
+    GIMP_VALUES_SET_IMAGE (return_vals, 1, image);
 
-  return return_vals;
+    return return_vals;
 }
 
 static GimpValueArray *
@@ -252,61 +252,61 @@ bmp_save (GimpProcedure        *procedure,
           const GimpValueArray *args,
           gpointer              run_data)
 {
-  GimpProcedureConfig *config;
-  GimpPDBStatusType    status = GIMP_PDB_SUCCESS;
-  GimpExportReturn     export = GIMP_EXPORT_CANCEL;
-  GError              *error = NULL;
+    GimpProcedureConfig *config;
+    GimpPDBStatusType    status = GIMP_PDB_SUCCESS;
+    GimpExportReturn     export = GIMP_EXPORT_CANCEL;
+    GError              *error = NULL;
 
-  INIT_I18N ();
-  gegl_init (NULL, NULL);
+    INIT_I18N ();
+    gegl_init (NULL, NULL);
 
-  config = gimp_procedure_create_config (procedure);
-  gimp_procedure_config_begin_run (config, image, run_mode, args);
+    config = gimp_procedure_create_config (procedure);
+    gimp_procedure_config_begin_run (config, image, run_mode, args);
 
-  switch (run_mode)
+    switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_ui_init (PLUG_IN_BINARY);
+        gimp_ui_init (PLUG_IN_BINARY);
 
-      export = gimp_export_image (&image, &n_drawables, &drawables, "BMP",
-                                  GIMP_EXPORT_CAN_HANDLE_RGB   |
-                                  GIMP_EXPORT_CAN_HANDLE_GRAY  |
-                                  GIMP_EXPORT_CAN_HANDLE_ALPHA |
-                                  GIMP_EXPORT_CAN_HANDLE_INDEXED);
+        export = gimp_export_image (&image, &n_drawables, &drawables, "BMP",
+                                    GIMP_EXPORT_CAN_HANDLE_RGB   |
+                                    GIMP_EXPORT_CAN_HANDLE_GRAY  |
+                                    GIMP_EXPORT_CAN_HANDLE_ALPHA |
+                                    GIMP_EXPORT_CAN_HANDLE_INDEXED);
 
-      if (export == GIMP_EXPORT_CANCEL)
-        return gimp_procedure_new_return_values (procedure,
-                                                 GIMP_PDB_CANCEL,
-                                                 NULL);
-      break;
+        if (export == GIMP_EXPORT_CANCEL)
+            return gimp_procedure_new_return_values (procedure,
+                    GIMP_PDB_CANCEL,
+                    NULL);
+        break;
 
     default:
-      break;
+        break;
     }
 
-  if (n_drawables != 1)
+    if (n_drawables != 1)
     {
-      g_set_error (&error, G_FILE_ERROR, 0,
-                   _("BMP format does not support multiple layers."));
+        g_set_error (&error, G_FILE_ERROR, 0,
+                     _("BMP format does not support multiple layers."));
 
-      return gimp_procedure_new_return_values (procedure,
-                                               GIMP_PDB_CALLING_ERROR,
-                                               error);
+        return gimp_procedure_new_return_values (procedure,
+                GIMP_PDB_CALLING_ERROR,
+                error);
     }
 
-  status = save_image (file, image, drawables[0], run_mode,
-                       procedure, G_OBJECT (config),
-                       &error);
+    status = save_image (file, image, drawables[0], run_mode,
+                         procedure, G_OBJECT (config),
+                         &error);
 
-  gimp_procedure_config_end_run (config, status);
-  g_object_unref (config);
+    gimp_procedure_config_end_run (config, status);
+    g_object_unref (config);
 
-  if (export == GIMP_EXPORT_EXPORT)
+    if (export == GIMP_EXPORT_EXPORT)
     {
-      gimp_image_delete (image);
-      g_free (drawables);
+        gimp_image_delete (image);
+        g_free (drawables);
     }
 
-  return gimp_procedure_new_return_values (procedure, status, error);
+    return gimp_procedure_new_return_values (procedure, status, error);
 }

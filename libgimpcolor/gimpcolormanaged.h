@@ -46,31 +46,31 @@ G_DECLARE_INTERFACE (GimpColorManaged, gimp_color_managed, GIMP, COLOR_MANAGED, 
  **/
 struct _GimpColorManagedInterface
 {
-  GTypeInterface  base_iface;
+    GTypeInterface  base_iface;
 
-  /**
-   * GimpColorManagedInterface::get_icc_profile:
-   * @managed: an object the implements the #GimpColorManaged interface
-   * @len: (out): return location for the number of bytes in the profile data
-   *
-   * Returns: (array length=len): A blob of data that represents an ICC color
-   *                              profile.
-   *
-   * Since: 2.4
-   */
-  const guint8     * (* get_icc_profile)   (GimpColorManaged *managed,
-                                            gsize            *len);
+    /**
+     * GimpColorManagedInterface::get_icc_profile:
+     * @managed: an object the implements the #GimpColorManaged interface
+     * @len: (out): return location for the number of bytes in the profile data
+     *
+     * Returns: (array length=len): A blob of data that represents an ICC color
+     *                              profile.
+     *
+     * Since: 2.4
+     */
+    const guint8     * (* get_icc_profile)   (GimpColorManaged *managed,
+            gsize            *len);
 
-  /*  signals  */
-  void               (* profile_changed)   (GimpColorManaged *managed);
+    /*  signals  */
+    void               (* profile_changed)   (GimpColorManaged *managed);
 
-  /*  virtual functions  */
-  GimpColorProfile * (* get_color_profile) (GimpColorManaged *managed);
+    /*  virtual functions  */
+    GimpColorProfile * (* get_color_profile) (GimpColorManaged *managed);
 };
 
 
 const guint8     * gimp_color_managed_get_icc_profile   (GimpColorManaged *managed,
-                                                         gsize            *len);
+        gsize            *len);
 GimpColorProfile * gimp_color_managed_get_color_profile (GimpColorManaged *managed);
 
 void               gimp_color_managed_profile_changed   (GimpColorManaged *managed);

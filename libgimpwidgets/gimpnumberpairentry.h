@@ -45,62 +45,62 @@ typedef struct _GimpNumberPairEntryClass   GimpNumberPairEntryClass;
 
 struct _GimpNumberPairEntry
 {
-  GtkEntry                    parent_instance;
+    GtkEntry                    parent_instance;
 
-  GimpNumberPairEntryPrivate *priv;
+    GimpNumberPairEntryPrivate *priv;
 };
 
 struct _GimpNumberPairEntryClass
 {
-  GtkEntryClass  parent_class;
+    GtkEntryClass  parent_class;
 
-  void (* numbers_changed) (GimpNumberPairEntry *entry);
-  void (* ratio_changed)   (GimpNumberPairEntry *entry);
+    void (* numbers_changed) (GimpNumberPairEntry *entry);
+    void (* ratio_changed)   (GimpNumberPairEntry *entry);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType          gimp_number_pair_entry_get_type           (void) G_GNUC_CONST;
 GtkWidget *    gimp_number_pair_entry_new                (const gchar         *separators,
-                                                          gboolean             allow_simplification,
-                                                          gdouble              min_valid_value,
-                                                          gdouble              max_valid_value);
+        gboolean             allow_simplification,
+        gdouble              min_valid_value,
+        gdouble              max_valid_value);
 void           gimp_number_pair_entry_set_default_values (GimpNumberPairEntry *entry,
-                                                          gdouble              left,
-                                                          gdouble              right);
+        gdouble              left,
+        gdouble              right);
 void           gimp_number_pair_entry_get_default_values (GimpNumberPairEntry *entry,
-                                                          gdouble             *left,
-                                                          gdouble             *right);
+        gdouble             *left,
+        gdouble             *right);
 void           gimp_number_pair_entry_set_values         (GimpNumberPairEntry *entry,
-                                                          gdouble              left,
-                                                          gdouble              right);
+        gdouble              left,
+        gdouble              right);
 void           gimp_number_pair_entry_get_values         (GimpNumberPairEntry *entry,
-                                                          gdouble             *left,
-                                                          gdouble             *right);
+        gdouble             *left,
+        gdouble             *right);
 
 void           gimp_number_pair_entry_set_default_text   (GimpNumberPairEntry *entry,
-                                                          const gchar         *string);
+        const gchar         *string);
 const gchar *  gimp_number_pair_entry_get_default_text   (GimpNumberPairEntry *entry);
 
 void           gimp_number_pair_entry_set_ratio          (GimpNumberPairEntry *entry,
-                                                          gdouble              ratio);
+        gdouble              ratio);
 gdouble        gimp_number_pair_entry_get_ratio          (GimpNumberPairEntry *entry);
 
 void           gimp_number_pair_entry_set_aspect         (GimpNumberPairEntry *entry,
-                                                          GimpAspectType       aspect);
+        GimpAspectType       aspect);
 GimpAspectType gimp_number_pair_entry_get_aspect         (GimpNumberPairEntry *entry);
 
 void           gimp_number_pair_entry_set_user_override  (GimpNumberPairEntry *entry,
-                                                          gboolean             user_override);
+        gboolean             user_override);
 gboolean       gimp_number_pair_entry_get_user_override  (GimpNumberPairEntry *entry);
 
 

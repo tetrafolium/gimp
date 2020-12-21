@@ -35,7 +35,7 @@ const Babl * gimp_pixbuf_get_format      (GdkPixbuf *pixbuf);
 GeglBuffer * gimp_pixbuf_create_buffer   (GdkPixbuf *pixbuf);
 
 guint8     * gimp_pixbuf_get_icc_profile (GdkPixbuf *pixbuf,
-                                          gsize     *length);
+        gsize     *length);
 
 
 G_END_DECLS

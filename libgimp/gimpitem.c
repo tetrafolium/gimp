@@ -31,15 +31,15 @@
 
 enum
 {
-  PROP_0,
-  PROP_ID,
-  N_PROPS
+    PROP_0,
+    PROP_ID,
+    N_PROPS
 };
 
 
 struct _GimpItemPrivate
 {
-  gint id;
+    gint id;
 };
 
 
@@ -63,65 +63,65 @@ static GParamSpec *props[N_PROPS] = { NULL, };
 static void
 gimp_item_class_init (GimpItemClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_item_set_property;
-  object_class->get_property = gimp_item_get_property;
+    object_class->set_property = gimp_item_set_property;
+    object_class->get_property = gimp_item_get_property;
 
-  props[PROP_ID] =
-    g_param_spec_int ("id",
-                      "The item id",
-                      "The item id for internal use",
-                      0, G_MAXINT32, 0,
-                      GIMP_PARAM_READWRITE |
-                      G_PARAM_CONSTRUCT_ONLY);
+    props[PROP_ID] =
+        g_param_spec_int ("id",
+                          "The item id",
+                          "The item id for internal use",
+                          0, G_MAXINT32, 0,
+                          GIMP_PARAM_READWRITE |
+                          G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+    g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void
 gimp_item_init (GimpItem *item)
 {
-  item->priv = gimp_item_get_instance_private (item);
+    item->priv = gimp_item_get_instance_private (item);
 }
 
 static void
 gimp_item_set_property (GObject      *object,
-                         guint         property_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
+                        guint         property_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
 {
-  GimpItem *item = GIMP_ITEM (object);
+    GimpItem *item = GIMP_ITEM (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_ID:
-      item->priv->id = g_value_get_int (value);
-      break;
+        item->priv->id = g_value_get_int (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
 static void
 gimp_item_get_property (GObject    *object,
-                         guint       property_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
+                        guint       property_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
 {
-  GimpItem *item = GIMP_ITEM (object);
+    GimpItem *item = GIMP_ITEM (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_ID:
-      g_value_set_int (value, item->priv->id);
-      break;
+        g_value_set_int (value, item->priv->id);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -140,7 +140,7 @@ gimp_item_get_property (GObject    *object,
 gint32
 gimp_item_get_id (GimpItem *item)
 {
-  return item ? item->priv->id : -1;
+    return item ? item->priv->id : -1;
 }
 
 /**
@@ -161,15 +161,15 @@ gimp_item_get_id (GimpItem *item)
 GimpItem *
 gimp_item_get_by_id (gint32 item_id)
 {
-  if (item_id > 0)
+    if (item_id > 0)
     {
-      GimpPlugIn    *plug_in   = gimp_get_plug_in ();
-      GimpProcedure *procedure = _gimp_plug_in_get_procedure (plug_in);
+        GimpPlugIn    *plug_in   = gimp_get_plug_in ();
+        GimpProcedure *procedure = _gimp_plug_in_get_procedure (plug_in);
 
-      return _gimp_procedure_get_item (procedure, item_id);
+        return _gimp_procedure_get_item (procedure, item_id);
     }
 
-  return NULL;
+    return NULL;
 }
 
 /**
@@ -188,7 +188,7 @@ gimp_item_get_by_id (gint32 item_id)
 gboolean
 gimp_item_is_valid (GimpItem *item)
 {
-  return gimp_item_id_is_valid (gimp_item_get_id (item));
+    return gimp_item_id_is_valid (gimp_item_get_id (item));
 }
 
 /**
@@ -206,7 +206,7 @@ gimp_item_is_valid (GimpItem *item)
 gboolean
 gimp_item_is_drawable (GimpItem *item)
 {
-  return gimp_item_id_is_drawable (gimp_item_get_id (item));
+    return gimp_item_id_is_drawable (gimp_item_get_id (item));
 }
 
 /**
@@ -224,7 +224,7 @@ gimp_item_is_drawable (GimpItem *item)
 gboolean
 gimp_item_is_layer (GimpItem *item)
 {
-  return gimp_item_id_is_layer (gimp_item_get_id (item));
+    return gimp_item_id_is_layer (gimp_item_get_id (item));
 }
 
 /**
@@ -243,7 +243,7 @@ gimp_item_is_layer (GimpItem *item)
 gboolean
 gimp_item_is_text_layer (GimpItem *item)
 {
-  return gimp_item_id_is_text_layer (gimp_item_get_id (item));
+    return gimp_item_id_is_text_layer (gimp_item_get_id (item));
 }
 
 /**
@@ -261,7 +261,7 @@ gimp_item_is_text_layer (GimpItem *item)
 gboolean
 gimp_item_is_channel (GimpItem *item)
 {
-  return gimp_item_id_is_channel (gimp_item_get_id (item));
+    return gimp_item_id_is_channel (gimp_item_get_id (item));
 }
 
 /**
@@ -280,7 +280,7 @@ gimp_item_is_channel (GimpItem *item)
 gboolean
 gimp_item_is_layer_mask (GimpItem *item)
 {
-  return gimp_item_id_is_layer_mask (gimp_item_get_id (item));
+    return gimp_item_id_is_layer_mask (gimp_item_get_id (item));
 }
 
 /**
@@ -298,7 +298,7 @@ gimp_item_is_layer_mask (GimpItem *item)
 gboolean
 gimp_item_is_selection (GimpItem *item)
 {
-  return gimp_item_id_is_selection (gimp_item_get_id (item));
+    return gimp_item_id_is_selection (gimp_item_get_id (item));
 }
 
 /**
@@ -316,7 +316,7 @@ gimp_item_is_selection (GimpItem *item)
 gboolean
 gimp_item_is_vectors (GimpItem *item)
 {
-  return gimp_item_id_is_vectors (gimp_item_get_id (item));
+    return gimp_item_id_is_vectors (gimp_item_get_id (item));
 }
 
 /**
@@ -338,17 +338,17 @@ gimp_item_is_vectors (GimpItem *item)
 GList *
 gimp_item_list_children (GimpItem *item)
 {
-  GimpItem **children;
-  gint       num_children;
-  GList     *list = NULL;
-  gint       i;
+    GimpItem **children;
+    gint       num_children;
+    GList     *list = NULL;
+    gint       i;
 
-  children = gimp_item_get_children (item, &num_children);
+    children = gimp_item_get_children (item, &num_children);
 
-  for (i = 0; i < num_children; i++)
-    list = g_list_prepend (list, children[i]);
+    for (i = 0; i < num_children; i++)
+        list = g_list_prepend (list, children[i]);
 
-  g_free (children);
+    g_free (children);
 
-  return g_list_reverse (list);
+    return g_list_reverse (list);
 }

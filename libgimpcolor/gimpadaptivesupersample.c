@@ -53,8 +53,8 @@ typedef struct _GimpSampleType GimpSampleType;
 
 struct _GimpSampleType
 {
-  guchar  ready;
-  GimpRGB color;
+    guchar  ready;
+    GimpRGB color;
 };
 
 
@@ -74,168 +74,168 @@ gimp_render_sub_pixel (gint             max_depth,
                        GimpRenderFunc   render_func,
                        gpointer         render_data)
 {
-  gint     x2, y2;          /* Coords of center sample */
-  gdouble  dx1, dy1;        /* Delta to upper left sample */
-  gdouble  dx3, dy3;        /* Delta to lower right sample */
-  GimpRGB  c[4];            /* Sample colors */
-  gulong   num_samples = 0;
-  gint     cnt;
+    gint     x2, y2;          /* Coords of center sample */
+    gdouble  dx1, dy1;        /* Delta to upper left sample */
+    gdouble  dx3, dy3;        /* Delta to lower right sample */
+    GimpRGB  c[4];            /* Sample colors */
+    gulong   num_samples = 0;
+    gint     cnt;
 
-  g_return_val_if_fail (render_func != NULL, 0);
+    g_return_val_if_fail (render_func != NULL, 0);
 
-  /* Get offsets for corners */
+    /* Get offsets for corners */
 
-  dx1 = (gdouble) (x1 - sub_pixel_size / 2) / sub_pixel_size;
-  dx3 = (gdouble) (x3 - sub_pixel_size / 2) / sub_pixel_size;
+    dx1 = (gdouble) (x1 - sub_pixel_size / 2) / sub_pixel_size;
+    dx3 = (gdouble) (x3 - sub_pixel_size / 2) / sub_pixel_size;
 
-  dy1 = (gdouble) (y1 - sub_pixel_size / 2) / sub_pixel_size;
-  dy3 = (gdouble) (y3 - sub_pixel_size / 2) / sub_pixel_size;
+    dy1 = (gdouble) (y1 - sub_pixel_size / 2) / sub_pixel_size;
+    dy3 = (gdouble) (y3 - sub_pixel_size / 2) / sub_pixel_size;
 
-  /* Render upper left sample */
+    /* Render upper left sample */
 
-  if (! block[y1][x1].ready)
+    if (! block[y1][x1].ready)
     {
-      num_samples++;
+        num_samples++;
 
-      render_func (x + dx1, y + dy1, &c[0], render_data);
+        render_func (x + dx1, y + dy1, &c[0], render_data);
 
-      block[y1][x1].ready = TRUE;
-      block[y1][x1].color = c[0];
+        block[y1][x1].ready = TRUE;
+        block[y1][x1].color = c[0];
     }
-  else
+    else
     {
-      c[0] = block[y1][x1].color;
-    }
-
-  /* Render upper right sample */
-
-  if (! block[y1][x3].ready)
-    {
-      num_samples++;
-
-      render_func (x + dx3, y + dy1, &c[1], render_data);
-
-      block[y1][x3].ready = TRUE;
-      block[y1][x3].color = c[1];
-    }
-  else
-    {
-      c[1] = block[y1][x3].color;
+        c[0] = block[y1][x1].color;
     }
 
-  /* Render lower left sample */
+    /* Render upper right sample */
 
-  if (! block[y3][x1].ready)
+    if (! block[y1][x3].ready)
     {
-      num_samples++;
+        num_samples++;
 
-      render_func (x + dx1, y + dy3, &c[2], render_data);
+        render_func (x + dx3, y + dy1, &c[1], render_data);
 
-      block[y3][x1].ready = TRUE;
-      block[y3][x1].color = c[2];
+        block[y1][x3].ready = TRUE;
+        block[y1][x3].color = c[1];
     }
-  else
+    else
     {
-      c[2] = block[y3][x1].color;
-    }
-
-  /* Render lower right sample */
-
-  if (! block[y3][x3].ready)
-    {
-      num_samples++;
-
-      render_func (x + dx3, y + dy3, &c[3], render_data);
-
-      block[y3][x3].ready = TRUE;
-      block[y3][x3].color = c[3];
-    }
-  else
-    {
-      c[3] = block[y3][x3].color;
+        c[1] = block[y1][x3].color;
     }
 
-  /* Check for supersampling */
+    /* Render lower left sample */
 
-  if (depth <= max_depth)
+    if (! block[y3][x1].ready)
     {
-      /* Check whether we have to supersample */
+        num_samples++;
 
-      if ((gimp_rgba_distance (&c[0], &c[1]) >= threshold) ||
-          (gimp_rgba_distance (&c[0], &c[2]) >= threshold) ||
-          (gimp_rgba_distance (&c[0], &c[3]) >= threshold) ||
-          (gimp_rgba_distance (&c[1], &c[2]) >= threshold) ||
-          (gimp_rgba_distance (&c[1], &c[3]) >= threshold) ||
-          (gimp_rgba_distance (&c[2], &c[3]) >= threshold))
+        render_func (x + dx1, y + dy3, &c[2], render_data);
+
+        block[y3][x1].ready = TRUE;
+        block[y3][x1].color = c[2];
+    }
+    else
+    {
+        c[2] = block[y3][x1].color;
+    }
+
+    /* Render lower right sample */
+
+    if (! block[y3][x3].ready)
+    {
+        num_samples++;
+
+        render_func (x + dx3, y + dy3, &c[3], render_data);
+
+        block[y3][x3].ready = TRUE;
+        block[y3][x3].color = c[3];
+    }
+    else
+    {
+        c[3] = block[y3][x3].color;
+    }
+
+    /* Check for supersampling */
+
+    if (depth <= max_depth)
+    {
+        /* Check whether we have to supersample */
+
+        if ((gimp_rgba_distance (&c[0], &c[1]) >= threshold) ||
+                (gimp_rgba_distance (&c[0], &c[2]) >= threshold) ||
+                (gimp_rgba_distance (&c[0], &c[3]) >= threshold) ||
+                (gimp_rgba_distance (&c[1], &c[2]) >= threshold) ||
+                (gimp_rgba_distance (&c[1], &c[3]) >= threshold) ||
+                (gimp_rgba_distance (&c[2], &c[3]) >= threshold))
         {
-          /* Calc coordinates of center subsample */
+            /* Calc coordinates of center subsample */
 
-          x2 = (x1 + x3) / 2;
-          y2 = (y1 + y3) / 2;
+            x2 = (x1 + x3) / 2;
+            y2 = (y1 + y3) / 2;
 
-          /* Render sub-blocks */
+            /* Render sub-blocks */
 
-          num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
-                                                x, y, x1, y1, x2, y2,
-                                                threshold, sub_pixel_size,
-                                                &c[0],
-                                                render_func, render_data);
+            num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
+                                                  x, y, x1, y1, x2, y2,
+                                                  threshold, sub_pixel_size,
+                                                  &c[0],
+                                                  render_func, render_data);
 
-          num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
-                                                x, y, x2, y1, x3, y2,
-                                                threshold, sub_pixel_size,
-                                                &c[1],
-                                                render_func, render_data);
+            num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
+                                                  x, y, x2, y1, x3, y2,
+                                                  threshold, sub_pixel_size,
+                                                  &c[1],
+                                                  render_func, render_data);
 
-          num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
-                                                x, y, x1, y2, x2, y3,
-                                                threshold, sub_pixel_size,
-                                                &c[2],
-                                                render_func, render_data);
+            num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
+                                                  x, y, x1, y2, x2, y3,
+                                                  threshold, sub_pixel_size,
+                                                  &c[2],
+                                                  render_func, render_data);
 
-          num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
-                                                x, y, x2, y2, x3, y3,
-                                                threshold, sub_pixel_size,
-                                                &c[3],
-                                                render_func, render_data);
+            num_samples += gimp_render_sub_pixel (max_depth, depth + 1, block,
+                                                  x, y, x2, y2, x3, y3,
+                                                  threshold, sub_pixel_size,
+                                                  &c[3],
+                                                  render_func, render_data);
         }
     }
 
-  if (c[0].a == 0.0 || c[1].a == 0.0 || c[2].a == 0.0 || c[3].a == 0.0)
+    if (c[0].a == 0.0 || c[1].a == 0.0 || c[2].a == 0.0 || c[3].a == 0.0)
     {
-      GimpRGB tmpcol;
-      gdouble weight;
+        GimpRGB tmpcol;
+        gdouble weight;
 
-      gimp_rgb_set (&tmpcol, 0.0, 0.0, 0.0);
+        gimp_rgb_set (&tmpcol, 0.0, 0.0, 0.0);
 
-      weight = 2.0;
+        weight = 2.0;
 
-      for (cnt = 0; cnt < 4; cnt++)
+        for (cnt = 0; cnt < 4; cnt++)
         {
-          if (c[cnt].a != 0.0)
+            if (c[cnt].a != 0.0)
             {
-              tmpcol.r += c[cnt].r;
-              tmpcol.g += c[cnt].g;
-              tmpcol.b += c[cnt].b;
+                tmpcol.r += c[cnt].r;
+                tmpcol.g += c[cnt].g;
+                tmpcol.b += c[cnt].b;
 
-              weight /= 2.0;
+                weight /= 2.0;
             }
         }
 
-      color->r = weight * tmpcol.r;
-      color->g = weight * tmpcol.g;
-      color->b = weight * tmpcol.b;
+        color->r = weight * tmpcol.r;
+        color->g = weight * tmpcol.g;
+        color->b = weight * tmpcol.b;
     }
-  else
+    else
     {
-      color->r = 0.25 * (c[0].r + c[1].r + c[2].r + c[3].r);
-      color->g = 0.25 * (c[0].g + c[1].g + c[2].g + c[3].g);
-      color->b = 0.25 * (c[0].b + c[1].b + c[2].b + c[3].b);
+        color->r = 0.25 * (c[0].r + c[1].r + c[2].r + c[3].r);
+        color->g = 0.25 * (c[0].g + c[1].g + c[2].g + c[3].g);
+        color->b = 0.25 * (c[0].b + c[1].b + c[2].b + c[3].b);
     }
 
-  color->a = 0.25 * (c[0].a + c[1].a + c[2].a + c[3].a);
+    color->a = 0.25 * (c[0].a + c[1].a + c[2].a + c[3].a);
 
-  return num_samples;
+    return num_samples;
 }
 
 /**
@@ -272,143 +272,143 @@ gimp_adaptive_supersample_area (gint              x1,
                                 GimpProgressFunc  progress_func,
                                 gpointer          progress_data)
 {
-  gint             x, y, width;                 /* Counters, width of region */
-  gint             xt, xtt, yt;                 /* Temporary counters */
-  gint             sub_pixel_size;              /* Number of samples per pixel (1D) */
-  GimpRGB          color;                       /* Rendered pixel's color */
-  GimpSampleType   tmp_sample;                  /* For swapping samples */
-  GimpSampleType  *top_row, *bot_row, *tmp_row; /* Sample rows */
-  GimpSampleType **block;                       /* Sample block matrix */
-  gulong           num_samples;
+    gint             x, y, width;                 /* Counters, width of region */
+    gint             xt, xtt, yt;                 /* Temporary counters */
+    gint             sub_pixel_size;              /* Number of samples per pixel (1D) */
+    GimpRGB          color;                       /* Rendered pixel's color */
+    GimpSampleType   tmp_sample;                  /* For swapping samples */
+    GimpSampleType  *top_row, *bot_row, *tmp_row; /* Sample rows */
+    GimpSampleType **block;                       /* Sample block matrix */
+    gulong           num_samples;
 
-  g_return_val_if_fail (render_func != NULL, 0);
-  g_return_val_if_fail (put_pixel_func != NULL, 0);
+    g_return_val_if_fail (render_func != NULL, 0);
+    g_return_val_if_fail (put_pixel_func != NULL, 0);
 
-  /* Initialize color */
+    /* Initialize color */
 
-  gimp_rgba_set (&color, 0.0, 0.0, 0.0, 0.0);
+    gimp_rgba_set (&color, 0.0, 0.0, 0.0, 0.0);
 
-  /* Calculate sub-pixel size */
+    /* Calculate sub-pixel size */
 
-  sub_pixel_size = 1 << max_depth;
+    sub_pixel_size = 1 << max_depth;
 
-  /* Create row arrays */
+    /* Create row arrays */
 
-  width = x2 - x1 + 1;
+    width = x2 - x1 + 1;
 
-  top_row = gegl_scratch_new (GimpSampleType, sub_pixel_size * width + 1);
-  bot_row = gegl_scratch_new (GimpSampleType, sub_pixel_size * width + 1);
+    top_row = gegl_scratch_new (GimpSampleType, sub_pixel_size * width + 1);
+    bot_row = gegl_scratch_new (GimpSampleType, sub_pixel_size * width + 1);
 
-  for (x = 0; x < (sub_pixel_size * width + 1); x++)
+    for (x = 0; x < (sub_pixel_size * width + 1); x++)
     {
-      top_row[x].ready = FALSE;
+        top_row[x].ready = FALSE;
 
-      gimp_rgba_set (&top_row[x].color, 0.0, 0.0, 0.0, 0.0);
+        gimp_rgba_set (&top_row[x].color, 0.0, 0.0, 0.0, 0.0);
 
-      bot_row[x].ready = FALSE;
+        bot_row[x].ready = FALSE;
 
-      gimp_rgba_set (&bot_row[x].color, 0.0, 0.0, 0.0, 0.0);
+        gimp_rgba_set (&bot_row[x].color, 0.0, 0.0, 0.0, 0.0);
     }
 
-  /* Allocate block matrix */
+    /* Allocate block matrix */
 
-  block = gegl_scratch_new (GimpSampleType *, sub_pixel_size + 1); /* Rows */
+    block = gegl_scratch_new (GimpSampleType *, sub_pixel_size + 1); /* Rows */
 
-  for (y = 0; y < (sub_pixel_size + 1); y++)
+    for (y = 0; y < (sub_pixel_size + 1); y++)
     {
-      block[y] = gegl_scratch_new (GimpSampleType, sub_pixel_size + 1); /* Columns */
+        block[y] = gegl_scratch_new (GimpSampleType, sub_pixel_size + 1); /* Columns */
 
-      for (x = 0; x < (sub_pixel_size + 1); x++)
+        for (x = 0; x < (sub_pixel_size + 1); x++)
         {
-          block[y][x].ready = FALSE;
+            block[y][x].ready = FALSE;
 
-          gimp_rgba_set (&block[y][x].color, 0.0, 0.0, 0.0, 0.0);
+            gimp_rgba_set (&block[y][x].color, 0.0, 0.0, 0.0, 0.0);
         }
     }
 
-  /* Render region */
+    /* Render region */
 
-  num_samples = 0;
+    num_samples = 0;
 
-  for (y = y1; y <= y2; y++)
+    for (y = y1; y <= y2; y++)
     {
-      /* Clear the bottom row */
+        /* Clear the bottom row */
 
-      for (xt = 0; xt < (sub_pixel_size * width + 1); xt++)
-        bot_row[xt].ready = FALSE;
+        for (xt = 0; xt < (sub_pixel_size * width + 1); xt++)
+            bot_row[xt].ready = FALSE;
 
-      /* Clear first column */
+        /* Clear first column */
 
-      for (yt = 0; yt < (sub_pixel_size + 1); yt++)
-        block[yt][0].ready = FALSE;
+        for (yt = 0; yt < (sub_pixel_size + 1); yt++)
+            block[yt][0].ready = FALSE;
 
-      /* Render row */
+        /* Render row */
 
-      for (x = x1; x <= x2; x++)
+        for (x = x1; x <= x2; x++)
         {
-          /* Initialize block by clearing all but first row/column */
+            /* Initialize block by clearing all but first row/column */
 
-          for (yt = 1; yt < (sub_pixel_size + 1); yt++)
-            for (xt = 1; xt < (sub_pixel_size + 1); xt++)
-              block[yt][xt].ready = FALSE;
+            for (yt = 1; yt < (sub_pixel_size + 1); yt++)
+                for (xt = 1; xt < (sub_pixel_size + 1); xt++)
+                    block[yt][xt].ready = FALSE;
 
-          /* Copy samples from top row to block */
+            /* Copy samples from top row to block */
 
-          for (xtt = 0, xt = (x - x1) * sub_pixel_size;
-               xtt < (sub_pixel_size + 1);
-               xtt++, xt++)
-            block[0][xtt] = top_row[xt];
+            for (xtt = 0, xt = (x - x1) * sub_pixel_size;
+                    xtt < (sub_pixel_size + 1);
+                    xtt++, xt++)
+                block[0][xtt] = top_row[xt];
 
-          /* Render pixel on (x, y) */
+            /* Render pixel on (x, y) */
 
-          num_samples += gimp_render_sub_pixel (max_depth, 1, block, x, y, 0, 0,
-                                                sub_pixel_size, sub_pixel_size,
-                                                threshold, sub_pixel_size,
-                                                &color,
-                                                render_func, render_data);
+            num_samples += gimp_render_sub_pixel (max_depth, 1, block, x, y, 0, 0,
+                                                  sub_pixel_size, sub_pixel_size,
+                                                  threshold, sub_pixel_size,
+                                                  &color,
+                                                  render_func, render_data);
 
-          if (put_pixel_func)
-            (* put_pixel_func) (x, y, &color, put_pixel_data);
+            if (put_pixel_func)
+                (* put_pixel_func) (x, y, &color, put_pixel_data);
 
-          /* Copy block information to rows */
+            /* Copy block information to rows */
 
-          top_row[(x - x1 + 1) * sub_pixel_size] = block[0][sub_pixel_size];
+            top_row[(x - x1 + 1) * sub_pixel_size] = block[0][sub_pixel_size];
 
-          for (xtt = 0, xt = (x - x1) * sub_pixel_size;
-               xtt < (sub_pixel_size + 1);
-               xtt++, xt++)
-            bot_row[xt] = block[sub_pixel_size][xtt];
+            for (xtt = 0, xt = (x - x1) * sub_pixel_size;
+                    xtt < (sub_pixel_size + 1);
+                    xtt++, xt++)
+                bot_row[xt] = block[sub_pixel_size][xtt];
 
-          /* Swap first and last columns */
+            /* Swap first and last columns */
 
-          for (yt = 0; yt < (sub_pixel_size + 1); yt++)
+            for (yt = 0; yt < (sub_pixel_size + 1); yt++)
             {
-              tmp_sample                = block[yt][0];
-              block[yt][0]              = block[yt][sub_pixel_size];
-              block[yt][sub_pixel_size] = tmp_sample;
+                tmp_sample                = block[yt][0];
+                block[yt][0]              = block[yt][sub_pixel_size];
+                block[yt][sub_pixel_size] = tmp_sample;
             }
         }
 
-      /* Swap rows */
+        /* Swap rows */
 
-      tmp_row = top_row;
-      top_row = bot_row;
-      bot_row = tmp_row;
+        tmp_row = top_row;
+        top_row = bot_row;
+        bot_row = tmp_row;
 
-      /* Call progress display function (if any) */
+        /* Call progress display function (if any) */
 
-      if (progress_func != NULL)
-        (* progress_func) (y1, y2, y, progress_data);
+        if (progress_func != NULL)
+            (* progress_func) (y1, y2, y, progress_data);
     }
 
-  /* Free memory */
+    /* Free memory */
 
-  for (y = 0; y < (sub_pixel_size + 1); y++)
-    gegl_scratch_free (block[y]);
+    for (y = 0; y < (sub_pixel_size + 1); y++)
+        gegl_scratch_free (block[y]);
 
-  gegl_scratch_free (block);
-  gegl_scratch_free (top_row);
-  gegl_scratch_free (bot_row);
+    gegl_scratch_free (block);
+    gegl_scratch_free (top_row);
+    gegl_scratch_free (bot_row);
 
-  return num_samples;
+    return num_samples;
 }

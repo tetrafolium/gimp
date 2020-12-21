@@ -152,8 +152,8 @@ G_BEGIN_DECLS
  * to "main".
  */
 gint                gimp_main                 (GType  plug_in_type,
-                                               gint   argc,
-                                               gchar *argv[]);
+        gint   argc,
+        gchar *argv[]);
 
 /* Return the GimpPlugIn singleton of this plug-in process
  */

@@ -55,14 +55,14 @@ typedef struct _GimpParamSpecRGB GimpParamSpecRGB;
 GType        gimp_param_rgb_get_type         (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_rgb             (const gchar    *name,
-                                              const gchar    *nick,
-                                              const gchar    *blurb,
-                                              gboolean        has_alpha,
-                                              const GimpRGB  *default_value,
-                                              GParamFlags     flags);
+        const gchar    *nick,
+        const gchar    *blurb,
+        gboolean        has_alpha,
+        const GimpRGB  *default_value,
+        GParamFlags     flags);
 
 void         gimp_param_spec_rgb_get_default (GParamSpec     *pspec,
-                                              GimpRGB        *default_value);
+        GimpRGB        *default_value);
 gboolean     gimp_param_spec_rgb_has_alpha   (GParamSpec     *pspec);
 
 
@@ -76,9 +76,9 @@ gboolean     gimp_param_spec_rgb_has_alpha   (GParamSpec     *pspec);
  **/
 typedef enum
 {
-  GIMP_RGB_COMPOSITE_NONE = 0,
-  GIMP_RGB_COMPOSITE_NORMAL,
-  GIMP_RGB_COMPOSITE_BEHIND
+    GIMP_RGB_COMPOSITE_NONE = 0,
+    GIMP_RGB_COMPOSITE_NORMAL,
+    GIMP_RGB_COMPOSITE_BEHIND
 } GimpRGBCompositeMode;
 
 

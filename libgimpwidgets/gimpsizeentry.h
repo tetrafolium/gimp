@@ -47,28 +47,28 @@ typedef struct _GimpSizeEntryField  GimpSizeEntryField;
 
 struct _GimpSizeEntry
 {
-  GtkGrid               parent_instance;
+    GtkGrid               parent_instance;
 
-  GimpSizeEntryPrivate *priv;
+    GimpSizeEntryPrivate *priv;
 };
 
 struct _GimpSizeEntryClass
 {
-  GtkGridClass  parent_class;
+    GtkGridClass  parent_class;
 
-  void (* value_changed)  (GimpSizeEntry *gse);
-  void (* refval_changed) (GimpSizeEntry *gse);
-  void (* unit_changed)   (GimpSizeEntry *gse);
+    void (* value_changed)  (GimpSizeEntry *gse);
+    void (* refval_changed) (GimpSizeEntry *gse);
+    void (* unit_changed)   (GimpSizeEntry *gse);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
@@ -90,65 +90,65 @@ void        gimp_size_entry_add_field  (GimpSizeEntry   *gse,
                                         GtkSpinButton   *refval_spinbutton);
 
 GimpSizeEntryUpdatePolicy
-            gimp_size_entry_get_update_policy     (GimpSizeEntry *gse);
+gimp_size_entry_get_update_policy     (GimpSizeEntry *gse);
 gint        gimp_size_entry_get_n_fields          (GimpSizeEntry *gse);
 GtkWidget * gimp_size_entry_get_unit_combo        (GimpSizeEntry *gse);
 
 GtkWidget * gimp_size_entry_attach_label          (GimpSizeEntry *gse,
-                                                   const gchar   *text,
-                                                   gint           row,
-                                                   gint           column,
-                                                   gfloat         alignment);
+        const gchar   *text,
+        gint           row,
+        gint           column,
+        gfloat         alignment);
 
 void        gimp_size_entry_set_resolution        (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gdouble        resolution,
-                                                   gboolean       keep_size);
+        gint           field,
+        gdouble        resolution,
+        gboolean       keep_size);
 
 void        gimp_size_entry_set_size              (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gdouble        lower,
-                                                   gdouble        upper);
+        gint           field,
+        gdouble        lower,
+        gdouble        upper);
 
 void        gimp_size_entry_set_value_boundaries  (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gdouble        lower,
-                                                   gdouble        upper);
+        gint           field,
+        gdouble        lower,
+        gdouble        upper);
 
 gdouble     gimp_size_entry_get_value             (GimpSizeEntry *gse,
-                                                   gint           field);
+        gint           field);
 void        gimp_size_entry_set_value             (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gdouble        value);
+        gint           field,
+        gdouble        value);
 
 void        gimp_size_entry_set_refval_boundaries (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gdouble        lower,
-                                                   gdouble        upper);
+        gint           field,
+        gdouble        lower,
+        gdouble        upper);
 void        gimp_size_entry_set_refval_digits     (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gint           digits);
+        gint           field,
+        gint           digits);
 
 gdouble     gimp_size_entry_get_refval            (GimpSizeEntry *gse,
-                                                   gint           field);
+        gint           field);
 void        gimp_size_entry_set_refval            (GimpSizeEntry *gse,
-                                                   gint           field,
-                                                   gdouble        refval);
+        gint           field,
+        gdouble        refval);
 
 GimpUnit    gimp_size_entry_get_unit              (GimpSizeEntry *gse);
 void        gimp_size_entry_set_unit              (GimpSizeEntry *gse,
-                                                   GimpUnit       unit);
+        GimpUnit       unit);
 void        gimp_size_entry_show_unit_menu        (GimpSizeEntry *gse,
-                                                   gboolean       show);
+        gboolean       show);
 
 void        gimp_size_entry_set_pixel_digits      (GimpSizeEntry *gse,
-                                                   gint           digits);
+        gint           digits);
 
 void        gimp_size_entry_grab_focus            (GimpSizeEntry *gse);
 void        gimp_size_entry_set_activates_default (GimpSizeEntry *gse,
-                                                   gboolean       setting);
+        gboolean       setting);
 GtkWidget * gimp_size_entry_get_help_widget       (GimpSizeEntry *gse,
-                                                   gint           field);
+        gint           field);
 
 
 G_END_DECLS

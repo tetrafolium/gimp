@@ -33,24 +33,24 @@ G_BEGIN_DECLS
 
 
 gboolean   gimp_edit_cut                      (gint             num_drawables,
-                                               const GimpItem **drawables);
+        const GimpItem **drawables);
 gboolean   gimp_edit_copy                     (gint             num_drawables,
-                                               const GimpItem **drawables);
+        const GimpItem **drawables);
 gboolean   gimp_edit_copy_visible             (GimpImage       *image);
 GimpLayer* gimp_edit_paste                    (GimpDrawable    *drawable,
-                                               gboolean         paste_into);
+        gboolean         paste_into);
 GimpImage* gimp_edit_paste_as_new_image       (void);
 gchar*     gimp_edit_named_cut                (gint             num_drawables,
-                                               const GimpItem **drawables,
-                                               const gchar     *buffer_name);
+        const GimpItem **drawables,
+        const gchar     *buffer_name);
 gchar*     gimp_edit_named_copy               (gint             num_drawables,
-                                               const GimpItem **drawables,
-                                               const gchar     *buffer_name);
+        const GimpItem **drawables,
+        const gchar     *buffer_name);
 gchar*     gimp_edit_named_copy_visible       (GimpImage       *image,
-                                               const gchar     *buffer_name);
+        const gchar     *buffer_name);
 GimpLayer* gimp_edit_named_paste              (GimpDrawable    *drawable,
-                                               const gchar     *buffer_name,
-                                               gboolean         paste_into);
+        const gchar     *buffer_name,
+        gboolean         paste_into);
 GimpImage* gimp_edit_named_paste_as_new_image (const gchar     *buffer_name);
 
 

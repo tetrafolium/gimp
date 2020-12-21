@@ -106,12 +106,12 @@ static gint             fits_nan_64            (guchar         *value);
 static void             fits_set_error         (const char     *errmsg);
 static void             fits_drop_error        (void);
 static FitsRecordList * fits_read_header       (FILE           *fp,
-                                                gint           *nrec);
+        gint           *nrec);
 static FitsHduList    * fits_decode_header     (FitsRecordList *hdr,
-                                                glong           hdr_offset,
-                                                glong           dat_offset);
+        glong           hdr_offset,
+        glong           dat_offset);
 static gint             fits_eval_pixrange     (FILE           *fp,
-                                                FitsHduList    *hdu);
+        FitsHduList    *hdu);
 
 
 /* Error handling like a FIFO */
@@ -218,52 +218,52 @@ static gboolean
 fits_scanfdouble (const gchar *buf,
                   gdouble     *value)
 {
-  gboolean  retval  = FALSE;
-  gchar    *bufcopy = g_strdup (buf);
+    gboolean  retval  = FALSE;
+    gchar    *bufcopy = g_strdup (buf);
 
-  /* We should use g_ascii_strtod. This also allows scanning of hexadecimal */
-  /* values like 0x02. But we want the behaviour of sscanf ("0x02","%lf",...*/
-  /* that gives 0.0 in this case. So check the string if we have a hex-value*/
+    /* We should use g_ascii_strtod. This also allows scanning of hexadecimal */
+    /* values like 0x02. But we want the behaviour of sscanf ("0x02","%lf",...*/
+    /* that gives 0.0 in this case. So check the string if we have a hex-value*/
 
-  if (bufcopy)
+    if (bufcopy)
     {
-      gchar *bufptr = bufcopy;
+        gchar *bufptr = bufcopy;
 
-      /* Remove leading white space */
-      g_strchug (bufcopy);
+        /* Remove leading white space */
+        g_strchug (bufcopy);
 
-      /* Skip leading sign character */
-      if ((*bufptr == '-') || (*bufptr == '+'))
-        bufptr++;
-
-      /* Start of hex value ? Take this as 0.0 */
-      if ((bufptr[0] == '0') && (g_ascii_toupper (bufptr[1]) == 'X'))
-        {
-          *value = 0.0;
-          retval = TRUE;
-        }
-      else
-        {
-          if (*bufptr == '.') /* leading decimal point ? Skip it */
+        /* Skip leading sign character */
+        if ((*bufptr == '-') || (*bufptr == '+'))
             bufptr++;
 
-          if (g_ascii_isdigit (*bufptr)) /* Expect the complete string is decimal */
-            {
-              gchar   *endptr;
-              gdouble  gvalue = g_ascii_strtod (bufcopy, &endptr);
+        /* Start of hex value ? Take this as 0.0 */
+        if ((bufptr[0] == '0') && (g_ascii_toupper (bufptr[1]) == 'X'))
+        {
+            *value = 0.0;
+            retval = TRUE;
+        }
+        else
+        {
+            if (*bufptr == '.') /* leading decimal point ? Skip it */
+                bufptr++;
 
-              if (errno == 0)
+            if (g_ascii_isdigit (*bufptr)) /* Expect the complete string is decimal */
+            {
+                gchar   *endptr;
+                gdouble  gvalue = g_ascii_strtod (bufcopy, &endptr);
+
+                if (errno == 0)
                 {
-                  *value = gvalue;
-                  retval = TRUE;
+                    *value = gvalue;
+                    retval = TRUE;
                 }
             }
         }
 
-      g_free (bufcopy);
+        g_free (bufcopy);
     }
 
-  return retval;
+    return retval;
 }
 
 /*****************************************************************************/
@@ -283,7 +283,7 @@ fits_scanfdouble (const gchar *buf,
 static FitsFile *
 fits_new_filestruct (void)
 {
-  return g_new0 (FitsFile, 1);
+    return g_new0 (FitsFile, 1);
 }
 
 
@@ -304,7 +304,7 @@ fits_new_filestruct (void)
 static FitsHduList *
 fits_new_hdulist (void)
 {
-  return g_new0 (FitsHduList, 1);
+    return g_new0 (FitsHduList, 1);
 }
 
 
@@ -325,13 +325,13 @@ fits_new_hdulist (void)
 static void
 fits_delete_filestruct (FitsFile *ff)
 {
-  if (ff == NULL)
-    return;
+    if (ff == NULL)
+        return;
 
-  fits_delete_hdulist (ff->hdu_list);
-  ff->hdu_list = NULL;
+    fits_delete_hdulist (ff->hdu_list);
+    ff->hdu_list = NULL;
 
-  g_free (ff);
+    g_free (ff);
 }
 
 
@@ -350,15 +350,15 @@ fits_delete_filestruct (FitsFile *ff)
 static void
 fits_delete_recordlist (FitsRecordList *rl)
 {
-  while (rl != NULL)
+    while (rl != NULL)
     {
-      FitsRecordList *next;
+        FitsRecordList *next;
 
-      next = rl->next_record;
-      rl->next_record = NULL;
-      g_free (rl);
+        next = rl->next_record;
+        rl->next_record = NULL;
+        g_free (rl);
 
-      rl = next;
+        rl = next;
     }
 }
 
@@ -378,16 +378,16 @@ fits_delete_recordlist (FitsRecordList *rl)
 static void
 fits_delete_hdulist (FitsHduList *hl)
 {
-  while (hl != NULL)
+    while (hl != NULL)
     {
-      FitsHduList *next;
+        FitsHduList *next;
 
-      fits_delete_recordlist (hl->header_record_list);
-      next = hl->next_hdu;
-      hl->next_hdu = NULL;
-      g_free (hl);
+        fits_delete_recordlist (hl->header_record_list);
+        next = hl->next_hdu;
+        hl->next_hdu = NULL;
+        g_free (hl);
 
-      hl = next;
+        hl = next;
     }
 }
 
@@ -410,15 +410,15 @@ fits_delete_hdulist (FitsHduList *hl)
 static int
 fits_nan_32 (guchar *v)
 {
-  register gulong k;
+    register gulong k;
 
-  k = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-  k &= 0x7fffffff;  /* Don't care about the sign bit */
+    k = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    k &= 0x7fffffff;  /* Don't care about the sign bit */
 
-  /* See NOST Definition of the Flexible Image Transport System (FITS), */
-  /* Appendix F, IEEE special formats. */
-  return (((k >= 0x7f7fffff) && (k <= 0x7fffffff)) ||
-          ((k >= 0x00000001) && (k <= 0x00800000)));
+    /* See NOST Definition of the Flexible Image Transport System (FITS), */
+    /* Appendix F, IEEE special formats. */
+    return (((k >= 0x7f7fffff) && (k <= 0x7fffffff)) ||
+            ((k >= 0x00000001) && (k <= 0x00800000)));
 }
 
 
@@ -442,15 +442,15 @@ fits_nan_32 (guchar *v)
 static int
 fits_nan_64 (guchar *v)
 {
-  register gulong k;
+    register gulong k;
 
-  k = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-  k &= 0x7fffffff;  /* Don't care about the sign bit */
+    k = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    k &= 0x7fffffff;  /* Don't care about the sign bit */
 
-  /* See NOST Definition of the Flexible Image Transport System (FITS), */
-  /* Appendix F, IEEE special formats. */
-  return (((k >= 0x7f7fffff) && (k <= 0x7fffffff)) ||
-          ((k >= 0x00000001) && (k <= 0x00800000)));
+    /* See NOST Definition of the Flexible Image Transport System (FITS), */
+    /* Appendix F, IEEE special formats. */
+    return (((k >= 0x7f7fffff) && (k <= 0x7fffffff)) ||
+            ((k >= 0x00000001) && (k <= 0x00800000)));
 }
 
 
@@ -472,20 +472,20 @@ fits_nan_64 (guchar *v)
 gchar *
 fits_get_error (void)
 {
-  static gchar errmsg[FITS_ERROR_LENGTH];
-  gint         k;
+    static gchar errmsg[FITS_ERROR_LENGTH];
+    gint         k;
 
-  if (fits_n_error <= 0)
-    return NULL;
+    if (fits_n_error <= 0)
+        return NULL;
 
-  strcpy (errmsg, fits_error[0]);
+    strcpy (errmsg, fits_error[0]);
 
-  for (k = 1; k < fits_n_error; k++)
-    strcpy (fits_error[k-1], fits_error[k]);
+    for (k = 1; k < fits_n_error; k++)
+        strcpy (fits_error[k-1], fits_error[k]);
 
-  fits_n_error--;
+    fits_n_error--;
 
-  return errmsg;
+    return errmsg;
 }
 
 
@@ -507,8 +507,8 @@ fits_get_error (void)
 static void
 fits_set_error (const gchar *errmsg)
 {
-  if (fits_n_error < FITS_MAX_ERROR)
-    g_strlcpy (fits_error[fits_n_error], errmsg, FITS_ERROR_LENGTH);
+    if (fits_n_error < FITS_MAX_ERROR)
+        g_strlcpy (fits_error[fits_n_error], errmsg, FITS_ERROR_LENGTH);
 }
 
 
@@ -528,8 +528,8 @@ fits_set_error (const gchar *errmsg)
 static void
 fits_drop_error (void)
 {
-  if (fits_n_error > 0)
-    fits_n_error--;
+    if (fits_n_error > 0)
+        fits_n_error--;
 }
 
 
@@ -556,104 +556,104 @@ fits_open (const gchar *filename,
            const gchar *openmode)
 
 {
-  gint            reading, writing, n_rec, n_hdr;
-  glong           fpos_header, fpos_data;
-  FILE           *fp;
-  FitsFile       *ff;
-  FitsRecordList *hdrlist;
-  FitsHduList    *hdulist      = NULL;
-  FitsHduList    *last_hdulist = NULL;
+    gint            reading, writing, n_rec, n_hdr;
+    glong           fpos_header, fpos_data;
+    FILE           *fp;
+    FitsFile       *ff;
+    FitsRecordList *hdrlist;
+    FitsHduList    *hdulist      = NULL;
+    FitsHduList    *last_hdulist = NULL;
 
-  /* Check the IEEE-format we are running on */
-  {
-    gfloat   one32 = 1.0;
-    gdouble  one64 = 1.0;
-    guchar  *op32  = (guchar *) &one32;
-    guchar  *op64  = (guchar *) &one64;
-
-    if (sizeof (float) == 4)
-      {
-        fits_ieee32_intel = (op32[3] == 0x3f);
-        fits_ieee32_motorola = (op32[0] == 0x3f);
-      }
-
-    if (sizeof (double) == 8)
-      {
-        fits_ieee64_intel = (op64[7] == 0x3f);
-        fits_ieee64_motorola = (op64[0] == 0x3f);
-      }
-  }
-
-  if ((filename == NULL) || (*filename == '\0') || (openmode == NULL))
-    FITS_RETURN ("fits_open: Invalid parameters", NULL);
-
-  reading = (strcmp (openmode, "r") == 0);
-  writing = (strcmp (openmode, "w") == 0);
-  if ((!reading) && (!writing))
-    FITS_RETURN ("fits_open: Invalid openmode", NULL);
-
-  fp = g_fopen (filename, reading ? "rb" : "wb");
-  if (fp == NULL)
-    FITS_RETURN ("fits_open: fopen() failed", NULL);
-
-  ff = fits_new_filestruct ();
-  if (ff == NULL)
+    /* Check the IEEE-format we are running on */
     {
-      fclose (fp);
-      FITS_RETURN ("fits_open: No more memory", NULL);
+        gfloat   one32 = 1.0;
+        gdouble  one64 = 1.0;
+        guchar  *op32  = (guchar *) &one32;
+        guchar  *op64  = (guchar *) &one64;
+
+        if (sizeof (float) == 4)
+        {
+            fits_ieee32_intel = (op32[3] == 0x3f);
+            fits_ieee32_motorola = (op32[0] == 0x3f);
+        }
+
+        if (sizeof (double) == 8)
+        {
+            fits_ieee64_intel = (op64[7] == 0x3f);
+            fits_ieee64_motorola = (op64[0] == 0x3f);
+        }
     }
 
-  ff->fp = fp;
-  ff->openmode = *openmode;
+    if ((filename == NULL) || (*filename == '\0') || (openmode == NULL))
+        FITS_RETURN ("fits_open: Invalid parameters", NULL);
 
-  if (writing)
+    reading = (strcmp (openmode, "r") == 0);
+    writing = (strcmp (openmode, "w") == 0);
+    if ((!reading) && (!writing))
+        FITS_RETURN ("fits_open: Invalid openmode", NULL);
+
+    fp = g_fopen (filename, reading ? "rb" : "wb");
+    if (fp == NULL)
+        FITS_RETURN ("fits_open: fopen() failed", NULL);
+
+    ff = fits_new_filestruct ();
+    if (ff == NULL)
+    {
+        fclose (fp);
+        FITS_RETURN ("fits_open: No more memory", NULL);
+    }
+
+    ff->fp = fp;
+    ff->openmode = *openmode;
+
+    if (writing)
+        return ff;
+
+    for (n_hdr = 0; ; n_hdr++)   /* Read through all HDUs */
+    {
+        fpos_header = ftell (fp);    /* Save file position of header */
+        hdrlist = fits_read_header (fp, &n_rec);
+
+        if (hdrlist == NULL)
+        {
+            if (n_hdr > 0)        /* At least one header must be present. */
+                fits_drop_error (); /* If we got a header already, drop the error */
+            break;
+        }
+        fpos_data = ftell (fp);      /* Save file position of data */
+
+        /* Decode the header */
+        hdulist = fits_decode_header (hdrlist, fpos_header, fpos_data);
+        if (hdulist == NULL)
+        {
+            fits_delete_recordlist (hdrlist);
+            break;
+        }
+        ff->n_hdu++;
+        ff->n_pic += hdulist->numpic;
+
+        if (hdulist->used.blank_value)
+            ff->blank_used = TRUE;
+
+        if (hdulist->used.nan_value)
+            ff->nan_used = TRUE;
+
+        if (n_hdr == 0)
+            ff->hdu_list = hdulist;
+        else
+            last_hdulist->next_hdu = hdulist;
+
+        last_hdulist = hdulist;
+
+        /* Evaluate the range of pixel data */
+        fits_eval_pixrange (fp, hdulist);
+
+        /* Reposition to start of next header */
+        if (fseek (fp, hdulist->data_offset + hdulist->data_size, SEEK_SET) < 0)
+            break;
+    }
+
     return ff;
-
-  for (n_hdr = 0; ; n_hdr++)   /* Read through all HDUs */
-    {
-      fpos_header = ftell (fp);    /* Save file position of header */
-      hdrlist = fits_read_header (fp, &n_rec);
-
-      if (hdrlist == NULL)
-        {
-          if (n_hdr > 0)        /* At least one header must be present. */
-            fits_drop_error (); /* If we got a header already, drop the error */
-          break;
-        }
-      fpos_data = ftell (fp);      /* Save file position of data */
-
-      /* Decode the header */
-      hdulist = fits_decode_header (hdrlist, fpos_header, fpos_data);
-      if (hdulist == NULL)
-        {
-          fits_delete_recordlist (hdrlist);
-          break;
-        }
-      ff->n_hdu++;
-      ff->n_pic += hdulist->numpic;
-
-      if (hdulist->used.blank_value)
-        ff->blank_used = TRUE;
-
-      if (hdulist->used.nan_value)
-        ff->nan_used = TRUE;
-
-      if (n_hdr == 0)
-        ff->hdu_list = hdulist;
-      else
-        last_hdulist->next_hdu = hdulist;
-
-      last_hdulist = hdulist;
-
-      /* Evaluate the range of pixel data */
-      fits_eval_pixrange (fp, hdulist);
-
-      /* Reposition to start of next header */
-      if (fseek (fp, hdulist->data_offset + hdulist->data_size, SEEK_SET) < 0)
-        break;
-    }
-
-  return ff;
 }
 
 
@@ -672,12 +672,12 @@ fits_open (const gchar *filename,
 void
 fits_close (FitsFile *ff)
 {
-  if (ff == NULL)
-    FITS_VRETURN ("fits_close: Invalid parameter");
+    if (ff == NULL)
+        FITS_VRETURN ("fits_close: Invalid parameter");
 
-  fclose (ff->fp);
+    fclose (ff->fp);
 
-  fits_delete_filestruct (ff);
+    fits_delete_filestruct (ff);
 }
 
 
@@ -699,28 +699,28 @@ fits_close (FitsFile *ff)
 FitsHduList *
 fits_add_hdu (FitsFile *ff)
 {
-  FitsHduList *newhdu, *hdu;
+    FitsHduList *newhdu, *hdu;
 
-  if (ff->openmode != 'w')
-    FITS_RETURN ("fits_add_hdu: file not open for writing", NULL);
+    if (ff->openmode != 'w')
+        FITS_RETURN ("fits_add_hdu: file not open for writing", NULL);
 
-  newhdu = fits_new_hdulist ();
-  if (newhdu == NULL)
-    return NULL;
+    newhdu = fits_new_hdulist ();
+    if (newhdu == NULL)
+        return NULL;
 
-  if (ff->hdu_list == NULL)
+    if (ff->hdu_list == NULL)
     {
-      ff->hdu_list = newhdu;
+        ff->hdu_list = newhdu;
     }
-  else
+    else
     {
-      hdu = ff->hdu_list;
-      while (hdu->next_hdu != NULL)
-        hdu = hdu->next_hdu;
-      hdu->next_hdu = newhdu;
+        hdu = ff->hdu_list;
+        while (hdu->next_hdu != NULL)
+            hdu = hdu->next_hdu;
+        hdu->next_hdu = newhdu;
     }
 
-  return newhdu;
+    return newhdu;
 }
 
 
@@ -745,24 +745,24 @@ gint
 fits_add_card (FitsHduList *hdulist,
                const gchar *card)
 {
-  gint k;
+    gint k;
 
-  if (hdulist->naddcards >= FITS_NADD_CARDS)
-    return -1;
+    if (hdulist->naddcards >= FITS_NADD_CARDS)
+        return -1;
 
-  k = strlen (card);
-  if (k < FITS_CARD_SIZE)
+    k = strlen (card);
+    if (k < FITS_CARD_SIZE)
     {
-      memset (&(hdulist->addcards[hdulist->naddcards][k]), ' ',
-              FITS_CARD_SIZE - k);
-      memcpy (hdulist->addcards[(hdulist->naddcards)++], card, k);
+        memset (&(hdulist->addcards[hdulist->naddcards][k]), ' ',
+                FITS_CARD_SIZE - k);
+        memcpy (hdulist->addcards[(hdulist->naddcards)++], card, k);
     }
-  else
+    else
     {
-      memcpy (hdulist->addcards[(hdulist->naddcards)++], card, FITS_CARD_SIZE);
+        memcpy (hdulist->addcards[(hdulist->naddcards)++], card, FITS_CARD_SIZE);
     }
 
-  return 0;
+    return 0;
 }
 
 
@@ -781,62 +781,62 @@ fits_add_card (FitsHduList *hdulist,
 void
 fits_print_header (FitsHduList *hdr)
 {
-  gint  k;
-  gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
+    gint  k;
+    gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
 
-  if (hdr->used.simple)
-    printf ("Content of SIMPLE-header:\n");
-  else
-    printf ("Content of XTENSION-header %s:\n", hdr->xtension);
+    if (hdr->used.simple)
+        printf ("Content of SIMPLE-header:\n");
+    else
+        printf ("Content of XTENSION-header %s:\n", hdr->xtension);
 
-  printf ("header_offset : %ld\n", hdr->header_offset);
-  printf ("data_offset   : %ld\n", hdr->data_offset);
-  printf ("data_size     : %ld\n", hdr->data_size);
-  printf ("used data_size: %ld\n", hdr->udata_size);
-  printf ("bytes p.pixel : %d\n", hdr->bpp);
-  printf ("pixmin        : %s\n", FDTOSTR (buf, hdr->pixmin));
-  printf ("pixmax        : %s\n", FDTOSTR (buf, hdr->pixmax));
+    printf ("header_offset : %ld\n", hdr->header_offset);
+    printf ("data_offset   : %ld\n", hdr->data_offset);
+    printf ("data_size     : %ld\n", hdr->data_size);
+    printf ("used data_size: %ld\n", hdr->udata_size);
+    printf ("bytes p.pixel : %d\n", hdr->bpp);
+    printf ("pixmin        : %s\n", FDTOSTR (buf, hdr->pixmin));
+    printf ("pixmax        : %s\n", FDTOSTR (buf, hdr->pixmax));
 
-  printf ("naxis         : %d\n", hdr->naxis);
-  for (k = 1; k <= hdr->naxis; k++)
-    printf ("naxis%-3d      : %d\n", k, hdr->naxisn[k-1]);
+    printf ("naxis         : %d\n", hdr->naxis);
+    for (k = 1; k <= hdr->naxis; k++)
+        printf ("naxis%-3d      : %d\n", k, hdr->naxisn[k-1]);
 
-  printf ("bitpix        : %d\n", hdr->bitpix);
+    printf ("bitpix        : %d\n", hdr->bitpix);
 
-  if (hdr->used.blank)
-    printf ("blank         : %ld\n", hdr->blank);
-  else
-    printf ("blank         : not used\n");
+    if (hdr->used.blank)
+        printf ("blank         : %ld\n", hdr->blank);
+    else
+        printf ("blank         : not used\n");
 
-  if (hdr->used.datamin)
-    printf ("datamin       : %s\n", FDTOSTR (buf, hdr->datamin));
-  else
-    printf ("datamin       : not used\n");
+    if (hdr->used.datamin)
+        printf ("datamin       : %s\n", FDTOSTR (buf, hdr->datamin));
+    else
+        printf ("datamin       : not used\n");
 
-  if (hdr->used.datamax)
-    printf ("datamax       : %s\n", FDTOSTR (buf, hdr->datamax));
-  else
-    printf ("datamax       : not used\n");
+    if (hdr->used.datamax)
+        printf ("datamax       : %s\n", FDTOSTR (buf, hdr->datamax));
+    else
+        printf ("datamax       : not used\n");
 
-  if (hdr->used.gcount)
-    printf ("gcount        : %ld\n", hdr->gcount);
-  else
-    printf ("gcount        : not used\n");
+    if (hdr->used.gcount)
+        printf ("gcount        : %ld\n", hdr->gcount);
+    else
+        printf ("gcount        : not used\n");
 
-  if (hdr->used.pcount)
-    printf ("pcount        : %ld\n", hdr->pcount);
-  else
-    printf ("pcount        : not used\n");
+    if (hdr->used.pcount)
+        printf ("pcount        : %ld\n", hdr->pcount);
+    else
+        printf ("pcount        : not used\n");
 
-  if (hdr->used.bscale)
-    printf ("bscale        : %s\n", FDTOSTR (buf, hdr->bscale));
-  else
-    printf ("bscale        : not used\n");
+    if (hdr->used.bscale)
+        printf ("bscale        : %s\n", FDTOSTR (buf, hdr->bscale));
+    else
+        printf ("bscale        : not used\n");
 
-  if (hdr->used.bzero)
-    printf ("bzero         : %s\n", FDTOSTR (buf, hdr->bzero));
-  else
-    printf ("bzero         : not used\n");
+    if (hdr->used.bzero)
+        printf ("bzero         : %s\n", FDTOSTR (buf, hdr->bzero));
+    else
+        printf ("bzero         : not used\n");
 }
 
 
@@ -861,56 +861,56 @@ static FitsRecordList *
 fits_read_header (FILE *fp,
                   gint *nrec)
 {
-  gchar           record[FITS_RECORD_SIZE];
-  FitsRecordList *start_list = NULL;
-  FitsRecordList *cu_record  = NULL;
-  FitsRecordList *new_record;
-  FitsData       *fdat;
-  gint            k, simple, xtension;
+    gchar           record[FITS_RECORD_SIZE];
+    FitsRecordList *start_list = NULL;
+    FitsRecordList *cu_record  = NULL;
+    FitsRecordList *new_record;
+    FitsData       *fdat;
+    gint            k, simple, xtension;
 
-  *nrec = 0;
+    *nrec = 0;
 
-  k = fread (record, 1, FITS_RECORD_SIZE, fp);
-  if (k != FITS_RECORD_SIZE)
-    FITS_RETURN ("fits_read_header: Error in read of first record", NULL);
+    k = fread (record, 1, FITS_RECORD_SIZE, fp);
+    if (k != FITS_RECORD_SIZE)
+        FITS_RETURN ("fits_read_header: Error in read of first record", NULL);
 
-  simple = (strncmp (record, "SIMPLE  ", 8) == 0);
-  xtension = (strncmp (record, "XTENSION", 8) == 0);
-  if ((!simple) && (!xtension))
-    FITS_RETURN ("fits_read_header: Missing keyword SIMPLE or XTENSION", NULL);
+    simple = (strncmp (record, "SIMPLE  ", 8) == 0);
+    xtension = (strncmp (record, "XTENSION", 8) == 0);
+    if ((!simple) && (!xtension))
+        FITS_RETURN ("fits_read_header: Missing keyword SIMPLE or XTENSION", NULL);
 
-  if (simple)
+    if (simple)
     {
-      fdat = fits_decode_card (record, FITS_DATA_TYPE_FBOOL);
-      if (fdat && !fdat->fbool)
-        fits_set_error ("fits_read_header (warning): keyword SIMPLE does not "
-                        "have value T");
+        fdat = fits_decode_card (record, FITS_DATA_TYPE_FBOOL);
+        if (fdat && !fdat->fbool)
+            fits_set_error ("fits_read_header (warning): keyword SIMPLE does not "
+                            "have value T");
     }
 
-  for (;;)   /* Process all header records */
+    for (;;)   /* Process all header records */
     {
-      new_record = g_new0 (FitsRecordList, 1);
-      memcpy (new_record->data, record, FITS_RECORD_SIZE);
-      new_record->next_record = NULL;
-      (*nrec)++;
+        new_record = g_new0 (FitsRecordList, 1);
+        memcpy (new_record->data, record, FITS_RECORD_SIZE);
+        new_record->next_record = NULL;
+        (*nrec)++;
 
-      if (start_list == NULL)      /* Add new record to the list */
-        start_list = new_record;
-      else
-        cu_record->next_record = new_record;
+        if (start_list == NULL)      /* Add new record to the list */
+            start_list = new_record;
+        else
+            cu_record->next_record = new_record;
 
-      cu_record = new_record;
+        cu_record = new_record;
 
-      /* Was this the last record ? */
-      if (fits_search_card (cu_record, "END") != NULL)
-        break;
+        /* Was this the last record ? */
+        if (fits_search_card (cu_record, "END") != NULL)
+            break;
 
-      k = fread (record, 1, FITS_RECORD_SIZE, fp);
-      if (k != FITS_RECORD_SIZE)
-        FITS_RETURN ("fits_read_header: Error in read of record", NULL);
+        k = fread (record, 1, FITS_RECORD_SIZE, fp);
+        if (k != FITS_RECORD_SIZE)
+            FITS_RETURN ("fits_read_header: Error in read of record", NULL);
     }
 
-  return start_list;
+    return start_list;
 }
 
 
@@ -934,112 +934,112 @@ gint
 fits_write_header (FitsFile    *ff,
                    FitsHduList *hdulist)
 {
-  gint numcards;
-  gint k;
+    gint numcards;
+    gint k;
 
-  if (ff->openmode != 'w')
-    FITS_RETURN ("fits_write_header: file not open for writing", -1);
+    if (ff->openmode != 'w')
+        FITS_RETURN ("fits_write_header: file not open for writing", -1);
 
-  numcards = 0;
+    numcards = 0;
 
-  if (hdulist->used.simple)
+    if (hdulist->used.simple)
     {
-      FITS_WRITE_BOOLCARD (ff->fp, "SIMPLE", 1);
-      numcards++;
+        FITS_WRITE_BOOLCARD (ff->fp, "SIMPLE", 1);
+        numcards++;
     }
-  else if (hdulist->used.xtension)
+    else if (hdulist->used.xtension)
     {
-      FITS_WRITE_STRINGCARD (ff->fp, "XTENSION", hdulist->xtension);
-      numcards++;
-    }
-
-  FITS_WRITE_LONGCARD (ff->fp, "BITPIX", hdulist->bitpix);
-  numcards++;
-
-  FITS_WRITE_LONGCARD (ff->fp, "NAXIS", hdulist->naxis);
-  numcards++;
-
-  for (k = 0; k < hdulist->naxis; k++)
-    {
-      gchar naxisn[16];
-
-      g_snprintf (naxisn, sizeof (naxisn), "NAXIS%d", k+1);
-      FITS_WRITE_LONGCARD (ff->fp, naxisn, hdulist->naxisn[k]);
-      numcards++;
+        FITS_WRITE_STRINGCARD (ff->fp, "XTENSION", hdulist->xtension);
+        numcards++;
     }
 
-  if (hdulist->used.extend)
+    FITS_WRITE_LONGCARD (ff->fp, "BITPIX", hdulist->bitpix);
+    numcards++;
+
+    FITS_WRITE_LONGCARD (ff->fp, "NAXIS", hdulist->naxis);
+    numcards++;
+
+    for (k = 0; k < hdulist->naxis; k++)
     {
-      FITS_WRITE_BOOLCARD (ff->fp, "EXTEND", hdulist->extend);
-      numcards++;
+        gchar naxisn[16];
+
+        g_snprintf (naxisn, sizeof (naxisn), "NAXIS%d", k+1);
+        FITS_WRITE_LONGCARD (ff->fp, naxisn, hdulist->naxisn[k]);
+        numcards++;
     }
 
-  if (hdulist->used.groups)
+    if (hdulist->used.extend)
     {
-      FITS_WRITE_BOOLCARD (ff->fp, "GROUPS", hdulist->groups);
-      numcards++;
+        FITS_WRITE_BOOLCARD (ff->fp, "EXTEND", hdulist->extend);
+        numcards++;
     }
 
-  if (hdulist->used.pcount)
+    if (hdulist->used.groups)
     {
-      FITS_WRITE_LONGCARD (ff->fp, "PCOUNT", hdulist->pcount);
-      numcards++;
+        FITS_WRITE_BOOLCARD (ff->fp, "GROUPS", hdulist->groups);
+        numcards++;
     }
 
-  if (hdulist->used.gcount)
+    if (hdulist->used.pcount)
     {
-      FITS_WRITE_LONGCARD (ff->fp, "GCOUNT", hdulist->gcount);
-      numcards++;
+        FITS_WRITE_LONGCARD (ff->fp, "PCOUNT", hdulist->pcount);
+        numcards++;
     }
 
-  if (hdulist->used.bzero)
+    if (hdulist->used.gcount)
     {
-      FITS_WRITE_DOUBLECARD (ff->fp, "BZERO", hdulist->bzero);
-      numcards++;
+        FITS_WRITE_LONGCARD (ff->fp, "GCOUNT", hdulist->gcount);
+        numcards++;
     }
 
-  if (hdulist->used.bscale)
+    if (hdulist->used.bzero)
     {
-      FITS_WRITE_DOUBLECARD (ff->fp, "BSCALE", hdulist->bscale);
-      numcards++;
+        FITS_WRITE_DOUBLECARD (ff->fp, "BZERO", hdulist->bzero);
+        numcards++;
     }
 
-  if (hdulist->used.datamin)
+    if (hdulist->used.bscale)
     {
-      FITS_WRITE_DOUBLECARD (ff->fp, "DATAMIN", hdulist->datamin);
-      numcards++;
+        FITS_WRITE_DOUBLECARD (ff->fp, "BSCALE", hdulist->bscale);
+        numcards++;
     }
 
-  if (hdulist->used.datamax)
+    if (hdulist->used.datamin)
     {
-      FITS_WRITE_DOUBLECARD (ff->fp, "DATAMAX", hdulist->datamax);
-      numcards++;
+        FITS_WRITE_DOUBLECARD (ff->fp, "DATAMIN", hdulist->datamin);
+        numcards++;
     }
 
-  if (hdulist->used.blank)
+    if (hdulist->used.datamax)
     {
-      FITS_WRITE_LONGCARD (ff->fp, "BLANK", hdulist->blank);
-      numcards++;
+        FITS_WRITE_DOUBLECARD (ff->fp, "DATAMAX", hdulist->datamax);
+        numcards++;
     }
 
-  /* Write additional cards */
-  if (hdulist->naddcards > 0)
+    if (hdulist->used.blank)
     {
-      fwrite (hdulist->addcards, FITS_CARD_SIZE, hdulist->naddcards, ff->fp);
-      numcards += hdulist->naddcards;
+        FITS_WRITE_LONGCARD (ff->fp, "BLANK", hdulist->blank);
+        numcards++;
     }
 
-  FITS_WRITE_CARD (ff->fp, "END");
-  numcards++;
-
-  k = (numcards * FITS_CARD_SIZE) % FITS_RECORD_SIZE;
-  if (k)  /* Must the record be filled up ? */
+    /* Write additional cards */
+    if (hdulist->naddcards > 0)
     {
-      while (k++ < FITS_RECORD_SIZE)
-        putc (' ', ff->fp);
+        fwrite (hdulist->addcards, FITS_CARD_SIZE, hdulist->naddcards, ff->fp);
+        numcards += hdulist->naddcards;
     }
 
-  return ferror (ff->fp) ? -1 : 0;
+    FITS_WRITE_CARD (ff->fp, "END");
+    numcards++;
+
+    k = (numcards * FITS_CARD_SIZE) % FITS_RECORD_SIZE;
+    if (k)  /* Must the record be filled up ? */
+    {
+        while (k++ < FITS_RECORD_SIZE)
+            putc (' ', ff->fp);
+    }
+
+    return ferror (ff->fp) ? -1 : 0;
 }
 
 
@@ -1065,11 +1065,11 @@ fits_decode_header (FitsRecordList *hdr,
                     glong           hdr_offset,
                     glong           dat_offset)
 {
-  FitsHduList *hdulist;
-  FitsData    *fdat;
-  gchar        errmsg[80], key[9];
-  gint         k, bpp, random_groups;
-  glong        mul_axis, data_size, bitpix_supported;
+    FitsHduList *hdulist;
+    FitsData    *fdat;
+    gchar        errmsg[80], key[9];
+    gint         k, bpp, random_groups;
+    glong        mul_axis, data_size, bitpix_supported;
 
 #define FITS_DECODE_CARD(mhdr,mkey,mfdat,mtyp) \
   { strcpy (key, mkey);                                            \
@@ -1081,199 +1081,199 @@ fits_decode_header (FitsRecordList *hdr,
     mhdu->used.mvar = (mfdat != NULL);                                  \
     if (mhdu->used.mvar) mhdu->mvar = mfdat->unionvar; }
 
-  hdulist = fits_new_hdulist ();
-  if (hdulist == NULL)
-    FITS_RETURN ("fits_decode_header: Not enough memory", NULL);
+    hdulist = fits_new_hdulist ();
+    if (hdulist == NULL)
+        FITS_RETURN ("fits_decode_header: Not enough memory", NULL);
 
-  /* Initialize the header data */
-  hdulist->header_offset = hdr_offset;
-  hdulist->data_offset   = dat_offset;
+    /* Initialize the header data */
+    hdulist->header_offset = hdr_offset;
+    hdulist->data_offset   = dat_offset;
 
-  hdulist->used.simple   = (strncmp (hdr->data, "SIMPLE  ", 8) == 0);
-  hdulist->used.xtension = (strncmp (hdr->data, "XTENSION", 8) == 0);
+    hdulist->used.simple   = (strncmp (hdr->data, "SIMPLE  ", 8) == 0);
+    hdulist->used.xtension = (strncmp (hdr->data, "XTENSION", 8) == 0);
 
-  if (hdulist->used.xtension)
+    if (hdulist->used.xtension)
     {
-      fdat = fits_decode_card (fits_search_card (hdr, "XTENSION"),
-                               FITS_DATA_TYPE_FSTRING);
-      if (fdat != NULL)
+        fdat = fits_decode_card (fits_search_card (hdr, "XTENSION"),
+                                 FITS_DATA_TYPE_FSTRING);
+        if (fdat != NULL)
         {
-          strcpy (hdulist->xtension, fdat->fstring);
+            strcpy (hdulist->xtension, fdat->fstring);
         }
-      else
+        else
         {
-          strcpy (errmsg, "No valid XTENSION header found.");
-          goto err_return;
+            strcpy (errmsg, "No valid XTENSION header found.");
+            goto err_return;
         }
     }
 
-  FITS_DECODE_CARD (hdr, "NAXIS", fdat, FITS_DATA_TYPE_FLONG);
-  hdulist->naxis = fdat->flong;
+    FITS_DECODE_CARD (hdr, "NAXIS", fdat, FITS_DATA_TYPE_FLONG);
+    hdulist->naxis = fdat->flong;
 
-  FITS_DECODE_CARD (hdr, "BITPIX", fdat, FITS_DATA_TYPE_FLONG);
-  bpp = hdulist->bitpix = (gint) fdat->flong;
-  if ((bpp != 8)   && (bpp != 16) && (bpp != 32) &&
-      (bpp != -32) && (bpp != -64))
+    FITS_DECODE_CARD (hdr, "BITPIX", fdat, FITS_DATA_TYPE_FLONG);
+    bpp = hdulist->bitpix = (gint) fdat->flong;
+    if ((bpp != 8)   && (bpp != 16) && (bpp != 32) &&
+            (bpp != -32) && (bpp != -64))
     {
-      strcpy (errmsg, "fits_decode_header: Invalid BITPIX-value");
-      goto err_return;
+        strcpy (errmsg, "fits_decode_header: Invalid BITPIX-value");
+        goto err_return;
     }
 
-  if (bpp < 0)
-    bpp = -bpp;
+    if (bpp < 0)
+        bpp = -bpp;
 
-  bpp /= 8;
-  hdulist->bpp = bpp;
+    bpp /= 8;
+    hdulist->bpp = bpp;
 
-  FITS_TRY_CARD (hdr, hdulist, "GCOUNT", gcount, FITS_DATA_TYPE_FLONG, flong);
-  FITS_TRY_CARD (hdr, hdulist, "PCOUNT", pcount, FITS_DATA_TYPE_FLONG, flong);
+    FITS_TRY_CARD (hdr, hdulist, "GCOUNT", gcount, FITS_DATA_TYPE_FLONG, flong);
+    FITS_TRY_CARD (hdr, hdulist, "PCOUNT", pcount, FITS_DATA_TYPE_FLONG, flong);
 
-  FITS_TRY_CARD (hdr, hdulist, "GROUPS", groups, FITS_DATA_TYPE_FLONG, fbool);
-  random_groups = hdulist->used.groups && hdulist->groups;
+    FITS_TRY_CARD (hdr, hdulist, "GROUPS", groups, FITS_DATA_TYPE_FLONG, fbool);
+    random_groups = hdulist->used.groups && hdulist->groups;
 
-  FITS_TRY_CARD (hdr, hdulist, "EXTEND", extend, FITS_DATA_TYPE_FBOOL, fbool);
+    FITS_TRY_CARD (hdr, hdulist, "EXTEND", extend, FITS_DATA_TYPE_FBOOL, fbool);
 
-  if (hdulist->used.xtension)  /* Extension requires GCOUNT and PCOUNT */
+    if (hdulist->used.xtension)  /* Extension requires GCOUNT and PCOUNT */
     {
-      if (! hdulist->used.gcount || ! hdulist->used.pcount)
+        if (! hdulist->used.gcount || ! hdulist->used.pcount)
         {
-          strcpy (errmsg, "fits_decode_header: Missing GCOUNT/PCOUNT for XTENSION");
-          goto err_return;
+            strcpy (errmsg, "fits_decode_header: Missing GCOUNT/PCOUNT for XTENSION");
+            goto err_return;
         }
     }
 
-  mul_axis = 1;
+    mul_axis = 1;
 
-  /* Find all NAXISx-cards */
-  for (k = 1; k <= FITS_MAX_AXIS; k++)
+    /* Find all NAXISx-cards */
+    for (k = 1; k <= FITS_MAX_AXIS; k++)
     {
-      gchar naxisn[16];
+        gchar naxisn[16];
 
-      g_snprintf (naxisn, sizeof (naxisn), "NAXIS%-3d", k);
-      fdat = fits_decode_card (fits_search_card (hdr, naxisn),
-                               FITS_DATA_TYPE_FLONG);
-      if (fdat == NULL)
+        g_snprintf (naxisn, sizeof (naxisn), "NAXIS%-3d", k);
+        fdat = fits_decode_card (fits_search_card (hdr, naxisn),
+                                 FITS_DATA_TYPE_FLONG);
+        if (fdat == NULL)
         {
-          k--;   /* Save the last NAXISk read */
-          break;
+            k--;   /* Save the last NAXISk read */
+            break;
         }
 
-      hdulist->naxisn[k-1] = (int)fdat->flong;
+        hdulist->naxisn[k-1] = (int)fdat->flong;
 
-      if (hdulist->naxisn[k-1] < 0)
+        if (hdulist->naxisn[k-1] < 0)
         {
-          strcpy (errmsg, "fits_decode_header: Negative value in NAXISn");
-          goto err_return;
+            strcpy (errmsg, "fits_decode_header: Negative value in NAXISn");
+            goto err_return;
         }
 
-      if ((k == 1) && random_groups)
+        if ((k == 1) && random_groups)
         {
-          if (hdulist->naxisn[0] != 0)
+            if (hdulist->naxisn[0] != 0)
             {
-              strcpy (errmsg, "fits_decode_header: Random groups with NAXIS1 != 0");
-              goto err_return;
+                strcpy (errmsg, "fits_decode_header: Random groups with NAXIS1 != 0");
+                goto err_return;
             }
         }
-      else
+        else
         {
-          mul_axis *= hdulist->naxisn[k - 1];
+            mul_axis *= hdulist->naxisn[k - 1];
         }
     }
 
-  if ((hdulist->naxis > 0) && (k < hdulist->naxis))
+    if ((hdulist->naxis > 0) && (k < hdulist->naxis))
     {
-      strcpy (errmsg, "fits_decode_card: Not enough NAXISn-cards");
-      goto err_return;
+        strcpy (errmsg, "fits_decode_card: Not enough NAXISn-cards");
+        goto err_return;
     }
 
-  /* If we have only one dimension, just set the second to size one. */
-  /* So we don't have to check for naxis < 2 in some places. */
-  if (hdulist->naxis < 2)
-    hdulist->naxisn[1] = 1;
+    /* If we have only one dimension, just set the second to size one. */
+    /* So we don't have to check for naxis < 2 in some places. */
+    if (hdulist->naxis < 2)
+        hdulist->naxisn[1] = 1;
 
-  if (hdulist->naxis < 1)
+    if (hdulist->naxis < 1)
     {
-      mul_axis = 0;
-      hdulist->naxisn[0] = 1;
+        mul_axis = 0;
+        hdulist->naxisn[0] = 1;
     }
 
-  if (hdulist->used.xtension)
-    data_size = bpp * hdulist->gcount * (hdulist->pcount + mul_axis);
-  else
-    data_size = bpp * mul_axis;
+    if (hdulist->used.xtension)
+        data_size = bpp * hdulist->gcount * (hdulist->pcount + mul_axis);
+    else
+        data_size = bpp * mul_axis;
 
-  hdulist->udata_size = data_size;  /* Used data size without padding */
+    hdulist->udata_size = data_size;  /* Used data size without padding */
 
-  /* Datasize must be a multiple of the FITS logical record size */
-  data_size = (data_size + FITS_RECORD_SIZE - 1) / FITS_RECORD_SIZE;
-  data_size *= FITS_RECORD_SIZE;
-  hdulist->data_size = data_size;
+    /* Datasize must be a multiple of the FITS logical record size */
+    data_size = (data_size + FITS_RECORD_SIZE - 1) / FITS_RECORD_SIZE;
+    data_size *= FITS_RECORD_SIZE;
+    hdulist->data_size = data_size;
 
-  FITS_TRY_CARD (hdr, hdulist, "BLANK", blank, FITS_DATA_TYPE_FLONG, flong);
+    FITS_TRY_CARD (hdr, hdulist, "BLANK", blank, FITS_DATA_TYPE_FLONG, flong);
 
-  FITS_TRY_CARD (hdr, hdulist, "DATAMIN", datamin, FITS_DATA_TYPE_FDOUBLE, fdouble);
-  FITS_TRY_CARD (hdr, hdulist, "DATAMAX", datamax, FITS_DATA_TYPE_FDOUBLE, fdouble);
+    FITS_TRY_CARD (hdr, hdulist, "DATAMIN", datamin, FITS_DATA_TYPE_FDOUBLE, fdouble);
+    FITS_TRY_CARD (hdr, hdulist, "DATAMAX", datamax, FITS_DATA_TYPE_FDOUBLE, fdouble);
 
-  FITS_TRY_CARD (hdr, hdulist, "BZERO", bzero, FITS_DATA_TYPE_FDOUBLE, fdouble);
-  FITS_TRY_CARD (hdr, hdulist, "BSCALE", bscale, FITS_DATA_TYPE_FDOUBLE, fdouble);
+    FITS_TRY_CARD (hdr, hdulist, "BZERO", bzero, FITS_DATA_TYPE_FDOUBLE, fdouble);
+    FITS_TRY_CARD (hdr, hdulist, "BSCALE", bscale, FITS_DATA_TYPE_FDOUBLE, fdouble);
 
-  /* Evaluate number of interpretable images for this HDU */
-  hdulist->numpic = 0;
+    /* Evaluate number of interpretable images for this HDU */
+    hdulist->numpic = 0;
 
-  /* We must support this format */
-  bitpix_supported =    (hdulist->bitpix > 0)
-                     || (   (hdulist->bitpix == -64)
-                         && (fits_ieee64_intel || fits_ieee64_motorola))
-                     || (   (hdulist->bitpix == -32)
-                         && (   fits_ieee32_intel || fits_ieee32_motorola
-                             || fits_ieee64_intel || fits_ieee64_motorola));
+    /* We must support this format */
+    bitpix_supported =    (hdulist->bitpix > 0)
+                          || (   (hdulist->bitpix == -64)
+                                 && (fits_ieee64_intel || fits_ieee64_motorola))
+                          || (   (hdulist->bitpix == -32)
+                                 && (   fits_ieee32_intel || fits_ieee32_motorola
+                                        || fits_ieee64_intel || fits_ieee64_motorola));
 
-  if (bitpix_supported)
+    if (bitpix_supported)
     {
-      if (hdulist->used.simple)
+        if (hdulist->used.simple)
         {
-          if (hdulist->naxis > 0)
+            if (hdulist->naxis > 0)
             {
-              hdulist->numpic = 1;
-              for (k = 3; k <= hdulist->naxis; k++)
-                hdulist->numpic *= hdulist->naxisn[k - 1];
+                hdulist->numpic = 1;
+                for (k = 3; k <= hdulist->naxis; k++)
+                    hdulist->numpic *= hdulist->naxisn[k - 1];
             }
         }
-      else if (hdulist->used.xtension &&
-               (strncmp (hdulist->xtension, "IMAGE", 5) == 0))
+        else if (hdulist->used.xtension &&
+                 (strncmp (hdulist->xtension, "IMAGE", 5) == 0))
         {
-          if (hdulist->naxis > 0)
+            if (hdulist->naxis > 0)
             {
-              hdulist->numpic = 1;
-              for (k = 3; k <= hdulist->naxis; k++)
-                hdulist->numpic *= hdulist->naxisn[k - 1];
+                hdulist->numpic = 1;
+                for (k = 3; k <= hdulist->naxis; k++)
+                    hdulist->numpic *= hdulist->naxisn[k - 1];
             }
         }
     }
-  else
+    else
     {
-      gchar msg[160];
+        gchar msg[160];
 
-      g_snprintf (msg, sizeof (msg),
-                  "fits_decode_header: IEEE floating point format required for "
-                  "BITPIX=%d\nis not supported on this machine",
-                  hdulist->bitpix);
-      fits_set_error (msg);
+        g_snprintf (msg, sizeof (msg),
+                    "fits_decode_header: IEEE floating point format required for "
+                    "BITPIX=%d\nis not supported on this machine",
+                    hdulist->bitpix);
+        fits_set_error (msg);
     }
 
-  hdulist->header_record_list = hdr;  /* Add header records to the list */
+    hdulist->header_record_list = hdr;  /* Add header records to the list */
 
-  return hdulist;
+    return hdulist;
 
- err_missing:
-  g_snprintf (errmsg, sizeof (errmsg),
-              "fits_decode_header: missing/invalid %s card", key);
+err_missing:
+    g_snprintf (errmsg, sizeof (errmsg),
+                "fits_decode_header: missing/invalid %s card", key);
 
- err_return:
-  fits_delete_hdulist (hdulist);
-  fits_set_error (errmsg);
+err_return:
+    fits_delete_hdulist (hdulist);
+    fits_set_error (errmsg);
 
-  return NULL;
+    return NULL;
 
 #undef FITS_DECODE_CARD
 }
@@ -1299,201 +1299,201 @@ static gint
 fits_eval_pixrange (FILE        *fp,
                     FitsHduList *hdu)
 {
-  register gint maxelem;
+    register gint maxelem;
 #define FITSNPIX 4096
-  guchar        pixdat[FITSNPIX];
-  gint          nelem, bpp;
-  gboolean      blank_found = FALSE;
-  gboolean      nan_found   = FALSE;
+    guchar        pixdat[FITSNPIX];
+    gint          nelem, bpp;
+    gboolean      blank_found = FALSE;
+    gboolean      nan_found   = FALSE;
 
-  if (fseek (fp, hdu->data_offset, SEEK_SET) < 0)
-    FITS_RETURN ("fits_eval_pixrange: can't position file", -1);
+    if (fseek (fp, hdu->data_offset, SEEK_SET) < 0)
+        FITS_RETURN ("fits_eval_pixrange: can't position file", -1);
 
-  bpp   = hdu->bpp;                /* Number of bytes per pixel */
-  nelem = hdu->udata_size / bpp;   /* Number of data elements */
+    bpp   = hdu->bpp;                /* Number of bytes per pixel */
+    nelem = hdu->udata_size / bpp;   /* Number of data elements */
 
-  switch (hdu->bitpix)
+    switch (hdu->bitpix)
     {
     case 8:
-      {
+    {
         register FitsBitpix8  pixval;
         register guchar      *ptr;
         FitsBitpix8           minval = 255;
         FitsBitpix8           maxval = 0;
 
         while (nelem > 0)
-          {
+        {
             maxelem = sizeof (pixdat) / bpp;
             if (nelem < maxelem)
-              maxelem = nelem;
+                maxelem = nelem;
 
             nelem -= maxelem;
             if (fread ((gchar *) pixdat, bpp, maxelem, fp) != maxelem)
-              FITS_RETURN ("fits_eval_pixrange: error on read bitpix 8 data", -1);
+                FITS_RETURN ("fits_eval_pixrange: error on read bitpix 8 data", -1);
 
             ptr = pixdat;
             if (hdu->used.blank)
-              {
+            {
                 FitsBitpix8 blankval = (FitsBitpix8) hdu->blank;
 
                 while (maxelem-- > 0)
-                  {
+                {
                     pixval = (FitsBitpix8)*(ptr++);
 
                     if (pixval != blankval)
-                      {
+                    {
                         if (pixval < minval)
-                          minval = pixval;
+                            minval = pixval;
                         else if (pixval > maxval)
-                          maxval = pixval;
-                      }
+                            maxval = pixval;
+                    }
                     else
-                      {
+                    {
                         blank_found = TRUE;
-                      }
-                  }
-              }
+                    }
+                }
+            }
             else
-              {
+            {
                 while (maxelem-- > 0)
-                  {
+                {
                     pixval = (FitsBitpix8)*(ptr++);
 
                     if (pixval < minval)
-                      minval = pixval;
+                        minval = pixval;
                     else if (pixval > maxval)
-                      maxval = pixval;
-                  }
-              }
-          }
+                        maxval = pixval;
+                }
+            }
+        }
 
         hdu->pixmin = minval;
         hdu->pixmax = maxval;
         break;
-      }
+    }
 
     case 16:
-      {
+    {
         register FitsBitpix16  pixval;
         register guchar       *ptr;
         FitsBitpix16           minval = 0x7fff;
         FitsBitpix16           maxval = ~0x7fff;
 
         while (nelem > 0)
-          {
+        {
             maxelem = sizeof (pixdat) / bpp;
             if (nelem < maxelem)
-              maxelem = nelem;
+                maxelem = nelem;
 
             nelem -= maxelem;
             if (fread ((gchar *) pixdat, bpp, maxelem, fp) != maxelem)
-              FITS_RETURN ("fits_eval_pixrange: error on read bitpix 16 data", -1);
+                FITS_RETURN ("fits_eval_pixrange: error on read bitpix 16 data", -1);
 
             ptr = pixdat;
             if (hdu->used.blank)
-              {
+            {
                 FitsBitpix16 blankval = (FitsBitpix16) hdu->blank;
 
                 while (maxelem-- > 0)
-                  {
+                {
                     FITS_GETBITPIX16 (ptr, pixval);
                     ptr += 2;
 
                     if (pixval != blankval)
-                      {
+                    {
                         if (pixval < minval)
-                          minval = pixval;
+                            minval = pixval;
                         else if (pixval > maxval)
-                          maxval = pixval;
-                      }
+                            maxval = pixval;
+                    }
                     else
-                      {
+                    {
                         blank_found = TRUE;
-                      }
-                  }
-              }
+                    }
+                }
+            }
             else
-              {
+            {
                 while (maxelem-- > 0)
-                  {
+                {
                     FITS_GETBITPIX16 (ptr, pixval);
                     ptr += 2;
 
                     if (pixval < minval)
-                      minval = pixval;
+                        minval = pixval;
                     else if (pixval > maxval)
-                      maxval = pixval;
-                  }
-              }
-          }
+                        maxval = pixval;
+                }
+            }
+        }
 
         hdu->pixmin = minval;
         hdu->pixmax = maxval;
         break;
-      }
+    }
 
     case 32:
-      {
+    {
         register FitsBitpix32  pixval;
         register guchar       *ptr;
         FitsBitpix32           minval = 0x7fffffff;
         FitsBitpix32           maxval = ~0x7fffffff;
 
         while (nelem > 0)
-          {
+        {
             maxelem = sizeof (pixdat)/bpp;
             if (nelem < maxelem)
-              maxelem = nelem;
+                maxelem = nelem;
 
             nelem -= maxelem;
             if (fread ((gchar *) pixdat, bpp, maxelem, fp) != maxelem)
-              FITS_RETURN ("fits_eval_pixrange: error on read bitpix 32 data", -1);
+                FITS_RETURN ("fits_eval_pixrange: error on read bitpix 32 data", -1);
 
             ptr = pixdat;
             if (hdu->used.blank)
-              {
+            {
                 FitsBitpix32 blankval = (FitsBitpix32)hdu->blank;
 
                 while (maxelem-- > 0)
-                  {
+                {
                     FITS_GETBITPIX32 (ptr, pixval);
                     ptr += 4;
 
                     if (pixval != blankval)
-                      {
+                    {
                         if (pixval < minval)
-                          minval = pixval;
+                            minval = pixval;
                         else if (pixval > maxval)
-                          maxval = pixval;
-                      }
+                            maxval = pixval;
+                    }
                     else
-                      {
+                    {
                         blank_found = TRUE;
-                      }
-                  }
-              }
+                    }
+                }
+            }
             else
-              {
+            {
                 while (maxelem-- > 0)
-                  {
+                {
                     FITS_GETBITPIX32 (ptr, pixval);
                     ptr += 4;
 
                     if (pixval < minval)
-                      minval = pixval;
+                        minval = pixval;
                     else if (pixval > maxval)
-                      maxval = pixval;
-                  }
-              }
-          }
+                        maxval = pixval;
+                }
+            }
+        }
 
         hdu->pixmin = minval;
         hdu->pixmax = maxval;
         break;
-      }
+    }
 
     case -32:
-      {
+    {
         register FitsBitpixM32  pixval = 0;
         register guchar        *ptr;
         FitsBitpixM32           minval = 0;
@@ -1501,51 +1501,51 @@ fits_eval_pixrange (FILE        *fp,
         gboolean                first  = TRUE;
 
         while (nelem > 0)
-          {
+        {
             maxelem = sizeof (pixdat) / bpp;
             if (nelem < maxelem)
-              maxelem = nelem;
+                maxelem = nelem;
 
             nelem -= maxelem;
             if (fread ((gchar *) pixdat, bpp, maxelem, fp) != maxelem)
-              FITS_RETURN ("fits_eval_pixrange: error on read bitpix -32 data", -1);
+                FITS_RETURN ("fits_eval_pixrange: error on read bitpix -32 data", -1);
 
             ptr = pixdat;
             while (maxelem-- > 0)
-              {
+            {
                 if (! fits_nan_32 (ptr))
-                  {
+                {
                     FITS_GETBITPIXM32 (ptr, pixval);
                     ptr += 4;
 
                     if (first)
-                      {
+                    {
                         first = FALSE;
                         minval = maxval = pixval;
-                      }
+                    }
                     else if (pixval < minval)
-                      {
+                    {
                         minval = pixval;
-                      }
+                    }
                     else if (pixval > maxval)
-                      {
+                    {
                         maxval = pixval;
-                      }
-                  }
+                    }
+                }
                 else
-                  {
+                {
                     nan_found = TRUE;
-                  }
-              }
-          }
+                }
+            }
+        }
 
         hdu->pixmin = minval;
         hdu->pixmax = maxval;
         break;
-      }
+    }
 
     case -64:
-      {
+    {
         register FitsBitpixM64  pixval;
         register guchar        *ptr;
         FitsBitpixM64           minval = 0;
@@ -1553,57 +1553,57 @@ fits_eval_pixrange (FILE        *fp,
         gboolean                first  = TRUE;
 
         while (nelem > 0)
-          {
+        {
             maxelem = sizeof (pixdat) / bpp;
             if (nelem < maxelem)
-              maxelem = nelem;
+                maxelem = nelem;
 
             nelem -= maxelem;
             if (fread ((gchar *) pixdat, bpp, maxelem, fp) != maxelem)
-              FITS_RETURN ("fits_eval_pixrange: error on read bitpix -64 data", -1);
+                FITS_RETURN ("fits_eval_pixrange: error on read bitpix -64 data", -1);
 
             ptr = pixdat;
             while (maxelem-- > 0)
-              {
+            {
                 if (! fits_nan_64 (ptr))
-                  {
+                {
                     FITS_GETBITPIXM64 (ptr, pixval);
                     ptr += 8;
 
                     if (first)
-                      {
+                    {
                         first = FALSE;
                         minval = maxval = pixval;
-                      }
+                    }
                     else if (pixval < minval)
-                      {
+                    {
                         minval = pixval;
-                      }
+                    }
                     else if (pixval > maxval)
-                      {
+                    {
                         maxval = pixval;
-                      }
-                  }
+                    }
+                }
                 else
-                  {
+                {
                     nan_found = TRUE;
-                  }
-              }
-          }
+                }
+            }
+        }
 
         hdu->pixmin = minval;
         hdu->pixmax = maxval;
         break;
-      }
+    }
     }
 
-  if (nan_found)
-    hdu->used.nan_value = TRUE;
+    if (nan_found)
+        hdu->used.nan_value = TRUE;
 
-  if (blank_found)
-    hdu->used.blank_value = TRUE;
+    if (blank_found)
+        hdu->used.blank_value = TRUE;
 
-  return 0;
+    return 0;
 }
 
 
@@ -1630,156 +1630,156 @@ FitsData *
 fits_decode_card (const gchar  *card,
                   FitsDataType  data_type)
 {
-  static FitsData  data;
-  glong            l_long;
-  gdouble          l_double;
-  gchar            l_card[FITS_CARD_SIZE + 1];
-  gchar            msg[256];
-  gchar           *cp, *dst, *end;
-  gint             ErrCount = 0;
+    static FitsData  data;
+    glong            l_long;
+    gdouble          l_double;
+    gchar            l_card[FITS_CARD_SIZE + 1];
+    gchar            msg[256];
+    gchar           *cp, *dst, *end;
+    gint             ErrCount = 0;
 
-  if (card == NULL)
-    return NULL;
+    if (card == NULL)
+        return NULL;
 
-  memcpy (l_card, card, FITS_CARD_SIZE);
-  l_card[FITS_CARD_SIZE] = '\0';
+    memcpy (l_card, card, FITS_CARD_SIZE);
+    l_card[FITS_CARD_SIZE] = '\0';
 
-  if (strncmp (card+8, "= ", 2) != 0)
+    if (strncmp (card+8, "= ", 2) != 0)
     {
-      g_snprintf (msg, sizeof (msg),
-                  "fits_decode_card (warning): Missing value indicator "
-                  "'= ' for %8.8s", l_card);
-      fits_set_error (msg);
-      ErrCount++;
+        g_snprintf (msg, sizeof (msg),
+                    "fits_decode_card (warning): Missing value indicator "
+                    "'= ' for %8.8s", l_card);
+        fits_set_error (msg);
+        ErrCount++;
     }
 
-  switch (data_type)
+    switch (data_type)
     {
     case FITS_DATA_TYPE_BITPIX_8:
-      data.bitpix8 = (FitsBitpix8) (l_card[10]);
-      break;
+        data.bitpix8 = (FitsBitpix8) (l_card[10]);
+        break;
 
     case FITS_DATA_TYPE_BITPIX_16:
-      if (sscanf (l_card + 10, "%ld", &l_long) != 1)
+        if (sscanf (l_card + 10, "%ld", &l_long) != 1)
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_16");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_16");
+            ErrCount++;
+            break;
         }
-      data.bitpix16 = (FitsBitpix16) l_long;
-      break;
+        data.bitpix16 = (FitsBitpix16) l_long;
+        break;
 
     case FITS_DATA_TYPE_BITPIX_32:
-      if (sscanf (l_card + 10, "%ld", &l_long) != 1)
+        if (sscanf (l_card + 10, "%ld", &l_long) != 1)
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_32");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_32");
+            ErrCount++;
+            break;
         }
-      data.bitpix32 = (FitsBitpix32) l_long;
-      break;
+        data.bitpix32 = (FitsBitpix32) l_long;
+        break;
 
     case FITS_DATA_TYPE_BITPIX_M32:
-      if (fits_scanfdouble (l_card + 10, &l_double) != 1)
+        if (fits_scanfdouble (l_card + 10, &l_double) != 1)
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_M32");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_M32");
+            ErrCount++;
+            break;
         }
-      data.bitpixm32 = (FitsBitpixM32) l_double;
-      break;
+        data.bitpixm32 = (FitsBitpixM32) l_double;
+        break;
 
     case FITS_DATA_TYPE_BITPIX_M64:
-      if (fits_scanfdouble (l_card + 10, &l_double) != 1)
+        if (fits_scanfdouble (l_card + 10, &l_double) != 1)
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_M64");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_BITPIX_M64");
+            ErrCount++;
+            break;
         }
-      data.bitpixm64 = (FitsBitpixM64) l_double;
-      break;
+        data.bitpixm64 = (FitsBitpixM64) l_double;
+        break;
 
     case FITS_DATA_TYPE_FBOOL:
-      cp = l_card + 10;
-      while (*cp == ' ')
-        cp++;
+        cp = l_card + 10;
+        while (*cp == ' ')
+            cp++;
 
-      if (*cp == 'T')
+        if (*cp == 'T')
         {
-          data.fbool = 1;
+            data.fbool = 1;
         }
-      else if (*cp == 'F')
+        else if (*cp == 'F')
         {
-          data.fbool = 0;
+            data.fbool = 0;
         }
-      else
+        else
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_FBOOL");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_FBOOL");
+            ErrCount++;
+            break;
         }
-      break;
+        break;
 
     case FITS_DATA_TYPE_FLONG:
-      if (sscanf (l_card + 10, "%ld", &l_long) != 1)
+        if (sscanf (l_card + 10, "%ld", &l_long) != 1)
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_FLONG");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_FLONG");
+            ErrCount++;
+            break;
         }
-      data.flong = (FitsBitpix32) l_long;
-      break;
+        data.flong = (FitsBitpix32) l_long;
+        break;
 
     case FITS_DATA_TYPE_FDOUBLE:
-      if (fits_scanfdouble (l_card + 10, &l_double) != 1)
+        if (fits_scanfdouble (l_card + 10, &l_double) != 1)
         {
-          fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_FDOUBLE");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: error decoding FITS_DATA_TYPE_FDOUBLE");
+            ErrCount++;
+            break;
         }
-      data.fdouble = (FitsBitpixM32) l_double;
-      break;
+        data.fdouble = (FitsBitpixM32) l_double;
+        break;
 
     case FITS_DATA_TYPE_FSTRING:
-      cp = l_card + 10;
-      if (*cp != '\'')
+        cp = l_card + 10;
+        if (*cp != '\'')
         {
-          fits_set_error ("fits_decode_card: missing \' decoding FITS_DATA_TYPE_FSTRING");
-          ErrCount++;
-          break;
+            fits_set_error ("fits_decode_card: missing \' decoding FITS_DATA_TYPE_FSTRING");
+            ErrCount++;
+            break;
         }
 
-      dst = data.fstring;
-      cp++;
-      end = l_card + FITS_CARD_SIZE - 1;
-      for (;;)   /* Search for trailing quote */
+        dst = data.fstring;
+        cp++;
+        end = l_card + FITS_CARD_SIZE - 1;
+        for (;;)   /* Search for trailing quote */
         {
-          if (*cp != '\'')    /* All characters but quote are used. */
+            if (*cp != '\'')    /* All characters but quote are used. */
             {
-              *(dst++) = *cp;
+                *(dst++) = *cp;
             }
-          else                /* Maybe there is a quote in the string */
+            else                /* Maybe there is a quote in the string */
             {
-              if (cp >= end)
-                break;  /* End of card ? finished */
+                if (cp >= end)
+                    break;  /* End of card ? finished */
 
-              if (*(cp+1) != '\'')
+                if (*(cp+1) != '\'')
+                    break;
+
+                *(dst++) = *(cp++);
+            }
+
+            if (cp >= end)
                 break;
 
-              *(dst++) = *(cp++);
-            }
-
-          if (cp >= end)
-            break;
-
-          cp++;
+            cp++;
         }
 
-      *dst = '\0';
-      break;
+        *dst = '\0';
+        break;
     }
 
-  return (ErrCount == 0) ? &data : NULL;
+    return (ErrCount == 0) ? &data : NULL;
 }
 
 
@@ -1808,34 +1808,34 @@ gchar *
 fits_search_card (FitsRecordList *rl,
                   gchar          *keyword)
 {
-  gint  key_len, k;
-  gchar key[9];
+    gint  key_len, k;
+    gchar key[9];
 
-  key_len = strlen (keyword);
-  if (key_len > 8)
-    key_len = 8;
-  if (key_len == 0)
-    FITS_RETURN ("fits_search_card: Invalid parameter", NULL);
+    key_len = strlen (keyword);
+    if (key_len > 8)
+        key_len = 8;
+    if (key_len == 0)
+        FITS_RETURN ("fits_search_card: Invalid parameter", NULL);
 
-  strcpy (key, "        ");
-  memcpy (key, keyword, key_len);
+    strcpy (key, "        ");
+    memcpy (key, keyword, key_len);
 
-  while (rl != NULL)
+    while (rl != NULL)
     {
-      gchar *card = (gchar *) rl->data;
+        gchar *card = (gchar *) rl->data;
 
-      for (k = 0; k < FITS_RECORD_SIZE / FITS_CARD_SIZE; k++)
+        for (k = 0; k < FITS_RECORD_SIZE / FITS_CARD_SIZE; k++)
         {
-          if (strncmp (card, key, 8) == 0)
-            return (card);
+            if (strncmp (card, key, 8) == 0)
+                return (card);
 
-          card += FITS_CARD_SIZE;
+            card += FITS_CARD_SIZE;
         }
 
-      rl = rl->next_record;
+        rl = rl->next_record;
     }
 
-  return NULL;
+    return NULL;
 }
 
 
@@ -1862,35 +1862,35 @@ fits_image_info (FitsFile *ff,
                  gint      picind,
                  gint     *hdupicind)
 {
-  FitsHduList *hdulist;
-  gint         firstpic, lastpic;
+    FitsHduList *hdulist;
+    gint         firstpic, lastpic;
 
-  if (ff == NULL)
-    FITS_RETURN ("fits_image_info: ff is NULL", NULL);
+    if (ff == NULL)
+        FITS_RETURN ("fits_image_info: ff is NULL", NULL);
 
-  if (ff->openmode != 'r')
-    FITS_RETURN ("fits_image_info: file not open for reading", NULL);
+    if (ff->openmode != 'r')
+        FITS_RETURN ("fits_image_info: file not open for reading", NULL);
 
-  if ((picind < 1) || (picind > ff->n_pic))
-    FITS_RETURN ("fits_image_info: picind out of range", NULL);
+    if ((picind < 1) || (picind > ff->n_pic))
+        FITS_RETURN ("fits_image_info: picind out of range", NULL);
 
-  firstpic = 1;
-  for (hdulist = ff->hdu_list; hdulist != NULL; hdulist = hdulist->next_hdu)
+    firstpic = 1;
+    for (hdulist = ff->hdu_list; hdulist != NULL; hdulist = hdulist->next_hdu)
     {
-      if (hdulist->numpic <= 0)
-        continue;
+        if (hdulist->numpic <= 0)
+            continue;
 
-      lastpic = firstpic + hdulist->numpic - 1;
+        lastpic = firstpic + hdulist->numpic - 1;
 
-      if (picind <= lastpic)  /* Found image in current HDU ? */
-        break;
+        if (picind <= lastpic)  /* Found image in current HDU ? */
+            break;
 
-      firstpic = lastpic + 1;
+        firstpic = lastpic + 1;
     }
 
-  *hdupicind = picind - firstpic + 1;
+    *hdupicind = picind - firstpic + 1;
 
-  return hdulist;
+    return hdulist;
 }
 
 
@@ -1916,20 +1916,20 @@ FitsHduList *
 fits_seek_image (FitsFile *ff,
                  gint      picind)
 {
-  FitsHduList *hdulist;
-  gint         hdupicind;
-  glong        offset, pic_size;
+    FitsHduList *hdulist;
+    gint         hdupicind;
+    glong        offset, pic_size;
 
-  hdulist = fits_image_info (ff, picind, &hdupicind);
-  if (hdulist == NULL)
-    return NULL;
+    hdulist = fits_image_info (ff, picind, &hdupicind);
+    if (hdulist == NULL)
+        return NULL;
 
-  pic_size = hdulist->bpp * hdulist->naxisn[0] * hdulist->naxisn[1];
-  offset = hdulist->data_offset + (hdupicind - 1) * pic_size;
-  if (fseek (ff->fp, offset, SEEK_SET) < 0)
-    FITS_RETURN ("fits_seek_image: Unable to position to image", NULL);
+    pic_size = hdulist->bpp * hdulist->naxisn[0] * hdulist->naxisn[1];
+    offset = hdulist->data_offset + (hdupicind - 1) * pic_size;
+    if (fseek (ff->fp, offset, SEEK_SET) < 0)
+        FITS_RETURN ("fits_seek_image: Unable to position to image", NULL);
 
-  return hdulist;
+    return hdulist;
 }
 
 
@@ -1964,83 +1964,83 @@ fits_read_pixel (FitsFile         *ff,
                  FitsPixTransform *trans,
                  void             *buf)
 {
-  gdouble  offs, scale;
-  gdouble  datadiff, pixdiff;
-  guchar   pixbuffer[4096];
-  guchar  *pix;
-  glong    creplace;
-  gint     transcount = 0;
-  glong    tdata, tmin, tmax;
-  gint     maxelem;
+    gdouble  offs, scale;
+    gdouble  datadiff, pixdiff;
+    guchar   pixbuffer[4096];
+    guchar  *pix;
+    glong    creplace;
+    gint     transcount = 0;
+    glong    tdata, tmin, tmax;
+    gint     maxelem;
 
-  if (ff->openmode != 'r')
-    return -1;   /* Not open for reading */
+    if (ff->openmode != 'r')
+        return -1;   /* Not open for reading */
 
-  if (trans->dsttyp != 'k')
-    return -1;  /* Currently we only return types equivalent to the image format */
+    if (trans->dsttyp != 'k')
+        return -1;  /* Currently we only return types equivalent to the image format */
 
-  if (npix <= 0)
-    return npix;
+    if (npix <= 0)
+        return npix;
 
-  datadiff = trans->datamax - trans->datamin;
-  pixdiff  = trans->pixmax - trans->pixmin;
+    datadiff = trans->datamax - trans->datamin;
+    pixdiff  = trans->pixmax - trans->pixmin;
 
-  offs  = trans->datamin - trans->pixmin * datadiff / pixdiff;
-  scale = datadiff / pixdiff;
+    offs  = trans->datamin - trans->pixmin * datadiff / pixdiff;
+    scale = datadiff / pixdiff;
 
-  tmin = (glong) trans->datamin;
-  tmax = (glong) trans->datamax;
+    tmin = (glong) trans->datamin;
+    tmax = (glong) trans->datamax;
 
-  creplace = (glong) trans->replacement;
+    creplace = (glong) trans->replacement;
 
-  switch (hdulist->bitpix)
+    switch (hdulist->bitpix)
     {
     case 8:
-      {
+    {
         guchar *cdata = (guchar *) buf;
         while (npix > 0)  /* For all pixels to read */
-          {
+        {
             FitsBitpix8 bp8, bp8blank;
 
             maxelem = sizeof (pixbuffer) / hdulist->bpp;
             if (maxelem > npix)
-              maxelem = npix;
+                maxelem = npix;
 
             if (fread ((gchar *) pixbuffer, hdulist->bpp,
                        maxelem, ff->fp) != maxelem)
-              return -1;
+                return -1;
 
             npix -= maxelem;
 
             pix = pixbuffer;
 
             if (hdulist->used.blank)
-              {
+            {
                 bp8blank = (FitsBitpix8) hdulist->blank;
 
                 while (maxelem--)
-                  {
+                {
                     bp8 = (FitsBitpix8) * (pix++);
 
                     if (bp8 == bp8blank)      /* Is it a blank pixel ? */
-                      {
+                    {
                         *(cdata++) = (guchar) creplace;
-                      }
+                    }
                     else                      /* Do transform */
-                      {
+                    {
                         tdata = (glong) (bp8 * scale + offs);
                         tdata = CLAMP (tdata, tmin, tmax);
 
                         *(cdata++) = (guchar) tdata;
-                      }
+                    }
 
                     transcount++;
-                  }
-              }
+                }
+            }
             else
-              {
+            {
                 while (maxelem--)
-                  {
+                {
                     bp8 = (FitsBitpix8) * (pix++);
 
                     tdata = (glong) (bp8 * scale + offs);
@@ -2049,129 +2049,129 @@ fits_read_pixel (FitsFile         *ff,
                     *(cdata++) = (guchar) tdata;
 
                     transcount++;
-                  }
-              }
-          }
-      }
-      break;
+                }
+            }
+        }
+    }
+    break;
 
     case 16:
-      {
+    {
         FitsBitpix16 *cdata = (FitsBitpix16 *) buf;
         while (npix > 0)  /* For all pixels to read */
-          {
+        {
             FitsBitpix16 bp16, bp16blank;
 
             maxelem = sizeof (pixbuffer) / hdulist->bpp;
             if (maxelem > npix)
-              maxelem = npix;
+                maxelem = npix;
 
             if (fread ((gchar *) pixbuffer, hdulist->bpp,
                        maxelem, ff->fp) != maxelem)
-              return -1;
+                return -1;
 
             npix -= maxelem;
 
             pix = pixbuffer;
             if (hdulist->used.blank)
-              {
+            {
                 bp16blank = (FitsBitpix16) hdulist->blank;
 
                 while (maxelem--)
-                  {
+                {
                     FITS_GETBITPIX16 (pix, bp16);
 
                     if (bp16 == bp16blank)
-                      {
+                    {
                         *(cdata++) = (FitsBitpix16) creplace;
-                      }
+                    }
                     else
-                      {
+                    {
                         tdata = (glong) (bp16 * scale + offs);
 
                         if (tdata < tmin)
-                          tdata = tmin;
+                            tdata = tmin;
                         else if (tdata > tmax)
-                          tdata = tmax;
+                            tdata = tmax;
 
                         *(cdata++) = (FitsBitpix16) tdata;
-                      }
+                    }
 
                     transcount++;
                     pix += 2;
-                  }
-              }
+                }
+            }
             else
-              {
+            {
                 while (maxelem--)
-                  {
+                {
                     FITS_GETBITPIX16 (pix, bp16);
 
                     tdata = (glong) (bp16 * scale + offs);
                     if (tdata < tmin)
-                      tdata = tmin;
+                        tdata = tmin;
                     else if (tdata > tmax)
-                      tdata = tmax;
+                        tdata = tmax;
 
                     *(cdata++) = (FitsBitpix16) tdata;
 
                     transcount++;
                     pix += 2;
-                  }
-              }
-          }
-      }
-      break;
+                }
+            }
+        }
+    }
+    break;
 
     case 32:
-      {
+    {
         FitsBitpix32 *cdata = (FitsBitpix32 *) buf;
         while (npix > 0)  /* For all pixels to read */
-          {
+        {
             FitsBitpix32 bp32, bp32blank;
 
             maxelem = sizeof (pixbuffer) / hdulist->bpp;
             if (maxelem > npix)
-              maxelem = npix;
+                maxelem = npix;
 
             if (fread ((gchar *) pixbuffer, hdulist->bpp,
                        maxelem, ff->fp) != maxelem)
-              return -1;
+                return -1;
 
             npix -= maxelem;
 
             pix = pixbuffer;
             if (hdulist->used.blank)
-              {
+            {
                 bp32blank = (FitsBitpix32) hdulist->blank;
 
                 while (maxelem--)
-                  {
+                {
                     FITS_GETBITPIX32 (pix, bp32);
 
                     if (bp32 == bp32blank)
-                      {
+                    {
                         *(cdata++) = (FitsBitpix32) creplace;
-                      }
+                    }
                     else
-                      {
+                    {
                         tdata = (glong) (bp32 * scale + offs);
                         if (tdata < tmin)
-                          tdata = tmin;
+                            tdata = tmin;
                         else if (tdata > tmax)
-                          tdata = tmax;
+                            tdata = tmax;
 
                         *(cdata++) = (FitsBitpix32) tdata;
-                      }
+                    }
 
                     transcount++;
                     pix += 4;
-                  }
-              }
+                }
+            }
             else
-              {
+            {
                 while (maxelem--)
-                  {
+                {
                     FITS_GETBITPIX32 (pix, bp32);
 
                     tdata = (glong) (bp32 * scale + offs);
@@ -2181,96 +2181,96 @@ fits_read_pixel (FitsFile         *ff,
 
                     transcount++;
                     pix += 4;
-                  }
-              }
-          }
-      }
-      break;
+                }
+            }
+        }
+    }
+    break;
 
     case -32:
-      {
+    {
         FitsBitpixM32 *cdata = (FitsBitpixM32 *) buf;
         while (npix > 0)  /* For all pixels to read */
-          {
+        {
             FitsBitpixM32 bpm32 = 0;
 
             maxelem = sizeof (pixbuffer) / hdulist->bpp;
             if (maxelem > npix)
-              maxelem = npix;
+                maxelem = npix;
 
             if (fread ((gchar *) pixbuffer, hdulist->bpp,
                        maxelem, ff->fp) != maxelem)
-              return -1;
+                return -1;
 
             npix -= maxelem;
 
             pix = pixbuffer;
             while (maxelem--)
-              {
+            {
                 if (fits_nan_32 (pix))    /* An IEEE special value ? */
-                  {
+                {
                     *(cdata++) = trans->replacement;
-                  }
+                }
                 else                      /* Do transform */
-                  {
+                {
                     FITS_GETBITPIXM32 (pix, bpm32);
 
                     bpm32 = bpm32 * scale + offs;
                     bpm32 = CLAMP (bpm32, trans->datamin, trans->datamax);
 
                     *(cdata++) = bpm32;
-                  }
+                }
 
                 transcount++;
                 pix += 4;
-              }
-          }
-      }
-      break;
+            }
+        }
+    }
+    break;
 
     case -64:
-      {
+    {
         FitsBitpixM64 *cdata = (FitsBitpixM64 *) buf;
         while (npix > 0)  /* For all pixels to read */
-          {
+        {
             FitsBitpixM64 bpm64;
 
             maxelem = sizeof (pixbuffer) / hdulist->bpp;
             if (maxelem > npix)
-              maxelem = npix;
+                maxelem = npix;
 
             if (fread ((gchar *) pixbuffer, hdulist->bpp,
                        maxelem, ff->fp) != maxelem)
-              return -1;
+                return -1;
 
             npix -= maxelem;
 
             pix = pixbuffer;
             while (maxelem--)
-              {
+            {
                 if (fits_nan_64 (pix))
-                  {
+                {
                     *(cdata++) = trans->replacement;
-                  }
+                }
                 else
-                  {
+                {
                     FITS_GETBITPIXM64 (pix, bpm64);
 
                     bpm64 = bpm64 * scale + offs;
                     bpm64 = CLAMP (bpm64, trans->datamin, trans->datamax);
 
                     *(cdata++) = bpm64;
-                  }
+                }
 
                 transcount++;
                 pix += 8;
-              }
-          }
-      }
-      break;
+            }
+        }
+    }
+    break;
     }
 
-  return transcount;
+    return transcount;
 }
 
 
@@ -2297,72 +2297,72 @@ gint
 fits_to_pgmraw (gchar *fitsfile,
                 gchar *pgmfile)
 {
-  FitsFile         *fitsin = NULL;
-  FILE             *pgmout = NULL;
-  FitsHduList      *hdu;
-  FitsPixTransform  trans;
-  gint              retval = -1, nbytes, maxbytes;
-  gchar             buffer[1024];
+    FitsFile         *fitsin = NULL;
+    FILE             *pgmout = NULL;
+    FitsHduList      *hdu;
+    FitsPixTransform  trans;
+    gint              retval = -1, nbytes, maxbytes;
+    gchar             buffer[1024];
 
-  fitsin = fits_open (fitsfile, "r");  /* Open FITS-file for reading */
-  if (fitsin == NULL)
-    goto err_return;
+    fitsin = fits_open (fitsfile, "r");  /* Open FITS-file for reading */
+    if (fitsin == NULL)
+        goto err_return;
 
-  if (fitsin->n_pic < 1)
-    goto err_return;  /* Any picture in it ? */
+    if (fitsin->n_pic < 1)
+        goto err_return;  /* Any picture in it ? */
 
-  hdu = fits_seek_image (fitsin, 1);       /* Position to the first image */
-  if (hdu == NULL)
-    goto err_return;
+    hdu = fits_seek_image (fitsin, 1);       /* Position to the first image */
+    if (hdu == NULL)
+        goto err_return;
 
-  if (hdu->naxis < 2)
-    goto err_return;     /* Enough dimensions ? */
+    if (hdu->naxis < 2)
+        goto err_return;     /* Enough dimensions ? */
 
-  pgmout = g_fopen (pgmfile, "wb");
-  if (pgmout == NULL)
-    goto err_return;
+    pgmout = g_fopen (pgmfile, "wb");
+    if (pgmout == NULL)
+        goto err_return;
 
-  /* Write PGM header with width/height */
-  fprintf (pgmout, "P5\n%d %d\n255\n", hdu->naxisn[0], hdu->naxisn[1]);
+    /* Write PGM header with width/height */
+    fprintf (pgmout, "P5\n%d %d\n255\n", hdu->naxisn[0], hdu->naxisn[1]);
 
-  /* Set up transformation for FITS pixel values to 0...255 */
-  /* It maps trans.pixmin to trans.datamin and trans.pixmax to trans.datamax. */
-  /* Values out of range [datamin, datamax] are clamped */
-  trans.pixmin      = hdu->pixmin;
-  trans.pixmax      = hdu->pixmax;
-  trans.datamin     = 0.0;
-  trans.datamax     = 255.0;
-  trans.replacement = 0.0;  /* Blank/NaN replacement value */
-  trans.dsttyp      = 'c';       /* Output type is character */
+    /* Set up transformation for FITS pixel values to 0...255 */
+    /* It maps trans.pixmin to trans.datamin and trans.pixmax to trans.datamax. */
+    /* Values out of range [datamin, datamax] are clamped */
+    trans.pixmin      = hdu->pixmin;
+    trans.pixmax      = hdu->pixmax;
+    trans.datamin     = 0.0;
+    trans.datamax     = 255.0;
+    trans.replacement = 0.0;  /* Blank/NaN replacement value */
+    trans.dsttyp      = 'c';       /* Output type is character */
 
-  nbytes = hdu->naxisn[0]*hdu->naxisn[1];
-  while (nbytes > 0)
+    nbytes = hdu->naxisn[0]*hdu->naxisn[1];
+    while (nbytes > 0)
     {
-      maxbytes = sizeof (buffer);
-      if (maxbytes > nbytes)
-        maxbytes = nbytes;
+        maxbytes = sizeof (buffer);
+        if (maxbytes > nbytes)
+            maxbytes = nbytes;
 
-      /* Read pixels and transform them */
-      if (fits_read_pixel (fitsin, hdu, maxbytes, &trans, buffer) != maxbytes)
-        goto err_return;
+        /* Read pixels and transform them */
+        if (fits_read_pixel (fitsin, hdu, maxbytes, &trans, buffer) != maxbytes)
+            goto err_return;
 
-      if (fwrite (buffer, 1, maxbytes, pgmout) != maxbytes)
-        goto err_return;
+        if (fwrite (buffer, 1, maxbytes, pgmout) != maxbytes)
+            goto err_return;
 
-      nbytes -= maxbytes;
+        nbytes -= maxbytes;
     }
 
-  retval = 0;
+    retval = 0;
 
- err_return:
+err_return:
 
-  if (fitsin)
-    fits_close (fitsin);
+    if (fitsin)
+        fits_close (fitsin);
 
-  if (pgmout)
-    fclose (pgmout);
+    if (pgmout)
+        fclose (pgmout);
 
-  return retval;
+    return retval;
 }
 
 
@@ -2387,117 +2387,117 @@ gint
 pgmraw_to_fits (gchar *pgmfile,
                 gchar *fitsfile)
 {
-  FitsFile    *fitsout = NULL;
-  FILE        *pgmin   = NULL;
-  FitsHduList *hdu;
-  gchar        buffer[1024];
-  gint         width, height, numbytes, maxbytes;
-  gint         retval = -1;
+    FitsFile    *fitsout = NULL;
+    FILE        *pgmin   = NULL;
+    FitsHduList *hdu;
+    gchar        buffer[1024];
+    gint         width, height, numbytes, maxbytes;
+    gint         retval = -1;
 
-  fitsout = fits_open (fitsfile, "w");
-  if (fitsout == NULL)
-    goto err_return;
-
-  pgmin = g_fopen (pgmfile, "r");
-  if (pgmin == NULL)
-    goto err_return;
-
-  /* Read signature of PGM file */
-  if (fgets (buffer, sizeof (buffer), pgmin) == NULL)
-    goto err_return;
-
-  if ((buffer[0] != 'P') || (buffer[1] != '5'))
-    goto err_return;
-
-  /* Skip comments up to width/height */
-  do
-    {
-      if (fgets (buffer, sizeof (buffer), pgmin) == NULL)
-        goto err_return;
-    }
-  while (buffer[0] == '#');
-
-  if (sscanf (buffer, "%d%d", &width, &height) != 2)
-    goto err_return;
-
-  if ((width < 1) || (height < 1))
-    goto err_return;
-
-  /* Skip comments up to maxval */
-  do
-    {
-      if (fgets (buffer, sizeof (buffer), pgmin) == NULL)
-        goto err_return;
-    }
-  while (buffer[0] == '#');
-
-  /* Ignore maxval */
-
-  hdu = fits_add_hdu (fitsout);     /* Create a HDU for the FITS file */
-  if (hdu == NULL)
-    goto err_return;
-
-  hdu->used.simple  = 1;         /* Set proper values */
-  hdu->bitpix       = 8;
-  hdu->naxis        = 2;
-  hdu->naxisn[0]    = width;
-  hdu->naxisn[1]    = height;
-  hdu->used.datamin = 1;
-  hdu->datamin      = 0.0;
-  hdu->used.datamax = 1;
-  hdu->datamax      = 255.0;
-  hdu->used.bzero   = 1;
-  hdu->bzero        = 0.0;
-  hdu->used.bscale  = 1;
-  hdu->bscale       = 1.0;
-
-  fits_add_card (hdu, "");
-  fits_add_card (hdu,
-                 "HISTORY THIS FITS FILE WAS GENERATED BY FITSRW "
-                 "USING PGMRAW_TO_FITS");
-
-  /* Write the header. Blocking is done automatically */
-  if (fits_write_header (fitsout, hdu) < 0)
-    goto err_return;
-
-  /* The primary array plus blocking must be written manually */
-  numbytes = width * height;
-
-  while (numbytes > 0)
-    {
-      maxbytes = sizeof (buffer);
-      if (maxbytes > numbytes)
-        maxbytes = numbytes;
-
-      if (fread (buffer, 1, maxbytes, pgmin) != maxbytes)
+    fitsout = fits_open (fitsfile, "w");
+    if (fitsout == NULL)
         goto err_return;
 
-      if (fwrite (buffer, 1, maxbytes, fitsout->fp) != maxbytes)
+    pgmin = g_fopen (pgmfile, "r");
+    if (pgmin == NULL)
         goto err_return;
 
-      numbytes -= maxbytes;
-    }
+    /* Read signature of PGM file */
+    if (fgets (buffer, sizeof (buffer), pgmin) == NULL)
+        goto err_return;
 
-  /* Do blocking */
-  numbytes = (width * height) % FITS_RECORD_SIZE;
-  if (numbytes)
+    if ((buffer[0] != 'P') || (buffer[1] != '5'))
+        goto err_return;
+
+    /* Skip comments up to width/height */
+    do
     {
-      while (numbytes++ < FITS_RECORD_SIZE)
-        if (putc (0, fitsout->fp) == EOF)
-          goto err_return;
+        if (fgets (buffer, sizeof (buffer), pgmin) == NULL)
+            goto err_return;
+    }
+    while (buffer[0] == '#');
+
+    if (sscanf (buffer, "%d%d", &width, &height) != 2)
+        goto err_return;
+
+    if ((width < 1) || (height < 1))
+        goto err_return;
+
+    /* Skip comments up to maxval */
+    do
+    {
+        if (fgets (buffer, sizeof (buffer), pgmin) == NULL)
+            goto err_return;
+    }
+    while (buffer[0] == '#');
+
+    /* Ignore maxval */
+
+    hdu = fits_add_hdu (fitsout);     /* Create a HDU for the FITS file */
+    if (hdu == NULL)
+        goto err_return;
+
+    hdu->used.simple  = 1;         /* Set proper values */
+    hdu->bitpix       = 8;
+    hdu->naxis        = 2;
+    hdu->naxisn[0]    = width;
+    hdu->naxisn[1]    = height;
+    hdu->used.datamin = 1;
+    hdu->datamin      = 0.0;
+    hdu->used.datamax = 1;
+    hdu->datamax      = 255.0;
+    hdu->used.bzero   = 1;
+    hdu->bzero        = 0.0;
+    hdu->used.bscale  = 1;
+    hdu->bscale       = 1.0;
+
+    fits_add_card (hdu, "");
+    fits_add_card (hdu,
+                   "HISTORY THIS FITS FILE WAS GENERATED BY FITSRW "
+                   "USING PGMRAW_TO_FITS");
+
+    /* Write the header. Blocking is done automatically */
+    if (fits_write_header (fitsout, hdu) < 0)
+        goto err_return;
+
+    /* The primary array plus blocking must be written manually */
+    numbytes = width * height;
+
+    while (numbytes > 0)
+    {
+        maxbytes = sizeof (buffer);
+        if (maxbytes > numbytes)
+            maxbytes = numbytes;
+
+        if (fread (buffer, 1, maxbytes, pgmin) != maxbytes)
+            goto err_return;
+
+        if (fwrite (buffer, 1, maxbytes, fitsout->fp) != maxbytes)
+            goto err_return;
+
+        numbytes -= maxbytes;
     }
 
-  retval = 0;
+    /* Do blocking */
+    numbytes = (width * height) % FITS_RECORD_SIZE;
+    if (numbytes)
+    {
+        while (numbytes++ < FITS_RECORD_SIZE)
+            if (putc (0, fitsout->fp) == EOF)
+                goto err_return;
+    }
 
- err_return:
+    retval = 0;
 
-  if (fitsout)
-    fits_close (fitsout);
+err_return:
 
-  if (pgmin)
-    fclose (pgmin);
+    if (fitsout)
+        fits_close (fitsout);
 
-  return retval;
+    if (pgmin)
+        fclose (pgmin);
+
+    return retval;
 }
 
 #endif /* ! FITS_NO_DEMO */

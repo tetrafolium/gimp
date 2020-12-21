@@ -61,18 +61,18 @@ G_DEFINE_BOXED_TYPE (GimpMatrix2, gimp_matrix2, matrix2_copy, g_free)
 static void   gimp_param_matrix2_class_init  (GParamSpecClass *class);
 static void   gimp_param_matrix2_init        (GParamSpec      *pspec);
 static void   gimp_param_matrix2_set_default (GParamSpec      *pspec,
-                                              GValue          *value);
+        GValue          *value);
 static gint   gimp_param_matrix2_values_cmp  (GParamSpec      *pspec,
-                                              const GValue    *value1,
-                                              const GValue    *value2);
+        const GValue    *value1,
+        const GValue    *value2);
 
 typedef struct _GimpParamSpecMatrix2 GimpParamSpecMatrix2;
 
 struct _GimpParamSpecMatrix2
 {
-  GParamSpecBoxed      parent_instance;
+    GParamSpecBoxed      parent_instance;
 
-  GimpMatrix2          default_value;
+    GimpMatrix2          default_value;
 };
 
 /**
@@ -87,52 +87,52 @@ struct _GimpParamSpecMatrix2
 GType
 gimp_param_matrix2_get_type (void)
 {
-  static GType spec_type = 0;
+    static GType spec_type = 0;
 
-  if (!spec_type)
+    if (!spec_type)
     {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GParamSpecClass),
-        NULL, NULL,
-        (GClassInitFunc) gimp_param_matrix2_class_init,
-        NULL, NULL,
-        sizeof (GimpParamSpecMatrix2),
-        0,
-        (GInstanceInitFunc) gimp_param_matrix2_init
-      };
+        static const GTypeInfo type_info =
+        {
+            sizeof (GParamSpecClass),
+            NULL, NULL,
+            (GClassInitFunc) gimp_param_matrix2_class_init,
+            NULL, NULL,
+            sizeof (GimpParamSpecMatrix2),
+            0,
+            (GInstanceInitFunc) gimp_param_matrix2_init
+        };
 
-      spec_type = g_type_register_static (G_TYPE_PARAM_BOXED,
-                                          "GimpParamMatrix2",
-                                          &type_info, 0);
+        spec_type = g_type_register_static (G_TYPE_PARAM_BOXED,
+                                            "GimpParamMatrix2",
+                                            &type_info, 0);
     }
 
-  return spec_type;
+    return spec_type;
 }
 
 static void
 gimp_param_matrix2_class_init (GParamSpecClass *class)
 {
-  class->value_type        = GIMP_TYPE_MATRIX2;
-  class->value_set_default = gimp_param_matrix2_set_default;
-  class->values_cmp        = gimp_param_matrix2_values_cmp;
+    class->value_type        = GIMP_TYPE_MATRIX2;
+    class->value_set_default = gimp_param_matrix2_set_default;
+    class->values_cmp        = gimp_param_matrix2_values_cmp;
 }
 
 static void
 gimp_param_matrix2_init (GParamSpec *pspec)
 {
-  GimpParamSpecMatrix2 *cspec = GIMP_PARAM_SPEC_MATRIX2 (pspec);
+    GimpParamSpecMatrix2 *cspec = GIMP_PARAM_SPEC_MATRIX2 (pspec);
 
-  gimp_matrix2_identity (&cspec->default_value);
+    gimp_matrix2_identity (&cspec->default_value);
 }
 
 static void
 gimp_param_matrix2_set_default (GParamSpec *pspec,
                                 GValue     *value)
 {
-  GimpParamSpecMatrix2 *cspec = GIMP_PARAM_SPEC_MATRIX2 (pspec);
+    GimpParamSpecMatrix2 *cspec = GIMP_PARAM_SPEC_MATRIX2 (pspec);
 
-  g_value_set_static_boxed (value, &cspec->default_value);
+    g_value_set_static_boxed (value, &cspec->default_value);
 }
 
 static gint
@@ -140,26 +140,26 @@ gimp_param_matrix2_values_cmp (GParamSpec   *pspec,
                                const GValue *value1,
                                const GValue *value2)
 {
-  GimpMatrix2 *matrix1;
-  GimpMatrix2 *matrix2;
-  gint         i, j;
+    GimpMatrix2 *matrix1;
+    GimpMatrix2 *matrix2;
+    gint         i, j;
 
-  matrix1 = value1->data[0].v_pointer;
-  matrix2 = value2->data[0].v_pointer;
+    matrix1 = value1->data[0].v_pointer;
+    matrix2 = value2->data[0].v_pointer;
 
-  /*  try to return at least *something*, it's useless anyway...  */
+    /*  try to return at least *something*, it's useless anyway...  */
 
-  if (! matrix1)
-    return matrix2 != NULL ? -1 : 0;
-  else if (! matrix2)
-    return matrix1 != NULL;
+    if (! matrix1)
+        return matrix2 != NULL ? -1 : 0;
+    else if (! matrix2)
+        return matrix1 != NULL;
 
-  for (i = 0; i < 2; i++)
-    for (j = 0; j < 2; j++)
-      if (matrix1->coeff[i][j] != matrix2->coeff[i][j])
-        return 1;
+    for (i = 0; i < 2; i++)
+        for (j = 0; j < 2; j++)
+            if (matrix1->coeff[i][j] != matrix2->coeff[i][j])
+                return 1;
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -184,23 +184,23 @@ gimp_param_spec_matrix2 (const gchar       *name,
                          const GimpMatrix2 *default_value,
                          GParamFlags        flags)
 {
-  GimpParamSpecMatrix2 *cspec;
+    GimpParamSpecMatrix2 *cspec;
 
-  g_return_val_if_fail (default_value != NULL, NULL);
+    g_return_val_if_fail (default_value != NULL, NULL);
 
-  cspec = g_param_spec_internal (GIMP_TYPE_PARAM_MATRIX2,
-                                 name, nick, blurb, flags);
+    cspec = g_param_spec_internal (GIMP_TYPE_PARAM_MATRIX2,
+                                   name, nick, blurb, flags);
 
-  cspec->default_value = *default_value;
+    cspec->default_value = *default_value;
 
-  return G_PARAM_SPEC (cspec);
+    return G_PARAM_SPEC (cspec);
 }
 
 
 static GimpMatrix2 *
 matrix2_copy (const GimpMatrix2 *matrix)
 {
-  return (GimpMatrix2 *) g_memdup (matrix, sizeof (GimpMatrix2));
+    return (GimpMatrix2 *) g_memdup (matrix, sizeof (GimpMatrix2));
 }
 
 
@@ -213,10 +213,12 @@ matrix2_copy (const GimpMatrix2 *matrix)
 void
 gimp_matrix2_identity (GimpMatrix2 *matrix)
 {
-  static const GimpMatrix2 identity = { { { 1.0, 0.0 },
-                                          { 0.0, 1.0 } } };
+    static const GimpMatrix2 identity = { { { 1.0, 0.0 },
+            { 0.0, 1.0 }
+        }
+    };
 
-  *matrix = identity;
+    *matrix = identity;
 }
 
 /**
@@ -230,18 +232,18 @@ void
 gimp_matrix2_mult (const GimpMatrix2 *matrix1,
                    GimpMatrix2       *matrix2)
 {
-  GimpMatrix2  tmp;
+    GimpMatrix2  tmp;
 
-  tmp.coeff[0][0] = (matrix1->coeff[0][0] * matrix2->coeff[0][0] +
-                     matrix1->coeff[0][1] * matrix2->coeff[1][0]);
-  tmp.coeff[0][1] = (matrix1->coeff[0][0] * matrix2->coeff[0][1] +
-                     matrix1->coeff[0][1] * matrix2->coeff[1][1]);
-  tmp.coeff[1][0] = (matrix1->coeff[1][0] * matrix2->coeff[0][0] +
-                     matrix1->coeff[1][1] * matrix2->coeff[1][0]);
-  tmp.coeff[1][1] = (matrix1->coeff[1][0] * matrix2->coeff[0][1] +
-                     matrix1->coeff[1][1] * matrix2->coeff[1][1]);
+    tmp.coeff[0][0] = (matrix1->coeff[0][0] * matrix2->coeff[0][0] +
+                       matrix1->coeff[0][1] * matrix2->coeff[1][0]);
+    tmp.coeff[0][1] = (matrix1->coeff[0][0] * matrix2->coeff[0][1] +
+                       matrix1->coeff[0][1] * matrix2->coeff[1][1]);
+    tmp.coeff[1][0] = (matrix1->coeff[1][0] * matrix2->coeff[0][0] +
+                       matrix1->coeff[1][1] * matrix2->coeff[1][0]);
+    tmp.coeff[1][1] = (matrix1->coeff[1][0] * matrix2->coeff[0][1] +
+                       matrix1->coeff[1][1] * matrix2->coeff[1][1]);
 
-  *matrix2 = tmp;
+    *matrix2 = tmp;
 }
 
 /**
@@ -258,8 +260,8 @@ gimp_matrix2_mult (const GimpMatrix2 *matrix1,
 gdouble
 gimp_matrix2_determinant (const GimpMatrix2 *matrix)
 {
-  return matrix->coeff[0][0] * matrix->coeff[1][1] -
-         matrix->coeff[0][1] * matrix->coeff[1][0];
+    return matrix->coeff[0][0] * matrix->coeff[1][1] -
+           matrix->coeff[0][1] * matrix->coeff[1][0];
 }
 
 /**
@@ -273,18 +275,18 @@ gimp_matrix2_determinant (const GimpMatrix2 *matrix)
 void
 gimp_matrix2_invert (GimpMatrix2 *matrix)
 {
-  gdouble det = gimp_matrix2_determinant (matrix);
-  gdouble temp;
+    gdouble det = gimp_matrix2_determinant (matrix);
+    gdouble temp;
 
-  if (fabs (det) <= EPSILON)
-    return;
+    if (fabs (det) <= EPSILON)
+        return;
 
-  temp = matrix->coeff[0][0];
+    temp = matrix->coeff[0][0];
 
-  matrix->coeff[0][0]  = matrix->coeff[1][1] / det;
-  matrix->coeff[0][1] /= -det;
-  matrix->coeff[1][0] /= -det;
-  matrix->coeff[1][1]  = temp / det;
+    matrix->coeff[0][0]  = matrix->coeff[1][1] / det;
+    matrix->coeff[0][1] /= -det;
+    matrix->coeff[1][0] /= -det;
+    matrix->coeff[1][1]  = temp / det;
 }
 
 /**
@@ -306,8 +308,8 @@ gimp_matrix2_transform_point (const GimpMatrix2 *matrix,
                               gdouble           *newx,
                               gdouble           *newy)
 {
-  *newx = matrix->coeff[0][0] * x + matrix->coeff[0][1] * y;
-  *newy = matrix->coeff[1][0] * x + matrix->coeff[1][1] * y;
+    *newx = matrix->coeff[0][0] * x + matrix->coeff[0][1] * y;
+    *newy = matrix->coeff[1][0] * x + matrix->coeff[1][1] * y;
 }
 
 
@@ -325,18 +327,18 @@ G_DEFINE_BOXED_TYPE (GimpMatrix3, gimp_matrix3, matrix3_copy, g_free)
 static void   gimp_param_matrix3_class_init  (GParamSpecClass *class);
 static void   gimp_param_matrix3_init        (GParamSpec      *pspec);
 static void   gimp_param_matrix3_set_default (GParamSpec      *pspec,
-                                              GValue          *value);
+        GValue          *value);
 static gint   gimp_param_matrix3_values_cmp  (GParamSpec      *pspec,
-                                              const GValue    *value1,
-                                              const GValue    *value2);
+        const GValue    *value1,
+        const GValue    *value2);
 
 typedef struct _GimpParamSpecMatrix3 GimpParamSpecMatrix3;
 
 struct _GimpParamSpecMatrix3
 {
-  GParamSpecBoxed      parent_instance;
+    GParamSpecBoxed      parent_instance;
 
-  GimpMatrix3          default_value;
+    GimpMatrix3          default_value;
 };
 
 /**
@@ -351,52 +353,52 @@ struct _GimpParamSpecMatrix3
 GType
 gimp_param_matrix3_get_type (void)
 {
-  static GType spec_type = 0;
+    static GType spec_type = 0;
 
-  if (!spec_type)
+    if (!spec_type)
     {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GParamSpecClass),
-        NULL, NULL,
-        (GClassInitFunc) gimp_param_matrix3_class_init,
-        NULL, NULL,
-        sizeof (GimpParamSpecMatrix3),
-        0,
-        (GInstanceInitFunc) gimp_param_matrix3_init
-      };
+        static const GTypeInfo type_info =
+        {
+            sizeof (GParamSpecClass),
+            NULL, NULL,
+            (GClassInitFunc) gimp_param_matrix3_class_init,
+            NULL, NULL,
+            sizeof (GimpParamSpecMatrix3),
+            0,
+            (GInstanceInitFunc) gimp_param_matrix3_init
+        };
 
-      spec_type = g_type_register_static (G_TYPE_PARAM_BOXED,
-                                          "GimpParamMatrix3",
-                                          &type_info, 0);
+        spec_type = g_type_register_static (G_TYPE_PARAM_BOXED,
+                                            "GimpParamMatrix3",
+                                            &type_info, 0);
     }
 
-  return spec_type;
+    return spec_type;
 }
 
 static void
 gimp_param_matrix3_class_init (GParamSpecClass *class)
 {
-  class->value_type        = GIMP_TYPE_MATRIX3;
-  class->value_set_default = gimp_param_matrix3_set_default;
-  class->values_cmp        = gimp_param_matrix3_values_cmp;
+    class->value_type        = GIMP_TYPE_MATRIX3;
+    class->value_set_default = gimp_param_matrix3_set_default;
+    class->values_cmp        = gimp_param_matrix3_values_cmp;
 }
 
 static void
 gimp_param_matrix3_init (GParamSpec *pspec)
 {
-  GimpParamSpecMatrix3 *cspec = GIMP_PARAM_SPEC_MATRIX3 (pspec);
+    GimpParamSpecMatrix3 *cspec = GIMP_PARAM_SPEC_MATRIX3 (pspec);
 
-  gimp_matrix3_identity (&cspec->default_value);
+    gimp_matrix3_identity (&cspec->default_value);
 }
 
 static void
 gimp_param_matrix3_set_default (GParamSpec *pspec,
                                 GValue     *value)
 {
-  GimpParamSpecMatrix3 *cspec = GIMP_PARAM_SPEC_MATRIX3 (pspec);
+    GimpParamSpecMatrix3 *cspec = GIMP_PARAM_SPEC_MATRIX3 (pspec);
 
-  g_value_set_static_boxed (value, &cspec->default_value);
+    g_value_set_static_boxed (value, &cspec->default_value);
 }
 
 static gint
@@ -404,26 +406,26 @@ gimp_param_matrix3_values_cmp (GParamSpec   *pspec,
                                const GValue *value1,
                                const GValue *value2)
 {
-  GimpMatrix3 *matrix1;
-  GimpMatrix3 *matrix2;
-  gint         i, j;
+    GimpMatrix3 *matrix1;
+    GimpMatrix3 *matrix2;
+    gint         i, j;
 
-  matrix1 = value1->data[0].v_pointer;
-  matrix2 = value2->data[0].v_pointer;
+    matrix1 = value1->data[0].v_pointer;
+    matrix2 = value2->data[0].v_pointer;
 
-  /*  try to return at least *something*, it's useless anyway...  */
+    /*  try to return at least *something*, it's useless anyway...  */
 
-  if (! matrix1)
-    return matrix2 != NULL ? -1 : 0;
-  else if (! matrix2)
-    return matrix1 != NULL;
+    if (! matrix1)
+        return matrix2 != NULL ? -1 : 0;
+    else if (! matrix2)
+        return matrix1 != NULL;
 
-  for (i = 0; i < 3; i++)
-    for (j = 0; j < 3; j++)
-      if (matrix1->coeff[i][j] != matrix2->coeff[i][j])
-        return 1;
+    for (i = 0; i < 3; i++)
+        for (j = 0; j < 3; j++)
+            if (matrix1->coeff[i][j] != matrix2->coeff[i][j])
+                return 1;
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -448,22 +450,22 @@ gimp_param_spec_matrix3 (const gchar       *name,
                          const GimpMatrix3 *default_value,
                          GParamFlags        flags)
 {
-  GimpParamSpecMatrix3 *cspec;
+    GimpParamSpecMatrix3 *cspec;
 
-  cspec = g_param_spec_internal (GIMP_TYPE_PARAM_MATRIX3,
-                                 name, nick, blurb, flags);
+    cspec = g_param_spec_internal (GIMP_TYPE_PARAM_MATRIX3,
+                                   name, nick, blurb, flags);
 
-  if (default_value)
-    cspec->default_value = *default_value;
+    if (default_value)
+        cspec->default_value = *default_value;
 
-  return G_PARAM_SPEC (cspec);
+    return G_PARAM_SPEC (cspec);
 }
 
 
 static GimpMatrix3 *
 matrix3_copy (const GimpMatrix3 *matrix)
 {
-  return (GimpMatrix3 *) g_memdup (matrix, sizeof (GimpMatrix3));
+    return (GimpMatrix3 *) g_memdup (matrix, sizeof (GimpMatrix3));
 }
 
 
@@ -476,11 +478,13 @@ matrix3_copy (const GimpMatrix3 *matrix)
 void
 gimp_matrix3_identity (GimpMatrix3 *matrix)
 {
-  static const GimpMatrix3 identity = { { { 1.0, 0.0, 0.0 },
-                                          { 0.0, 1.0, 0.0 },
-                                          { 0.0, 0.0, 1.0 } } };
+    static const GimpMatrix3 identity = { { { 1.0, 0.0, 0.0 },
+            { 0.0, 1.0, 0.0 },
+            { 0.0, 0.0, 1.0 }
+        }
+    };
 
-  *matrix = identity;
+    *matrix = identity;
 }
 
 /**
@@ -500,21 +504,21 @@ gimp_matrix3_transform_point (const GimpMatrix3 *matrix,
                               gdouble           *newx,
                               gdouble           *newy)
 {
-  gdouble  w;
+    gdouble  w;
 
-  w = matrix->coeff[2][0] * x + matrix->coeff[2][1] * y + matrix->coeff[2][2];
+    w = matrix->coeff[2][0] * x + matrix->coeff[2][1] * y + matrix->coeff[2][2];
 
-  if (w == 0.0)
-    w = 1.0;
-  else
-    w = 1.0/w;
+    if (w == 0.0)
+        w = 1.0;
+    else
+        w = 1.0/w;
 
-  *newx = (matrix->coeff[0][0] * x +
-           matrix->coeff[0][1] * y +
-           matrix->coeff[0][2]) * w;
-  *newy = (matrix->coeff[1][0] * x +
-           matrix->coeff[1][1] * y +
-           matrix->coeff[1][2]) * w;
+    *newx = (matrix->coeff[0][0] * x +
+             matrix->coeff[0][1] * y +
+             matrix->coeff[0][2]) * w;
+    *newy = (matrix->coeff[1][0] * x +
+             matrix->coeff[1][1] * y +
+             matrix->coeff[1][2]) * w;
 }
 
 /**
@@ -528,25 +532,25 @@ void
 gimp_matrix3_mult (const GimpMatrix3 *matrix1,
                    GimpMatrix3       *matrix2)
 {
-  gint         i, j;
-  GimpMatrix3  tmp;
-  gdouble      t1, t2, t3;
+    gint         i, j;
+    GimpMatrix3  tmp;
+    gdouble      t1, t2, t3;
 
-  for (i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
     {
-      t1 = matrix1->coeff[i][0];
-      t2 = matrix1->coeff[i][1];
-      t3 = matrix1->coeff[i][2];
+        t1 = matrix1->coeff[i][0];
+        t2 = matrix1->coeff[i][1];
+        t3 = matrix1->coeff[i][2];
 
-      for (j = 0; j < 3; j++)
+        for (j = 0; j < 3; j++)
         {
-          tmp.coeff[i][j]  = t1 * matrix2->coeff[0][j];
-          tmp.coeff[i][j] += t2 * matrix2->coeff[1][j];
-          tmp.coeff[i][j] += t3 * matrix2->coeff[2][j];
+            tmp.coeff[i][j]  = t1 * matrix2->coeff[0][j];
+            tmp.coeff[i][j] += t2 * matrix2->coeff[1][j];
+            tmp.coeff[i][j] += t3 * matrix2->coeff[2][j];
         }
     }
 
-  *matrix2 = tmp;
+    *matrix2 = tmp;
 }
 
 /**
@@ -562,18 +566,18 @@ gimp_matrix3_translate (GimpMatrix3 *matrix,
                         gdouble      x,
                         gdouble      y)
 {
-  gdouble g, h, i;
+    gdouble g, h, i;
 
-  g = matrix->coeff[2][0];
-  h = matrix->coeff[2][1];
-  i = matrix->coeff[2][2];
+    g = matrix->coeff[2][0];
+    h = matrix->coeff[2][1];
+    i = matrix->coeff[2][2];
 
-  matrix->coeff[0][0] += x * g;
-  matrix->coeff[0][1] += x * h;
-  matrix->coeff[0][2] += x * i;
-  matrix->coeff[1][0] += y * g;
-  matrix->coeff[1][1] += y * h;
-  matrix->coeff[1][2] += y * i;
+    matrix->coeff[0][0] += x * g;
+    matrix->coeff[0][1] += x * h;
+    matrix->coeff[0][2] += x * i;
+    matrix->coeff[1][0] += y * g;
+    matrix->coeff[1][1] += y * h;
+    matrix->coeff[1][2] += y * i;
 }
 
 /**
@@ -589,13 +593,13 @@ gimp_matrix3_scale (GimpMatrix3 *matrix,
                     gdouble      x,
                     gdouble      y)
 {
-  matrix->coeff[0][0] *= x;
-  matrix->coeff[0][1] *= x;
-  matrix->coeff[0][2] *= x;
+    matrix->coeff[0][0] *= x;
+    matrix->coeff[0][1] *= x;
+    matrix->coeff[0][2] *= x;
 
-  matrix->coeff[1][0] *= y;
-  matrix->coeff[1][1] *= y;
-  matrix->coeff[1][2] *= y;
+    matrix->coeff[1][0] *= y;
+    matrix->coeff[1][1] *= y;
+    matrix->coeff[1][2] *= y;
 }
 
 /**
@@ -609,26 +613,26 @@ void
 gimp_matrix3_rotate (GimpMatrix3 *matrix,
                      gdouble      theta)
 {
-  gdouble t1, t2;
-  gdouble cost, sint;
+    gdouble t1, t2;
+    gdouble cost, sint;
 
-  cost = cos (theta);
-  sint = sin (theta);
+    cost = cos (theta);
+    sint = sin (theta);
 
-  t1 = matrix->coeff[0][0];
-  t2 = matrix->coeff[1][0];
-  matrix->coeff[0][0] = cost * t1 - sint * t2;
-  matrix->coeff[1][0] = sint * t1 + cost * t2;
+    t1 = matrix->coeff[0][0];
+    t2 = matrix->coeff[1][0];
+    matrix->coeff[0][0] = cost * t1 - sint * t2;
+    matrix->coeff[1][0] = sint * t1 + cost * t2;
 
-  t1 = matrix->coeff[0][1];
-  t2 = matrix->coeff[1][1];
-  matrix->coeff[0][1] = cost * t1 - sint * t2;
-  matrix->coeff[1][1] = sint * t1 + cost * t2;
+    t1 = matrix->coeff[0][1];
+    t2 = matrix->coeff[1][1];
+    matrix->coeff[0][1] = cost * t1 - sint * t2;
+    matrix->coeff[1][1] = sint * t1 + cost * t2;
 
-  t1 = matrix->coeff[0][2];
-  t2 = matrix->coeff[1][2];
-  matrix->coeff[0][2] = cost * t1 - sint * t2;
-  matrix->coeff[1][2] = sint * t1 + cost * t2;
+    t1 = matrix->coeff[0][2];
+    t2 = matrix->coeff[1][2];
+    matrix->coeff[0][2] = cost * t1 - sint * t2;
+    matrix->coeff[1][2] = sint * t1 + cost * t2;
 }
 
 /**
@@ -642,9 +646,9 @@ void
 gimp_matrix3_xshear (GimpMatrix3 *matrix,
                      gdouble      amount)
 {
-  matrix->coeff[0][0] += amount * matrix->coeff[1][0];
-  matrix->coeff[0][1] += amount * matrix->coeff[1][1];
-  matrix->coeff[0][2] += amount * matrix->coeff[1][2];
+    matrix->coeff[0][0] += amount * matrix->coeff[1][0];
+    matrix->coeff[0][1] += amount * matrix->coeff[1][1];
+    matrix->coeff[0][2] += amount * matrix->coeff[1][2];
 }
 
 /**
@@ -658,9 +662,9 @@ void
 gimp_matrix3_yshear (GimpMatrix3 *matrix,
                      gdouble      amount)
 {
-  matrix->coeff[1][0] += amount * matrix->coeff[0][0];
-  matrix->coeff[1][1] += amount * matrix->coeff[0][1];
-  matrix->coeff[1][2] += amount * matrix->coeff[0][2];
+    matrix->coeff[1][0] += amount * matrix->coeff[0][0];
+    matrix->coeff[1][1] += amount * matrix->coeff[0][1];
+    matrix->coeff[1][2] += amount * matrix->coeff[0][2];
 }
 
 /**
@@ -690,21 +694,21 @@ gimp_matrix3_affine (GimpMatrix3 *matrix,
                      gdouble      e,
                      gdouble      f)
 {
-  GimpMatrix3 affine;
+    GimpMatrix3 affine;
 
-  affine.coeff[0][0] = a;
-  affine.coeff[1][0] = b;
-  affine.coeff[2][0] = 0.0;
+    affine.coeff[0][0] = a;
+    affine.coeff[1][0] = b;
+    affine.coeff[2][0] = 0.0;
 
-  affine.coeff[0][1] = c;
-  affine.coeff[1][1] = d;
-  affine.coeff[2][1] = 0.0;
+    affine.coeff[0][1] = c;
+    affine.coeff[1][1] = d;
+    affine.coeff[2][1] = 0.0;
 
-  affine.coeff[0][2] = e;
-  affine.coeff[1][2] = f;
-  affine.coeff[2][2] = 1.0;
+    affine.coeff[0][2] = e;
+    affine.coeff[1][2] = f;
+    affine.coeff[2][2] = 1.0;
 
-  gimp_matrix3_mult (&affine, matrix);
+    gimp_matrix3_mult (&affine, matrix);
 }
 
 /**
@@ -718,19 +722,19 @@ gimp_matrix3_affine (GimpMatrix3 *matrix,
 gdouble
 gimp_matrix3_determinant (const GimpMatrix3 *matrix)
 {
-  gdouble determinant;
+    gdouble determinant;
 
-  determinant  = (matrix->coeff[0][0] *
-                  (matrix->coeff[1][1] * matrix->coeff[2][2] -
-                   matrix->coeff[1][2] * matrix->coeff[2][1]));
-  determinant -= (matrix->coeff[1][0] *
-                  (matrix->coeff[0][1] * matrix->coeff[2][2] -
-                   matrix->coeff[0][2] * matrix->coeff[2][1]));
-  determinant += (matrix->coeff[2][0] *
-                  (matrix->coeff[0][1] * matrix->coeff[1][2] -
-                   matrix->coeff[0][2] * matrix->coeff[1][1]));
+    determinant  = (matrix->coeff[0][0] *
+                    (matrix->coeff[1][1] * matrix->coeff[2][2] -
+                     matrix->coeff[1][2] * matrix->coeff[2][1]));
+    determinant -= (matrix->coeff[1][0] *
+                    (matrix->coeff[0][1] * matrix->coeff[2][2] -
+                     matrix->coeff[0][2] * matrix->coeff[2][1]));
+    determinant += (matrix->coeff[2][0] *
+                    (matrix->coeff[0][1] * matrix->coeff[1][2] -
+                     matrix->coeff[0][2] * matrix->coeff[1][1]));
 
-  return determinant;
+    return determinant;
 }
 
 /**
@@ -742,44 +746,44 @@ gimp_matrix3_determinant (const GimpMatrix3 *matrix)
 void
 gimp_matrix3_invert (GimpMatrix3 *matrix)
 {
-  GimpMatrix3 inv;
-  gdouble     det;
+    GimpMatrix3 inv;
+    gdouble     det;
 
-  det = gimp_matrix3_determinant (matrix);
+    det = gimp_matrix3_determinant (matrix);
 
-  if (det == 0.0)
-    return;
+    if (det == 0.0)
+        return;
 
-  det = 1.0 / det;
+    det = 1.0 / det;
 
-  inv.coeff[0][0] =   (matrix->coeff[1][1] * matrix->coeff[2][2] -
-                       matrix->coeff[1][2] * matrix->coeff[2][1]) * det;
+    inv.coeff[0][0] =   (matrix->coeff[1][1] * matrix->coeff[2][2] -
+                         matrix->coeff[1][2] * matrix->coeff[2][1]) * det;
 
-  inv.coeff[1][0] = - (matrix->coeff[1][0] * matrix->coeff[2][2] -
-                       matrix->coeff[1][2] * matrix->coeff[2][0]) * det;
+    inv.coeff[1][0] = - (matrix->coeff[1][0] * matrix->coeff[2][2] -
+                         matrix->coeff[1][2] * matrix->coeff[2][0]) * det;
 
-  inv.coeff[2][0] =   (matrix->coeff[1][0] * matrix->coeff[2][1] -
-                       matrix->coeff[1][1] * matrix->coeff[2][0]) * det;
+    inv.coeff[2][0] =   (matrix->coeff[1][0] * matrix->coeff[2][1] -
+                         matrix->coeff[1][1] * matrix->coeff[2][0]) * det;
 
-  inv.coeff[0][1] = - (matrix->coeff[0][1] * matrix->coeff[2][2] -
-                       matrix->coeff[0][2] * matrix->coeff[2][1]) * det;
+    inv.coeff[0][1] = - (matrix->coeff[0][1] * matrix->coeff[2][2] -
+                         matrix->coeff[0][2] * matrix->coeff[2][1]) * det;
 
-  inv.coeff[1][1] =   (matrix->coeff[0][0] * matrix->coeff[2][2] -
-                       matrix->coeff[0][2] * matrix->coeff[2][0]) * det;
+    inv.coeff[1][1] =   (matrix->coeff[0][0] * matrix->coeff[2][2] -
+                         matrix->coeff[0][2] * matrix->coeff[2][0]) * det;
 
-  inv.coeff[2][1] = - (matrix->coeff[0][0] * matrix->coeff[2][1] -
-                       matrix->coeff[0][1] * matrix->coeff[2][0]) * det;
+    inv.coeff[2][1] = - (matrix->coeff[0][0] * matrix->coeff[2][1] -
+                         matrix->coeff[0][1] * matrix->coeff[2][0]) * det;
 
-  inv.coeff[0][2] =   (matrix->coeff[0][1] * matrix->coeff[1][2] -
-                       matrix->coeff[0][2] * matrix->coeff[1][1]) * det;
+    inv.coeff[0][2] =   (matrix->coeff[0][1] * matrix->coeff[1][2] -
+                         matrix->coeff[0][2] * matrix->coeff[1][1]) * det;
 
-  inv.coeff[1][2] = - (matrix->coeff[0][0] * matrix->coeff[1][2] -
-                       matrix->coeff[0][2] * matrix->coeff[1][0]) * det;
+    inv.coeff[1][2] = - (matrix->coeff[0][0] * matrix->coeff[1][2] -
+                         matrix->coeff[0][2] * matrix->coeff[1][0]) * det;
 
-  inv.coeff[2][2] =   (matrix->coeff[0][0] * matrix->coeff[1][1] -
-                       matrix->coeff[0][1] * matrix->coeff[1][0]) * det;
+    inv.coeff[2][2] =   (matrix->coeff[0][0] * matrix->coeff[1][1] -
+                         matrix->coeff[0][1] * matrix->coeff[1][0]) * det;
 
-  *matrix = inv;
+    *matrix = inv;
 }
 
 
@@ -796,26 +800,26 @@ gimp_matrix3_invert (GimpMatrix3 *matrix)
 gboolean
 gimp_matrix3_is_identity (const GimpMatrix3 *matrix)
 {
-  gint i, j;
+    gint i, j;
 
-  for (i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
     {
-      for (j = 0; j < 3; j++)
+        for (j = 0; j < 3; j++)
         {
-          if (i == j)
+            if (i == j)
             {
-              if (fabs (matrix->coeff[i][j] - 1.0) > EPSILON)
-                return FALSE;
+                if (fabs (matrix->coeff[i][j] - 1.0) > EPSILON)
+                    return FALSE;
             }
-          else
+            else
             {
-              if (fabs (matrix->coeff[i][j]) > EPSILON)
-                return FALSE;
+                if (fabs (matrix->coeff[i][j]) > EPSILON)
+                    return FALSE;
             }
         }
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 /**
@@ -829,18 +833,18 @@ gimp_matrix3_is_identity (const GimpMatrix3 *matrix)
 gboolean
 gimp_matrix3_is_diagonal (const GimpMatrix3 *matrix)
 {
-  gint i, j;
+    gint i, j;
 
-  for (i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
     {
-      for (j = 0; j < 3; j++)
+        for (j = 0; j < 3; j++)
         {
-          if (i != j && fabs (matrix->coeff[i][j]) > EPSILON)
-            return FALSE;
+            if (i != j && fabs (matrix->coeff[i][j]) > EPSILON)
+                return FALSE;
         }
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 /**
@@ -857,9 +861,9 @@ gimp_matrix3_is_diagonal (const GimpMatrix3 *matrix)
 gboolean
 gimp_matrix3_is_affine (const GimpMatrix3 *matrix)
 {
-  return (fabs (matrix->coeff[2][0]) < EPSILON &&
-          fabs (matrix->coeff[2][1]) < EPSILON &&
-          fabs (matrix->coeff[2][2] - 1.0) < EPSILON);
+    return (fabs (matrix->coeff[2][0]) < EPSILON &&
+            fabs (matrix->coeff[2][1]) < EPSILON &&
+            fabs (matrix->coeff[2][2] - 1.0) < EPSILON);
 }
 
 /**
@@ -875,20 +879,20 @@ gimp_matrix3_is_affine (const GimpMatrix3 *matrix)
 gboolean
 gimp_matrix3_is_simple (const GimpMatrix3 *matrix)
 {
-  gdouble absm;
-  gint    i, j;
+    gdouble absm;
+    gint    i, j;
 
-  for (i = 0; i < 2; i++)
+    for (i = 0; i < 2; i++)
     {
-      for (j = 0; j < 2; j++)
+        for (j = 0; j < 2; j++)
         {
-          absm = fabs (matrix->coeff[i][j]);
-          if (absm > EPSILON && fabs (absm - 1.0) > EPSILON)
-            return FALSE;
+            absm = fabs (matrix->coeff[i][j]);
+            if (absm > EPSILON && fabs (absm - 1.0) > EPSILON)
+                return FALSE;
         }
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 /**
@@ -906,18 +910,18 @@ gboolean
 gimp_matrix3_equal (const GimpMatrix3 *matrix1,
                     const GimpMatrix3 *matrix2)
 {
-  gint i, j;
+    gint i, j;
 
-  for (i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
     {
-      for (j = 0; j < 3; j++)
+        for (j = 0; j < 3; j++)
         {
-          if (fabs (matrix1->coeff[i][j] - matrix2->coeff[i][j]) > EPSILON)
-            return FALSE;
+            if (fabs (matrix1->coeff[i][j] - matrix2->coeff[i][j]) > EPSILON)
+                return FALSE;
         }
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 /**
@@ -931,12 +935,12 @@ gimp_matrix3_equal (const GimpMatrix3 *matrix1,
 void
 gimp_matrix4_identity (GimpMatrix4 *matrix)
 {
-  gint i, j;
+    gint i, j;
 
-  for (i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++)
     {
-      for (j = 0; j < 4; j++)
-        matrix->coeff[i][j] = i == j;
+        for (j = 0; j < 4; j++)
+            matrix->coeff[i][j] = i == j;
     }
 }
 
@@ -953,19 +957,19 @@ void
 gimp_matrix4_mult (const GimpMatrix4 *matrix1,
                    GimpMatrix4       *matrix2)
 {
-  GimpMatrix4 result = {};
-  gint        i, j, k;
+    GimpMatrix4 result = {};
+    gint        i, j, k;
 
-  for (i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++)
     {
-      for (j = 0; j < 4; j++)
+        for (j = 0; j < 4; j++)
         {
-          for (k = 0; k < 4; k++)
-            result.coeff[i][j] += matrix1->coeff[i][k] * matrix2->coeff[k][j];
+            for (k = 0; k < 4; k++)
+                result.coeff[i][j] += matrix1->coeff[i][k] * matrix2->coeff[k][j];
         }
     }
 
-  *matrix2 = result;
+    *matrix2 = result;
 }
 
 /**
@@ -982,9 +986,9 @@ gimp_matrix4_to_deg (const GimpMatrix4 *matrix,
                      gdouble           *b,
                      gdouble           *c)
 {
-  *a = 180 * (asin (matrix->coeff[1][0]) / G_PI_2);
-  *b = 180 * (asin (matrix->coeff[2][0]) / G_PI_2);
-  *c = 180 * (asin (matrix->coeff[2][1]) / G_PI_2);
+    *a = 180 * (asin (matrix->coeff[1][0]) / G_PI_2);
+    *b = 180 * (asin (matrix->coeff[2][0]) / G_PI_2);
+    *c = 180 * (asin (matrix->coeff[2][1]) / G_PI_2);
 }
 
 /**
@@ -1012,28 +1016,28 @@ gimp_matrix4_transform_point (const GimpMatrix4 *matrix,
                               gdouble           *newy,
                               gdouble           *newz)
 {
-  gdouble neww;
+    gdouble neww;
 
-  *newx = matrix->coeff[0][0] * x +
-          matrix->coeff[0][1] * y +
-          matrix->coeff[0][2] * z +
-          matrix->coeff[0][3];
-  *newy = matrix->coeff[1][0] * x +
-          matrix->coeff[1][1] * y +
-          matrix->coeff[1][2] * z +
-          matrix->coeff[1][3];
-  *newz = matrix->coeff[2][0] * x +
-          matrix->coeff[2][1] * y +
-          matrix->coeff[2][2] * z +
-          matrix->coeff[2][3];
-  neww  = matrix->coeff[3][0] * x +
-          matrix->coeff[3][1] * y +
-          matrix->coeff[3][2] * z +
-          matrix->coeff[3][3];
+    *newx = matrix->coeff[0][0] * x +
+            matrix->coeff[0][1] * y +
+            matrix->coeff[0][2] * z +
+            matrix->coeff[0][3];
+    *newy = matrix->coeff[1][0] * x +
+            matrix->coeff[1][1] * y +
+            matrix->coeff[1][2] * z +
+            matrix->coeff[1][3];
+    *newz = matrix->coeff[2][0] * x +
+            matrix->coeff[2][1] * y +
+            matrix->coeff[2][2] * z +
+            matrix->coeff[2][3];
+    neww  = matrix->coeff[3][0] * x +
+            matrix->coeff[3][1] * y +
+            matrix->coeff[3][2] * z +
+            matrix->coeff[3][3];
 
-  *newx /= neww;
-  *newy /= neww;
-  *newz /= neww;
+    *newx /= neww;
+    *newy /= neww;
+    *newz /= neww;
 
-  return neww;
+    return neww;
 }

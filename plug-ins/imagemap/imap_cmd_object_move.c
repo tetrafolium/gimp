@@ -33,48 +33,48 @@ static CmdExecuteValue_t object_move_command_execute(Command_t *parent);
 static void object_move_command_undo(Command_t *parent);
 
 static CommandClass_t object_move_command_class = {
-   object_move_command_destruct,
-   object_move_command_execute,
-   object_move_command_undo,
-   NULL                         /* object_move_command_redo */
+    object_move_command_destruct,
+    object_move_command_execute,
+    object_move_command_undo,
+    NULL                         /* object_move_command_redo */
 };
 
 typedef struct {
-   Command_t parent;
-   Object_t *obj;
-   gint dx;
-   gint dy;
+    Command_t parent;
+    Object_t *obj;
+    gint dx;
+    gint dy;
 } ObjectMoveCommand_t;
 
 Command_t*
 object_move_command_new(Object_t *obj, gint dx, gint dy)
 {
-   ObjectMoveCommand_t *command = g_new(ObjectMoveCommand_t, 1);
-   command->obj = object_ref(obj);
-   command->dx = dx;
-   command->dy = dy;
-   return command_init(&command->parent, _("Move"),
-                       &object_move_command_class);
+    ObjectMoveCommand_t *command = g_new(ObjectMoveCommand_t, 1);
+    command->obj = object_ref(obj);
+    command->dx = dx;
+    command->dy = dy;
+    return command_init(&command->parent, _("Move"),
+                        &object_move_command_class);
 }
 
 static void
 object_move_command_destruct(Command_t *parent)
 {
-   ObjectMoveCommand_t *command = (ObjectMoveCommand_t*) parent;
-   object_unref(command->obj);
+    ObjectMoveCommand_t *command = (ObjectMoveCommand_t*) parent;
+    object_unref(command->obj);
 }
 
 static CmdExecuteValue_t
 object_move_command_execute(Command_t *parent)
 {
-   ObjectMoveCommand_t *command = (ObjectMoveCommand_t*) parent;
-   object_move(command->obj, command->dx, command->dy);
-   return CMD_APPEND;
+    ObjectMoveCommand_t *command = (ObjectMoveCommand_t*) parent;
+    object_move(command->obj, command->dx, command->dy);
+    return CMD_APPEND;
 }
 
 static void
 object_move_command_undo(Command_t *parent)
 {
-   ObjectMoveCommand_t *command = (ObjectMoveCommand_t*) parent;
-   object_move(command->obj, -command->dx, -command->dy);
+    ObjectMoveCommand_t *command = (ObjectMoveCommand_t*) parent;
+    object_move(command->obj, -command->dx, -command->dy);
 }

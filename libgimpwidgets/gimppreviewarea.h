@@ -39,24 +39,24 @@ typedef struct _GimpPreviewAreaClass   GimpPreviewAreaClass;
 
 struct _GimpPreviewArea
 {
-  GtkDrawingArea          parent_instance;
+    GtkDrawingArea          parent_instance;
 
-  GimpPreviewAreaPrivate *priv;
+    GimpPreviewAreaPrivate *priv;
 };
 
 struct _GimpPreviewAreaClass
 {
-  GtkDrawingAreaClass  parent_class;
+    GtkDrawingAreaClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
@@ -65,65 +65,65 @@ GType       gimp_preview_area_get_type         (void) G_GNUC_CONST;
 GtkWidget * gimp_preview_area_new              (void);
 
 void        gimp_preview_area_draw             (GimpPreviewArea *area,
-                                                gint             x,
-                                                gint             y,
-                                                gint             width,
-                                                gint             height,
-                                                GimpImageType    type,
-                                                const guchar    *buf,
-                                                gint             rowstride);
+        gint             x,
+        gint             y,
+        gint             width,
+        gint             height,
+        GimpImageType    type,
+        const guchar    *buf,
+        gint             rowstride);
 void        gimp_preview_area_blend            (GimpPreviewArea *area,
-                                                gint             x,
-                                                gint             y,
-                                                gint             width,
-                                                gint             height,
-                                                GimpImageType    type,
-                                                const guchar    *buf1,
-                                                gint             rowstride1,
-                                                const guchar    *buf2,
-                                                gint             rowstride2,
-                                                guchar           opacity);
+        gint             x,
+        gint             y,
+        gint             width,
+        gint             height,
+        GimpImageType    type,
+        const guchar    *buf1,
+        gint             rowstride1,
+        const guchar    *buf2,
+        gint             rowstride2,
+        guchar           opacity);
 void        gimp_preview_area_mask             (GimpPreviewArea *area,
-                                                gint             x,
-                                                gint             y,
-                                                gint             width,
-                                                gint             height,
-                                                GimpImageType    type,
-                                                const guchar    *buf1,
-                                                gint             rowstride1,
-                                                const guchar    *buf2,
-                                                gint             rowstride2,
-                                                const guchar    *mask,
-                                                gint             rowstride_mask);
+        gint             x,
+        gint             y,
+        gint             width,
+        gint             height,
+        GimpImageType    type,
+        const guchar    *buf1,
+        gint             rowstride1,
+        const guchar    *buf2,
+        gint             rowstride2,
+        const guchar    *mask,
+        gint             rowstride_mask);
 void        gimp_preview_area_fill             (GimpPreviewArea *area,
-                                                gint             x,
-                                                gint             y,
-                                                gint             width,
-                                                gint             height,
-                                                guchar           red,
-                                                guchar           green,
-                                                guchar           blue);
+        gint             x,
+        gint             y,
+        gint             width,
+        gint             height,
+        guchar           red,
+        guchar           green,
+        guchar           blue);
 
 void        gimp_preview_area_set_offsets      (GimpPreviewArea *area,
-                                                gint             x,
-                                                gint             y);
+        gint             x,
+        gint             y);
 
 void        gimp_preview_area_set_colormap     (GimpPreviewArea *area,
-                                                const guchar    *colormap,
-                                                gint             num_colors);
+        const guchar    *colormap,
+        gint             num_colors);
 
 void        gimp_preview_area_set_color_config (GimpPreviewArea *area,
-                                                GimpColorConfig *config);
+        GimpColorConfig *config);
 
 void        gimp_preview_area_get_size         (GimpPreviewArea *area,
-                                                gint            *width,
-                                                gint            *height);
+        gint            *width,
+        gint            *height);
 void        gimp_preview_area_set_max_size     (GimpPreviewArea *area,
-                                                gint             width,
-                                                gint             height);
+        gint             width,
+        gint             height);
 
 void        gimp_preview_area_menu_popup       (GimpPreviewArea *area,
-                                                GdkEventButton  *event);
+        GdkEventButton  *event);
 
 
 G_END_DECLS

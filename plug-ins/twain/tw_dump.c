@@ -84,11 +84,11 @@ extern pTW_SESSION twSession;
 void
 dumpPreTransferCallback(void *clientData)
 {
-  /* Open our output file... Not settable... Always
-   * write to the root directory.  Simplistic, but
-   * gets the job done.
-   */
-  outputFile = g_fopen(DUMP_FILE, "wb");
+    /* Open our output file... Not settable... Always
+     * write to the root directory.  Simplistic, but
+     * gets the job done.
+     */
+    outputFile = g_fopen(DUMP_FILE, "wb");
 }
 
 /*
@@ -100,13 +100,13 @@ dumpPreTransferCallback(void *clientData)
 int
 dumpBeginTransferCallback(pTW_IMAGEINFO imageInfo, void *clientData)
 {
-  logBegin(imageInfo, clientData);
+    logBegin(imageInfo, clientData);
 
-  /* Dump the image information */
-  fwrite((void *) imageInfo, sizeof(TW_IMAGEINFO), 1, outputFile);
+    /* Dump the image information */
+    fwrite((void *) imageInfo, sizeof(TW_IMAGEINFO), 1, outputFile);
 
-  /* Keep going */
-  return TRUE;
+    /* Keep going */
+    return TRUE;
 }
 
 /*
@@ -117,23 +117,23 @@ dumpBeginTransferCallback(pTW_IMAGEINFO imageInfo, void *clientData)
  */
 int
 dumpDataTransferCallback(pTW_IMAGEINFO imageInfo,
-			 pTW_IMAGEMEMXFER imageMemXfer,
-			 void *clientData)
+                         pTW_IMAGEMEMXFER imageMemXfer,
+                         void *clientData)
 {
-  int flag = 1;
+    int flag = 1;
 
-  logData(imageInfo, imageMemXfer, clientData);
+    logData(imageInfo, imageMemXfer, clientData);
 
-  /* Write a flag that says that this is a data packet */
-  fwrite((void *) &flag, sizeof(int), 1, outputFile);
+    /* Write a flag that says that this is a data packet */
+    fwrite((void *) &flag, sizeof(int), 1, outputFile);
 
-  /* Dump the memory information */
-  fwrite((void *) imageMemXfer, sizeof(TW_IMAGEMEMXFER), 1, outputFile);
-  fwrite((void *) imageMemXfer->Memory.TheMem,
-	 1, imageMemXfer->BytesWritten, outputFile);
+    /* Dump the memory information */
+    fwrite((void *) imageMemXfer, sizeof(TW_IMAGEMEMXFER), 1, outputFile);
+    fwrite((void *) imageMemXfer->Memory.TheMem,
+           1, imageMemXfer->BytesWritten, outputFile);
 
-  /* Keep going */
-  return TRUE;
+    /* Keep going */
+    return TRUE;
 }
 
 /*
@@ -155,17 +155,17 @@ dumpDataTransferCallback(pTW_IMAGEINFO imageInfo,
 int
 dumpEndTransferCallback(int completionState, int pendingCount, void *clientData)
 {
-  int flag = 0;
+    int flag = 0;
 
-  /* Write a flag that says that this is a data packet */
-  fwrite((void *) &flag, sizeof(int), 1, outputFile);
+    /* Write a flag that says that this is a data packet */
+    fwrite((void *) &flag, sizeof(int), 1, outputFile);
 
-  /* Write the necessary data */
-  fwrite(&completionState, sizeof(int), 1, outputFile);
-  fwrite(&pendingCount, sizeof(int), 1, outputFile);
+    /* Write the necessary data */
+    fwrite(&completionState, sizeof(int), 1, outputFile);
+    fwrite(&pendingCount, sizeof(int), 1, outputFile);
 
-  /* Only ever transfer a single image */
-  return FALSE;
+    /* Only ever transfer a single image */
+    return FALSE;
 }
 
 /*
@@ -178,30 +178,30 @@ dumpEndTransferCallback(int completionState, int pendingCount, void *clientData)
 void
 dumpPostTransferCallback(int pendingCount, void *clientData)
 {
-  char buffer[128];
+    char buffer[128];
 
-  /* Shut things down. */
-  if (pendingCount != 0)
-    cancelPendingTransfers(twSession);
+    /* Shut things down. */
+    if (pendingCount != 0)
+        cancelPendingTransfers(twSession);
 
-  /* This will close the datasource and datasource
-   * manager.  Then the message queue will be shut
-   * down and the run() procedure will finally be
-   * able to finish.
-   */
-  disableDS(twSession);
-  closeDS(twSession);
-  closeDSM(twSession);
+    /* This will close the datasource and datasource
+     * manager.  Then the message queue will be shut
+     * down and the run() procedure will finally be
+     * able to finish.
+     */
+    disableDS(twSession);
+    closeDS(twSession);
+    closeDSM(twSession);
 
-  /* Close the dump file */
-  fclose(outputFile);
+    /* Close the dump file */
+    fclose(outputFile);
 
-  /* Tell the user */
-  sprintf(buffer, "Image dumped to file %s\n", DUMP_FILE);
-  gimp_message(buffer);
+    /* Tell the user */
+    sprintf(buffer, "Image dumped to file %s\n", DUMP_FILE);
+    gimp_message(buffer);
 
-  /* Post a message to close up the application */
-  twainQuitApplication ();
+    /* Post a message to close up the application */
+    twainQuitApplication ();
 }
 
 /*
@@ -211,63 +211,63 @@ dumpPostTransferCallback(int pendingCount, void *clientData)
  */
 void readDumpedImage(pTW_SESSION twSession)
 {
-  int moreData;
-  int completionState;
-  int pendingCount;
+    int moreData;
+    int completionState;
+    int pendingCount;
 
-  TW_IMAGEINFO imageInfo;
-  TW_IMAGEMEMXFER imageMemXfer;
+    TW_IMAGEINFO imageInfo;
+    TW_IMAGEMEMXFER imageMemXfer;
 
-  /* Open our output file... Not settable... Always
-   * write to the root directory.  Simplistic, but
-   * gets the job done.
-   */
-  FILE *inputFile = g_fopen(DUMP_FILE, "rb");
+    /* Open our output file... Not settable... Always
+     * write to the root directory.  Simplistic, but
+     * gets the job done.
+     */
+    FILE *inputFile = g_fopen(DUMP_FILE, "rb");
 
-  /*
-   * Inform our application that we are getting ready
-   * to transfer images.
-   */
-  (*twSession->transferFunctions->preTxfrCb)(NULL);
+    /*
+     * Inform our application that we are getting ready
+     * to transfer images.
+     */
+    (*twSession->transferFunctions->preTxfrCb)(NULL);
 
-  /* Read the image information */
-  fread((void *) &imageInfo, sizeof(TW_IMAGEINFO), 1, inputFile);
+    /* Read the image information */
+    fread((void *) &imageInfo, sizeof(TW_IMAGEINFO), 1, inputFile);
 
-  /* Call the begin transfer callback */
-  if (!(*twSession->transferFunctions->txfrBeginCb)(&imageInfo, twSession->clientData))
-    return;
+    /* Call the begin transfer callback */
+    if (!(*twSession->transferFunctions->txfrBeginCb)(&imageInfo, twSession->clientData))
+        return;
 
-  /* Read all of the data packets */
-  fread((void *) &moreData, sizeof(int), 1, inputFile);
-  while (moreData) {
-    /* Read the memory information */
-    fread((void *) &imageMemXfer, sizeof(TW_IMAGEMEMXFER), 1, inputFile);
-    imageMemXfer.Memory.TheMem = (TW_MEMREF) g_malloc (imageMemXfer.BytesWritten);
-    fread((void *) imageMemXfer.Memory.TheMem,
-	  1, imageMemXfer.BytesWritten, inputFile);
-
-    /* Call the data transfer callback function */
-    if (!(*twSession->transferFunctions->txfrDataCb)
-	(&imageInfo,
-	 &imageMemXfer,
-	 twSession->clientData))
-      return;
-
-    /* Clean up the memory */
-    g_free (imageMemXfer.Memory.TheMem);
-
-    /* Check for continuation */
+    /* Read all of the data packets */
     fread((void *) &moreData, sizeof(int), 1, inputFile);
-  }
+    while (moreData) {
+        /* Read the memory information */
+        fread((void *) &imageMemXfer, sizeof(TW_IMAGEMEMXFER), 1, inputFile);
+        imageMemXfer.Memory.TheMem = (TW_MEMREF) g_malloc (imageMemXfer.BytesWritten);
+        fread((void *) imageMemXfer.Memory.TheMem,
+              1, imageMemXfer.BytesWritten, inputFile);
 
-  /* Grab the final information */
-  fread(&completionState, sizeof(int), 1, inputFile);
-  fread(&pendingCount, sizeof(int), 1, inputFile);
+        /* Call the data transfer callback function */
+        if (!(*twSession->transferFunctions->txfrDataCb)
+                (&imageInfo,
+                 &imageMemXfer,
+                 twSession->clientData))
+            return;
 
-  if (twSession->transferFunctions->txfrEndCb)
-    (*twSession->transferFunctions->txfrEndCb)(completionState, 0,
-					       twSession->clientData);
+        /* Clean up the memory */
+        g_free (imageMemXfer.Memory.TheMem);
 
-  /* Post a message to close up the application */
-  twainQuitApplication ();
+        /* Check for continuation */
+        fread((void *) &moreData, sizeof(int), 1, inputFile);
+    }
+
+    /* Grab the final information */
+    fread(&completionState, sizeof(int), 1, inputFile);
+    fread(&pendingCount, sizeof(int), 1, inputFile);
+
+    if (twSession->transferFunctions->txfrEndCb)
+        (*twSession->transferFunctions->txfrEndCb)(completionState, 0,
+                twSession->clientData);
+
+    /* Post a message to close up the application */
+    twainQuitApplication ();
 }

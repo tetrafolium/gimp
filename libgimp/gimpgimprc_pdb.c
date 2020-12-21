@@ -56,25 +56,25 @@
 gchar *
 gimp_gimprc_query (const gchar *token)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *value = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *value = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, token,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, token,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-gimprc-query",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-gimprc-query",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    value = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        value = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return value;
+    return value;
 }
 
 /**
@@ -96,25 +96,25 @@ gboolean
 gimp_gimprc_set (const gchar *token,
                  const gchar *value)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_STRING, token,
-                                          G_TYPE_STRING, value,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_STRING, token,
+                                            G_TYPE_STRING, value,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-gimprc-set",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-gimprc-set",
+                  args);
+    gimp_value_array_unref (args);
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -130,24 +130,24 @@ gimp_gimprc_set (const gchar *token,
 gchar *
 gimp_get_default_comment (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *comment = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *comment = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-get-default-comment",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-get-default-comment",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    comment = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        comment = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return comment;
+    return comment;
 }
 
 /**
@@ -164,24 +164,24 @@ gimp_get_default_comment (void)
 GimpUnit
 gimp_get_default_unit (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  GimpUnit unit_id = GIMP_UNIT_PIXEL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    GimpUnit unit_id = GIMP_UNIT_PIXEL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-get-default-unit",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-get-default-unit",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    unit_id = GIMP_VALUES_GET_INT (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        unit_id = GIMP_VALUES_GET_INT (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return unit_id;
+    return unit_id;
 }
 
 /**
@@ -202,32 +202,32 @@ gboolean
 gimp_get_monitor_resolution (gdouble *xres,
                              gdouble *yres)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gboolean success = TRUE;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gboolean success = TRUE;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-get-monitor-resolution",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-get-monitor-resolution",
+                  args);
+    gimp_value_array_unref (args);
 
-  *xres = 0.0;
-  *yres = 0.0;
+    *xres = 0.0;
+    *yres = 0.0;
 
-  success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-  if (success)
+    if (success)
     {
-      *xres = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
-      *yres = GIMP_VALUES_GET_DOUBLE (return_vals, 2);
+        *xres = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+        *yres = GIMP_VALUES_GET_DOUBLE (return_vals, 2);
     }
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return success;
+    return success;
 }
 
 /**
@@ -246,24 +246,24 @@ gimp_get_monitor_resolution (gdouble *xres,
 gchar *
 _gimp_get_color_configuration (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *config = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *config = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-get-color-configuration",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-get-color-configuration",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    config = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        config = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return config;
+    return config;
 }
 
 /**
@@ -279,22 +279,22 @@ _gimp_get_color_configuration (void)
 gchar *
 gimp_get_module_load_inhibit (void)
 {
-  GimpValueArray *args;
-  GimpValueArray *return_vals;
-  gchar *load_inhibit = NULL;
+    GimpValueArray *args;
+    GimpValueArray *return_vals;
+    gchar *load_inhibit = NULL;
 
-  args = gimp_value_array_new_from_types (NULL,
-                                          G_TYPE_NONE);
+    args = gimp_value_array_new_from_types (NULL,
+                                            G_TYPE_NONE);
 
-  return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                                              "gimp-get-module-load-inhibit",
-                                              args);
-  gimp_value_array_unref (args);
+    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+                  "gimp-get-module-load-inhibit",
+                  args);
+    gimp_value_array_unref (args);
 
-  if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    load_inhibit = GIMP_VALUES_DUP_STRING (return_vals, 1);
+    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+        load_inhibit = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-  gimp_value_array_unref (return_vals);
+    gimp_value_array_unref (return_vals);
 
-  return load_inhibit;
+    return load_inhibit;
 }

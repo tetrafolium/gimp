@@ -42,23 +42,23 @@ typedef struct _GimpColorProfileStoreClass   GimpColorProfileStoreClass;
 
 struct _GimpColorProfileStore
 {
-  GtkListStore                  parent_instance;
+    GtkListStore                  parent_instance;
 
-  GimpColorProfileStorePrivate *priv;
+    GimpColorProfileStorePrivate *priv;
 };
 
 struct _GimpColorProfileStoreClass
 {
-  GtkListStoreClass  parent_class;
+    GtkListStoreClass  parent_class;
 
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
@@ -67,8 +67,8 @@ GType          gimp_color_profile_store_get_type (void) G_GNUC_CONST;
 GtkListStore * gimp_color_profile_store_new      (GFile                 *history);
 
 void           gimp_color_profile_store_add_file (GimpColorProfileStore *store,
-                                                  GFile                 *file,
-                                                  const gchar           *label);
+        GFile                 *file,
+        const gchar           *label);
 
 
 G_END_DECLS

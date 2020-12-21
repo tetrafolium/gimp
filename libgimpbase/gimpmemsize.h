@@ -39,7 +39,7 @@ GType      gimp_memsize_get_type         (void) G_GNUC_CONST;
 
 gchar    * gimp_memsize_serialize        (guint64      memsize) G_GNUC_MALLOC;
 gboolean   gimp_memsize_deserialize      (const gchar *string,
-                                          guint64     *memsize);
+        guint64     *memsize);
 
 
 /*
@@ -52,12 +52,12 @@ gboolean   gimp_memsize_deserialize      (const gchar *string,
 GType        gimp_param_memsize_get_type  (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_memsize      (const gchar  *name,
-                                           const gchar  *nick,
-                                           const gchar  *blurb,
-                                           guint64       minimum,
-                                           guint64       maximum,
-                                           guint64       default_value,
-                                           GParamFlags   flags);
+        const gchar  *nick,
+        const gchar  *blurb,
+        guint64       minimum,
+        guint64       maximum,
+        guint64       default_value,
+        GParamFlags   flags);
 
 
 G_END_DECLS

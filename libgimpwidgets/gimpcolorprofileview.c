@@ -45,7 +45,7 @@
 
 struct _GimpColorProfileViewPrivate
 {
-  GimpColorProfile *profile;
+    GimpColorProfile *profile;
 };
 
 
@@ -62,127 +62,127 @@ G_DEFINE_TYPE_WITH_PRIVATE (GimpColorProfileView, gimp_color_profile_view,
 static void
 gimp_color_profile_view_class_init (GimpColorProfileViewClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed = gimp_color_profile_view_constructed;
-  object_class->finalize    = gimp_color_profile_view_finalize;
+    object_class->constructed = gimp_color_profile_view_constructed;
+    object_class->finalize    = gimp_color_profile_view_finalize;
 }
 
 static void
 gimp_color_profile_view_init (GimpColorProfileView *view)
 {
-  view->priv = gimp_color_profile_view_get_instance_private (view);
+    view->priv = gimp_color_profile_view_get_instance_private (view);
 }
 
 static void
 gimp_color_profile_view_constructed (GObject *object)
 {
-  GtkTextBuffer *buffer;
+    GtkTextBuffer *buffer;
 
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object));
+    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object));
 
-  gtk_text_buffer_create_tag (buffer, "text",
-                              NULL);
-  gtk_text_buffer_create_tag (buffer, "title",
-                              "weight", PANGO_WEIGHT_BOLD,
-                              "scale",  PANGO_SCALE_LARGE,
-                              NULL);
-  gtk_text_buffer_create_tag (buffer, "header",
-                              "weight", PANGO_WEIGHT_BOLD,
-                              NULL);
-  gtk_text_buffer_create_tag (buffer, "error",
-                              "style",  PANGO_STYLE_OBLIQUE,
-                              NULL);
+    gtk_text_buffer_create_tag (buffer, "text",
+                                NULL);
+    gtk_text_buffer_create_tag (buffer, "title",
+                                "weight", PANGO_WEIGHT_BOLD,
+                                "scale",  PANGO_SCALE_LARGE,
+                                NULL);
+    gtk_text_buffer_create_tag (buffer, "header",
+                                "weight", PANGO_WEIGHT_BOLD,
+                                NULL);
+    gtk_text_buffer_create_tag (buffer, "error",
+                                "style",  PANGO_STYLE_OBLIQUE,
+                                NULL);
 
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (object), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (object), GTK_WRAP_WORD);
+    gtk_text_view_set_editable (GTK_TEXT_VIEW (object), FALSE);
+    gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (object), GTK_WRAP_WORD);
 
-  gtk_text_view_set_pixels_above_lines (GTK_TEXT_VIEW (object), 6);
-  gtk_text_view_set_left_margin (GTK_TEXT_VIEW (object), 6);
-  gtk_text_view_set_right_margin (GTK_TEXT_VIEW (object), 6);
+    gtk_text_view_set_pixels_above_lines (GTK_TEXT_VIEW (object), 6);
+    gtk_text_view_set_left_margin (GTK_TEXT_VIEW (object), 6);
+    gtk_text_view_set_right_margin (GTK_TEXT_VIEW (object), 6);
 }
 
 static void
 gimp_color_profile_view_finalize (GObject *object)
 {
-  GimpColorProfileView *view = GIMP_COLOR_PROFILE_VIEW (object);
+    GimpColorProfileView *view = GIMP_COLOR_PROFILE_VIEW (object);
 
-  g_clear_object (&view->priv->profile);
+    g_clear_object (&view->priv->profile);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 GtkWidget *
 gimp_color_profile_view_new (void)
 {
-  return g_object_new (GIMP_TYPE_COLOR_PROFILE_VIEW, NULL);
+    return g_object_new (GIMP_TYPE_COLOR_PROFILE_VIEW, NULL);
 }
 
 void
 gimp_color_profile_view_set_profile (GimpColorProfileView *view,
                                      GimpColorProfile     *profile)
 {
-  GtkTextBuffer *buffer;
+    GtkTextBuffer *buffer;
 
-  g_return_if_fail (GIMP_IS_COLOR_PROFILE_VIEW (view));
-  g_return_if_fail (profile == NULL || GIMP_IS_COLOR_PROFILE (profile));
+    g_return_if_fail (GIMP_IS_COLOR_PROFILE_VIEW (view));
+    g_return_if_fail (profile == NULL || GIMP_IS_COLOR_PROFILE (profile));
 
-  if (profile == view->priv->profile)
-    return;
+    if (profile == view->priv->profile)
+        return;
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
 
-  gtk_text_buffer_set_text (buffer, "", 0);
+    gtk_text_buffer_set_text (buffer, "", 0);
 
-  if (g_set_object (&view->priv->profile, profile) && profile)
+    if (g_set_object (&view->priv->profile, profile) && profile)
     {
-      GtkTextIter  iter;
-      const gchar *text;
+        GtkTextIter  iter;
+        const gchar *text;
 
-      gtk_text_buffer_get_start_iter (buffer, &iter);
+        gtk_text_buffer_get_start_iter (buffer, &iter);
 
-      text = gimp_color_profile_get_label (profile);
-      if (text && strlen (text))
+        text = gimp_color_profile_get_label (profile);
+        if (text && strlen (text))
         {
-          gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                                    text, -1,
-                                                    "title", NULL);
-          gtk_text_buffer_insert (buffer, &iter, "\n", 1);
+            gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+                    text, -1,
+                    "title", NULL);
+            gtk_text_buffer_insert (buffer, &iter, "\n", 1);
         }
 
-      text = gimp_color_profile_get_model (profile);
-      if (text && strlen (text))
+        text = gimp_color_profile_get_model (profile);
+        if (text && strlen (text))
         {
-          gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                                    text, -1,
-                                                    "text", NULL);
-          gtk_text_buffer_insert (buffer, &iter, "\n", 1);
+            gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+                    text, -1,
+                    "text", NULL);
+            gtk_text_buffer_insert (buffer, &iter, "\n", 1);
         }
 
-      text = gimp_color_profile_get_manufacturer (profile);
-      if (text && strlen (text))
+        text = gimp_color_profile_get_manufacturer (profile);
+        if (text && strlen (text))
         {
-          gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                                    _("Manufacturer: "), -1,
-                                                    "header", NULL);
-          gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                                    text, -1,
-                                                    "text", NULL);
-          gtk_text_buffer_insert (buffer, &iter, "\n", 1);
+            gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+                    _("Manufacturer: "), -1,
+                    "header", NULL);
+            gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+                    text, -1,
+                    "text", NULL);
+            gtk_text_buffer_insert (buffer, &iter, "\n", 1);
         }
 
-      text = gimp_color_profile_get_copyright (profile);
-      if (text && strlen (text))
+        text = gimp_color_profile_get_copyright (profile);
+        if (text && strlen (text))
         {
-          gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                                    _("Copyright: "), -1,
-                                                    "header", NULL);
-          gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                                    text, -1,
-                                                    "text", NULL);
-          gtk_text_buffer_insert (buffer, &iter, "\n", 1);
+            gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+                    _("Copyright: "), -1,
+                    "header", NULL);
+            gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+                    text, -1,
+                    "text", NULL);
+            gtk_text_buffer_insert (buffer, &iter, "\n", 1);
         }
     }
 }
@@ -191,19 +191,19 @@ void
 gimp_color_profile_view_set_error (GimpColorProfileView *view,
                                    const gchar          *message)
 {
-  GtkTextBuffer *buffer;
-  GtkTextIter    iter;
+    GtkTextBuffer *buffer;
+    GtkTextIter    iter;
 
-  g_return_if_fail (GIMP_IS_COLOR_PROFILE_VIEW (view));
-  g_return_if_fail (message != NULL);
+    g_return_if_fail (GIMP_IS_COLOR_PROFILE_VIEW (view));
+    g_return_if_fail (message != NULL);
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
 
-  gtk_text_buffer_set_text (buffer, "", 0);
+    gtk_text_buffer_set_text (buffer, "", 0);
 
-  gtk_text_buffer_get_start_iter (buffer, &iter);
+    gtk_text_buffer_get_start_iter (buffer, &iter);
 
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
-                                            message, -1,
-                                            "error", NULL);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter,
+            message, -1,
+            "error", NULL);
 }

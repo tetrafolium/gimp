@@ -24,15 +24,15 @@
 #define _IMAP_STATUSBAR_H
 
 typedef struct {
-   GtkWidget *status;
-   GtkWidget *xy;
-   GtkWidget *dimension;
-   GtkWidget *zoom;
+    GtkWidget *status;
+    GtkWidget *xy;
+    GtkWidget *dimension;
+    GtkWidget *zoom;
 
-   gint status_id;
-   gint message_id;
+    gint status_id;
+    gint message_id;
 
-   gint zoom_id;
+    gint zoom_id;
 } StatusBar_t;
 
 StatusBar_t *make_statusbar(GtkWidget *main_vbox, GtkWidget *window);

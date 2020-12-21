@@ -58,9 +58,9 @@ typedef struct _GimpDisplay         GimpDisplay;
  **/
 typedef enum
 {
-  GIMP_PIXBUF_KEEP_ALPHA,
-  GIMP_PIXBUF_SMALL_CHECKS,
-  GIMP_PIXBUF_LARGE_CHECKS
+    GIMP_PIXBUF_KEEP_ALPHA,
+    GIMP_PIXBUF_SMALL_CHECKS,
+    GIMP_PIXBUF_LARGE_CHECKS
 } GimpPixbufTransparency;
 
 

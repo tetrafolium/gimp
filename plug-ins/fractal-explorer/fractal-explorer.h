@@ -23,23 +23,23 @@
 
 enum
 {
-  SINUS,
-  COSINUS,
-  NONE
+    SINUS,
+    COSINUS,
+    NONE
 };
 
 enum
 {
-  TYPE_MANDELBROT,
-  TYPE_JULIA,
-  TYPE_BARNSLEY_1,
-  TYPE_BARNSLEY_2,
-  TYPE_BARNSLEY_3,
-  TYPE_SPIDER,
-  TYPE_MAN_O_WAR,
-  TYPE_LAMBDA,
-  TYPE_SIERPINSKI,
-  NUM_TYPES
+    TYPE_MANDELBROT,
+    TYPE_JULIA,
+    TYPE_BARNSLEY_1,
+    TYPE_BARNSLEY_2,
+    TYPE_BARNSLEY_3,
+    TYPE_SPIDER,
+    TYPE_MAN_O_WAR,
+    TYPE_LAMBDA,
+    TYPE_SIERPINSKI,
+    NUM_TYPES
 };
 
 /**********************************************************************
@@ -48,42 +48,42 @@ enum
 
 typedef struct
 {
-  gint     fractaltype;
-  gdouble  xmin;
-  gdouble  xmax;
-  gdouble  ymin;
-  gdouble  ymax;
-  gdouble  iter;
-  gdouble  cx;
-  gdouble  cy;
-  gint     colormode;
-  gdouble  redstretch;
-  gdouble  greenstretch;
-  gdouble  bluestretch;
-  gint     redmode;
-  gint     greenmode;
-  gint     bluemode;
-  gboolean redinvert;
-  gboolean greeninvert;
-  gboolean blueinvert;
-  gboolean alwayspreview;
-  gint     ncolors;
-  gboolean gradinvert;
-  gboolean useloglog;
+    gint     fractaltype;
+    gdouble  xmin;
+    gdouble  xmax;
+    gdouble  ymin;
+    gdouble  ymax;
+    gdouble  iter;
+    gdouble  cx;
+    gdouble  cy;
+    gint     colormode;
+    gdouble  redstretch;
+    gdouble  greenstretch;
+    gdouble  bluestretch;
+    gint     redmode;
+    gint     greenmode;
+    gint     bluemode;
+    gboolean redinvert;
+    gboolean greeninvert;
+    gboolean blueinvert;
+    gboolean alwayspreview;
+    gint     ncolors;
+    gboolean gradinvert;
+    gboolean useloglog;
 } explorer_vals_t;
 
 typedef struct
 {
-  GtkWidget *preview;
-  guchar    *wimage;
-  gint       run;
+    GtkWidget *preview;
+    guchar    *wimage;
+    gint       run;
 } explorer_interface_t;
 
 /* typedef gint       colorvalue[3]; */
 typedef struct
-  {
+{
     guchar r, g, b;
-  } gucharRGB;
+} gucharRGB;
 
 typedef gucharRGB  clrmap[MAXNCOLORS];
 
@@ -91,75 +91,75 @@ typedef guchar     vlumap[MAXNCOLORS];
 
 typedef struct
 {
-  GtkWidget     *text;
-  GtkAdjustment *data;
+    GtkWidget     *text;
+    GtkAdjustment *data;
 } scaledata;
 
 typedef struct _DialogElements DialogElements;
 
 struct _DialogElements
 {
-  GtkWidget     *type[NUM_TYPES];
-  GtkWidget     *xmin;
-  GtkWidget     *xmax;
-  GtkWidget     *ymin;
-  GtkWidget     *ymax;
-  GtkWidget     *iter;
-  GtkWidget     *cx;
-  GtkWidget     *cy;
+    GtkWidget     *type[NUM_TYPES];
+    GtkWidget     *xmin;
+    GtkWidget     *xmax;
+    GtkWidget     *ymin;
+    GtkWidget     *ymax;
+    GtkWidget     *iter;
+    GtkWidget     *cx;
+    GtkWidget     *cy;
 
-  GtkWidget     *ncol;
-  GtkWidget     *useloglog;
+    GtkWidget     *ncol;
+    GtkWidget     *useloglog;
 
-  GtkWidget     *red;
-  GtkWidget     *green;
-  GtkWidget     *blue;
+    GtkWidget     *red;
+    GtkWidget     *green;
+    GtkWidget     *blue;
 
-  GtkWidget     *redmode[3];
-  GtkWidget     *redinvert;
+    GtkWidget     *redmode[3];
+    GtkWidget     *redinvert;
 
-  GtkWidget     *greenmode[3];
-  GtkWidget     *greeninvert;
+    GtkWidget     *greenmode[3];
+    GtkWidget     *greeninvert;
 
-  GtkWidget     *bluemode[3];
-  GtkWidget     *blueinvert;
+    GtkWidget     *bluemode[3];
+    GtkWidget     *blueinvert;
 
-  GtkWidget     *colormode[2];
+    GtkWidget     *colormode[2];
 };
 
 
 typedef struct DFigObj
 {
-  gchar           *name;      /* Trailing name of file  */
-  gchar           *filename;  /* Filename itself */
-  gchar           *draw_name; /* Name of the drawing */
-  explorer_vals_t  opts;      /* Options enforced when fig saved */
-  GtkWidget       *list_item;
-  GtkWidget       *label_widget;
-  GtkWidget       *pixmap_widget;
-  gint             obj_status;
+    gchar           *name;      /* Trailing name of file  */
+    gchar           *filename;  /* Filename itself */
+    gchar           *draw_name; /* Name of the drawing */
+    explorer_vals_t  opts;      /* Options enforced when fig saved */
+    GtkWidget       *list_item;
+    GtkWidget       *label_widget;
+    GtkWidget       *pixmap_widget;
+    gint             obj_status;
 } fractalexplorerOBJ;
 
 
 typedef struct GigObj
 {
-  gchar     *name;      /* Trailing name of file  */
-  gchar     *filename;  /* Filename itself */
-  gchar     *draw_name; /* Name of the drawing */
-  gint       typus;
-  GtkWidget *list_item;
-  GtkWidget *label_widget;
-  GtkWidget *pixmap_widget;
-  gint       obj_status;
+    gchar     *name;      /* Trailing name of file  */
+    gchar     *filename;  /* Filename itself */
+    gchar     *draw_name; /* Name of the drawing */
+    gint       typus;
+    GtkWidget *list_item;
+    GtkWidget *label_widget;
+    GtkWidget *pixmap_widget;
+    gint       obj_status;
 } gradientOBJ;
 
 typedef struct _fractalexplorerListOptions
 {
-  GtkWidget          *query_box;
-  GtkWidget          *name_entry;
-  GtkWidget          *list_entry;
-  fractalexplorerOBJ *obj;
-  gint                created;
+    GtkWidget          *query_box;
+    GtkWidget          *name_entry;
+    GtkWidget          *list_entry;
+    fractalexplorerOBJ *obj;
+    gint                created;
 } fractalexplorerListOptions;
 
 /* States of the object */
@@ -185,11 +185,11 @@ extern gdouble      ybild;
 extern gdouble      xdiff;
 extern gdouble      ydiff;
 extern gint         sel_x1,
-                    sel_y1,
-                    sel_x2,
-                    sel_y2;
+       sel_y1,
+       sel_x2,
+       sel_y2;
 extern gint         preview_width,
-                    preview_height;
+       preview_height;
 extern gdouble     *gg;
 extern int          line_no;
 extern gchar       *filename;

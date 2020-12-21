@@ -43,77 +43,77 @@ typedef struct _GimpProcedureDialogPrivate GimpProcedureDialogPrivate;
 
 struct _GimpProcedureDialog
 {
-  GimpDialog                  parent_instance;
+    GimpDialog                  parent_instance;
 
-  GimpProcedureDialogPrivate *priv;
+    GimpProcedureDialogPrivate *priv;
 };
 
 struct _GimpProcedureDialogClass
 {
-  GimpDialogClass  parent_class;
+    GimpDialogClass  parent_class;
 
-  void             (* fill_list) (GimpProcedureDialog *dialog,
-                                  GimpProcedure       *procedure,
-                                  GimpProcedureConfig *config,
-                                  GList               *properties);
+    void             (* fill_list) (GimpProcedureDialog *dialog,
+                                    GimpProcedure       *procedure,
+                                    GimpProcedureConfig *config,
+                                    GList               *properties);
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 
 GType       gimp_procedure_dialog_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * gimp_procedure_dialog_new               (GimpProcedure       *procedure,
-                                                     GimpProcedureConfig *config,
-                                                     const gchar         *title);
+        GimpProcedureConfig *config,
+        const gchar         *title);
 
 GtkWidget * gimp_procedure_dialog_get_widget        (GimpProcedureDialog *dialog,
-                                                     const gchar         *property,
-                                                     GType                widget_type);
+        const gchar         *property,
+        GType                widget_type);
 GtkWidget * gimp_procedure_dialog_get_int_combo     (GimpProcedureDialog *dialog,
-                                                     const gchar         *property,
-                                                     GimpIntStore        *store);
+        const gchar         *property,
+        GimpIntStore        *store);
 GtkWidget * gimp_procedure_dialog_get_scale_entry   (GimpProcedureDialog *dialog,
-                                                     const gchar         *property,
-                                                     gdouble              factor);
+        const gchar         *property,
+        gdouble              factor);
 GtkWidget * gimp_procedure_dialog_get_label         (GimpProcedureDialog *dialog,
-                                                     const gchar         *label_id,
-                                                     const gchar         *text);
+        const gchar         *label_id,
+        const gchar         *text);
 
 GtkWidget * gimp_procedure_dialog_fill_box          (GimpProcedureDialog *dialog,
-                                                     const gchar         *container_id,
-                                                     const gchar         *first_property,
-                                                     ...);
+        const gchar         *container_id,
+        const gchar         *first_property,
+        ...);
 GtkWidget * gimp_procedure_dialog_fill_box_list     (GimpProcedureDialog *dialog,
-                                                     const gchar         *container_id,
-                                                     GList               *properties);
+        const gchar         *container_id,
+        GList               *properties);
 GtkWidget * gimp_procedure_dialog_fill_flowbox      (GimpProcedureDialog *dialog,
-                                                     const gchar         *container_id,
-                                                     const gchar         *first_property,
-                                                     ...);
+        const gchar         *container_id,
+        const gchar         *first_property,
+        ...);
 GtkWidget * gimp_procedure_dialog_fill_flowbox_list (GimpProcedureDialog *dialog,
-                                                     const gchar         *container_id,
-                                                     GList               *properties);
+        const gchar         *container_id,
+        GList               *properties);
 
 GtkWidget * gimp_procedure_dialog_fill_frame        (GimpProcedureDialog *dialog,
-                                                     const gchar         *container_id,
-                                                     const gchar         *title_id,
-                                                     gboolean             invert_title,
-                                                     const gchar         *contents_id);
+        const gchar         *container_id,
+        const gchar         *title_id,
+        gboolean             invert_title,
+        const gchar         *contents_id);
 
 void        gimp_procedure_dialog_fill              (GimpProcedureDialog *dialog,
-                                                     const gchar         *first_property,
-                                                     ...);
+        const gchar         *first_property,
+        ...);
 void        gimp_procedure_dialog_fill_list         (GimpProcedureDialog *dialog,
-                                                     GList               *properties);
+        GList               *properties);
 
 gboolean    gimp_procedure_dialog_run               (GimpProcedureDialog *dialog);
 

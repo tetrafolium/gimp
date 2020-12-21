@@ -44,26 +44,26 @@ typedef struct _GimpColorSelectionClass   GimpColorSelectionClass;
 
 struct _GimpColorSelection
 {
-  GtkBox                     parent_instance;
+    GtkBox                     parent_instance;
 
-  GimpColorSelectionPrivate *priv;
+    GimpColorSelectionPrivate *priv;
 };
 
 struct _GimpColorSelectionClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  void (* color_changed) (GimpColorSelection *selection);
+    void (* color_changed) (GimpColorSelection *selection);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
@@ -72,25 +72,25 @@ GType       gimp_color_selection_get_type       (void) G_GNUC_CONST;
 GtkWidget * gimp_color_selection_new            (void);
 
 void        gimp_color_selection_set_show_alpha (GimpColorSelection *selection,
-                                                 gboolean           show_alpha);
+        gboolean           show_alpha);
 gboolean    gimp_color_selection_get_show_alpha (GimpColorSelection *selection);
 
 void        gimp_color_selection_set_color      (GimpColorSelection *selection,
-                                                 const GimpRGB      *color);
+        const GimpRGB      *color);
 void        gimp_color_selection_get_color      (GimpColorSelection *selection,
-                                                 GimpRGB            *color);
+        GimpRGB            *color);
 
 void        gimp_color_selection_set_old_color  (GimpColorSelection *selection,
-                                                 const GimpRGB      *color);
+        const GimpRGB      *color);
 void        gimp_color_selection_get_old_color  (GimpColorSelection *selection,
-                                                 GimpRGB            *color);
+        GimpRGB            *color);
 
 void        gimp_color_selection_reset          (GimpColorSelection *selection);
 
 void        gimp_color_selection_color_changed  (GimpColorSelection *selection);
 
 void        gimp_color_selection_set_config     (GimpColorSelection *selection,
-                                                 GimpColorConfig    *config);
+        GimpColorConfig    *config);
 
 GtkWidget * gimp_color_selection_get_notebook   (GimpColorSelection *selection);
 GtkWidget * gimp_color_selection_get_right_vbox (GimpColorSelection *selection);

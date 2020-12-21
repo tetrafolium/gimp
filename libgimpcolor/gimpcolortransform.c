@@ -60,21 +60,21 @@
 
 enum
 {
-  PROGRESS,
-  LAST_SIGNAL
+    PROGRESS,
+    LAST_SIGNAL
 };
 
 
 struct _GimpColorTransformPrivate
 {
-  GimpColorProfile *src_profile;
-  const Babl       *src_format;
+    GimpColorProfile *src_profile;
+    const Babl       *src_format;
 
-  GimpColorProfile *dest_profile;
-  const Babl       *dest_format;
+    GimpColorProfile *dest_profile;
+    const Babl       *dest_format;
 
-  cmsHTRANSFORM     transform;
-  const Babl       *fish;
+    cmsHTRANSFORM     transform;
+    const Babl       *fish;
 };
 
 
@@ -94,10 +94,10 @@ static gchar *lcms_last_error = NULL;
 static void
 lcms_error_clear (void)
 {
-  if (lcms_last_error)
+    if (lcms_last_error)
     {
-      g_free (lcms_last_error);
-      lcms_last_error = NULL;
+        g_free (lcms_last_error);
+        lcms_last_error = NULL;
     }
 }
 
@@ -106,48 +106,48 @@ lcms_error_handler (cmsContext       ContextID,
                     cmsUInt32Number  ErrorCode,
                     const gchar     *text)
 {
-  lcms_error_clear ();
+    lcms_error_clear ();
 
-  lcms_last_error = g_strdup_printf ("lcms2 error %d: %s", ErrorCode, text);
+    lcms_last_error = g_strdup_printf ("lcms2 error %d: %s", ErrorCode, text);
 }
 
 static void
 gimp_color_transform_class_init (GimpColorTransformClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->finalize = gimp_color_transform_finalize;
+    object_class->finalize = gimp_color_transform_finalize;
 
-  gimp_color_transform_signals[PROGRESS] =
-    g_signal_new ("progress",
-                  G_OBJECT_CLASS_TYPE (object_class),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpColorTransformClass,
-                                   progress),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_DOUBLE);
+    gimp_color_transform_signals[PROGRESS] =
+        g_signal_new ("progress",
+                      G_OBJECT_CLASS_TYPE (object_class),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpColorTransformClass,
+                                       progress),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_DOUBLE);
 
-  cmsSetLogErrorHandler (lcms_error_handler);
+    cmsSetLogErrorHandler (lcms_error_handler);
 }
 
 static void
 gimp_color_transform_init (GimpColorTransform *transform)
 {
-  transform->priv = gimp_color_transform_get_instance_private (transform);
+    transform->priv = gimp_color_transform_get_instance_private (transform);
 }
 
 static void
 gimp_color_transform_finalize (GObject *object)
 {
-  GimpColorTransform *transform = GIMP_COLOR_TRANSFORM (object);
+    GimpColorTransform *transform = GIMP_COLOR_TRANSFORM (object);
 
-  g_clear_object (&transform->priv->src_profile);
-  g_clear_object (&transform->priv->dest_profile);
+    g_clear_object (&transform->priv->src_profile);
+    g_clear_object (&transform->priv->dest_profile);
 
-  g_clear_pointer (&transform->priv->transform, cmsDeleteTransform);
+    g_clear_pointer (&transform->priv->transform, cmsDeleteTransform);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -187,106 +187,106 @@ gimp_color_transform_new (GimpColorProfile         *src_profile,
                           GimpColorRenderingIntent  rendering_intent,
                           GimpColorTransformFlags   flags)
 {
-  GimpColorTransform        *transform;
-  GimpColorTransformPrivate *priv;
-  cmsHPROFILE                src_lcms;
-  cmsHPROFILE                dest_lcms;
-  cmsUInt32Number            lcms_src_format;
-  cmsUInt32Number            lcms_dest_format;
-  GError                    *error = NULL;
+    GimpColorTransform        *transform;
+    GimpColorTransformPrivate *priv;
+    cmsHPROFILE                src_lcms;
+    cmsHPROFILE                dest_lcms;
+    cmsUInt32Number            lcms_src_format;
+    cmsUInt32Number            lcms_dest_format;
+    GError                    *error = NULL;
 
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), NULL);
-  g_return_val_if_fail (src_format != NULL, NULL);
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (dest_profile), NULL);
-  g_return_val_if_fail (dest_format != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), NULL);
+    g_return_val_if_fail (src_format != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (dest_profile), NULL);
+    g_return_val_if_fail (dest_format != NULL, NULL);
 
-  transform = g_object_new (GIMP_TYPE_COLOR_TRANSFORM, NULL);
+    transform = g_object_new (GIMP_TYPE_COLOR_TRANSFORM, NULL);
 
-  priv = transform->priv;
+    priv = transform->priv;
 
-  /* only src_profile and dest_profile must determine the transform's
-   * color spaces, create formats with src_format's and dest_format's
-   * encoding, and the profiles' color spaces; see process_pixels()
-   * and process_buffer().
-   */
+    /* only src_profile and dest_profile must determine the transform's
+     * color spaces, create formats with src_format's and dest_format's
+     * encoding, and the profiles' color spaces; see process_pixels()
+     * and process_buffer().
+     */
 
-  priv->src_format = gimp_color_profile_get_format (src_profile,
-                                                    src_format,
-                                                    BABL_ICC_INTENT_RELATIVE_COLORIMETRIC,
-                                                    &error);
-  if (! priv->src_format)
+    priv->src_format = gimp_color_profile_get_format (src_profile,
+                       src_format,
+                       BABL_ICC_INTENT_RELATIVE_COLORIMETRIC,
+                       &error);
+    if (! priv->src_format)
     {
-      g_printerr ("%s: error making src format: %s\n",
-                  G_STRFUNC, error->message);
-      g_clear_error (&error);
+        g_printerr ("%s: error making src format: %s\n",
+                    G_STRFUNC, error->message);
+        g_clear_error (&error);
     }
 
-  priv->dest_format = gimp_color_profile_get_format (dest_profile,
-                                                     dest_format,
-                                                     rendering_intent,
-                                                     &error);
-  if (! priv->dest_format)
+    priv->dest_format = gimp_color_profile_get_format (dest_profile,
+                        dest_format,
+                        rendering_intent,
+                        &error);
+    if (! priv->dest_format)
     {
-      g_printerr ("%s: error making dest format: %s\n",
-                  G_STRFUNC, error->message);
-      g_clear_error (&error);
+        g_printerr ("%s: error making dest format: %s\n",
+                    G_STRFUNC, error->message);
+        g_clear_error (&error);
     }
 
-  if (! g_getenv ("GIMP_COLOR_TRANSFORM_DISABLE_BABL") &&
-      priv->src_format && priv->dest_format)
+    if (! g_getenv ("GIMP_COLOR_TRANSFORM_DISABLE_BABL") &&
+            priv->src_format && priv->dest_format)
     {
-      priv->fish = babl_fish (priv->src_format,
-                              priv->dest_format);
+        priv->fish = babl_fish (priv->src_format,
+                                priv->dest_format);
 
-      g_printerr ("%s: using babl for '%s' -> '%s'\n",
-                  G_STRFUNC,
-                  gimp_color_profile_get_label (src_profile),
-                  gimp_color_profile_get_label (dest_profile));
+        g_printerr ("%s: using babl for '%s' -> '%s'\n",
+                    G_STRFUNC,
+                    gimp_color_profile_get_label (src_profile),
+                    gimp_color_profile_get_label (dest_profile));
 
-      return transform;
+        return transform;
     }
 
-  /* see above: when using lcms, don't mess with formats with color
-   * spaces, gimp_color_profile_get_lcms_format() might return the
-   * same format and it must be without space
-   */
-  src_format  = babl_format_with_space ((const gchar *) src_format,  NULL);
-  dest_format = babl_format_with_space ((const gchar *) dest_format, NULL);
+    /* see above: when using lcms, don't mess with formats with color
+     * spaces, gimp_color_profile_get_lcms_format() might return the
+     * same format and it must be without space
+     */
+    src_format  = babl_format_with_space ((const gchar *) src_format,  NULL);
+    dest_format = babl_format_with_space ((const gchar *) dest_format, NULL);
 
-  priv->src_format  = gimp_color_profile_get_lcms_format (src_format,
-                                                          &lcms_src_format);
-  priv->dest_format = gimp_color_profile_get_lcms_format (dest_format,
-                                                          &lcms_dest_format);
+    priv->src_format  = gimp_color_profile_get_lcms_format (src_format,
+                        &lcms_src_format);
+    priv->dest_format = gimp_color_profile_get_lcms_format (dest_format,
+                        &lcms_dest_format);
 
-  src_lcms  = gimp_color_profile_get_lcms_profile (src_profile);
-  dest_lcms = gimp_color_profile_get_lcms_profile (dest_profile);
+    src_lcms  = gimp_color_profile_get_lcms_profile (src_profile);
+    dest_lcms = gimp_color_profile_get_lcms_profile (dest_profile);
 
-  lcms_error_clear ();
+    lcms_error_clear ();
 
-  priv->transform = cmsCreateTransform (src_lcms,  lcms_src_format,
-                                        dest_lcms, lcms_dest_format,
-                                        rendering_intent,
-                                        flags |
-                                        cmsFLAGS_COPY_ALPHA);
+    priv->transform = cmsCreateTransform (src_lcms,  lcms_src_format,
+                                          dest_lcms, lcms_dest_format,
+                                          rendering_intent,
+                                          flags |
+                                          cmsFLAGS_COPY_ALPHA);
 
-  if (lcms_last_error)
+    if (lcms_last_error)
     {
-      if (priv->transform)
+        if (priv->transform)
         {
-          cmsDeleteTransform (priv->transform);
-          priv->transform = NULL;
+            cmsDeleteTransform (priv->transform);
+            priv->transform = NULL;
         }
 
-      g_printerr ("%s: %s\n", G_STRFUNC, lcms_last_error);
+        g_printerr ("%s: %s\n", G_STRFUNC, lcms_last_error);
     }
 
-  if (! priv->transform)
+    if (! priv->transform)
     {
-      g_object_unref (transform);
-      transform = NULL;
+        g_object_unref (transform);
+        transform = NULL;
     }
 
-  return transform;
+    return transform;
 }
 
 /**
@@ -319,68 +319,68 @@ gimp_color_transform_new_proofing (GimpColorProfile         *src_profile,
                                    GimpColorRenderingIntent  display_intent,
                                    GimpColorTransformFlags   flags)
 {
-  GimpColorTransform        *transform;
-  GimpColorTransformPrivate *priv;
-  cmsHPROFILE                src_lcms;
-  cmsHPROFILE                dest_lcms;
-  cmsHPROFILE                proof_lcms;
-  cmsUInt32Number            lcms_src_format;
-  cmsUInt32Number            lcms_dest_format;
+    GimpColorTransform        *transform;
+    GimpColorTransformPrivate *priv;
+    cmsHPROFILE                src_lcms;
+    cmsHPROFILE                dest_lcms;
+    cmsHPROFILE                proof_lcms;
+    cmsUInt32Number            lcms_src_format;
+    cmsUInt32Number            lcms_dest_format;
 
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), NULL);
-  g_return_val_if_fail (src_format != NULL, NULL);
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (dest_profile), NULL);
-  g_return_val_if_fail (dest_format != NULL, NULL);
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (proof_profile), NULL);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), NULL);
+    g_return_val_if_fail (src_format != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (dest_profile), NULL);
+    g_return_val_if_fail (dest_format != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (proof_profile), NULL);
 
-  transform = g_object_new (GIMP_TYPE_COLOR_TRANSFORM, NULL);
+    transform = g_object_new (GIMP_TYPE_COLOR_TRANSFORM, NULL);
 
-  priv = transform->priv;
+    priv = transform->priv;
 
-  src_lcms   = gimp_color_profile_get_lcms_profile (src_profile);
-  dest_lcms  = gimp_color_profile_get_lcms_profile (dest_profile);
-  proof_lcms = gimp_color_profile_get_lcms_profile (proof_profile);
+    src_lcms   = gimp_color_profile_get_lcms_profile (src_profile);
+    dest_lcms  = gimp_color_profile_get_lcms_profile (dest_profile);
+    proof_lcms = gimp_color_profile_get_lcms_profile (proof_profile);
 
-  /* see gimp_color_transform_new(), we can't have color spaces
-   * on the formats
-   */
-  src_format  = babl_format_with_space ((const gchar *) src_format,  NULL);
-  dest_format = babl_format_with_space ((const gchar *) dest_format, NULL);
+    /* see gimp_color_transform_new(), we can't have color spaces
+     * on the formats
+     */
+    src_format  = babl_format_with_space ((const gchar *) src_format,  NULL);
+    dest_format = babl_format_with_space ((const gchar *) dest_format, NULL);
 
-  priv->src_format  = gimp_color_profile_get_lcms_format (src_format,
-                                                          &lcms_src_format);
-  priv->dest_format = gimp_color_profile_get_lcms_format (dest_format,
-                                                          &lcms_dest_format);
+    priv->src_format  = gimp_color_profile_get_lcms_format (src_format,
+                        &lcms_src_format);
+    priv->dest_format = gimp_color_profile_get_lcms_format (dest_format,
+                        &lcms_dest_format);
 
-  lcms_error_clear ();
+    lcms_error_clear ();
 
-  priv->transform = cmsCreateProofingTransform (src_lcms,  lcms_src_format,
-                                                dest_lcms, lcms_dest_format,
-                                                proof_lcms,
-                                                proof_intent,
-                                                display_intent,
-                                                flags                 |
-                                                cmsFLAGS_SOFTPROOFING |
-                                                cmsFLAGS_COPY_ALPHA);
+    priv->transform = cmsCreateProofingTransform (src_lcms,  lcms_src_format,
+                      dest_lcms, lcms_dest_format,
+                      proof_lcms,
+                      proof_intent,
+                      display_intent,
+                      flags                 |
+                      cmsFLAGS_SOFTPROOFING |
+                      cmsFLAGS_COPY_ALPHA);
 
-  if (lcms_last_error)
+    if (lcms_last_error)
     {
-      if (priv->transform)
+        if (priv->transform)
         {
-          cmsDeleteTransform (priv->transform);
-          priv->transform = NULL;
+            cmsDeleteTransform (priv->transform);
+            priv->transform = NULL;
         }
 
-      g_printerr ("%s: %s\n", G_STRFUNC, lcms_last_error);
+        g_printerr ("%s: %s\n", G_STRFUNC, lcms_last_error);
     }
 
-  if (! priv->transform)
+    if (! priv->transform)
     {
-      g_object_unref (transform);
-      transform = NULL;
+        g_object_unref (transform);
+        transform = NULL;
     }
 
-  return transform;
+    return transform;
 }
 
 /**
@@ -409,73 +409,73 @@ gimp_color_transform_process_pixels (GimpColorTransform *transform,
                                      gpointer            dest_pixels,
                                      gsize               length)
 {
-  GimpColorTransformPrivate *priv;
-  gpointer                  *src;
-  gpointer                  *dest;
+    GimpColorTransformPrivate *priv;
+    gpointer                  *src;
+    gpointer                  *dest;
 
-  g_return_if_fail (GIMP_IS_COLOR_TRANSFORM (transform));
-  g_return_if_fail (src_format != NULL);
-  g_return_if_fail (src_pixels != NULL);
-  g_return_if_fail (dest_format != NULL);
-  g_return_if_fail (dest_pixels != NULL);
+    g_return_if_fail (GIMP_IS_COLOR_TRANSFORM (transform));
+    g_return_if_fail (src_format != NULL);
+    g_return_if_fail (src_pixels != NULL);
+    g_return_if_fail (dest_format != NULL);
+    g_return_if_fail (dest_pixels != NULL);
 
-  priv = transform->priv;
+    priv = transform->priv;
 
-  /* we must not do any babl color transforms when reading from
-   * src_pixels or writing to dest_pixels, so construct formats with
-   * src_format's and dest_format's encoding, and the transform's
-   * input and output color spaces.
-   */
-  src_format =
-    babl_format_with_space ((const gchar *) src_format,
-                            babl_format_get_space (priv->src_format));
-  dest_format =
-    babl_format_with_space ((const gchar *) dest_format,
-                            babl_format_get_space (priv->dest_format));
+    /* we must not do any babl color transforms when reading from
+     * src_pixels or writing to dest_pixels, so construct formats with
+     * src_format's and dest_format's encoding, and the transform's
+     * input and output color spaces.
+     */
+    src_format =
+        babl_format_with_space ((const gchar *) src_format,
+                                babl_format_get_space (priv->src_format));
+    dest_format =
+        babl_format_with_space ((const gchar *) dest_format,
+                                babl_format_get_space (priv->dest_format));
 
-  if (src_format != priv->src_format)
+    if (src_format != priv->src_format)
     {
-      src = g_malloc (length * babl_format_get_bytes_per_pixel (priv->src_format));
+        src = g_malloc (length * babl_format_get_bytes_per_pixel (priv->src_format));
 
-      babl_process (babl_fish (src_format,
-                               priv->src_format),
-                    src_pixels, src, length);
+        babl_process (babl_fish (src_format,
+                                 priv->src_format),
+                      src_pixels, src, length);
     }
-  else
+    else
     {
-      src = (gpointer) src_pixels;
-    }
-
-  if (dest_format != priv->dest_format)
-    {
-      dest = g_malloc (length * babl_format_get_bytes_per_pixel (priv->dest_format));
-    }
-  else
-    {
-      dest = dest_pixels;
+        src = (gpointer) src_pixels;
     }
 
-  if (priv->transform)
+    if (dest_format != priv->dest_format)
     {
-      cmsDoTransform (priv->transform, src, dest, length);
+        dest = g_malloc (length * babl_format_get_bytes_per_pixel (priv->dest_format));
     }
-  else
+    else
     {
-      babl_process (priv->fish, src, dest, length);
-    }
-
-  if (src_format != priv->src_format)
-    {
-      g_free (src);
+        dest = dest_pixels;
     }
 
-  if (dest_format != priv->dest_format)
+    if (priv->transform)
     {
-      babl_process (babl_fish (priv->dest_format,
-                               dest_format),
-                    dest, dest_pixels, length);
+        cmsDoTransform (priv->transform, src, dest, length);
+    }
+    else
+    {
+        babl_process (priv->fish, src, dest, length);
+    }
 
-      g_free (dest);
+    if (src_format != priv->src_format)
+    {
+        g_free (src);
+    }
+
+    if (dest_format != priv->dest_format)
+    {
+        babl_process (babl_fish (priv->dest_format,
+                                 dest_format),
+                      dest, dest_pixels, length);
+
+        g_free (dest);
     }
 }
 
@@ -503,106 +503,106 @@ gimp_color_transform_process_buffer (GimpColorTransform  *transform,
                                      GeglBuffer          *dest_buffer,
                                      const GeglRectangle *dest_rect)
 {
-  GimpColorTransformPrivate *priv;
-  const Babl                *src_format;
-  const Babl                *dest_format;
-  GeglBufferIterator        *iter;
-  gint                       total_pixels;
-  gint                       done_pixels = 0;
+    GimpColorTransformPrivate *priv;
+    const Babl                *src_format;
+    const Babl                *dest_format;
+    GeglBufferIterator        *iter;
+    gint                       total_pixels;
+    gint                       done_pixels = 0;
 
-  g_return_if_fail (GIMP_IS_COLOR_TRANSFORM (transform));
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GIMP_IS_COLOR_TRANSFORM (transform));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  priv = transform->priv;
+    priv = transform->priv;
 
-  if (src_rect)
+    if (src_rect)
     {
-      total_pixels = src_rect->width * src_rect->height;
+        total_pixels = src_rect->width * src_rect->height;
     }
-  else
+    else
     {
-      total_pixels = (gegl_buffer_get_width  (src_buffer) *
-                      gegl_buffer_get_height (src_buffer));
+        total_pixels = (gegl_buffer_get_width  (src_buffer) *
+                        gegl_buffer_get_height (src_buffer));
     }
 
-  /* we must not do any babl color transforms when reading from
-   * src_buffer or writing to dest_buffer, so construct formats with
-   * the transform's expected input and output encoding and
-   * src_buffer's and dest_buffers's color spaces.
-   */
-  src_format  = gegl_buffer_get_format (src_buffer);
-  dest_format = gegl_buffer_get_format (dest_buffer);
+    /* we must not do any babl color transforms when reading from
+     * src_buffer or writing to dest_buffer, so construct formats with
+     * the transform's expected input and output encoding and
+     * src_buffer's and dest_buffers's color spaces.
+     */
+    src_format  = gegl_buffer_get_format (src_buffer);
+    dest_format = gegl_buffer_get_format (dest_buffer);
 
-  src_format =
-    babl_format_with_space ((const gchar *) priv->src_format,
-                            babl_format_get_space (src_format));
-  dest_format =
-    babl_format_with_space ((const gchar *) priv->dest_format,
-                            babl_format_get_space (dest_format));
+    src_format =
+        babl_format_with_space ((const gchar *) priv->src_format,
+                                babl_format_get_space (src_format));
+    dest_format =
+        babl_format_with_space ((const gchar *) priv->dest_format,
+                                babl_format_get_space (dest_format));
 
-  if (src_buffer != dest_buffer)
+    if (src_buffer != dest_buffer)
     {
-      iter = gegl_buffer_iterator_new (src_buffer, src_rect, 0,
-                                       src_format,
-                                       GEGL_ACCESS_READ,
-                                       GEGL_ABYSS_NONE, 2);
+        iter = gegl_buffer_iterator_new (src_buffer, src_rect, 0,
+                                         src_format,
+                                         GEGL_ACCESS_READ,
+                                         GEGL_ABYSS_NONE, 2);
 
-      gegl_buffer_iterator_add (iter, dest_buffer, dest_rect, 0,
-                                dest_format,
-                                GEGL_ACCESS_WRITE,
-                                GEGL_ABYSS_NONE);
+        gegl_buffer_iterator_add (iter, dest_buffer, dest_rect, 0,
+                                  dest_format,
+                                  GEGL_ACCESS_WRITE,
+                                  GEGL_ABYSS_NONE);
 
-      while (gegl_buffer_iterator_next (iter))
+        while (gegl_buffer_iterator_next (iter))
         {
-          if (priv->transform)
+            if (priv->transform)
             {
-              cmsDoTransform (priv->transform,
+                cmsDoTransform (priv->transform,
+                                iter->items[0].data, iter->items[1].data, iter->length);
+            }
+            else
+            {
+                babl_process (priv->fish,
                               iter->items[0].data, iter->items[1].data, iter->length);
             }
-          else
-            {
-              babl_process (priv->fish,
-                            iter->items[0].data, iter->items[1].data, iter->length);
-            }
 
-          done_pixels += iter->items[0].roi.width * iter->items[0].roi.height;
+            done_pixels += iter->items[0].roi.width * iter->items[0].roi.height;
 
-          g_signal_emit (transform, gimp_color_transform_signals[PROGRESS], 0,
-                         (gdouble) done_pixels /
-                         (gdouble) total_pixels);
+            g_signal_emit (transform, gimp_color_transform_signals[PROGRESS], 0,
+                           (gdouble) done_pixels /
+                           (gdouble) total_pixels);
         }
     }
-  else
+    else
     {
-      iter = gegl_buffer_iterator_new (src_buffer, src_rect, 0,
-                                       src_format,
-                                       GEGL_ACCESS_READWRITE,
-                                       GEGL_ABYSS_NONE, 1);
+        iter = gegl_buffer_iterator_new (src_buffer, src_rect, 0,
+                                         src_format,
+                                         GEGL_ACCESS_READWRITE,
+                                         GEGL_ABYSS_NONE, 1);
 
-      while (gegl_buffer_iterator_next (iter))
+        while (gegl_buffer_iterator_next (iter))
         {
-          if (priv->transform)
+            if (priv->transform)
             {
-              cmsDoTransform (priv->transform,
+                cmsDoTransform (priv->transform,
+                                iter->items[0].data, iter->items[0].data, iter->length);
+            }
+            else
+            {
+                babl_process (priv->fish,
                               iter->items[0].data, iter->items[0].data, iter->length);
             }
-          else
-            {
-              babl_process (priv->fish,
-                            iter->items[0].data, iter->items[0].data, iter->length);
-            }
 
-          done_pixels += iter->items[0].roi.width * iter->items[0].roi.height;
+            done_pixels += iter->items[0].roi.width * iter->items[0].roi.height;
 
-          g_signal_emit (transform, gimp_color_transform_signals[PROGRESS], 0,
-                         (gdouble) done_pixels /
-                         (gdouble) total_pixels);
+            g_signal_emit (transform, gimp_color_transform_signals[PROGRESS], 0,
+                           (gdouble) done_pixels /
+                           (gdouble) total_pixels);
         }
     }
 
-  g_signal_emit (transform, gimp_color_transform_signals[PROGRESS], 0,
-                 1.0);
+    g_signal_emit (transform, gimp_color_transform_signals[PROGRESS], 0,
+                   1.0);
 }
 
 /**
@@ -622,21 +622,21 @@ gboolean
 gimp_color_transform_can_gegl_copy (GimpColorProfile *src_profile,
                                     GimpColorProfile *dest_profile)
 {
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), FALSE);
-  g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (dest_profile), FALSE);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), FALSE);
+    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (dest_profile), FALSE);
 
-  if (gimp_color_profile_is_equal (src_profile, dest_profile))
-    return TRUE;
+    if (gimp_color_profile_is_equal (src_profile, dest_profile))
+        return TRUE;
 
-  if (gimp_color_profile_get_space (src_profile,
-                                    GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
-                                    NULL) &&
-      gimp_color_profile_get_space (dest_profile,
-                                    GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
-                                    NULL))
+    if (gimp_color_profile_get_space (src_profile,
+                                      GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+                                      NULL) &&
+            gimp_color_profile_get_space (dest_profile,
+                                          GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+                                          NULL))
     {
-      return TRUE;
+        return TRUE;
     }
 
-  return FALSE;
+    return FALSE;
 }

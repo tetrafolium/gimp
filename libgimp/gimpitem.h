@@ -44,24 +44,24 @@ typedef struct _GimpItemPrivate GimpItemPrivate;
 
 struct _GimpItem
 {
-  GObject           parent_instance;
+    GObject           parent_instance;
 
-  GimpItemPrivate *priv;
+    GimpItemPrivate *priv;
 };
 
 struct _GimpItemClass
 {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 

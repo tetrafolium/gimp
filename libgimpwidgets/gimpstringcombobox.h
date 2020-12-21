@@ -42,34 +42,34 @@ typedef struct _GimpStringComboBoxClass   GimpStringComboBoxClass;
 
 struct _GimpStringComboBox
 {
-  GtkComboBox                parent_instance;
+    GtkComboBox                parent_instance;
 
-  GimpStringComboBoxPrivate *priv;
+    GimpStringComboBoxPrivate *priv;
 };
 
 struct _GimpStringComboBoxClass
 {
-  GtkComboBoxClass  parent_class;
+    GtkComboBoxClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_string_combo_box_get_type   (void) G_GNUC_CONST;
 
 GtkWidget * gimp_string_combo_box_new        (GtkTreeModel       *model,
-                                              gint                id_column,
-                                              gint                label_column);
+        gint                id_column,
+        gint                label_column);
 gboolean    gimp_string_combo_box_set_active (GimpStringComboBox *combo_box,
-                                              const gchar        *id);
+        const gchar        *id);
 gchar     * gimp_string_combo_box_get_active (GimpStringComboBox *combo_box);
 
 

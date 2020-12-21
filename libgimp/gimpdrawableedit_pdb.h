@@ -34,25 +34,25 @@ G_BEGIN_DECLS
 
 gboolean gimp_drawable_edit_clear            (GimpDrawable     *drawable);
 gboolean gimp_drawable_edit_fill             (GimpDrawable     *drawable,
-                                              GimpFillType      fill_type);
+        GimpFillType      fill_type);
 gboolean gimp_drawable_edit_bucket_fill      (GimpDrawable     *drawable,
-                                              GimpFillType      fill_type,
-                                              gdouble           x,
-                                              gdouble           y);
+        GimpFillType      fill_type,
+        gdouble           x,
+        gdouble           y);
 gboolean gimp_drawable_edit_gradient_fill    (GimpDrawable     *drawable,
-                                              GimpGradientType  gradient_type,
-                                              gdouble           offset,
-                                              gboolean          supersample,
-                                              gint              supersample_max_depth,
-                                              gdouble           supersample_threshold,
-                                              gboolean          dither,
-                                              gdouble           x1,
-                                              gdouble           y1,
-                                              gdouble           x2,
-                                              gdouble           y2);
+        GimpGradientType  gradient_type,
+        gdouble           offset,
+        gboolean          supersample,
+        gint              supersample_max_depth,
+        gdouble           supersample_threshold,
+        gboolean          dither,
+        gdouble           x1,
+        gdouble           y1,
+        gdouble           x2,
+        gdouble           y2);
 gboolean gimp_drawable_edit_stroke_selection (GimpDrawable     *drawable);
 gboolean gimp_drawable_edit_stroke_item      (GimpDrawable     *drawable,
-                                              GimpItem         *item);
+        GimpItem         *item);
 
 
 G_END_DECLS

@@ -26,11 +26,11 @@
 
 typedef struct
 {
-  gint                    o_pages;
-  gint                    n_pages;
-  gint                   *pages;
-  GimpPageSelectorTarget  target;
-  gboolean                keep_empty_space;
+    gint                    o_pages;
+    gint                    n_pages;
+    gint                   *pages;
+    GimpPageSelectorTarget  target;
+    gboolean                keep_empty_space;
 } TiffSelectedPages;
 
 

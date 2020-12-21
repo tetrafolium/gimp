@@ -44,31 +44,31 @@ typedef struct _GimpSpinButtonClass    GimpSpinButtonClass;
 
 struct _GimpSpinButton
 {
-  GtkSpinButton          parent_instance;
+    GtkSpinButton          parent_instance;
 
-  GimpSpinButtonPrivate *priv;
+    GimpSpinButtonPrivate *priv;
 };
 
 struct _GimpSpinButtonClass
 {
-  GtkSpinButtonClass  parent_class;
+    GtkSpinButtonClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
 };
 
 
 GType       gimp_spin_button_get_type       (void) G_GNUC_CONST;
 
 GtkWidget * gimp_spin_button_new            (GtkAdjustment *adjustment,
-                                             gdouble        climb_rate,
-                                             guint          digits);
+        gdouble        climb_rate,
+        guint          digits);
 GtkWidget * gimp_spin_button_new_with_range (gdouble        min,
-                                             gdouble        max,
-                                             gdouble        step);
+        gdouble        max,
+        gdouble        step);
 
 
 G_END_DECLS

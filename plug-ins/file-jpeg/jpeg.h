@@ -30,25 +30,25 @@
 
 typedef struct my_error_mgr
 {
-  struct jpeg_error_mgr pub;            /* "public" fields */
+    struct jpeg_error_mgr pub;            /* "public" fields */
 
 #ifdef __ia64__
-  /* Ugh, the jmp_buf field needs to be 16-byte aligned on ia64 and some
-   * glibc/icc combinations don't guarantee this. So we pad. See bug #138357
-   * for details.
-   */
-  long double           dummy;
+    /* Ugh, the jmp_buf field needs to be 16-byte aligned on ia64 and some
+     * glibc/icc combinations don't guarantee this. So we pad. See bug #138357
+     * for details.
+     */
+    long double           dummy;
 #endif
 
-  jmp_buf               setjmp_buffer;  /* for return to caller */
+    jmp_buf               setjmp_buffer;  /* for return to caller */
 } *my_error_ptr;
 
 typedef enum
 {
-  JPEG_SUBSAMPLING_2x2_1x1_1x1 = 0,  /* smallest file */
-  JPEG_SUBSAMPLING_2x1_1x1_1x1 = 1,  /* 4:2:2         */
-  JPEG_SUBSAMPLING_1x1_1x1_1x1 = 2,
-  JPEG_SUBSAMPLING_1x2_1x1_1x1 = 3
+    JPEG_SUBSAMPLING_2x2_1x1_1x1 = 0,  /* smallest file */
+    JPEG_SUBSAMPLING_2x1_1x1_1x1 = 1,  /* 4:2:2         */
+    JPEG_SUBSAMPLING_1x1_1x1_1x1 = 2,
+    JPEG_SUBSAMPLING_1x2_1x1_1x1 = 3
 } JpegSubsampling;
 
 extern GimpImage * volatile  preview_image;
@@ -62,7 +62,7 @@ void      destroy_preview               (void);
 
 void      my_error_exit                 (j_common_ptr   cinfo);
 void      my_emit_message               (j_common_ptr   cinfo,
-                                         int            msg_level);
+        int            msg_level);
 void      my_output_message             (j_common_ptr   cinfo);
 
 

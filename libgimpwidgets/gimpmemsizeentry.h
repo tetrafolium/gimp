@@ -42,36 +42,36 @@ typedef struct _GimpMemsizeEntryClass   GimpMemsizeEntryClass;
 
 struct _GimpMemsizeEntry
 {
-  GtkBox  parent_instance;
+    GtkBox  parent_instance;
 
-  GimpMemsizeEntryPrivate *priv;
+    GimpMemsizeEntryPrivate *priv;
 };
 
 struct _GimpMemsizeEntryClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  void (* value_changed)  (GimpMemsizeEntry *entry);
+    void (* value_changed)  (GimpMemsizeEntry *entry);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_memsize_entry_get_type       (void) G_GNUC_CONST;
 
 GtkWidget * gimp_memsize_entry_new            (guint64           value,
-                                               guint64           lower,
-                                               guint64           upper);
+        guint64           lower,
+        guint64           upper);
 void        gimp_memsize_entry_set_value      (GimpMemsizeEntry *entry,
-                                               guint64           value);
+        guint64           value);
 guint64     gimp_memsize_entry_get_value      (GimpMemsizeEntry *entry);
 
 GtkWidget * gimp_memsize_entry_get_spinbutton (GimpMemsizeEntry *entry);

@@ -84,51 +84,51 @@ static int             rectScreensCount = 0;
 static GimpImage     **image;
 
 static void sendBMPToGimp                      (HBITMAP         hBMP,
-                                                HDC             hDC,
-                                                RECT            rect);
+        HDC             hDC,
+        RECT            rect);
 static int      doWindowCapture                    (void);
 static gboolean doCapture                          (HWND            selectedHwnd);
 static BOOL     isWindowIsAboveCaptureRegion       (HWND            hwndWindow,
-                                                    RECT            rectCapture);
+        RECT            rectCapture);
 static gboolean doCaptureMagnificationAPI          (HWND            selectedHwnd,
-                                                    RECT            rect);
+        RECT            rect);
 static void     doCaptureMagnificationAPI_callback (HWND            hwnd,
-                                                    void           *srcdata,
-                                                    MAGIMAGEHEADER  srcheader,
-                                                    void           *destdata,
-                                                    MAGIMAGEHEADER  destheader,
-                                                    RECT            unclipped,
-                                                    RECT            clipped,
-                                                    HRGN            dirty);
+        void           *srcdata,
+        MAGIMAGEHEADER  srcheader,
+        void           *destdata,
+        MAGIMAGEHEADER  destheader,
+        RECT            unclipped,
+        RECT            clipped,
+        HRGN            dirty);
 static gboolean doCaptureBitBlt                    (HWND            selectedHwnd,
-                                                    RECT            rect);
+        RECT            rect);
 
 BOOL CALLBACK dialogProc (HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK WndProc (HWND, UINT, WPARAM, LPARAM);
 
 /* Data structure holding data between runs */
 typedef struct {
-  gint root;
-  guint delay;
-  gint decor;
+    gint root;
+    guint delay;
+    gint decor;
 } WinSnapValues;
 
 /* Default WinSnap values */
 static WinSnapValues winsnapvals =
 {
-  FALSE,
-  0,
-  TRUE,
+    FALSE,
+    0,
+    TRUE,
 };
 
 /* The dialog information */
 typedef struct {
 #ifdef CAN_SET_DECOR
-  GtkWidget *decor_button;
+    GtkWidget *decor_button;
 #endif
-  GtkWidget *single_button;
-  GtkWidget *root_button;
-  GtkWidget *delay_spinner;
+    GtkWidget *single_button;
+    GtkWidget *root_button;
+    GtkWidget *delay_spinner;
 } WinSnapInterface;
 
 /* We create a DIB section to hold the grabbed area. The scanlines in
@@ -149,14 +149,14 @@ typedef struct {
 gboolean
 screenshot_win32_available (void)
 {
-  return TRUE;
+    return TRUE;
 }
 
 ScreenshotCapabilities
 screenshot_win32_get_capabilities (void)
 {
-  return (SCREENSHOT_CAN_SHOOT_DECORATIONS |
-          SCREENSHOT_CAN_SHOOT_WINDOW);
+    return (SCREENSHOT_CAN_SHOOT_DECORATIONS |
+            SCREENSHOT_CAN_SHOOT_WINDOW);
 }
 
 GimpPDBStatusType
@@ -165,49 +165,49 @@ screenshot_win32_shoot (ScreenshotValues  *shootvals,
                         GimpImage        **_image,
                         GError           **error)
 {
-  GimpPDBStatusType status = GIMP_PDB_EXECUTION_ERROR;
+    GimpPDBStatusType status = GIMP_PDB_EXECUTION_ERROR;
 
-  /* leave "shootvals->monitor" alone until somebody patches the code
-   * to be able to get a monitor's color profile
-   */
+    /* leave "shootvals->monitor" alone until somebody patches the code
+     * to be able to get a monitor's color profile
+     */
 
-  image = _image;
+    image = _image;
 
-  winsnapvals.delay = shootvals->screenshot_delay;
+    winsnapvals.delay = shootvals->screenshot_delay;
 
-  if (shootvals->shoot_type == SHOOT_ROOT)
+    if (shootvals->shoot_type == SHOOT_ROOT)
     {
-      doCapture (0);
+        doCapture (0);
 
-      status = GIMP_PDB_SUCCESS;
+        status = GIMP_PDB_SUCCESS;
     }
-  else if (shootvals->shoot_type == SHOOT_WINDOW)
+    else if (shootvals->shoot_type == SHOOT_WINDOW)
     {
-      status = 0 == doWindowCapture () ? GIMP_PDB_CANCEL : GIMP_PDB_SUCCESS;
+        status = 0 == doWindowCapture () ? GIMP_PDB_CANCEL : GIMP_PDB_SUCCESS;
     }
-  else if (shootvals->shoot_type == SHOOT_REGION)
+    else if (shootvals->shoot_type == SHOOT_REGION)
     {
-      /* FIXME */
+        /* FIXME */
     }
 
-  if (status == GIMP_PDB_SUCCESS)
+    if (status == GIMP_PDB_SUCCESS)
     {
-      GimpColorProfile *profile;
+        GimpColorProfile *profile;
 
-      /* XXX No idea if the "monitor" value is right at all, especially
-       * considering above comment. Just make so that it at least
-       * compiles!
-       */
-      profile = gimp_monitor_get_color_profile (monitor);
+        /* XXX No idea if the "monitor" value is right at all, especially
+         * considering above comment. Just make so that it at least
+         * compiles!
+         */
+        profile = gimp_monitor_get_color_profile (monitor);
 
-      if (profile)
+        if (profile)
         {
-          gimp_image_set_color_profile (*image, profile);
-          g_object_unref (profile);
+            gimp_image_set_color_profile (*image, profile);
+            g_object_unref (profile);
         }
     }
 
-  return status;
+    return status;
 }
 
 
@@ -231,22 +231,22 @@ static void
 flipRedAndBlueBytes (int width,
                      int height)
 {
-  int      i, j;
-  guchar  *bufp;
-  guchar   temp;
+    int      i, j;
+    guchar  *bufp;
+    guchar   temp;
 
-  j = 0;
-  while (j < height) {
-    i = width;
-    bufp = capBytes + j*ROUND4(width)*3;
-    while (i--) {
-      temp = bufp[2];
-      bufp[2] = bufp[0];
-      bufp[0] = temp;
-      bufp += 3;
+    j = 0;
+    while (j < height) {
+        i = width;
+        bufp = capBytes + j*ROUND4(width)*3;
+        while (i--) {
+            temp = bufp[2];
+            bufp[2] = bufp[0];
+            bufp[0] = temp;
+            bufp += 3;
+        }
+        j++;
     }
-    j++;
-  }
 }
 
 /*
@@ -259,13 +259,13 @@ rgbaToRgbBytes (guchar *rgbBufp,
                 guchar *rgbaBufp,
                 int     rgbaBufSize)
 {
-  int rgbPoint = 0, rgbaPoint;
+    int rgbPoint = 0, rgbaPoint;
 
-  for (rgbaPoint = 0; rgbaPoint < rgbaBufSize; rgbaPoint += 4)
+    for (rgbaPoint = 0; rgbaPoint < rgbaBufSize; rgbaPoint += 4)
     {
-      rgbBufp[rgbPoint++] = rgbaBufp[rgbaPoint];
-      rgbBufp[rgbPoint++] = rgbaBufp[rgbaPoint + 1];
-      rgbBufp[rgbPoint++] = rgbaBufp[rgbaPoint + 2];
+        rgbBufp[rgbPoint++] = rgbaBufp[rgbaPoint];
+        rgbBufp[rgbPoint++] = rgbaBufp[rgbaPoint + 1];
+        rgbBufp[rgbPoint++] = rgbaBufp[rgbaPoint + 2];
     }
 }
 
@@ -280,67 +280,67 @@ sendBMPToGimp (HBITMAP hBMP,
                HDC     hDC,
                RECT    rect)
 {
-  int            width, height;
-  int            imageType, layerType;
-  GimpImage     *new_image;
-  GimpLayer     *layer;
-  GeglBuffer    *buffer;
-  GeglRectangle *rectangle;
+    int            width, height;
+    int            imageType, layerType;
+    GimpImage     *new_image;
+    GimpLayer     *layer;
+    GeglBuffer    *buffer;
+    GeglRectangle *rectangle;
 
-  /* Our width and height */
-  width = (rect.right - rect.left);
-  height = (rect.bottom - rect.top);
+    /* Our width and height */
+    width = (rect.right - rect.left);
+    height = (rect.bottom - rect.top);
 
-  /* Check that we got the memory */
-  if (!capBytes)
+    /* Check that we got the memory */
+    if (!capBytes)
     {
-      g_message (_("No data captured"));
-      return;
+        g_message (_("No data captured"));
+        return;
     }
 
-  /* Flip the red and blue bytes */
-  flipRedAndBlueBytes (width, height);
+    /* Flip the red and blue bytes */
+    flipRedAndBlueBytes (width, height);
 
-  /* Set up the image and layer types */
-  imageType = GIMP_RGB;
-  layerType = GIMP_RGB_IMAGE;
+    /* Set up the image and layer types */
+    imageType = GIMP_RGB;
+    layerType = GIMP_RGB_IMAGE;
 
-  /* Create the GIMP image and layers */
-  new_image = gimp_image_new (width, height, imageType);
-  layer = gimp_layer_new (new_image, _("Background"),
-                          ROUND4 (width), height,
-                          layerType,
-                          100,
-                          gimp_image_get_default_new_layer_mode (new_image));
-  gimp_image_insert_layer (new_image, layer, NULL, 0);
+    /* Create the GIMP image and layers */
+    new_image = gimp_image_new (width, height, imageType);
+    layer = gimp_layer_new (new_image, _("Background"),
+                            ROUND4 (width), height,
+                            layerType,
+                            100,
+                            gimp_image_get_default_new_layer_mode (new_image));
+    gimp_image_insert_layer (new_image, layer, NULL, 0);
 
-  /* make rectangle */
-  rectangle = g_new (GeglRectangle, 1);
-  rectangle->x = 0;
-  rectangle->y = 0;
-  rectangle->width = ROUND4(width);
-  rectangle->height = height;
+    /* make rectangle */
+    rectangle = g_new (GeglRectangle, 1);
+    rectangle->x = 0;
+    rectangle->y = 0;
+    rectangle->width = ROUND4(width);
+    rectangle->height = height;
 
-  /* get the buffer */
-  buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
+    /* get the buffer */
+    buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
 
-  /* fill the buffer */
-  gegl_buffer_set (buffer, rectangle, 0, NULL, (guchar *) capBytes,
-                   GEGL_AUTO_ROWSTRIDE);
+    /* fill the buffer */
+    gegl_buffer_set (buffer, rectangle, 0, NULL, (guchar *) capBytes,
+                     GEGL_AUTO_ROWSTRIDE);
 
-  /* flushing data */
-  gegl_buffer_flush (buffer);
+    /* flushing data */
+    gegl_buffer_flush (buffer);
 
-  /* Now resize the layer down to the correct size if necessary. */
-  if (width != ROUND4 (width))
+    /* Now resize the layer down to the correct size if necessary. */
+    if (width != ROUND4 (width))
     {
-      gimp_layer_resize (layer, width, height, 0, 0);
-      gimp_image_resize (new_image, width, height, 0, 0);
+        gimp_layer_resize (layer, width, height, 0, 0);
+        gimp_image_resize (new_image, width, height, 0, 0);
     }
 
-  *image = new_image;
+    *image = new_image;
 
-  return;
+    return;
 }
 
 /*
@@ -353,12 +353,12 @@ sendBMPToGimp (HBITMAP hBMP,
 static int
 doWindowCapture (void)
 {
-  /* Start up a standard Win32
-   * message handling loop for
-   * selection of the window
-   * to be captured
-   */
-  return winsnapWinMain ();
+    /* Start up a standard Win32
+     * message handling loop for
+     * selection of the window
+     * to be captured
+     */
+    return winsnapWinMain ();
 }
 
 /******************************************************************
@@ -376,19 +376,19 @@ static void
 formatWindowsError (char *buffer,
                     int   buf_size)
 {
-  LPVOID lpMsgBuf;
+    LPVOID lpMsgBuf;
 
-  /* Format the message */
-  FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-    FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-    NULL, GetLastError(),
-    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-    (LPTSTR) &lpMsgBuf, 0, NULL );
+    /* Format the message */
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                  FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                  NULL, GetLastError(),
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                  (LPTSTR) &lpMsgBuf, 0, NULL );
 
-  /* Copy to the buffer */
-  g_strlcpy (buffer, lpMsgBuf, buf_size);
+    /* Copy to the buffer */
+    g_strlcpy (buffer, lpMsgBuf, buf_size);
 
-  LocalFree(lpMsgBuf);
+    LocalFree(lpMsgBuf);
 }
 
 /******************************************************************
@@ -407,64 +407,64 @@ primDoWindowCapture (HDC  hdcWindow,
                      HDC  hdcCompat,
                      RECT rect)
 {
-  HBITMAP hbmCopy;
-  HGDIOBJ oldObject;
-  BITMAPINFO  bmi;
+    HBITMAP hbmCopy;
+    HGDIOBJ oldObject;
+    BITMAPINFO  bmi;
 
-  int width = (rect.right - rect.left);
-  int height = (rect.bottom - rect.top);
+    int width = (rect.right - rect.left);
+    int height = (rect.bottom - rect.top);
 
-  /* Create the bitmap info header */
-  bmi.bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
-  bmi.bmiHeader.biWidth = ROUND4(width);
-  bmi.bmiHeader.biHeight = -height;
-  bmi.bmiHeader.biPlanes = 1;
-  bmi.bmiHeader.biBitCount = 24;
-  bmi.bmiHeader.biCompression = BI_RGB;
-  bmi.bmiHeader.biSizeImage = 0;
-  bmi.bmiHeader.biXPelsPerMeter =
-  bmi.bmiHeader.biYPelsPerMeter = 0;
-  bmi.bmiHeader.biClrUsed = 0;
-  bmi.bmiHeader.biClrImportant = 0;
+    /* Create the bitmap info header */
+    bmi.bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth = ROUND4(width);
+    bmi.bmiHeader.biHeight = -height;
+    bmi.bmiHeader.biPlanes = 1;
+    bmi.bmiHeader.biBitCount = 24;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    bmi.bmiHeader.biSizeImage = 0;
+    bmi.bmiHeader.biXPelsPerMeter =
+        bmi.bmiHeader.biYPelsPerMeter = 0;
+    bmi.bmiHeader.biClrUsed = 0;
+    bmi.bmiHeader.biClrImportant = 0;
 
-  /* Create the bitmap storage space */
-  hbmCopy = CreateDIBSection (hdcCompat,
-                              (BITMAPINFO *) &bmi,
-                              DIB_RGB_COLORS,
-                              (void **)&capBytes, NULL, 0);
-  if (!hbmCopy)
+    /* Create the bitmap storage space */
+    hbmCopy = CreateDIBSection (hdcCompat,
+                                (BITMAPINFO *) &bmi,
+                                DIB_RGB_COLORS,
+                                (void **)&capBytes, NULL, 0);
+    if (!hbmCopy)
     {
-      formatWindowsError(buffer, sizeof buffer);
-      g_error("Error creating DIB section: %s", buffer);
-      return NULL;
+        formatWindowsError(buffer, sizeof buffer);
+        g_error("Error creating DIB section: %s", buffer);
+        return NULL;
     }
 
-  /* Select the bitmap into the compatible DC. */
-  oldObject = SelectObject (hdcCompat, hbmCopy);
-  if (!oldObject)
+    /* Select the bitmap into the compatible DC. */
+    oldObject = SelectObject (hdcCompat, hbmCopy);
+    if (!oldObject)
     {
-      formatWindowsError (buffer, sizeof buffer);
-      g_error ("Error selecting object: %s", buffer);
-      return NULL;
+        formatWindowsError (buffer, sizeof buffer);
+        g_error ("Error selecting object: %s", buffer);
+        return NULL;
     }
 
-  /* Copy the data from the application to the bitmap.  Even if we did
-   * round up the width, BitBlt only the actual data.
-   */
-  if (!BitBlt(hdcCompat, 0,0,
-              width, height,
-              hdcWindow, rect.left, rect.top,
-              SRCCOPY))
+    /* Copy the data from the application to the bitmap.  Even if we did
+     * round up the width, BitBlt only the actual data.
+     */
+    if (!BitBlt(hdcCompat, 0,0,
+                width, height,
+                hdcWindow, rect.left, rect.top,
+                SRCCOPY))
     {
-      formatWindowsError (buffer, sizeof buffer);
-      g_error ("Error copying bitmap: %s", buffer);
-      return NULL;
+        formatWindowsError (buffer, sizeof buffer);
+        g_error ("Error copying bitmap: %s", buffer);
+        return NULL;
     }
 
-  /* Restore the original object */
-  SelectObject (hdcCompat, oldObject);
+    /* Restore the original object */
+    SelectObject (hdcCompat, oldObject);
 
-  return hbmCopy;
+    return hbmCopy;
 }
 
 static BOOL CALLBACK
@@ -473,109 +473,109 @@ GetAccurateWindowRect_MonitorEnumProc (HMONITOR hMonitor,
                                        LPRECT   lprcMonitor,
                                        LPARAM   dwData)
 {
-  RECT **rectScreens = (RECT**) dwData;
+    RECT **rectScreens = (RECT**) dwData;
 
-  if (!lprcMonitor) return FALSE;
+    if (!lprcMonitor) return FALSE;
 
-  if (! (*rectScreens))
-    *rectScreens = (RECT*) g_malloc (sizeof (RECT)*(rectScreensCount+1));
-  else
-    *rectScreens = (RECT*) g_realloc (rectScreens,
-                                      sizeof (RECT)*(rectScreensCount+1));
+    if (! (*rectScreens))
+        *rectScreens = (RECT*) g_malloc (sizeof (RECT)*(rectScreensCount+1));
+    else
+        *rectScreens = (RECT*) g_realloc (rectScreens,
+                                          sizeof (RECT)*(rectScreensCount+1));
 
-  if (*rectScreens == NULL)
+    if (*rectScreens == NULL)
     {
-      rectScreensCount = 0;
-      return FALSE;
+        rectScreensCount = 0;
+        return FALSE;
     }
 
-  (*rectScreens)[rectScreensCount] = *lprcMonitor;
+    (*rectScreens)[rectScreensCount] = *lprcMonitor;
 
-  rectScreensCount++;
+    rectScreensCount++;
 
-  return TRUE;
+    return TRUE;
 }
 
 static BOOL
 GetAccurateWindowRect (HWND hwndTarget,
                        RECT *outRect)
 {
-  HRESULT dwmResult;
-  WINDOWPLACEMENT windowplacment;
+    HRESULT dwmResult;
+    WINDOWPLACEMENT windowplacment;
 
-  ZeroMemory (outRect, sizeof (RECT));
+    ZeroMemory (outRect, sizeof (RECT));
 
-  /* First we try to get the rect using the dwm api. it will also avoid us from doing more ugly fixes when the window is maximized */
-  if (LoadRequiredDwmFunctions ())
+    /* First we try to get the rect using the dwm api. it will also avoid us from doing more ugly fixes when the window is maximized */
+    if (LoadRequiredDwmFunctions ())
     {
-      dwmResult = DwmGetWindowAttribute (hwndTarget, DWMWA_EXTENDED_FRAME_BOUNDS, (PVOID) outRect, sizeof (RECT));
-      UnloadRequiredDwmFunctions ();
-      if (dwmResult == S_OK) return TRUE;
+        dwmResult = DwmGetWindowAttribute (hwndTarget, DWMWA_EXTENDED_FRAME_BOUNDS, (PVOID) outRect, sizeof (RECT));
+        UnloadRequiredDwmFunctions ();
+        if (dwmResult == S_OK) return TRUE;
     }
 
-  /* In this case, we did not got the rect from the dwm api so we try to get the rect with the normal function */
-  if (GetWindowRect (hwndTarget, outRect))
+    /* In this case, we did not got the rect from the dwm api so we try to get the rect with the normal function */
+    if (GetWindowRect (hwndTarget, outRect))
     {
-      /* If the window is maximized then we need and can fix the rect variable 
-       * (we need to do this if the rect isn't coming from dwm api) 
-       */
-      ZeroMemory (&windowplacment, sizeof (WINDOWPLACEMENT));
-      if (GetWindowPlacement (hwndTarget, &windowplacment) && windowplacment.showCmd == SW_SHOWMAXIMIZED)
+        /* If the window is maximized then we need and can fix the rect variable
+         * (we need to do this if the rect isn't coming from dwm api)
+         */
+        ZeroMemory (&windowplacment, sizeof (WINDOWPLACEMENT));
+        if (GetWindowPlacement (hwndTarget, &windowplacment) && windowplacment.showCmd == SW_SHOWMAXIMIZED)
         {
-          RECT *rectScreens = NULL;
-          int   xCenter;
-          int   yCenter;
-          int   i;
+            RECT *rectScreens = NULL;
+            int   xCenter;
+            int   yCenter;
+            int   i;
 
-          /* If this is not the first time we call this function for some
-           * reason then we reset the rectScreens count
-           */
-          if (rectScreensCount)
-            rectScreensCount = 0;
+            /* If this is not the first time we call this function for some
+             * reason then we reset the rectScreens count
+             */
+            if (rectScreensCount)
+                rectScreensCount = 0;
 
-          /* Get the screens rects */
-          EnumDisplayMonitors (NULL, NULL, GetAccurateWindowRect_MonitorEnumProc,
-                               (LPARAM) &rectScreens);
+            /* Get the screens rects */
+            EnumDisplayMonitors (NULL, NULL, GetAccurateWindowRect_MonitorEnumProc,
+                                 (LPARAM) &rectScreens);
 
-          /* If for some reason the array size is 0 then we fill it with the desktop rect */
-          if (! rectScreensCount)
+            /* If for some reason the array size is 0 then we fill it with the desktop rect */
+            if (! rectScreensCount)
             {
-              rectScreens = (RECT*) g_malloc (sizeof (RECT));
-              if (! GetWindowRect (GetDesktopWindow (), rectScreens))
+                rectScreens = (RECT*) g_malloc (sizeof (RECT));
+                if (! GetWindowRect (GetDesktopWindow (), rectScreens))
                 {
-                  /* error: could not get rect screens */
-                  g_free (rectScreens);
-                  return FALSE;
+                    /* error: could not get rect screens */
+                    g_free (rectScreens);
+                    return FALSE;
                 }
 
-              rectScreensCount = 1;
+                rectScreensCount = 1;
             }
 
-          xCenter = outRect->left + (outRect->right - outRect->left) / 2;
-          yCenter = outRect->top + (outRect->bottom - outRect->top) / 2;
+            xCenter = outRect->left + (outRect->right - outRect->left) / 2;
+            yCenter = outRect->top + (outRect->bottom - outRect->top) / 2;
 
-          /* find on which screen the window exist */
-          for (i = 0; i < rectScreensCount; i++)
-            if (xCenter > rectScreens[i].left && xCenter < rectScreens[i].right &&
-                yCenter > rectScreens[i].top && yCenter < rectScreens[i].bottom)
-              break;
+            /* find on which screen the window exist */
+            for (i = 0; i < rectScreensCount; i++)
+                if (xCenter > rectScreens[i].left && xCenter < rectScreens[i].right &&
+                        yCenter > rectScreens[i].top && yCenter < rectScreens[i].bottom)
+                    break;
 
-          if (i == rectScreensCount)
-            /* Error: did not found on which screen the window exist */
-            return FALSE;
+            if (i == rectScreensCount)
+                /* Error: did not found on which screen the window exist */
+                return FALSE;
 
-          if (rectScreens[i].left > outRect->left) outRect->left = rectScreens[i].left;
-          if (rectScreens[i].right < outRect->right) outRect->right = rectScreens[i].right;
-          if (rectScreens[i].top > outRect->top) outRect->top = rectScreens[i].top;
-          if (rectScreens[i].bottom < outRect->bottom) outRect->bottom = rectScreens[i].bottom;
+            if (rectScreens[i].left > outRect->left) outRect->left = rectScreens[i].left;
+            if (rectScreens[i].right < outRect->right) outRect->right = rectScreens[i].right;
+            if (rectScreens[i].top > outRect->top) outRect->top = rectScreens[i].top;
+            if (rectScreens[i].bottom < outRect->bottom) outRect->bottom = rectScreens[i].bottom;
 
-          g_free (rectScreens);
+            g_free (rectScreens);
         }
 
-      return TRUE;
+        return TRUE;
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 /*
@@ -588,59 +588,59 @@ GetAccurateWindowRect (HWND hwndTarget,
 static gboolean
 doCapture (HWND selectedHwnd)
 {
-  RECT rect;
+    RECT rect;
 
-  /* Try and get everything out of the way before the
-   * capture.
-   */
-  Sleep (500 + winsnapvals.delay * 1000);
+    /* Try and get everything out of the way before the
+     * capture.
+     */
+    Sleep (500 + winsnapvals.delay * 1000);
 
-  /* Are we capturing a window or the whole screen */
-  if (selectedHwnd)
+    /* Are we capturing a window or the whole screen */
+    if (selectedHwnd)
     {
-      if (! GetAccurateWindowRect (selectedHwnd, &rect))
-      /* For some reason it works only if we return here TRUE. strange... */
-          return TRUE;
+        if (! GetAccurateWindowRect (selectedHwnd, &rect))
+            /* For some reason it works only if we return here TRUE. strange... */
+            return TRUE;
 
-      /* First try to capture the window with the magnification api.
-      *  This will solve the bug https://bugzilla.gnome.org/show_bug.cgi?id=793722/
-      */
+        /* First try to capture the window with the magnification api.
+        *  This will solve the bug https://bugzilla.gnome.org/show_bug.cgi?id=793722/
+        */
 
-      if (! doCaptureMagnificationAPI (selectedHwnd, rect))
+        if (! doCaptureMagnificationAPI (selectedHwnd, rect))
         {
-          /* If for some reason this capture method failed then
-          *  capture the window with the normal method:
-          */
-          HWND     previousHwnd = GetForegroundWindow ();
-          gboolean success;
+            /* If for some reason this capture method failed then
+            *  capture the window with the normal method:
+            */
+            HWND     previousHwnd = GetForegroundWindow ();
+            gboolean success;
 
-          SetForegroundWindow (selectedHwnd);
-          BringWindowToTop (selectedHwnd);
+            SetForegroundWindow (selectedHwnd);
+            BringWindowToTop (selectedHwnd);
 
-          success = doCaptureBitBlt (selectedHwnd, rect);
+            success = doCaptureBitBlt (selectedHwnd, rect);
 
-          if (previousHwnd)
-            SetForegroundWindow (previousHwnd);
+            if (previousHwnd)
+                SetForegroundWindow (previousHwnd);
 
-          return success;
+            return success;
         }
 
-      return TRUE;
+        return TRUE;
 
     }
-  else
+    else
     {
-      /* Get the screen's rectangle */
-      rect.top    = GetSystemMetrics (SM_YVIRTUALSCREEN);
-      rect.bottom = GetSystemMetrics (SM_YVIRTUALSCREEN) + GetSystemMetrics (SM_CYVIRTUALSCREEN);
-      rect.left   = GetSystemMetrics (SM_XVIRTUALSCREEN);
-      rect.right  = GetSystemMetrics (SM_XVIRTUALSCREEN) + GetSystemMetrics (SM_CXVIRTUALSCREEN);
+        /* Get the screen's rectangle */
+        rect.top    = GetSystemMetrics (SM_YVIRTUALSCREEN);
+        rect.bottom = GetSystemMetrics (SM_YVIRTUALSCREEN) + GetSystemMetrics (SM_CYVIRTUALSCREEN);
+        rect.left   = GetSystemMetrics (SM_XVIRTUALSCREEN);
+        rect.right  = GetSystemMetrics (SM_XVIRTUALSCREEN) + GetSystemMetrics (SM_CXVIRTUALSCREEN);
 
-      return doCaptureBitBlt (selectedHwnd, rect);
+        return doCaptureBitBlt (selectedHwnd, rect);
 
     }
 
-  return FALSE; /* we should never get here... */
+    return FALSE; /* we should never get here... */
 }
 
 static gboolean
@@ -648,45 +648,45 @@ doCaptureBitBlt (HWND selectedHwnd,
                  RECT rect)
 {
 
-  HDC     hdcSrc;
-  HDC     hdcCompat;
-  HBITMAP hbm;
+    HDC     hdcSrc;
+    HDC     hdcCompat;
+    HBITMAP hbm;
 
-  /* Get the device context for the whole screen
-   * even if we just want to capture a window.
-   * this will allow to capture applications that
-   * don't render to their main window's device
-   * context (e.g. browsers).
-  */
-  hdcSrc = CreateDC (TEXT("DISPLAY"), NULL, NULL, NULL);
+    /* Get the device context for the whole screen
+     * even if we just want to capture a window.
+     * this will allow to capture applications that
+     * don't render to their main window's device
+     * context (e.g. browsers).
+    */
+    hdcSrc = CreateDC (TEXT("DISPLAY"), NULL, NULL, NULL);
 
-  if (!hdcSrc)
+    if (!hdcSrc)
     {
-      formatWindowsError(buffer, sizeof buffer);
-      g_error ("Error getting device context: %s", buffer);
-      return FALSE;
+        formatWindowsError(buffer, sizeof buffer);
+        g_error ("Error getting device context: %s", buffer);
+        return FALSE;
     }
-  hdcCompat = CreateCompatibleDC (hdcSrc);
-  if (!hdcCompat)
+    hdcCompat = CreateCompatibleDC (hdcSrc);
+    if (!hdcCompat)
     {
-      formatWindowsError (buffer, sizeof buffer);
-      g_error ("Error getting compat device context: %s", buffer);
-      return FALSE;
+        formatWindowsError (buffer, sizeof buffer);
+        g_error ("Error getting compat device context: %s", buffer);
+        return FALSE;
     }
 
-  /* Do the window capture */
-  hbm = primDoWindowCapture (hdcSrc, hdcCompat, rect);
-  if (!hbm)
-    return FALSE;
+    /* Do the window capture */
+    hbm = primDoWindowCapture (hdcSrc, hdcCompat, rect);
+    if (!hbm)
+        return FALSE;
 
-  /* Release the device context */
-  ReleaseDC(selectedHwnd, hdcSrc);
+    /* Release the device context */
+    ReleaseDC(selectedHwnd, hdcSrc);
 
-  if (hbm == NULL) return FALSE;
+    if (hbm == NULL) return FALSE;
 
-  sendBMPToGimp (hbm, hdcCompat, rect);
+    sendBMPToGimp (hbm, hdcCompat, rect);
 
-  return TRUE;
+    return TRUE;
 
 }
 
@@ -700,114 +700,114 @@ doCaptureMagnificationAPI_callback (HWND            hwnd,
                                     RECT            clipped,
                                     HRGN            dirty)
 {
-  if (!srcdata) return;
-  capBytes = (guchar*) malloc (sizeof (guchar)*srcheader.cbSize);
-  rgbaToRgbBytes (capBytes, srcdata, srcheader.cbSize);
-  returnedSrcheader = srcheader;
+    if (!srcdata) return;
+    capBytes = (guchar*) malloc (sizeof (guchar)*srcheader.cbSize);
+    rgbaToRgbBytes (capBytes, srcdata, srcheader.cbSize);
+    returnedSrcheader = srcheader;
 }
 
 static BOOL
 isWindowIsAboveCaptureRegion (HWND hwndWindow,
                               RECT rectCapture)
 {
-  RECT rectWindow;
-  ZeroMemory (&rectWindow, sizeof (RECT));
-  if (!GetWindowRect (hwndWindow, &rectWindow)) return FALSE;
-  if (
-      (
-       (rectWindow.left >= rectCapture.left && rectWindow.left < rectCapture.right)
-       ||
-       (rectWindow.right <= rectCapture.right && rectWindow.right > rectCapture.left)
-       ||
-       (rectWindow.left <= rectCapture.left && rectWindow.right >= rectCapture.right)
-      )
-      &&
-      (
-       (rectWindow.top >= rectCapture.top && rectWindow.top < rectCapture.bottom)
-       ||
-       (rectWindow.bottom <= rectCapture.bottom && rectWindow.bottom > rectCapture.top)
-       ||
-       (rectWindow.top <= rectCapture.top && rectWindow.bottom >= rectCapture.bottom)
-      )
-  )
-    return TRUE;
-  else
-    return FALSE;
+    RECT rectWindow;
+    ZeroMemory (&rectWindow, sizeof (RECT));
+    if (!GetWindowRect (hwndWindow, &rectWindow)) return FALSE;
+    if (
+        (
+            (rectWindow.left >= rectCapture.left && rectWindow.left < rectCapture.right)
+            ||
+            (rectWindow.right <= rectCapture.right && rectWindow.right > rectCapture.left)
+            ||
+            (rectWindow.left <= rectCapture.left && rectWindow.right >= rectCapture.right)
+        )
+        &&
+        (
+            (rectWindow.top >= rectCapture.top && rectWindow.top < rectCapture.bottom)
+            ||
+            (rectWindow.bottom <= rectCapture.bottom && rectWindow.bottom > rectCapture.top)
+            ||
+            (rectWindow.top <= rectCapture.top && rectWindow.bottom >= rectCapture.bottom)
+        )
+    )
+        return TRUE;
+    else
+        return FALSE;
 }
 
 static gboolean
 doCaptureMagnificationAPI (HWND selectedHwnd,
                            RECT rect)
 {
-  HWND            hwndMag;
-  HWND            hwndHost;
-  HWND            nextWindow;
-  HWND            excludeWins[24];
-  RECT            round4Rect;
-  int             excludeWinsCount = 0;
+    HWND            hwndMag;
+    HWND            hwndHost;
+    HWND            nextWindow;
+    HWND            excludeWins[24];
+    RECT            round4Rect;
+    int             excludeWinsCount = 0;
 
-  if (!LoadMagnificationLibrary ()) return FALSE;
+    if (!LoadMagnificationLibrary ()) return FALSE;
 
-  if (!MagInitialize ()) return FALSE;
+    if (!MagInitialize ()) return FALSE;
 
-  round4Rect = rect;
-  round4Rect.right = round4Rect.left + ROUND4(round4Rect.right - round4Rect.left);
+    round4Rect = rect;
+    round4Rect.right = round4Rect.left + ROUND4(round4Rect.right - round4Rect.left);
 
-  /* Create the host window that will store the mag child window */
-  hwndHost = CreateWindowEx (0x08000000 | 0x080000 | 0x80 | 0x20, APP_NAME, NULL, 0x80000000,
-                             0, 0, 0, 0, NULL, NULL, GetModuleHandle (NULL), NULL);
+    /* Create the host window that will store the mag child window */
+    hwndHost = CreateWindowEx (0x08000000 | 0x080000 | 0x80 | 0x20, APP_NAME, NULL, 0x80000000,
+                               0, 0, 0, 0, NULL, NULL, GetModuleHandle (NULL), NULL);
 
-  if (!hwndHost)
+    if (!hwndHost)
     {
-      MagUninitialize ();
-      return FALSE;
+        MagUninitialize ();
+        return FALSE;
     }
 
-  SetLayeredWindowAttributes (hwndHost, (COLORREF)0, (BYTE)255, (DWORD)0x02);
+    SetLayeredWindowAttributes (hwndHost, (COLORREF)0, (BYTE)255, (DWORD)0x02);
 
-  /* Create the mag child window inside the host window */
-  hwndMag = CreateWindow (WC_MAGNIFIER, TEXT ("MagnifierWindow"),
-                          WS_CHILD /*| MS_SHOWMAGNIFIEDCURSOR*/  /*| WS_VISIBLE*/,
-                          0, 0, round4Rect.right - round4Rect.left, round4Rect.bottom - round4Rect.top,
-                          hwndHost, NULL, GetModuleHandle (NULL), NULL);
+    /* Create the mag child window inside the host window */
+    hwndMag = CreateWindow (WC_MAGNIFIER, TEXT ("MagnifierWindow"),
+                            WS_CHILD /*| MS_SHOWMAGNIFIEDCURSOR*/  /*| WS_VISIBLE*/,
+                            0, 0, round4Rect.right - round4Rect.left, round4Rect.bottom - round4Rect.top,
+                            hwndHost, NULL, GetModuleHandle (NULL), NULL);
 
-  /* Set the callback function that will be called by the api to get the pixels */
-  if (!MagSetImageScalingCallback (hwndMag, (MagImageScalingCallback)doCaptureMagnificationAPI_callback))
+    /* Set the callback function that will be called by the api to get the pixels */
+    if (!MagSetImageScalingCallback (hwndMag, (MagImageScalingCallback)doCaptureMagnificationAPI_callback))
     {
-      DestroyWindow (hwndHost);
-      MagUninitialize ();
-      return FALSE;
+        DestroyWindow (hwndHost);
+        MagUninitialize ();
+        return FALSE;
     }
 
-  /* Add only windows that above the target window */
-  for (nextWindow = GetNextWindow (selectedHwnd, GW_HWNDPREV); nextWindow != NULL; nextWindow = GetNextWindow (nextWindow, GW_HWNDPREV))
-    if (isWindowIsAboveCaptureRegion (nextWindow, rect))
+    /* Add only windows that above the target window */
+    for (nextWindow = GetNextWindow (selectedHwnd, GW_HWNDPREV); nextWindow != NULL; nextWindow = GetNextWindow (nextWindow, GW_HWNDPREV))
+        if (isWindowIsAboveCaptureRegion (nextWindow, rect))
+        {
+            excludeWins[excludeWinsCount++] = nextWindow;
+            /* This api can't work with more than 24 windows. we stop on the 24 window */
+            if (excludeWinsCount >= 24) break;
+        }
+
+    if (excludeWinsCount)
+        MagSetWindowFilterList (hwndMag, MW_FILTERMODE_EXCLUDE, excludeWinsCount, excludeWins);
+
+    /* Call the api to capture the window */
+    capBytes = NULL;
+
+    if (!MagSetWindowSource (hwndMag, round4Rect) || !capBytes)
     {
-      excludeWins[excludeWinsCount++] = nextWindow;
-      /* This api can't work with more than 24 windows. we stop on the 24 window */
-      if (excludeWinsCount >= 24) break;
+        DestroyWindow (hwndHost);
+        MagUninitialize ();
+        return FALSE;
     }
 
-  if (excludeWinsCount)
-    MagSetWindowFilterList (hwndMag, MW_FILTERMODE_EXCLUDE, excludeWinsCount, excludeWins);
+    /* Send it to Gimp */
+    sendBMPToGimp (NULL, NULL, rect);
 
-  /* Call the api to capture the window */
-  capBytes = NULL;
+    DestroyWindow (hwndHost);
+    MagUninitialize ();
 
-  if (!MagSetWindowSource (hwndMag, round4Rect) || !capBytes)
-    {
-      DestroyWindow (hwndHost);
-      MagUninitialize ();
-      return FALSE;
-    }
-
-  /* Send it to Gimp */
-  sendBMPToGimp (NULL, NULL, rect);
-
-  DestroyWindow (hwndHost);
-  MagUninitialize ();
-
-  return TRUE;
+    return TRUE;
 }
 
 /******************************************************************
@@ -825,29 +825,29 @@ doCaptureMagnificationAPI (HWND selectedHwnd,
 static void
 highlightWindowFrame (HWND hWnd)
 {
-  HDC  hdc;
-  RECT rc;
+    HDC  hdc;
+    RECT rc;
 
-  if (!IsWindow (hWnd))
-    return;
+    if (!IsWindow (hWnd))
+        return;
 
-  hdc = GetWindowDC (hWnd);
-  GetWindowRect (hWnd, &rc);
-  OffsetRect (&rc, -rc.left, -rc.top);
+    hdc = GetWindowDC (hWnd);
+    GetWindowRect (hWnd, &rc);
+    OffsetRect (&rc, -rc.left, -rc.top);
 
-  if (!IsRectEmpty (&rc))
+    if (!IsRectEmpty (&rc))
     {
-      PatBlt (hdc, rc.left, rc.top, rc.right-rc.left, DINV, DSTINVERT);
-      PatBlt (hdc, rc.left, rc.bottom-DINV, DINV, -(rc.bottom-rc.top-2*DINV),
-              DSTINVERT);
-      PatBlt (hdc, rc.right-DINV, rc.top+DINV, DINV, rc.bottom-rc.top-2*DINV,
-              DSTINVERT);
-      PatBlt (hdc, rc.right, rc.bottom-DINV, -(rc.right-rc.left), DINV,
-              DSTINVERT);
+        PatBlt (hdc, rc.left, rc.top, rc.right-rc.left, DINV, DSTINVERT);
+        PatBlt (hdc, rc.left, rc.bottom-DINV, DINV, -(rc.bottom-rc.top-2*DINV),
+                DSTINVERT);
+        PatBlt (hdc, rc.right-DINV, rc.top+DINV, DINV, rc.bottom-rc.top-2*DINV,
+                DSTINVERT);
+        PatBlt (hdc, rc.right, rc.bottom-DINV, -(rc.right-rc.left), DINV,
+                DSTINVERT);
     }
 
-  ReleaseDC (hWnd, hdc);
-  UpdateWindow (hWnd);
+    ReleaseDC (hWnd, hdc);
+    UpdateWindow (hWnd);
 }
 
 /*
@@ -861,7 +861,7 @@ highlightWindowFrame (HWND hWnd)
 void
 setCaptureType (int capType)
 {
-  captureType = capType;
+    captureType = capType;
 }
 
 /*
@@ -874,29 +874,29 @@ setCaptureType (int capType)
 static HWND
 myWindowFromPoint (POINT pt)
 {
-  HWND myHwnd;
-  HWND nextHwnd;
+    HWND myHwnd;
+    HWND nextHwnd;
 
-  switch (captureType)
+    switch (captureType)
     {
     case SELECT_FRAME:
     case SELECT_CLIENT:
-      nextHwnd = WindowFromPoint (pt);
+        nextHwnd = WindowFromPoint (pt);
 
-      do {
-          myHwnd = nextHwnd;
-          nextHwnd = GetParent (myHwnd);
-      } while (nextHwnd);
+        do {
+            myHwnd = nextHwnd;
+            nextHwnd = GetParent (myHwnd);
+        } while (nextHwnd);
 
-      return myHwnd;
-      break;
+        return myHwnd;
+        break;
 
     case SELECT_WINDOW:
-      return WindowFromPoint (pt);
-      break;
+        return WindowFromPoint (pt);
+        break;
     }
 
-  return WindowFromPoint (pt);
+    return WindowFromPoint (pt);
 }
 
 /*
@@ -911,168 +911,168 @@ dialogProc (HWND   hwndDlg,
             WPARAM wParam,
             LPARAM lParam)
 {
-  static int     mouseCaptured;
-  static int     buttonDown;
-  static HCURSOR oldCursor;
-  static RECT    bitmapRect;
-  static HWND    highlightedHwnd = NULL;
+    static int     mouseCaptured;
+    static int     buttonDown;
+    static HCURSOR oldCursor;
+    static RECT    bitmapRect;
+    static HWND    highlightedHwnd = NULL;
 
-  switch (msg)
+    switch (msg)
     {
     case WM_INITDIALOG:
-        {
-          int    nonclientHeight;
-          HWND   hwndGroup;
-          RECT   dlgRect;
-          RECT   clientRect;
-          RECT   groupRect;
-          BITMAP bm;
+    {
+        int    nonclientHeight;
+        HWND   hwndGroup;
+        RECT   dlgRect;
+        RECT   clientRect;
+        RECT   groupRect;
+        BITMAP bm;
 
-          /* Set the mouse capture flag */
-          buttonDown = 0;
-          mouseCaptured = 0;
+        /* Set the mouse capture flag */
+        buttonDown = 0;
+        mouseCaptured = 0;
 
-          /* Calculate the bitmap dimensions */
-          GetObject (iconInfo.hbmMask, sizeof(BITMAP), (VOID *)&bm);
+        /* Calculate the bitmap dimensions */
+        GetObject (iconInfo.hbmMask, sizeof(BITMAP), (VOID *)&bm);
 
-          /* Calculate the dialog window dimensions */
-          GetWindowRect (hwndDlg, &dlgRect);
+        /* Calculate the dialog window dimensions */
+        GetWindowRect (hwndDlg, &dlgRect);
 
-          /* Calculate the group box dimensions */
-          hwndGroup = GetDlgItem(hwndDlg, IDC_GROUP);
-          GetWindowRect (hwndGroup, &groupRect);
-          OffsetRect (&groupRect, -dlgRect.left, -dlgRect.top);
+        /* Calculate the group box dimensions */
+        hwndGroup = GetDlgItem(hwndDlg, IDC_GROUP);
+        GetWindowRect (hwndGroup, &groupRect);
+        OffsetRect (&groupRect, -dlgRect.left, -dlgRect.top);
 
-          /* The client's rectangle */
-          GetClientRect (hwndDlg, &clientRect);
+        /* The client's rectangle */
+        GetClientRect (hwndDlg, &clientRect);
 
-          /* The non-client height */
-          nonclientHeight = (dlgRect.bottom - dlgRect.top) -
-            (clientRect.bottom - clientRect.top);
+        /* The non-client height */
+        nonclientHeight = (dlgRect.bottom - dlgRect.top) -
+                          (clientRect.bottom - clientRect.top);
 
-          /* Calculate the bitmap rectangle */
-          bitmapRect.top = ((groupRect.top + groupRect.bottom) / 2) -
-            (bm.bmHeight / 2);
-          bitmapRect.top -= nonclientHeight;
-          bitmapRect.bottom = bitmapRect.top + bm.bmHeight;
-          bitmapRect.left = ((groupRect.left + groupRect.right) / 2) - (bm.bmWidth / 2);
-          bitmapRect.right = bitmapRect.left + bm.bmWidth;
-        }
-      break;
+        /* Calculate the bitmap rectangle */
+        bitmapRect.top = ((groupRect.top + groupRect.bottom) / 2) -
+                         (bm.bmHeight / 2);
+        bitmapRect.top -= nonclientHeight;
+        bitmapRect.bottom = bitmapRect.top + bm.bmHeight;
+        bitmapRect.left = ((groupRect.left + groupRect.right) / 2) - (bm.bmWidth / 2);
+        bitmapRect.right = bitmapRect.left + bm.bmWidth;
+    }
+    break;
 
     case WM_LBUTTONDOWN:
-      /* Track the button down state */
-      buttonDown = 1;
-      break;
+        /* Track the button down state */
+        buttonDown = 1;
+        break;
 
     case WM_LBUTTONUP:
-      buttonDown = 0;
+        buttonDown = 0;
 
-      /* If we have mouse captured
-       * we do this stuff.
-       */
-      if (mouseCaptured)
+        /* If we have mouse captured
+         * we do this stuff.
+         */
+        if (mouseCaptured)
         {
-          HWND  selectedHwnd;
-          POINT cursorPos;
+            HWND  selectedHwnd;
+            POINT cursorPos;
 
-          /* Release the capture */
-          mouseCaptured = 0;
-          SetCursor (oldCursor);
-          ReleaseCapture ();
+            /* Release the capture */
+            mouseCaptured = 0;
+            SetCursor (oldCursor);
+            ReleaseCapture ();
 
-          /* Remove the highlight */
-          if (highlightedHwnd)
-            highlightWindowFrame (highlightedHwnd);
-          RedrawWindow (hwndDlg, NULL, NULL, RDW_INVALIDATE);
+            /* Remove the highlight */
+            if (highlightedHwnd)
+                highlightWindowFrame (highlightedHwnd);
+            RedrawWindow (hwndDlg, NULL, NULL, RDW_INVALIDATE);
 
-          /* Return the selected window */
-          GetCursorPos (&cursorPos);
-          selectedHwnd = myWindowFromPoint (cursorPos);
-          EndDialog (hwndDlg, (INT_PTR) selectedHwnd);
+            /* Return the selected window */
+            GetCursorPos (&cursorPos);
+            selectedHwnd = myWindowFromPoint (cursorPos);
+            EndDialog (hwndDlg, (INT_PTR) selectedHwnd);
         }
-      break;
+        break;
 
     case WM_MOUSEMOVE:
-      /* If the mouse is captured, show
-       * the window which is tracking
-       * under the mouse position.
-       */
-      if (mouseCaptured)
+        /* If the mouse is captured, show
+         * the window which is tracking
+         * under the mouse position.
+         */
+        if (mouseCaptured)
         {
-          HWND  currentHwnd;
-          POINT cursorPos;
+            HWND  currentHwnd;
+            POINT cursorPos;
 
-          /* Get the window */
-          GetCursorPos (&cursorPos);
-          currentHwnd = myWindowFromPoint (cursorPos);
+            /* Get the window */
+            GetCursorPos (&cursorPos);
+            currentHwnd = myWindowFromPoint (cursorPos);
 
-          /* Do the highlighting */
-          if (highlightedHwnd != currentHwnd)
+            /* Do the highlighting */
+            if (highlightedHwnd != currentHwnd)
             {
-              if (highlightedHwnd)
-                highlightWindowFrame (highlightedHwnd);
-              if (currentHwnd)
-                highlightWindowFrame (currentHwnd);
-              highlightedHwnd = currentHwnd;
+                if (highlightedHwnd)
+                    highlightWindowFrame (highlightedHwnd);
+                if (currentHwnd)
+                    highlightWindowFrame (currentHwnd);
+                highlightedHwnd = currentHwnd;
             }
-          /* If the mouse has not been captured,
-           * try to figure out if we should capture
-           * the mouse.
-           */
-      }
-      else if (buttonDown)
+            /* If the mouse has not been captured,
+             * try to figure out if we should capture
+             * the mouse.
+             */
+        }
+        else if (buttonDown)
         {
-          POINT cursorPos;
+            POINT cursorPos;
 
-          /* Get the current client position */
-          GetCursorPos (&cursorPos);
-          ScreenToClient (hwndDlg, &cursorPos);
+            /* Get the current client position */
+            GetCursorPos (&cursorPos);
+            ScreenToClient (hwndDlg, &cursorPos);
 
-          /* Check if within the rectangle formed
-           * by the bitmap
-           */
-          if (PtInRect (&bitmapRect, cursorPos)) {
-              mouseCaptured = 1;
-              oldCursor = SetCursor (selectCursor);
-              SetCapture (hwndDlg);
-              RedrawWindow (hwndDlg, NULL, NULL, RDW_INVALIDATE | RDW_ERASE);
-          }
+            /* Check if within the rectangle formed
+             * by the bitmap
+             */
+            if (PtInRect (&bitmapRect, cursorPos)) {
+                mouseCaptured = 1;
+                oldCursor = SetCursor (selectCursor);
+                SetCapture (hwndDlg);
+                RedrawWindow (hwndDlg, NULL, NULL, RDW_INVALIDATE | RDW_ERASE);
+            }
         }
 
-      break;
+        break;
 
     case WM_PAINT:
-        {
-          HDC          hDC;
-          PAINTSTRUCT  ps;
+    {
+        HDC          hDC;
+        PAINTSTRUCT  ps;
 
-          /* If the mouse is not captured draw
-           * the cursor image
-           */
-          if (!mouseCaptured)
-            {
-              hDC = BeginPaint (hwndDlg, &ps);
-              DrawIconEx (hDC, bitmapRect.left, bitmapRect.top, selectCursor,
-                          0, 0, 0, NULL, DI_NORMAL);
-              EndPaint (hwndDlg, &ps);
-            }
+        /* If the mouse is not captured draw
+         * the cursor image
+         */
+        if (!mouseCaptured)
+        {
+            hDC = BeginPaint (hwndDlg, &ps);
+            DrawIconEx (hDC, bitmapRect.left, bitmapRect.top, selectCursor,
+                        0, 0, 0, NULL, DI_NORMAL);
+            EndPaint (hwndDlg, &ps);
         }
-      break;
+    }
+    break;
 
     case WM_COMMAND:
-      /* Handle the cancel button */
-      switch (LOWORD (wParam))
+        /* Handle the cancel button */
+        switch (LOWORD (wParam))
         {
         case IDCANCEL:
-          EndDialog (hwndDlg, 0);
-          return TRUE;
-          break;
+            EndDialog (hwndDlg, 0);
+            return TRUE;
+            break;
         }
 
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 ///* Don't use the normal WinMain from gimp.h */
@@ -1118,45 +1118,45 @@ dialogProc (HWND   hwndDlg,
 BOOL
 InitApplication (HINSTANCE hInstance)
 {
-  WNDCLASS wc;
-  BOOL     retValue;
+    WNDCLASS wc;
+    BOOL     retValue;
 
-  /* Get some resources */
+    /* Get some resources */
 #ifdef _MSC_VER
-  /* For some reason this works only with MSVC */
-  selectCursor = LoadCursor (hInstance, MAKEINTRESOURCE(IDC_SELECT));
+    /* For some reason this works only with MSVC */
+    selectCursor = LoadCursor (hInstance, MAKEINTRESOURCE(IDC_SELECT));
 #else
-  selectCursor = LoadCursor (NULL, IDC_CROSS);
+    selectCursor = LoadCursor (NULL, IDC_CROSS);
 #endif
-  GetIconInfo (selectCursor, &iconInfo);
+    GetIconInfo (selectCursor, &iconInfo);
 
-  /*
-   * Fill in window class structure with parameters to describe
-   * the main window.
-   */
-  wc.style = CS_HREDRAW | CS_VREDRAW;
-  wc.lpfnWndProc = (WNDPROC) WndProc;
-  wc.cbClsExtra = 0;
-  wc.cbWndExtra = 0;
-  wc.hInstance = hInstance;
-  wc.hIcon = LoadIcon (NULL, IDI_APPLICATION);
-  wc.hCursor = LoadCursor (NULL, IDC_ARROW);
-  wc.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
-  wc.lpszClassName = APP_NAME;
-  wc.lpszMenuName = NULL;
+    /*
+     * Fill in window class structure with parameters to describe
+     * the main window.
+     */
+    wc.style = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc = (WNDPROC) WndProc;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = hInstance;
+    wc.hIcon = LoadIcon (NULL, IDI_APPLICATION);
+    wc.hCursor = LoadCursor (NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
+    wc.lpszClassName = APP_NAME;
+    wc.lpszMenuName = NULL;
 
-  /* Register the window class and stash success/failure code. */
-  retValue = RegisterClass (&wc);
+    /* Register the window class and stash success/failure code. */
+    retValue = RegisterClass (&wc);
 
-  /* Log error */
-  if (!retValue)
+    /* Log error */
+    if (!retValue)
     {
-      formatWindowsError (buffer, sizeof buffer);
-      g_error ("Error registering class: %s", buffer);
-      return retValue;
+        formatWindowsError (buffer, sizeof buffer);
+        g_error ("Error registering class: %s", buffer);
+        return retValue;
     }
 
-  return retValue;
+    return retValue;
 }
 
 /*
@@ -1168,36 +1168,36 @@ BOOL
 InitInstance (HINSTANCE hInstance,
               int       nCmdShow)
 {
-  HINSTANCE User32Library = LoadLibrary ("user32.dll");
+    HINSTANCE User32Library = LoadLibrary ("user32.dll");
 
-  if (User32Library)
+    if (User32Library)
     {
-      typedef BOOL (WINAPI* SET_PROC_DPI_AWARE)();
-      SET_PROC_DPI_AWARE SetProcessDPIAware;
+        typedef BOOL (WINAPI* SET_PROC_DPI_AWARE)();
+        SET_PROC_DPI_AWARE SetProcessDPIAware;
 
-      /* This line fix bug: https://bugzilla.gnome.org/show_bug.cgi?id=796121#c4 */
-      SetProcessDPIAware = (SET_PROC_DPI_AWARE) GetProcAddress (User32Library,
-                                                                "SetProcessDPIAware");
-      if (SetProcessDPIAware)
-        SetProcessDPIAware();
+        /* This line fix bug: https://bugzilla.gnome.org/show_bug.cgi?id=796121#c4 */
+        SetProcessDPIAware = (SET_PROC_DPI_AWARE) GetProcAddress (User32Library,
+                             "SetProcessDPIAware");
+        if (SetProcessDPIAware)
+            SetProcessDPIAware();
 
-      FreeLibrary (User32Library);
+        FreeLibrary (User32Library);
     }
 
-  /* Create our window */
-  mainHwnd = CreateWindow (APP_NAME, APP_NAME, WS_OVERLAPPEDWINDOW,
-                           CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
-                           NULL, NULL, hInstance, NULL);
+    /* Create our window */
+    mainHwnd = CreateWindow (APP_NAME, APP_NAME, WS_OVERLAPPEDWINDOW,
+                             CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
+                             NULL, NULL, hInstance, NULL);
 
-  if (!mainHwnd)
+    if (!mainHwnd)
     {
-      return (FALSE);
+        return (FALSE);
     }
 
-  ShowWindow (mainHwnd, nCmdShow);
-  UpdateWindow (mainHwnd);
+    ShowWindow (mainHwnd, nCmdShow);
+    UpdateWindow (mainHwnd);
 
-  return TRUE;
+    return TRUE;
 }
 
 /*
@@ -1212,24 +1212,24 @@ InitInstance (HINSTANCE hInstance,
 int
 winsnapWinMain (void)
 {
-  MSG msg;
+    MSG msg;
 
-  /* Perform instance initialization */
-  if (!InitApplication (hInst))
-    return (FALSE);
+    /* Perform instance initialization */
+    if (!InitApplication (hInst))
+        return (FALSE);
 
-  /* Perform application initialization */
-  if (!InitInstance (hInst, SHOW_WINDOW))
-    return (FALSE);
+    /* Perform application initialization */
+    if (!InitInstance (hInst, SHOW_WINDOW))
+        return (FALSE);
 
-  /* Main message loop */
-  while (GetMessage (&msg, NULL, 0, 0))
+    /* Main message loop */
+    while (GetMessage (&msg, NULL, 0, 0))
     {
-      TranslateMessage (&msg);
-      DispatchMessage (&msg);
+        TranslateMessage (&msg);
+        DispatchMessage (&msg);
     }
 
-  return (msg.wParam);
+    return (msg.wParam);
 }
 
 /*
@@ -1243,36 +1243,36 @@ WndProc (HWND   hwnd,
          WPARAM wParam,
          LPARAM lParam)
 {
-  HWND selectedHwnd;
+    HWND selectedHwnd;
 
-  switch (message)
+    switch (message)
     {
 
     case WM_CREATE:
-      /* The window is created... Send the capture message */
-      PostMessage (hwnd, WM_DOCAPTURE, 0, 0);
-      break;
+        /* The window is created... Send the capture message */
+        PostMessage (hwnd, WM_DOCAPTURE, 0, 0);
+        break;
 
     case WM_DOCAPTURE:
-      /* Get the selected window handle */
-      selectedHwnd = (HWND) DialogBox (hInst, MAKEINTRESOURCE(IDD_SELECT),
-                                       hwnd, (DLGPROC) dialogProc);
-      if (selectedHwnd)
-        doCapture (selectedHwnd);
+        /* Get the selected window handle */
+        selectedHwnd = (HWND) DialogBox (hInst, MAKEINTRESOURCE(IDD_SELECT),
+                                         hwnd, (DLGPROC) dialogProc);
+        if (selectedHwnd)
+            doCapture (selectedHwnd);
 
-      PostQuitMessage (selectedHwnd != NULL);
+        PostQuitMessage (selectedHwnd != NULL);
 
-      break;
+        break;
 
     case WM_DESTROY:
-      PostQuitMessage (0);
-      break;
+        PostQuitMessage (0);
+        break;
 
     default:
-      return (DefWindowProc (hwnd, message, wParam, lParam));
+        return (DefWindowProc (hwnd, message, wParam, lParam));
     }
 
-  return 0;
+    return 0;
 }
 
 #endif /* G_OS_WIN32 */

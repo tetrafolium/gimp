@@ -42,28 +42,28 @@ typedef char   FitsString[FITS_CARD_SIZE];
 
 typedef enum
 {
-  FITS_DATA_TYPE_BITPIX_8,
-  FITS_DATA_TYPE_BITPIX_16,
-  FITS_DATA_TYPE_BITPIX_32,
-  FITS_DATA_TYPE_BITPIX_M32,
-  FITS_DATA_TYPE_BITPIX_M64,
-  FITS_DATA_TYPE_FBOOL,
-  FITS_DATA_TYPE_FLONG,
-  FITS_DATA_TYPE_FDOUBLE,
-  FITS_DATA_TYPE_FSTRING
+    FITS_DATA_TYPE_BITPIX_8,
+    FITS_DATA_TYPE_BITPIX_16,
+    FITS_DATA_TYPE_BITPIX_32,
+    FITS_DATA_TYPE_BITPIX_M32,
+    FITS_DATA_TYPE_BITPIX_M64,
+    FITS_DATA_TYPE_FBOOL,
+    FITS_DATA_TYPE_FLONG,
+    FITS_DATA_TYPE_FDOUBLE,
+    FITS_DATA_TYPE_FSTRING
 } FitsDataType;
 
 typedef union
 {
-  FitsBitpix8   bitpix8;
-  FitsBitpix16  bitpix16;
-  FitsBitpix32  bitpix32;
-  FitsBitpixM32 bitpixm32;
-  FitsBitpixM64 bitpixm64;
-  FitsBool      fbool;
-  FitsLong      flong;
-  FitsDouble    fdouble;
-  FitsString    fstring;
+    FitsBitpix8   bitpix8;
+    FitsBitpix16  bitpix16;
+    FitsBitpix32  bitpix32;
+    FitsBitpixM32 bitpixm32;
+    FitsBitpixM64 bitpixm64;
+    FitsBool      fbool;
+    FitsLong      flong;
+    FitsDouble    fdouble;
+    FitsString    fstring;
 } FitsData;
 
 
@@ -73,10 +73,10 @@ typedef struct _FitsPixTransform FitsPixTransform;
 
 struct _FitsPixTransform
 {
-  gdouble pixmin, pixmax;    /* Pixel values [pixmin,pixmax] should be mapped */
-  gdouble datamin, datamax;  /* to [datamin,datamax] */
-  gdouble replacement;       /* datavalue to use for blank or NaN pixels */
-  gchar   dsttyp;            /* Destination typ ('c' = char) */
+    gdouble pixmin, pixmax;    /* Pixel values [pixmin,pixmax] should be mapped */
+    gdouble datamin, datamax;  /* to [datamin,datamax] */
+    gdouble replacement;       /* datavalue to use for blank or NaN pixels */
+    gchar   dsttyp;            /* Destination typ ('c' = char) */
 };
 
 
@@ -86,8 +86,8 @@ typedef struct _FitsRecordList FitsRecordList;
 
 struct _FitsRecordList
 {
-  gchar           data[FITS_RECORD_SIZE];
-  FitsRecordList *next_record;
+    gchar           data[FITS_RECORD_SIZE];
+    FitsRecordList *next_record;
 };
 
 
@@ -97,49 +97,49 @@ typedef struct _FitsHduList FitsHduList;
 
 struct _FitsHduList
 {
-  glong header_offset;             /* Offset of header in the file */
-  glong data_offset;               /* Offset of data in the file */
-  glong data_size;                 /* Size of data in the HDU (including pad)*/
-  glong udata_size;                /* Size of used data in the HDU (excl. pad) */
-  gint  bpp;                       /* Bytes per pixel */
-  gint  numpic;                    /* Number of interpretable images in HDU */
-  gint  naddcards;                 /* Number of additional cards */
-  gchar addcards[FITS_NADD_CARDS][FITS_CARD_SIZE];
-  struct
-  {
-    gboolean nan_value;            /* NaN's found in data ? */
-    gboolean blank_value;          /* Blanks found in data ? */
-                                   /* Flags specifying if some cards are used */
-    gchar blank;                   /* The corresponding data below is only */
-    gchar datamin;                 /* valid, if the flag is set. */
-    gchar datamax;
-    gchar simple;                  /* This indicates a simple HDU */
-    gchar xtension;                /* This indicates an extension */
-    gchar gcount;
-    gchar pcount;
-    gchar bzero;
-    gchar bscale;
-    gchar groups;
-    gchar extend;
-  } used;
-  gdouble pixmin, pixmax;          /* Minimum/Maximum pixel values */
-                                   /* Some decoded data of the HDU: */
-  gint naxis;                      /* Number of axes */
-  gint naxisn[FITS_MAX_AXIS];      /* Sizes of axes (NAXIS1 --> naxisn[0]) */
-  gint bitpix;                     /* Data representation (8,16,32,-16,-32) */
-                                   /* When using the following data, */
-                                   /* the used-flags must be checked before. */
-  glong   blank;                   /* Blank value */
-  gdouble datamin, datamax;        /* Minimum/Maximum physical data values */
-  gchar   xtension[FITS_CARD_SIZE];/* Type of extension */
-  glong   gcount, pcount;          /* Used by XTENSION */
-  gdouble bzero, bscale;           /* Transformation values */
-  gint    groups;                  /* Random groups indicator */
-  gint    extend;                  /* Extend flag */
+    glong header_offset;             /* Offset of header in the file */
+    glong data_offset;               /* Offset of data in the file */
+    glong data_size;                 /* Size of data in the HDU (including pad)*/
+    glong udata_size;                /* Size of used data in the HDU (excl. pad) */
+    gint  bpp;                       /* Bytes per pixel */
+    gint  numpic;                    /* Number of interpretable images in HDU */
+    gint  naddcards;                 /* Number of additional cards */
+    gchar addcards[FITS_NADD_CARDS][FITS_CARD_SIZE];
+    struct
+    {
+        gboolean nan_value;            /* NaN's found in data ? */
+        gboolean blank_value;          /* Blanks found in data ? */
+        /* Flags specifying if some cards are used */
+        gchar blank;                   /* The corresponding data below is only */
+        gchar datamin;                 /* valid, if the flag is set. */
+        gchar datamax;
+        gchar simple;                  /* This indicates a simple HDU */
+        gchar xtension;                /* This indicates an extension */
+        gchar gcount;
+        gchar pcount;
+        gchar bzero;
+        gchar bscale;
+        gchar groups;
+        gchar extend;
+    } used;
+    gdouble pixmin, pixmax;          /* Minimum/Maximum pixel values */
+    /* Some decoded data of the HDU: */
+    gint naxis;                      /* Number of axes */
+    gint naxisn[FITS_MAX_AXIS];      /* Sizes of axes (NAXIS1 --> naxisn[0]) */
+    gint bitpix;                     /* Data representation (8,16,32,-16,-32) */
+    /* When using the following data, */
+    /* the used-flags must be checked before. */
+    glong   blank;                   /* Blank value */
+    gdouble datamin, datamax;        /* Minimum/Maximum physical data values */
+    gchar   xtension[FITS_CARD_SIZE];/* Type of extension */
+    glong   gcount, pcount;          /* Used by XTENSION */
+    gdouble bzero, bscale;           /* Transformation values */
+    gint    groups;                  /* Random groups indicator */
+    gint    extend;                  /* Extend flag */
 
-  FitsRecordList *header_record_list; /* Header records read in */
+    FitsRecordList *header_record_list; /* Header records read in */
 
-  FitsHduList    *next_hdu;
+    FitsHduList    *next_hdu;
 };
 
 
@@ -147,15 +147,15 @@ typedef struct _FitsFile FitsFile;
 
 struct _FitsFile
 {
-  FILE     *fp;               /* File pointer to fits file */
-  gchar     openmode;         /* Mode the file was opened (0, 'r', 'w') */
+    FILE     *fp;               /* File pointer to fits file */
+    gchar     openmode;         /* Mode the file was opened (0, 'r', 'w') */
 
-  gint      n_hdu;            /* Number of HDUs in file */
-  gint      n_pic;            /* Total number of interpretable pictures */
-  gboolean  nan_used;         /* NaN's used in the file ? */
-  gboolean  blank_used;       /* Blank's used in the file ? */
+    gint      n_hdu;            /* Number of HDUs in file */
+    gint      n_pic;            /* Total number of interpretable pictures */
+    gboolean  nan_used;         /* NaN's used in the file ? */
+    gboolean  blank_used;       /* Blank's used in the file ? */
 
-  FitsHduList *hdu_list;    /* Header and Data Unit List */
+    FitsHduList *hdu_list;    /* Header and Data Unit List */
 };
 
 

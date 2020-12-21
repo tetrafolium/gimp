@@ -38,7 +38,7 @@ gboolean     gimp_display_delete            (GimpDisplay *display);
 gint         gimp_display_get_window_handle (GimpDisplay *display);
 gboolean     gimp_displays_flush            (void);
 gboolean     gimp_displays_reconnect        (GimpImage   *old_image,
-                                             GimpImage   *new_image);
+        GimpImage   *new_image);
 
 
 G_END_DECLS

@@ -44,44 +44,44 @@ typedef struct _GimpOffsetAreaClass   GimpOffsetAreaClass;
 
 struct _GimpOffsetArea
 {
-  GtkDrawingArea         parent_instance;
+    GtkDrawingArea         parent_instance;
 
-  GimpOffsetAreaPrivate *priv;
+    GimpOffsetAreaPrivate *priv;
 };
 
 struct _GimpOffsetAreaClass
 {
-  GtkDrawingAreaClass  parent_class;
+    GtkDrawingAreaClass  parent_class;
 
-  void (* offsets_changed) (GimpOffsetArea *offset_area,
-                            gint            offset_x,
-                            gint            offset_y);
+    void (* offsets_changed) (GimpOffsetArea *offset_area,
+                              gint            offset_x,
+                              gint            offset_y);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_offset_area_get_type    (void) G_GNUC_CONST;
 
 GtkWidget * gimp_offset_area_new         (gint            orig_width,
-                                          gint            orig_height);
+        gint            orig_height);
 void        gimp_offset_area_set_pixbuf  (GimpOffsetArea *offset_area,
-                                          GdkPixbuf      *pixbuf);
+        GdkPixbuf      *pixbuf);
 
 void        gimp_offset_area_set_size    (GimpOffsetArea *offset_area,
-                                          gint            width,
-                                          gint            height);
+        gint            width,
+        gint            height);
 void        gimp_offset_area_set_offsets (GimpOffsetArea *offset_area,
-                                          gint            offset_x,
-                                          gint            offset_y);
+        gint            offset_x,
+        gint            offset_y);
 
 
 G_END_DECLS

@@ -31,20 +31,20 @@
 gchar *
 script_fu_strescape (const gchar *source)
 {
-  const guchar *p;
-  gchar        *dest;
-  gchar        *q;
+    const guchar *p;
+    gchar        *dest;
+    gchar        *q;
 
-  g_return_val_if_fail (source != NULL, NULL);
+    g_return_val_if_fail (source != NULL, NULL);
 
-  p = (const guchar *) source;
+    p = (const guchar *) source;
 
-  /* Each source byte needs maximally two destination chars */
-  q = dest = g_malloc (strlen (source) * 2 + 1);
+    /* Each source byte needs maximally two destination chars */
+    q = dest = g_malloc (strlen (source) * 2 + 1);
 
-  while (*p)
+    while (*p)
     {
-      switch (*p)
+        switch (*p)
         {
         case '\b':
         case '\f':
@@ -53,17 +53,17 @@ script_fu_strescape (const gchar *source)
         case '\t':
         case '\\':
         case '"':
-          *q++ = '\\';
-          /* fallthrough */
+            *q++ = '\\';
+        /* fallthrough */
         default:
-          *q++ = *p;
-          break;
+            *q++ = *p;
+            break;
         }
 
-      p++;
+        p++;
     }
 
-  *q = 0;
+    *q = 0;
 
-  return dest;
+    return dest;
 }

@@ -23,10 +23,10 @@
 
 typedef enum dxt_flags_e
 {
-  DXT_BC1           = 1 << 0,
-  DXT_BC2           = 1 << 1,
-  DXT_BC3           = 1 << 2,
-  DXT_PERCEPTUAL    = 1 << 3,
+    DXT_BC1           = 1 << 0,
+    DXT_BC2           = 1 << 1,
+    DXT_BC3           = 1 << 2,
+    DXT_PERCEPTUAL    = 1 << 3,
 } dxt_flags_t;
 
 int dxt_compress   (unsigned char *dst,

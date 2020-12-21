@@ -40,20 +40,20 @@ typedef struct _GimpTileBackendPluginPrivate GimpTileBackendPluginPrivate;
 
 struct _GimpTileBackendPlugin
 {
-  GeglTileBackend               parent_instance;
+    GeglTileBackend               parent_instance;
 
-  GimpTileBackendPluginPrivate *priv;
+    GimpTileBackendPluginPrivate *priv;
 };
 
 struct _GimpTileBackendPluginClass
 {
-  GeglTileBackendClass parent_class;
+    GeglTileBackendClass parent_class;
 };
 
 GType             _gimp_tile_backend_plugin_get_type (void) G_GNUC_CONST;
 
 GeglTileBackend * _gimp_tile_backend_plugin_new      (GimpDrawable *drawable,
-                                                      gint          shadow);
+        gint          shadow);
 
 G_END_DECLS
 

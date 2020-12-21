@@ -16,84 +16,84 @@
 
 typedef enum
 {
-  POINT_LIGHT,
-  DIRECTIONAL_LIGHT,
-  SPOT_LIGHT,
-  NO_LIGHT
+    POINT_LIGHT,
+    DIRECTIONAL_LIGHT,
+    SPOT_LIGHT,
+    NO_LIGHT
 } LightType;
 
 enum
 {
-  LINEAR_MAP,
-  LOGARITHMIC_MAP,
-  SINUSOIDAL_MAP,
-  SPHERICAL_MAP
+    LINEAR_MAP,
+    LOGARITHMIC_MAP,
+    SINUSOIDAL_MAP,
+    SPHERICAL_MAP
 };
 
 enum
 {
-  IMAGE_BUMP,
-  WAVES_BUMP
+    IMAGE_BUMP,
+    WAVES_BUMP
 };
 
 typedef struct
 {
-  gdouble     ambient_int;
-  gdouble     diffuse_int;
-  gdouble     diffuse_ref;
-  gdouble     specular_ref;
-  gdouble     highlight;
-  gboolean    metallic;
-  GimpRGB     color;
+    gdouble     ambient_int;
+    gdouble     diffuse_int;
+    gdouble     diffuse_ref;
+    gdouble     specular_ref;
+    gdouble     highlight;
+    gboolean    metallic;
+    GimpRGB     color;
 } MaterialSettings;
 
 typedef struct
 {
-  LightType    type;
-  GimpVector3  position;
-  GimpVector3  direction;
-  GimpRGB      color;
-  gdouble      intensity;
-  gboolean     active;
+    LightType    type;
+    GimpVector3  position;
+    GimpVector3  direction;
+    GimpRGB      color;
+    gdouble      intensity;
+    gboolean     active;
 } LightSettings;
 
 typedef struct
 {
-  gint32       drawable_id;
-  gint32       bumpmap_id;
-  gint32       envmap_id;
+    gint32       drawable_id;
+    gint32       bumpmap_id;
+    gint32       envmap_id;
 
-  /* Render variables */
-  /* ================ */
+    /* Render variables */
+    /* ================ */
 
-  GimpVector3      viewpoint;
-  GimpVector3      planenormal;
-  LightSettings    lightsource[NUM_LIGHTS];
-  MaterialSettings material;
-  MaterialSettings ref_material;
+    GimpVector3      viewpoint;
+    GimpVector3      planenormal;
+    LightSettings    lightsource[NUM_LIGHTS];
+    MaterialSettings material;
+    MaterialSettings ref_material;
 
-  gdouble      pixel_threshold;
-  gdouble      bumpmax,bumpmin;
-  gint         max_depth;
-  gint         bumpmaptype;
+    gdouble      pixel_threshold;
+    gdouble      bumpmax,bumpmin;
+    gint         max_depth;
+    gint         bumpmaptype;
 
-  /* Flags */
-  gint         antialiasing;
-  gint         create_new_image;
-  gint         transparent_background;
-  gint         bump_mapped;
-  gint         env_mapped;
-  gint         ref_mapped;
-  gint         bumpstretch;
-  gint         previewquality;
-  gboolean     symbols;
-  gboolean     interactive_preview;
+    /* Flags */
+    gint         antialiasing;
+    gint         create_new_image;
+    gint         transparent_background;
+    gint         bump_mapped;
+    gint         env_mapped;
+    gint         ref_mapped;
+    gint         bumpstretch;
+    gint         previewquality;
+    gboolean     symbols;
+    gboolean     interactive_preview;
 
-  /* Misc */
-  gboolean     update_enabled;
-  gint         light_selected;
-  gboolean     light_isolated;
-  gdouble      preview_zoom_factor;
+    /* Misc */
+    gboolean     update_enabled;
+    gint         light_selected;
+    gboolean     light_isolated;
+    gdouble      preview_zoom_factor;
 } LightingValues;
 
 /* Externally visible variables */

@@ -31,18 +31,18 @@
 void
 print_page_setup_dialog (GtkPrintOperation *operation)
 {
-  GtkPrintSettings *settings;
-  GtkPageSetup     *setup;
+    GtkPrintSettings *settings;
+    GtkPageSetup     *setup;
 
-  g_return_if_fail (GTK_IS_PRINT_OPERATION (operation));
+    g_return_if_fail (GTK_IS_PRINT_OPERATION (operation));
 
-  setup = gtk_print_operation_get_default_page_setup (operation);
+    setup = gtk_print_operation_get_default_page_setup (operation);
 
-  settings = gtk_print_settings_new ();
-  setup = gtk_print_run_page_setup_dialog (NULL, setup, settings);
-  g_object_unref (settings);
+    settings = gtk_print_settings_new ();
+    setup = gtk_print_run_page_setup_dialog (NULL, setup, settings);
+    g_object_unref (settings);
 
-  gtk_print_operation_set_default_page_setup (operation, setup);
+    gtk_print_operation_set_default_page_setup (operation, setup);
 }
 #endif
 
@@ -50,30 +50,30 @@ void
 print_page_setup_load (GtkPrintOperation *operation,
                        GimpImage         *image)
 {
-  GKeyFile *key_file;
+    GKeyFile *key_file;
 
-  g_return_if_fail (GTK_IS_PRINT_OPERATION (operation));
+    g_return_if_fail (GTK_IS_PRINT_OPERATION (operation));
 
-  key_file = print_utils_key_file_load_from_parasite (image,
-                                                      PRINT_PAGE_SETUP_NAME);
+    key_file = print_utils_key_file_load_from_parasite (image,
+               PRINT_PAGE_SETUP_NAME);
 
-  if (! key_file)
-    key_file = print_utils_key_file_load_from_rcfile (PRINT_PAGE_SETUP_NAME);
+    if (! key_file)
+        key_file = print_utils_key_file_load_from_rcfile (PRINT_PAGE_SETUP_NAME);
 
-  if (key_file)
+    if (key_file)
     {
-      GtkPageSetup *setup;
+        GtkPageSetup *setup;
 
-      setup = gtk_page_setup_new_from_key_file (key_file,
-                                                PRINT_PAGE_SETUP_NAME, NULL);
+        setup = gtk_page_setup_new_from_key_file (key_file,
+                PRINT_PAGE_SETUP_NAME, NULL);
 
-      if (setup)
+        if (setup)
         {
-          gtk_print_operation_set_default_page_setup (operation, setup);
-          g_object_unref (setup);
+            gtk_print_operation_set_default_page_setup (operation, setup);
+            g_object_unref (setup);
         }
 
-      g_key_file_free (key_file);
+        g_key_file_free (key_file);
     }
 }
 
@@ -81,21 +81,21 @@ void
 print_page_setup_save (GtkPrintOperation *operation,
                        GimpImage         *image)
 {
-  GtkPageSetup *setup;
-  GKeyFile     *key_file;
+    GtkPageSetup *setup;
+    GKeyFile     *key_file;
 
-  g_return_if_fail (GTK_IS_PRINT_OPERATION (operation));
+    g_return_if_fail (GTK_IS_PRINT_OPERATION (operation));
 
-  key_file = g_key_file_new ();
+    key_file = g_key_file_new ();
 
-  setup = gtk_print_operation_get_default_page_setup (operation);
+    setup = gtk_print_operation_get_default_page_setup (operation);
 
-  gtk_page_setup_to_key_file (setup, key_file, PRINT_PAGE_SETUP_NAME);
+    gtk_page_setup_to_key_file (setup, key_file, PRINT_PAGE_SETUP_NAME);
 
-  print_utils_key_file_save_as_parasite (key_file,
-                                         image, PRINT_PAGE_SETUP_NAME);
-  print_utils_key_file_save_as_rcfile (key_file,
-                                       PRINT_PAGE_SETUP_NAME);
+    print_utils_key_file_save_as_parasite (key_file,
+                                           image, PRINT_PAGE_SETUP_NAME);
+    print_utils_key_file_save_as_rcfile (key_file,
+                                         PRINT_PAGE_SETUP_NAME);
 
-  g_key_file_free (key_file);
+    g_key_file_free (key_file);
 }

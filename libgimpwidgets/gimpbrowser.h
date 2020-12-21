@@ -44,28 +44,28 @@ typedef struct _GimpBrowserClass   GimpBrowserClass;
 
 struct _GimpBrowser
 {
-  GtkPaned            parent_instance;
+    GtkPaned            parent_instance;
 
-  GimpBrowserPrivate *priv;
+    GimpBrowserPrivate *priv;
 };
 
 struct _GimpBrowserClass
 {
-  GtkPanedClass  parent_class;
+    GtkPanedClass  parent_class;
 
-  void (* search) (GimpBrowser *browser,
-                   const gchar *search_string,
-                   gint         search_type);
+    void (* search) (GimpBrowser *browser,
+                     const gchar *search_string,
+                     gint         search_type);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
@@ -74,19 +74,19 @@ GType       gimp_browser_get_type         (void) G_GNUC_CONST;
 GtkWidget * gimp_browser_new                (void);
 
 void        gimp_browser_add_search_types   (GimpBrowser *browser,
-                                             const gchar *first_type_label,
-                                             gint         first_type_id,
-                                             ...) G_GNUC_NULL_TERMINATED;
+        const gchar *first_type_label,
+        gint         first_type_id,
+        ...) G_GNUC_NULL_TERMINATED;
 
 GtkWidget * gimp_browser_get_left_vbox      (GimpBrowser *browser);
 GtkWidget * gimp_browser_get_right_vbox     (GimpBrowser *browser);
 
 void        gimp_browser_set_search_summary (GimpBrowser *browser,
-                                             const gchar *summary);
+        const gchar *summary);
 void        gimp_browser_set_widget         (GimpBrowser *browser,
-                                             GtkWidget   *widget);
+        GtkWidget   *widget);
 void        gimp_browser_show_message       (GimpBrowser *browser,
-                                             const gchar *message);
+        const gchar *message);
 
 
 G_END_DECLS

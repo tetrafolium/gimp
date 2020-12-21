@@ -64,17 +64,17 @@ typedef void (* GimpProgressFunc) (gint      min,
 
 
 gulong   gimp_adaptive_supersample_area (gint              x1,
-                                         gint              y1,
-                                         gint              x2,
-                                         gint              y2,
-                                         gint              max_depth,
-                                         gdouble           threshold,
-                                         GimpRenderFunc    render_func,
-                                         gpointer          render_data,
-                                         GimpPutPixelFunc  put_pixel_func,
-                                         gpointer          put_pixel_data,
-                                         GimpProgressFunc  progress_func,
-                                         gpointer          progress_data);
+        gint              y1,
+        gint              x2,
+        gint              y2,
+        gint              max_depth,
+        gdouble           threshold,
+        GimpRenderFunc    render_func,
+        gpointer          render_data,
+        GimpPutPixelFunc  put_pixel_func,
+        gpointer          put_pixel_data,
+        GimpProgressFunc  progress_func,
+        gpointer          progress_data);
 
 
 G_END_DECLS

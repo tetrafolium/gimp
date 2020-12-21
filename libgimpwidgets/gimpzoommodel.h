@@ -42,28 +42,28 @@ typedef struct _GimpZoomModelClass   GimpZoomModelClass;
 
 struct _GimpZoomModel
 {
-  GObject               parent_instance;
+    GObject               parent_instance;
 
-  GimpZoomModelPrivate *priv;
+    GimpZoomModelPrivate *priv;
 };
 
 struct _GimpZoomModelClass
 {
-  GObjectClass  parent_class;
+    GObjectClass  parent_class;
 
-  void (* zoomed) (GimpZoomModel *model,
-                   gdouble        old_factor,
-                   gdouble        new_factor);
+    void (* zoomed) (GimpZoomModel *model,
+                     gdouble        old_factor,
+                     gdouble        new_factor);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
@@ -71,23 +71,23 @@ GType           gimp_zoom_model_get_type     (void) G_GNUC_CONST;
 
 GimpZoomModel * gimp_zoom_model_new          (void);
 void            gimp_zoom_model_set_range    (GimpZoomModel      *model,
-                                              gdouble             min,
-                                              gdouble             max);
+        gdouble             min,
+        gdouble             max);
 void            gimp_zoom_model_zoom         (GimpZoomModel      *model,
-                                              GimpZoomType        zoom_type,
-                                              gdouble             scale);
+        GimpZoomType        zoom_type,
+        gdouble             scale);
 gdouble         gimp_zoom_model_get_factor   (GimpZoomModel      *model);
 void            gimp_zoom_model_get_fraction (GimpZoomModel      *model,
-                                              gint               *numerator,
-                                              gint               *denominator);
+        gint               *numerator,
+        gint               *denominator);
 
 GtkWidget     * gimp_zoom_button_new         (GimpZoomModel      *model,
-                                              GimpZoomType        zoom_type,
-                                              GtkIconSize         icon_size);
+        GimpZoomType        zoom_type,
+        GtkIconSize         icon_size);
 
 gdouble         gimp_zoom_model_zoom_step    (GimpZoomType        zoom_type,
-                                              gdouble             scale,
-                                              gdouble             delta);
+        gdouble             scale,
+        gdouble             delta);
 
 G_END_DECLS
 

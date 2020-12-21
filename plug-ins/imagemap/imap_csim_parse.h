@@ -43,36 +43,36 @@ extern int csim_debug;
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     IMG = 258,
-     SRC = 259,
-     WIDTH = 260,
-     HEIGHT = 261,
-     BORDER = 262,
-     USEMAP = 263,
-     START_MAP = 264,
-     END_MAP = 265,
-     NAME = 266,
-     AREA = 267,
-     SHAPE = 268,
-     COORDS = 269,
-     ALT = 270,
-     HREF = 271,
-     NOHREF = 272,
-     TARGET = 273,
-     ONMOUSEOVER = 274,
-     ONMOUSEOUT = 275,
-     ONFOCUS = 276,
-     ONBLUR = 277,
-     AUTHOR = 278,
-     DESCRIPTION = 279,
-     BEGIN_COMMENT = 280,
-     END_COMMENT = 281,
-     FLOAT = 282,
-     STRING = 283
-   };
+/* Put the tokens into the symbol table, so that GDB and other debuggers
+   know about them.  */
+enum yytokentype {
+    IMG = 258,
+    SRC = 259,
+    WIDTH = 260,
+    HEIGHT = 261,
+    BORDER = 262,
+    USEMAP = 263,
+    START_MAP = 264,
+    END_MAP = 265,
+    NAME = 266,
+    AREA = 267,
+    SHAPE = 268,
+    COORDS = 269,
+    ALT = 270,
+    HREF = 271,
+    NOHREF = 272,
+    TARGET = 273,
+    ONMOUSEOVER = 274,
+    ONMOUSEOUT = 275,
+    ONFOCUS = 276,
+    ONBLUR = 277,
+    AUTHOR = 278,
+    DESCRIPTION = 279,
+    BEGIN_COMMENT = 280,
+    END_COMMENT = 281,
+    FLOAT = 282,
+    STRING = 283
+};
 #endif
 /* Tokens.  */
 #define IMG 258
@@ -107,15 +107,15 @@ extern int csim_debug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 {
-/* Line 2049 of yacc.c  */
+    /* Line 2049 of yacc.c  */
 #line 49 "imap_csim.y"
 
-  int val;
-  double value;
-  char *id;
+    int val;
+    double value;
+    char *id;
 
 
-/* Line 2049 of yacc.c  */
+    /* Line 2049 of yacc.c  */
 #line 120 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

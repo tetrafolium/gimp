@@ -29,15 +29,15 @@ G_BEGIN_DECLS
 
 
 typedef void (* GimpRunPaletteCallback)   (const gchar *palette_name,
-                                           gboolean     dialog_closing,
-                                           gpointer     user_data);
+        gboolean     dialog_closing,
+        gpointer     user_data);
 
 
 const gchar * gimp_palette_select_new     (const gchar            *title,
-                                           const gchar            *palette_name,
-                                           GimpRunPaletteCallback  callback,
-                                           gpointer                data,
-                                           GDestroyNotify          data_destroy);
+        const gchar            *palette_name,
+        GimpRunPaletteCallback  callback,
+        gpointer                data,
+        GDestroyNotify          data_destroy);
 void          gimp_palette_select_destroy (const gchar            *palette_callback);
 
 

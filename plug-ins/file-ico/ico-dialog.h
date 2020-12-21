@@ -24,7 +24,7 @@
 
 GtkWidget * ico_dialog_new                 (IcoSaveInfo  *info);
 void        ico_dialog_add_icon            (GtkWidget    *dialog,
-                                            GimpDrawable *layer,
-                                            gint          layer_num);
+        GimpDrawable *layer,
+        gint          layer_num);
 
 #endif /* __ICO_DIALOG_H__ */

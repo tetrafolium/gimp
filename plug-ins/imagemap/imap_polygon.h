@@ -26,8 +26,8 @@
 #include "imap_object.h"
 
 typedef struct {
-   Object_t obj;
-   GList *points;
+    Object_t obj;
+    GList *points;
 } Polygon_t;
 
 #define ObjectToPolygon(obj) ((Polygon_t*) (obj))

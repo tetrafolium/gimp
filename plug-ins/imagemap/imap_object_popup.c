@@ -34,26 +34,26 @@
 void
 object_handle_popup(ObjectPopup_t *popup, Object_t *obj, GdkEventButton *event)
 {
-  /* int position = object_get_position_in_list(obj) + 1; */
+    /* int position = object_get_position_in_list(obj) + 1; */
 
 #ifdef _TEMP_
-   gtk_widget_set_sensitive(popup->up, (position > 1) ? TRUE : FALSE);
-   gtk_widget_set_sensitive(popup->down,
-                            (position < g_list_length(obj->list->list))
-                            ? TRUE : FALSE);
+    gtk_widget_set_sensitive(popup->up, (position > 1) ? TRUE : FALSE);
+    gtk_widget_set_sensitive(popup->down,
+                             (position < g_list_length(obj->list->list))
+                             ? TRUE : FALSE);
 #endif
-   gtk_menu_popup_at_pointer (GTK_MENU (popup->menu), (GdkEvent *) event);
+    gtk_menu_popup_at_pointer (GTK_MENU (popup->menu), (GdkEvent *) event);
 }
 
 void
 object_do_popup(Object_t *obj, GdkEventButton *event)
 {
-   static ObjectPopup_t *popup;
+    static ObjectPopup_t *popup;
 
-   if (!popup)
-     {
-       popup = g_new (ObjectPopup_t, 1);
-       popup->menu = menu_get_widget ("/ObjectPopupMenu");
-     }
-   object_handle_popup (popup, obj, event);
+    if (!popup)
+    {
+        popup = g_new (ObjectPopup_t, 1);
+        popup->menu = menu_get_widget ("/ObjectPopupMenu");
+    }
+    object_handle_popup (popup, obj, event);
 }

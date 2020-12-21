@@ -24,83 +24,83 @@
 
 typedef struct
 {
-  GtkAdjustment    *adj;
-  gdouble           value;
-  gdouble           lower;
-  gdouble           upper;
-  gdouble           step;
-  gdouble           page;
-  gint              digits;
-  SFAdjustmentType  type;
+    GtkAdjustment    *adj;
+    gdouble           value;
+    gdouble           lower;
+    gdouble           upper;
+    gdouble           step;
+    gdouble           page;
+    gint              digits;
+    SFAdjustmentType  type;
 } SFAdjustment;
 
 typedef struct
 {
-  gchar  *filename;
+    gchar  *filename;
 } SFFilename;
 
 typedef struct
 {
-  gchar         *name;
-  gdouble        opacity;
-  gint           spacing;
-  GimpLayerMode  paint_mode;
+    gchar         *name;
+    gdouble        opacity;
+    gint           spacing;
+    GimpLayerMode  paint_mode;
 } SFBrush;
 
 typedef struct
 {
-  GSList *list;
-  gint    history;
+    GSList *list;
+    gint    history;
 } SFOption;
 
 typedef struct
 {
-  gchar *type_name;
-  gint   history;
+    gchar *type_name;
+    gint   history;
 } SFEnum;
 
 typedef union
 {
-  gint32         sfa_image;
-  gint32         sfa_drawable;
-  gint32         sfa_layer;
-  gint32         sfa_channel;
-  gint32         sfa_vectors;
-  gint32         sfa_display;
-  GimpRGB        sfa_color;
-  gint32         sfa_toggle;
-  gchar         *sfa_value;
-  SFAdjustment   sfa_adjustment;
-  SFFilename     sfa_file;
-  gchar         *sfa_font;
-  gchar         *sfa_gradient;
-  gchar         *sfa_palette;
-  gchar         *sfa_pattern;
-  SFBrush        sfa_brush;
-  SFOption       sfa_option;
-  SFEnum         sfa_enum;
+    gint32         sfa_image;
+    gint32         sfa_drawable;
+    gint32         sfa_layer;
+    gint32         sfa_channel;
+    gint32         sfa_vectors;
+    gint32         sfa_display;
+    GimpRGB        sfa_color;
+    gint32         sfa_toggle;
+    gchar         *sfa_value;
+    SFAdjustment   sfa_adjustment;
+    SFFilename     sfa_file;
+    gchar         *sfa_font;
+    gchar         *sfa_gradient;
+    gchar         *sfa_palette;
+    gchar         *sfa_pattern;
+    SFBrush        sfa_brush;
+    SFOption       sfa_option;
+    SFEnum         sfa_enum;
 } SFArgValue;
 
 typedef struct
 {
-  SFArgType   type;
-  gchar      *label;
-  SFArgValue  default_value;
-  SFArgValue  value;
+    SFArgType   type;
+    gchar      *label;
+    SFArgValue  default_value;
+    SFArgValue  value;
 } SFArg;
 
 typedef struct
 {
-  gchar        *name;
-  gchar        *menu_label;
-  gchar        *blurb;
-  gchar        *author;
-  gchar        *copyright;
-  gchar        *date;
-  gchar        *image_types;
+    gchar        *name;
+    gchar        *menu_label;
+    gchar        *blurb;
+    gchar        *author;
+    gchar        *copyright;
+    gchar        *date;
+    gchar        *image_types;
 
-  gint          n_args;
-  SFArg        *args;
+    gint          n_args;
+    SFArg        *args;
 } SFScript;
 
 

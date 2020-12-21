@@ -8,8 +8,8 @@
 
 GimpPlugInInfo PLUG_IN_INFO =
 {
-  NULL,
-  NULL,
-  NULL,
-  NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
 };

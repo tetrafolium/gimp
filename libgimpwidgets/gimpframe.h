@@ -44,24 +44,24 @@ typedef struct _GimpFrameClass   GimpFrameClass;
 
 struct _GimpFrame
 {
-  GtkFrame          parent_instance;
+    GtkFrame          parent_instance;
 
-  GimpFramePrivate *priv;
+    GimpFramePrivate *priv;
 };
 
 struct _GimpFrameClass
 {
-  GtkFrameClass  parent_class;
+    GtkFrameClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 

@@ -26,12 +26,12 @@
 #include <glib.h>
 
 typedef struct {
-   gchar *name;
-   gchar *value;
+    gchar *name;
+    gchar *value;
 } Tag_t;
 
 typedef struct {
-   GList *list;
+    GList *list;
 } TagList_t;
 
 TagList_t *taglist_create(void);

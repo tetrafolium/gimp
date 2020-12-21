@@ -45,25 +45,25 @@ typedef struct _GimpDrawablePrivate GimpDrawablePrivate;
 
 struct _GimpDrawable
 {
-  GimpItem             parent_instance;
+    GimpItem             parent_instance;
 
-  GimpDrawablePrivate *priv;
+    GimpDrawablePrivate *priv;
 };
 
 struct _GimpDrawableClass
 {
-  GimpItemClass parent_class;
+    GimpItemClass parent_class;
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
-  void (*_gimp_reserved9) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
+    void (*_gimp_reserved9) (void);
 };
 
 
@@ -78,30 +78,30 @@ const Babl   * gimp_drawable_get_format             (GimpDrawable  *drawable);
 const Babl   * gimp_drawable_get_thumbnail_format   (GimpDrawable  *drawable);
 
 guchar       * gimp_drawable_get_thumbnail_data     (GimpDrawable  *drawable,
-                                                     gint          *width,
-                                                     gint          *height,
-                                                     gint          *bpp);
+        gint          *width,
+        gint          *height,
+        gint          *bpp);
 GdkPixbuf    * gimp_drawable_get_thumbnail          (GimpDrawable  *drawable,
-                                                     gint           width,
-                                                     gint           height,
-                                                     GimpPixbufTransparency alpha);
+        gint           width,
+        gint           height,
+        GimpPixbufTransparency alpha);
 
 guchar       * gimp_drawable_get_sub_thumbnail_data (GimpDrawable  *drawable,
-                                                     gint           src_x,
-                                                     gint           src_y,
-                                                     gint           src_width,
-                                                     gint           src_height,
-                                                     gint          *dest_width,
-                                                     gint          *dest_height,
-                                                     gint          *bpp);
+        gint           src_x,
+        gint           src_y,
+        gint           src_width,
+        gint           src_height,
+        gint          *dest_width,
+        gint          *dest_height,
+        gint          *bpp);
 GdkPixbuf    * gimp_drawable_get_sub_thumbnail      (GimpDrawable  *drawable,
-                                                     gint           src_x,
-                                                     gint           src_y,
-                                                     gint           src_width,
-                                                     gint           src_height,
-                                                     gint           dest_width,
-                                                     gint           dest_height,
-                                                     GimpPixbufTransparency alpha);
+        gint           src_x,
+        gint           src_y,
+        gint           src_width,
+        gint           src_height,
+        gint           dest_width,
+        gint           dest_height,
+        GimpPixbufTransparency alpha);
 
 
 G_END_DECLS

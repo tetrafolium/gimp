@@ -42,24 +42,24 @@ typedef struct _GimpUnitComboBoxClass   GimpUnitComboBoxClass;
 
 struct _GimpUnitComboBox
 {
-  GtkComboBox              parent_instance;
+    GtkComboBox              parent_instance;
 
-  GimpUnitComboBoxPrivate *priv;
+    GimpUnitComboBoxPrivate *priv;
 };
 
 struct _GimpUnitComboBoxClass
 {
-  GtkComboBoxClass  parent_class;
+    GtkComboBoxClass  parent_class;
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 
@@ -70,7 +70,7 @@ GtkWidget * gimp_unit_combo_box_new_with_model (GimpUnitStore    *model);
 
 GimpUnit    gimp_unit_combo_box_get_active     (GimpUnitComboBox *combo);
 void        gimp_unit_combo_box_set_active     (GimpUnitComboBox *combo,
-                                                GimpUnit          unit);
+        GimpUnit          unit);
 
 
 G_END_DECLS

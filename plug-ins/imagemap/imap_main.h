@@ -35,16 +35,16 @@
 typedef enum {NCSA, CERN, CSIM} MapFormat_t;
 
 typedef struct {
-   MapFormat_t map_format;
-   gchar *image_name;
-   gchar *title;
-   gchar *author;
-   gchar *default_url;
-   gchar *description;
-   gint   old_image_width;
-   gint   old_image_height;
-   gboolean color;              /* Color (TRUE) or Gray (FALSE) */
-   gboolean show_gray;
+    MapFormat_t map_format;
+    gchar *image_name;
+    gchar *title;
+    gchar *author;
+    gchar *default_url;
+    gchar *description;
+    gint   old_image_width;
+    gint   old_image_height;
+    gboolean color;              /* Color (TRUE) or Gray (FALSE) */
+    gboolean show_gray;
 } MapInfo_t;
 
 void main_set_dimension(gint width, gint height);
@@ -90,14 +90,14 @@ void show_url(void);
 void hide_url(void);
 
 void            set_preview_color          (GtkRadioAction *action,
-                                            GtkRadioAction *current,
-                                            gpointer        user_data);
+        GtkRadioAction *current,
+        gpointer        user_data);
 void            set_zoom_factor            (GtkRadioAction *action,
-                                            GtkRadioAction *current,
-                                            gpointer        user_data);
+        GtkRadioAction *current,
+        gpointer        user_data);
 void            set_func                   (GtkRadioAction *action,
-                                            GtkRadioAction *current,
-                                            gpointer        user_data);
+        GtkRadioAction *current,
+        gpointer        user_data);
 void            do_edit_selected_shape     (void);
 void            do_zoom_in                 (void);
 void            do_zoom_out                (void);

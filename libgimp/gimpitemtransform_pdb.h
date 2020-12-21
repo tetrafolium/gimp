@@ -33,62 +33,62 @@ G_BEGIN_DECLS
 
 
 GimpItem* gimp_item_transform_translate     (GimpItem            *item,
-                                             gdouble              off_x,
-                                             gdouble              off_y);
+        gdouble              off_x,
+        gdouble              off_y);
 GimpItem* gimp_item_transform_flip_simple   (GimpItem            *item,
-                                             GimpOrientationType  flip_type,
-                                             gboolean             auto_center,
-                                             gdouble              axis);
+        GimpOrientationType  flip_type,
+        gboolean             auto_center,
+        gdouble              axis);
 GimpItem* gimp_item_transform_flip          (GimpItem            *item,
-                                             gdouble              x0,
-                                             gdouble              y0,
-                                             gdouble              x1,
-                                             gdouble              y1);
+        gdouble              x0,
+        gdouble              y0,
+        gdouble              x1,
+        gdouble              y1);
 GimpItem* gimp_item_transform_perspective   (GimpItem            *item,
-                                             gdouble              x0,
-                                             gdouble              y0,
-                                             gdouble              x1,
-                                             gdouble              y1,
-                                             gdouble              x2,
-                                             gdouble              y2,
-                                             gdouble              x3,
-                                             gdouble              y3);
+        gdouble              x0,
+        gdouble              y0,
+        gdouble              x1,
+        gdouble              y1,
+        gdouble              x2,
+        gdouble              y2,
+        gdouble              x3,
+        gdouble              y3);
 GimpItem* gimp_item_transform_rotate_simple (GimpItem            *item,
-                                             GimpRotationType     rotate_type,
-                                             gboolean             auto_center,
-                                             gdouble              center_x,
-                                             gdouble              center_y);
+        GimpRotationType     rotate_type,
+        gboolean             auto_center,
+        gdouble              center_x,
+        gdouble              center_y);
 GimpItem* gimp_item_transform_rotate        (GimpItem            *item,
-                                             gdouble              angle,
-                                             gboolean             auto_center,
-                                             gdouble              center_x,
-                                             gdouble              center_y);
+        gdouble              angle,
+        gboolean             auto_center,
+        gdouble              center_x,
+        gdouble              center_y);
 GimpItem* gimp_item_transform_scale         (GimpItem            *item,
-                                             gdouble              x0,
-                                             gdouble              y0,
-                                             gdouble              x1,
-                                             gdouble              y1);
+        gdouble              x0,
+        gdouble              y0,
+        gdouble              x1,
+        gdouble              y1);
 GimpItem* gimp_item_transform_shear         (GimpItem            *item,
-                                             GimpOrientationType  shear_type,
-                                             gdouble              magnitude);
+        GimpOrientationType  shear_type,
+        gdouble              magnitude);
 GimpItem* gimp_item_transform_2d            (GimpItem            *item,
-                                             gdouble              source_x,
-                                             gdouble              source_y,
-                                             gdouble              scale_x,
-                                             gdouble              scale_y,
-                                             gdouble              angle,
-                                             gdouble              dest_x,
-                                             gdouble              dest_y);
+        gdouble              source_x,
+        gdouble              source_y,
+        gdouble              scale_x,
+        gdouble              scale_y,
+        gdouble              angle,
+        gdouble              dest_x,
+        gdouble              dest_y);
 GimpItem* gimp_item_transform_matrix        (GimpItem            *item,
-                                             gdouble              coeff_0_0,
-                                             gdouble              coeff_0_1,
-                                             gdouble              coeff_0_2,
-                                             gdouble              coeff_1_0,
-                                             gdouble              coeff_1_1,
-                                             gdouble              coeff_1_2,
-                                             gdouble              coeff_2_0,
-                                             gdouble              coeff_2_1,
-                                             gdouble              coeff_2_2);
+        gdouble              coeff_0_0,
+        gdouble              coeff_0_1,
+        gdouble              coeff_0_2,
+        gdouble              coeff_1_0,
+        gdouble              coeff_1_1,
+        gdouble              coeff_1_2,
+        gdouble              coeff_2_0,
+        gdouble              coeff_2_1,
+        gdouble              coeff_2_2);
 
 
 G_END_DECLS

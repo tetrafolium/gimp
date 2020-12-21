@@ -33,41 +33,41 @@ G_BEGIN_DECLS
 
 
 gboolean gimp_image_select_color            (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             GimpDrawable   *drawable,
-                                             const GimpRGB  *color);
+        GimpChannelOps  operation,
+        GimpDrawable   *drawable,
+        const GimpRGB  *color);
 gboolean gimp_image_select_contiguous_color (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             GimpDrawable   *drawable,
-                                             gdouble         x,
-                                             gdouble         y);
+        GimpChannelOps  operation,
+        GimpDrawable   *drawable,
+        gdouble         x,
+        gdouble         y);
 gboolean gimp_image_select_rectangle        (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             gdouble         x,
-                                             gdouble         y,
-                                             gdouble         width,
-                                             gdouble         height);
+        GimpChannelOps  operation,
+        gdouble         x,
+        gdouble         y,
+        gdouble         width,
+        gdouble         height);
 gboolean gimp_image_select_round_rectangle  (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             gdouble         x,
-                                             gdouble         y,
-                                             gdouble         width,
-                                             gdouble         height,
-                                             gdouble         corner_radius_x,
-                                             gdouble         corner_radius_y);
+        GimpChannelOps  operation,
+        gdouble         x,
+        gdouble         y,
+        gdouble         width,
+        gdouble         height,
+        gdouble         corner_radius_x,
+        gdouble         corner_radius_y);
 gboolean gimp_image_select_ellipse          (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             gdouble         x,
-                                             gdouble         y,
-                                             gdouble         width,
-                                             gdouble         height);
+        GimpChannelOps  operation,
+        gdouble         x,
+        gdouble         y,
+        gdouble         width,
+        gdouble         height);
 gboolean gimp_image_select_polygon          (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             gint            num_segs,
-                                             const gdouble  *segs);
+        GimpChannelOps  operation,
+        gint            num_segs,
+        const gdouble  *segs);
 gboolean gimp_image_select_item             (GimpImage      *image,
-                                             GimpChannelOps  operation,
-                                             GimpItem       *item);
+        GimpChannelOps  operation,
+        GimpItem       *item);
 
 
 G_END_DECLS

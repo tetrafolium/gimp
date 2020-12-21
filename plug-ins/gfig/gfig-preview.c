@@ -51,9 +51,9 @@ static GtkWidget *pos_label;       /* XY pos marker */
 
 static void       gfig_preview_realize  (GtkWidget *widget);
 static gboolean   gfig_preview_events   (GtkWidget *widget,
-                                         GdkEvent  *event);
+        GdkEvent  *event);
 static gboolean   gfig_preview_draw     (GtkWidget *widget,
-                                         cairo_t   *cr);
+        cairo_t   *cr);
 
 static gint       gfig_invscale_x        (gint      x);
 static gint       gfig_invscale_y        (gint      y);
@@ -61,99 +61,99 @@ static GtkWidget *gfig_pos_labels        (void);
 static GtkWidget *make_pos_info          (void);
 
 static void       gfig_pos_update        (gint      x,
-                                          gint      y);
+        gint      y);
 static void       gfig_pos_update_labels (gpointer  data);
 
 GtkWidget *
 make_preview (void)
 {
-  GtkWidget *frame;
-  GtkWidget *vbox;
-  GtkWidget *hbox;
-  GtkWidget *grid;
-  GtkWidget *ruler;
+    GtkWidget *frame;
+    GtkWidget *vbox;
+    GtkWidget *hbox;
+    GtkWidget *grid;
+    GtkWidget *ruler;
 
-  gfig_context->preview = gtk_drawing_area_new ();
-  gtk_widget_set_events (GTK_WIDGET (gfig_context->preview), PREVIEW_MASK);
+    gfig_context->preview = gtk_drawing_area_new ();
+    gtk_widget_set_events (GTK_WIDGET (gfig_context->preview), PREVIEW_MASK);
 
-  g_signal_connect (gfig_context->preview , "realize",
-                    G_CALLBACK (gfig_preview_realize),
-                    NULL);
+    g_signal_connect (gfig_context->preview, "realize",
+                      G_CALLBACK (gfig_preview_realize),
+                      NULL);
 
-  g_signal_connect (gfig_context->preview , "event",
-                    G_CALLBACK (gfig_preview_events),
-                    NULL);
+    g_signal_connect (gfig_context->preview, "event",
+                      G_CALLBACK (gfig_preview_events),
+                      NULL);
 
-  g_signal_connect_after (gfig_context->preview , "draw",
-                          G_CALLBACK (gfig_preview_draw),
-                          NULL);
+    g_signal_connect_after (gfig_context->preview, "draw",
+                            G_CALLBACK (gfig_preview_draw),
+                            NULL);
 
-  gtk_widget_set_size_request (gfig_context->preview,
-                               preview_width, preview_height);
+    gtk_widget_set_size_request (gfig_context->preview,
+                                 preview_width, preview_height);
 
-  frame = gtk_frame_new (NULL);
+    frame = gtk_frame_new (NULL);
 
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+    gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 
-  grid = gtk_grid_new ();
-  gtk_grid_attach (GTK_GRID (grid), gfig_context->preview, 1, 1, 1, 1);
-  gtk_container_add (GTK_CONTAINER (frame), grid);
+    grid = gtk_grid_new ();
+    gtk_grid_attach (GTK_GRID (grid), gfig_context->preview, 1, 1, 1, 1);
+    gtk_container_add (GTK_CONTAINER (frame), grid);
 
-  ruler = gimp_ruler_new (GTK_ORIENTATION_HORIZONTAL);
-  gimp_ruler_set_range (GIMP_RULER (ruler), 0, preview_width, PREVIEW_SIZE);
-  g_signal_connect_swapped (gfig_context->preview, "motion-notify-event",
-                            G_CALLBACK (GTK_WIDGET_CLASS (G_OBJECT_GET_CLASS (ruler))->motion_notify_event),
-                            ruler);
-  gtk_grid_attach (GTK_GRID (grid), ruler, 1, 0, 1, 1);
-  gtk_widget_show (ruler);
+    ruler = gimp_ruler_new (GTK_ORIENTATION_HORIZONTAL);
+    gimp_ruler_set_range (GIMP_RULER (ruler), 0, preview_width, PREVIEW_SIZE);
+    g_signal_connect_swapped (gfig_context->preview, "motion-notify-event",
+                              G_CALLBACK (GTK_WIDGET_CLASS (G_OBJECT_GET_CLASS (ruler))->motion_notify_event),
+                              ruler);
+    gtk_grid_attach (GTK_GRID (grid), ruler, 1, 0, 1, 1);
+    gtk_widget_show (ruler);
 
-  ruler = gimp_ruler_new (GTK_ORIENTATION_VERTICAL);
-  gimp_ruler_set_range (GIMP_RULER (ruler), 0, preview_height, PREVIEW_SIZE);
-  g_signal_connect_swapped (gfig_context->preview, "motion-notify-event",
-                            G_CALLBACK (GTK_WIDGET_CLASS (G_OBJECT_GET_CLASS (ruler))->motion_notify_event),
-                            ruler);
-  gtk_grid_attach (GTK_GRID (grid), ruler, 0, 1, 1, 1);
-  gtk_widget_show (ruler);
+    ruler = gimp_ruler_new (GTK_ORIENTATION_VERTICAL);
+    gimp_ruler_set_range (GIMP_RULER (ruler), 0, preview_height, PREVIEW_SIZE);
+    g_signal_connect_swapped (gfig_context->preview, "motion-notify-event",
+                              G_CALLBACK (GTK_WIDGET_CLASS (G_OBJECT_GET_CLASS (ruler))->motion_notify_event),
+                              ruler);
+    gtk_grid_attach (GTK_GRID (grid), ruler, 0, 1, 1, 1);
+    gtk_widget_show (ruler);
 
-  gtk_widget_show (frame);
-  gtk_widget_show (grid);
+    gtk_widget_show (frame);
+    gtk_widget_show (grid);
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-  frame = make_pos_info ();
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+    frame = make_pos_info ();
+    gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
 
-  gtk_widget_show (vbox);
-  gtk_widget_show (hbox);
+    gtk_widget_show (vbox);
+    gtk_widget_show (hbox);
 
-  return vbox;
+    return vbox;
 }
 
 static void
 gfig_preview_realize (GtkWidget *widget)
 {
-  GdkDisplay *display = gtk_widget_get_display (widget);
+    GdkDisplay *display = gtk_widget_get_display (widget);
 
-  gdk_window_set_cursor (gtk_widget_get_window (gfig_context->preview),
-                         gdk_cursor_new_for_display (display, GDK_CROSSHAIR));
-  gfig_grid_colors (widget);
+    gdk_window_set_cursor (gtk_widget_get_window (gfig_context->preview),
+                           gdk_cursor_new_for_display (display, GDK_CROSSHAIR));
+    gfig_grid_colors (widget);
 }
 
 static void
 draw_background (cairo_t  *cr)
 {
-  if (! back_pixbuf)
-    back_pixbuf = gimp_image_get_thumbnail (gfig_context->image,
-                                            preview_width, preview_height,
-                                            GIMP_PIXBUF_LARGE_CHECKS);
+    if (! back_pixbuf)
+        back_pixbuf = gimp_image_get_thumbnail (gfig_context->image,
+                                                preview_width, preview_height,
+                                                GIMP_PIXBUF_LARGE_CHECKS);
 
-  if (back_pixbuf)
+    if (back_pixbuf)
     {
-      gdk_cairo_set_source_pixbuf (cr, back_pixbuf, 0, 0);
-      cairo_paint (cr);
+        gdk_cairo_set_source_pixbuf (cr, back_pixbuf, 0, 0);
+        cairo_paint (cr);
     }
 }
 
@@ -161,254 +161,254 @@ static gboolean
 gfig_preview_draw (GtkWidget *widget,
                    cairo_t   *cr)
 {
-  if (gfig_context->show_background)
-    draw_background (cr);
+    if (gfig_context->show_background)
+        draw_background (cr);
 
-  draw_grid (cr);
-  draw_objects (gfig_context->current_obj->obj_list, TRUE, cr);
+    draw_grid (cr);
+    draw_objects (gfig_context->current_obj->obj_list, TRUE, cr);
 
-  if (obj_creating)
+    if (obj_creating)
     {
-      GList *single = g_list_prepend (NULL, obj_creating);
-      draw_objects (single, TRUE, cr);
-      g_list_free (single);
+        GList *single = g_list_prepend (NULL, obj_creating);
+        draw_objects (single, TRUE, cr);
+        g_list_free (single);
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 static gboolean
 gfig_preview_events (GtkWidget *widget,
                      GdkEvent  *event)
 {
-  GdkEventButton *bevent;
-  GdkEventMotion *mevent;
-  GdkPoint        point;
-  static gint     tmp_show_single = 0;
+    GdkEventButton *bevent;
+    GdkEventMotion *mevent;
+    GdkPoint        point;
+    static gint     tmp_show_single = 0;
 
-  switch (event->type)
+    switch (event->type)
     {
     case GDK_BUTTON_PRESS:
-      bevent = (GdkEventButton *) event;
-      point.x = bevent->x;
-      point.y = bevent->y;
+        bevent = (GdkEventButton *) event;
+        point.x = bevent->x;
+        point.y = bevent->y;
 
-      g_assert (need_to_scale == 0); /* If not out of step some how */
+        g_assert (need_to_scale == 0); /* If not out of step some how */
 
-      /* Start drawing of object */
-      if (selvals.otype >= MOVE_OBJ)
+        /* Start drawing of object */
+        if (selvals.otype >= MOVE_OBJ)
         {
-          if (!selvals.scaletoimage)
+            if (!selvals.scaletoimage)
             {
-              point.x = gfig_invscale_x (point.x);
-              point.y = gfig_invscale_y (point.y);
+                point.x = gfig_invscale_x (point.x);
+                point.y = gfig_invscale_y (point.y);
             }
-          object_operation_start (&point, bevent->state & GDK_SHIFT_MASK);
+            object_operation_start (&point, bevent->state & GDK_SHIFT_MASK);
 
-          /* If constraining save start pnt */
-          if (selvals.opts.snap2grid)
+            /* If constraining save start pnt */
+            if (selvals.opts.snap2grid)
             {
-              /* Save point to constrained point ... if button 3 down */
-              if (bevent->button == 3)
+                /* Save point to constrained point ... if button 3 down */
+                if (bevent->button == 3)
                 {
-                  find_grid_pos (&point, &point, FALSE);
+                    find_grid_pos (&point, &point, FALSE);
                 }
             }
         }
-      else
+        else
         {
-          if (selvals.opts.snap2grid)
-            find_grid_pos (&point, &point, FALSE);
-          object_start (&point, bevent->state & GDK_SHIFT_MASK);
+            if (selvals.opts.snap2grid)
+                find_grid_pos (&point, &point, FALSE);
+            object_start (&point, bevent->state & GDK_SHIFT_MASK);
 
-          gtk_widget_queue_draw (widget);
+            gtk_widget_queue_draw (widget);
         }
 
-      break;
+        break;
 
     case GDK_BUTTON_RELEASE:
-      bevent = (GdkEventButton *) event;
-      point.x = bevent->x;
-      point.y = bevent->y;
+        bevent = (GdkEventButton *) event;
+        point.x = bevent->x;
+        point.y = bevent->y;
 
-      if (selvals.opts.snap2grid)
-        find_grid_pos (&point, &point, bevent->button == 3);
+        if (selvals.opts.snap2grid)
+            find_grid_pos (&point, &point, bevent->button == 3);
 
-      /* Still got shift down ?*/
-      if (selvals.otype >= MOVE_OBJ)
+        /* Still got shift down ?*/
+        if (selvals.otype >= MOVE_OBJ)
         {
-          if (!selvals.scaletoimage)
+            if (!selvals.scaletoimage)
             {
-              point.x = gfig_invscale_x (point.x);
-              point.y = gfig_invscale_y (point.y);
+                point.x = gfig_invscale_x (point.x);
+                point.y = gfig_invscale_y (point.y);
             }
-          object_operation_end (&point, bevent->state & GDK_SHIFT_MASK);
+            object_operation_end (&point, bevent->state & GDK_SHIFT_MASK);
         }
-      else
+        else
         {
-          if (obj_creating)
+            if (obj_creating)
             {
-              object_end (&point, bevent->state & GDK_SHIFT_MASK);
+                object_end (&point, bevent->state & GDK_SHIFT_MASK);
             }
-          else
-            break;
+            else
+                break;
         }
 
-      gfig_paint_callback ();
-      break;
+        gfig_paint_callback ();
+        break;
 
     case GDK_MOTION_NOTIFY:
-      mevent = (GdkEventMotion *) event;
-      point.x = mevent->x;
-      point.y = mevent->y;
+        mevent = (GdkEventMotion *) event;
+        point.x = mevent->x;
+        point.y = mevent->y;
 
-      if (selvals.opts.snap2grid)
-        find_grid_pos (&point, &point, mevent->state & GDK_BUTTON3_MASK);
+        if (selvals.opts.snap2grid)
+            find_grid_pos (&point, &point, mevent->state & GDK_BUTTON3_MASK);
 
-      if (selvals.otype >= MOVE_OBJ)
+        if (selvals.otype >= MOVE_OBJ)
         {
-          /* Moving objects around */
-          if (!selvals.scaletoimage)
+            /* Moving objects around */
+            if (!selvals.scaletoimage)
             {
-              point.x = gfig_invscale_x (point.x);
-              point.y = gfig_invscale_y (point.y);
+                point.x = gfig_invscale_x (point.x);
+                point.y = gfig_invscale_y (point.y);
             }
-          object_operation (&point, mevent->state & GDK_SHIFT_MASK);
-          gfig_pos_update (point.x, point.y);
-          return FALSE;
+            object_operation (&point, mevent->state & GDK_SHIFT_MASK);
+            gfig_pos_update (point.x, point.y);
+            return FALSE;
         }
 
-      if (obj_creating)
+        if (obj_creating)
         {
-          obj_creating->class->update (&point);
-          gtk_widget_queue_draw (widget);
+            obj_creating->class->update (&point);
+            gtk_widget_queue_draw (widget);
         }
-      gfig_pos_update (point.x, point.y);
-      break;
+        gfig_pos_update (point.x, point.y);
+        break;
 
     case GDK_KEY_PRESS:
-      if ((tmp_show_single = obj_show_single) != -1)
+        if ((tmp_show_single = obj_show_single) != -1)
         {
-          obj_show_single = -1;
-          draw_grid_clear ();
+            obj_show_single = -1;
+            draw_grid_clear ();
         }
-      break;
+        break;
 
     case GDK_KEY_RELEASE:
-      if (tmp_show_single != -1)
+        if (tmp_show_single != -1)
         {
-          obj_show_single = tmp_show_single;
-          draw_grid_clear ();
+            obj_show_single = tmp_show_single;
+            draw_grid_clear ();
         }
-      break;
+        break;
 
     default:
-      break;
+        break;
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 static GtkWidget *
 make_pos_info (void)
 {
-  GtkWidget *frame;
-  GtkWidget *hbox;
-  GtkWidget *label;
+    GtkWidget *frame;
+    GtkWidget *hbox;
+    GtkWidget *label;
 
-  frame = gimp_frame_new (_("Object Details"));
+    frame = gimp_frame_new (_("Object Details"));
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), hbox);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
+    gtk_container_add (GTK_CONTAINER (frame), hbox);
 
-  /* Add labels */
-  label = gfig_pos_labels ();
-  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-  gfig_pos_enable (NULL, NULL);
+    /* Add labels */
+    label = gfig_pos_labels ();
+    gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+    gfig_pos_enable (NULL, NULL);
 
 #if 0
-  label = gfig_obj_size_label ();
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+    label = gfig_obj_size_label ();
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 #endif /* 0 */
 
-  gtk_widget_show (hbox);
-  gtk_widget_show (frame);
+    gtk_widget_show (hbox);
+    gtk_widget_show (frame);
 
-  return frame;
+    return frame;
 }
 
 static gint
 gfig_invscale_x (gint x)
 {
-  if (!selvals.scaletoimage)
-    return (gint) (x * scale_x_factor);
-  else
-    return x;
+    if (!selvals.scaletoimage)
+        return (gint) (x * scale_x_factor);
+    else
+        return x;
 }
 
 static gint
 gfig_invscale_y (gint y)
 {
-  if (!selvals.scaletoimage)
-    return (gint) (y * scale_y_factor);
-  else
-    return y;
+    if (!selvals.scaletoimage)
+        return (gint) (y * scale_y_factor);
+    else
+        return y;
 }
 
 static GtkWidget *
 gfig_pos_labels (void)
 {
-  GtkWidget *label;
-  GtkWidget *hbox;
-  gchar      buf[256];
+    GtkWidget *label;
+    GtkWidget *hbox;
+    gchar      buf[256];
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_widget_show (hbox);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_widget_show (hbox);
 
-  /* Position labels */
-  label = gtk_label_new (_("XY position:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
+    /* Position labels */
+    label = gtk_label_new (_("XY position:"));
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
 
-  pos_label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), pos_label, FALSE, FALSE, 0);
-  gtk_widget_show (pos_label);
+    pos_label = gtk_label_new ("");
+    gtk_box_pack_start (GTK_BOX (hbox), pos_label, FALSE, FALSE, 0);
+    gtk_widget_show (pos_label);
 
-  g_snprintf (buf, sizeof (buf), "%d, %d", 0, 0);
-  gtk_label_set_text (GTK_LABEL (pos_label), buf);
+    g_snprintf (buf, sizeof (buf), "%d, %d", 0, 0);
+    gtk_label_set_text (GTK_LABEL (pos_label), buf);
 
-  return hbox;
+    return hbox;
 }
 
 void
 gfig_pos_enable (GtkWidget *widget,
                  gpointer   data)
 {
-  gboolean enable = selvals.showpos;
+    gboolean enable = selvals.showpos;
 
-  gtk_widget_set_sensitive (GTK_WIDGET (pos_label), enable);
+    gtk_widget_set_sensitive (GTK_WIDGET (pos_label), enable);
 }
 
 static void
 gfig_pos_update_labels (gpointer data)
 {
-  static gchar buf[256];
+    static gchar buf[256];
 
-  pos_tag = -1;
+    pos_tag = -1;
 
-  g_snprintf (buf, sizeof (buf), "%d, %d", x_pos_val, y_pos_val);
-  gtk_label_set_text (GTK_LABEL (pos_label), buf);
+    g_snprintf (buf, sizeof (buf), "%d, %d", x_pos_val, y_pos_val);
+    gtk_label_set_text (GTK_LABEL (pos_label), buf);
 }
 
 static void
 gfig_pos_update (gint x,
                  gint y)
 {
-  if ((x_pos_val !=x || y_pos_val != y) && pos_tag == -1 && selvals.showpos)
+    if ((x_pos_val !=x || y_pos_val != y) && pos_tag == -1 && selvals.showpos)
     {
-      x_pos_val = x;
-      y_pos_val = y;
-      gfig_pos_update_labels (NULL);
+        x_pos_val = x;
+        y_pos_val = y;
+        gfig_pos_update_labels (NULL);
     }
 }

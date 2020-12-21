@@ -26,14 +26,14 @@
 
 struct _GimpHelpItem
 {
-  gchar *ref;
-  gchar *title;
-  gchar *sort;   /* optional sort key provided by doc team */
-  gchar *parent;
+    gchar *ref;
+    gchar *title;
+    gchar *sort;   /* optional sort key provided by doc team */
+    gchar *parent;
 
-  /*  extra fields used by the help-browser  */
-  GList *children;
-  gulong index;
+    /*  extra fields used by the help-browser  */
+    GList *children;
+    gulong index;
 };
 
 

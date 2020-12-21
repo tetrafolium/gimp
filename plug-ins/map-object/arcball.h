@@ -3,16 +3,16 @@
 
 typedef struct
 {
-  double x, y, z, w;
+    double x, y, z, w;
 } Quat;
 
 enum QuatPart
 {
-  X,
-  Y,
-  Z,
-  W,
-  QuatLen
+    X,
+    Y,
+    Z,
+    W,
+    QuatLen
 };
 
 typedef Quat HVect;
@@ -21,11 +21,11 @@ typedef double HMatrix[QuatLen][QuatLen];
 
 typedef enum AxisSet
 {
-  NoAxes,
-  CameraAxes,
-  BodyAxes,
-  OtherAxes,
-  NSets
+    NoAxes,
+    CameraAxes,
+    BodyAxes,
+    OtherAxes,
+    NSets
 } AxisSet;
 
 typedef double *ConstraintSet;

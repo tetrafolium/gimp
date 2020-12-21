@@ -28,7 +28,7 @@
 
 
 gboolean          gimp_cairo_set_focus_line_pattern     (cairo_t       *cr,
-                                                         GtkWidget     *widget);
+        GtkWidget     *widget);
 
 cairo_surface_t * gimp_cairo_surface_create_from_pixbuf (GdkPixbuf     *pixbuf);
 

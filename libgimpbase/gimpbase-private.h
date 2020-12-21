@@ -27,32 +27,32 @@ typedef struct _GimpUnitVtable GimpUnitVtable;
 
 struct _GimpUnitVtable
 {
-  gint          (* unit_get_number_of_units)          (void);
-  gint          (* unit_get_number_of_built_in_units) (void);
+    gint          (* unit_get_number_of_units)          (void);
+    gint          (* unit_get_number_of_built_in_units) (void);
 
-  GimpUnit      (* unit_new)                          (gchar    *identifier,
-                                                       gdouble   factor,
-                                                       gint      digits,
-                                                       gchar    *symbol,
-                                                       gchar    *abbreviation,
-                                                       gchar    *singular,
-                                                       gchar    *plural);
-  gboolean      (* unit_get_deletion_flag)            (GimpUnit  unit);
-  void          (* unit_set_deletion_flag)            (GimpUnit  unit,
-                                                       gboolean  deletion_flag);
+    GimpUnit      (* unit_new)                          (gchar    *identifier,
+            gdouble   factor,
+            gint      digits,
+            gchar    *symbol,
+            gchar    *abbreviation,
+            gchar    *singular,
+            gchar    *plural);
+    gboolean      (* unit_get_deletion_flag)            (GimpUnit  unit);
+    void          (* unit_set_deletion_flag)            (GimpUnit  unit,
+            gboolean  deletion_flag);
 
-  gdouble       (* unit_get_factor)                   (GimpUnit  unit);
-  gint          (* unit_get_digits)                   (GimpUnit  unit);
-  const gchar * (* unit_get_identifier)               (GimpUnit  unit);
-  const gchar * (* unit_get_symbol)                   (GimpUnit  unit);
-  const gchar * (* unit_get_abbreviation)             (GimpUnit  unit);
-  const gchar * (* unit_get_singular)                 (GimpUnit  unit);
-  const gchar * (* unit_get_plural)                   (GimpUnit  unit);
+    gdouble       (* unit_get_factor)                   (GimpUnit  unit);
+    gint          (* unit_get_digits)                   (GimpUnit  unit);
+    const gchar * (* unit_get_identifier)               (GimpUnit  unit);
+    const gchar * (* unit_get_symbol)                   (GimpUnit  unit);
+    const gchar * (* unit_get_abbreviation)             (GimpUnit  unit);
+    const gchar * (* unit_get_singular)                 (GimpUnit  unit);
+    const gchar * (* unit_get_plural)                   (GimpUnit  unit);
 
-  void          (* _reserved_1)                       (void);
-  void          (* _reserved_2)                       (void);
-  void          (* _reserved_3)                       (void);
-  void          (* _reserved_4)                       (void);
+    void          (* _reserved_1)                       (void);
+    void          (* _reserved_2)                       (void);
+    void          (* _reserved_3)                       (void);
+    void          (* _reserved_4)                       (void);
 };
 
 

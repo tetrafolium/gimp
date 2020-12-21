@@ -33,56 +33,56 @@ G_BEGIN_DECLS
 
 
 GimpLayer*            gimp_text_layer_new                (GimpImage             *image,
-                                                          const gchar           *text,
-                                                          const gchar           *fontname,
-                                                          gdouble                size,
-                                                          GimpUnit               unit);
+        const gchar           *text,
+        const gchar           *fontname,
+        gdouble                size,
+        GimpUnit               unit);
 gchar*                gimp_text_layer_get_text           (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_text           (GimpLayer             *layer,
-                                                          const gchar           *text);
+        const gchar           *text);
 gchar*                gimp_text_layer_get_markup         (GimpLayer             *layer);
 gchar*                gimp_text_layer_get_font           (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_font           (GimpLayer             *layer,
-                                                          const gchar           *font);
+        const gchar           *font);
 gdouble               gimp_text_layer_get_font_size      (GimpLayer             *layer,
-                                                          GimpUnit              *unit);
+        GimpUnit              *unit);
 gboolean              gimp_text_layer_set_font_size      (GimpLayer             *layer,
-                                                          gdouble                font_size,
-                                                          GimpUnit               unit);
+        gdouble                font_size,
+        GimpUnit               unit);
 gboolean              gimp_text_layer_get_antialias      (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_antialias      (GimpLayer             *layer,
-                                                          gboolean               antialias);
+        gboolean               antialias);
 GimpTextHintStyle     gimp_text_layer_get_hint_style     (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_hint_style     (GimpLayer             *layer,
-                                                          GimpTextHintStyle      style);
+        GimpTextHintStyle      style);
 gboolean              gimp_text_layer_get_kerning        (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_kerning        (GimpLayer             *layer,
-                                                          gboolean               kerning);
+        gboolean               kerning);
 gchar*                gimp_text_layer_get_language       (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_language       (GimpLayer             *layer,
-                                                          const gchar           *language);
+        const gchar           *language);
 GimpTextDirection     gimp_text_layer_get_base_direction (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_base_direction (GimpLayer             *layer,
-                                                          GimpTextDirection      direction);
+        GimpTextDirection      direction);
 GimpTextJustification gimp_text_layer_get_justification  (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_justification  (GimpLayer             *layer,
-                                                          GimpTextJustification  justify);
+        GimpTextJustification  justify);
 gboolean              gimp_text_layer_get_color          (GimpLayer             *layer,
-                                                          GimpRGB               *color);
+        GimpRGB               *color);
 gboolean              gimp_text_layer_set_color          (GimpLayer             *layer,
-                                                          const GimpRGB         *color);
+        const GimpRGB         *color);
 gdouble               gimp_text_layer_get_indent         (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_indent         (GimpLayer             *layer,
-                                                          gdouble                indent);
+        gdouble                indent);
 gdouble               gimp_text_layer_get_line_spacing   (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_line_spacing   (GimpLayer             *layer,
-                                                          gdouble                line_spacing);
+        gdouble                line_spacing);
 gdouble               gimp_text_layer_get_letter_spacing (GimpLayer             *layer);
 gboolean              gimp_text_layer_set_letter_spacing (GimpLayer             *layer,
-                                                          gdouble                letter_spacing);
+        gdouble                letter_spacing);
 gboolean              gimp_text_layer_resize             (GimpLayer             *layer,
-                                                          gdouble                width,
-                                                          gdouble                height);
+        gdouble                width,
+        gdouble                height);
 
 
 G_END_DECLS

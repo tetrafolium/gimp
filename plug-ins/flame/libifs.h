@@ -36,37 +36,37 @@
 typedef double point[3];
 
 typedef struct {
-   double var[NVARS];   /* normalized interp coefs between variations */
-   double c[3][2];      /* the coefs to the affine part of the function */
-   double density;      /* prob is this function is chosen. 0 - 1 */
-   double color;        /* color coord for this function. 0 - 1 */
+    double var[NVARS];   /* normalized interp coefs between variations */
+    double c[3][2];      /* the coefs to the affine part of the function */
+    double density;      /* prob is this function is chosen. 0 - 1 */
+    double color;        /* color coord for this function. 0 - 1 */
 } xform;
 
 typedef struct {
-   xform xform[NXFORMS];
-   clrmap cmap;
-   double time;
-   int  cmap_index;
-   double brightness;           /* 1.0 = normal */
-   double contrast;             /* 1.0 = normal */
-   double gamma;
-   int  width, height;          /* of the final image */
-   int  spatial_oversample;
-   double center[2];             /* camera center */
-   double zoom;                  /* effects ppu and sample density */
-   double pixels_per_unit;       /* and scale */
-   double spatial_filter_radius; /* variance of gaussian */
-   double sample_density;        /* samples per pixel (not bucket) */
-   /* in order to motion blur more accurately we compute the logs of the
-      sample density many times and average the results.  we interpolate
-      only this many times. */
-   int nbatches;
-   /* this much color resolution.  but making it too high induces clipping */
-   int white_level;
-   int cmap_inter; /* if this is true, then color map interpolates one entry
+    xform xform[NXFORMS];
+    clrmap cmap;
+    double time;
+    int  cmap_index;
+    double brightness;           /* 1.0 = normal */
+    double contrast;             /* 1.0 = normal */
+    double gamma;
+    int  width, height;          /* of the final image */
+    int  spatial_oversample;
+    double center[2];             /* camera center */
+    double zoom;                  /* effects ppu and sample density */
+    double pixels_per_unit;       /* and scale */
+    double spatial_filter_radius; /* variance of gaussian */
+    double sample_density;        /* samples per pixel (not bucket) */
+    /* in order to motion blur more accurately we compute the logs of the
+       sample density many times and average the results.  we interpolate
+       only this many times. */
+    int nbatches;
+    /* this much color resolution.  but making it too high induces clipping */
+    int white_level;
+    int cmap_inter; /* if this is true, then color map interpolates one entry
 		      at a time with a bright edge */
-   double pulse[2][2]; /* [i][0]=magnitude [i][1]=frequency */
-   double wiggle[2][2]; /* frequency is /minute, assuming 30 frames/s */
+    double pulse[2][2]; /* [i][0]=magnitude [i][1]=frequency */
+    double wiggle[2][2]; /* frequency is /minute, assuming 30 frames/s */
 } control_point;
 
 

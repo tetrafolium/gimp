@@ -41,21 +41,21 @@ typedef struct _GimpProgressBarClass  GimpProgressBarClass;
 
 struct _GimpProgressBar
 {
-  GtkProgressBar  parent_instance;
+    GtkProgressBar  parent_instance;
 
-  const gchar    *progress_callback;
-  gboolean        cancelable;
+    const gchar    *progress_callback;
+    gboolean        cancelable;
 };
 
 struct _GimpProgressBarClass
 {
-  GtkProgressBarClass  parent_class;
+    GtkProgressBarClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
 };
 
 

@@ -31,8 +31,8 @@
 
 typedef struct
 {
-  real_coordinate_type coord;
-  real t;
+    real_coordinate_type coord;
+    real t;
 } point_type;
 
 
@@ -42,13 +42,13 @@ typedef struct
 
 struct curve
 {
-  point_type *point_list;
-  int length;
-  boolean cyclic;
-  vector_type *start_tangent;
-  vector_type *end_tangent;
-  struct curve *previous;
-  struct curve *next;
+    point_type *point_list;
+    int length;
+    boolean cyclic;
+    vector_type *start_tangent;
+    vector_type *end_tangent;
+    struct curve *previous;
+    struct curve *next;
 };
 
 typedef struct curve *curve_type;
@@ -114,9 +114,9 @@ extern void display_curve (curve_type);
 /* So, an outline is a list of curves.  */
 typedef struct
 {
-  curve_type *data;
-  unsigned length;
-  boolean clockwise;
+    curve_type *data;
+    unsigned length;
+    boolean clockwise;
 } curve_list_type;
 
 /* Number of curves in the list.  */
@@ -140,8 +140,8 @@ extern void append_curve (curve_list_type *, curve_type);
    monstrous.  */
 typedef struct
 {
-  curve_list_type *data;
-  unsigned length;
+    curve_list_type *data;
+    unsigned length;
 } curve_list_array_type;
 
 /* Turns out we can use the same definitions for lists of lists as for

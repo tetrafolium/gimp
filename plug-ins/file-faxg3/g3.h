@@ -9,7 +9,9 @@
  * bit_code is the code itself (msb2lsb), and bit_length its length
  */
 
-struct g3code { int nr_bits, nr_pels, bit_code, bit_length; };
+struct g3code {
+    int nr_bits, nr_pels, bit_code, bit_length;
+};
 
 /* tables for makeup / terminal codes white / black, extended m_codes */
 extern struct g3code t_white[], m_white[], t_black[], m_black[], m_ext[];
@@ -36,14 +38,15 @@ extern struct g3code t_white[], m_white[], t_black[], m_black[], m_ext[];
 
 #define BITN 1<<FBITS
 
-struct g3_tree { int nr_bits;
-		 struct g3_tree *	nextb[ BITN ];
-		 };
+struct g3_tree {
+    int nr_bits;
+    struct g3_tree *	nextb[ BITN ];
+};
 
 #define g3_leaf g3code
 
 extern void tree_add_node ( struct g3_tree *p, struct g3code * g3c,
-		                   int bit_code, int bit_length );
+                            int bit_code, int bit_length );
 extern void build_tree ( struct g3_tree ** p, struct g3code * c );
 
 #ifdef DEBUG

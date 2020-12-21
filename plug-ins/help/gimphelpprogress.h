@@ -26,23 +26,23 @@
 
 typedef struct
 {
-  void  (* start)           (const gchar *message,
-                             gboolean     cancelable,
-                             gpointer     user_data);
-  void  (* end)             (gpointer     user_data);
-  void  (* set_value)       (gdouble      percentage,
-                             gpointer     user_data);
+    void  (* start)           (const gchar *message,
+                               gboolean     cancelable,
+                               gpointer     user_data);
+    void  (* end)             (gpointer     user_data);
+    void  (* set_value)       (gdouble      percentage,
+                               gpointer     user_data);
 
-  /* Padding for future expansion. Must be initialized with NULL! */
-  void  (* _gimp_reserved1) (void);
-  void  (* _gimp_reserved2) (void);
-  void  (* _gimp_reserved3) (void);
-  void  (* _gimp_reserved4) (void);
+    /* Padding for future expansion. Must be initialized with NULL! */
+    void  (* _gimp_reserved1) (void);
+    void  (* _gimp_reserved2) (void);
+    void  (* _gimp_reserved3) (void);
+    void  (* _gimp_reserved4) (void);
 } GimpHelpProgressVTable;
 
 
 GimpHelpProgress * gimp_help_progress_new    (const GimpHelpProgressVTable *vtable,
-                                              gpointer                      user_data);
+        gpointer                      user_data);
 void               gimp_help_progress_free   (GimpHelpProgress *progress);
 
 void               gimp_help_progress_cancel (GimpHelpProgress *progress);

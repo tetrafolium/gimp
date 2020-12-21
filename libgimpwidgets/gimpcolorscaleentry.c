@@ -43,7 +43,7 @@
 
 struct _GimpColorScaleEntry
 {
-  GimpScaleEntry parent_instance;
+    GimpScaleEntry parent_instance;
 };
 
 static GtkWidget * gimp_color_scale_entry_new_range_widget (GtkAdjustment  *adjustment);
@@ -56,9 +56,9 @@ G_DEFINE_TYPE (GimpColorScaleEntry, gimp_color_scale_entry, GIMP_TYPE_SCALE_ENTR
 static void
 gimp_color_scale_entry_class_init (GimpColorScaleEntryClass *klass)
 {
-  GimpScaleEntryClass *entry_class = GIMP_SCALE_ENTRY_CLASS (klass);
+    GimpScaleEntryClass *entry_class = GIMP_SCALE_ENTRY_CLASS (klass);
 
-  entry_class->new_range_widget = gimp_color_scale_entry_new_range_widget;
+    entry_class->new_range_widget = gimp_color_scale_entry_new_range_widget;
 }
 
 static void
@@ -69,16 +69,16 @@ gimp_color_scale_entry_init (GimpColorScaleEntry *entry)
 static GtkWidget *
 gimp_color_scale_entry_new_range_widget (GtkAdjustment  *adjustment)
 {
-  GtkWidget *scale;
+    GtkWidget *scale;
 
-  g_return_val_if_fail (GTK_IS_ADJUSTMENT (adjustment), NULL);
+    g_return_val_if_fail (GTK_IS_ADJUSTMENT (adjustment), NULL);
 
-  scale = gimp_color_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                                GIMP_COLOR_SELECTOR_VALUE);
+    scale = gimp_color_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                  GIMP_COLOR_SELECTOR_VALUE);
 
-  gtk_range_set_adjustment (GTK_RANGE (scale), adjustment);
+    gtk_range_set_adjustment (GTK_RANGE (scale), adjustment);
 
-  return scale;
+    return scale;
 }
 
 /**
@@ -98,15 +98,15 @@ gimp_color_scale_entry_new (const gchar *text,
                             gdouble      upper,
                             guint        digits)
 {
-  GtkWidget *entry;
+    GtkWidget *entry;
 
-  entry = g_object_new (GIMP_TYPE_COLOR_SCALE_ENTRY,
-                        "label",          text,
-                        "value",          value,
-                        "lower",          lower,
-                        "upper",          upper,
-                        "digits",         digits,
-                        NULL);
+    entry = g_object_new (GIMP_TYPE_COLOR_SCALE_ENTRY,
+                          "label",          text,
+                          "value",          value,
+                          "lower",          lower,
+                          "upper",          upper,
+                          "digits",         digits,
+                          NULL);
 
-  return entry;
+    return entry;
 }

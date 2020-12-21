@@ -77,65 +77,65 @@ gboolean
 jpeg_detect_original_settings (struct jpeg_decompress_struct *cinfo,
                                GimpImage                     *image)
 {
-  guint         parasite_size;
-  guchar       *parasite_data;
-  GimpParasite *parasite;
-  guchar       *dest;
-  gint          quality;
-  gint          num_quant_tables = 0;
-  gint          t;
-  gint          i;
+    guint         parasite_size;
+    guchar       *parasite_data;
+    GimpParasite *parasite;
+    guchar       *dest;
+    gint          quality;
+    gint          num_quant_tables = 0;
+    gint          t;
+    gint          i;
 
-  g_return_val_if_fail (cinfo != NULL, FALSE);
-  if (cinfo->jpeg_color_space == JCS_UNKNOWN
-      || cinfo->out_color_space == JCS_UNKNOWN)
-    return FALSE;
+    g_return_val_if_fail (cinfo != NULL, FALSE);
+    if (cinfo->jpeg_color_space == JCS_UNKNOWN
+            || cinfo->out_color_space == JCS_UNKNOWN)
+        return FALSE;
 
-  quality = jpeg_detect_quality (cinfo);
-  /* no need to attach quantization tables if they are the ones from IJG */
-  if (quality <= 0)
+    quality = jpeg_detect_quality (cinfo);
+    /* no need to attach quantization tables if they are the ones from IJG */
+    if (quality <= 0)
     {
-      for (t = 0; t < 4; t++)
-        if (cinfo->quant_tbl_ptrs[t])
-          num_quant_tables++;
+        for (t = 0; t < 4; t++)
+            if (cinfo->quant_tbl_ptrs[t])
+                num_quant_tables++;
     }
 
-  parasite_size = 4 + cinfo->num_components * 2 + num_quant_tables * 128;
-  parasite_data = g_new (guchar, parasite_size);
-  dest = parasite_data;
+    parasite_size = 4 + cinfo->num_components * 2 + num_quant_tables * 128;
+    parasite_data = g_new (guchar, parasite_size);
+    dest = parasite_data;
 
-  *dest++ = CLAMP0255 (cinfo->jpeg_color_space);
-  *dest++ = ABS (quality);
-  *dest++ = CLAMP0255 (cinfo->num_components);
-  *dest++ = num_quant_tables;
+    *dest++ = CLAMP0255 (cinfo->jpeg_color_space);
+    *dest++ = ABS (quality);
+    *dest++ = CLAMP0255 (cinfo->num_components);
+    *dest++ = num_quant_tables;
 
-  for (i = 0; i < cinfo->num_components; i++)
+    for (i = 0; i < cinfo->num_components; i++)
     {
-      *dest++ = CLAMP0255 (cinfo->comp_info[i].h_samp_factor);
-      *dest++ = CLAMP0255 (cinfo->comp_info[i].v_samp_factor);
+        *dest++ = CLAMP0255 (cinfo->comp_info[i].h_samp_factor);
+        *dest++ = CLAMP0255 (cinfo->comp_info[i].v_samp_factor);
     }
 
-  if (quality <= 0)
+    if (quality <= 0)
     {
-      for (t = 0; t < 4; t++)
-        if (cinfo->quant_tbl_ptrs[t])
-          for (i = 0; i < DCTSIZE2; i++)
-            {
-              guint16 c = cinfo->quant_tbl_ptrs[t]->quantval[i];
-              *dest++ = c / 256;
-              *dest++ = c & 255;
-            }
+        for (t = 0; t < 4; t++)
+            if (cinfo->quant_tbl_ptrs[t])
+                for (i = 0; i < DCTSIZE2; i++)
+                {
+                    guint16 c = cinfo->quant_tbl_ptrs[t]->quantval[i];
+                    *dest++ = c / 256;
+                    *dest++ = c & 255;
+                }
     }
 
-  parasite = gimp_parasite_new ("jpeg-settings",
-                                GIMP_PARASITE_PERSISTENT,
-                                parasite_size,
-                                parasite_data);
-  g_free (parasite_data);
-  gimp_image_attach_parasite (image, parasite);
-  gimp_parasite_free (parasite);
+    parasite = gimp_parasite_new ("jpeg-settings",
+                                  GIMP_PARASITE_PERSISTENT,
+                                  parasite_size,
+                                  parasite_data);
+    g_free (parasite_data);
+    gimp_image_attach_parasite (image, parasite);
+    gimp_parasite_free (parasite);
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -170,80 +170,80 @@ jpeg_restore_original_settings (GimpImage       *image,
                                 JpegSubsampling *subsmp,
                                 gint            *num_quant_tables)
 {
-  GimpParasite *parasite;
-  const guchar *src;
-  glong         src_size;
-  gint          color_space;
-  gint          q;
-  gint          num_components;
-  gint          num_tables;
-  guchar        h[3];
-  guchar        v[3];
+    GimpParasite *parasite;
+    const guchar *src;
+    glong         src_size;
+    gint          color_space;
+    gint          q;
+    gint          num_components;
+    gint          num_tables;
+    guchar        h[3];
+    guchar        v[3];
 
-  g_return_val_if_fail (quality != NULL, FALSE);
-  g_return_val_if_fail (subsmp != NULL, FALSE);
-  g_return_val_if_fail (num_quant_tables != NULL, FALSE);
+    g_return_val_if_fail (quality != NULL, FALSE);
+    g_return_val_if_fail (subsmp != NULL, FALSE);
+    g_return_val_if_fail (num_quant_tables != NULL, FALSE);
 
-  parasite = gimp_image_get_parasite (image, "jpeg-settings");
-  if (parasite)
+    parasite = gimp_image_get_parasite (image, "jpeg-settings");
+    if (parasite)
     {
-      src = gimp_parasite_data (parasite);
-      src_size = gimp_parasite_data_size (parasite);
-      if (src_size >= 4)
+        src = gimp_parasite_data (parasite);
+        src_size = gimp_parasite_data_size (parasite);
+        if (src_size >= 4)
         {
-          color_space      = *src++;
-          q                = *src++;
-          num_components   = *src++;
-          num_tables       = *src++;
+            color_space      = *src++;
+            q                = *src++;
+            num_components   = *src++;
+            num_tables       = *src++;
 
-          if (src_size >= (4 + num_components * 2 + num_tables * 128)
-              && q <= 100 && num_tables <= 4)
+            if (src_size >= (4 + num_components * 2 + num_tables * 128)
+                    && q <= 100 && num_tables <= 4)
             {
-              *quality = q;
+                *quality = q;
 
-              /* the current plug-in can only create grayscale or YCbCr JPEGs */
-              if (color_space == JCS_GRAYSCALE || color_space == JCS_YCbCr)
-                *num_quant_tables = num_tables;
-              else
-                *num_quant_tables = -1;
+                /* the current plug-in can only create grayscale or YCbCr JPEGs */
+                if (color_space == JCS_GRAYSCALE || color_space == JCS_YCbCr)
+                    *num_quant_tables = num_tables;
+                else
+                    *num_quant_tables = -1;
 
-              /* the current plug-in can only use subsampling for YCbCr (3) */
-              *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
-              if (num_components == 3)
+                /* the current plug-in can only use subsampling for YCbCr (3) */
+                *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
+                if (num_components == 3)
                 {
-                  h[0] = *src++;
-                  v[0] = *src++;
-                  h[1] = *src++;
-                  v[1] = *src++;
-                  h[2] = *src++;
-                  v[2] = *src++;
+                    h[0] = *src++;
+                    v[0] = *src++;
+                    h[1] = *src++;
+                    v[1] = *src++;
+                    h[2] = *src++;
+                    v[2] = *src++;
 
-                  if (h[1] == 1 && v[1] == 1 && h[2] == 1 && v[2] == 1)
+                    if (h[1] == 1 && v[1] == 1 && h[2] == 1 && v[2] == 1)
                     {
-                      if (h[0] == 1 && v[0] == 1)
-                        *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
-                      else if (h[0] == 2 && v[0] == 1)
-                        *subsmp = JPEG_SUBSAMPLING_2x1_1x1_1x1;
-                      else if (h[0] == 1 && v[0] == 2)
-                        *subsmp = JPEG_SUBSAMPLING_1x2_1x1_1x1;
-                      else if (h[0] == 2 && v[0] == 2)
-                        *subsmp = JPEG_SUBSAMPLING_2x2_1x1_1x1;
+                        if (h[0] == 1 && v[0] == 1)
+                            *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
+                        else if (h[0] == 2 && v[0] == 1)
+                            *subsmp = JPEG_SUBSAMPLING_2x1_1x1_1x1;
+                        else if (h[0] == 1 && v[0] == 2)
+                            *subsmp = JPEG_SUBSAMPLING_1x2_1x1_1x1;
+                        else if (h[0] == 2 && v[0] == 2)
+                            *subsmp = JPEG_SUBSAMPLING_2x2_1x1_1x1;
                     }
                 }
 
-              gimp_parasite_free (parasite);
-              return TRUE;
+                gimp_parasite_free (parasite);
+                return TRUE;
             }
         }
 
-      gimp_parasite_free (parasite);
+        gimp_parasite_free (parasite);
     }
 
-  *quality = -1;
-  *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
-  *num_quant_tables = 0;
+    *quality = -1;
+    *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
+    *num_quant_tables = 0;
 
-  return FALSE;
+    return FALSE;
 }
 
 
@@ -271,50 +271,50 @@ guint **
 jpeg_restore_original_tables (GimpImage *image,
                               gint       num_quant_tables)
 {
-  GimpParasite *parasite;
-  const guchar *src;
-  glong         src_size;
-  gint          num_components;
-  gint          num_tables;
-  guint       **quant_tables;
-  gint          t;
-  gint          i;
+    GimpParasite *parasite;
+    const guchar *src;
+    glong         src_size;
+    gint          num_components;
+    gint          num_tables;
+    guint       **quant_tables;
+    gint          t;
+    gint          i;
 
-  parasite = gimp_image_get_parasite (image, "jpeg-settings");
-  if (parasite)
+    parasite = gimp_image_get_parasite (image, "jpeg-settings");
+    if (parasite)
     {
-      src_size = gimp_parasite_data_size (parasite);
-      if (src_size >= 4)
+        src_size = gimp_parasite_data_size (parasite);
+        if (src_size >= 4)
         {
-          src = gimp_parasite_data (parasite);
-          num_components = src[2];
-          num_tables     = src[3];
+            src = gimp_parasite_data (parasite);
+            num_components = src[2];
+            num_tables     = src[3];
 
-          if (src_size >= (4 + num_components * 2 + num_tables * 128)
-              && num_tables == num_quant_tables)
+            if (src_size >= (4 + num_components * 2 + num_tables * 128)
+                    && num_tables == num_quant_tables)
             {
-              src += 4 + num_components * 2;
-              quant_tables = g_new (guint *, num_tables);
+                src += 4 + num_components * 2;
+                quant_tables = g_new (guint *, num_tables);
 
-              for (t = 0; t < num_tables; t++)
+                for (t = 0; t < num_tables; t++)
                 {
-                  quant_tables[t] = g_new (guint, 128);
-                  for (i = 0; i < 64; i++)
+                    quant_tables[t] = g_new (guint, 128);
+                    for (i = 0; i < 64; i++)
                     {
-                      guint c;
+                        guint c;
 
-                      c = *src++ * 256;
-                      c += *src++;
-                      quant_tables[t][i] = c;
+                        c = *src++ * 256;
+                        c += *src++;
+                        quant_tables[t][i] = c;
                     }
                 }
-              gimp_parasite_free (parasite);
-              return quant_tables;
+                gimp_parasite_free (parasite);
+                return quant_tables;
             }
         }
-      gimp_parasite_free (parasite);
+        gimp_parasite_free (parasite);
     }
-  return NULL;
+    return NULL;
 }
 
 
@@ -330,69 +330,69 @@ jpeg_restore_original_tables (GimpImage *image,
 void
 jpeg_swap_original_settings (GimpImage *image)
 {
-  GimpParasite *parasite;
-  const guchar *src;
-  glong         src_size;
-  gint          num_components;
-  gint          num_tables;
-  guchar       *new_data;
-  guchar       *dest;
-  gint          t;
-  gint          i;
-  gint          j;
+    GimpParasite *parasite;
+    const guchar *src;
+    glong         src_size;
+    gint          num_components;
+    gint          num_tables;
+    guchar       *new_data;
+    guchar       *dest;
+    gint          t;
+    gint          i;
+    gint          j;
 
-  parasite = gimp_image_get_parasite (image, "jpeg-settings");
-  if (parasite)
+    parasite = gimp_image_get_parasite (image, "jpeg-settings");
+    if (parasite)
     {
-      src_size = gimp_parasite_data_size (parasite);
-      if (src_size >= 4)
+        src_size = gimp_parasite_data_size (parasite);
+        if (src_size >= 4)
         {
-          src = gimp_parasite_data (parasite);
-          num_components = src[2];
-          num_tables     = src[3];
+            src = gimp_parasite_data (parasite);
+            num_components = src[2];
+            num_tables     = src[3];
 
-          if (src_size >= (4 + num_components * 2 + num_tables * 128))
+            if (src_size >= (4 + num_components * 2 + num_tables * 128))
             {
-              new_data = g_new (guchar, src_size);
-              dest = new_data;
-              *dest++ = *src++;
-              *dest++ = *src++;
-              *dest++ = *src++;
-              *dest++ = *src++;
-              for (i = 0; i < num_components; i++)
+                new_data = g_new (guchar, src_size);
+                dest = new_data;
+                *dest++ = *src++;
+                *dest++ = *src++;
+                *dest++ = *src++;
+                *dest++ = *src++;
+                for (i = 0; i < num_components; i++)
                 {
-                  dest[0] = src[1];
-                  dest[1] = src[0];
-                  dest += 2;
-                  src += 2;
+                    dest[0] = src[1];
+                    dest[1] = src[0];
+                    dest += 2;
+                    src += 2;
                 }
-              for (t = 0; t < num_tables; t++)
+                for (t = 0; t < num_tables; t++)
                 {
-                  for (i = 0; i < 8; i++)
+                    for (i = 0; i < 8; i++)
                     {
-                      for (j = 0; j < 8; j++)
+                        for (j = 0; j < 8; j++)
                         {
-                          dest[i * 16 + j * 2]     = src[j * 16 + i * 2];
-                          dest[i * 16 + j * 2 + 1] = src[j * 16 + i * 2 + 1];
+                            dest[i * 16 + j * 2]     = src[j * 16 + i * 2];
+                            dest[i * 16 + j * 2 + 1] = src[j * 16 + i * 2 + 1];
                         }
                     }
-                  dest += 128;
-                  src += 128;
-                  if (src_size > (4 + num_components * 2 + num_tables * 128))
+                    dest += 128;
+                    src += 128;
+                    if (src_size > (4 + num_components * 2 + num_tables * 128))
                     {
-                      memcpy (dest, src, src_size - (4 + num_components * 2
-                                                     + num_tables * 128));
+                        memcpy (dest, src, src_size - (4 + num_components * 2
+                                                       + num_tables * 128));
                     }
                 }
-              gimp_parasite_free (parasite);
-              parasite = gimp_parasite_new ("jpeg-settings",
-                                            GIMP_PARASITE_PERSISTENT,
-                                            src_size,
-                                            new_data);
-              g_free (new_data);
-              gimp_image_attach_parasite (image, parasite);
+                gimp_parasite_free (parasite);
+                parasite = gimp_parasite_new ("jpeg-settings",
+                                              GIMP_PARASITE_PERSISTENT,
+                                              src_size,
+                                              new_data);
+                g_free (new_data);
+                gimp_image_attach_parasite (image, parasite);
             }
         }
-      gimp_parasite_free (parasite);
+        gimp_parasite_free (parasite);
     }
 }

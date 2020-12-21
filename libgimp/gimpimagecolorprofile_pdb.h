@@ -33,23 +33,23 @@ G_BEGIN_DECLS
 
 
 G_GNUC_INTERNAL guint8*  _gimp_image_get_color_profile              (GimpImage                *image,
-                                                                     gint                     *num_bytes);
+        gint                     *num_bytes);
 G_GNUC_INTERNAL guint8*  _gimp_image_get_effective_color_profile    (GimpImage                *image,
-                                                                     gint                     *num_bytes);
+        gint                     *num_bytes);
 G_GNUC_INTERNAL gboolean _gimp_image_set_color_profile              (GimpImage                *image,
-                                                                     gint                      num_bytes,
-                                                                     const guint8             *color_profile);
+        gint                      num_bytes,
+        const guint8             *color_profile);
 gboolean                 gimp_image_set_color_profile_from_file     (GimpImage                *image,
-                                                                     GFile                    *file);
+        GFile                    *file);
 G_GNUC_INTERNAL gboolean _gimp_image_convert_color_profile          (GimpImage                *image,
-                                                                     gint                      num_bytes,
-                                                                     const guint8             *color_profile,
-                                                                     GimpColorRenderingIntent  intent,
-                                                                     gboolean                  bpc);
+        gint                      num_bytes,
+        const guint8             *color_profile,
+        GimpColorRenderingIntent  intent,
+        gboolean                  bpc);
 gboolean                 gimp_image_convert_color_profile_from_file (GimpImage                *image,
-                                                                     GFile                    *file,
-                                                                     GimpColorRenderingIntent  intent,
-                                                                     gboolean                  bpc);
+        GFile                    *file,
+        GimpColorRenderingIntent  intent,
+        gboolean                  bpc);
 
 
 G_END_DECLS

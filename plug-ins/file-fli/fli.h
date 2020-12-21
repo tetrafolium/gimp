@@ -22,33 +22,33 @@
 
 typedef struct _fli_header
 {
-  unsigned long  filesize;
-  unsigned short magic;
-  unsigned short frames;
-  unsigned short width;
-  unsigned short height;
-  unsigned short depth;
-  unsigned short flags;
-  unsigned long  speed;
-  unsigned long  created;
-  unsigned long  creator;
-  unsigned long  updated;
-  unsigned short aspect_x, aspect_y;
-  unsigned long  oframe1, oframe2;
+    unsigned long  filesize;
+    unsigned short magic;
+    unsigned short frames;
+    unsigned short width;
+    unsigned short height;
+    unsigned short depth;
+    unsigned short flags;
+    unsigned long  speed;
+    unsigned long  created;
+    unsigned long  creator;
+    unsigned long  updated;
+    unsigned short aspect_x, aspect_y;
+    unsigned long  oframe1, oframe2;
 } s_fli_header;
 
 typedef struct _fli_frame
 {
-  unsigned long  size;
-  unsigned short magic;
-  unsigned short chunks;
+    unsigned long  size;
+    unsigned short magic;
+    unsigned short chunks;
 } s_fli_frame;
 
 typedef struct _fli_chunk
 {
-  unsigned long   size;
-  unsigned short  magic;
-  unsigned char  *data;
+    unsigned long   size;
+    unsigned short  magic;
+    unsigned char  *data;
 } s_fli_chunk;
 
 /** chunk magics */

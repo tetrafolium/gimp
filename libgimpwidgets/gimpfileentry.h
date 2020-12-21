@@ -46,39 +46,39 @@ typedef struct _GimpFileEntryClass   GimpFileEntryClass;
 
 struct _GimpFileEntry
 {
-  GtkBox                parent_instance;
+    GtkBox                parent_instance;
 
-  GimpFileEntryPrivate *priv;
+    GimpFileEntryPrivate *priv;
 };
 
 struct _GimpFileEntryClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  void (* filename_changed) (GimpFileEntry *entry);
+    void (* filename_changed) (GimpFileEntry *entry);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_file_entry_get_type     (void) G_GNUC_CONST;
 
 GtkWidget * gimp_file_entry_new          (const gchar   *title,
-                                          const gchar   *filename,
-                                          gboolean       dir_only,
-                                          gboolean       check_valid);
+        const gchar   *filename,
+        gboolean       dir_only,
+        gboolean       check_valid);
 
 gchar     * gimp_file_entry_get_filename (GimpFileEntry *entry);
 void        gimp_file_entry_set_filename (GimpFileEntry *entry,
-                                          const gchar   *filename);
+        const gchar   *filename);
 
 GtkWidget * gimp_file_entry_get_entry    (GimpFileEntry *entry);
 

@@ -36,7 +36,7 @@ gboolean                    gimp_context_push                           (void);
 gboolean                    gimp_context_pop                            (void);
 gboolean                    gimp_context_set_defaults                   (void);
 gboolean                    gimp_context_list_paint_methods             (gint                          *num_paint_methods,
-                                                                         gchar                       ***paint_methods);
+        gchar                       ***paint_methods);
 gchar*                      gimp_context_get_paint_method               (void);
 gboolean                    gimp_context_set_paint_method               (const gchar                   *name);
 GimpStrokeMethod            gimp_context_get_stroke_method              (void);
@@ -64,9 +64,9 @@ gboolean                    gimp_context_set_line_miter_limit           (gdouble
 gdouble                     gimp_context_get_line_dash_offset           (void);
 gboolean                    gimp_context_set_line_dash_offset           (gdouble                        dash_offset);
 gboolean                    gimp_context_get_line_dash_pattern          (gint                          *num_dashes,
-                                                                         gdouble                      **dashes);
+        gdouble                      **dashes);
 gboolean                    gimp_context_set_line_dash_pattern          (gint                           num_dashes,
-                                                                         const gdouble                 *dashes);
+        const gdouble                 *dashes);
 gchar*                      gimp_context_get_brush                      (void);
 gboolean                    gimp_context_set_brush                      (const gchar                   *name);
 gdouble                     gimp_context_get_brush_size                 (void);
@@ -111,9 +111,9 @@ gboolean                    gimp_context_set_antialias                  (gboolea
 gboolean                    gimp_context_get_feather                    (void);
 gboolean                    gimp_context_set_feather                    (gboolean                       feather);
 gboolean                    gimp_context_get_feather_radius             (gdouble                       *feather_radius_x,
-                                                                         gdouble                       *feather_radius_y);
+        gdouble                       *feather_radius_y);
 gboolean                    gimp_context_set_feather_radius             (gdouble                        feather_radius_x,
-                                                                         gdouble                        feather_radius_y);
+        gdouble                        feather_radius_y);
 gboolean                    gimp_context_get_sample_merged              (void);
 gboolean                    gimp_context_set_sample_merged              (gboolean                       sample_merged);
 GimpSelectCriterion         gimp_context_get_sample_criterion           (void);

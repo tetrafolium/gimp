@@ -28,92 +28,92 @@
 
 enum
 {
-  GIMP_XMP_NONE = 0,
-  GIMP_XMP_TEXT,
-  GIMP_XMP_BAG,
-  GIMP_XMP_SEQ,
-  GIMP_XMP_LANG,
-  GIMP_XMP_ALT
+    GIMP_XMP_NONE = 0,
+    GIMP_XMP_TEXT,
+    GIMP_XMP_BAG,
+    GIMP_XMP_SEQ,
+    GIMP_XMP_LANG,
+    GIMP_XMP_ALT
 };
 
 enum
 {
-  COL_LICENSOR_NAME = 0,
-  COL_LICENSOR_ID,
-  COL_LICENSOR_PHONE1,
-  COL_LICENSOR_PHONE_TYPE1,
-  COL_LICENSOR_PHONE2,
-  COL_LICENSOR_PHONE_TYPE2,
-  COL_LICENSOR_EMAIL,
-  COL_LICENSOR_WEB,
-  COL_LICENSOR_NUM_COLS
+    COL_LICENSOR_NAME = 0,
+    COL_LICENSOR_ID,
+    COL_LICENSOR_PHONE1,
+    COL_LICENSOR_PHONE_TYPE1,
+    COL_LICENSOR_PHONE2,
+    COL_LICENSOR_PHONE_TYPE2,
+    COL_LICENSOR_EMAIL,
+    COL_LICENSOR_WEB,
+    COL_LICENSOR_NUM_COLS
 };
 
 enum
 {
-  COL_CR_OWNER_NAME = 0,
-  COL_CR_OWNER_ID,
-  COL_CR_OWNER_NUM_COLS
+    COL_CR_OWNER_NAME = 0,
+    COL_CR_OWNER_ID,
+    COL_CR_OWNER_NUM_COLS
 };
 
 enum
 {
-  COL_IMG_CR8_NAME = 0,
-  COL_IMG_CR8_ID,
-  COL_IMG_CR8_NUM_COLS
+    COL_IMG_CR8_NAME = 0,
+    COL_IMG_CR8_ID,
+    COL_IMG_CR8_NUM_COLS
 };
 
 enum
 {
-  COL_AOO_TITLE = 0,
-  COL_AOO_DATE_CREAT,
-  COL_AOO_CREATOR,
-  COL_AOO_SOURCE,
-  COL_AOO_SRC_INV_ID,
-  COL_AOO_CR_NOT,
-  COL_AOO_NUM_COLS
+    COL_AOO_TITLE = 0,
+    COL_AOO_DATE_CREAT,
+    COL_AOO_CREATOR,
+    COL_AOO_SOURCE,
+    COL_AOO_SRC_INV_ID,
+    COL_AOO_CR_NOT,
+    COL_AOO_NUM_COLS
 };
 
 enum
 {
-  COL_REGSITRY_ORG_ID = 0,
-  COL_REGSITRY_ITEM_ID,
-  COL_REGSITRY_NUM_COLS
+    COL_REGSITRY_ORG_ID = 0,
+    COL_REGSITRY_ITEM_ID,
+    COL_REGSITRY_NUM_COLS
 };
 
 enum
 {
-  COL_LOC_SHO_SUB_LOC = 0,
-  COL_LOC_SHO_CITY,
-  COL_LOC_SHO_STATE_PROV,
-  COL_LOC_SHO_CNTRY,
-  COL_LOC_SHO_CNTRY_ISO,
-  COL_LOC_SHO_CNTRY_WRLD_REG,
-  COL_LOC_SHO_NUM_COLS
+    COL_LOC_SHO_SUB_LOC = 0,
+    COL_LOC_SHO_CITY,
+    COL_LOC_SHO_STATE_PROV,
+    COL_LOC_SHO_CNTRY,
+    COL_LOC_SHO_CNTRY_ISO,
+    COL_LOC_SHO_CNTRY_WRLD_REG,
+    COL_LOC_SHO_NUM_COLS
 };
 
 enum
 {
-  COL_ORG_IMG_CODE = 0,
-  ORG_IMG_CODE_REL_NUM_COLS
+    COL_ORG_IMG_CODE = 0,
+    ORG_IMG_CODE_REL_NUM_COLS
 };
 
 enum
 {
-  COL_ORG_IMG_NAME = 0,
-  ORG_IMG_NAME_REL_NUM_COLS
+    COL_ORG_IMG_NAME = 0,
+    ORG_IMG_NAME_REL_NUM_COLS
 };
 
 enum
 {
-  COL_MOD_REL_ID = 0,
-  MOD_REL_NUM_COLS
+    COL_MOD_REL_ID = 0,
+    MOD_REL_NUM_COLS
 };
 
 enum
 {
-  COL_PROP_REL_ID = 0,
-  PROP_REL_NUM_COLS
+    COL_PROP_REL_ID = 0,
+    PROP_REL_NUM_COLS
 };
 
 extern const metadata_tag default_metadata_tags[];
@@ -236,7 +236,7 @@ extern const gint   n_locationcreated;
 
 gchar * metadata_format_gps_longitude_latitude (const gdouble  value);
 gchar * metadata_format_gps_altitude           (const gdouble  value,
-                                                gboolean       use_meter,
-                                                gchar         *measurement_symbol);
+        gboolean       use_meter,
+        gchar         *measurement_symbol);
 
 #endif /* __METADATA_TAGS_H__ */

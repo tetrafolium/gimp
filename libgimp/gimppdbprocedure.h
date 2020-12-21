@@ -41,21 +41,21 @@ typedef struct _GimpPDBProcedurePrivate GimpPDBProcedurePrivate;
 
 struct _GimpPDBProcedure
 {
-  GimpProcedure            parent_instance;
+    GimpProcedure            parent_instance;
 
-  GimpPDBProcedurePrivate *priv;
+    GimpPDBProcedurePrivate *priv;
 };
 
 struct _GimpPDBProcedureClass
 {
-  GimpProcedureClass parent_class;
+    GimpProcedureClass parent_class;
 };
 
 
 GType           _gimp_pdb_procedure_get_type (void) G_GNUC_CONST;
 
 GimpProcedure * _gimp_pdb_procedure_new      (GimpPDB     *pdb,
-                                              const gchar *name);
+        const gchar *name);
 
 
 G_END_DECLS

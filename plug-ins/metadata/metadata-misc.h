@@ -22,48 +22,48 @@
 
 typedef struct
 {
-  GtkWidget      *dialog;
-  GtkBuilder     *builder;
-  GExiv2Metadata *metadata;
-  GimpImage      *image;
-  gchar          *filename;
+    GtkWidget      *dialog;
+    GtkBuilder     *builder;
+    GExiv2Metadata *metadata;
+    GimpImage      *image;
+    gchar          *filename;
 } metadata_editor;
 
 typedef struct
 {
-  gchar  *tag;
-  gchar  *mode;
-  gint32  other_tag_index;
-  gint32  tag_type;
-  gint32  xmp_type;
+    gchar  *tag;
+    gchar  *mode;
+    gint32  other_tag_index;
+    gint32  tag_type;
+    gint32  xmp_type;
 } metadata_tag;
 
 typedef struct
 {
-  gchar  *data;
-  gchar  *display;
+    gchar  *data;
+    gchar  *display;
 } combobox_str_tag;
 
 typedef struct
 {
-  gint32  data;
-  gchar  *display;
+    gint32  data;
+    gchar  *display;
 } combobox_int_tag;
 
 typedef struct
 {
-  gchar  *header;
-  gchar  *type;
-  gint32  size;
+    gchar  *header;
+    gchar  *type;
+    gint32  size;
 } TranslateHeaderTag;
 
 typedef struct
 {
-  gchar  *id;
-  gchar  *tag;
-  gchar  *mode;
-  gint32  other_tag_index;
-  gint32  tag_type;
+    gchar  *id;
+    gchar  *tag;
+    gchar  *mode;
+    gint32  other_tag_index;
+    gint32  tag_type;
 } TranslateTag;
 
 #endif /* __METADATA_MISC_H__ */

@@ -34,12 +34,12 @@ typedef struct _PlaceholderClass PlaceholderClass;
 
 struct _Placeholder
 {
-  GimpPlugIn      parent_instance;
+    GimpPlugIn      parent_instance;
 };
 
 struct _PlaceholderClass
 {
-  GimpPlugInClass parent_class;
+    GimpPlugInClass parent_class;
 };
 
 
@@ -50,13 +50,13 @@ GType                   placeholder_get_type         (void) G_GNUC_CONST;
 
 static GList          * placeholder_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * placeholder_create_procedure (GimpPlugIn           *plug_in,
-                                                      const gchar          *name);
+        const gchar          *name);
 
 static GimpValueArray * placeholder_load             (GimpProcedure        *procedure,
-                                                      GimpRunMode           run_mode,
-                                                      GFile                *file,
-                                                      const GimpValueArray *args,
-                                                      gpointer              run_data);
+        GimpRunMode           run_mode,
+        GFile                *file,
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 
 G_DEFINE_TYPE (Placeholder, placeholder, GIMP_TYPE_PLUG_IN)
@@ -67,10 +67,10 @@ GIMP_MAIN (PLACEHOLDER_TYPE)
 static void
 placeholder_class_init (PlaceholderClass *klass)
 {
-  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-  plug_in_class->query_procedures = placeholder_query_procedures;
-  plug_in_class->create_procedure = placeholder_create_procedure;
+    plug_in_class->query_procedures = placeholder_query_procedures;
+    plug_in_class->create_procedure = placeholder_create_procedure;
 }
 
 static void
@@ -81,79 +81,79 @@ placeholder_init (Placeholder *placeholder)
 static GList *
 placeholder_query_procedures (GimpPlugIn *plug_in)
 {
-  GList *list = NULL;
-  gint   i;
+    GList *list = NULL;
+    gint   i;
 
-  for (i = 0; i < G_N_ELEMENTS (file_formats); i++)
+    for (i = 0; i < G_N_ELEMENTS (file_formats); i++)
     {
-      const FileFormat *format = &file_formats[i];
-      gchar            *load_proc;
+        const FileFormat *format = &file_formats[i];
+        gchar            *load_proc;
 
-      load_proc = g_strdup_printf (format->load_proc_format,
-                                   "raw-placeholder");
+        load_proc = g_strdup_printf (format->load_proc_format,
+                                     "raw-placeholder");
 
-      list = g_list_append (list, load_proc);
+        list = g_list_append (list, load_proc);
     }
 
-  return list;
+    return list;
 }
 
 static GimpProcedure *
 placeholder_create_procedure (GimpPlugIn  *plug_in,
                               const gchar *name)
 {
-  GimpProcedure *procedure = NULL;
-  gint           i;
+    GimpProcedure *procedure = NULL;
+    gint           i;
 
-  for (i = 0; i < G_N_ELEMENTS (file_formats); i++)
+    for (i = 0; i < G_N_ELEMENTS (file_formats); i++)
     {
-      const FileFormat *format = &file_formats[i];
-      gchar            *load_proc;
-      gchar            *load_blurb;
-      gchar            *load_help;
+        const FileFormat *format = &file_formats[i];
+        gchar            *load_proc;
+        gchar            *load_blurb;
+        gchar            *load_help;
 
-      load_proc = g_strdup_printf (format->load_proc_format,
-                                   "raw-placeholder");
+        load_proc = g_strdup_printf (format->load_proc_format,
+                                     "raw-placeholder");
 
-      if (strcmp (name, load_proc))
+        if (strcmp (name, load_proc))
         {
-          g_free (load_proc);
-          continue;
+            g_free (load_proc);
+            continue;
         }
 
-      load_blurb = g_strdup_printf (format->load_blurb_format, "placeholder");
-      load_help  = g_strdup_printf (format->load_help_format,  "placeholder");
+        load_blurb = g_strdup_printf (format->load_blurb_format, "placeholder");
+        load_help  = g_strdup_printf (format->load_help_format,  "placeholder");
 
-      procedure = gimp_load_procedure_new (plug_in, name,
-                                           GIMP_PDB_PROC_TYPE_PLUGIN,
-                                           placeholder_load,
-                                           (gpointer) format, NULL);
+        procedure = gimp_load_procedure_new (plug_in, name,
+                                             GIMP_PDB_PROC_TYPE_PLUGIN,
+                                             placeholder_load,
+                                             (gpointer) format, NULL);
 
-      gimp_procedure_set_documentation (procedure,
-                                        load_blurb, load_help, name);
-      gimp_procedure_set_attribution (procedure,
-                                      "Tobias Ellinghaus",
-                                      "Tobias Ellinghaus",
-                                      "2016");
+        gimp_procedure_set_documentation (procedure,
+                                          load_blurb, load_help, name);
+        gimp_procedure_set_attribution (procedure,
+                                        "Tobias Ellinghaus",
+                                        "Tobias Ellinghaus",
+                                        "2016");
 
-      gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
-                                          format->mime_type);
-      gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
-                                          format->extensions);
-      gimp_file_procedure_set_magics (GIMP_FILE_PROCEDURE (procedure),
-                                      format->magic);
+        gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
+                                            format->mime_type);
+        gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
+                                            format->extensions);
+        gimp_file_procedure_set_magics (GIMP_FILE_PROCEDURE (procedure),
+                                        format->magic);
 
-      gimp_load_procedure_set_handles_raw (GIMP_LOAD_PROCEDURE (procedure),
-                                           TRUE);
+        gimp_load_procedure_set_handles_raw (GIMP_LOAD_PROCEDURE (procedure),
+                                             TRUE);
 
-      g_free (load_proc);
-      g_free (load_blurb);
-      g_free (load_help);
+        g_free (load_proc);
+        g_free (load_blurb);
+        g_free (load_help);
 
-      break;
+        break;
     }
 
-  return procedure;
+    return procedure;
 }
 
 static GimpValueArray *
@@ -163,23 +163,23 @@ placeholder_load (GimpProcedure        *procedure,
                   const GimpValueArray *args,
                   gpointer              run_data)
 {
-  const FileFormat *format = run_data;
-  GError           *error = NULL;
+    const FileFormat *format = run_data;
+    GError           *error = NULL;
 
-  INIT_I18N ();
+    INIT_I18N ();
 
-  g_set_error (&error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-               _("There is no RAW loader installed to open '%s' files.\n"
-                 "\n"
-                 "GIMP currently supports these RAW loaders:\n"
-                 "- darktable (http://www.darktable.org/), at least 1.7\n"
-                 "- RawTherapee (http://rawtherapee.com/), at least 5.2\n"
-                 "\n"
-                 "Please install one of them in order to "
-                 "load RAW files."),
-               gettext (format->file_type));
+    g_set_error (&error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                 _("There is no RAW loader installed to open '%s' files.\n"
+                   "\n"
+                   "GIMP currently supports these RAW loaders:\n"
+                   "- darktable (http://www.darktable.org/), at least 1.7\n"
+                   "- RawTherapee (http://rawtherapee.com/), at least 5.2\n"
+                   "\n"
+                   "Please install one of them in order to "
+                   "load RAW files."),
+                 gettext (format->file_type));
 
-  return gimp_procedure_new_return_values (procedure,
-                                           GIMP_PDB_EXECUTION_ERROR,
-                                           error);
+    return gimp_procedure_new_return_values (procedure,
+            GIMP_PDB_EXECUTION_ERROR,
+            error);
 }

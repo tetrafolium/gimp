@@ -69,10 +69,10 @@ G_BEGIN_DECLS
  **/
 typedef enum
 {
-  GIMP_MODULE_STATE_ERROR,
-  GIMP_MODULE_STATE_LOADED,
-  GIMP_MODULE_STATE_LOAD_FAILED,
-  GIMP_MODULE_STATE_NOT_LOADED
+    GIMP_MODULE_STATE_ERROR,
+    GIMP_MODULE_STATE_LOADED,
+    GIMP_MODULE_STATE_LOAD_FAILED,
+    GIMP_MODULE_STATE_NOT_LOADED
 } GimpModuleState;
 
 
@@ -88,7 +88,7 @@ GQuark  gimp_module_error_quark (void) G_GNUC_CONST;
  **/
 typedef enum
 {
-  GIMP_MODULE_FAILED
+    GIMP_MODULE_FAILED
 } GimpModuleError;
 
 
@@ -105,12 +105,12 @@ typedef enum
  **/
 struct _GimpModuleInfo
 {
-  guint32  abi_version;
-  gchar   *purpose;
-  gchar   *author;
-  gchar   *version;
-  gchar   *copyright;
-  gchar   *date;
+    guint32  abi_version;
+    gchar   *purpose;
+    gchar   *author;
+    gchar   *version;
+    gchar   *copyright;
+    gchar   *date;
 };
 
 
@@ -163,39 +163,39 @@ typedef struct _GimpModuleClass   GimpModuleClass;
 
 struct _GimpModule
 {
-  GTypeModule        parent_instance;
+    GTypeModule        parent_instance;
 
-  GimpModulePrivate *priv;
+    GimpModulePrivate *priv;
 };
 
 struct _GimpModuleClass
 {
-  GTypeModuleClass  parent_class;
+    GTypeModuleClass  parent_class;
 
-  void (* modified) (GimpModule *module);
+    void (* modified) (GimpModule *module);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType                  gimp_module_get_type       (void) G_GNUC_CONST;
 
 GimpModule           * gimp_module_new            (GFile           *file,
-                                                   gboolean         auto_load,
-                                                   gboolean         verbose);
+        gboolean         auto_load,
+        gboolean         verbose);
 
 GFile                * gimp_module_get_file       (GimpModule      *module);
 
 void                   gimp_module_set_auto_load  (GimpModule      *module,
-                                                   gboolean         auto_load);
+        gboolean         auto_load);
 gboolean               gimp_module_get_auto_load  (GimpModule      *module);
 
 gboolean               gimp_module_is_on_disk     (GimpModule      *module);

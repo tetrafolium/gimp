@@ -33,17 +33,17 @@ G_BEGIN_DECLS
 
 
 guint               gimp_image_add_hguide            (GimpImage *image,
-                                                      gint       yposition);
+        gint       yposition);
 guint               gimp_image_add_vguide            (GimpImage *image,
-                                                      gint       xposition);
+        gint       xposition);
 gboolean            gimp_image_delete_guide          (GimpImage *image,
-                                                      guint      guide);
+        guint      guide);
 guint               gimp_image_find_next_guide       (GimpImage *image,
-                                                      guint      guide);
+        guint      guide);
 GimpOrientationType gimp_image_get_guide_orientation (GimpImage *image,
-                                                      guint      guide);
+        guint      guide);
 gint                gimp_image_get_guide_position    (GimpImage *image,
-                                                      guint      guide);
+        guint      guide);
 
 
 G_END_DECLS

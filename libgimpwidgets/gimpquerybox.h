@@ -40,8 +40,8 @@ G_BEGIN_DECLS
  * Note that you must not g_free() the passed string.
  **/
 typedef void (* GimpQueryStringCallback)  (GtkWidget   *query_box,
-                                           const gchar *string,
-                                           gpointer     data);
+        const gchar *string,
+        gpointer     data);
 
 /**
  * GimpQueryIntCallback:
@@ -52,8 +52,8 @@ typedef void (* GimpQueryStringCallback)  (GtkWidget   *query_box,
  * The callback for an int query box.
  **/
 typedef void (* GimpQueryIntCallback)     (GtkWidget   *query_box,
-                                           gint         value,
-                                           gpointer     data);
+        gint         value,
+        gpointer     data);
 
 /**
  * GimpQueryDoubleCallback:
@@ -64,8 +64,8 @@ typedef void (* GimpQueryIntCallback)     (GtkWidget   *query_box,
  * The callback for a double query box.
  **/
 typedef void (* GimpQueryDoubleCallback)  (GtkWidget   *query_box,
-                                           gdouble      value,
-                                           gpointer     data);
+        gdouble      value,
+        gpointer     data);
 
 /**
  * GimpQuerySizeCallback:
@@ -77,9 +77,9 @@ typedef void (* GimpQueryDoubleCallback)  (GtkWidget   *query_box,
  * The callback for a size query box.
  **/
 typedef void (* GimpQuerySizeCallback)    (GtkWidget   *query_box,
-                                           gdouble      size,
-                                           GimpUnit     unit,
-                                           gpointer     data);
+        gdouble      size,
+        GimpUnit     unit,
+        gpointer     data);
 
 /**
  * GimpQueryBooleanCallback:
@@ -90,8 +90,8 @@ typedef void (* GimpQuerySizeCallback)    (GtkWidget   *query_box,
  * The callback for a boolean query box.
  **/
 typedef void (* GimpQueryBooleanCallback) (GtkWidget   *query_box,
-                                           gboolean     value,
-                                           gpointer     data);
+        gboolean     value,
+        gpointer     data);
 
 
 /**

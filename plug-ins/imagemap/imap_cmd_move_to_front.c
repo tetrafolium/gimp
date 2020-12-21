@@ -31,53 +31,53 @@
 static CmdExecuteValue_t move_to_front_command_execute(Command_t *parent);
 
 static CommandClass_t move_to_front_command_class = {
-   NULL,                        /* move_to_front_command_destruct, */
-   move_to_front_command_execute,
-   NULL,                        /* move_to_front_command_undo */
-   NULL                         /* move_to_front_command_redo */
+    NULL,                        /* move_to_front_command_destruct, */
+    move_to_front_command_execute,
+    NULL,                        /* move_to_front_command_undo */
+    NULL                         /* move_to_front_command_redo */
 };
 
 typedef struct {
-   Command_t parent;
-   ObjectList_t *list;
+    Command_t parent;
+    ObjectList_t *list;
 } MoveToFrontCommand_t;
 
 Command_t*
 move_to_front_command_new(ObjectList_t *list)
 {
-   MoveToFrontCommand_t *command = g_new(MoveToFrontCommand_t, 1);
-   command->list = list;
-   return command_init(&command->parent, _("Move To Front"),
-                       &move_to_front_command_class);
+    MoveToFrontCommand_t *command = g_new(MoveToFrontCommand_t, 1);
+    command->list = list;
+    return command_init(&command->parent, _("Move To Front"),
+                        &move_to_front_command_class);
 }
 
 static void
 remove_one_object(Object_t *obj, gpointer data)
 {
-   MoveToFrontCommand_t *command = (MoveToFrontCommand_t*) data;
-   command_add_subcommand(&command->parent,
-                          delete_command_new(command->list, obj));
+    MoveToFrontCommand_t *command = (MoveToFrontCommand_t*) data;
+    command_add_subcommand(&command->parent,
+                           delete_command_new(command->list, obj));
 }
 
 static void
 add_one_object(Object_t *obj, gpointer data)
 {
-   MoveToFrontCommand_t *command = (MoveToFrontCommand_t*) data;
-   command_add_subcommand(&command->parent,
-                          create_command_new(command->list, obj));
+    MoveToFrontCommand_t *command = (MoveToFrontCommand_t*) data;
+    command_add_subcommand(&command->parent,
+                           create_command_new(command->list, obj));
 }
 
 static CmdExecuteValue_t
 move_to_front_command_execute(Command_t *parent)
 {
-   MoveToFrontCommand_t *command = (MoveToFrontCommand_t*) parent;
-   gpointer id1, id2;
+    MoveToFrontCommand_t *command = (MoveToFrontCommand_t*) parent;
+    gpointer id1, id2;
 
-   id1 = object_list_add_remove_cb(command->list, remove_one_object, command);
-   id2 = object_list_add_add_cb(command->list, add_one_object, command);
+    id1 = object_list_add_remove_cb(command->list, remove_one_object, command);
+    id2 = object_list_add_add_cb(command->list, add_one_object, command);
 
-   object_list_move_to_front(command->list);
-   object_list_remove_remove_cb(command->list, id1);
-   object_list_remove_add_cb(command->list, id2);
-   return CMD_APPEND;
+    object_list_move_to_front(command->list);
+    object_list_remove_remove_cb(command->list, id1);
+    object_list_remove_add_cb(command->list, id2);
+    return CMD_APPEND;
 }

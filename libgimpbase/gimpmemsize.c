@@ -47,22 +47,22 @@ static void   string_to_memsize (const GValue *src_value,
 GType
 gimp_memsize_get_type (void)
 {
-  static GType memsize_type = 0;
+    static GType memsize_type = 0;
 
-  if (! memsize_type)
+    if (! memsize_type)
     {
-      const GTypeInfo type_info = { 0, };
+        const GTypeInfo type_info = { 0, };
 
-      memsize_type = g_type_register_static (G_TYPE_UINT64, "GimpMemsize",
-                                             &type_info, 0);
+        memsize_type = g_type_register_static (G_TYPE_UINT64, "GimpMemsize",
+                                               &type_info, 0);
 
-      g_value_register_transform_func (memsize_type, G_TYPE_STRING,
-                                       memsize_to_string);
-      g_value_register_transform_func (G_TYPE_STRING, memsize_type,
-                                       string_to_memsize);
+        g_value_register_transform_func (memsize_type, G_TYPE_STRING,
+                                         memsize_to_string);
+        g_value_register_transform_func (G_TYPE_STRING, memsize_type,
+                                         string_to_memsize);
     }
 
-  return memsize_type;
+    return memsize_type;
 }
 
 /**
@@ -81,14 +81,14 @@ gimp_memsize_get_type (void)
 gchar *
 gimp_memsize_serialize (guint64 memsize)
 {
-  if (memsize > (1 << 30) && memsize % (1 << 30) == 0)
-    return g_strdup_printf ("%" G_GUINT64_FORMAT "G", memsize >> 30);
-  else if (memsize > (1 << 20) && memsize % (1 << 20) == 0)
-    return g_strdup_printf ("%" G_GUINT64_FORMAT "M", memsize >> 20);
-  else if (memsize > (1 << 10) && memsize % (1 << 10) == 0)
-    return g_strdup_printf ("%" G_GUINT64_FORMAT "k", memsize >> 10);
-  else
-    return g_strdup_printf ("%" G_GUINT64_FORMAT, memsize);
+    if (memsize > (1 << 30) && memsize % (1 << 30) == 0)
+        return g_strdup_printf ("%" G_GUINT64_FORMAT "G", memsize >> 30);
+    else if (memsize > (1 << 20) && memsize % (1 << 20) == 0)
+        return g_strdup_printf ("%" G_GUINT64_FORMAT "M", memsize >> 20);
+    else if (memsize > (1 << 10) && memsize % (1 << 10) == 0)
+        return g_strdup_printf ("%" G_GUINT64_FORMAT "k", memsize >> 10);
+    else
+        return g_strdup_printf ("%" G_GUINT64_FORMAT, memsize);
 }
 
 /**
@@ -108,54 +108,54 @@ gboolean
 gimp_memsize_deserialize (const gchar *string,
                           guint64     *memsize)
 {
-  gchar   *end;
-  guint64  size;
+    gchar   *end;
+    guint64  size;
 
-  g_return_val_if_fail (string != NULL, FALSE);
-  g_return_val_if_fail (memsize != NULL, FALSE);
+    g_return_val_if_fail (string != NULL, FALSE);
+    g_return_val_if_fail (memsize != NULL, FALSE);
 
-  size = g_ascii_strtoull (string, &end, 0);
+    size = g_ascii_strtoull (string, &end, 0);
 
-  if (size == G_MAXUINT64 && errno == ERANGE)
-    return FALSE;
+    if (size == G_MAXUINT64 && errno == ERANGE)
+        return FALSE;
 
-  if (end && *end)
+    if (end && *end)
     {
-      guint shift;
+        guint shift;
 
-      switch (g_ascii_tolower (*end))
+        switch (g_ascii_tolower (*end))
         {
         case 'b':
-          shift = 0;
-          break;
+            shift = 0;
+            break;
         case 'k':
-          shift = 10;
-          break;
+            shift = 10;
+            break;
         case 'm':
-          shift = 20;
-          break;
+            shift = 20;
+            break;
         case 'g':
-          shift = 30;
-          break;
+            shift = 30;
+            break;
         default:
-          return FALSE;
+            return FALSE;
         }
 
-      /* protect against overflow */
-      if (shift)
+        /* protect against overflow */
+        if (shift)
         {
-          guint64  limit = G_MAXUINT64 >> shift;
+            guint64  limit = G_MAXUINT64 >> shift;
 
-          if (size != (size & limit))
-            return FALSE;
+            if (size != (size & limit))
+                return FALSE;
 
-          size <<= shift;
+            size <<= shift;
         }
     }
 
-  *memsize = size;
+    *memsize = size;
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -163,26 +163,26 @@ static void
 memsize_to_string (const GValue *src_value,
                    GValue       *dest_value)
 {
-  g_value_take_string (dest_value,
-                       gimp_memsize_serialize (g_value_get_uint64 (src_value)));
+    g_value_take_string (dest_value,
+                         gimp_memsize_serialize (g_value_get_uint64 (src_value)));
 }
 
 static void
 string_to_memsize (const GValue *src_value,
                    GValue       *dest_value)
 {
-  const gchar *str;
-  guint64      memsize;
+    const gchar *str;
+    guint64      memsize;
 
-  str = g_value_get_string (src_value);
+    str = g_value_get_string (src_value);
 
-  if (str && gimp_memsize_deserialize (str, &memsize))
+    if (str && gimp_memsize_deserialize (str, &memsize))
     {
-      g_value_set_uint64 (dest_value, memsize);
+        g_value_set_uint64 (dest_value, memsize);
     }
-  else
+    else
     {
-      g_warning ("Can't convert string to GimpMemsize.");
+        g_warning ("Can't convert string to GimpMemsize.");
     }
 }
 
@@ -205,32 +205,32 @@ static void  gimp_param_memsize_class_init (GParamSpecClass *class);
 GType
 gimp_param_memsize_get_type (void)
 {
-  static GType spec_type = 0;
+    static GType spec_type = 0;
 
-  if (! spec_type)
+    if (! spec_type)
     {
-      const GTypeInfo type_info =
-      {
-        sizeof (GParamSpecClass),
-        NULL, NULL,
-        (GClassInitFunc) gimp_param_memsize_class_init,
-        NULL, NULL,
-        sizeof (GParamSpecUInt64),
-        0, NULL, NULL
-      };
+        const GTypeInfo type_info =
+        {
+            sizeof (GParamSpecClass),
+            NULL, NULL,
+            (GClassInitFunc) gimp_param_memsize_class_init,
+            NULL, NULL,
+            sizeof (GParamSpecUInt64),
+            0, NULL, NULL
+        };
 
-      spec_type = g_type_register_static (G_TYPE_PARAM_UINT64,
-                                          "GimpParamMemsize",
-                                          &type_info, 0);
+        spec_type = g_type_register_static (G_TYPE_PARAM_UINT64,
+                                            "GimpParamMemsize",
+                                            &type_info, 0);
     }
 
-  return spec_type;
+    return spec_type;
 }
 
 static void
 gimp_param_memsize_class_init (GParamSpecClass *class)
 {
-  class->value_type = GIMP_TYPE_MEMSIZE;
+    class->value_type = GIMP_TYPE_MEMSIZE;
 }
 
 /**
@@ -259,15 +259,15 @@ gimp_param_spec_memsize (const gchar *name,
                          guint64      default_value,
                          GParamFlags  flags)
 {
-  GParamSpecUInt64 *pspec;
+    GParamSpecUInt64 *pspec;
 
-  pspec = g_param_spec_internal (GIMP_TYPE_PARAM_MEMSIZE,
-                                 name, nick, blurb, flags);
+    pspec = g_param_spec_internal (GIMP_TYPE_PARAM_MEMSIZE,
+                                   name, nick, blurb, flags);
 
-  pspec->minimum       = minimum;
-  pspec->maximum       = maximum;
-  pspec->default_value = default_value;
+    pspec->minimum       = minimum;
+    pspec->maximum       = maximum;
+    pspec->default_value = default_value;
 
-  return G_PARAM_SPEC (pspec);
+    return G_PARAM_SPEC (pspec);
 }
 

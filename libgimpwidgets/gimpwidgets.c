@@ -84,82 +84,82 @@ gimp_int_radio_group_new (gboolean         in_frame,
 
                           ...)
 {
-  GtkWidget *vbox;
-  GtkWidget *button;
-  GSList    *group;
+    GtkWidget *vbox;
+    GtkWidget *button;
+    GSList    *group;
 
-  /*  radio button variables  */
-  const gchar *label;
-  gint         item_data;
-  gpointer     item_ptr;
-  GtkWidget  **widget_ptr;
+    /*  radio button variables  */
+    const gchar *label;
+    gint         item_data;
+    gpointer     item_ptr;
+    GtkWidget  **widget_ptr;
 
-  va_list args;
+    va_list args;
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
-  group = NULL;
+    group = NULL;
 
-  if (radio_button_callback_destroy)
-    g_object_weak_ref (G_OBJECT (vbox),
-                       (GWeakNotify) radio_button_callback_destroy,
-                       radio_button_callback_data);
+    if (radio_button_callback_destroy)
+        g_object_weak_ref (G_OBJECT (vbox),
+                           (GWeakNotify) radio_button_callback_destroy,
+                           radio_button_callback_data);
 
-  /*  create the radio buttons  */
-  va_start (args, initial);
-  label = va_arg (args, const gchar *);
+    /*  create the radio buttons  */
+    va_start (args, initial);
+    label = va_arg (args, const gchar *);
 
-  while (label)
+    while (label)
     {
-      item_data  = va_arg (args, gint);
-      widget_ptr = va_arg (args, GtkWidget **);
+        item_data  = va_arg (args, gint);
+        widget_ptr = va_arg (args, GtkWidget **);
 
-      item_ptr = GINT_TO_POINTER (item_data);
+        item_ptr = GINT_TO_POINTER (item_data);
 
-      if (label != GINT_TO_POINTER (1))
-        button = gtk_radio_button_new_with_mnemonic (group, label);
-      else
-        button = gtk_radio_button_new (group);
+        if (label != GINT_TO_POINTER (1))
+            button = gtk_radio_button_new_with_mnemonic (group, label);
+        else
+            button = gtk_radio_button_new (group);
 
-      group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+        group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
+        gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
 
-      if (item_data)
+        if (item_data)
         {
-          g_object_set_data (G_OBJECT (button), "gimp-item-data", item_ptr);
+            g_object_set_data (G_OBJECT (button), "gimp-item-data", item_ptr);
 
-          /*  backward compatibility  */
-          g_object_set_data (G_OBJECT (button), "user_data", item_ptr);
+            /*  backward compatibility  */
+            g_object_set_data (G_OBJECT (button), "user_data", item_ptr);
         }
 
-      if (widget_ptr)
-        *widget_ptr = button;
+        if (widget_ptr)
+            *widget_ptr = button;
 
-      if (initial == item_data)
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
+        if (initial == item_data)
+            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
 
-      g_signal_connect (button, "toggled",
-                        radio_button_callback,
-                        radio_button_callback_data);
+        g_signal_connect (button, "toggled",
+                          radio_button_callback,
+                          radio_button_callback_data);
 
-      gtk_widget_show (button);
+        gtk_widget_show (button);
 
-      label = va_arg (args, const gchar *);
+        label = va_arg (args, const gchar *);
     }
-  va_end (args);
+    va_end (args);
 
-  if (in_frame)
+    if (in_frame)
     {
-      GtkWidget *frame;
+        GtkWidget *frame;
 
-      frame = gimp_frame_new (frame_title);
-      gtk_container_add (GTK_CONTAINER (frame), vbox);
-      gtk_widget_show (vbox);
+        frame = gimp_frame_new (frame_title);
+        gtk_container_add (GTK_CONTAINER (frame), vbox);
+        gtk_widget_show (vbox);
 
-      return frame;
+        return frame;
     }
 
-  return vbox;
+    return vbox;
 }
 
 /**
@@ -176,22 +176,22 @@ void
 gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
                                  gint            item_data)
 {
-  GtkWidget *button;
-  GSList    *group;
+    GtkWidget *button;
+    GSList    *group;
 
-  g_return_if_fail (GTK_IS_RADIO_BUTTON (radio_button));
+    g_return_if_fail (GTK_IS_RADIO_BUTTON (radio_button));
 
-  for (group = gtk_radio_button_get_group (radio_button);
-       group;
-       group = g_slist_next (group))
+    for (group = gtk_radio_button_get_group (radio_button);
+            group;
+            group = g_slist_next (group))
     {
-      button = GTK_WIDGET (group->data);
+        button = GTK_WIDGET (group->data);
 
-      if (g_object_get_data (G_OBJECT (button), "gimp-item-data") ==
-          GINT_TO_POINTER (item_data))
+        if (g_object_get_data (G_OBJECT (button), "gimp-item-data") ==
+                GINT_TO_POINTER (item_data))
         {
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-          return;
+            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
+            return;
         }
     }
 }
@@ -201,16 +201,16 @@ static void
 gimp_random_seed_update (GtkWidget *widget,
                          gpointer   data)
 {
-  GtkWidget *spinbutton = data;
+    GtkWidget *spinbutton = data;
 
-  /* Generate a new seed if the "New Seed" button was clicked or
-   * of the "Randomize" toggle is activated
-   */
-  if (! GTK_IS_TOGGLE_BUTTON (widget) ||
-      gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+    /* Generate a new seed if the "New Seed" button was clicked or
+     * of the "Randomize" toggle is activated
+     */
+    if (! GTK_IS_TOGGLE_BUTTON (widget) ||
+            gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     {
-      gtk_spin_button_set_value (GTK_SPIN_BUTTON (spinbutton),
-                                 (guint) g_random_int ());
+        gtk_spin_button_set_value (GTK_SPIN_BUTTON (spinbutton),
+                                   (guint) g_random_int ());
     }
 }
 
@@ -230,183 +230,183 @@ GtkWidget *
 gimp_random_seed_new (guint    *seed,
                       gboolean *random_seed)
 {
-  GtkWidget     *hbox;
-  GtkWidget     *toggle;
-  GtkWidget     *spinbutton;
-  GtkAdjustment *adj;
-  GtkWidget     *button;
+    GtkWidget     *hbox;
+    GtkWidget     *toggle;
+    GtkWidget     *spinbutton;
+    GtkAdjustment *adj;
+    GtkWidget     *button;
 
-  g_return_val_if_fail (seed != NULL, NULL);
-  g_return_val_if_fail (random_seed != NULL, NULL);
+    g_return_val_if_fail (seed != NULL, NULL);
+    g_return_val_if_fail (random_seed != NULL, NULL);
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
-  /* If we're being asked to generate a random seed, generate one. */
-  if (*random_seed)
-    *seed = g_random_int ();
+    /* If we're being asked to generate a random seed, generate one. */
+    if (*random_seed)
+        *seed = g_random_int ();
 
-  adj = gtk_adjustment_new (*seed, 0, (guint32) -1, 1, 10, 0);
-  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
-  gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
-  gtk_widget_show (spinbutton);
+    adj = gtk_adjustment_new (*seed, 0, (guint32) -1, 1, 10, 0);
+    spinbutton = gimp_spin_button_new (adj, 1.0, 0);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+    gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
+    gtk_widget_show (spinbutton);
 
-  g_signal_connect (adj, "value-changed",
-                    G_CALLBACK (gimp_uint_adjustment_update),
-                    seed);
+    g_signal_connect (adj, "value-changed",
+                      G_CALLBACK (gimp_uint_adjustment_update),
+                      seed);
 
-  gimp_help_set_help_data (spinbutton,
-                           _("Use this value for random number generator "
-                             "seed - this allows you to repeat a "
-                             "given \"random\" operation"), NULL);
+    gimp_help_set_help_data (spinbutton,
+                             _("Use this value for random number generator "
+                               "seed - this allows you to repeat a "
+                               "given \"random\" operation"), NULL);
 
-  button = gtk_button_new_with_mnemonic (_("_New Seed"));
-  g_object_set (gtk_bin_get_child (GTK_BIN (button)),
-                "margin-start", 2,
-                "margin-end",   2,
-                NULL);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
+    button = gtk_button_new_with_mnemonic (_("_New Seed"));
+    g_object_set (gtk_bin_get_child (GTK_BIN (button)),
+                  "margin-start", 2,
+                  "margin-end",   2,
+                  NULL);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+    gtk_widget_show (button);
 
-  /* Send spinbutton as data so that we can change the value in
-   * gimp_random_seed_update()
-   */
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (gimp_random_seed_update),
-                    spinbutton);
+    /* Send spinbutton as data so that we can change the value in
+     * gimp_random_seed_update()
+     */
+    g_signal_connect (button, "clicked",
+                      G_CALLBACK (gimp_random_seed_update),
+                      spinbutton);
 
-  gimp_help_set_help_data (button,
-                           _("Seed random number generator with a generated "
-                             "random number"),
-                           NULL);
+    gimp_help_set_help_data (button,
+                             _("Seed random number generator with a generated "
+                               "random number"),
+                             NULL);
 
-  toggle = gtk_check_button_new_with_mnemonic (_("_Randomize"));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), *random_seed);
-  gtk_box_pack_start (GTK_BOX (hbox), toggle, FALSE, FALSE, 0);
-  gtk_widget_show (toggle);
+    toggle = gtk_check_button_new_with_mnemonic (_("_Randomize"));
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), *random_seed);
+    gtk_box_pack_start (GTK_BOX (hbox), toggle, FALSE, FALSE, 0);
+    gtk_widget_show (toggle);
 
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    random_seed);
+    g_signal_connect (toggle, "toggled",
+                      G_CALLBACK (gimp_toggle_button_update),
+                      random_seed);
 
-  /* Need to create a new seed when the "Randomize" toggle is activated  */
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_random_seed_update),
-                    spinbutton);
+    /* Need to create a new seed when the "Randomize" toggle is activated  */
+    g_signal_connect (toggle, "toggled",
+                      G_CALLBACK (gimp_random_seed_update),
+                      spinbutton);
 
-  g_object_set_data (G_OBJECT (hbox), "spinbutton", spinbutton);
-  g_object_set_data (G_OBJECT (hbox), "button", button);
-  g_object_set_data (G_OBJECT (hbox), "toggle", toggle);
+    g_object_set_data (G_OBJECT (hbox), "spinbutton", spinbutton);
+    g_object_set_data (G_OBJECT (hbox), "button", button);
+    g_object_set_data (G_OBJECT (hbox), "toggle", toggle);
 
-  g_object_bind_property (toggle,     "active",
-                          spinbutton, "sensitive",
-                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
-  g_object_bind_property (toggle, "active",
-                          button, "sensitive",
-                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+    g_object_bind_property (toggle,     "active",
+                            spinbutton, "sensitive",
+                            G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+    g_object_bind_property (toggle, "active",
+                            button, "sensitive",
+                            G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
 
-  return hbox;
+    return hbox;
 }
 
 typedef struct
 {
-  GimpChainButton *chainbutton;
-  gboolean         chain_constrains_ratio;
-  gdouble          orig_x;
-  gdouble          orig_y;
-  gdouble          last_x;
-  gdouble          last_y;
+    GimpChainButton *chainbutton;
+    gboolean         chain_constrains_ratio;
+    gdouble          orig_x;
+    gdouble          orig_y;
+    gdouble          last_x;
+    gdouble          last_y;
 } GimpCoordinatesData;
 
 static void
 gimp_coordinates_callback (GtkWidget           *widget,
                            GimpCoordinatesData *data)
 {
-  gdouble new_x;
-  gdouble new_y;
+    gdouble new_x;
+    gdouble new_y;
 
-  new_x = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
-  new_y = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
+    new_x = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
+    new_y = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
 
-  if (gimp_chain_button_get_active (data->chainbutton))
+    if (gimp_chain_button_get_active (data->chainbutton))
     {
-      if (data->chain_constrains_ratio)
+        if (data->chain_constrains_ratio)
         {
-          if ((data->orig_x != 0) && (data->orig_y != 0))
+            if ((data->orig_x != 0) && (data->orig_y != 0))
             {
-              g_signal_handlers_block_by_func (widget,
-                                               gimp_coordinates_callback,
-                                               data);
-
-              if (ROUND (new_x) != ROUND (data->last_x))
-                {
-                  data->last_x = new_x;
-                  new_y = (new_x * data->orig_y) / data->orig_x;
-
-                  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1,
-                                              new_y);
-                  data->last_y
-                    = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
-                }
-              else if (ROUND (new_y) != ROUND (data->last_y))
-                {
-                  data->last_y = new_y;
-                  new_x = (new_y * data->orig_x) / data->orig_y;
-
-                  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0,
-                                              new_x);
-                  data->last_x
-                    = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
-                }
-
-              g_signal_handlers_unblock_by_func (widget,
+                g_signal_handlers_block_by_func (widget,
                                                  gimp_coordinates_callback,
                                                  data);
+
+                if (ROUND (new_x) != ROUND (data->last_x))
+                {
+                    data->last_x = new_x;
+                    new_y = (new_x * data->orig_y) / data->orig_x;
+
+                    gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1,
+                                                new_y);
+                    data->last_y
+                        = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
+                }
+                else if (ROUND (new_y) != ROUND (data->last_y))
+                {
+                    data->last_y = new_y;
+                    new_x = (new_y * data->orig_x) / data->orig_y;
+
+                    gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0,
+                                                new_x);
+                    data->last_x
+                        = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
+                }
+
+                g_signal_handlers_unblock_by_func (widget,
+                                                   gimp_coordinates_callback,
+                                                   data);
             }
         }
-      else
+        else
         {
-          if (new_x != data->last_x)
+            if (new_x != data->last_x)
             {
-              gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1, new_x);
-              data->last_y = data->last_x
-                = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
+                gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1, new_x);
+                data->last_y = data->last_x
+                               = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
             }
-          else if (new_y != data->last_y)
+            else if (new_y != data->last_y)
             {
-              gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0, new_y);
-              data->last_x = data->last_y
-                = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
+                gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0, new_y);
+                data->last_x = data->last_y
+                               = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
             }
         }
     }
-  else
+    else
     {
-      if (new_x != data->last_x)
-        data->last_x = new_x;
-      if (new_y != data->last_y)
-        data->last_y = new_y;
+        if (new_x != data->last_x)
+            data->last_x = new_x;
+        if (new_y != data->last_y)
+            data->last_y = new_y;
     }
 }
 
 static void
 gimp_coordinates_data_free (GimpCoordinatesData *data)
 {
-  g_slice_free (GimpCoordinatesData, data);
+    g_slice_free (GimpCoordinatesData, data);
 }
 
 static void
 gimp_coordinates_chainbutton_toggled (GimpChainButton *button,
                                       GimpSizeEntry   *entry)
 {
-  if (gimp_chain_button_get_active (button))
+    if (gimp_chain_button_get_active (button))
     {
-      GimpCoordinatesData *data;
+        GimpCoordinatesData *data;
 
-      data = g_object_get_data (G_OBJECT (entry), "coordinates-data");
+        data = g_object_get_data (G_OBJECT (entry), "coordinates-data");
 
-      data->orig_x = gimp_size_entry_get_refval (entry, 0);
-      data->orig_y = gimp_size_entry_get_refval (entry, 1);
+        data->orig_x = gimp_size_entry_get_refval (entry, 0);
+        data->orig_y = gimp_size_entry_get_refval (entry, 1);
     }
 }
 
@@ -475,95 +475,95 @@ gimp_coordinates_new (GimpUnit         unit,
                       gdouble          ysize_0,   /* % */
                       gdouble          ysize_100  /* % */)
 {
-  GimpCoordinatesData *data;
-  GtkAdjustment       *adjustment;
-  GtkWidget           *spinbutton;
-  GtkWidget           *sizeentry;
-  GtkWidget           *chainbutton;
+    GimpCoordinatesData *data;
+    GtkAdjustment       *adjustment;
+    GtkWidget           *spinbutton;
+    GtkWidget           *sizeentry;
+    GtkWidget           *chainbutton;
 
-  adjustment = gtk_adjustment_new (1, 0, 1, 1, 10, 0);
-  spinbutton = gimp_spin_button_new (adjustment, 1.0, 2);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+    adjustment = gtk_adjustment_new (1, 0, 1, 1, 10, 0);
+    spinbutton = gimp_spin_button_new (adjustment, 1.0, 2);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
 
-  if (spinbutton_width > 0)
+    if (spinbutton_width > 0)
     {
-      if (spinbutton_width < 17)
-        gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), spinbutton_width);
-      else
-        gtk_widget_set_size_request (spinbutton, spinbutton_width, -1);
+        if (spinbutton_width < 17)
+            gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), spinbutton_width);
+        else
+            gtk_widget_set_size_request (spinbutton, spinbutton_width, -1);
     }
 
-  sizeentry = gimp_size_entry_new (1, unit, unit_format,
-                                   menu_show_pixels,
-                                   menu_show_percent,
-                                   FALSE,
-                                   spinbutton_width,
-                                   update_policy);
-  gimp_size_entry_add_field (GIMP_SIZE_ENTRY (sizeentry),
-                             GTK_SPIN_BUTTON (spinbutton), NULL);
-  gtk_grid_attach (GTK_GRID (sizeentry), spinbutton, 1, 0, 1, 1);
-  gtk_widget_show (spinbutton);
+    sizeentry = gimp_size_entry_new (1, unit, unit_format,
+                                     menu_show_pixels,
+                                     menu_show_percent,
+                                     FALSE,
+                                     spinbutton_width,
+                                     update_policy);
+    gimp_size_entry_add_field (GIMP_SIZE_ENTRY (sizeentry),
+                               GTK_SPIN_BUTTON (spinbutton), NULL);
+    gtk_grid_attach (GTK_GRID (sizeentry), spinbutton, 1, 0, 1, 1);
+    gtk_widget_show (spinbutton);
 
-  gimp_size_entry_set_unit (GIMP_SIZE_ENTRY (sizeentry),
-                            (update_policy == GIMP_SIZE_ENTRY_UPDATE_RESOLUTION) ||
-                            (menu_show_pixels == FALSE) ?
-                            GIMP_UNIT_INCH : GIMP_UNIT_PIXEL);
+    gimp_size_entry_set_unit (GIMP_SIZE_ENTRY (sizeentry),
+                              (update_policy == GIMP_SIZE_ENTRY_UPDATE_RESOLUTION) ||
+                              (menu_show_pixels == FALSE) ?
+                              GIMP_UNIT_INCH : GIMP_UNIT_PIXEL);
 
-  gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (sizeentry), 0, xres, TRUE);
-  gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (sizeentry), 1, yres, TRUE);
-  gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (sizeentry), 0,
-                                         lower_boundary_x, upper_boundary_x);
-  gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (sizeentry), 1,
-                                         lower_boundary_y, upper_boundary_y);
+    gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (sizeentry), 0, xres, TRUE);
+    gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (sizeentry), 1, yres, TRUE);
+    gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (sizeentry), 0,
+                                           lower_boundary_x, upper_boundary_x);
+    gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (sizeentry), 1,
+                                           lower_boundary_y, upper_boundary_y);
 
-  if (menu_show_percent)
+    if (menu_show_percent)
     {
-      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (sizeentry), 0,
-                                xsize_0, xsize_100);
-      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (sizeentry), 1,
-                                ysize_0, ysize_100);
+        gimp_size_entry_set_size (GIMP_SIZE_ENTRY (sizeentry), 0,
+                                  xsize_0, xsize_100);
+        gimp_size_entry_set_size (GIMP_SIZE_ENTRY (sizeentry), 1,
+                                  ysize_0, ysize_100);
     }
 
-  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (sizeentry), 0, x);
-  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (sizeentry), 1, y);
+    gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (sizeentry), 0, x);
+    gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (sizeentry), 1, y);
 
-  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (sizeentry),
-                                xlabel, 0, 0, 0.0);
-  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (sizeentry),
-                                ylabel, 1, 0, 0.0);
+    gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (sizeentry),
+                                  xlabel, 0, 0, 0.0);
+    gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (sizeentry),
+                                  ylabel, 1, 0, 0.0);
 
-  chainbutton = gimp_chain_button_new (GIMP_CHAIN_RIGHT);
+    chainbutton = gimp_chain_button_new (GIMP_CHAIN_RIGHT);
 
-  if (chainbutton_active)
-    gimp_chain_button_set_active (GIMP_CHAIN_BUTTON (chainbutton), TRUE);
+    if (chainbutton_active)
+        gimp_chain_button_set_active (GIMP_CHAIN_BUTTON (chainbutton), TRUE);
 
-  gtk_grid_attach (GTK_GRID (sizeentry), chainbutton, 2, 0, 1, 2);
-  gtk_widget_show (chainbutton);
+    gtk_grid_attach (GTK_GRID (sizeentry), chainbutton, 2, 0, 1, 2);
+    gtk_widget_show (chainbutton);
 
-  data = g_slice_new (GimpCoordinatesData);
+    data = g_slice_new (GimpCoordinatesData);
 
-  data->chainbutton            = GIMP_CHAIN_BUTTON (chainbutton);
-  data->chain_constrains_ratio = chain_constrains_ratio;
-  data->orig_x                 = x;
-  data->orig_y                 = y;
-  data->last_x                 = x;
-  data->last_y                 = y;
+    data->chainbutton            = GIMP_CHAIN_BUTTON (chainbutton);
+    data->chain_constrains_ratio = chain_constrains_ratio;
+    data->orig_x                 = x;
+    data->orig_y                 = y;
+    data->last_x                 = x;
+    data->last_y                 = y;
 
-  g_object_set_data_full (G_OBJECT (sizeentry), "coordinates-data",
-                          data,
-                          (GDestroyNotify) gimp_coordinates_data_free);
+    g_object_set_data_full (G_OBJECT (sizeentry), "coordinates-data",
+                            data,
+                            (GDestroyNotify) gimp_coordinates_data_free);
 
-  g_signal_connect (sizeentry, "value-changed",
-                    G_CALLBACK (gimp_coordinates_callback),
-                    data);
+    g_signal_connect (sizeentry, "value-changed",
+                      G_CALLBACK (gimp_coordinates_callback),
+                      data);
 
-  g_object_set_data (G_OBJECT (sizeentry), "chainbutton", chainbutton);
+    g_object_set_data (G_OBJECT (sizeentry), "chainbutton", chainbutton);
 
-  g_signal_connect (chainbutton, "toggled",
-                    G_CALLBACK (gimp_coordinates_chainbutton_toggled),
-                    sizeentry);
+    g_signal_connect (chainbutton, "toggled",
+                      G_CALLBACK (gimp_coordinates_chainbutton_toggled),
+                      sizeentry);
 
-  return sizeentry;
+    return sizeentry;
 }
 
 
@@ -581,12 +581,12 @@ void
 gimp_toggle_button_update (GtkWidget *widget,
                            gpointer   data)
 {
-  gint *toggle_val = (gint *) data;
+    gint *toggle_val = (gint *) data;
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
-    *toggle_val = TRUE;
-  else
-    *toggle_val = FALSE;
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+        *toggle_val = TRUE;
+    else
+        *toggle_val = FALSE;
 }
 
 /**
@@ -599,12 +599,12 @@ void
 gimp_radio_button_update (GtkWidget *widget,
                           gpointer   data)
 {
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     {
-      gint *toggle_val = (gint *) data;
+        gint *toggle_val = (gint *) data;
 
-      *toggle_val = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
-                                                        "gimp-item-data"));
+        *toggle_val = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
+                                       "gimp-item-data"));
     }
 }
 
@@ -621,9 +621,9 @@ void
 gimp_int_adjustment_update (GtkAdjustment *adjustment,
                             gpointer       data)
 {
-  gint *val = (gint *) data;
+    gint *val = (gint *) data;
 
-  *val = RINT (gtk_adjustment_get_value (adjustment));
+    *val = RINT (gtk_adjustment_get_value (adjustment));
 }
 
 /**
@@ -639,9 +639,9 @@ void
 gimp_uint_adjustment_update (GtkAdjustment *adjustment,
                              gpointer       data)
 {
-  guint *val = (guint *) data;
+    guint *val = (guint *) data;
 
-  *val = (guint) (gtk_adjustment_get_value (adjustment) + 0.5);
+    *val = (guint) (gtk_adjustment_get_value (adjustment) + 0.5);
 }
 
 /**
@@ -654,9 +654,9 @@ void
 gimp_float_adjustment_update (GtkAdjustment *adjustment,
                               gpointer       data)
 {
-  gfloat *val = (gfloat *) data;
+    gfloat *val = (gfloat *) data;
 
-  *val = gtk_adjustment_get_value (adjustment);
+    *val = gtk_adjustment_get_value (adjustment);
 
 }
 
@@ -670,7 +670,7 @@ void
 gimp_double_adjustment_update (GtkAdjustment *adjustment,
                                gpointer       data)
 {
-  gdouble *val = (gdouble *) data;
+    gdouble *val = (gdouble *) data;
 
-  *val = gtk_adjustment_get_value (adjustment);
+    *val = gtk_adjustment_get_value (adjustment);
 }

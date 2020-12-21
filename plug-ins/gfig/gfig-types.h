@@ -27,85 +27,85 @@
 
 typedef enum
 {
-  RECT_GRID = 0,
-  POLAR_GRID,
-  ISO_GRID
+    RECT_GRID = 0,
+    POLAR_GRID,
+    ISO_GRID
 } GridType;
 
 typedef enum
 {
-  ADD = 0,
-  SUBTRACT,
-  REPLACE,
-  INTERSECT
+    ADD = 0,
+    SUBTRACT,
+    REPLACE,
+    INTERSECT
 } SelectionType;
 
 typedef enum
 {
-  ARC_SEGMENT = 0,
-  ARC_SECTOR
+    ARC_SEGMENT = 0,
+    ARC_SECTOR
 } ArcType;
 
 typedef enum
 {
-  FILL_NONE = 0,
-  FILL_COLOR,
-  FILL_PATTERN,
-  FILL_GRADIENT,
-  FILL_VERTICAL,
-  FILL_HORIZONTAL
+    FILL_NONE = 0,
+    FILL_COLOR,
+    FILL_PATTERN,
+    FILL_GRADIENT,
+    FILL_VERTICAL,
+    FILL_HORIZONTAL
 } FillType;
 
 typedef enum
 {
-  ORIGINAL_LAYER = 0,
-  SINGLE_LAYER,
-  MULTI_LAYER
+    ORIGINAL_LAYER = 0,
+    SINGLE_LAYER,
+    MULTI_LAYER
 } DrawonLayers;
 
 typedef enum
 {
-  LAYER_TRANS_BG = 0,
-  LAYER_BG_BG,
-  LAYER_FG_BG,
-  LAYER_WHITE_BG,
-  LAYER_COPY_BG
+    LAYER_TRANS_BG = 0,
+    LAYER_BG_BG,
+    LAYER_FG_BG,
+    LAYER_WHITE_BG,
+    LAYER_COPY_BG
 } LayersBGType;
 
 typedef enum
 {
-  PAINT_NONE = 0,
-  PAINT_BRUSH_TYPE = 1
+    PAINT_NONE = 0,
+    PAINT_BRUSH_TYPE = 1
 } PaintType;
 
 typedef enum
 {
-  BRUSH_BRUSH_TYPE = 0,
-  BRUSH_PENCIL_TYPE,
-  BRUSH_AIRBRUSH_TYPE,
-  BRUSH_PATTERN_TYPE
+    BRUSH_BRUSH_TYPE = 0,
+    BRUSH_PENCIL_TYPE,
+    BRUSH_AIRBRUSH_TYPE,
+    BRUSH_PATTERN_TYPE
 } BrushType;
 
 typedef enum
 {
-  OBJ_TYPE_NONE = 0,
-  LINE,
-  RECTANGLE,
-  CIRCLE,
-  ELLIPSE,
-  ARC,
-  POLY,
-  STAR,
-  SPIRAL,
-  BEZIER,
-  NUM_OBJ_TYPES,
-  MOVE_OBJ,
-  MOVE_POINT,
-  COPY_OBJ,
-  MOVE_COPY_OBJ,
-  DEL_OBJ,
-  SELECT_OBJ,
-  NULL_OPER
+    OBJ_TYPE_NONE = 0,
+    LINE,
+    RECTANGLE,
+    CIRCLE,
+    ELLIPSE,
+    ARC,
+    POLY,
+    STAR,
+    SPIRAL,
+    BEZIER,
+    NUM_OBJ_TYPES,
+    MOVE_OBJ,
+    MOVE_POINT,
+    COPY_OBJ,
+    MOVE_COPY_OBJ,
+    DEL_OBJ,
+    SELECT_OBJ,
+    NULL_OPER
 } DobjType;
 
 typedef struct _GFigObj    GFigObj;

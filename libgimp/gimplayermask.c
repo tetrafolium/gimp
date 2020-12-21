@@ -26,7 +26,7 @@
 
 struct _GimpLayerMaskPrivate
 {
-  gpointer unused;
+    gpointer unused;
 };
 
 
@@ -43,7 +43,7 @@ gimp_layer_mask_class_init (GimpLayerMaskClass *klass)
 static void
 gimp_layer_mask_init (GimpLayerMask *layer_mask)
 {
-  layer_mask->priv = gimp_layer_mask_get_instance_private (layer_mask);
+    layer_mask->priv = gimp_layer_mask_get_instance_private (layer_mask);
 }
 
 /**
@@ -64,10 +64,10 @@ gimp_layer_mask_init (GimpLayerMask *layer_mask)
 GimpLayerMask *
 gimp_layer_mask_get_by_id (gint32 layer_mask_id)
 {
-  GimpItem *item = gimp_item_get_by_id (layer_mask_id);
+    GimpItem *item = gimp_item_get_by_id (layer_mask_id);
 
-  if (GIMP_IS_LAYER_MASK (item))
-    return (GimpLayerMask *) item;
+    if (GIMP_IS_LAYER_MASK (item))
+        return (GimpLayerMask *) item;
 
-  return NULL;
+    return NULL;
 }

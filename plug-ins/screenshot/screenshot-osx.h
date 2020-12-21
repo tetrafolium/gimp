@@ -26,9 +26,9 @@ gboolean               screenshot_osx_available        (void);
 ScreenshotCapabilities screenshot_osx_get_capabilities (void);
 
 GimpPDBStatusType      screenshot_osx_shoot            (ScreenshotValues  *shootvals,
-                                                        GdkScreen         *screen,
-                                                        GimpImage        **image,
-                                                        GError           **error);
+        GdkScreen         *screen,
+        GimpImage        **image,
+        GError           **error);
 
 #endif /* PLATFORM_OSX */
 

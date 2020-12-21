@@ -45,18 +45,18 @@ GimpEnsureModulesFunc _gimp_ensure_modules_func = NULL;
 static void
 gimp_widgets_init_foreign_enums (void)
 {
-  static const GimpEnumDesc input_mode_descs[] =
-  {
-    { GDK_MODE_DISABLED, NC_("input-mode", "Disabled"), NULL },
-    { GDK_MODE_SCREEN,   NC_("input-mode", "Screen"),   NULL },
-    { GDK_MODE_WINDOW,   NC_("input-mode", "Window"),   NULL },
-    { 0, NULL, NULL }
-  };
+    static const GimpEnumDesc input_mode_descs[] =
+    {
+        { GDK_MODE_DISABLED, NC_("input-mode", "Disabled"), NULL },
+        { GDK_MODE_SCREEN,   NC_("input-mode", "Screen"),   NULL },
+        { GDK_MODE_WINDOW,   NC_("input-mode", "Window"),   NULL },
+        { 0, NULL, NULL }
+    };
 
-  gimp_type_set_translation_domain (GDK_TYPE_INPUT_MODE,
-                                    GETTEXT_PACKAGE "-libgimp");
-  gimp_type_set_translation_context (GDK_TYPE_INPUT_MODE, "input-mode");
-  gimp_enum_set_value_descriptions (GDK_TYPE_INPUT_MODE, input_mode_descs);
+    gimp_type_set_translation_domain (GDK_TYPE_INPUT_MODE,
+                                      GETTEXT_PACKAGE "-libgimp");
+    gimp_type_set_translation_context (GDK_TYPE_INPUT_MODE, "input-mode");
+    gimp_enum_set_value_descriptions (GDK_TYPE_INPUT_MODE, input_mode_descs);
 }
 
 void
@@ -65,32 +65,32 @@ gimp_widgets_init (GimpHelpFunc          standard_help_func,
                    GimpGetColorFunc      get_background_func,
                    GimpEnsureModulesFunc ensure_modules_func)
 {
-  GtkIconTheme *icon_theme;
+    GtkIconTheme *icon_theme;
 
-  g_return_if_fail (standard_help_func != NULL);
+    g_return_if_fail (standard_help_func != NULL);
 
-  if (gimp_widgets_initialized)
-    g_error ("gimp_widgets_init() must only be called once!");
+    if (gimp_widgets_initialized)
+        g_error ("gimp_widgets_init() must only be called once!");
 
-  _gimp_standard_help_func  = standard_help_func;
-  _gimp_get_foreground_func = get_foreground_func;
-  _gimp_get_background_func = get_background_func;
-  _gimp_ensure_modules_func = ensure_modules_func;
+    _gimp_standard_help_func  = standard_help_func;
+    _gimp_get_foreground_func = get_foreground_func;
+    _gimp_get_background_func = get_background_func;
+    _gimp_ensure_modules_func = ensure_modules_func;
 
-  babl_init (); /* color selectors use babl */
+    babl_init (); /* color selectors use babl */
 
-  gimp_icons_init ();
+    gimp_icons_init ();
 
-  icon_theme = gtk_icon_theme_get_for_screen (gdk_screen_get_default ());
+    icon_theme = gtk_icon_theme_get_for_screen (gdk_screen_get_default ());
 
-  if (gtk_icon_theme_has_icon (icon_theme, GIMP_ICON_WILBER "-symbolic"))
-    gtk_window_set_default_icon_name (GIMP_ICON_WILBER "-symbolic");
-  else
-    gtk_window_set_default_icon_name (GIMP_ICON_WILBER);
+    if (gtk_icon_theme_has_icon (icon_theme, GIMP_ICON_WILBER "-symbolic"))
+        gtk_window_set_default_icon_name (GIMP_ICON_WILBER "-symbolic");
+    else
+        gtk_window_set_default_icon_name (GIMP_ICON_WILBER);
 
-  gimp_widgets_init_foreign_enums ();
+    gimp_widgets_init_foreign_enums ();
 
-  gimp_widgets_initialized = TRUE;
+    gimp_widgets_initialized = TRUE;
 }
 
 /* clean up babl (in particular, so that the fish cache is constructed) if the
@@ -102,8 +102,8 @@ __attribute__ ((destructor))
 static void
 gimp_widgets_exit (void)
 {
-  if (gimp_widgets_initialized)
-    babl_exit ();
+    if (gimp_widgets_initialized)
+        babl_exit ();
 }
 
 #elif defined (__GNUC__)

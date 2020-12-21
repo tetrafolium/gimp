@@ -128,20 +128,20 @@ typedef void (* TW_POST_TXFR_CB)(int, void *);
  * not be called.
  */
 typedef struct _TXFR_CB_FUNCS {
-  /* Pre-transfer function */
-  TW_PRE_TXFR_CB preTxfrCb;
+    /* Pre-transfer function */
+    TW_PRE_TXFR_CB preTxfrCb;
 
-  /* Begin function */
-  TW_TXFR_BEGIN_CB txfrBeginCb;
+    /* Begin function */
+    TW_TXFR_BEGIN_CB txfrBeginCb;
 
-  /* Data transfer */
-  TW_TXFR_DATA_CB txfrDataCb;
+    /* Data transfer */
+    TW_TXFR_DATA_CB txfrDataCb;
 
-  /* End function */
-  TW_TXFR_END_CB txfrEndCb;
+    /* End function */
+    TW_TXFR_END_CB txfrEndCb;
 
-  /* Post-transfer function */
-  TW_POST_TXFR_CB postTxfrCb;
+    /* Post-transfer function */
+    TW_POST_TXFR_CB postTxfrCb;
 } TXFR_CB_FUNCS, *pTXFR_CB_FUNCS;
 
 /*
@@ -150,39 +150,39 @@ typedef struct _TXFR_CB_FUNCS {
  * session.
  */
 typedef struct _TWAIN_SESSION {
-  /* The window handle related to the TWAIN application on Win32 */
-  TW_HANDLE hwnd;
+    /* The window handle related to the TWAIN application on Win32 */
+    TW_HANDLE hwnd;
 
-  /* The current TWAIN return code */
-  TW_UINT16 twRC;
+    /* The current TWAIN return code */
+    TW_UINT16 twRC;
 
-  /* The application's TWAIN identity */
-  pTW_IDENTITY appIdentity;
+    /* The application's TWAIN identity */
+    pTW_IDENTITY appIdentity;
 
-  /* The datasource's TWAIN identity */
-  pTW_IDENTITY dsIdentity;
+    /* The datasource's TWAIN identity */
+    pTW_IDENTITY dsIdentity;
 
-  /* The image data transfer functions */
-  pTXFR_CB_FUNCS transferFunctions;
+    /* The image data transfer functions */
+    pTXFR_CB_FUNCS transferFunctions;
 
-  /* Client data that is associated with the image
-   * transfer callback
-   */
-  void *clientData;
+    /* Client data that is associated with the image
+     * transfer callback
+     */
+    void *clientData;
 
-  /*
-   * The following variable tracks the current state
-   * as related to the TWAIN engine.  The states are:
-   *
-   * 1) Pre-session: The DSM has not been loaded
-   * 2) Source Manager Loaded (not opened)
-   * 3) Source Manager Opened
-   * 4) Source Open
-   * 5) Source Enabled
-   * 6) Transfer ready
-   * 7) Transferring
-   */
-  int twainState;
+    /*
+     * The following variable tracks the current state
+     * as related to the TWAIN engine.  The states are:
+     *
+     * 1) Pre-session: The DSM has not been loaded
+     * 2) Source Manager Loaded (not opened)
+     * 3) Source Manager Opened
+     * 4) Source Open
+     * 5) Source Enabled
+     * 6) Transfer ready
+     * 7) Transferring
+     */
+    int twainState;
 
 } TW_SESSION, *pTW_SESSION;
 

@@ -43,31 +43,31 @@ typedef struct _GimpSelectButtonClass   GimpSelectButtonClass;
 
 struct _GimpSelectButton
 {
-  GtkBox                   parent_instance;
+    GtkBox                   parent_instance;
 
-  GimpSelectButtonPrivate *priv;
+    GimpSelectButtonPrivate *priv;
 
-  /* FIXME MOVE TO PRIVATE */
-  const gchar *temp_callback;
+    /* FIXME MOVE TO PRIVATE */
+    const gchar *temp_callback;
 };
 
 struct _GimpSelectButtonClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  gchar       *default_title;
+    gchar       *default_title;
 
-  void (* select_destroy) (const gchar *callback);
+    void (* select_destroy) (const gchar *callback);
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 

@@ -35,18 +35,18 @@ G_BEGIN_DECLS
 gboolean gimp_image_convert_rgb               (GimpImage              *image);
 gboolean gimp_image_convert_grayscale         (GimpImage              *image);
 gboolean gimp_image_convert_indexed           (GimpImage              *image,
-                                               GimpConvertDitherType   dither_type,
-                                               GimpConvertPaletteType  palette_type,
-                                               gint                    num_cols,
-                                               gboolean                alpha_dither,
-                                               gboolean                remove_unused,
-                                               const gchar            *palette);
+        GimpConvertDitherType   dither_type,
+        GimpConvertPaletteType  palette_type,
+        gint                    num_cols,
+        gboolean                alpha_dither,
+        gboolean                remove_unused,
+        const gchar            *palette);
 gboolean gimp_image_convert_set_dither_matrix (gint                    width,
-                                               gint                    height,
-                                               gint                    matrix_length,
-                                               const guint8           *matrix);
+        gint                    height,
+        gint                    matrix_length,
+        const guint8           *matrix);
 gboolean gimp_image_convert_precision         (GimpImage              *image,
-                                               GimpPrecision           precision);
+        GimpPrecision           precision);
 
 
 G_END_DECLS

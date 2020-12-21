@@ -27,23 +27,23 @@
 #include "imap_object.h"
 
 typedef struct {
-  GtkListStore          *store;
-  GtkTreeSelection      *selection;
+    GtkListStore          *store;
+    GtkTreeSelection      *selection;
 
-  GtkWidget    *container;
-  GtkWidget    *list;
-  GtkWidget    *selected_child;
-  ObjectList_t *object_list;
-  gint          selected_row;
-  gint          nr_rows;
-  gboolean      is_visible;
-  gboolean      select_lock;
-  gboolean      doubleclick;
+    GtkWidget    *container;
+    GtkWidget    *list;
+    GtkWidget    *selected_child;
+    ObjectList_t *object_list;
+    gint          selected_row;
+    gint          nr_rows;
+    gboolean      is_visible;
+    gboolean      select_lock;
+    gboolean      doubleclick;
 
-  CommandFactory_t cmd_move_up;
-  CommandFactory_t cmd_move_down;
-  CommandFactory_t cmd_delete;
-  CommandFactory_t cmd_edit;
+    CommandFactory_t cmd_move_up;
+    CommandFactory_t cmd_move_down;
+    CommandFactory_t cmd_delete;
+    CommandFactory_t cmd_edit;
 } Selection_t;
 
 Selection_t *make_selection(ObjectList_t *list);

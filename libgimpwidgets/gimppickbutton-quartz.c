@@ -40,10 +40,10 @@
 @implementation NSWindow (GIMPExt)
 - (NSRect) convertRectToScreen: (NSRect)aRect
 {
-  NSRect result = aRect;
-  NSPoint origin = result.origin;
-  result.origin = [self convertBaseToScreen:origin];
-  return result;
+    NSRect result = aRect;
+    NSPoint origin = result.origin;
+    result.origin = [self convertBaseToScreen:origin];
+    return result;
 }
 @end
 #endif
@@ -51,8 +51,8 @@
 
 @interface GimpPickWindowController : NSObject
 {
-  GimpPickButton *button;
-  NSMutableArray *windows;
+    GimpPickButton *button;
+    NSMutableArray *windows;
 }
 
 @property (nonatomic, assign) BOOL firstBecameKey;
@@ -65,8 +65,8 @@
 
 @interface GimpPickView : NSView
 {
-  GimpPickButton *button;
-  GimpPickWindowController *controller;
+    GimpPickButton *button;
+    GimpPickWindowController *controller;
 }
 
 @property (readonly,assign) NSTrackingArea *area;
@@ -80,189 +80,189 @@
 
 - (id)initWithButton:(GimpPickButton *)_button controller:(GimpPickWindowController *)_controller
 {
-  self = [super init];
+    self = [super init];
 
-  if (self)
+    if (self)
     {
-      button = _button;
-      controller = _controller;
+        button = _button;
+        controller = _controller;
     }
 
-  return self;
+    return self;
 }
 
 - (void)dealloc
 {
-  [self removeTrackingArea:self.area];
+    [self removeTrackingArea:self.area];
 
-  [super dealloc];
+    [super dealloc];
 }
 
 - (void)viewDidMoveToWindow
 {
-  NSTrackingAreaOptions options;
+    NSTrackingAreaOptions options;
 
-  [super viewDidMoveToWindow];
+    [super viewDidMoveToWindow];
 
-  if ([self window] == nil)
-    return;
+    if ([self window] == nil)
+        return;
 
-  options = NSTrackingMouseEnteredAndExited |
-            NSTrackingMouseMoved |
-            NSTrackingActiveAlways;
+    options = NSTrackingMouseEnteredAndExited |
+              NSTrackingMouseMoved |
+              NSTrackingActiveAlways;
 
-  /* Add assume inside if mouse pointer is above this window */
-  if (NSPointInRect ([NSEvent mouseLocation], self.window.frame))
-    options |= NSTrackingAssumeInside;
+    /* Add assume inside if mouse pointer is above this window */
+    if (NSPointInRect ([NSEvent mouseLocation], self.window.frame))
+        options |= NSTrackingAssumeInside;
 
-  area = [[NSTrackingArea alloc] initWithRect:self.bounds
-                                 options:options
-                                 owner:self
-                                 userInfo:nil];
-  [self addTrackingArea:self.area];
+    area = [[NSTrackingArea alloc] initWithRect:self.bounds
+                                   options:options
+                                   owner:self
+                                   userInfo:nil];
+    [self addTrackingArea:self.area];
 }
 
 - (void)mouseEntered:(NSEvent *)event
 {
-  /* We handle the mouse cursor manually, see also the comment in
-   * [GimpPickWindow windowDidBecomeMain below].
-   */
-  if (controller.cursor)
-    [controller.cursor push];
+    /* We handle the mouse cursor manually, see also the comment in
+     * [GimpPickWindow windowDidBecomeMain below].
+     */
+    if (controller.cursor)
+        [controller.cursor push];
 }
 
 - (void)mouseExited:(NSEvent *)event
 {
-  if (controller.cursor)
-    [controller.cursor pop];
+    if (controller.cursor)
+        [controller.cursor pop];
 
-  [controller updateKeyWindow];
+    [controller updateKeyWindow];
 }
 
 - (void)mouseMoved:(NSEvent *)event
 {
-  [self pickColor:event];
+    [self pickColor:event];
 }
 
 - (void)mouseUp:(NSEvent *)event
 {
-  [self pickColor:event];
+    [self pickColor:event];
 
-  [controller shutdown];
+    [controller shutdown];
 }
 
 - (void)rightMouseUp:(NSEvent *)event
 {
-  [self mouseUp:event];
+    [self mouseUp:event];
 }
 
 - (void)otherMouseUp:(NSEvent *)event
 {
-  [self mouseUp:event];
+    [self mouseUp:event];
 }
 
 - (void)keyDown:(NSEvent *)event
 {
-  if (event.keyCode == kVK_Escape)
-    [controller shutdown];
+    if (event.keyCode == kVK_Escape)
+        [controller shutdown];
 }
 
 - (void)pickColor:(NSEvent *)event
 {
-  CGImageRef        root_image_ref;
-  CFDataRef         pixel_data;
-  const guchar     *data;
-  GimpRGB           rgb;
-  NSPoint           point;
-  GimpColorProfile *profile     = NULL;
-  CGColorSpaceRef   color_space = NULL;
+    CGImageRef        root_image_ref;
+    CFDataRef         pixel_data;
+    const guchar     *data;
+    GimpRGB           rgb;
+    NSPoint           point;
+    GimpColorProfile *profile     = NULL;
+    CGColorSpaceRef   color_space = NULL;
 
-  /* The event gives us a point in Cocoa window coordinates. The function
-   * CGWindowListCreateImage expects a rectangle in screen coordinates
-   * with the origin in the upper left (contrary to Cocoa). The origin is
-   * on the screen showing the menu bar (this is the screen at index 0 in the
-   * screens array). So, after converting the rectangle to Cocoa screen
-   * coordinates, we use the height of this particular screen to translate
-   * to the coordinate space expected by CGWindowListCreateImage.
-   */
-  point = event.locationInWindow;
-  NSRect rect = NSMakeRect (point.x, point.y,
-                            1, 1);
-  rect = [self.window convertRectToScreen:rect];
-  rect.origin.y = [[[NSScreen screens] objectAtIndex:0] frame].size.height - rect.origin.y;
+    /* The event gives us a point in Cocoa window coordinates. The function
+     * CGWindowListCreateImage expects a rectangle in screen coordinates
+     * with the origin in the upper left (contrary to Cocoa). The origin is
+     * on the screen showing the menu bar (this is the screen at index 0 in the
+     * screens array). So, after converting the rectangle to Cocoa screen
+     * coordinates, we use the height of this particular screen to translate
+     * to the coordinate space expected by CGWindowListCreateImage.
+     */
+    point = event.locationInWindow;
+    NSRect rect = NSMakeRect (point.x, point.y,
+                              1, 1);
+    rect = [self.window convertRectToScreen:rect];
+    rect.origin.y = [[[NSScreen screens] objectAtIndex:0] frame].size.height - rect.origin.y;
 
-  root_image_ref = CGWindowListCreateImage (rect,
-                                            kCGWindowListOptionOnScreenOnly,
-                                            kCGNullWindowID,
-                                            kCGWindowImageDefault);
-  pixel_data = CGDataProviderCopyData (CGImageGetDataProvider (root_image_ref));
-  data = CFDataGetBytePtr (pixel_data);
+    root_image_ref = CGWindowListCreateImage (rect,
+                     kCGWindowListOptionOnScreenOnly,
+                     kCGNullWindowID,
+                     kCGWindowImageDefault);
+    pixel_data = CGDataProviderCopyData (CGImageGetDataProvider (root_image_ref));
+    data = CFDataGetBytePtr (pixel_data);
 
-  color_space = CGImageGetColorSpace (root_image_ref);
-  if (color_space)
+    color_space = CGImageGetColorSpace (root_image_ref);
+    if (color_space)
     {
-      CFDataRef icc_data = NULL;
+        CFDataRef icc_data = NULL;
 
-      icc_data = CGColorSpaceCopyICCProfile (color_space);
-      if (icc_data)
+        icc_data = CGColorSpaceCopyICCProfile (color_space);
+        if (icc_data)
         {
-          UInt8 *buffer = g_malloc (CFDataGetLength (icc_data));
+            UInt8 *buffer = g_malloc (CFDataGetLength (icc_data));
 
-          CFDataGetBytes (icc_data, CFRangeMake (0, CFDataGetLength (icc_data)),
-                          buffer);
+            CFDataGetBytes (icc_data, CFRangeMake (0, CFDataGetLength (icc_data)),
+                            buffer);
 
-          profile = gimp_color_profile_new_from_icc_profile (buffer,
-                                                             CFDataGetLength (icc_data),
-                                                             NULL);
-          g_free (buffer);
-          CFRelease (icc_data);
+            profile = gimp_color_profile_new_from_icc_profile (buffer,
+                      CFDataGetLength (icc_data),
+                      NULL);
+            g_free (buffer);
+            CFRelease (icc_data);
         }
     }
 
-  gimp_rgba_set_uchar (&rgb, data[2], data[1], data[0], 255);
-  if (profile)
+    gimp_rgba_set_uchar (&rgb, data[2], data[1], data[0], 255);
+    if (profile)
     {
-      GimpColorProfile        *srgb_profile;
-      GimpColorTransform      *transform;
-      const Babl              *format;
-      GimpColorTransformFlags  flags = 0;
+        GimpColorProfile        *srgb_profile;
+        GimpColorTransform      *transform;
+        const Babl              *format;
+        GimpColorTransformFlags  flags = 0;
 
-      format = babl_format ("R'G'B'A double");
+        format = babl_format ("R'G'B'A double");
 
-      flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
-      flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
+        flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
+        flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
 
-      srgb_profile = gimp_color_profile_new_rgb_srgb ();
-      transform = gimp_color_transform_new (profile,      format,
-                                            srgb_profile, format,
-                                            GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
-                                            flags);
+        srgb_profile = gimp_color_profile_new_rgb_srgb ();
+        transform = gimp_color_transform_new (profile,      format,
+                                              srgb_profile, format,
+                                              GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+                                              flags);
 
-      if (transform)
+        if (transform)
         {
-          gimp_color_transform_process_pixels (transform,
-                                               format, &rgb,
-                                               format, &rgb,
-                                               1);
-          gimp_rgb_clamp (&rgb);
+            gimp_color_transform_process_pixels (transform,
+                                                 format, &rgb,
+                                                 format, &rgb,
+                                                 1);
+            gimp_rgb_clamp (&rgb);
 
-          g_object_unref (transform);
+            g_object_unref (transform);
         }
-      g_object_unref (srgb_profile);
-      g_object_unref (profile);
+        g_object_unref (srgb_profile);
+        g_object_unref (profile);
     }
 
-  CGImageRelease (root_image_ref);
-  CFRelease (pixel_data);
+    CGImageRelease (root_image_ref);
+    CFRelease (pixel_data);
 
-  g_signal_emit_by_name (button, "color-picked", &rgb);
+    g_signal_emit_by_name (button, "color-picked", &rgb);
 }
 @end
 
 
 @interface GimpPickWindow : NSWindow <NSWindowDelegate>
 {
-  GimpPickWindowController *controller;
+    GimpPickWindowController *controller;
 }
 
 - (id)initWithButton:(GimpPickButton *)button forScreen:(NSScreen *)screen withController:(GimpPickWindowController *)_controller;
@@ -271,42 +271,42 @@
 @implementation GimpPickWindow
 - (id)initWithButton:(GimpPickButton *)button forScreen:(NSScreen *)screen withController:(GimpPickWindowController *)_controller
 {
-  self = [super initWithContentRect:screen.frame
-                styleMask:NSBorderlessWindowMask
-                backing:NSBackingStoreBuffered
-                defer:NO];
+    self = [super initWithContentRect:screen.frame
+                  styleMask:NSBorderlessWindowMask
+                  backing:NSBackingStoreBuffered
+                  defer:NO];
 
-  if (self)
+    if (self)
     {
-      GimpPickView *view;
+        GimpPickView *view;
 
-      controller = _controller;
+        controller = _controller;
 
-      [self setDelegate:self];
+        [self setDelegate:self];
 
-      [self setAlphaValue:0.0];
+        [self setAlphaValue:0.0];
 #if 0
-      /* Useful for debugging purposes */
-      [self setBackgroundColor:[NSColor redColor]];
-      [self setAlphaValue:0.2];
+        /* Useful for debugging purposes */
+        [self setBackgroundColor:[NSColor redColor]];
+        [self setAlphaValue:0.2];
 #endif
-      [self setIgnoresMouseEvents:NO];
-      [self setAcceptsMouseMovedEvents:YES];
-      [self setHasShadow:NO];
-      [self setOpaque:NO];
+        [self setIgnoresMouseEvents:NO];
+        [self setAcceptsMouseMovedEvents:YES];
+        [self setHasShadow:NO];
+        [self setOpaque:NO];
 
-      /* Set the highest level, so on top of everything */
-      [self setLevel:NSScreenSaverWindowLevel];
+        /* Set the highest level, so on top of everything */
+        [self setLevel:NSScreenSaverWindowLevel];
 
-      view = [[GimpPickView alloc] initWithButton:button controller:controller];
-      [self setContentView:view];
-      [self makeFirstResponder:view];
-      [view release];
+        view = [[GimpPickView alloc] initWithButton:button controller:controller];
+        [self setContentView:view];
+        [self makeFirstResponder:view];
+        [view release];
 
-      [self disableCursorRects];
+        [self disableCursorRects];
     }
 
-  return self;
+    return self;
 }
 
 /* Borderless windows cannot become key/main by default, so we force it
@@ -314,49 +314,49 @@
  */
 - (BOOL)canBecomeKeyWindow
 {
-  return YES;
+    return YES;
 }
 
 - (BOOL)canBecomeMainWindow
 {
-  return YES;
+    return YES;
 }
 
 - (void)windowDidBecomeKey:(NSNotification *)aNotification
 {
-  /* We cannot use the usual Cocoa method for handling cursor updates,
-   * since the GDK Quartz backend is interfering. Additionally, because
-   * one of the screen-spanning windows pops up under the mouse pointer this
-   * view will not receive a MouseEntered event. So, we synthesize such
-   * an event here and the view can set the mouse pointer in response to
-   * this. So, this event only has to be synthesized once and only for
-   * the window that pops up under the mouse cursor. Synthesizing multiple
-   * times messes up the mouse cursor stack.
-   *
-   * We cannot set the mouse pointer at this moment, because the GDK window
-   * will still receive an MouseExited event in which turn it will modify
-   * the cursor. So, with this synthesized event we also ensure we set
-   * the mouse cursor *after* the GDK window has manipulated the cursor.
-   */
-  NSEvent *event;
+    /* We cannot use the usual Cocoa method for handling cursor updates,
+     * since the GDK Quartz backend is interfering. Additionally, because
+     * one of the screen-spanning windows pops up under the mouse pointer this
+     * view will not receive a MouseEntered event. So, we synthesize such
+     * an event here and the view can set the mouse pointer in response to
+     * this. So, this event only has to be synthesized once and only for
+     * the window that pops up under the mouse cursor. Synthesizing multiple
+     * times messes up the mouse cursor stack.
+     *
+     * We cannot set the mouse pointer at this moment, because the GDK window
+     * will still receive an MouseExited event in which turn it will modify
+     * the cursor. So, with this synthesized event we also ensure we set
+     * the mouse cursor *after* the GDK window has manipulated the cursor.
+     */
+    NSEvent *event;
 
-  if (!controller.firstBecameKey ||
-      !NSPointInRect ([NSEvent mouseLocation], self.frame))
-    return;
+    if (!controller.firstBecameKey ||
+            !NSPointInRect ([NSEvent mouseLocation], self.frame))
+        return;
 
-  controller.firstBecameKey = NO;
+    controller.firstBecameKey = NO;
 
-  event = [NSEvent enterExitEventWithType:NSMouseEntered
-                   location:[self mouseLocationOutsideOfEventStream]
-                   modifierFlags:0
-                   timestamp:[[NSApp currentEvent] timestamp]
-                   windowNumber:self.windowNumber
-                   context:nil
-                   eventNumber:0
-                   trackingNumber:(NSInteger)[[self contentView] area]
-                   userData:nil];
+    event = [NSEvent enterExitEventWithType:NSMouseEntered
+                     location:[self mouseLocationOutsideOfEventStream]
+                     modifierFlags:0
+                     timestamp:[[NSApp currentEvent] timestamp]
+                     windowNumber:self.windowNumber
+                     context:nil
+                     eventNumber:0
+                     trackingNumber:(NSInteger)[[self contentView] area]
+                     userData:nil];
 
-  [NSApp postEvent:event atStart:NO];
+    [NSApp postEvent:event atStart:NO];
 }
 @end
 
@@ -376,91 +376,91 @@
 
 - (id)initWithButton:(GimpPickButton *)_button;
 {
-  self = [super init];
+    self = [super init];
 
-  if (self)
+    if (self)
     {
-      firstBecameKey = YES;
-      button = _button;
-      cursor = [GimpPickWindowController makePickCursor];
+        firstBecameKey = YES;
+        button = _button;
+        cursor = [GimpPickWindowController makePickCursor];
 
-      windows = [[NSMutableArray alloc] init];
+        windows = [[NSMutableArray alloc] init];
 
-      for (NSScreen *screen in [NSScreen screens])
+        for (NSScreen *screen in [NSScreen screens])
         {
-          GimpPickWindow *window;
+            GimpPickWindow *window;
 
-          window = [[GimpPickWindow alloc] initWithButton:button
-                                           forScreen:screen
-                                           withController:self];
+            window = [[GimpPickWindow alloc] initWithButton:button
+                                             forScreen:screen
+                                             withController:self];
 
-          [window orderFrontRegardless];
-          [window makeMainWindow];
+            [window orderFrontRegardless];
+            [window makeMainWindow];
 
-          [windows addObject:window];
+            [windows addObject:window];
         }
 
-      [self updateKeyWindow];
+        [self updateKeyWindow];
     }
 
-  return self;
+    return self;
 }
 
 - (void)updateKeyWindow
 {
-  for (GimpPickWindow *window in windows)
+    for (GimpPickWindow *window in windows)
     {
-      if (NSPointInRect ([NSEvent mouseLocation], window.frame))
-        [window makeKeyWindow];
+        if (NSPointInRect ([NSEvent mouseLocation], window.frame))
+            [window makeKeyWindow];
     }
 }
 
 - (void)shutdown
 {
-  GtkWidget *window;
+    GtkWidget *window;
 
-  for (GimpPickWindow *window in windows)
-    [window close];
+    for (GimpPickWindow *window in windows)
+        [window close];
 
-  [windows release];
+    [windows release];
 
-  if (cursor)
-    [cursor release];
+    if (cursor)
+        [cursor release];
 
-  /* Give focus back to the window containing the pick button */
-  window = gtk_widget_get_toplevel (GTK_WIDGET (button));
-  gtk_window_present_with_time (GTK_WINDOW (window), GDK_CURRENT_TIME);
+    /* Give focus back to the window containing the pick button */
+    window = gtk_widget_get_toplevel (GTK_WIDGET (button));
+    gtk_window_present_with_time (GTK_WINDOW (window), GDK_CURRENT_TIME);
 
-  [self release];
+    [self release];
 }
 
 + (NSCursor *)makePickCursor
 {
-  GBytes    *bytes = NULL;
-  GError    *error = NULL;
+    GBytes    *bytes = NULL;
+    GError    *error = NULL;
 
-  bytes = g_resources_lookup_data ("/org/gimp/color-picker-cursors-raw/cursor-color-picker.png",
-                                   G_RESOURCE_LOOKUP_FLAGS_NONE, &error);
+    bytes = g_resources_lookup_data ("/org/gimp/color-picker-cursors-raw/cursor-color-picker.png",
+                                     G_RESOURCE_LOOKUP_FLAGS_NONE, &error);
 
-  if (bytes)
+    if (bytes)
     {
-      NSData   *data = [NSData dataWithBytes:g_bytes_get_data (bytes, NULL)
-                               length:g_bytes_get_size (bytes)];
-      NSImage  *image = [[NSImage alloc] initWithData:data];
-      NSCursor *cursor = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(1, 30)];
+        NSData   *data = [NSData dataWithBytes:g_bytes_get_data (bytes, NULL)
+                                 length:g_bytes_get_size (bytes)];
+        NSImage  *image = [[NSImage alloc] initWithData:data];
+        NSCursor *cursor = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(1, 30)];
 
-      [image release];
-      g_bytes_unref (bytes);
+        [image release];
+        g_bytes_unref (bytes);
 
-      return [cursor retain];
+        return [cursor retain];
     }
-  else
+    else
     {
-      g_critical ("Failed to create cursor image: %s", error->message);
-      g_clear_error (&error);
+        g_critical ("Failed to create cursor image: %s", error->message);
+        g_clear_error (&error);
     }
 
-  return NULL;
+    return NULL;
 }
 @end
 
@@ -468,12 +468,12 @@
 void
 _gimp_pick_button_quartz_pick (GimpPickButton *button)
 {
-  GimpPickWindowController *controller;
-  NSAutoreleasePool        *pool;
+    GimpPickWindowController *controller;
+    NSAutoreleasePool        *pool;
 
-  pool = [[NSAutoreleasePool alloc] init];
+    pool = [[NSAutoreleasePool alloc] init];
 
-  controller = [[GimpPickWindowController alloc] initWithButton:button];
+    controller = [[GimpPickWindowController alloc] initWithButton:button];
 
-  [pool release];
+    [pool release];
 }

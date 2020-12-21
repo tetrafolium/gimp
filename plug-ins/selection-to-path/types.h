@@ -63,8 +63,8 @@ typedef int byte_count_type;
 /* Complex numbers.  */
 typedef struct
 {
-  real real;
-  real imag;
+    real real;
+    real imag;
 } complex;
 typedef enum { first_complex_part, second_complex_part} complex_part_type;
 typedef enum { polar_rep, rectangular_rep} complex_rep_type;
@@ -73,7 +73,7 @@ typedef enum { polar_rep, rectangular_rep} complex_rep_type;
 /* Dimensions of a rectangle.  */
 typedef struct
 {
-  unsigned height, width;
+    unsigned height, width;
 } dimensions_type;
 
 #define DIMENSIONS_HEIGHT(d) ((d).height)
@@ -83,63 +83,63 @@ typedef struct
 /* Cartesian points.  */
 typedef struct
 {
-  int x, y;
+    int x, y;
 } coordinate_type;
 
 typedef struct
 {
-  double x, y;
+    double x, y;
 } real_coordinate_type;
 
 #if 0
 typedef struct
 {
-  double       align_threshold;
-  double       corner_always_threshold;
-  unsigned int corner_surround;
-  double       corner_threshold;
-  double       error_threshold;
-  unsigned int filter_alternative_surround;
-  double       filter_epsilon;
-  unsigned int filter_iteration_count;
-  double       filter_percent;
-  unsigned int filter_secondary_surround;
-  unsigned int filter_surround;
-  boolean      keep_knees;
-  double       line_reversion_threshold;
-  double       line_threshold;
-  double       reparameterize_improvement;
-  double       reparameterize_threshold;
-  double       subdivide_search;
-  unsigned int subdivide_surround;
-  double       subdivide_threshold;
-  unsigned int tangent_surround;
+    double       align_threshold;
+    double       corner_always_threshold;
+    unsigned int corner_surround;
+    double       corner_threshold;
+    double       error_threshold;
+    unsigned int filter_alternative_surround;
+    double       filter_epsilon;
+    unsigned int filter_iteration_count;
+    double       filter_percent;
+    unsigned int filter_secondary_surround;
+    unsigned int filter_surround;
+    boolean      keep_knees;
+    double       line_reversion_threshold;
+    double       line_threshold;
+    double       reparameterize_improvement;
+    double       reparameterize_threshold;
+    double       subdivide_search;
+    unsigned int subdivide_surround;
+    double       subdivide_threshold;
+    unsigned int tangent_surround;
 } SELVALS;
 
 #else
 
 typedef struct
 {
-  double       align_threshold;
-  double       corner_always_threshold;
-  double       corner_surround;
-  double       corner_threshold;
-  double       error_threshold;
-  double       filter_alternative_surround;
-  double       filter_epsilon;
-  double       filter_iteration_count;
-  double       filter_percent;
-  double       filter_secondary_surround;
-  double       filter_surround;
-  boolean      keep_knees;
-  double       line_reversion_threshold;
-  double       line_threshold;
-  double       reparameterize_improvement;
-  double       reparameterize_threshold;
-  double       subdivide_search;
-  double       subdivide_surround;
-  double       subdivide_threshold;
-  double       tangent_surround;
+    double       align_threshold;
+    double       corner_always_threshold;
+    double       corner_surround;
+    double       corner_threshold;
+    double       error_threshold;
+    double       filter_alternative_surround;
+    double       filter_epsilon;
+    double       filter_iteration_count;
+    double       filter_percent;
+    double       filter_secondary_surround;
+    double       filter_surround;
+    boolean      keep_knees;
+    double       line_reversion_threshold;
+    double       line_threshold;
+    double       reparameterize_improvement;
+    double       reparameterize_threshold;
+    double       subdivide_search;
+    double       subdivide_surround;
+    double       subdivide_threshold;
+    double       tangent_surround;
 } SELVALS;
 
 #endif /* 1 */

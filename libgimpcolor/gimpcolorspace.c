@@ -62,45 +62,45 @@ void
 gimp_rgb_to_hsv (const GimpRGB *rgb,
                  GimpHSV       *hsv)
 {
-  gdouble max, min, delta;
+    gdouble max, min, delta;
 
-  g_return_if_fail (rgb != NULL);
-  g_return_if_fail (hsv != NULL);
+    g_return_if_fail (rgb != NULL);
+    g_return_if_fail (hsv != NULL);
 
-  max = gimp_rgb_max (rgb);
-  min = gimp_rgb_min (rgb);
+    max = gimp_rgb_max (rgb);
+    min = gimp_rgb_min (rgb);
 
-  hsv->v = max;
-  delta = max - min;
+    hsv->v = max;
+    delta = max - min;
 
-  if (delta > 0.0001)
+    if (delta > 0.0001)
     {
-      hsv->s = delta / max;
+        hsv->s = delta / max;
 
-      if (rgb->r == max)
+        if (rgb->r == max)
         {
-          hsv->h = (rgb->g - rgb->b) / delta;
-          if (hsv->h < 0.0)
-            hsv->h += 6.0;
+            hsv->h = (rgb->g - rgb->b) / delta;
+            if (hsv->h < 0.0)
+                hsv->h += 6.0;
         }
-      else if (rgb->g == max)
+        else if (rgb->g == max)
         {
-          hsv->h = 2.0 + (rgb->b - rgb->r) / delta;
+            hsv->h = 2.0 + (rgb->b - rgb->r) / delta;
         }
-      else
+        else
         {
-          hsv->h = 4.0 + (rgb->r - rgb->g) / delta;
+            hsv->h = 4.0 + (rgb->r - rgb->g) / delta;
         }
 
-      hsv->h /= 6.0;
+        hsv->h /= 6.0;
     }
-  else
+    else
     {
-      hsv->s = 0.0;
-      hsv->h = 0.0;
+        hsv->s = 0.0;
+        hsv->h = 0.0;
     }
 
-  hsv->a = rgb->a;
+    hsv->a = rgb->a;
 }
 
 /**
@@ -114,71 +114,71 @@ void
 gimp_hsv_to_rgb (const GimpHSV *hsv,
                  GimpRGB       *rgb)
 {
-  gint    i;
-  gdouble f, w, q, t;
+    gint    i;
+    gdouble f, w, q, t;
 
-  gdouble hue;
+    gdouble hue;
 
-  g_return_if_fail (rgb != NULL);
-  g_return_if_fail (hsv != NULL);
+    g_return_if_fail (rgb != NULL);
+    g_return_if_fail (hsv != NULL);
 
-  if (hsv->s == 0.0)
+    if (hsv->s == 0.0)
     {
-      rgb->r = hsv->v;
-      rgb->g = hsv->v;
-      rgb->b = hsv->v;
+        rgb->r = hsv->v;
+        rgb->g = hsv->v;
+        rgb->b = hsv->v;
     }
-  else
+    else
     {
-      hue = hsv->h;
+        hue = hsv->h;
 
-      if (hue == 1.0)
-        hue = 0.0;
+        if (hue == 1.0)
+            hue = 0.0;
 
-      hue *= 6.0;
+        hue *= 6.0;
 
-      i = (gint) hue;
-      f = hue - i;
-      w = hsv->v * (1.0 - hsv->s);
-      q = hsv->v * (1.0 - (hsv->s * f));
-      t = hsv->v * (1.0 - (hsv->s * (1.0 - f)));
+        i = (gint) hue;
+        f = hue - i;
+        w = hsv->v * (1.0 - hsv->s);
+        q = hsv->v * (1.0 - (hsv->s * f));
+        t = hsv->v * (1.0 - (hsv->s * (1.0 - f)));
 
-      switch (i)
+        switch (i)
         {
         case 0:
-          rgb->r = hsv->v;
-          rgb->g = t;
-          rgb->b = w;
-          break;
+            rgb->r = hsv->v;
+            rgb->g = t;
+            rgb->b = w;
+            break;
         case 1:
-          rgb->r = q;
-          rgb->g = hsv->v;
-          rgb->b = w;
-          break;
+            rgb->r = q;
+            rgb->g = hsv->v;
+            rgb->b = w;
+            break;
         case 2:
-          rgb->r = w;
-          rgb->g = hsv->v;
-          rgb->b = t;
-          break;
+            rgb->r = w;
+            rgb->g = hsv->v;
+            rgb->b = t;
+            break;
         case 3:
-          rgb->r = w;
-          rgb->g = q;
-          rgb->b = hsv->v;
-          break;
+            rgb->r = w;
+            rgb->g = q;
+            rgb->b = hsv->v;
+            break;
         case 4:
-          rgb->r = t;
-          rgb->g = w;
-          rgb->b = hsv->v;
-          break;
+            rgb->r = t;
+            rgb->g = w;
+            rgb->b = hsv->v;
+            break;
         case 5:
-          rgb->r = hsv->v;
-          rgb->g = w;
-          rgb->b = q;
-          break;
+            rgb->r = hsv->v;
+            rgb->g = w;
+            rgb->b = q;
+            break;
         }
     }
 
-  rgb->a = hsv->a;
+    rgb->a = hsv->a;
 }
 
 
@@ -194,53 +194,53 @@ void
 gimp_rgb_to_hsl (const GimpRGB *rgb,
                  GimpHSL       *hsl)
 {
-  gdouble max, min, delta;
+    gdouble max, min, delta;
 
-  g_return_if_fail (rgb != NULL);
-  g_return_if_fail (hsl != NULL);
+    g_return_if_fail (rgb != NULL);
+    g_return_if_fail (hsl != NULL);
 
-  max = gimp_rgb_max (rgb);
-  min = gimp_rgb_min (rgb);
+    max = gimp_rgb_max (rgb);
+    min = gimp_rgb_min (rgb);
 
-  hsl->l = (max + min) / 2.0;
+    hsl->l = (max + min) / 2.0;
 
-  if (max == min)
+    if (max == min)
     {
-      hsl->s = 0.0;
-      hsl->h = GIMP_HSL_UNDEFINED;
+        hsl->s = 0.0;
+        hsl->h = GIMP_HSL_UNDEFINED;
     }
-  else
+    else
     {
-      if (hsl->l <= 0.5)
-        hsl->s = (max - min) / (max + min);
-      else
-        hsl->s = (max - min) / (2.0 - max - min);
+        if (hsl->l <= 0.5)
+            hsl->s = (max - min) / (max + min);
+        else
+            hsl->s = (max - min) / (2.0 - max - min);
 
-      delta = max - min;
+        delta = max - min;
 
-      if (delta == 0.0)
-        delta = 1.0;
+        if (delta == 0.0)
+            delta = 1.0;
 
-      if (rgb->r == max)
+        if (rgb->r == max)
         {
-          hsl->h = (rgb->g - rgb->b) / delta;
+            hsl->h = (rgb->g - rgb->b) / delta;
         }
-      else if (rgb->g == max)
+        else if (rgb->g == max)
         {
-          hsl->h = 2.0 + (rgb->b - rgb->r) / delta;
+            hsl->h = 2.0 + (rgb->b - rgb->r) / delta;
         }
-      else
+        else
         {
-          hsl->h = 4.0 + (rgb->r - rgb->g) / delta;
+            hsl->h = 4.0 + (rgb->r - rgb->g) / delta;
         }
 
-      hsl->h /= 6.0;
+        hsl->h /= 6.0;
 
-      if (hsl->h < 0.0)
-        hsl->h += 1.0;
+        if (hsl->h < 0.0)
+            hsl->h += 1.0;
     }
 
-  hsl->a = rgb->a;
+    hsl->a = rgb->a;
 }
 
 static inline gdouble
@@ -248,23 +248,23 @@ gimp_hsl_value (gdouble n1,
                 gdouble n2,
                 gdouble hue)
 {
-  gdouble val;
+    gdouble val;
 
-  if (hue > 6.0)
-    hue -= 6.0;
-  else if (hue < 0.0)
-    hue += 6.0;
+    if (hue > 6.0)
+        hue -= 6.0;
+    else if (hue < 0.0)
+        hue += 6.0;
 
-  if (hue < 1.0)
-    val = n1 + (n2 - n1) * hue;
-  else if (hue < 3.0)
-    val = n2;
-  else if (hue < 4.0)
-    val = n1 + (n2 - n1) * (4.0 - hue);
-  else
-    val = n1;
+    if (hue < 1.0)
+        val = n1 + (n2 - n1) * hue;
+    else if (hue < 3.0)
+        val = n2;
+    else if (hue < 4.0)
+        val = n1 + (n2 - n1) * (4.0 - hue);
+    else
+        val = n1;
 
-  return val;
+    return val;
 }
 
 
@@ -280,33 +280,33 @@ void
 gimp_hsl_to_rgb (const GimpHSL *hsl,
                  GimpRGB       *rgb)
 {
-  g_return_if_fail (hsl != NULL);
-  g_return_if_fail (rgb != NULL);
+    g_return_if_fail (hsl != NULL);
+    g_return_if_fail (rgb != NULL);
 
-  if (hsl->s == 0)
+    if (hsl->s == 0)
     {
-      /*  achromatic case  */
-      rgb->r = hsl->l;
-      rgb->g = hsl->l;
-      rgb->b = hsl->l;
+        /*  achromatic case  */
+        rgb->r = hsl->l;
+        rgb->g = hsl->l;
+        rgb->b = hsl->l;
     }
-  else
+    else
     {
-      gdouble m1, m2;
+        gdouble m1, m2;
 
-      if (hsl->l <= 0.5)
-        m2 = hsl->l * (1.0 + hsl->s);
-      else
-        m2 = hsl->l + hsl->s - hsl->l * hsl->s;
+        if (hsl->l <= 0.5)
+            m2 = hsl->l * (1.0 + hsl->s);
+        else
+            m2 = hsl->l + hsl->s - hsl->l * hsl->s;
 
-      m1 = 2.0 * hsl->l - m2;
+        m1 = 2.0 * hsl->l - m2;
 
-      rgb->r = gimp_hsl_value (m1, m2, hsl->h * 6.0 + 2.0);
-      rgb->g = gimp_hsl_value (m1, m2, hsl->h * 6.0);
-      rgb->b = gimp_hsl_value (m1, m2, hsl->h * 6.0 - 2.0);
+        rgb->r = gimp_hsl_value (m1, m2, hsl->h * 6.0 + 2.0);
+        rgb->g = gimp_hsl_value (m1, m2, hsl->h * 6.0);
+        rgb->b = gimp_hsl_value (m1, m2, hsl->h * 6.0 - 2.0);
     }
 
-  rgb->a = hsl->a;
+    rgb->a = hsl->a;
 }
 
 
@@ -329,37 +329,37 @@ gimp_rgb_to_cmyk (const GimpRGB  *rgb,
                   gdouble         pullout,
                   GimpCMYK       *cmyk)
 {
-  gdouble c, m, y, k;
+    gdouble c, m, y, k;
 
-  g_return_if_fail (rgb != NULL);
-  g_return_if_fail (cmyk != NULL);
+    g_return_if_fail (rgb != NULL);
+    g_return_if_fail (cmyk != NULL);
 
-  c = 1.0 - rgb->r;
-  m = 1.0 - rgb->g;
-  y = 1.0 - rgb->b;
+    c = 1.0 - rgb->r;
+    m = 1.0 - rgb->g;
+    y = 1.0 - rgb->b;
 
-  k = 1.0;
-  if (c < k)  k = c;
-  if (m < k)  k = m;
-  if (y < k)  k = y;
+    k = 1.0;
+    if (c < k)  k = c;
+    if (m < k)  k = m;
+    if (y < k)  k = y;
 
-  k *= pullout;
+    k *= pullout;
 
-  if (k < 1.0)
+    if (k < 1.0)
     {
-      cmyk->c = (c - k) / (1.0 - k);
-      cmyk->m = (m - k) / (1.0 - k);
-      cmyk->y = (y - k) / (1.0 - k);
+        cmyk->c = (c - k) / (1.0 - k);
+        cmyk->m = (m - k) / (1.0 - k);
+        cmyk->y = (y - k) / (1.0 - k);
     }
-  else
+    else
     {
-      cmyk->c = 0.0;
-      cmyk->m = 0.0;
-      cmyk->y = 0.0;
+        cmyk->c = 0.0;
+        cmyk->m = 0.0;
+        cmyk->y = 0.0;
     }
 
-  cmyk->k = k;
-  cmyk->a = rgb->a;
+    cmyk->k = k;
+    cmyk->a = rgb->a;
 }
 
 /**
@@ -374,28 +374,28 @@ void
 gimp_cmyk_to_rgb (const GimpCMYK *cmyk,
                   GimpRGB        *rgb)
 {
-  gdouble c, m, y, k;
+    gdouble c, m, y, k;
 
-  g_return_if_fail (cmyk != NULL);
-  g_return_if_fail (rgb != NULL);
+    g_return_if_fail (cmyk != NULL);
+    g_return_if_fail (rgb != NULL);
 
-  k = cmyk->k;
+    k = cmyk->k;
 
-  if (k < 1.0)
+    if (k < 1.0)
     {
-      c = cmyk->c * (1.0 - k) + k;
-      m = cmyk->m * (1.0 - k) + k;
-      y = cmyk->y * (1.0 - k) + k;
+        c = cmyk->c * (1.0 - k) + k;
+        m = cmyk->m * (1.0 - k) + k;
+        y = cmyk->y * (1.0 - k) + k;
     }
-  else
+    else
     {
-      c = 1.0;
-      m = 1.0;
-      y = 1.0;
+        c = 1.0;
+        m = 1.0;
+        y = 1.0;
     }
 
-  rgb->r = 1.0 - c;
-  rgb->g = 1.0 - m;
-  rgb->b = 1.0 - y;
-  rgb->a = cmyk->a;
+    rgb->r = 1.0 - c;
+    rgb->g = 1.0 - m;
+    rgb->b = 1.0 - y;
+    rgb->a = cmyk->a;
 }

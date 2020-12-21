@@ -37,7 +37,7 @@ G_DEFINE_BOXED_TYPE (GimpHSL, gimp_hsl, gimp_hsl_copy, g_free)
 static GimpHSL *
 gimp_hsl_copy (const GimpHSL *hsl)
 {
-  return g_memdup (hsl, sizeof (GimpHSL));
+    return g_memdup (hsl, sizeof (GimpHSL));
 }
 
 
@@ -58,11 +58,11 @@ gimp_hsl_set (GimpHSL *hsl,
               gdouble  s,
               gdouble  l)
 {
-  g_return_if_fail (hsl != NULL);
+    g_return_if_fail (hsl != NULL);
 
-  hsl->h = h;
-  hsl->s = s;
-  hsl->l = l;
+    hsl->h = h;
+    hsl->s = s;
+    hsl->l = l;
 }
 
 /**
@@ -76,7 +76,7 @@ void
 gimp_hsl_set_alpha (GimpHSL *hsl,
                     gdouble a)
 {
-  g_return_if_fail (hsl != NULL);
+    g_return_if_fail (hsl != NULL);
 
-  hsl->a = a;
+    hsl->a = a;
 }

@@ -35,25 +35,25 @@ typedef struct _PrintPreviewClass  PrintPreviewClass;
 GType       print_preview_get_type              (void) G_GNUC_CONST;
 
 GtkWidget * print_preview_new                   (GtkPageSetup *page,
-                                                 GimpDrawable *drawable);
+        GimpDrawable *drawable);
 
 void        print_preview_set_image_dpi         (PrintPreview *preview,
-                                                 gdouble       xres,
-                                                 gdouble       yres);
+        gdouble       xres,
+        gdouble       yres);
 
 void        print_preview_set_page_setup        (PrintPreview *preview,
-                                                 GtkPageSetup *page);
+        GtkPageSetup *page);
 
 void        print_preview_set_image_offsets     (PrintPreview *preview,
-                                                 gdouble       offset_x,
-                                                 gdouble       offset_y);
+        gdouble       offset_x,
+        gdouble       offset_y);
 
 void        print_preview_set_image_offsets_max (PrintPreview *preview,
-                                                 gdouble       offset_x_max,
-                                                 gdouble       offset_y_max);
+        gdouble       offset_x_max,
+        gdouble       offset_y_max);
 
 void        print_preview_set_use_full_page     (PrintPreview *preview,
-                                                 gboolean      full_page);
+        gboolean      full_page);
 
 G_END_DECLS
 

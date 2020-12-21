@@ -70,39 +70,39 @@ gimp_signal_private (gint                   signum,
                      gint                   flags)
 {
 #ifndef G_OS_WIN32
-  gint ret;
-  struct sigaction sa;
-  struct sigaction osa;
+    gint ret;
+    struct sigaction sa;
+    struct sigaction osa;
 
-  /*  The sa_handler (mandated by POSIX.1) and sa_sigaction (a
-   *  common extension) are often implemented by the OS as members
-   *  of a union.  This means you CAN NOT set both, you set one or
-   *  the other.  Caveat programmer!
-   */
+    /*  The sa_handler (mandated by POSIX.1) and sa_sigaction (a
+     *  common extension) are often implemented by the OS as members
+     *  of a union.  This means you CAN NOT set both, you set one or
+     *  the other.  Caveat programmer!
+     */
 
-  /*  Passing gimp_signal_private a gimp_sighandler of NULL is not
-   *  an error, and generally results in the action for that signal
-   *  being set to SIG_DFL (default behavior).  Many OSes define
-   *  SIG_DFL as (void (*)()0, so setting sa_handler to NULL is
-   *  the same thing as passing SIG_DFL to it.
-   */
-  sa.sa_handler = handler;
+    /*  Passing gimp_signal_private a gimp_sighandler of NULL is not
+     *  an error, and generally results in the action for that signal
+     *  being set to SIG_DFL (default behavior).  Many OSes define
+     *  SIG_DFL as (void (*)()0, so setting sa_handler to NULL is
+     *  the same thing as passing SIG_DFL to it.
+     */
+    sa.sa_handler = handler;
 
-  /*  Mask all signals while handler runs to avoid re-entrancy
-   *  problems.
-   */
-  sigfillset (&sa.sa_mask);
+    /*  Mask all signals while handler runs to avoid re-entrancy
+     *  problems.
+     */
+    sigfillset (&sa.sa_mask);
 
-  sa.sa_flags = flags;
+    sa.sa_flags = flags;
 
-  ret = sigaction (signum, &sa, &osa);
+    ret = sigaction (signum, &sa, &osa);
 
-  if (ret < 0)
-    g_error ("unable to set handler for signal %d\n", signum);
+    if (ret < 0)
+        g_error ("unable to set handler for signal %d\n", signum);
 
-  return (GimpSignalHandlerFunc) osa.sa_handler;
+    return (GimpSignalHandlerFunc) osa.sa_handler;
 #else
-  return NULL;                  /* Or g_error()? Should all calls to
+    return NULL;                  /* Or g_error()? Should all calls to
                                  * this function really be inside
                                  * #ifdef G_OS_UNIX?
                                  */

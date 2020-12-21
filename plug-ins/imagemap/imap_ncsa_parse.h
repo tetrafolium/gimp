@@ -43,21 +43,21 @@ extern int ncsa_debug;
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     RECTANGLE = 258,
-     POLYGON = 259,
-     CIRCLE = 260,
-     DEFAULT = 261,
-     AUTHOR = 262,
-     TITLE = 263,
-     DESCRIPTION = 264,
-     BEGIN_COMMENT = 265,
-     FLOAT = 266,
-     LINK = 267,
-     COMMENT = 268
-   };
+/* Put the tokens into the symbol table, so that GDB and other debuggers
+   know about them.  */
+enum yytokentype {
+    RECTANGLE = 258,
+    POLYGON = 259,
+    CIRCLE = 260,
+    DEFAULT = 261,
+    AUTHOR = 262,
+    TITLE = 263,
+    DESCRIPTION = 264,
+    BEGIN_COMMENT = 265,
+    FLOAT = 266,
+    LINK = 267,
+    COMMENT = 268
+};
 #endif
 /* Tokens.  */
 #define RECTANGLE 258
@@ -77,15 +77,15 @@ extern int ncsa_debug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 {
-/* Line 2049 of yacc.c  */
+    /* Line 2049 of yacc.c  */
 #line 45 "imap_ncsa.y"
 
-   int val;
-   double value;
-   char *id;
+    int val;
+    double value;
+    char *id;
 
 
-/* Line 2049 of yacc.c  */
+    /* Line 2049 of yacc.c  */
 #line 90 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

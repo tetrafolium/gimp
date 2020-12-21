@@ -48,13 +48,13 @@ G_BEGIN_DECLS
  * Since: 3.0
  **/
 typedef GimpValueArray * (* GimpRunSaveFunc) (GimpProcedure        *procedure,
-                                              GimpRunMode           run_mode,
-                                              GimpImage            *image,
-                                              gint                  n_drawables,
-                                              GimpDrawable        **drawables,
-                                              GFile                *file,
-                                              const GimpValueArray *args,
-                                              gpointer              run_data);
+        GimpRunMode           run_mode,
+        GimpImage            *image,
+        gint                  n_drawables,
+        GimpDrawable        **drawables,
+        GFile                *file,
+        const GimpValueArray *args,
+        gpointer              run_data);
 
 
 #define GIMP_TYPE_SAVE_PROCEDURE            (gimp_save_procedure_get_type ())
@@ -71,38 +71,38 @@ typedef struct _GimpSaveProcedurePrivate GimpSaveProcedurePrivate;
 
 struct _GimpSaveProcedure
 {
-  GimpFileProcedure         parent_instance;
+    GimpFileProcedure         parent_instance;
 
-  GimpSaveProcedurePrivate *priv;
+    GimpSaveProcedurePrivate *priv;
 };
 
 struct _GimpSaveProcedureClass
 {
-  GimpFileProcedureClass parent_class;
+    GimpFileProcedureClass parent_class;
 };
 
 
 GType           gimp_save_procedure_get_type (void) G_GNUC_CONST;
 
 GimpProcedure * gimp_save_procedure_new      (GimpPlugIn      *plug_in,
-                                              const gchar     *name,
-                                              GimpPDBProcType  proc_type,
-                                              GimpRunSaveFunc  run_func,
-                                              gpointer         run_data,
-                                              GDestroyNotify   run_data_destroy);
+        const gchar     *name,
+        GimpPDBProcType  proc_type,
+        GimpRunSaveFunc  run_func,
+        gpointer         run_data,
+        GDestroyNotify   run_data_destroy);
 
 void            gimp_save_procedure_set_support_exif      (GimpSaveProcedure *procedure,
-                                                           gboolean           supports);
+        gboolean           supports);
 void            gimp_save_procedure_set_support_iptc      (GimpSaveProcedure *procedure,
-                                                           gboolean           supports);
+        gboolean           supports);
 void            gimp_save_procedure_set_support_xmp       (GimpSaveProcedure *procedure,
-                                                           gboolean           supports);
+        gboolean           supports);
 void            gimp_save_procedure_set_support_profile   (GimpSaveProcedure *procedure,
-                                                           gboolean           supports);
+        gboolean           supports);
 void            gimp_save_procedure_set_support_thumbnail (GimpSaveProcedure *procedure,
-                                                           gboolean           supports);
+        gboolean           supports);
 void            gimp_save_procedure_set_support_comment   (GimpSaveProcedure *procedure,
-                                                            gboolean           supports);
+        gboolean           supports);
 
 gboolean        gimp_save_procedure_get_support_exif      (GimpSaveProcedure *procedure);
 gboolean        gimp_save_procedure_get_support_iptc      (GimpSaveProcedure *procedure);

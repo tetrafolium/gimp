@@ -33,9 +33,9 @@ add_widget_to_grid (GtkWidget *grid,
                     gint       col,
                     GtkWidget *w)
 {
-   gtk_grid_attach (GTK_GRID (grid), w, col, row, 1, 1);
-   gtk_widget_show (w);
-   return w;
+    gtk_grid_attach (GTK_GRID (grid), w, col, row, 1, 1);
+    gtk_widget_show (w);
+    return w;
 }
 
 GtkWidget*
@@ -47,14 +47,14 @@ create_spin_button_in_grid (GtkWidget *grid,
                             gint       min,
                             gint       max)
 {
-   GtkAdjustment *adj = gtk_adjustment_new (value, min, max, 1, 10, 0);
-   GtkWidget *button = gimp_spin_button_new (adj, 1, 0);
+    GtkAdjustment *adj = gtk_adjustment_new (value, min, max, 1, 10, 0);
+    GtkWidget *button = gimp_spin_button_new (adj, 1, 0);
 
-   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (button), TRUE);
-   if (label)
-      gtk_label_set_mnemonic_widget (GTK_LABEL (label), button);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (button), TRUE);
+    if (label)
+        gtk_label_set_mnemonic_widget (GTK_LABEL (label), button);
 
-   return add_widget_to_grid (grid, row, col, button);
+    return add_widget_to_grid (grid, row, col, button);
 }
 
 GtkWidget*
@@ -63,9 +63,9 @@ create_check_button_in_grid (GtkWidget  *grid,
                              gint        col,
                              const char *text)
 {
-   GtkWidget *button = gtk_check_button_new_with_mnemonic (text);
+    GtkWidget *button = gtk_check_button_new_with_mnemonic (text);
 
-   return add_widget_to_grid (grid, row, col, button);
+    return add_widget_to_grid (grid, row, col, button);
 }
 
 GtkWidget*
@@ -75,9 +75,9 @@ create_radio_button_in_grid (GtkWidget  *grid,
                              gint        col,
                              const char *text)
 {
-   GtkWidget *button = gtk_radio_button_new_with_mnemonic (group, text);
+    GtkWidget *button = gtk_radio_button_new_with_mnemonic (group, text);
 
-   return add_widget_to_grid (grid, row, col, button);
+    return add_widget_to_grid (grid, row, col, button);
 }
 
 GtkWidget*
@@ -86,11 +86,11 @@ create_label_in_grid (GtkWidget  *grid,
                       gint        col,
                       const char *text)
 {
-   GtkWidget *label = gtk_label_new_with_mnemonic (text);
+    GtkWidget *label = gtk_label_new_with_mnemonic (text);
 
-   gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+    gtk_label_set_xalign (GTK_LABEL (label), 0.0);
 
-   return add_widget_to_grid (grid, row, col, label);
+    return add_widget_to_grid (grid, row, col, label);
 }
 
 GtkWidget*
@@ -99,10 +99,10 @@ create_entry_in_grid (GtkWidget *grid,
                       gint       row,
                       gint       col)
 {
-   GtkWidget *entry = gtk_entry_new ();
+    GtkWidget *entry = gtk_entry_new ();
 
-   if (label)
-      gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+    if (label)
+        gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
-   return add_widget_to_grid (grid, row, col, entry);
+    return add_widget_to_grid (grid, row, col, entry);
 }

@@ -33,18 +33,18 @@
 spline_type
 new_spline (void)
 {
-  real_coordinate_type coord = { -100.0, -100.0 };
-  spline_type spline;
+    real_coordinate_type coord = { -100.0, -100.0 };
+    spline_type spline;
 
-  START_POINT (spline)
-    = CONTROL1 (spline)
-    = CONTROL2 (spline)
-    = END_POINT (spline)
-    = coord;
-  SPLINE_DEGREE (spline) = -1;
-  SPLINE_LINEARITY (spline) = 0;
+    START_POINT (spline)
+        = CONTROL1 (spline)
+          = CONTROL2 (spline)
+            = END_POINT (spline)
+              = coord;
+    SPLINE_DEGREE (spline) = -1;
+    SPLINE_LINEARITY (spline) = 0;
 
-  return spline;
+    return spline;
 }
 
 
@@ -53,21 +53,21 @@ new_spline (void)
 void
 print_spline (FILE *f, spline_type s)
 {
-  if (SPLINE_DEGREE (s) == LINEAR)
-    fprintf (f, "(%.3f,%.3f)--(%.3f,%.3f).\n",
-                START_POINT (s).x, START_POINT (s).y,
-                END_POINT (s).x, END_POINT (s).y);
+    if (SPLINE_DEGREE (s) == LINEAR)
+        fprintf (f, "(%.3f,%.3f)--(%.3f,%.3f).\n",
+                 START_POINT (s).x, START_POINT (s).y,
+                 END_POINT (s).x, END_POINT (s).y);
 
-  else if (SPLINE_DEGREE (s) == CUBIC)
-    fprintf (f, "(%.3f,%.3f)..ctrls(%.3f,%.3f)&(%.3f,%.3f)..(%.3f,%.3f).\n",
-                START_POINT (s).x, START_POINT (s).y,
-                CONTROL1 (s).x, CONTROL1 (s).y,
-                CONTROL2 (s).x, CONTROL2 (s).y,
-                END_POINT (s).x, END_POINT (s).y);
+    else if (SPLINE_DEGREE (s) == CUBIC)
+        fprintf (f, "(%.3f,%.3f)..ctrls(%.3f,%.3f)&(%.3f,%.3f)..(%.3f,%.3f).\n",
+                 START_POINT (s).x, START_POINT (s).y,
+                 CONTROL1 (s).x, CONTROL1 (s).y,
+                 CONTROL2 (s).x, CONTROL2 (s).y,
+                 END_POINT (s).x, END_POINT (s).y);
 
-  else
+    else
     {
-/*       FATAL1 ("print_spline: strange degree (%d)", SPLINE_DEGREE (s)); */
+        /*       FATAL1 ("print_spline: strange degree (%d)", SPLINE_DEGREE (s)); */
     }
 }
 
@@ -78,37 +78,37 @@ print_spline (FILE *f, spline_type s)
 real_coordinate_type
 evaluate_spline (spline_type s, real t)
 {
-  spline_type V[4];    /* We need degree+1 splines, but assert degree <= 3.  */
-  unsigned i, j;
-  real one_minus_t = 1.0 - t;
-  polynomial_degree degree = SPLINE_DEGREE (s);
+    spline_type V[4];    /* We need degree+1 splines, but assert degree <= 3.  */
+    unsigned i, j;
+    real one_minus_t = 1.0 - t;
+    polynomial_degree degree = SPLINE_DEGREE (s);
 
-  for (i = 0; i <= degree; i++)
-    V[0].v[i] = s.v[i];
+    for (i = 0; i <= degree; i++)
+        V[0].v[i] = s.v[i];
 
-  for (j = 1; j <= degree; j++)
-    for (i = 0; i <= degree - j; i++)
-      {
+    for (j = 1; j <= degree; j++)
+        for (i = 0; i <= degree - j; i++)
+        {
 #if defined (__GNUC__)
-        real_coordinate_type t1 = Pmult_scalar (V[j - 1].v[i], one_minus_t);
-        real_coordinate_type t2 = Pmult_scalar (V[j - 1].v[i + 1], t);
-        V[j].v[i] = Padd (t1, t2);
+            real_coordinate_type t1 = Pmult_scalar (V[j - 1].v[i], one_minus_t);
+            real_coordinate_type t2 = Pmult_scalar (V[j - 1].v[i + 1], t);
+            V[j].v[i] = Padd (t1, t2);
 #else
-	/* HB: the above is really nice, but is there any other compiler
-	 * supporting this ??
-	 */
-        real_coordinate_type t1;
-        real_coordinate_type t2;
-        t1.x = V[j - 1].v[i].x * one_minus_t;
-        t1.y = V[j - 1].v[i].y * one_minus_t;
-        t2.x = V[j - 1].v[i + 1].x * t;
-        t2.y = V[j - 1].v[i + 1].y * t;
-        V[j].v[i].x = t1.x + t2.x;
-        V[j].v[i].y = t1.y + t2.y;
+            /* HB: the above is really nice, but is there any other compiler
+             * supporting this ??
+             */
+            real_coordinate_type t1;
+            real_coordinate_type t2;
+            t1.x = V[j - 1].v[i].x * one_minus_t;
+            t1.y = V[j - 1].v[i].y * one_minus_t;
+            t2.x = V[j - 1].v[i + 1].x * t;
+            t2.y = V[j - 1].v[i + 1].y * t;
+            V[j].v[i].x = t1.x + t2.x;
+            V[j].v[i].y = t1.y + t2.y;
 #endif
-      }
+        }
 
-  return V[degree].v[0];
+    return V[degree].v[0];
 }
 
 
@@ -118,12 +118,12 @@ evaluate_spline (spline_type s, real t)
 spline_list_type *
 new_spline_list (void)
 {
-  spline_list_type *answer = g_new (spline_list_type, 1);
+    spline_list_type *answer = g_new (spline_list_type, 1);
 
-  SPLINE_LIST_DATA (*answer) = NULL;
-  SPLINE_LIST_LENGTH (*answer) = 0;
+    SPLINE_LIST_DATA (*answer) = NULL;
+    SPLINE_LIST_LENGTH (*answer) = 0;
 
-  return answer;
+    return answer;
 }
 
 
@@ -132,13 +132,13 @@ new_spline_list (void)
 spline_list_type *
 init_spline_list (spline_type spline)
 {
-  spline_list_type *answer = g_new (spline_list_type, 1);
+    spline_list_type *answer = g_new (spline_list_type, 1);
 
-  SPLINE_LIST_DATA (*answer) = g_new (spline_type, 1);
-  SPLINE_LIST_ELT (*answer, 0) = spline;
-  SPLINE_LIST_LENGTH (*answer) = 1;
+    SPLINE_LIST_DATA (*answer) = g_new (spline_type, 1);
+    SPLINE_LIST_ELT (*answer, 0) = spline;
+    SPLINE_LIST_LENGTH (*answer) = 1;
 
-  return answer;
+    return answer;
 }
 
 
@@ -149,8 +149,8 @@ init_spline_list (spline_type spline)
 void
 free_spline_list (spline_list_type *spline_list)
 {
-  if (SPLINE_LIST_DATA (*spline_list) != NULL)
-    safe_free ((address *) &(SPLINE_LIST_DATA (*spline_list)));
+    if (SPLINE_LIST_DATA (*spline_list) != NULL)
+        safe_free ((address *) &(SPLINE_LIST_DATA (*spline_list)));
 }
 
 
@@ -159,12 +159,12 @@ free_spline_list (spline_list_type *spline_list)
 void
 append_spline (spline_list_type *l, spline_type s)
 {
-  assert (l != NULL);
+    assert (l != NULL);
 
-  SPLINE_LIST_LENGTH (*l)++;
-  SPLINE_LIST_DATA (*l) = g_realloc (SPLINE_LIST_DATA (*l),
-                               SPLINE_LIST_LENGTH (*l) * sizeof (spline_type));
-  LAST_SPLINE_LIST_ELT (*l) = s;
+    SPLINE_LIST_LENGTH (*l)++;
+    SPLINE_LIST_DATA (*l) = g_realloc (SPLINE_LIST_DATA (*l),
+                                       SPLINE_LIST_LENGTH (*l) * sizeof (spline_type));
+    LAST_SPLINE_LIST_ELT (*l) = s;
 }
 
 
@@ -174,18 +174,18 @@ append_spline (spline_list_type *l, spline_type s)
 void
 concat_spline_lists (spline_list_type *s1, spline_list_type s2)
 {
-  unsigned this_spline;
-  unsigned new_length;
+    unsigned this_spline;
+    unsigned new_length;
 
-  assert (s1 != NULL);
+    assert (s1 != NULL);
 
-  new_length = SPLINE_LIST_LENGTH (*s1) + SPLINE_LIST_LENGTH (s2);
+    new_length = SPLINE_LIST_LENGTH (*s1) + SPLINE_LIST_LENGTH (s2);
 
-  SPLINE_LIST_DATA (*s1) = g_realloc(SPLINE_LIST_DATA (*s1),new_length * sizeof(spline_type));
+    SPLINE_LIST_DATA (*s1) = g_realloc(SPLINE_LIST_DATA (*s1),new_length * sizeof(spline_type));
 
-  for (this_spline = 0; this_spline < SPLINE_LIST_LENGTH (s2); this_spline++)
-    SPLINE_LIST_ELT (*s1, SPLINE_LIST_LENGTH (*s1)++)
-      = SPLINE_LIST_ELT (s2, this_spline);
+    for (this_spline = 0; this_spline < SPLINE_LIST_LENGTH (s2); this_spline++)
+        SPLINE_LIST_ELT (*s1, SPLINE_LIST_LENGTH (*s1)++)
+            = SPLINE_LIST_ELT (s2, this_spline);
 }
 
 
@@ -194,12 +194,12 @@ concat_spline_lists (spline_list_type *s1, spline_list_type s2)
 spline_list_array_type
 new_spline_list_array (void)
 {
-  spline_list_array_type answer;
+    spline_list_array_type answer;
 
-  SPLINE_LIST_ARRAY_DATA (answer) = NULL;
-  SPLINE_LIST_ARRAY_LENGTH (answer) = 0;
+    SPLINE_LIST_ARRAY_DATA (answer) = NULL;
+    SPLINE_LIST_ARRAY_LENGTH (answer) = 0;
 
-  return answer;
+    return answer;
 }
 
 
@@ -209,15 +209,15 @@ new_spline_list_array (void)
 void
 free_spline_list_array (spline_list_array_type *spline_list_array)
 {
-  unsigned this_list;
+    unsigned this_list;
 
-  for (this_list = 0;
-       this_list < SPLINE_LIST_ARRAY_LENGTH (*spline_list_array);
-       this_list++)
-    free_spline_list (&SPLINE_LIST_ARRAY_ELT (*spline_list_array, this_list));
+    for (this_list = 0;
+            this_list < SPLINE_LIST_ARRAY_LENGTH (*spline_list_array);
+            this_list++)
+        free_spline_list (&SPLINE_LIST_ARRAY_ELT (*spline_list_array, this_list));
 
-  if (SPLINE_LIST_ARRAY_DATA (*spline_list_array) != NULL)
-    safe_free ((address *) &(SPLINE_LIST_ARRAY_DATA (*spline_list_array)));
+    if (SPLINE_LIST_ARRAY_DATA (*spline_list_array) != NULL)
+        safe_free ((address *) &(SPLINE_LIST_ARRAY_DATA (*spline_list_array)));
 }
 
 
@@ -226,8 +226,8 @@ free_spline_list_array (spline_list_array_type *spline_list_array)
 void
 append_spline_list (spline_list_array_type *l, spline_list_type s)
 {
-  SPLINE_LIST_ARRAY_LENGTH (*l)++;
+    SPLINE_LIST_ARRAY_LENGTH (*l)++;
 
-  SPLINE_LIST_ARRAY_DATA (*l) = g_realloc(SPLINE_LIST_ARRAY_DATA (*l),(SPLINE_LIST_ARRAY_LENGTH (*l))*sizeof(spline_list_type));
-  LAST_SPLINE_LIST_ARRAY_ELT (*l) = s;
+    SPLINE_LIST_ARRAY_DATA (*l) = g_realloc(SPLINE_LIST_ARRAY_DATA (*l),(SPLINE_LIST_ARRAY_LENGTH (*l))*sizeof(spline_list_type));
+    LAST_SPLINE_LIST_ARRAY_ELT (*l) = s;
 }

@@ -173,7 +173,7 @@ extern boolean points_adjacent_p (int row1, int col1, int r2, int c2);
 
 /* Find the largest and smallest elements of an array.  */
 extern void find_bounds (real values[], unsigned value_count,
-	                 /* returned: */ real *the_min, real *the_max);
+                         /* returned: */ real *the_min, real *the_max);
 
 /* Make all the elements in the array between zero and one.  */
 extern real *map_to_unit (real * values, unsigned value_count);

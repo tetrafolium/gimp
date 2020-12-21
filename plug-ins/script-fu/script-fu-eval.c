@@ -29,44 +29,44 @@ GimpValueArray *
 script_fu_eval_run (GimpProcedure        *procedure,
                     const GimpValueArray *args)
 {
-  GString           *output = g_string_new (NULL);
-  GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
-  GimpRunMode        run_mode;
-  const gchar       *code;
+    GString           *output = g_string_new (NULL);
+    GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
+    GimpRunMode        run_mode;
+    const gchar       *code;
 
-  run_mode = GIMP_VALUES_GET_ENUM   (args, 0);
-  code     = GIMP_VALUES_GET_STRING (args, 1);
+    run_mode = GIMP_VALUES_GET_ENUM   (args, 0);
+    code     = GIMP_VALUES_GET_STRING (args, 1);
 
-  ts_set_run_mode (run_mode);
-  ts_register_output_func (ts_gstring_output_func, output);
+    ts_set_run_mode (run_mode);
+    ts_register_output_func (ts_gstring_output_func, output);
 
-  switch (run_mode)
+    switch (run_mode)
     {
     case GIMP_RUN_NONINTERACTIVE:
-      if (ts_interpret_string (code) != 0)
-        status = GIMP_PDB_EXECUTION_ERROR;
-      break;
+        if (ts_interpret_string (code) != 0)
+            status = GIMP_PDB_EXECUTION_ERROR;
+        break;
 
     case GIMP_RUN_INTERACTIVE:
     case GIMP_RUN_WITH_LAST_VALS:
-      status        = GIMP_PDB_CALLING_ERROR;
-      g_string_assign (output, _("Script-Fu evaluation mode only allows "
-                                 "non-interactive invocation"));
-      break;
+        status        = GIMP_PDB_CALLING_ERROR;
+        g_string_assign (output, _("Script-Fu evaluation mode only allows "
+                                   "non-interactive invocation"));
+        break;
 
     default:
-      break;
+        break;
     }
 
-  if (status != GIMP_PDB_SUCCESS && output->len > 0)
+    if (status != GIMP_PDB_SUCCESS && output->len > 0)
     {
-      GError *error = g_error_new_literal (0, 0,
-                                           g_string_free (output, FALSE));
+        GError *error = g_error_new_literal (0, 0,
+                                             g_string_free (output, FALSE));
 
-      return gimp_procedure_new_return_values (procedure, status, error);
+        return gimp_procedure_new_return_values (procedure, status, error);
     }
 
-  g_string_free (output, TRUE);
+    g_string_free (output, TRUE);
 
-  return gimp_procedure_new_return_values (procedure, status, NULL);
+    return gimp_procedure_new_return_values (procedure, status, NULL);
 }

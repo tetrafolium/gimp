@@ -37,10 +37,10 @@
 
 struct _GimpHelpProgress
 {
-  GimpHelpProgressVTable  vtable;
-  gpointer                user_data;
+    GimpHelpProgressVTable  vtable;
+    gpointer                user_data;
 
-  GCancellable           *cancellable;
+    GCancellable           *cancellable;
 };
 
 
@@ -48,42 +48,42 @@ GimpHelpProgress *
 gimp_help_progress_new (const GimpHelpProgressVTable *vtable,
                         gpointer                      user_data)
 {
-  GimpHelpProgress *progress;
+    GimpHelpProgress *progress;
 
-  g_return_val_if_fail (vtable != NULL, NULL);
+    g_return_val_if_fail (vtable != NULL, NULL);
 
-  progress = g_slice_new0 (GimpHelpProgress);
+    progress = g_slice_new0 (GimpHelpProgress);
 
-  progress->vtable.start     = vtable->start;
-  progress->vtable.end       = vtable->end;
-  progress->vtable.set_value = vtable->set_value;
+    progress->vtable.start     = vtable->start;
+    progress->vtable.end       = vtable->end;
+    progress->vtable.set_value = vtable->set_value;
 
-  progress->user_data        = user_data;
+    progress->user_data        = user_data;
 
-  return progress;
+    return progress;
 }
 
 void
 gimp_help_progress_free (GimpHelpProgress *progress)
 {
-  g_return_if_fail (progress != NULL);
+    g_return_if_fail (progress != NULL);
 
-  if (progress->cancellable)
+    if (progress->cancellable)
     {
-      g_object_unref (progress->cancellable);
-      progress->cancellable = NULL;
+        g_object_unref (progress->cancellable);
+        progress->cancellable = NULL;
     }
 
-  g_slice_free (GimpHelpProgress, progress);
+    g_slice_free (GimpHelpProgress, progress);
 }
 
 void
 gimp_help_progress_cancel (GimpHelpProgress *progress)
 {
-  g_return_if_fail (progress != NULL);
+    g_return_if_fail (progress != NULL);
 
-  if (progress->cancellable)
-    g_cancellable_cancel (progress->cancellable);
+    if (progress->cancellable)
+        g_cancellable_cancel (progress->cancellable);
 }
 
 
@@ -93,58 +93,58 @@ _gimp_help_progress_start (GimpHelpProgress *progress,
                            const gchar      *format,
                            ...)
 {
-  gchar   *message;
-  va_list  args;
+    gchar   *message;
+    va_list  args;
 
-  g_return_if_fail (progress != NULL);
+    g_return_if_fail (progress != NULL);
 
-  if (cancellable)
-    g_object_ref (cancellable);
+    if (cancellable)
+        g_object_ref (cancellable);
 
-  if (progress->cancellable)
-    g_object_unref (progress->cancellable);
+    if (progress->cancellable)
+        g_object_unref (progress->cancellable);
 
-  progress->cancellable = cancellable;
+    progress->cancellable = cancellable;
 
-  va_start (args, format);
-  message = g_strdup_vprintf (format, args);
-  va_end (args);
+    va_start (args, format);
+    message = g_strdup_vprintf (format, args);
+    va_end (args);
 
-  if (progress->vtable.start)
-    progress->vtable.start (message, cancellable != NULL, progress->user_data);
+    if (progress->vtable.start)
+        progress->vtable.start (message, cancellable != NULL, progress->user_data);
 
-  g_free (message);
+    g_free (message);
 }
 
 void
 _gimp_help_progress_update (GimpHelpProgress *progress,
                             gdouble           percentage)
 {
-  g_return_if_fail (progress != NULL);
+    g_return_if_fail (progress != NULL);
 
-  if (progress->vtable.set_value)
-    progress->vtable.set_value (percentage, progress->user_data);
+    if (progress->vtable.set_value)
+        progress->vtable.set_value (percentage, progress->user_data);
 }
 
 void
 _gimp_help_progress_pulse (GimpHelpProgress *progress)
 {
-  g_return_if_fail (progress != NULL);
+    g_return_if_fail (progress != NULL);
 
-  _gimp_help_progress_update (progress, -1.0);
+    _gimp_help_progress_update (progress, -1.0);
 }
 
 void
 _gimp_help_progress_finish (GimpHelpProgress *progress)
 {
-  g_return_if_fail (progress != NULL);
+    g_return_if_fail (progress != NULL);
 
-  if (progress->vtable.end)
-    progress->vtable.end (progress->user_data);
+    if (progress->vtable.end)
+        progress->vtable.end (progress->user_data);
 
-  if (progress->cancellable)
+    if (progress->cancellable)
     {
-      g_object_unref (progress->cancellable);
-      progress->cancellable = NULL;
+        g_object_unref (progress->cancellable);
+        progress->cancellable = NULL;
     }
 }

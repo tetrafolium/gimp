@@ -9,10 +9,10 @@ GimpRGB get_ray_color_ref             (GimpVector3 *position);
 GimpRGB get_ray_color_no_bilinear_ref (GimpVector3 *position);
 
 void    precompute_init               (gint         w,
-				       gint         h);
+                                       gint         h);
 void    precompute_normals            (gint         x1,
-				       gint         x2,
-				       gint         y);
+                                       gint         x2,
+                                       gint         y);
 void    interpol_row                  (gint         x1,
                                        gint         x2,
                                        gint         y);

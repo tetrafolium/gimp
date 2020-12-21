@@ -47,33 +47,33 @@ static gboolean      be_verbose   = FALSE;
 
 static const GOptionEntry entries[] =
 {
-  { "version", 'v', 0,
-    G_OPTION_ARG_CALLBACK, (GOptionArgFunc) show_version,
-    "Show version information and exit", NULL
-  },
-  { "base", 'b', 0,
-    G_OPTION_ARG_STRING, &help_base,
-    "Specifies base URI", "URI"
-  },
-  { "root", 'r', 0,
-    G_OPTION_ARG_FILENAME, &help_root,
-    "Specifies root directory for index files", "DIR"
-  },
-  { "lang", 'l', 0,
-    G_OPTION_ARG_STRING, &help_locales,
-    "Specifies help language", "LANG"
-  },
-  {
-    "verbose", 0, 0,
-    G_OPTION_ARG_NONE, &be_verbose,
-    "Be more verbose", NULL
-  },
-  {
-    G_OPTION_REMAINING, 0, 0,
-    G_OPTION_ARG_STRING_ARRAY, &help_ids,
-    NULL, NULL
-  },
-  { NULL }
+    {   "version", 'v', 0,
+        G_OPTION_ARG_CALLBACK, (GOptionArgFunc) show_version,
+        "Show version information and exit", NULL
+    },
+    {   "base", 'b', 0,
+        G_OPTION_ARG_STRING, &help_base,
+        "Specifies base URI", "URI"
+    },
+    {   "root", 'r', 0,
+        G_OPTION_ARG_FILENAME, &help_root,
+        "Specifies root directory for index files", "DIR"
+    },
+    {   "lang", 'l', 0,
+        G_OPTION_ARG_STRING, &help_locales,
+        "Specifies help language", "LANG"
+    },
+    {
+        "verbose", 0, 0,
+        G_OPTION_ARG_NONE, &be_verbose,
+        "Be more verbose", NULL
+    },
+    {
+        G_OPTION_REMAINING, 0, 0,
+        G_OPTION_ARG_STRING_ARRAY, &help_ids,
+        NULL, NULL
+    },
+    { NULL }
 };
 
 
@@ -81,45 +81,45 @@ gint
 main (gint   argc,
       gchar *argv[])
 {
-  GOptionContext *context;
-  gchar          *uri;
-  GError         *error = NULL;
+    GOptionContext *context;
+    gchar          *uri;
+    GError         *error = NULL;
 
-  help_base = g_getenv (GIMP_HELP_ENV_URI);
-  help_root = g_build_filename (gimp_data_directory (), GIMP_HELP_PREFIX, NULL);
+    help_base = g_getenv (GIMP_HELP_ENV_URI);
+    help_root = g_build_filename (gimp_data_directory (), GIMP_HELP_PREFIX, NULL);
 
-  context = g_option_context_new ("HELP-ID");
-  g_option_context_add_main_entries (context, entries, NULL);
+    context = g_option_context_new ("HELP-ID");
+    g_option_context_add_main_entries (context, entries, NULL);
 
-  if (! g_option_context_parse (context, &argc, &argv, &error))
+    if (! g_option_context_parse (context, &argc, &argv, &error))
     {
-      g_print ("%s\n", error->message);
-      g_error_free (error);
-      return EXIT_FAILURE;
+        g_print ("%s\n", error->message);
+        g_error_free (error);
+        return EXIT_FAILURE;
     }
 
-  if (help_base)
-    uri = g_strdup (help_base);
-  else
-    uri = g_filename_to_uri (help_root, NULL, NULL);
+    if (help_base)
+        uri = g_strdup (help_base);
+    else
+        uri = g_filename_to_uri (help_root, NULL, NULL);
 
-  gimp_help_register_domain (GIMP_HELP_DEFAULT_DOMAIN, uri);
-  g_free (uri);
+    gimp_help_register_domain (GIMP_HELP_DEFAULT_DOMAIN, uri);
+    g_free (uri);
 
-  uri = lookup (GIMP_HELP_DEFAULT_DOMAIN,
-                help_locales ? help_locales : GIMP_HELP_DEFAULT_LOCALE,
-                help_ids     ? help_ids[0]  : GIMP_HELP_DEFAULT_ID);
+    uri = lookup (GIMP_HELP_DEFAULT_DOMAIN,
+                  help_locales ? help_locales : GIMP_HELP_DEFAULT_LOCALE,
+                  help_ids     ? help_ids[0]  : GIMP_HELP_DEFAULT_ID);
 
-  if (uri)
+    if (uri)
     {
-      g_print ("%s\n", uri);
-      g_free (uri);
+        g_print ("%s\n", uri);
+        g_free (uri);
     }
 
-  g_option_context_free (context);
-  g_free (help_root);
+    g_option_context_free (context);
+    g_free (help_root);
 
-  return uri ? EXIT_SUCCESS : EXIT_FAILURE;
+    return uri ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 static gchar *
@@ -127,33 +127,33 @@ lookup (const gchar *help_domain,
         const gchar *help_locales,
         const gchar *help_id)
 {
-  GimpHelpDomain *domain = gimp_help_lookup_domain (help_domain);
+    GimpHelpDomain *domain = gimp_help_lookup_domain (help_domain);
 
-  if (domain)
+    if (domain)
     {
-      GimpHelpProgress *progress = progress_new ();
-      GList            *locales;
-      gchar            *full_uri;
+        GimpHelpProgress *progress = progress_new ();
+        GList            *locales;
+        gchar            *full_uri;
 
-      locales  = gimp_help_parse_locales (help_locales);
-      full_uri = gimp_help_domain_map (domain, locales, help_id, progress,
-                                       NULL, NULL);
+        locales  = gimp_help_parse_locales (help_locales);
+        full_uri = gimp_help_domain_map (domain, locales, help_id, progress,
+                                         NULL, NULL);
 
-      gimp_help_progress_free (progress);
+        gimp_help_progress_free (progress);
 
-      g_list_free_full (locales, (GDestroyNotify) g_free);
+        g_list_free_full (locales, (GDestroyNotify) g_free);
 
-      return full_uri;
+        return full_uri;
     }
 
-  return NULL;
+    return NULL;
 }
 
 static void
 show_version (void)
 {
-  g_print ("gimp-help-lookup version %s\n", GIMP_VERSION);
-  exit (EXIT_SUCCESS);
+    g_print ("gimp-help-lookup version %s\n", GIMP_VERSION);
+    exit (EXIT_SUCCESS);
 }
 
 
@@ -162,34 +162,34 @@ progress_start (const gchar *message,
                 gboolean     cancelable,
                 gpointer     user_data)
 {
-  if (be_verbose)
-    g_printerr ("\n%s\n", message);
+    if (be_verbose)
+        g_printerr ("\n%s\n", message);
 }
 
 static void
 progress_end (gpointer user_data)
 {
-  if (be_verbose)
-    g_printerr ("done\n");
+    if (be_verbose)
+        g_printerr ("done\n");
 }
 
 static void
 progress_set_value (gdouble  percentage,
                     gpointer user_data)
 {
-  if (be_verbose)
-    g_printerr (".");
+    if (be_verbose)
+        g_printerr (".");
 }
 
 static GimpHelpProgress *
 progress_new (void)
 {
-  const GimpHelpProgressVTable vtable =
+    const GimpHelpProgressVTable vtable =
     {
-      progress_start,
-      progress_end,
-      progress_set_value
+        progress_start,
+        progress_end,
+        progress_set_value
     };
 
-  return gimp_help_progress_new (&vtable, NULL);
+    return gimp_help_progress_new (&vtable, NULL);
 }

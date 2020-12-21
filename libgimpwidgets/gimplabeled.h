@@ -33,38 +33,38 @@ G_DECLARE_DERIVABLE_TYPE (GimpLabeled, gimp_labeled, GIMP, LABELED, GtkGrid)
 
 struct _GimpLabeledClass
 {
-  GtkGridClass       parent_class;
+    GtkGridClass       parent_class;
 
-  /*  Class methods  */
+    /*  Class methods  */
 
-  /**
-   * GimpLabelledClass::populate:
-   *
-   * Fill the #GtkGrid with any necessary widget and sets the
-   * coordinates and dimensions the #GtkLabel should be attached to.
-   * By default, @x, @y, @width and @height will be pre-filled with 0,
-   * 0, 1 and 1 respectively, i.e. the top-left of the grid. There is no
-   * need to edit these output variables unless your subclass wants the
-   * label to be placed elsewhere.
-   *
-   * Returns: (transfer none): the #GtkWidget which the label must be
-   *                           set as mnemonic to.
-   **/
-  GtkWidget     * (* populate) (GimpLabeled *labeled,
-                                gint        *x,
-                                gint        *y,
-                                gint        *width,
-                                gint        *height);
+    /**
+     * GimpLabelledClass::populate:
+     *
+     * Fill the #GtkGrid with any necessary widget and sets the
+     * coordinates and dimensions the #GtkLabel should be attached to.
+     * By default, @x, @y, @width and @height will be pre-filled with 0,
+     * 0, 1 and 1 respectively, i.e. the top-left of the grid. There is no
+     * need to edit these output variables unless your subclass wants the
+     * label to be placed elsewhere.
+     *
+     * Returns: (transfer none): the #GtkWidget which the label must be
+     *                           set as mnemonic to.
+     **/
+    GtkWidget     * (* populate) (GimpLabeled *labeled,
+                                  gint        *x,
+                                  gint        *y,
+                                  gint        *width,
+                                  gint        *height);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 GtkWidget     * gimp_labeled_get_label (GimpLabeled *labeled);

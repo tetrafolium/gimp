@@ -25,7 +25,7 @@
 
 struct _GimpChannelPrivate
 {
-  gpointer unused;
+    gpointer unused;
 };
 
 
@@ -42,7 +42,7 @@ gimp_channel_class_init (GimpChannelClass *klass)
 static void
 gimp_channel_init (GimpChannel *channel)
 {
-  channel->priv = gimp_channel_get_instance_private (channel);
+    channel->priv = gimp_channel_get_instance_private (channel);
 }
 
 /**
@@ -63,12 +63,12 @@ gimp_channel_init (GimpChannel *channel)
 GimpChannel *
 gimp_channel_get_by_id (gint32 channel_id)
 {
-  GimpItem *item = gimp_item_get_by_id (channel_id);
+    GimpItem *item = gimp_item_get_by_id (channel_id);
 
-  if (GIMP_IS_CHANNEL (item))
-    return (GimpChannel *) item;
+    if (GIMP_IS_CHANNEL (item))
+        return (GimpChannel *) item;
 
-  return NULL;
+    return NULL;
 }
 
 /**
@@ -101,10 +101,10 @@ gimp_channel_new (GimpImage     *image,
                   gdouble        opacity,
                   const GimpRGB *color)
 {
-  return _gimp_channel_new (image,
-                            width,
-                            height,
-                            name,
-                            opacity,
-                            color);
+    return _gimp_channel_new (image,
+                              width,
+                              height,
+                              name,
+                              opacity,
+                              color);
 }

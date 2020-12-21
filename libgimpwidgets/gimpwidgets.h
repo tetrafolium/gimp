@@ -111,7 +111,7 @@ GtkWidget * gimp_int_radio_group_new (gboolean          in_frame,
                                       ...) G_GNUC_NULL_TERMINATED;
 
 void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
-                                             gint            item_data);
+        gint            item_data);
 
 
 /**
@@ -187,22 +187,22 @@ GtkWidget * gimp_coordinates_new   (GimpUnit            unit,
  */
 
 void gimp_toggle_button_update           (GtkWidget       *widget,
-                                          gpointer         data);
+        gpointer         data);
 
 void gimp_radio_button_update            (GtkWidget       *widget,
-                                          gpointer         data);
+        gpointer         data);
 
 void gimp_int_adjustment_update          (GtkAdjustment   *adjustment,
-                                          gpointer         data);
+        gpointer         data);
 
 void gimp_uint_adjustment_update         (GtkAdjustment   *adjustment,
-                                          gpointer         data);
+        gpointer         data);
 
 void gimp_float_adjustment_update        (GtkAdjustment   *adjustment,
-                                          gpointer         data);
+        gpointer         data);
 
 void gimp_double_adjustment_update       (GtkAdjustment   *adjustment,
-                                          gpointer         data);
+        gpointer         data);
 
 
 G_END_DECLS

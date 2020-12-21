@@ -45,44 +45,44 @@ typedef struct _GimpPatternSelectButtonClass   GimpPatternSelectButtonClass;
 
 struct _GimpPatternSelectButton
 {
-  GimpSelectButton                parent_instance;
+    GimpSelectButton                parent_instance;
 
-  GimpPatternSelectButtonPrivate *priv;
+    GimpPatternSelectButtonPrivate *priv;
 };
 
 struct _GimpPatternSelectButtonClass
 {
-  GimpSelectButtonClass  parent_class;
+    GimpSelectButtonClass  parent_class;
 
-  /* pattern_set signal is emitted when pattern is chosen */
-  void (* pattern_set) (GimpPatternSelectButton *button,
-                        const gchar             *pattern_name,
-                        gint                     width,
-                        gint                     height,
-                        gint                     bpp,
-                        const guchar            *mask_data,
-                        gboolean                 dialog_closing);
+    /* pattern_set signal is emitted when pattern is chosen */
+    void (* pattern_set) (GimpPatternSelectButton *button,
+                          const gchar             *pattern_name,
+                          gint                     width,
+                          gint                     height,
+                          gint                     bpp,
+                          const guchar            *mask_data,
+                          gboolean                 dialog_closing);
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 
 GType         gimp_pattern_select_button_get_type    (void) G_GNUC_CONST;
 
 GtkWidget   * gimp_pattern_select_button_new         (const gchar *title,
-                                                      const gchar *pattern_name);
+        const gchar *pattern_name);
 
 const gchar * gimp_pattern_select_button_get_pattern (GimpPatternSelectButton *button);
 void          gimp_pattern_select_button_set_pattern (GimpPatternSelectButton *button,
-                                                      const gchar             *pattern_name);
+        const gchar             *pattern_name);
 
 
 G_END_DECLS

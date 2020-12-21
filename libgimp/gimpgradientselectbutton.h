@@ -45,42 +45,42 @@ typedef struct _GimpGradientSelectButtonClass   GimpGradientSelectButtonClass;
 
 struct _GimpGradientSelectButton
 {
-  GimpSelectButton                 parent_instance;
+    GimpSelectButton                 parent_instance;
 
-  GimpGradientSelectButtonPrivate *priv;
+    GimpGradientSelectButtonPrivate *priv;
 };
 
 struct _GimpGradientSelectButtonClass
 {
-  GimpSelectButtonClass  parent_class;
+    GimpSelectButtonClass  parent_class;
 
-  /* gradient_set signal is emitted when gradient is chosen */
-  void (* gradient_set) (GimpGradientSelectButton *button,
-                         const gchar              *gradient_name,
-                         gint                      width,
-                         const gdouble            *gradient_data,
-                         gboolean                  dialog_closing);
+    /* gradient_set signal is emitted when gradient is chosen */
+    void (* gradient_set) (GimpGradientSelectButton *button,
+                           const gchar              *gradient_name,
+                           gint                      width,
+                           const gdouble            *gradient_data,
+                           gboolean                  dialog_closing);
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 
 GType         gimp_gradient_select_button_get_type     (void) G_GNUC_CONST;
 
 GtkWidget   * gimp_gradient_select_button_new          (const gchar *title,
-                                                        const gchar *gradient_name);
+        const gchar *gradient_name);
 
 const gchar * gimp_gradient_select_button_get_gradient (GimpGradientSelectButton *button);
 void          gimp_gradient_select_button_set_gradient (GimpGradientSelectButton *button,
-                                                        const gchar              *gradient_name);
+        const gchar              *gradient_name);
 
 
 G_END_DECLS

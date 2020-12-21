@@ -26,17 +26,17 @@
 #include <libgimp/gimp.h>
 
 typedef struct {
-  GimpDrawable *drawable;
-  GtkWidget    *window;
-  GtkWidget    *preview;
-  GtkWidget    *hruler;
-  GtkWidget    *vruler;
-  gint         width;
-  gint         height;
-  gint         widget_width;
-  gint         widget_height;
+    GimpDrawable *drawable;
+    GtkWidget    *window;
+    GtkWidget    *preview;
+    GtkWidget    *hruler;
+    GtkWidget    *vruler;
+    gint         width;
+    gint         height;
+    gint         widget_width;
+    gint         widget_height;
 
-   GdkCursorType cursor;
+    GdkCursorType cursor;
 } Preview_t;
 
 Preview_t *make_preview(GimpDrawable *drawable);

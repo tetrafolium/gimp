@@ -44,24 +44,24 @@ typedef struct _GimpAspectPreviewClass   GimpAspectPreviewClass;
 
 struct _GimpAspectPreview
 {
-  GimpPreview               parent_instance;
+    GimpPreview               parent_instance;
 
-  GimpAspectPreviewPrivate *priv;
+    GimpAspectPreviewPrivate *priv;
 };
 
 struct _GimpAspectPreviewClass
 {
-  GimpPreviewClass  parent_class;
+    GimpPreviewClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 

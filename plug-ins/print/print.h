@@ -24,33 +24,33 @@
 
 typedef enum
 {
-  GIMP_PLUGIN_PRINT_ERROR_FAILED
+    GIMP_PLUGIN_PRINT_ERROR_FAILED
 } GimpPluginPrintError;
 
 GQuark gimp_plugin_print_error_quark (void);
 
 typedef enum
 {
-  CENTER_NONE         = 0,
-  CENTER_HORIZONTALLY = 1,
-  CENTER_VERTICALLY   = 2,
-  CENTER_BOTH         = 3
+    CENTER_NONE         = 0,
+    CENTER_HORIZONTALLY = 1,
+    CENTER_VERTICALLY   = 2,
+    CENTER_BOTH         = 3
 } PrintCenterMode;
 
 typedef struct
 {
-  GimpImage          *image;
-  GimpDrawable       *drawable;
-  GimpUnit            unit;
-  gdouble             xres;
-  gdouble             yres;
-  gdouble             min_xres;
-  gdouble             min_yres;
-  GimpUnit            image_unit;
-  gdouble             offset_x;
-  gdouble             offset_y;
-  PrintCenterMode     center;
-  gboolean            use_full_page;
-  gboolean            draw_crop_marks;
-  GtkPrintOperation  *operation;
+    GimpImage          *image;
+    GimpDrawable       *drawable;
+    GimpUnit            unit;
+    gdouble             xres;
+    gdouble             yres;
+    gdouble             min_xres;
+    gdouble             min_yres;
+    GimpUnit            image_unit;
+    gdouble             offset_x;
+    gdouble             offset_y;
+    PrintCenterMode     center;
+    gboolean            use_full_page;
+    gboolean            draw_crop_marks;
+    GtkPrintOperation  *operation;
 } PrintData;

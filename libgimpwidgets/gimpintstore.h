@@ -43,13 +43,13 @@ G_BEGIN_DECLS
  **/
 typedef enum
 {
-  GIMP_INT_STORE_VALUE,
-  GIMP_INT_STORE_LABEL,
-  GIMP_INT_STORE_ABBREV,
-  GIMP_INT_STORE_ICON_NAME,
-  GIMP_INT_STORE_PIXBUF,
-  GIMP_INT_STORE_USER_DATA,
-  GIMP_INT_STORE_NUM_COLUMNS
+    GIMP_INT_STORE_VALUE,
+    GIMP_INT_STORE_LABEL,
+    GIMP_INT_STORE_ABBREV,
+    GIMP_INT_STORE_ICON_NAME,
+    GIMP_INT_STORE_PIXBUF,
+    GIMP_INT_STORE_USER_DATA,
+    GIMP_INT_STORE_NUM_COLUMNS
 } GimpIntStoreColumns;
 
 
@@ -66,42 +66,42 @@ typedef struct _GimpIntStoreClass   GimpIntStoreClass;
 
 struct _GimpIntStore
 {
-  GtkListStore         parent_instance;
+    GtkListStore         parent_instance;
 
-  GimpIntStorePrivate *priv;
+    GimpIntStorePrivate *priv;
 };
 
 struct _GimpIntStoreClass
 {
-  GtkListStoreClass  parent_class;
+    GtkListStoreClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType          gimp_int_store_get_type        (void) G_GNUC_CONST;
 
 GtkListStore * gimp_int_store_new             (const gchar   *first_label,
-                                               gint           first_value,
-                                               ...) G_GNUC_NULL_TERMINATED;
+        gint           first_value,
+        ...) G_GNUC_NULL_TERMINATED;
 GtkListStore * gimp_int_store_new_valist      (const gchar   *first_label,
-                                               gint           first_value,
-                                               va_list        values);
+        gint           first_value,
+        va_list        values);
 
 gboolean       gimp_int_store_lookup_by_value (GtkTreeModel  *model,
-                                               gint           value,
-                                               GtkTreeIter   *iter);
+        gint           value,
+        GtkTreeIter   *iter);
 gboolean   gimp_int_store_lookup_by_user_data (GtkTreeModel  *model,
-                                               gpointer       user_data,
-                                               GtkTreeIter   *iter);
+        gpointer       user_data,
+        GtkTreeIter   *iter);
 
 
 G_END_DECLS

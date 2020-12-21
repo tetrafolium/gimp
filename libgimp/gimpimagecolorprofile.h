@@ -32,14 +32,14 @@ G_BEGIN_DECLS
 
 GimpColorProfile * gimp_image_get_color_profile           (GimpImage                 *image);
 gboolean           gimp_image_set_color_profile           (GimpImage                 *image,
-                                                           GimpColorProfile          *profile);
+        GimpColorProfile          *profile);
 
 GimpColorProfile * gimp_image_get_effective_color_profile (GimpImage                 *image);
 
 gboolean           gimp_image_convert_color_profile       (GimpImage                 *image,
-                                                           GimpColorProfile          *profile,
-                                                           GimpColorRenderingIntent   intent,
-                                                           gboolean                   bpc);
+        GimpColorProfile          *profile,
+        GimpColorRenderingIntent   intent,
+        gboolean                   bpc);
 
 
 G_END_DECLS

@@ -28,8 +28,8 @@
 #define DEFAULT_MRU_SIZE 4
 
 typedef struct {
-   GList       *list;
-   gint         max_size;
+    GList       *list;
+    gint         max_size;
 } MRU_t;
 
 MRU_t* mru_create(void);

@@ -33,52 +33,52 @@ static CmdExecuteValue_t copy_object_command_execute(Command_t *parent);
 static void copy_object_command_undo(Command_t *parent);
 
 static CommandClass_t copy_object_command_class = {
-   copy_object_command_destruct,
-   copy_object_command_execute,
-   copy_object_command_undo,
-   NULL                         /* copy_object_command_redo */
+    copy_object_command_destruct,
+    copy_object_command_execute,
+    copy_object_command_undo,
+    NULL                         /* copy_object_command_redo */
 };
 
 typedef struct {
-   Command_t parent;
-   Object_t     *obj;
-   ObjectList_t *paste_buffer;
+    Command_t parent;
+    Object_t     *obj;
+    ObjectList_t *paste_buffer;
 } CopyObjectCommand_t;
 
 Command_t*
 copy_object_command_new(Object_t *obj)
 {
-   CopyObjectCommand_t *command = g_new(CopyObjectCommand_t, 1);
-   command->obj = object_ref(obj);
-   command->paste_buffer = NULL;
-   return command_init(&command->parent, _("Copy"),
-                       &copy_object_command_class);
+    CopyObjectCommand_t *command = g_new(CopyObjectCommand_t, 1);
+    command->obj = object_ref(obj);
+    command->paste_buffer = NULL;
+    return command_init(&command->parent, _("Copy"),
+                        &copy_object_command_class);
 }
 
 static void
 copy_object_command_destruct(Command_t *parent)
 {
-   CopyObjectCommand_t *command = (CopyObjectCommand_t*) parent;
-   object_unref(command->obj);
+    CopyObjectCommand_t *command = (CopyObjectCommand_t*) parent;
+    object_unref(command->obj);
 }
 
 static CmdExecuteValue_t
 copy_object_command_execute(Command_t *parent)
 {
-   CopyObjectCommand_t *command = (CopyObjectCommand_t*) parent;
-   ObjectList_t *paste_buffer = get_paste_buffer();
+    CopyObjectCommand_t *command = (CopyObjectCommand_t*) parent;
+    ObjectList_t *paste_buffer = get_paste_buffer();
 
-   command->paste_buffer = object_list_copy(command->paste_buffer,
-                                            paste_buffer);
-   clear_paste_buffer();
-   object_list_append(paste_buffer, object_clone(command->obj));
+    command->paste_buffer = object_list_copy(command->paste_buffer,
+                            paste_buffer);
+    clear_paste_buffer();
+    object_list_append(paste_buffer, object_clone(command->obj));
 
-   return CMD_APPEND;
+    return CMD_APPEND;
 }
 
 static void
 copy_object_command_undo(Command_t *parent)
 {
-   CopyObjectCommand_t *command = (CopyObjectCommand_t*) parent;
-   object_list_copy(get_paste_buffer(), command->paste_buffer);
+    CopyObjectCommand_t *command = (CopyObjectCommand_t*) parent;
+    object_list_copy(get_paste_buffer(), command->paste_buffer);
 }

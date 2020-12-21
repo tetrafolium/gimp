@@ -33,7 +33,7 @@
 
 typedef enum
 {
-  top = 1, left = 2, bottom = 3, right = 0, no_edge = 4
+    top = 1, left = 2, bottom = 3, right = 0, no_edge = 4
 } edge_type;
 
 /* This choice is also not arbitrary: starting at the top edge makes the
@@ -44,13 +44,13 @@ typedef enum
 
 /* Return the next outline edge on B in EDGE, ROW, and COL.  */
 extern void next_outline_edge (edge_type *edge,
-	   	   	       unsigned *row, unsigned *col);
+                               unsigned *row, unsigned *col);
 
 /* Return the next edge after START on the pixel ROW/COL in B that is
    unmarked, according to the MARKED array.  */
 extern edge_type next_unmarked_outline_edge (unsigned row, unsigned col,
-                                             edge_type start,
-                                             bitmap_type marked);
+        edge_type start,
+        bitmap_type marked);
 
 /* Mark the edge E at the pixel ROW/COL in MARKED.  */
 extern void mark_edge (edge_type e, unsigned row, unsigned col,

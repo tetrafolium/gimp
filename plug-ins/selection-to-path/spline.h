@@ -27,7 +27,7 @@
 /* Third degree is the highest we deal with.  */
 typedef enum
 {
-  LINEAR = 1, QUADRATIC = 2, CUBIC = 3
+    LINEAR = 1, QUADRATIC = 2, CUBIC = 3
 } polynomial_degree;
 
 
@@ -38,9 +38,9 @@ typedef enum
    straight line defined by the endpoints.  */
 typedef struct
 {
-  real_coordinate_type v[4];	/* The control points.  */
-  polynomial_degree degree;
-  real linearity;
+    real_coordinate_type v[4];	/* The control points.  */
+    polynomial_degree degree;
+    real linearity;
 } spline_type;
 
 #define START_POINT(spl)	((spl).v[0])
@@ -64,8 +64,8 @@ extern real_coordinate_type evaluate_spline (spline_type spline, real t);
    splines.  So, here is a list structure for that:  */
 typedef struct
 {
-  spline_type *data;
-  unsigned length;
+    spline_type *data;
+    unsigned length;
 } spline_list_type;
 
 /* An empty list will have length zero (and null data).  */
@@ -105,8 +105,8 @@ extern void concat_spline_lists (spline_list_type *s1, spline_list_type s2);
    more list structure.  */
 typedef struct
 {
-  spline_list_type *data;
-  unsigned length;
+    spline_list_type *data;
+    unsigned length;
 } spline_list_array_type;
 
 /* Turns out we can use the same definitions for lists of lists as for

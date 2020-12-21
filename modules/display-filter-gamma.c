@@ -44,50 +44,50 @@ typedef struct _CdisplayGammaClass CdisplayGammaClass;
 
 struct _CdisplayGamma
 {
-  GimpColorDisplay  parent_instance;
+    GimpColorDisplay  parent_instance;
 
-  gdouble           gamma;
+    gdouble           gamma;
 };
 
 struct _CdisplayGammaClass
 {
-  GimpColorDisplayClass  parent_instance;
+    GimpColorDisplayClass  parent_instance;
 };
 
 
 enum
 {
-  PROP_0,
-  PROP_GAMMA
+    PROP_0,
+    PROP_GAMMA
 };
 
 
 static GType       cdisplay_gamma_get_type        (void);
 
 static void        cdisplay_gamma_set_property    (GObject            *object,
-                                                   guint               property_id,
-                                                   const GValue       *value,
-                                                   GParamSpec         *pspec);
+        guint               property_id,
+        const GValue       *value,
+        GParamSpec         *pspec);
 static void        cdisplay_gamma_get_property    (GObject            *object,
-                                                   guint               property_id,
-                                                   GValue             *value,
-                                                   GParamSpec         *pspec);
+        guint               property_id,
+        GValue             *value,
+        GParamSpec         *pspec);
 
 static void        cdisplay_gamma_convert_buffer  (GimpColorDisplay   *display,
-                                                   GeglBuffer         *buffer,
-                                                   GeglRectangle      *area);
+        GeglBuffer         *buffer,
+        GeglRectangle      *area);
 static void        cdisplay_gamma_set_gamma       (CdisplayGamma      *gamma,
-                                                   gdouble             value);
+        gdouble             value);
 
 
 static const GimpModuleInfo cdisplay_gamma_info =
 {
-  GIMP_MODULE_ABI_VERSION,
-  N_("Gamma color display filter"),
-  "Manish Singh <yosh@gimp.org>",
-  "v0.2",
-  "(c) 1999, released under the GPL",
-  "October 14, 2000"
+    GIMP_MODULE_ABI_VERSION,
+    N_("Gamma color display filter"),
+    "Manish Singh <yosh@gimp.org>",
+    "v0.2",
+    "(c) 1999, released under the GPL",
+    "October 14, 2000"
 };
 
 
@@ -98,38 +98,38 @@ G_DEFINE_DYNAMIC_TYPE (CdisplayGamma, cdisplay_gamma,
 G_MODULE_EXPORT const GimpModuleInfo *
 gimp_module_query (GTypeModule *module)
 {
-  return &cdisplay_gamma_info;
+    return &cdisplay_gamma_info;
 }
 
 G_MODULE_EXPORT gboolean
 gimp_module_register (GTypeModule *module)
 {
-  cdisplay_gamma_register_type (module);
+    cdisplay_gamma_register_type (module);
 
-  return TRUE;
+    return TRUE;
 }
 
 static void
 cdisplay_gamma_class_init (CdisplayGammaClass *klass)
 {
-  GObjectClass          *object_class  = G_OBJECT_CLASS (klass);
-  GimpColorDisplayClass *display_class = GIMP_COLOR_DISPLAY_CLASS (klass);
+    GObjectClass          *object_class  = G_OBJECT_CLASS (klass);
+    GimpColorDisplayClass *display_class = GIMP_COLOR_DISPLAY_CLASS (klass);
 
-  object_class->get_property     = cdisplay_gamma_get_property;
-  object_class->set_property     = cdisplay_gamma_set_property;
+    object_class->get_property     = cdisplay_gamma_get_property;
+    object_class->set_property     = cdisplay_gamma_set_property;
 
-  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_GAMMA,
-                           "gamma",
-                           _("Gamma"),
-                           NULL,
-                           0.01, 10.0, DEFAULT_GAMMA,
-                           0);
+    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_GAMMA,
+                             "gamma",
+                             _("Gamma"),
+                             NULL,
+                             0.01, 10.0, DEFAULT_GAMMA,
+                             0);
 
-  display_class->name            = _("Gamma");
-  display_class->help_id         = "gimp-colordisplay-gamma";
-  display_class->icon_name       = GIMP_ICON_DISPLAY_FILTER_GAMMA;
+    display_class->name            = _("Gamma");
+    display_class->help_id         = "gimp-colordisplay-gamma";
+    display_class->icon_name       = GIMP_ICON_DISPLAY_FILTER_GAMMA;
 
-  display_class->convert_buffer  = cdisplay_gamma_convert_buffer;
+    display_class->convert_buffer  = cdisplay_gamma_convert_buffer;
 }
 
 static void
@@ -148,16 +148,16 @@ cdisplay_gamma_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
-  CdisplayGamma *gamma = CDISPLAY_GAMMA (object);
+    CdisplayGamma *gamma = CDISPLAY_GAMMA (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_GAMMA:
-      g_value_set_double (value, gamma->gamma);
-      break;
+        g_value_set_double (value, gamma->gamma);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -167,16 +167,16 @@ cdisplay_gamma_set_property (GObject      *object,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
-  CdisplayGamma *gamma = CDISPLAY_GAMMA (object);
+    CdisplayGamma *gamma = CDISPLAY_GAMMA (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_GAMMA:
-      cdisplay_gamma_set_gamma (gamma, g_value_get_double (value));
-      break;
+        cdisplay_gamma_set_gamma (gamma, g_value_get_double (value));
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -185,28 +185,31 @@ cdisplay_gamma_convert_buffer (GimpColorDisplay *display,
                                GeglBuffer       *buffer,
                                GeglRectangle    *area)
 {
-  CdisplayGamma      *gamma = CDISPLAY_GAMMA (display);
-  GeglBufferIterator *iter;
-  gdouble             one_over_gamma;
+    CdisplayGamma      *gamma = CDISPLAY_GAMMA (display);
+    GeglBufferIterator *iter;
+    gdouble             one_over_gamma;
 
-  one_over_gamma = 1.0 / gamma->gamma;
+    one_over_gamma = 1.0 / gamma->gamma;
 
-  iter = gegl_buffer_iterator_new (buffer, area, 0,
-                                   babl_format ("R'G'B'A float"),
-                                   GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE, 1);
+    iter = gegl_buffer_iterator_new (buffer, area, 0,
+                                     babl_format ("R'G'B'A float"),
+                                     GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE, 1);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      gfloat *data  = iter->items[0].data;
-      gint    count = iter->length;
+        gfloat *data  = iter->items[0].data;
+        gint    count = iter->length;
 
-      while (count--)
+        while (count--)
         {
-          *data = pow (*data, one_over_gamma); data++;
-          *data = pow (*data, one_over_gamma); data++;
-          *data = pow (*data, one_over_gamma); data++;
+            *data = pow (*data, one_over_gamma);
+            data++;
+            *data = pow (*data, one_over_gamma);
+            data++;
+            *data = pow (*data, one_over_gamma);
+            data++;
 
-          data++;
+            data++;
         }
     }
 }
@@ -215,14 +218,14 @@ static void
 cdisplay_gamma_set_gamma (CdisplayGamma *gamma,
                           gdouble        value)
 {
-  if (value <= 0.0)
-    value = 1.0;
+    if (value <= 0.0)
+        value = 1.0;
 
-  if (value != gamma->gamma)
+    if (value != gamma->gamma)
     {
-      gamma->gamma = value;
+        gamma->gamma = value;
 
-      g_object_notify (G_OBJECT (gamma), "gamma");
-      gimp_color_display_changed (GIMP_COLOR_DISPLAY (gamma));
+        g_object_notify (G_OBJECT (gamma), "gamma");
+        gimp_color_display_changed (GIMP_COLOR_DISPLAY (gamma));
     }
 }

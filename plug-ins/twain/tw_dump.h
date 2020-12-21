@@ -62,8 +62,8 @@
 void dumpPreTransferCallback(void *clientData);
 int dumpBeginTransferCallback(pTW_IMAGEINFO imageInfo, void *clientData);
 int dumpDataTransferCallback(pTW_IMAGEINFO imageInfo,
-			     pTW_IMAGEMEMXFER imageMemXfer,
-			     void *clientData);
+                             pTW_IMAGEMEMXFER imageMemXfer,
+                             void *clientData);
 int dumpEndTransferCallback(int completionState, int pendingCount, void *clientData);
 void dumpPostTransferCallback(int pendingCount, void *clientData);
 void readDumpedImage(pTW_SESSION twSession);

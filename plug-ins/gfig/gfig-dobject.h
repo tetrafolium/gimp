@@ -33,21 +33,21 @@ typedef GfigObject *(*DobjGenFunc)    (GfigObject *);
 
 typedef struct DobjPoints
 {
-  struct DobjPoints *next;
-  GdkPoint           pnt;
-  gboolean           found_me;
+    struct DobjPoints *next;
+    GdkPoint           pnt;
+    gboolean           found_me;
 } DobjPoints;
 
 typedef struct
 {
-  DobjType      type;       /* the object type for this class */
-  const gchar  *name;
+    DobjType      type;       /* the object type for this class */
+    const gchar  *name;
 
-  /* virtuals */
-  DobjDrawFunc  drawfunc;   /* How do I draw myself */
-  DobjFunc      paintfunc;  /* Draw me on canvas */
-  DobjGenFunc   copyfunc;   /* copy */
-  void         (*update) (GdkPoint   *pnt);
+    /* virtuals */
+    DobjDrawFunc  drawfunc;   /* How do I draw myself */
+    DobjFunc      paintfunc;  /* Draw me on canvas */
+    DobjGenFunc   copyfunc;   /* copy */
+    void         (*update) (GdkPoint   *pnt);
 } GfigObjectClass;
 
 extern GfigObjectClass dobj_class[10];
@@ -55,12 +55,12 @@ extern GfigObjectClass dobj_class[10];
 /* The object itself */
 struct _GfigObject
 {
-  DobjType         type;       /* What is the type? */
-  GfigObjectClass *class;      /* What class does it belong to? */
-  gint             type_data;  /* Extra data needed by the object */
-  DobjPoints      *points;     /* List of points */
-  Style            style;      /* this object's individual style settings */
-  gint             style_no;   /* style index of this specific object */
+    DobjType         type;       /* What is the type? */
+    GfigObjectClass *class;      /* What class does it belong to? */
+    gint             type_data;  /* Extra data needed by the object */
+    DobjPoints      *points;     /* List of points */
+    Style            style;      /* this object's individual style settings */
+    gint             style_no;   /* style index of this specific object */
 };
 
 /* States of the object */

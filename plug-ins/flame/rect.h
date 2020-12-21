@@ -23,10 +23,10 @@
 #define CMAP_SIZE 256
 
 typedef struct {
-   double        temporal_filter_radius;
-   control_point *cps;
-   int           ncps;
-   double        time;
+    double        temporal_filter_radius;
+    control_point *cps;
+    int           ncps;
+    double        time;
 } frame_spec;
 
 

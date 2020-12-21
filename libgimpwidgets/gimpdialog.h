@@ -44,59 +44,59 @@ typedef struct _GimpDialogClass   GimpDialogClass;
 
 struct _GimpDialog
 {
-  GtkDialog          parent_instance;
+    GtkDialog          parent_instance;
 
-  GimpDialogPrivate *priv;
+    GimpDialogPrivate *priv;
 };
 
 struct _GimpDialogClass
 {
-  GtkDialogClass  parent_class;
+    GtkDialogClass  parent_class;
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved1) (void);
-  void (* _gimp_reserved2) (void);
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
-  void (* _gimp_reserved5) (void);
-  void (* _gimp_reserved6) (void);
-  void (* _gimp_reserved7) (void);
-  void (* _gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (* _gimp_reserved1) (void);
+    void (* _gimp_reserved2) (void);
+    void (* _gimp_reserved3) (void);
+    void (* _gimp_reserved4) (void);
+    void (* _gimp_reserved5) (void);
+    void (* _gimp_reserved6) (void);
+    void (* _gimp_reserved7) (void);
+    void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_dialog_get_type           (void) G_GNUC_CONST;
 
 GtkWidget * gimp_dialog_new                (const gchar    *title,
-                                            const gchar    *role,
-                                            GtkWidget      *parent,
-                                            GtkDialogFlags  flags,
-                                            GimpHelpFunc    help_func,
-                                            const gchar    *help_id,
-                                            ...) G_GNUC_NULL_TERMINATED;
+        const gchar    *role,
+        GtkWidget      *parent,
+        GtkDialogFlags  flags,
+        GimpHelpFunc    help_func,
+        const gchar    *help_id,
+        ...) G_GNUC_NULL_TERMINATED;
 
 GtkWidget * gimp_dialog_new_valist         (const gchar    *title,
-                                            const gchar    *role,
-                                            GtkWidget      *parent,
-                                            GtkDialogFlags  flags,
-                                            GimpHelpFunc    help_func,
-                                            const gchar    *help_id,
-                                            va_list         args);
+        const gchar    *role,
+        GtkWidget      *parent,
+        GtkDialogFlags  flags,
+        GimpHelpFunc    help_func,
+        const gchar    *help_id,
+        va_list         args);
 
 GtkWidget * gimp_dialog_add_button         (GimpDialog     *dialog,
-                                            const gchar    *button_text,
-                                            gint            response_id);
+        const gchar    *button_text,
+        gint            response_id);
 void        gimp_dialog_add_buttons        (GimpDialog     *dialog,
-                                            ...) G_GNUC_NULL_TERMINATED;
+        ...) G_GNUC_NULL_TERMINATED;
 void        gimp_dialog_add_buttons_valist (GimpDialog     *dialog,
-                                            va_list         args);
+        va_list         args);
 
 gint        gimp_dialog_run                (GimpDialog     *dialog);
 
 void        gimp_dialog_set_alternative_button_order_from_array
-                                           (GimpDialog     *dialog,
-                                            gint            n_buttons,
-                                            gint           *order);
+(GimpDialog     *dialog,
+ gint            n_buttons,
+ gint           *order);
 
 /*  for internal use only!  */
 void        gimp_dialogs_show_help_button  (gboolean        show);

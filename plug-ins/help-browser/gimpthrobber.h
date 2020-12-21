@@ -38,28 +38,28 @@ typedef struct _GimpThrobberPrivate GimpThrobberPrivate;
 
 struct _GimpThrobber
 {
-  GtkToolItem          parent;
+    GtkToolItem          parent;
 
-  /*< private >*/
-  GimpThrobberPrivate *priv;
+    /*< private >*/
+    GimpThrobberPrivate *priv;
 };
 
 struct _GimpThrobberClass
 {
-  GtkToolItemClass parent_class;
+    GtkToolItemClass parent_class;
 
-  /* signal */
-  void  (* clicked) (GimpThrobber *button);
+    /* signal */
+    void  (* clicked) (GimpThrobber *button);
 };
 
 GType         gimp_throbber_get_type      (void) G_GNUC_CONST;
 
 GtkToolItem * gimp_throbber_new           (const gchar  *icon_name);
 void          gimp_throbber_set_icon_name (GimpThrobber *button,
-                                           const gchar  *icon_name);
+        const gchar  *icon_name);
 const gchar * gimp_throbber_get_icon_name (GimpThrobber *button);
 void          gimp_throbber_set_image     (GimpThrobber *button,
-                                           GtkWidget    *image);
+        GtkWidget    *image);
 GtkWidget   * gimp_throbber_get_image     (GimpThrobber *button);
 
 

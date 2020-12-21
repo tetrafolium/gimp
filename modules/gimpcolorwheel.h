@@ -45,28 +45,28 @@ typedef struct _GimpColorWheelClass GimpColorWheelClass;
 
 struct _GimpColorWheel
 {
-  GtkWidget parent_instance;
+    GtkWidget parent_instance;
 
-  /* Private data */
-  gpointer priv;
+    /* Private data */
+    gpointer priv;
 };
 
 struct _GimpColorWheelClass
 {
-  GtkWidgetClass parent_class;
+    GtkWidgetClass parent_class;
 
-  /* Notification signals */
-  void (* changed) (GimpColorWheel   *wheel);
+    /* Notification signals */
+    void (* changed) (GimpColorWheel   *wheel);
 
-  /* Keybindings */
-  void (* move)    (GimpColorWheel   *wheel,
-                    GtkDirectionType  type);
+    /* Keybindings */
+    void (* move)    (GimpColorWheel   *wheel,
+                      GtkDirectionType  type);
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
 };
 
 
@@ -76,20 +76,20 @@ GType       gimp_color_wheel_get_type          (void) G_GNUC_CONST;
 GtkWidget * gimp_color_wheel_new               (void);
 
 void        gimp_color_wheel_set_color         (GimpColorWheel  *wheel,
-                                                double           h,
-                                                double           s,
-                                                double           v);
+        double           h,
+        double           s,
+        double           v);
 void        gimp_color_wheel_get_color         (GimpColorWheel  *wheel,
-                                                gdouble         *h,
-                                                gdouble         *s,
-                                                gdouble         *v);
+        gdouble         *h,
+        gdouble         *s,
+        gdouble         *v);
 
 void        gimp_color_wheel_set_ring_fraction (GimpColorWheel  *wheel,
-                                                gdouble          fraction);
+        gdouble          fraction);
 gdouble     gimp_color_wheel_get_ring_fraction (GimpColorWheel  *wheel);
 
 void        gimp_color_wheel_set_color_config  (GimpColorWheel  *wheel,
-                                                GimpColorConfig *config);
+        GimpColorConfig *config);
 
 gboolean    gimp_color_wheel_is_adjusting      (GimpColorWheel  *wheel);
 

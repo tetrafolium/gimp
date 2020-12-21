@@ -45,55 +45,55 @@ typedef struct _GimpBrushSelectButtonClass   GimpBrushSelectButtonClass;
 
 struct _GimpBrushSelectButton
 {
-  GimpSelectButton              parent_instance;
+    GimpSelectButton              parent_instance;
 
-  GimpBrushSelectButtonPrivate *priv;
+    GimpBrushSelectButtonPrivate *priv;
 };
 
 struct _GimpBrushSelectButtonClass
 {
-  GimpSelectButtonClass  parent_class;
+    GimpSelectButtonClass  parent_class;
 
-  /* brush_set signal is emitted when brush is chosen */
-  void (* brush_set) (GimpBrushSelectButton *button,
-                      const gchar           *brush_name,
-                      gdouble                opacity,
-                      gint                   spacing,
-                      GimpLayerMode          paint_mode,
-                      gint                   width,
-                      gint                   height,
-                      const guchar          *mask_data,
-                      gboolean               dialog_closing);
+    /* brush_set signal is emitted when brush is chosen */
+    void (* brush_set) (GimpBrushSelectButton *button,
+                        const gchar           *brush_name,
+                        gdouble                opacity,
+                        gint                   spacing,
+                        GimpLayerMode          paint_mode,
+                        gint                   width,
+                        gint                   height,
+                        const guchar          *mask_data,
+                        gboolean               dialog_closing);
 
-  /* Padding for future expansion */
-  void (*_gimp_reserved1) (void);
-  void (*_gimp_reserved2) (void);
-  void (*_gimp_reserved3) (void);
-  void (*_gimp_reserved4) (void);
-  void (*_gimp_reserved5) (void);
-  void (*_gimp_reserved6) (void);
-  void (*_gimp_reserved7) (void);
-  void (*_gimp_reserved8) (void);
+    /* Padding for future expansion */
+    void (*_gimp_reserved1) (void);
+    void (*_gimp_reserved2) (void);
+    void (*_gimp_reserved3) (void);
+    void (*_gimp_reserved4) (void);
+    void (*_gimp_reserved5) (void);
+    void (*_gimp_reserved6) (void);
+    void (*_gimp_reserved7) (void);
+    void (*_gimp_reserved8) (void);
 };
 
 
 GType          gimp_brush_select_button_get_type  (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_brush_select_button_new       (const gchar           *title,
-                                                   const gchar           *brush_name,
-                                                   gdouble                opacity,
-                                                   gint                   spacing,
-                                                   GimpLayerMode          paint_mode);
+        const gchar           *brush_name,
+        gdouble                opacity,
+        gint                   spacing,
+        GimpLayerMode          paint_mode);
 
 const  gchar * gimp_brush_select_button_get_brush (GimpBrushSelectButton *button,
-                                                   gdouble               *opacity,
-                                                   gint                  *spacing,
-                                                   GimpLayerMode         *paint_mode);
+        gdouble               *opacity,
+        gint                  *spacing,
+        GimpLayerMode         *paint_mode);
 void           gimp_brush_select_button_set_brush (GimpBrushSelectButton *button,
-                                                   const gchar           *brush_name,
-                                                   gdouble                opacity,
-                                                   gint                   spacing,
-                                                   GimpLayerMode          paint_mode);
+        const gchar           *brush_name,
+        gdouble                opacity,
+        gint                   spacing,
+        GimpLayerMode          paint_mode);
 
 
 G_END_DECLS
