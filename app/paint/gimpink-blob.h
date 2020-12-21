@@ -17,15 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
-*/
+ */
 
 #ifndef __GIMP_INK_BLOB_H__
 #define __GIMP_INK_BLOB_H__
 
 
 typedef struct _GimpBlobPoint GimpBlobPoint;
-typedef struct _GimpBlobSpan  GimpBlobSpan;
-typedef struct _GimpBlob      GimpBlob;
+typedef struct _GimpBlobSpan GimpBlobSpan;
+typedef struct _GimpBlob GimpBlob;
 
 typedef GimpBlob * (* GimpBlobFunc) (gdouble xc,
                                      gdouble yc,
@@ -36,44 +36,44 @@ typedef GimpBlob * (* GimpBlobFunc) (gdouble xc,
 
 struct _GimpBlobPoint
 {
-    gint x;
-    gint y;
+	gint x;
+	gint y;
 };
 
 struct _GimpBlobSpan
 {
-    gint left;
-    gint right;
+	gint left;
+	gint right;
 };
 
 struct _GimpBlob
 {
-    gint         y;
-    gint         height;
-    GimpBlobSpan data[1];
+	gint y;
+	gint height;
+	GimpBlobSpan data[1];
 };
 
 
 GimpBlob * gimp_blob_polygon      (GimpBlobPoint *points,
-                                   gint           n_points);
-GimpBlob * gimp_blob_square       (gdouble        xc,
-                                   gdouble        yc,
-                                   gdouble        xp,
-                                   gdouble        yp,
-                                   gdouble        xq,
-                                   gdouble        yq);
-GimpBlob * gimp_blob_diamond      (gdouble        xc,
-                                   gdouble        yc,
-                                   gdouble        xp,
-                                   gdouble        yp,
-                                   gdouble        xq,
-                                   gdouble        yq);
-GimpBlob * gimp_blob_ellipse      (gdouble        xc,
-                                   gdouble        yc,
-                                   gdouble        xp,
-                                   gdouble        yp,
-                                   gdouble        xq,
-                                   gdouble        yq);
+                                   gint n_points);
+GimpBlob * gimp_blob_square       (gdouble xc,
+                                   gdouble yc,
+                                   gdouble xp,
+                                   gdouble yp,
+                                   gdouble xq,
+                                   gdouble yq);
+GimpBlob * gimp_blob_diamond      (gdouble xc,
+                                   gdouble yc,
+                                   gdouble xp,
+                                   gdouble yp,
+                                   gdouble xq,
+                                   gdouble yq);
+GimpBlob * gimp_blob_ellipse      (gdouble xc,
+                                   gdouble yc,
+                                   gdouble xp,
+                                   gdouble yp,
+                                   gdouble xq,
+                                   gdouble yq);
 void       gimp_blob_bounds       (GimpBlob      *b,
                                    gint          *x,
                                    gint          *y,

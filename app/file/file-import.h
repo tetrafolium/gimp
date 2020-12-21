@@ -24,7 +24,7 @@
 void   file_import_image (GimpImage    *image,
                           GimpContext  *context,
                           GFile        *file,
-                          gboolean      interactive,
+                          gboolean interactive,
                           GimpProgress *progress);
 
 

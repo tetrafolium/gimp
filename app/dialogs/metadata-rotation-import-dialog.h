@@ -23,9 +23,9 @@
 
 
 GimpMetadataRotationPolicy metadata_rotation_import_dialog_run (GimpImage   *image,
-        GimpContext *context,
-        GtkWidget   *parent,
-        gboolean    *dont_ask);
+                                                                GimpContext *context,
+                                                                GtkWidget   *parent,
+                                                                gboolean    *dont_ask);
 
 
 #endif  /*  __METADATA_ROTATION_IMPORT_DIALOG_H__*/

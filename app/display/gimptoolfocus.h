@@ -33,20 +33,20 @@
 #define GIMP_TOOL_FOCUS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_FOCUS, GimpToolFocusClass))
 
 
-typedef struct _GimpToolFocus        GimpToolFocus;
+typedef struct _GimpToolFocus GimpToolFocus;
 typedef struct _GimpToolFocusPrivate GimpToolFocusPrivate;
-typedef struct _GimpToolFocusClass   GimpToolFocusClass;
+typedef struct _GimpToolFocusClass GimpToolFocusClass;
 
 struct _GimpToolFocus
 {
-    GimpToolWidget        parent_instance;
+	GimpToolWidget parent_instance;
 
-    GimpToolFocusPrivate *priv;
+	GimpToolFocusPrivate *priv;
 };
 
 struct _GimpToolFocusClass
 {
-    GimpToolWidgetClass  parent_class;
+	GimpToolWidgetClass parent_class;
 };
 
 

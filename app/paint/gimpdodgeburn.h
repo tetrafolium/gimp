@@ -33,17 +33,17 @@ typedef struct _GimpDodgeBurnClass GimpDodgeBurnClass;
 
 struct _GimpDodgeBurn
 {
-    GimpBrushCore  parent_instance;
+	GimpBrushCore parent_instance;
 };
 
 struct _GimpDodgeBurnClass
 {
-    GimpBrushCoreClass  parent_class;
+	GimpBrushCoreClass parent_class;
 };
 
 
 void    gimp_dodge_burn_register (Gimp                      *gimp,
-                                  GimpPaintRegisterCallback  callback);
+                                  GimpPaintRegisterCallback callback);
 
 GType   gimp_dodge_burn_get_type (void) G_GNUC_CONST;
 

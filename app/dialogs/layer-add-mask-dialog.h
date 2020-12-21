@@ -21,19 +21,19 @@
 
 typedef void (* GimpAddMaskCallback) (GtkWidget       *dialog,
                                       GList           *layers,
-                                      GimpAddMaskType  add_mask_type,
+                                      GimpAddMaskType add_mask_type,
                                       GimpChannel     *channel,
-                                      gboolean         invert,
-                                      gpointer         user_data);
+                                      gboolean invert,
+                                      gpointer user_data);
 
 
 GtkWidget * layer_add_mask_dialog_new (GList               *layers,
                                        GimpContext         *context,
                                        GtkWidget           *parent,
-                                       GimpAddMaskType      add_mask_type,
-                                       gboolean             invert,
-                                       GimpAddMaskCallback  callback,
-                                       gpointer             user_data);
+                                       GimpAddMaskType add_mask_type,
+                                       gboolean invert,
+                                       GimpAddMaskCallback callback,
+                                       gpointer user_data);
 
 
 #endif /* __LAYER_ADD_MASK_DIALOG_H__ */

@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_HSV_SATURATION_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_HSV_SATURATION_LEGACY, GimpOperationHsvSaturationLegacyClass))
 
 
-typedef struct _GimpOperationHsvSaturationLegacy      GimpOperationHsvSaturationLegacy;
+typedef struct _GimpOperationHsvSaturationLegacy GimpOperationHsvSaturationLegacy;
 typedef struct _GimpOperationHsvSaturationLegacyClass GimpOperationHsvSaturationLegacyClass;
 
 struct _GimpOperationHsvSaturationLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationHsvSaturationLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

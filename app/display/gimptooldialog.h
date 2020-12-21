@@ -36,7 +36,7 @@ typedef struct _GimpViewableDialogClass GimpToolDialogClass;
 
 struct _GimpToolDialog
 {
-    GimpViewableDialog  parent_instance;
+	GimpViewableDialog parent_instance;
 };
 
 

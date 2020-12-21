@@ -33,26 +33,26 @@
 #define GIMP_CANVAS_TEXT_CURSOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_TEXT_CURSOR, GimpCanvasTextCursorClass))
 
 
-typedef struct _GimpCanvasTextCursor      GimpCanvasTextCursor;
+typedef struct _GimpCanvasTextCursor GimpCanvasTextCursor;
 typedef struct _GimpCanvasTextCursorClass GimpCanvasTextCursorClass;
 
 struct _GimpCanvasTextCursor
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasTextCursorClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_text_cursor_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_text_cursor_new      (GimpDisplayShell *shell,
-        PangoRectangle   *cursor,
-        gboolean          overwrite,
-        GimpTextDirection direction);
+                                                   PangoRectangle   *cursor,
+                                                   gboolean overwrite,
+                                                   GimpTextDirection direction);
 
 
 #endif /* __GIMP_CANVAS_RECTANGLE_H__ */

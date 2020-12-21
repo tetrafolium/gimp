@@ -34,17 +34,17 @@
 #define GIMP_OPERATION_PASS_THROUGH_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_PASS_THROUGH, GimpOperationPassThroughClass))
 
 
-typedef struct _GimpOperationPassThrough      GimpOperationPassThrough;
+typedef struct _GimpOperationPassThrough GimpOperationPassThrough;
 typedef struct _GimpOperationPassThroughClass GimpOperationPassThroughClass;
 
 struct _GimpOperationPassThrough
 {
-    GimpOperationReplace parent_instance;
+	GimpOperationReplace parent_instance;
 };
 
 struct _GimpOperationPassThroughClass
 {
-    GimpOperationReplaceClass parent_class;
+	GimpOperationReplaceClass parent_class;
 };
 
 

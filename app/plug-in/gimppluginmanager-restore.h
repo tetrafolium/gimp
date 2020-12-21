@@ -23,7 +23,7 @@
 
 void    gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
                                       GimpContext        *context,
-                                      GimpInitStatusFunc  status_callback);
+                                      GimpInitStatusFunc status_callback);
 
 
 #endif  /* __GIMP_PLUG_IN_MANAGER_RESTORE_H__ */

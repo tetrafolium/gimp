@@ -36,32 +36,32 @@
 
 enum
 {
-    PROP_0,
-    PROP_BRIGHTNESS,
-    PROP_CONTRAST
+	PROP_0,
+	PROP_BRIGHTNESS,
+	PROP_CONTRAST
 };
 
 
 static void     gimp_brightness_contrast_config_iface_init   (GimpConfigInterface *iface);
 
 static void     gimp_brightness_contrast_config_get_property (GObject      *object,
-        guint         property_id,
-        GValue       *value,
-        GParamSpec   *pspec);
+                                                              guint property_id,
+                                                              GValue       *value,
+                                                              GParamSpec   *pspec);
 static void     gimp_brightness_contrast_config_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec);
+                                                              guint property_id,
+                                                              const GValue *value,
+                                                              GParamSpec   *pspec);
 
 static gboolean gimp_brightness_contrast_config_equal        (GimpConfig   *a,
-        GimpConfig   *b);
+                                                              GimpConfig   *b);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpBrightnessContrastConfig,
                          gimp_brightness_contrast_config,
                          GIMP_TYPE_OPERATION_SETTINGS,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
-                                 gimp_brightness_contrast_config_iface_init))
+                                                gimp_brightness_contrast_config_iface_init))
 
 #define parent_class gimp_brightness_contrast_config_parent_class
 
@@ -69,31 +69,31 @@ G_DEFINE_TYPE_WITH_CODE (GimpBrightnessContrastConfig,
 static void
 gimp_brightness_contrast_config_class_init (GimpBrightnessContrastConfigClass *klass)
 {
-    GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
-    GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
+	GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
+	GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
 
-    object_class->set_property        = gimp_brightness_contrast_config_set_property;
-    object_class->get_property        = gimp_brightness_contrast_config_get_property;
+	object_class->set_property        = gimp_brightness_contrast_config_set_property;
+	object_class->get_property        = gimp_brightness_contrast_config_get_property;
 
-    viewable_class->default_icon_name = "gimp-tool-brightness-contrast";
+	viewable_class->default_icon_name = "gimp-tool-brightness-contrast";
 
-    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_BRIGHTNESS,
-                             "brightness",
-                             _("Brightness"),
-                             _("Brightness"),
-                             -1.0, 1.0, 0.0, 0);
+	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_BRIGHTNESS,
+	                         "brightness",
+	                         _("Brightness"),
+	                         _("Brightness"),
+	                         -1.0, 1.0, 0.0, 0);
 
-    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_CONTRAST,
-                             "contrast",
-                             _("Contrast"),
-                             _("Contrast"),
-                             -1.0, 1.0, 0.0, 0);
+	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_CONTRAST,
+	                         "contrast",
+	                         _("Contrast"),
+	                         _("Contrast"),
+	                         -1.0, 1.0, 0.0, 0);
 }
 
 static void
 gimp_brightness_contrast_config_iface_init (GimpConfigInterface *iface)
 {
-    iface->equal = gimp_brightness_contrast_config_equal;
+	iface->equal = gimp_brightness_contrast_config_equal;
 }
 
 static void
@@ -103,67 +103,67 @@ gimp_brightness_contrast_config_init (GimpBrightnessContrastConfig *self)
 
 static void
 gimp_brightness_contrast_config_get_property (GObject    *object,
-        guint       property_id,
-        GValue     *value,
-        GParamSpec *pspec)
+                                              guint property_id,
+                                              GValue     *value,
+                                              GParamSpec *pspec)
 {
-    GimpBrightnessContrastConfig *self = GIMP_BRIGHTNESS_CONTRAST_CONFIG (object);
+	GimpBrightnessContrastConfig *self = GIMP_BRIGHTNESS_CONTRAST_CONFIG (object);
 
-    switch (property_id)
-    {
-    case PROP_BRIGHTNESS:
-        g_value_set_double (value, self->brightness);
-        break;
+	switch (property_id)
+	{
+	case PROP_BRIGHTNESS:
+		g_value_set_double (value, self->brightness);
+		break;
 
-    case PROP_CONTRAST:
-        g_value_set_double (value, self->contrast);
-        break;
+	case PROP_CONTRAST:
+		g_value_set_double (value, self->contrast);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_brightness_contrast_config_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec)
+                                              guint property_id,
+                                              const GValue *value,
+                                              GParamSpec   *pspec)
 {
-    GimpBrightnessContrastConfig *self = GIMP_BRIGHTNESS_CONTRAST_CONFIG (object);
+	GimpBrightnessContrastConfig *self = GIMP_BRIGHTNESS_CONTRAST_CONFIG (object);
 
-    switch (property_id)
-    {
-    case PROP_BRIGHTNESS:
-        self->brightness = g_value_get_double (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_BRIGHTNESS:
+		self->brightness = g_value_get_double (value);
+		break;
 
-    case PROP_CONTRAST:
-        self->contrast = g_value_get_double (value);
-        break;
+	case PROP_CONTRAST:
+		self->contrast = g_value_get_double (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static gboolean
 gimp_brightness_contrast_config_equal (GimpConfig *a,
                                        GimpConfig *b)
 {
-    GimpBrightnessContrastConfig *config_a = GIMP_BRIGHTNESS_CONTRAST_CONFIG (a);
-    GimpBrightnessContrastConfig *config_b = GIMP_BRIGHTNESS_CONTRAST_CONFIG (b);
+	GimpBrightnessContrastConfig *config_a = GIMP_BRIGHTNESS_CONTRAST_CONFIG (a);
+	GimpBrightnessContrastConfig *config_b = GIMP_BRIGHTNESS_CONTRAST_CONFIG (b);
 
-    if (! gimp_operation_settings_config_equal_base (a, b) ||
-            config_a->brightness != config_b->brightness       ||
-            config_a->contrast   != config_b->contrast)
-    {
-        return FALSE;
-    }
+	if (!gimp_operation_settings_config_equal_base (a, b) ||
+	    config_a->brightness != config_b->brightness       ||
+	    config_a->contrast   != config_b->contrast)
+	{
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 
@@ -172,77 +172,77 @@ gimp_brightness_contrast_config_equal (GimpConfig *a,
 GimpLevelsConfig *
 gimp_brightness_contrast_config_to_levels_config (GimpBrightnessContrastConfig *config)
 {
-    GimpLevelsConfig *levels;
-    gdouble           brightness;
-    gdouble           slant;
-    gdouble           value;
+	GimpLevelsConfig *levels;
+	gdouble brightness;
+	gdouble slant;
+	gdouble value;
 
-    g_return_val_if_fail (GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG (config), NULL);
+	g_return_val_if_fail (GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG (config), NULL);
 
-    levels = g_object_new (GIMP_TYPE_LEVELS_CONFIG, NULL);
+	levels = g_object_new (GIMP_TYPE_LEVELS_CONFIG, NULL);
 
-    gimp_operation_settings_config_copy_base (GIMP_CONFIG (config),
-            GIMP_CONFIG (levels),
-            0);
+	gimp_operation_settings_config_copy_base (GIMP_CONFIG (config),
+	                                          GIMP_CONFIG (levels),
+	                                          0);
 
-    brightness = config->brightness / 2.0;
-    slant = tan ((config->contrast + 1) * G_PI_4);
+	brightness = config->brightness / 2.0;
+	slant = tan ((config->contrast + 1) * G_PI_4);
 
-    if (config->brightness >= 0)
-    {
-        value = -0.5 * slant + brightness * slant + 0.5;
+	if (config->brightness >= 0)
+	{
+		value = -0.5 * slant + brightness * slant + 0.5;
 
-        if (value < 0.0)
-        {
-            value = 0.0;
+		if (value < 0.0)
+		{
+			value = 0.0;
 
-            /* this slightly convoluted math follows by inverting the
-             * calculation of the brightness/contrast LUT in base/lut-funcs.h */
+			/* this slightly convoluted math follows by inverting the
+			 * calculation of the brightness/contrast LUT in base/lut-funcs.h */
 
-            levels->low_input[GIMP_HISTOGRAM_VALUE] =
-                (- brightness * slant + 0.5 * slant - 0.5) / (slant - brightness * slant);
-        }
+			levels->low_input[GIMP_HISTOGRAM_VALUE] =
+				(-brightness * slant + 0.5 * slant - 0.5) / (slant - brightness * slant);
+		}
 
-        levels->low_output[GIMP_HISTOGRAM_VALUE] = value;
+		levels->low_output[GIMP_HISTOGRAM_VALUE] = value;
 
-        value = 0.5 * slant + 0.5;
+		value = 0.5 * slant + 0.5;
 
-        if (value > 1.0)
-        {
-            value = 1.0;
+		if (value > 1.0)
+		{
+			value = 1.0;
 
-            levels->high_input[GIMP_HISTOGRAM_VALUE] =
-                (- brightness * slant + 0.5 * slant + 0.5) / (slant - brightness * slant);
-        }
+			levels->high_input[GIMP_HISTOGRAM_VALUE] =
+				(-brightness * slant + 0.5 * slant + 0.5) / (slant - brightness * slant);
+		}
 
-        levels->high_output[GIMP_HISTOGRAM_VALUE] = value;
-    }
-    else
-    {
-        value = 0.5 - 0.5 * slant;
+		levels->high_output[GIMP_HISTOGRAM_VALUE] = value;
+	}
+	else
+	{
+		value = 0.5 - 0.5 * slant;
 
-        if (value < 0.0)
-        {
-            value = 0.0;
+		if (value < 0.0)
+		{
+			value = 0.0;
 
-            levels->low_input[GIMP_HISTOGRAM_VALUE] =
-                (0.5 * slant - 0.5) / (slant + brightness * slant);
-        }
+			levels->low_input[GIMP_HISTOGRAM_VALUE] =
+				(0.5 * slant - 0.5) / (slant + brightness * slant);
+		}
 
-        levels->low_output[GIMP_HISTOGRAM_VALUE] = value;
+		levels->low_output[GIMP_HISTOGRAM_VALUE] = value;
 
-        value = slant * brightness + slant * 0.5 + 0.5;
+		value = slant * brightness + slant * 0.5 + 0.5;
 
-        if (value > 1.0)
-        {
-            value = 1.0;
+		if (value > 1.0)
+		{
+			value = 1.0;
 
-            levels->high_input[GIMP_HISTOGRAM_VALUE] =
-                (0.5 * slant + 0.5) / (slant + brightness * slant);
-        }
+			levels->high_input[GIMP_HISTOGRAM_VALUE] =
+				(0.5 * slant + 0.5) / (slant + brightness * slant);
+		}
 
-        levels->high_output[GIMP_HISTOGRAM_VALUE] = value;
-    }
+		levels->high_output[GIMP_HISTOGRAM_VALUE] = value;
+	}
 
-    return levels;
+	return levels;
 }

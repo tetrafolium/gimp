@@ -25,7 +25,7 @@ void       session_exit    (Gimp       *gimp);
 void       session_restore (Gimp       *gimp,
                             GdkMonitor *monitor);
 void       session_save    (Gimp       *gimp,
-                            gboolean    always_save);
+                            gboolean always_save);
 
 gboolean   session_clear   (Gimp       *gimp,
                             GError    **error);

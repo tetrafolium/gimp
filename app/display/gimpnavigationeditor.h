@@ -36,34 +36,34 @@
 #define GIMP_NAVIGATION_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_NAVIGATION_EDITOR, GimpNavigationEditorClass))
 
 
-typedef struct _GimpNavigationEditorClass  GimpNavigationEditorClass;
+typedef struct _GimpNavigationEditorClass GimpNavigationEditorClass;
 
 struct _GimpNavigationEditor
 {
-    GimpEditor        parent_instance;
+	GimpEditor parent_instance;
 
-    GimpContext      *context;
-    GimpDisplayShell *shell;
+	GimpContext      *context;
+	GimpDisplayShell *shell;
 
-    GimpImageProxy   *image_proxy;
+	GimpImageProxy   *image_proxy;
 
-    GtkWidget        *view;
-    GtkWidget        *zoom_label;
-    GtkAdjustment    *zoom_adjustment;
+	GtkWidget        *view;
+	GtkWidget        *zoom_label;
+	GtkAdjustment    *zoom_adjustment;
 
-    GtkWidget        *zoom_out_button;
-    GtkWidget        *zoom_in_button;
-    GtkWidget        *zoom_100_button;
-    GtkWidget        *zoom_fit_in_button;
-    GtkWidget        *zoom_fill_button;
-    GtkWidget        *shrink_wrap_button;
+	GtkWidget        *zoom_out_button;
+	GtkWidget        *zoom_in_button;
+	GtkWidget        *zoom_100_button;
+	GtkWidget        *zoom_fit_in_button;
+	GtkWidget        *zoom_fill_button;
+	GtkWidget        *shrink_wrap_button;
 
-    guint             scale_timeout;
+	guint scale_timeout;
 };
 
 struct _GimpNavigationEditorClass
 {
-    GimpEditorClass  parent_class;
+	GimpEditorClass parent_class;
 };
 
 
@@ -71,10 +71,10 @@ GType       gimp_navigation_editor_get_type  (void) G_GNUC_CONST;
 
 GtkWidget * gimp_navigation_editor_new       (GimpMenuFactory  *menu_factory);
 void        gimp_navigation_editor_popup     (GimpDisplayShell *shell,
-        GtkWidget        *widget,
-        GdkEvent         *event,
-        gint              click_x,
-        gint              click_y);
+                                              GtkWidget        *widget,
+                                              GdkEvent         *event,
+                                              gint click_x,
+                                              gint click_y);
 
 
 #endif  /*  __GIMP_NAVIGATION_EDITOR_H__  */

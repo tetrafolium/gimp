@@ -30,5 +30,5 @@ void
 dockable_menu_setup (GimpUIManager *manager,
                      const gchar   *ui_path)
 {
-    window_menu_setup (manager, "dock", ui_path);
+	window_menu_setup (manager, "dock", ui_path);
 }

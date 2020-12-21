@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY, GimpOperationLightenOnlyLegacyClass))
 
 
-typedef struct _GimpOperationLightenOnlyLegacy      GimpOperationLightenOnlyLegacy;
+typedef struct _GimpOperationLightenOnlyLegacy GimpOperationLightenOnlyLegacy;
 typedef struct _GimpOperationLightenOnlyLegacyClass GimpOperationLightenOnlyLegacyClass;
 
 struct _GimpOperationLightenOnlyLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationLightenOnlyLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

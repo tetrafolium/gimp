@@ -34,23 +34,23 @@ typedef struct _GimpInkOptionsClass GimpInkOptionsClass;
 
 struct _GimpInkOptions
 {
-    GimpPaintOptions  parent_instance;
+	GimpPaintOptions parent_instance;
 
-    gdouble           size;
-    gdouble           tilt_angle;
+	gdouble size;
+	gdouble tilt_angle;
 
-    gdouble           size_sensitivity;
-    gdouble           vel_sensitivity;
-    gdouble           tilt_sensitivity;
+	gdouble size_sensitivity;
+	gdouble vel_sensitivity;
+	gdouble tilt_sensitivity;
 
-    GimpInkBlobType   blob_type;
-    gdouble           blob_aspect;
-    gdouble           blob_angle;
+	GimpInkBlobType blob_type;
+	gdouble blob_aspect;
+	gdouble blob_angle;
 };
 
 struct _GimpInkOptionsClass
 {
-    GimpPaintOptionsClass  parent_instance;
+	GimpPaintOptionsClass parent_instance;
 };
 
 

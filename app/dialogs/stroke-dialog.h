@@ -26,7 +26,7 @@ typedef void (* GimpStrokeCallback) (GtkWidget         *dialog,
                                      GList             *drawables,
                                      GimpContext       *context,
                                      GimpStrokeOptions *options,
-                                     gpointer           user_data);
+                                     gpointer user_data);
 
 
 GtkWidget * stroke_dialog_new (GimpItem           *item,
@@ -37,8 +37,8 @@ GtkWidget * stroke_dialog_new (GimpItem           *item,
                                const gchar        *help_id,
                                GtkWidget          *parent,
                                GimpStrokeOptions  *options,
-                               GimpStrokeCallback  callback,
-                               gpointer            user_data);
+                               GimpStrokeCallback callback,
+                               gpointer user_data);
 
 
 #endif  /*  __STROKE_DIALOG_H__  */

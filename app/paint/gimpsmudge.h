@@ -34,20 +34,20 @@ typedef struct _GimpSmudgeClass GimpSmudgeClass;
 
 struct _GimpSmudge
 {
-    GimpBrushCore  parent_instance;
+	GimpBrushCore parent_instance;
 
-    gboolean       initialized;
-    GList         *accum_buffers;
+	gboolean initialized;
+	GList         *accum_buffers;
 };
 
 struct _GimpSmudgeClass
 {
-    GimpBrushCoreClass  parent_class;
+	GimpBrushCoreClass parent_class;
 };
 
 
 void    gimp_smudge_register (Gimp                      *gimp,
-                              GimpPaintRegisterCallback  callback);
+                              GimpPaintRegisterCallback callback);
 
 GType   gimp_smudge_get_type (void) G_GNUC_CONST;
 

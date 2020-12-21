@@ -30,20 +30,20 @@
 #define GIMP_PAINT_CORE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_CORE_UNDO, GimpPaintCoreUndoClass))
 
 
-typedef struct _GimpPaintCoreUndo      GimpPaintCoreUndo;
+typedef struct _GimpPaintCoreUndo GimpPaintCoreUndo;
 typedef struct _GimpPaintCoreUndoClass GimpPaintCoreUndoClass;
 
 struct _GimpPaintCoreUndo
 {
-    GimpUndo       parent_instance;
+	GimpUndo parent_instance;
 
-    GimpPaintCore *paint_core;
-    GimpCoords     last_coords;
+	GimpPaintCore *paint_core;
+	GimpCoords last_coords;
 };
 
 struct _GimpPaintCoreUndoClass
 {
-    GimpUndoClass  parent_class;
+	GimpUndoClass parent_class;
 };
 
 

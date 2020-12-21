@@ -43,8 +43,8 @@
 
 enum
 {
-    RESPONSE,
-    LAST_SIGNAL
+	RESPONSE,
+	LAST_SIGNAL
 };
 
 
@@ -52,33 +52,33 @@ typedef struct _ResponseEntry ResponseEntry;
 
 struct _ResponseEntry
 {
-    gint      response_id;
-    gchar    *button_text;
-    gint      alternative_position;
-    gboolean  sensitive;
+	gint response_id;
+	gchar    *button_text;
+	gint alternative_position;
+	gboolean sensitive;
 };
 
 typedef struct _GimpToolGuiPrivate GimpToolGuiPrivate;
 
 struct _GimpToolGuiPrivate
 {
-    GimpToolInfo     *tool_info;
-    gchar            *title;
-    gchar            *description;
-    gchar            *icon_name;
-    gchar            *help_id;
-    GList            *response_entries;
-    gint              default_response;
-    gboolean          focus_on_map;
+	GimpToolInfo     *tool_info;
+	gchar            *title;
+	gchar            *description;
+	gchar            *icon_name;
+	gchar            *help_id;
+	GList            *response_entries;
+	gint default_response;
+	gboolean focus_on_map;
 
-    gboolean          overlay;
-    gboolean          auto_overlay;
+	gboolean overlay;
+	gboolean auto_overlay;
 
-    GimpDisplayShell *shell;
-    GList            *viewables;
+	GimpDisplayShell *shell;
+	GList            *viewables;
 
-    GtkWidget        *dialog;
-    GtkWidget        *vbox;
+	GtkWidget        *dialog;
+	GtkWidget        *vbox;
 };
 
 #define GET_PRIVATE(gui) ((GimpToolGuiPrivate *) gimp_tool_gui_get_instance_private ((GimpToolGui *) (gui)))
@@ -88,25 +88,25 @@ static void            gimp_tool_gui_dispose           (GObject       *object);
 static void            gimp_tool_gui_finalize          (GObject       *object);
 
 static void            gimp_tool_gui_create_dialog     (GimpToolGui   *gui,
-        GdkMonitor    *monitor);
+                                                        GdkMonitor    *monitor);
 static void            gimp_tool_gui_add_dialog_button (GimpToolGui   *gui,
-        ResponseEntry *entry);
+                                                        ResponseEntry *entry);
 static void            gimp_tool_gui_update_buttons    (GimpToolGui   *gui);
 static void            gimp_tool_gui_update_shell      (GimpToolGui   *gui);
 static void            gimp_tool_gui_update_viewable   (GimpToolGui   *gui);
 
 static void            gimp_tool_gui_dialog_response   (GtkWidget     *dialog,
-        gint           response_id,
-        GimpToolGui   *gui);
+                                                        gint response_id,
+                                                        GimpToolGui   *gui);
 static void            gimp_tool_gui_canvas_resized    (GtkWidget     *canvas,
-        GtkAllocation *allocation,
-        GimpToolGui   *gui);
+                                                        GtkAllocation *allocation,
+                                                        GimpToolGui   *gui);
 
-static ResponseEntry * response_entry_new              (gint           response_id,
-        const gchar   *button_text);
+static ResponseEntry * response_entry_new              (gint response_id,
+                                                        const gchar   *button_text);
 static void            response_entry_free             (ResponseEntry *entry);
 static ResponseEntry * response_entry_find             (GList         *entries,
-        gint           response_id);
+                                                        gint response_id);
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpToolGui, gimp_tool_gui, GIMP_TYPE_OBJECT)
@@ -119,82 +119,82 @@ static guint signals[LAST_SIGNAL] = { 0, };
 static void
 gimp_tool_gui_class_init (GimpToolGuiClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->dispose  = gimp_tool_gui_dispose;
-    object_class->finalize = gimp_tool_gui_finalize;
+	object_class->dispose  = gimp_tool_gui_dispose;
+	object_class->finalize = gimp_tool_gui_finalize;
 
-    signals[RESPONSE] =
-        g_signal_new ("response",
-                      G_OBJECT_CLASS_TYPE (klass),
-                      G_SIGNAL_RUN_LAST,
-                      G_STRUCT_OFFSET (GimpToolGuiClass, response),
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 1,
-                      G_TYPE_INT);
+	signals[RESPONSE] =
+		g_signal_new ("response",
+		              G_OBJECT_CLASS_TYPE (klass),
+		              G_SIGNAL_RUN_LAST,
+		              G_STRUCT_OFFSET (GimpToolGuiClass, response),
+		              NULL, NULL, NULL,
+		              G_TYPE_NONE, 1,
+		              G_TYPE_INT);
 }
 
 static void
 gimp_tool_gui_init (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
 
-    private->default_response = -1;
-    private->focus_on_map     = TRUE;
+	private->default_response = -1;
+	private->focus_on_map     = TRUE;
 
-    private->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-    g_object_ref_sink (private->vbox);
+	private->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+	g_object_ref_sink (private->vbox);
 }
 
 static void
 gimp_tool_gui_dispose (GObject *object)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (object);
+	GimpToolGuiPrivate *private = GET_PRIVATE (object);
 
-    g_clear_object (&private->tool_info);
+	g_clear_object (&private->tool_info);
 
-    if (private->shell)
-        gimp_tool_gui_set_shell (GIMP_TOOL_GUI (object), NULL);
+	if (private->shell)
+		gimp_tool_gui_set_shell (GIMP_TOOL_GUI (object), NULL);
 
-    if (private->viewables)
-        gimp_tool_gui_set_viewables (GIMP_TOOL_GUI (object), NULL);
+	if (private->viewables)
+		gimp_tool_gui_set_viewables (GIMP_TOOL_GUI (object), NULL);
 
-    g_clear_object (&private->vbox);
+	g_clear_object (&private->vbox);
 
-    if (private->dialog)
-    {
-        if (gtk_widget_get_visible (private->dialog))
-            gimp_tool_gui_hide (GIMP_TOOL_GUI (object));
+	if (private->dialog)
+	{
+		if (gtk_widget_get_visible (private->dialog))
+			gimp_tool_gui_hide (GIMP_TOOL_GUI (object));
 
-        if (private->overlay)
-            g_object_unref (private->dialog);
-        else
-            gtk_widget_destroy (private->dialog);
+		if (private->overlay)
+			g_object_unref (private->dialog);
+		else
+			gtk_widget_destroy (private->dialog);
 
-        private->dialog = NULL;
-    }
+		private->dialog = NULL;
+	}
 
-    G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
 gimp_tool_gui_finalize (GObject *object)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (object);
+	GimpToolGuiPrivate *private = GET_PRIVATE (object);
 
-    g_clear_pointer (&private->title,       g_free);
-    g_clear_pointer (&private->description, g_free);
-    g_clear_pointer (&private->icon_name,   g_free);
-    g_clear_pointer (&private->help_id,     g_free);
+	g_clear_pointer (&private->title,       g_free);
+	g_clear_pointer (&private->description, g_free);
+	g_clear_pointer (&private->icon_name,   g_free);
+	g_clear_pointer (&private->help_id,     g_free);
 
-    if (private->response_entries)
-    {
-        g_list_free_full (private->response_entries,
-                          (GDestroyNotify) response_entry_free);
-        private->response_entries = NULL;
-    }
+	if (private->response_entries)
+	{
+		g_list_free_full (private->response_entries,
+		                  (GDestroyNotify) response_entry_free);
+		private->response_entries = NULL;
+	}
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -218,572 +218,572 @@ gimp_tool_gui_new (GimpToolInfo *tool_info,
                    const gchar  *icon_name,
                    const gchar  *help_id,
                    GdkMonitor   *monitor,
-                   gboolean      overlay,
+                   gboolean overlay,
                    ...)
 {
-    GimpToolGui        *gui;
-    GimpToolGuiPrivate *private;
-    va_list             args;
+	GimpToolGui        *gui;
+	GimpToolGuiPrivate *private;
+	va_list args;
 
-    g_return_val_if_fail (GIMP_IS_TOOL_INFO (tool_info), NULL);
+	g_return_val_if_fail (GIMP_IS_TOOL_INFO (tool_info), NULL);
 
-    gui = g_object_new (GIMP_TYPE_TOOL_GUI, NULL);
+	gui = g_object_new (GIMP_TYPE_TOOL_GUI, NULL);
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (! title)
-        title = tool_info->label;
+	if (!title)
+		title = tool_info->label;
 
-    if (! description)
-        description = tool_info->label;
+	if (!description)
+		description = tool_info->label;
 
-    if (! icon_name)
-        icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (tool_info));
+	if (!icon_name)
+		icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (tool_info));
 
-    if (! help_id)
-        help_id = tool_info->help_id;
+	if (!help_id)
+		help_id = tool_info->help_id;
 
-    private->tool_info   = g_object_ref (tool_info);
-    private->title       = g_strdup (title);
-    private->description = g_strdup (description);
-    private->icon_name   = g_strdup (icon_name);
-    private->help_id     = g_strdup (help_id);
-    private->overlay     = overlay;
+	private->tool_info   = g_object_ref (tool_info);
+	private->title       = g_strdup (title);
+	private->description = g_strdup (description);
+	private->icon_name   = g_strdup (icon_name);
+	private->help_id     = g_strdup (help_id);
+	private->overlay     = overlay;
 
-    va_start (args, overlay);
+	va_start (args, overlay);
 
-    gimp_tool_gui_add_buttons_valist (gui, args);
+	gimp_tool_gui_add_buttons_valist (gui, args);
 
-    va_end (args);
+	va_end (args);
 
-    gimp_tool_gui_create_dialog (gui, monitor);
+	gimp_tool_gui_create_dialog (gui, monitor);
 
-    return gui;
+	return gui;
 }
 
 void
 gimp_tool_gui_set_title (GimpToolGui *gui,
                          const gchar *title)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (title == private->title)
-        return;
+	if (title == private->title)
+		return;
 
-    g_free (private->title);
-    private->title = g_strdup (title);
+	g_free (private->title);
+	private->title = g_strdup (title);
 
-    if (! title)
-        title = private->tool_info->label;
+	if (!title)
+		title = private->tool_info->label;
 
-    g_object_set (private->dialog, "title", title, NULL);
+	g_object_set (private->dialog, "title", title, NULL);
 }
 
 void
 gimp_tool_gui_set_description (GimpToolGui *gui,
                                const gchar *description)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (description == private->description)
-        return;
+	if (description == private->description)
+		return;
 
-    g_free (private->description);
-    private->description = g_strdup (description);
+	g_free (private->description);
+	private->description = g_strdup (description);
 
-    if (! description)
-        description = private->tool_info->tooltip;
+	if (!description)
+		description = private->tool_info->tooltip;
 
-    if (private->overlay)
-    {
-        /* TODO */
-    }
-    else
-    {
-        g_object_set (private->dialog, "description", description, NULL);
-    }
+	if (private->overlay)
+	{
+		/* TODO */
+	}
+	else
+	{
+		g_object_set (private->dialog, "description", description, NULL);
+	}
 }
 
 void
 gimp_tool_gui_set_icon_name (GimpToolGui *gui,
                              const gchar *icon_name)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (icon_name == private->icon_name)
-        return;
+	if (icon_name == private->icon_name)
+		return;
 
-    g_free (private->icon_name);
-    private->icon_name = g_strdup (icon_name);
+	g_free (private->icon_name);
+	private->icon_name = g_strdup (icon_name);
 
-    if (! icon_name)
-        icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (private->tool_info));
+	if (!icon_name)
+		icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (private->tool_info));
 
-    g_object_set (private->dialog, "icon-name", icon_name, NULL);
+	g_object_set (private->dialog, "icon-name", icon_name, NULL);
 }
 
 void
 gimp_tool_gui_set_help_id (GimpToolGui *gui,
                            const gchar *help_id)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (help_id == private->help_id)
-        return;
+	if (help_id == private->help_id)
+		return;
 
-    g_free (private->help_id);
-    private->help_id = g_strdup (help_id);
+	g_free (private->help_id);
+	private->help_id = g_strdup (help_id);
 
-    if (! help_id)
-        help_id = private->tool_info->help_id;
+	if (!help_id)
+		help_id = private->tool_info->help_id;
 
-    if (private->overlay)
-    {
-        /* TODO */
-    }
-    else
-    {
-        g_object_set (private->dialog, "help-id", help_id, NULL);
-    }
+	if (private->overlay)
+	{
+		/* TODO */
+	}
+	else
+	{
+		g_object_set (private->dialog, "help-id", help_id, NULL);
+	}
 }
 
 void
 gimp_tool_gui_set_shell (GimpToolGui      *gui,
                          GimpDisplayShell *shell)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
-    g_return_if_fail (shell == NULL || GIMP_IS_DISPLAY_SHELL (shell));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (shell == NULL || GIMP_IS_DISPLAY_SHELL (shell));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (shell == private->shell)
-        return;
+	if (shell == private->shell)
+		return;
 
-    if (private->shell)
-    {
-        g_object_remove_weak_pointer (G_OBJECT (private->shell),
-                                      (gpointer) &private->shell);
-        g_signal_handlers_disconnect_by_func (private->shell->canvas,
-                                              gimp_tool_gui_canvas_resized,
-                                              gui);
-    }
+	if (private->shell)
+	{
+		g_object_remove_weak_pointer (G_OBJECT (private->shell),
+		                              (gpointer) &private->shell);
+		g_signal_handlers_disconnect_by_func (private->shell->canvas,
+		                                      gimp_tool_gui_canvas_resized,
+		                                      gui);
+	}
 
-    private->shell = shell;
+	private->shell = shell;
 
-    if (private->shell)
-    {
-        g_signal_connect (private->shell->canvas, "size-allocate",
-                          G_CALLBACK (gimp_tool_gui_canvas_resized),
-                          gui);
-        g_object_add_weak_pointer (G_OBJECT (private->shell),
-                                   (gpointer) &private->shell);
-    }
+	if (private->shell)
+	{
+		g_signal_connect (private->shell->canvas, "size-allocate",
+		                  G_CALLBACK (gimp_tool_gui_canvas_resized),
+		                  gui);
+		g_object_add_weak_pointer (G_OBJECT (private->shell),
+		                           (gpointer) &private->shell);
+	}
 
-    gimp_tool_gui_update_shell (gui);
+	gimp_tool_gui_update_shell (gui);
 }
 
 void
 gimp_tool_gui_set_viewables (GimpToolGui *gui,
                              GList       *viewables)
 {
-    GimpToolGuiPrivate *private;
-    GList              *iter;
+	GimpToolGuiPrivate *private;
+	GList              *iter;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (g_list_length (viewables) == g_list_length (private->viewables))
-    {
-        for (iter = private->viewables; iter; iter = iter->next)
-        {
-            g_return_if_fail (iter->data == NULL || GIMP_IS_VIEWABLE (iter->data));
+	if (g_list_length (viewables) == g_list_length (private->viewables))
+	{
+		for (iter = private->viewables; iter; iter = iter->next)
+		{
+			g_return_if_fail (iter->data == NULL || GIMP_IS_VIEWABLE (iter->data));
 
-            if (! g_list_find (private->viewables, iter->data))
-                break;
-        }
+			if (!g_list_find (private->viewables, iter->data))
+				break;
+		}
 
-        if (iter == NULL)
-            /* Identical viewable list. */
-            return;
-    }
+		if (iter == NULL)
+			/* Identical viewable list. */
+			return;
+	}
 
-    if (private->viewables)
-    {
-        for (iter = private->viewables; iter; iter = iter->next)
-        {
-            if (iter->data)
-                g_object_remove_weak_pointer (G_OBJECT (iter->data),
-                                              (gpointer) &iter->data);
-        }
+	if (private->viewables)
+	{
+		for (iter = private->viewables; iter; iter = iter->next)
+		{
+			if (iter->data)
+				g_object_remove_weak_pointer (G_OBJECT (iter->data),
+				                              (gpointer) &iter->data);
+		}
 
-        g_list_free (private->viewables);
-    }
+		g_list_free (private->viewables);
+	}
 
-    private->viewables = g_list_copy (viewables);
+	private->viewables = g_list_copy (viewables);
 
-    if (private->viewables)
-    {
-        for (iter = private->viewables; iter; iter = iter->next)
-            g_object_add_weak_pointer (G_OBJECT (iter->data),
-                                       (gpointer) &iter->data);
-    }
+	if (private->viewables)
+	{
+		for (iter = private->viewables; iter; iter = iter->next)
+			g_object_add_weak_pointer (G_OBJECT (iter->data),
+			                           (gpointer) &iter->data);
+	}
 
-    gimp_tool_gui_update_viewable (gui);
+	gimp_tool_gui_update_viewable (gui);
 }
 
 void
 gimp_tool_gui_set_viewable (GimpToolGui  *gui,
                             GimpViewable *viewable)
 {
-    GList *viewables = g_list_prepend (NULL, viewable);
+	GList *viewables = g_list_prepend (NULL, viewable);
 
-    gimp_tool_gui_set_viewables (gui, viewables);
-    g_list_free (viewables);
+	gimp_tool_gui_set_viewables (gui, viewables);
+	g_list_free (viewables);
 }
 
 GtkWidget *
 gimp_tool_gui_get_dialog (GimpToolGui *gui)
 {
-    g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), NULL);
+	g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), NULL);
 
-    return GET_PRIVATE (gui)->dialog;
+	return GET_PRIVATE (gui)->dialog;
 }
 
 GtkWidget *
 gimp_tool_gui_get_vbox (GimpToolGui *gui)
 {
-    g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), NULL);
+	g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), NULL);
 
-    return GET_PRIVATE (gui)->vbox;
+	return GET_PRIVATE (gui)->vbox;
 }
 
 gboolean
 gimp_tool_gui_get_visible (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
+	g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (private->overlay)
-        return gtk_widget_get_parent (private->dialog) != NULL;
-    else
-        return gtk_widget_get_visible (private->dialog);
+	if (private->overlay)
+		return gtk_widget_get_parent (private->dialog) != NULL;
+	else
+		return gtk_widget_get_visible (private->dialog);
 }
 
 void
 gimp_tool_gui_show (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    g_return_if_fail (private->shell != NULL);
+	g_return_if_fail (private->shell != NULL);
 
-    if (private->overlay)
-    {
-        if (! gtk_widget_get_parent (private->dialog))
-        {
-            gimp_overlay_box_add_child (GIMP_OVERLAY_BOX (private->shell->canvas),
-                                        private->dialog, 1.0, 0.0);
-            gtk_widget_show (private->dialog);
-        }
-    }
-    else
-    {
-        if (gtk_widget_get_visible (private->dialog))
-            gdk_window_show (gtk_widget_get_window (private->dialog));
-        else
-            gtk_widget_show (private->dialog);
-    }
+	if (private->overlay)
+	{
+		if (!gtk_widget_get_parent (private->dialog))
+		{
+			gimp_overlay_box_add_child (GIMP_OVERLAY_BOX (private->shell->canvas),
+			                            private->dialog, 1.0, 0.0);
+			gtk_widget_show (private->dialog);
+		}
+	}
+	else
+	{
+		if (gtk_widget_get_visible (private->dialog))
+			gdk_window_show (gtk_widget_get_window (private->dialog));
+		else
+			gtk_widget_show (private->dialog);
+	}
 }
 
 void
 gimp_tool_gui_hide (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (private->overlay)
-    {
-        if (gtk_widget_get_parent (private->dialog))
-        {
-            gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (private->dialog)),
-                                  private->dialog);
-            gtk_widget_hide (private->dialog);
-        }
-    }
-    else
-    {
-        if (gimp_dialog_factory_from_widget (private->dialog, NULL))
-        {
-            gimp_dialog_factory_hide_dialog (private->dialog);
-        }
-        else
-        {
-            gtk_widget_hide (private->dialog);
-        }
-    }
+	if (private->overlay)
+	{
+		if (gtk_widget_get_parent (private->dialog))
+		{
+			gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (private->dialog)),
+			                      private->dialog);
+			gtk_widget_hide (private->dialog);
+		}
+	}
+	else
+	{
+		if (gimp_dialog_factory_from_widget (private->dialog, NULL))
+		{
+			gimp_dialog_factory_hide_dialog (private->dialog);
+		}
+		else
+		{
+			gtk_widget_hide (private->dialog);
+		}
+	}
 }
 
 void
 gimp_tool_gui_set_overlay (GimpToolGui *gui,
                            GdkMonitor  *monitor,
-                           gboolean     overlay)
+                           gboolean overlay)
 {
-    GimpToolGuiPrivate *private;
-    gboolean            visible;
+	GimpToolGuiPrivate *private;
+	gboolean visible;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (private->overlay == overlay)
-        return;
+	if (private->overlay == overlay)
+		return;
 
-    if (! private->dialog)
-    {
-        private->overlay = overlay;
-        return;
-    }
+	if (!private->dialog)
+	{
+		private->overlay = overlay;
+		return;
+	}
 
-    visible = gtk_widget_get_visible (private->dialog);
+	visible = gtk_widget_get_visible (private->dialog);
 
-    if (visible)
-        gimp_tool_gui_hide (gui);
+	if (visible)
+		gimp_tool_gui_hide (gui);
 
-    gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (private->vbox)),
-                          private->vbox);
+	gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (private->vbox)),
+	                      private->vbox);
 
-    if (private->overlay)
-        g_object_unref (private->dialog);
-    else
-        gtk_widget_destroy (private->dialog);
+	if (private->overlay)
+		g_object_unref (private->dialog);
+	else
+		gtk_widget_destroy (private->dialog);
 
-    private->overlay = overlay;
+	private->overlay = overlay;
 
-    gimp_tool_gui_create_dialog (gui, monitor);
+	gimp_tool_gui_create_dialog (gui, monitor);
 
-    if (visible)
-        gimp_tool_gui_show (gui);
+	if (visible)
+		gimp_tool_gui_show (gui);
 }
 
 gboolean
 gimp_tool_gui_get_overlay (GimpToolGui *gui)
 {
-    g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
+	g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
 
-    return GET_PRIVATE (gui)->overlay;
+	return GET_PRIVATE (gui)->overlay;
 }
 
 void
 gimp_tool_gui_set_auto_overlay (GimpToolGui *gui,
-                                gboolean     auto_overlay)
+                                gboolean auto_overlay)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (private->auto_overlay != auto_overlay)
-    {
-        private->auto_overlay = auto_overlay;
+	if (private->auto_overlay != auto_overlay)
+	{
+		private->auto_overlay = auto_overlay;
 
-        if (private->shell)
-            gimp_tool_gui_canvas_resized (private->shell->canvas, NULL, gui);
-    }
+		if (private->shell)
+			gimp_tool_gui_canvas_resized (private->shell->canvas, NULL, gui);
+	}
 }
 
 gboolean
 gimp_tool_gui_get_auto_overlay (GimpToolGui *gui)
 {
-    g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
+	g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
 
-    return GET_PRIVATE (gui)->auto_overlay;
+	return GET_PRIVATE (gui)->auto_overlay;
 }
 
 void
 gimp_tool_gui_set_focus_on_map (GimpToolGui *gui,
-                                gboolean     focus_on_map)
+                                gboolean focus_on_map)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    if (private->focus_on_map == focus_on_map)
-        return;
+	if (private->focus_on_map == focus_on_map)
+		return;
 
-    private->focus_on_map = focus_on_map ? TRUE : FALSE;
+	private->focus_on_map = focus_on_map ? TRUE : FALSE;
 
-    if (! private->overlay)
-    {
-        gtk_window_set_focus_on_map (GTK_WINDOW (private->dialog),
-                                     private->focus_on_map);
-    }
+	if (!private->overlay)
+	{
+		gtk_window_set_focus_on_map (GTK_WINDOW (private->dialog),
+		                             private->focus_on_map);
+	}
 }
 
 gboolean
 gimp_tool_gui_get_focus_on_map (GimpToolGui *gui)
 {
-    g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
+	g_return_val_if_fail (GIMP_IS_TOOL_GUI (gui), FALSE);
 
-    return GET_PRIVATE (gui)->focus_on_map;
+	return GET_PRIVATE (gui)->focus_on_map;
 }
 
 void
 gimp_tool_gui_add_buttons_valist (GimpToolGui *gui,
-                                  va_list      args)
+                                  va_list args)
 {
-    const gchar *button_text;
-    gint         response_id;
+	const gchar *button_text;
+	gint response_id;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    while ((button_text = va_arg (args, const gchar *)))
-    {
-        response_id = va_arg (args, gint);
+	while ((button_text = va_arg (args, const gchar *)))
+	{
+		response_id = va_arg (args, gint);
 
-        gimp_tool_gui_add_button (gui, button_text, response_id);
-    }
+		gimp_tool_gui_add_button (gui, button_text, response_id);
+	}
 }
 
 void
 gimp_tool_gui_add_button (GimpToolGui *gui,
                           const gchar *button_text,
-                          gint         response_id)
+                          gint response_id)
 {
-    GimpToolGuiPrivate *private;
-    ResponseEntry     *entry;
+	GimpToolGuiPrivate *private;
+	ResponseEntry     *entry;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
-    g_return_if_fail (button_text != NULL);
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (button_text != NULL);
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    entry = response_entry_new (response_id, button_text);
+	entry = response_entry_new (response_id, button_text);
 
-    private->response_entries = g_list_append (private->response_entries,
-                                entry);
+	private->response_entries = g_list_append (private->response_entries,
+	                                           entry);
 
-    if (private->dialog)
-        gimp_tool_gui_add_dialog_button (gui, entry);
+	if (private->dialog)
+		gimp_tool_gui_add_dialog_button (gui, entry);
 }
 
 void
 gimp_tool_gui_set_default_response (GimpToolGui *gui,
-                                    gint         response_id)
+                                    gint response_id)
 {
-    GimpToolGuiPrivate *private;
+	GimpToolGuiPrivate *private;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    g_return_if_fail (response_entry_find (private->response_entries,
-                                           response_id) != NULL);
+	g_return_if_fail (response_entry_find (private->response_entries,
+	                                       response_id) != NULL);
 
-    private->default_response = response_id;
+	private->default_response = response_id;
 
-    if (private->overlay)
-    {
-        gimp_overlay_dialog_set_default_response (GIMP_OVERLAY_DIALOG (private->dialog),
-                response_id);
-    }
-    else
-    {
-        gtk_dialog_set_default_response (GTK_DIALOG (private->dialog),
-                                         response_id);
-    }
+	if (private->overlay)
+	{
+		gimp_overlay_dialog_set_default_response (GIMP_OVERLAY_DIALOG (private->dialog),
+		                                          response_id);
+	}
+	else
+	{
+		gtk_dialog_set_default_response (GTK_DIALOG (private->dialog),
+		                                 response_id);
+	}
 }
 
 void
 gimp_tool_gui_set_response_sensitive (GimpToolGui *gui,
-                                      gint         response_id,
-                                      gboolean     sensitive)
+                                      gint response_id,
+                                      gboolean sensitive)
 {
-    GimpToolGuiPrivate *private;
-    ResponseEntry      *entry;
+	GimpToolGuiPrivate *private;
+	ResponseEntry      *entry;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    entry = response_entry_find (private->response_entries, response_id);
+	entry = response_entry_find (private->response_entries, response_id);
 
-    if (! entry)
-        return;
+	if (!entry)
+		return;
 
-    entry->sensitive = sensitive;
+	entry->sensitive = sensitive;
 
-    if (private->overlay)
-    {
-        gimp_overlay_dialog_set_response_sensitive (GIMP_OVERLAY_DIALOG (private->dialog),
-                response_id, sensitive);
-    }
-    else
-    {
-        gtk_dialog_set_response_sensitive (GTK_DIALOG (private->dialog),
-                                           response_id, sensitive);
-    }
+	if (private->overlay)
+	{
+		gimp_overlay_dialog_set_response_sensitive (GIMP_OVERLAY_DIALOG (private->dialog),
+		                                            response_id, sensitive);
+	}
+	else
+	{
+		gtk_dialog_set_response_sensitive (GTK_DIALOG (private->dialog),
+		                                   response_id, sensitive);
+	}
 }
 
 void
 gimp_tool_gui_set_alternative_button_order (GimpToolGui *gui,
-        ...)
+                                            ...)
 {
-    GimpToolGuiPrivate *private;
-    va_list             args;
-    gint                response_id;
-    gint                i;
+	GimpToolGuiPrivate *private;
+	va_list args;
+	gint response_id;
+	gint i;
 
-    g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
+	g_return_if_fail (GIMP_IS_TOOL_GUI (gui));
 
-    private = GET_PRIVATE (gui);
+	private = GET_PRIVATE (gui);
 
-    va_start (args, gui);
+	va_start (args, gui);
 
-    for (response_id = va_arg (args, gint), i = 0;
-            response_id != -1;
-            response_id = va_arg (args, gint), i++)
-    {
-        ResponseEntry *entry = response_entry_find (private->response_entries,
-                               response_id);
+	for (response_id = va_arg (args, gint), i = 0;
+	     response_id != -1;
+	     response_id = va_arg (args, gint), i++)
+	{
+		ResponseEntry *entry = response_entry_find (private->response_entries,
+		                                            response_id);
 
-        if (entry)
-            entry->alternative_position = i;
-    }
+		if (entry)
+			entry->alternative_position = i;
+	}
 
-    va_end (args);
+	va_end (args);
 
-    gimp_tool_gui_update_buttons (gui);
+	gimp_tool_gui_update_buttons (gui);
 }
 
 
@@ -793,208 +793,208 @@ static void
 gimp_tool_gui_create_dialog (GimpToolGui *gui,
                              GdkMonitor  *monitor)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
-    GList              *list;
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GList              *list;
 
-    if (private->overlay)
-    {
-        private->dialog = gimp_overlay_dialog_new (private->tool_info,
-                          private->description,
-                          NULL);
-        g_object_ref_sink (private->dialog);
+	if (private->overlay)
+	{
+		private->dialog = gimp_overlay_dialog_new (private->tool_info,
+		                                           private->description,
+		                                           NULL);
+		g_object_ref_sink (private->dialog);
 
-        for (list = private->response_entries; list; list = g_list_next (list))
-        {
-            ResponseEntry *entry = list->data;
+		for (list = private->response_entries; list; list = g_list_next (list))
+		{
+			ResponseEntry *entry = list->data;
 
-            gimp_tool_gui_add_dialog_button (gui, entry);
-        }
+			gimp_tool_gui_add_dialog_button (gui, entry);
+		}
 
-        if (private->default_response != -1)
-            gimp_overlay_dialog_set_default_response (GIMP_OVERLAY_DIALOG (private->dialog),
-                    private->default_response);
+		if (private->default_response != -1)
+			gimp_overlay_dialog_set_default_response (GIMP_OVERLAY_DIALOG (private->dialog),
+			                                          private->default_response);
 
-        gtk_container_set_border_width (GTK_CONTAINER (private->dialog), 6);
+		gtk_container_set_border_width (GTK_CONTAINER (private->dialog), 6);
 
-        gtk_container_set_border_width (GTK_CONTAINER (private->vbox), 0);
-        gtk_container_add (GTK_CONTAINER (private->dialog), private->vbox);
-        gtk_widget_show (private->vbox);
-    }
-    else
-    {
-        private->dialog = gimp_tool_dialog_new (private->tool_info,
-                                                monitor,
-                                                private->title,
-                                                private->description,
-                                                private->icon_name,
-                                                private->help_id,
-                                                NULL);
+		gtk_container_set_border_width (GTK_CONTAINER (private->vbox), 0);
+		gtk_container_add (GTK_CONTAINER (private->dialog), private->vbox);
+		gtk_widget_show (private->vbox);
+	}
+	else
+	{
+		private->dialog = gimp_tool_dialog_new (private->tool_info,
+		                                        monitor,
+		                                        private->title,
+		                                        private->description,
+		                                        private->icon_name,
+		                                        private->help_id,
+		                                        NULL);
 
-        for (list = private->response_entries; list; list = g_list_next (list))
-        {
-            ResponseEntry *entry = list->data;
+		for (list = private->response_entries; list; list = g_list_next (list))
+		{
+			ResponseEntry *entry = list->data;
 
-            gimp_tool_gui_add_dialog_button (gui, entry);
-        }
+			gimp_tool_gui_add_dialog_button (gui, entry);
+		}
 
-        if (private->default_response != -1)
-            gtk_dialog_set_default_response (GTK_DIALOG (private->dialog),
-                                             private->default_response);
+		if (private->default_response != -1)
+			gtk_dialog_set_default_response (GTK_DIALOG (private->dialog),
+			                                 private->default_response);
 
-        gtk_window_set_focus_on_map (GTK_WINDOW (private->dialog),
-                                     private->focus_on_map);
+		gtk_window_set_focus_on_map (GTK_WINDOW (private->dialog),
+		                             private->focus_on_map);
 
-        gtk_container_set_border_width (GTK_CONTAINER (private->vbox), 6);
-        gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (private->dialog))),
-                            private->vbox, TRUE, TRUE, 0);
-        gtk_widget_show (private->vbox);
-    }
+		gtk_container_set_border_width (GTK_CONTAINER (private->vbox), 6);
+		gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (private->dialog))),
+		                    private->vbox, TRUE, TRUE, 0);
+		gtk_widget_show (private->vbox);
+	}
 
-    gimp_tool_gui_update_buttons (gui);
+	gimp_tool_gui_update_buttons (gui);
 
-    if (private->shell)
-        gimp_tool_gui_update_shell (gui);
+	if (private->shell)
+		gimp_tool_gui_update_shell (gui);
 
-    if (private->viewables)
-        gimp_tool_gui_update_viewable (gui);
+	if (private->viewables)
+		gimp_tool_gui_update_viewable (gui);
 
-    g_signal_connect_object (private->dialog, "response",
-                             G_CALLBACK (gimp_tool_gui_dialog_response),
-                             G_OBJECT (gui), 0);
+	g_signal_connect_object (private->dialog, "response",
+	                         G_CALLBACK (gimp_tool_gui_dialog_response),
+	                         G_OBJECT (gui), 0);
 }
 
 static void
 gimp_tool_gui_add_dialog_button (GimpToolGui   *gui,
                                  ResponseEntry *entry)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
 
-    if (private->overlay)
-    {
-        gimp_overlay_dialog_add_button (GIMP_OVERLAY_DIALOG (private->dialog),
-                                        entry->button_text,
-                                        entry->response_id);
+	if (private->overlay)
+	{
+		gimp_overlay_dialog_add_button (GIMP_OVERLAY_DIALOG (private->dialog),
+		                                entry->button_text,
+		                                entry->response_id);
 
-        if (! entry->sensitive)
-        {
-            gimp_overlay_dialog_set_response_sensitive (
-                GIMP_OVERLAY_DIALOG (private->dialog),
-                entry->response_id, FALSE);
-        }
-    }
-    else
-    {
-        gimp_dialog_add_button (GIMP_DIALOG (private->dialog),
-                                entry->button_text,
-                                entry->response_id);
+		if (!entry->sensitive)
+		{
+			gimp_overlay_dialog_set_response_sensitive (
+				GIMP_OVERLAY_DIALOG (private->dialog),
+				entry->response_id, FALSE);
+		}
+	}
+	else
+	{
+		gimp_dialog_add_button (GIMP_DIALOG (private->dialog),
+		                        entry->button_text,
+		                        entry->response_id);
 
-        if (! entry->sensitive)
-            gtk_dialog_set_response_sensitive (GTK_DIALOG (private->dialog),
-                                               entry->response_id,
-                                               FALSE);
-    }
+		if (!entry->sensitive)
+			gtk_dialog_set_response_sensitive (GTK_DIALOG (private->dialog),
+			                                   entry->response_id,
+			                                   FALSE);
+	}
 }
 
 static void
 gimp_tool_gui_update_buttons (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
-    GList              *list;
-    gint               *ids;
-    gint                n_ids;
-    gint                n_alternatives = 0;
-    gint                i;
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GList              *list;
+	gint               *ids;
+	gint n_ids;
+	gint n_alternatives = 0;
+	gint i;
 
-    n_ids = g_list_length (private->response_entries);
-    ids   = g_new0 (gint, n_ids);
+	n_ids = g_list_length (private->response_entries);
+	ids   = g_new0 (gint, n_ids);
 
-    for (list = private->response_entries, i = 0;
-            list;
-            list = g_list_next (list), i++)
-    {
-        ResponseEntry *entry = list->data;
+	for (list = private->response_entries, i = 0;
+	     list;
+	     list = g_list_next (list), i++)
+	{
+		ResponseEntry *entry = list->data;
 
-        if (entry->alternative_position >= 0 &&
-                entry->alternative_position < n_ids)
-        {
-            ids[entry->alternative_position] = entry->response_id;
-            n_alternatives++;
-        }
-    }
+		if (entry->alternative_position >= 0 &&
+		    entry->alternative_position < n_ids)
+		{
+			ids[entry->alternative_position] = entry->response_id;
+			n_alternatives++;
+		}
+	}
 
-    if (n_ids == n_alternatives)
-    {
-        if (private->overlay)
-        {
-            gimp_overlay_dialog_set_alternative_button_order (GIMP_OVERLAY_DIALOG (private->dialog),
-                    n_ids, ids);
-        }
-        else
-        {
-            gimp_dialog_set_alternative_button_order_from_array (GIMP_DIALOG (private->dialog),
-                    n_ids, ids);
-        }
-    }
+	if (n_ids == n_alternatives)
+	{
+		if (private->overlay)
+		{
+			gimp_overlay_dialog_set_alternative_button_order (GIMP_OVERLAY_DIALOG (private->dialog),
+			                                                  n_ids, ids);
+		}
+		else
+		{
+			gimp_dialog_set_alternative_button_order_from_array (GIMP_DIALOG (private->dialog),
+			                                                     n_ids, ids);
+		}
+	}
 
-    g_free (ids);
+	g_free (ids);
 }
 
 static void
 gimp_tool_gui_update_shell (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
 
-    if (private->overlay)
-    {
-        if (gtk_widget_get_parent (private->dialog))
-        {
-            gimp_tool_gui_hide (gui);
+	if (private->overlay)
+	{
+		if (gtk_widget_get_parent (private->dialog))
+		{
+			gimp_tool_gui_hide (gui);
 
-            if (private->shell)
-                gimp_tool_gui_show (gui);
-        }
-    }
-    else
-    {
-        gimp_tool_dialog_set_shell (GIMP_TOOL_DIALOG (private->dialog),
-                                    private->shell);
-    }
+			if (private->shell)
+				gimp_tool_gui_show (gui);
+		}
+	}
+	else
+	{
+		gimp_tool_dialog_set_shell (GIMP_TOOL_DIALOG (private->dialog),
+		                            private->shell);
+	}
 }
 
 static void
 gimp_tool_gui_update_viewable (GimpToolGui *gui)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
 
-    if (! private->overlay)
-    {
-        GimpContext *context = NULL;
+	if (!private->overlay)
+	{
+		GimpContext *context = NULL;
 
-        if (private->tool_info)
-            context = GIMP_CONTEXT (private->tool_info->tool_options);
+		if (private->tool_info)
+			context = GIMP_CONTEXT (private->tool_info->tool_options);
 
-        gimp_viewable_dialog_set_viewables (GIMP_VIEWABLE_DIALOG (private->dialog),
-                                            g_list_copy (private->viewables), context);
-    }
+		gimp_viewable_dialog_set_viewables (GIMP_VIEWABLE_DIALOG (private->dialog),
+		                                    g_list_copy (private->viewables), context);
+	}
 }
 
 static void
 gimp_tool_gui_dialog_response (GtkWidget   *dialog,
-                               gint         response_id,
+                               gint response_id,
                                GimpToolGui *gui)
 {
-    if (response_id == GIMP_RESPONSE_DETACH)
-    {
-        gimp_tool_gui_set_auto_overlay (gui, FALSE);
-        gimp_tool_gui_set_overlay (gui,
-                                   gimp_widget_get_monitor (dialog),
-                                   FALSE);
-    }
-    else
-    {
-        g_signal_emit (gui, signals[RESPONSE], 0,
-                       response_id);
-    }
+	if (response_id == GIMP_RESPONSE_DETACH)
+	{
+		gimp_tool_gui_set_auto_overlay (gui, FALSE);
+		gimp_tool_gui_set_overlay (gui,
+		                           gimp_widget_get_monitor (dialog),
+		                           FALSE);
+	}
+	else
+	{
+		g_signal_emit (gui, signals[RESPONSE], 0,
+		               response_id);
+	}
 }
 
 static void
@@ -1002,62 +1002,62 @@ gimp_tool_gui_canvas_resized (GtkWidget     *canvas,
                               GtkAllocation *unused,
                               GimpToolGui   *gui)
 {
-    GimpToolGuiPrivate *private = GET_PRIVATE (gui);
+	GimpToolGuiPrivate *private = GET_PRIVATE (gui);
 
-    if (private->auto_overlay)
-    {
-        GtkRequisition requisition;
-        GtkAllocation  allocation;
-        gboolean       overlay = FALSE;
+	if (private->auto_overlay)
+	{
+		GtkRequisition requisition;
+		GtkAllocation allocation;
+		gboolean overlay = FALSE;
 
-        gtk_widget_get_preferred_size (private->vbox, &requisition, NULL);
-        gtk_widget_get_allocation (canvas, &allocation);
+		gtk_widget_get_preferred_size (private->vbox, &requisition, NULL);
+		gtk_widget_get_allocation (canvas, &allocation);
 
-        if (allocation.width  > 2 * requisition.width &&
-                allocation.height > 3 * requisition.height)
-        {
-            overlay = TRUE;
-        }
+		if (allocation.width  > 2 * requisition.width &&
+		    allocation.height > 3 * requisition.height)
+		{
+			overlay = TRUE;
+		}
 
-        gimp_tool_gui_set_overlay (gui,
-                                   gimp_widget_get_monitor (private->dialog),
-                                   overlay);
-    }
+		gimp_tool_gui_set_overlay (gui,
+		                           gimp_widget_get_monitor (private->dialog),
+		                           overlay);
+	}
 }
 
 static ResponseEntry *
-response_entry_new (gint         response_id,
+response_entry_new (gint response_id,
                     const gchar *button_text)
 {
-    ResponseEntry *entry = g_slice_new0 (ResponseEntry);
+	ResponseEntry *entry = g_slice_new0 (ResponseEntry);
 
-    entry->response_id          = response_id;
-    entry->button_text          = g_strdup (button_text);
-    entry->alternative_position = -1;
-    entry->sensitive            = TRUE;
+	entry->response_id          = response_id;
+	entry->button_text          = g_strdup (button_text);
+	entry->alternative_position = -1;
+	entry->sensitive            = TRUE;
 
-    return entry;
+	return entry;
 }
 
 static void
 response_entry_free (ResponseEntry *entry)
 {
-    g_free (entry->button_text);
+	g_free (entry->button_text);
 
-    g_slice_free (ResponseEntry, entry);
+	g_slice_free (ResponseEntry, entry);
 }
 
 static ResponseEntry *
 response_entry_find (GList *entries,
-                     gint   response_id)
+                     gint response_id)
 {
-    for (; entries; entries = g_list_next (entries))
-    {
-        ResponseEntry *entry = entries->data;
+	for (; entries; entries = g_list_next (entries))
+	{
+		ResponseEntry *entry = entries->data;
 
-        if (entry->response_id == response_id)
-            return entry;
-    }
+		if (entry->response_id == response_id)
+			return entry;
+	}
 
-    return NULL;
+	return NULL;
 }

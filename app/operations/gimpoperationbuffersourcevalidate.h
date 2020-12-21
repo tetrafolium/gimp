@@ -30,19 +30,19 @@
 #define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE, GimpOperationBufferSourceValidateClass))
 
 
-typedef struct _GimpOperationBufferSourceValidate      GimpOperationBufferSourceValidate;
+typedef struct _GimpOperationBufferSourceValidate GimpOperationBufferSourceValidate;
 typedef struct _GimpOperationBufferSourceValidateClass GimpOperationBufferSourceValidateClass;
 
 struct _GimpOperationBufferSourceValidate
 {
-    GeglOperationSource  parent_instance;
+	GeglOperationSource parent_instance;
 
-    GeglBuffer          *buffer;
+	GeglBuffer          *buffer;
 };
 
 struct _GimpOperationBufferSourceValidateClass
 {
-    GeglOperationSourceClass  parent_class;
+	GeglOperationSourceClass parent_class;
 };
 
 

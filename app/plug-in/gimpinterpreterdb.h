@@ -34,36 +34,36 @@ typedef struct _GimpInterpreterDBClass GimpInterpreterDBClass;
 
 struct _GimpInterpreterDB
 {
-    GObject     parent_instance;
+	GObject parent_instance;
 
-    gboolean    verbose;
+	gboolean verbose;
 
-    GHashTable *programs;
+	GHashTable *programs;
 
-    GSList     *magics;
-    GHashTable *magic_names;
+	GSList     *magics;
+	GHashTable *magic_names;
 
-    GHashTable *extensions;
-    GHashTable *extension_names;
+	GHashTable *extensions;
+	GHashTable *extension_names;
 };
 
 struct _GimpInterpreterDBClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 };
 
 
 GType               gimp_interpreter_db_get_type (void) G_GNUC_CONST;
-GimpInterpreterDB * gimp_interpreter_db_new      (gboolean            verbose);
+GimpInterpreterDB * gimp_interpreter_db_new      (gboolean verbose);
 
 void                gimp_interpreter_db_load     (GimpInterpreterDB  *db,
-        GList              *path);
+                                                  GList              *path);
 
 void                gimp_interpreter_db_clear    (GimpInterpreterDB  *db);
 
 gchar             * gimp_interpreter_db_resolve  (GimpInterpreterDB  *db,
-        const gchar        *program_path,
-        gchar             **interp_arg);
+                                                  const gchar        *program_path,
+                                                  gchar             **interp_arg);
 gchar       * gimp_interpreter_db_get_extensions (GimpInterpreterDB  *db);
 
 

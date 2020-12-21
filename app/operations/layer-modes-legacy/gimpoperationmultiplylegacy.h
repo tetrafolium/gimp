@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_MULTIPLY_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_MULTIPLY_LEGACY, GimpOperationMultiplyLegacyClass))
 
 
-typedef struct _GimpOperationMultiplyLegacy      GimpOperationMultiplyLegacy;
+typedef struct _GimpOperationMultiplyLegacy GimpOperationMultiplyLegacy;
 typedef struct _GimpOperationMultiplyLegacyClass GimpOperationMultiplyLegacyClass;
 
 struct _GimpOperationMultiplyLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationMultiplyLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

@@ -36,46 +36,46 @@
 gboolean
 gimp_plug_in_context_push (GimpPlugIn *plug_in)
 {
-    GimpPlugInProcFrame *proc_frame;
-    GimpContext         *parent;
-    GimpContext         *context;
+	GimpPlugInProcFrame *proc_frame;
+	GimpContext         *parent;
+	GimpContext         *context;
 
-    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+	g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
 
-    proc_frame = gimp_plug_in_get_proc_frame (plug_in);
+	proc_frame = gimp_plug_in_get_proc_frame (plug_in);
 
-    if (proc_frame->context_stack)
-        parent = proc_frame->context_stack->data;
-    else
-        parent = proc_frame->main_context;
+	if (proc_frame->context_stack)
+		parent = proc_frame->context_stack->data;
+	else
+		parent = proc_frame->main_context;
 
-    context = gimp_pdb_context_new (plug_in->manager->gimp, parent, FALSE);
+	context = gimp_pdb_context_new (plug_in->manager->gimp, parent, FALSE);
 
-    proc_frame->context_stack = g_list_prepend (proc_frame->context_stack,
-                                context);
+	proc_frame->context_stack = g_list_prepend (proc_frame->context_stack,
+	                                            context);
 
-    return TRUE;
+	return TRUE;
 }
 
 gboolean
 gimp_plug_in_context_pop (GimpPlugIn *plug_in)
 {
-    GimpPlugInProcFrame *proc_frame;
+	GimpPlugInProcFrame *proc_frame;
 
-    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+	g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
 
-    proc_frame = gimp_plug_in_get_proc_frame (plug_in);
+	proc_frame = gimp_plug_in_get_proc_frame (plug_in);
 
-    if (proc_frame->context_stack)
-    {
-        GimpContext *context = proc_frame->context_stack->data;
+	if (proc_frame->context_stack)
+	{
+		GimpContext *context = proc_frame->context_stack->data;
 
-        proc_frame->context_stack = g_list_remove (proc_frame->context_stack,
-                                    context);
-        g_object_unref (context);
+		proc_frame->context_stack = g_list_remove (proc_frame->context_stack,
+		                                           context);
+		g_object_unref (context);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }

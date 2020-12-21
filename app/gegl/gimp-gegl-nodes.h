@@ -23,32 +23,32 @@
 
 
 GeglNode * gimp_gegl_create_flatten_node       (const GimpRGB         *background,
-        const Babl            *space,
-        GimpLayerColorSpace    composite_space);
+                                                const Babl            *space,
+                                                GimpLayerColorSpace composite_space);
 GeglNode * gimp_gegl_create_apply_opacity_node (GeglBuffer            *mask,
-        gint                   mask_offset_x,
-        gint                   mask_offset_y,
-        gdouble                opacity);
+                                                gint mask_offset_x,
+                                                gint mask_offset_y,
+                                                gdouble opacity);
 GeglNode * gimp_gegl_create_transform_node     (const GimpMatrix3     *matrix);
 
 GeglNode * gimp_gegl_add_buffer_source         (GeglNode              *parent,
-        GeglBuffer            *buffer,
-        gint                   offset_x,
-        gint                   offset_y);
+                                                GeglBuffer            *buffer,
+                                                gint offset_x,
+                                                gint offset_y);
 
 void       gimp_gegl_mode_node_set_mode        (GeglNode               *node,
-        GimpLayerMode           mode,
-        GimpLayerColorSpace     blend_space,
-        GimpLayerColorSpace     composite_space,
-        GimpLayerCompositeMode  composite_mode);
+                                                GimpLayerMode mode,
+                                                GimpLayerColorSpace blend_space,
+                                                GimpLayerColorSpace composite_space,
+                                                GimpLayerCompositeMode composite_mode);
 void       gimp_gegl_mode_node_set_opacity     (GeglNode               *node,
-        gdouble                 opacity);
+                                                gdouble opacity);
 
 void       gimp_gegl_node_set_matrix           (GeglNode               *node,
-        const GimpMatrix3      *matrix);
+                                                const GimpMatrix3      *matrix);
 void       gimp_gegl_node_set_color            (GeglNode               *node,
-        const GimpRGB          *color,
-        const Babl             *space);
+                                                const GimpRGB          *color,
+                                                const Babl             *space);
 
 
 #endif /* __GIMP_GEGL_NODES_H__ */

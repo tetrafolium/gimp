@@ -33,37 +33,37 @@
 #define GIMP_OPERATION_GRADIENT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_GRADIENT, GimpOperationGradientClass))
 
 
-typedef struct _GimpOperationGradient      GimpOperationGradient;
+typedef struct _GimpOperationGradient GimpOperationGradient;
 typedef struct _GimpOperationGradientClass GimpOperationGradientClass;
 
 struct _GimpOperationGradient
 {
-    GeglOperationFilter          parent_instance;
+	GeglOperationFilter parent_instance;
 
-    GimpContext                 *context;
+	GimpContext                 *context;
 
-    GimpGradient                *gradient;
-    gdouble                      start_x, start_y, end_x, end_y;
-    GimpGradientType             gradient_type;
-    GimpRepeatMode               gradient_repeat;
-    gdouble                      offset;
-    gboolean                     gradient_reverse;
-    GimpGradientBlendColorSpace  gradient_blend_color_space;
+	GimpGradient                *gradient;
+	gdouble start_x, start_y, end_x, end_y;
+	GimpGradientType gradient_type;
+	GimpRepeatMode gradient_repeat;
+	gdouble offset;
+	gboolean gradient_reverse;
+	GimpGradientBlendColorSpace gradient_blend_color_space;
 
-    gboolean                     supersample;
-    gint                         supersample_depth;
-    gdouble                      supersample_threshold;
+	gboolean supersample;
+	gint supersample_depth;
+	gdouble supersample_threshold;
 
-    gboolean                     dither;
+	gboolean dither;
 
-    GimpRGB                     *gradient_cache;
-    gint                         gradient_cache_size;
-    GMutex                       gradient_cache_mutex;
+	GimpRGB                     *gradient_cache;
+	gint gradient_cache_size;
+	GMutex gradient_cache_mutex;
 };
 
 struct _GimpOperationGradientClass
 {
-    GeglOperationFilterClass  parent_class;
+	GeglOperationFilterClass parent_class;
 };
 
 

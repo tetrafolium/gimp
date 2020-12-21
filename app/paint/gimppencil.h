@@ -34,17 +34,17 @@ typedef struct _GimpPencilClass GimpPencilClass;
 
 struct _GimpPencil
 {
-    GimpPaintbrush  parent_instance;
+	GimpPaintbrush parent_instance;
 };
 
 struct _GimpPencilClass
 {
-    GimpPaintbrushClass  parent_class;
+	GimpPaintbrushClass parent_class;
 };
 
 
 void    gimp_pencil_register (Gimp                      *gimp,
-                              GimpPaintRegisterCallback  callback);
+                              GimpPaintRegisterCallback callback);
 
 GType   gimp_pencil_get_type (void) G_GNUC_CONST;
 

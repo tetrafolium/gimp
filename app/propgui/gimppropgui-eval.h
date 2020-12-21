@@ -25,7 +25,7 @@
 gboolean   gimp_prop_eval_boolean (GObject     *config,
                                    GParamSpec  *pspec,
                                    const gchar *key,
-                                   gboolean     default_value);
+                                   gboolean default_value);
 
 gchar    * gimp_prop_eval_string  (GObject     *config,
                                    GParamSpec  *pspec,

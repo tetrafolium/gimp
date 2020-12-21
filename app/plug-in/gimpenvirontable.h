@@ -34,34 +34,34 @@ typedef struct _GimpEnvironTableClass GimpEnvironTableClass;
 
 struct _GimpEnvironTable
 {
-    GObject      parent_instance;
+	GObject parent_instance;
 
-    gboolean     verbose;
+	gboolean verbose;
 
-    GHashTable  *vars;
-    GHashTable  *internal;
+	GHashTable  *vars;
+	GHashTable  *internal;
 
-    gchar      **envp;
+	gchar      **envp;
 };
 
 struct _GimpEnvironTableClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 };
 
 
 GType               gimp_environ_table_get_type  (void) G_GNUC_CONST;
-GimpEnvironTable  * gimp_environ_table_new       (gboolean          verbose);
+GimpEnvironTable  * gimp_environ_table_new       (gboolean verbose);
 
 void                gimp_environ_table_load      (GimpEnvironTable *environ_table,
-        GList            *path);
+                                                  GList            *path);
 
 void                gimp_environ_table_add       (GimpEnvironTable *environ_table,
-        const gchar      *name,
-        const gchar      *value,
-        const gchar      *separator);
+                                                  const gchar      *name,
+                                                  const gchar      *value,
+                                                  const gchar      *separator);
 void                gimp_environ_table_remove    (GimpEnvironTable *environ_table,
-        const gchar      *name);
+                                                  const gchar      *name);
 
 void                gimp_environ_table_clear     (GimpEnvironTable *environ_table);
 void                gimp_environ_table_clear_all (GimpEnvironTable *environ_table);

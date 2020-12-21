@@ -33,40 +33,40 @@
 #define GIMP_CANVAS_CORNER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_CORNER, GimpCanvasCornerClass))
 
 
-typedef struct _GimpCanvasCorner      GimpCanvasCorner;
+typedef struct _GimpCanvasCorner GimpCanvasCorner;
 typedef struct _GimpCanvasCornerClass GimpCanvasCornerClass;
 
 struct _GimpCanvasCorner
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasCornerClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_corner_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_corner_new      (GimpDisplayShell *shell,
-        gdouble           x,
-        gdouble           y,
-        gdouble           width,
-        gdouble           height,
-        GimpHandleAnchor  anchor,
-        gint              corner_width,
-        gint              corner_height,
-        gboolean          outside);
+                                              gdouble x,
+                                              gdouble y,
+                                              gdouble width,
+                                              gdouble height,
+                                              GimpHandleAnchor anchor,
+                                              gint corner_width,
+                                              gint corner_height,
+                                              gboolean outside);
 
 void             gimp_canvas_corner_set      (GimpCanvasItem   *corner,
-        gdouble           x,
-        gdouble           y,
-        gdouble           width,
-        gdouble           height,
-        gint              corner_width,
-        gint              corner_height,
-        gboolean          outside);
+                                              gdouble x,
+                                              gdouble y,
+                                              gdouble width,
+                                              gdouble height,
+                                              gint corner_width,
+                                              gint corner_height,
+                                              gboolean outside);
 
 
 #endif /* __GIMP_CANVAS_CORNER_H__ */

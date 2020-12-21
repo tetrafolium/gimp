@@ -26,10 +26,10 @@ GimpPDBStatusType   file_save (Gimp                 *gimp,
                                GimpProgress         *progress,
                                GFile                *file,
                                GimpPlugInProcedure  *file_proc,
-                               GimpRunMode           run_mode,
-                               gboolean              change_saved_state,
-                               gboolean              export_backward,
-                               gboolean              export_forward,
+                               GimpRunMode run_mode,
+                               gboolean change_saved_state,
+                               gboolean export_backward,
+                               gboolean export_forward,
                                GError              **error);
 
 

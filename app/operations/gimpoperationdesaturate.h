@@ -33,19 +33,19 @@
 #define GIMP_OPERATION_DESATURATE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_DESATURATE, GimpOperationDesaturateClass))
 
 
-typedef struct _GimpOperationDesaturate      GimpOperationDesaturate;
+typedef struct _GimpOperationDesaturate GimpOperationDesaturate;
 typedef struct _GimpOperationDesaturateClass GimpOperationDesaturateClass;
 
 struct _GimpOperationDesaturate
 {
-    GimpOperationPointFilter  parent_instance;
+	GimpOperationPointFilter parent_instance;
 
-    GimpDesaturateMode        mode;
+	GimpDesaturateMode mode;
 };
 
 struct _GimpOperationDesaturateClass
 {
-    GimpOperationPointFilterClass  parent_class;
+	GimpOperationPointFilterClass parent_class;
 };
 
 

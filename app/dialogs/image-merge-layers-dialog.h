@@ -20,23 +20,23 @@
 
 
 typedef void (* GimpMergeLayersCallback) (GtkWidget     *dialog,
-        GimpImage     *image,
-        GimpContext   *context,
-        GimpMergeType  merge_type,
-        gboolean       merge_active_group,
-        gboolean       discard_invisible,
-        gpointer       user_data);
+                                          GimpImage     *image,
+                                          GimpContext   *context,
+                                          GimpMergeType merge_type,
+                                          gboolean merge_active_group,
+                                          gboolean discard_invisible,
+                                          gpointer user_data);
 
 
 GtkWidget *
 image_merge_layers_dialog_new (GimpImage               *image,
                                GimpContext             *context,
                                GtkWidget               *parent,
-                               GimpMergeType            merge_type,
-                               gboolean                 merge_active_group,
-                               gboolean                 discard_invisible,
-                               GimpMergeLayersCallback  callback,
-                               gpointer                 user_data);
+                               GimpMergeType merge_type,
+                               gboolean merge_active_group,
+                               gboolean discard_invisible,
+                               GimpMergeLayersCallback callback,
+                               gpointer user_data);
 
 
 #endif /* __IMAGE_MERGE_LAYERS_DIALOG_H__ */

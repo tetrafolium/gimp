@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_BEHIND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BEHIND, GimpOperationBehindClass))
 
 
-typedef struct _GimpOperationBehind      GimpOperationBehind;
+typedef struct _GimpOperationBehind GimpOperationBehind;
 typedef struct _GimpOperationBehindClass GimpOperationBehindClass;
 
 struct _GimpOperationBehind
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationBehindClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

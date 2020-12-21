@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_CURVES_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_CURVES, GimpOperationCurvesClass))
 
 
-typedef struct _GimpOperationCurves      GimpOperationCurves;
+typedef struct _GimpOperationCurves GimpOperationCurves;
 typedef struct _GimpOperationCurvesClass GimpOperationCurvesClass;
 
 struct _GimpOperationCurves
 {
-    GimpOperationPointFilter  parent_instance;
+	GimpOperationPointFilter parent_instance;
 };
 
 struct _GimpOperationCurvesClass
 {
-    GimpOperationPointFilterClass  parent_class;
+	GimpOperationPointFilterClass parent_class;
 };
 
 

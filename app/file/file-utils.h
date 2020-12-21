@@ -22,12 +22,12 @@
 
 
 GFile     * file_utils_filename_to_file  (Gimp         *gimp,
-        const gchar  *filename,
-        GError      **error);
+                                          const gchar  *filename,
+                                          GError      **error);
 
 GdkPixbuf * file_utils_load_thumbnail    (GFile        *file);
 gboolean    file_utils_save_thumbnail    (GimpImage    *image,
-        GFile        *file);
+                                          GFile        *file);
 
 
 #endif /* __FILE_UTILS_H__ */

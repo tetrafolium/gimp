@@ -44,40 +44,40 @@ brushes_popup_invoker (GimpProcedure         *procedure,
                        const GimpValueArray  *args,
                        GError               **error)
 {
-    gboolean success = TRUE;
-    const gchar *brush_callback;
-    const gchar *popup_title;
-    const gchar *initial_brush;
-    gdouble opacity;
-    gint spacing;
-    gint paint_mode;
+	gboolean success = TRUE;
+	const gchar *brush_callback;
+	const gchar *popup_title;
+	const gchar *initial_brush;
+	gdouble opacity;
+	gint spacing;
+	gint paint_mode;
 
-    brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
-    popup_title = g_value_get_string (gimp_value_array_index (args, 1));
-    initial_brush = g_value_get_string (gimp_value_array_index (args, 2));
-    opacity = g_value_get_double (gimp_value_array_index (args, 3));
-    spacing = g_value_get_int (gimp_value_array_index (args, 4));
-    paint_mode = g_value_get_enum (gimp_value_array_index (args, 5));
+	brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
+	popup_title = g_value_get_string (gimp_value_array_index (args, 1));
+	initial_brush = g_value_get_string (gimp_value_array_index (args, 2));
+	opacity = g_value_get_double (gimp_value_array_index (args, 3));
+	spacing = g_value_get_int (gimp_value_array_index (args, 4));
+	paint_mode = g_value_get_enum (gimp_value_array_index (args, 5));
 
-    if (success)
-    {
-        if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
-            paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+	if (success)
+	{
+		if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+			paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
 
-        if (gimp->no_interface ||
-                ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
-                ! gimp_pdb_dialog_new (gimp, context, progress,
-                                       gimp_data_factory_get_container (gimp->brush_factory),
-                                       popup_title, brush_callback, initial_brush,
-                                       "opacity",    opacity / 100.0,
-                                       "paint-mode", paint_mode,
-                                       "spacing",    spacing,
-                                       NULL))
-            success = FALSE;
-    }
+		if (gimp->no_interface ||
+		    !gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
+		    !gimp_pdb_dialog_new (gimp, context, progress,
+		                          gimp_data_factory_get_container (gimp->brush_factory),
+		                          popup_title, brush_callback, initial_brush,
+		                          "opacity",    opacity / 100.0,
+		                          "paint-mode", paint_mode,
+		                          "spacing",    spacing,
+		                          NULL))
+			success = FALSE;
+	}
 
-    return gimp_procedure_get_return_values (procedure, success,
-            error ? *error : NULL);
+	return gimp_procedure_get_return_values (procedure, success,
+	                                         error ? *error : NULL);
 }
 
 static GimpValueArray *
@@ -88,22 +88,22 @@ brushes_close_popup_invoker (GimpProcedure         *procedure,
                              const GimpValueArray  *args,
                              GError               **error)
 {
-    gboolean success = TRUE;
-    const gchar *brush_callback;
+	gboolean success = TRUE;
+	const gchar *brush_callback;
 
-    brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
+	brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
 
-    if (success)
-    {
-        if (gimp->no_interface ||
-                ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
-                ! gimp_pdb_dialog_close (gimp, gimp_data_factory_get_container (gimp->brush_factory),
-                                         brush_callback))
-            success = FALSE;
-    }
+	if (success)
+	{
+		if (gimp->no_interface ||
+		    !gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
+		    !gimp_pdb_dialog_close (gimp, gimp_data_factory_get_container (gimp->brush_factory),
+		                            brush_callback))
+			success = FALSE;
+	}
 
-    return gimp_procedure_get_return_values (procedure, success,
-            error ? *error : NULL);
+	return gimp_procedure_get_return_values (procedure, success,
+	                                         error ? *error : NULL);
 }
 
 static GimpValueArray *
@@ -114,172 +114,172 @@ brushes_set_popup_invoker (GimpProcedure         *procedure,
                            const GimpValueArray  *args,
                            GError               **error)
 {
-    gboolean success = TRUE;
-    const gchar *brush_callback;
-    const gchar *brush_name;
-    gdouble opacity;
-    gint spacing;
-    gint paint_mode;
+	gboolean success = TRUE;
+	const gchar *brush_callback;
+	const gchar *brush_name;
+	gdouble opacity;
+	gint spacing;
+	gint paint_mode;
 
-    brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
-    brush_name = g_value_get_string (gimp_value_array_index (args, 1));
-    opacity = g_value_get_double (gimp_value_array_index (args, 2));
-    spacing = g_value_get_int (gimp_value_array_index (args, 3));
-    paint_mode = g_value_get_enum (gimp_value_array_index (args, 4));
+	brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
+	brush_name = g_value_get_string (gimp_value_array_index (args, 1));
+	opacity = g_value_get_double (gimp_value_array_index (args, 2));
+	spacing = g_value_get_int (gimp_value_array_index (args, 3));
+	paint_mode = g_value_get_enum (gimp_value_array_index (args, 4));
 
-    if (success)
-    {
-        if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
-            paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+	if (success)
+	{
+		if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+			paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
 
-        if (gimp->no_interface ||
-                ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
-                ! gimp_pdb_dialog_set (gimp, gimp_data_factory_get_container (gimp->brush_factory),
-                                       brush_callback, brush_name,
-                                       "opacity",    opacity / 100.0,
-                                       "paint-mode", paint_mode,
-                                       "spacing",    spacing,
-                                       NULL))
-            success = FALSE;
-    }
+		if (gimp->no_interface ||
+		    !gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
+		    !gimp_pdb_dialog_set (gimp, gimp_data_factory_get_container (gimp->brush_factory),
+		                          brush_callback, brush_name,
+		                          "opacity",    opacity / 100.0,
+		                          "paint-mode", paint_mode,
+		                          "spacing",    spacing,
+		                          NULL))
+			success = FALSE;
+	}
 
-    return gimp_procedure_get_return_values (procedure, success,
-            error ? *error : NULL);
+	return gimp_procedure_get_return_values (procedure, success,
+	                                         error ? *error : NULL);
 }
 
 void
 register_brush_select_procs (GimpPDB *pdb)
 {
-    GimpProcedure *procedure;
+	GimpProcedure *procedure;
 
-    /*
-     * gimp-brushes-popup
-     */
-    procedure = gimp_procedure_new (brushes_popup_invoker);
-    gimp_object_set_static_name (GIMP_OBJECT (procedure),
-                                 "gimp-brushes-popup");
-    gimp_procedure_set_static_help (procedure,
-                                    "Invokes the Gimp brush selection.",
-                                    "This procedure opens the brush selection dialog.",
-                                    NULL);
-    gimp_procedure_set_static_attribution (procedure,
-                                           "Andy Thomas",
-                                           "Andy Thomas",
-                                           "1998");
-    gimp_procedure_add_argument (procedure,
-                                 gimp_param_spec_string ("brush-callback",
-                                         "brush callback",
-                                         "The callback PDB proc to call when brush selection is made",
-                                         FALSE, FALSE, TRUE,
-                                         NULL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 gimp_param_spec_string ("popup-title",
-                                         "popup title",
-                                         "Title of the brush selection dialog",
-                                         FALSE, FALSE, FALSE,
-                                         NULL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 gimp_param_spec_string ("initial-brush",
-                                         "initial brush",
-                                         "The name of the brush to set as the first selected",
-                                         FALSE, TRUE, FALSE,
-                                         NULL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 g_param_spec_double ("opacity",
-                                         "opacity",
-                                         "The initial opacity of the brush",
-                                         0, 100, 0,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 g_param_spec_int ("spacing",
-                                         "spacing",
-                                         "The initial spacing of the brush (if < 0 then use brush default spacing)",
-                                         G_MININT32, 1000, 0,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 g_param_spec_enum ("paint-mode",
-                                         "paint mode",
-                                         "The initial paint mode",
-                                         GIMP_TYPE_LAYER_MODE,
-                                         GIMP_LAYER_MODE_NORMAL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_pdb_register_procedure (pdb, procedure);
-    g_object_unref (procedure);
+	/*
+	 * gimp-brushes-popup
+	 */
+	procedure = gimp_procedure_new (brushes_popup_invoker);
+	gimp_object_set_static_name (GIMP_OBJECT (procedure),
+	                             "gimp-brushes-popup");
+	gimp_procedure_set_static_help (procedure,
+	                                "Invokes the Gimp brush selection.",
+	                                "This procedure opens the brush selection dialog.",
+	                                NULL);
+	gimp_procedure_set_static_attribution (procedure,
+	                                       "Andy Thomas",
+	                                       "Andy Thomas",
+	                                       "1998");
+	gimp_procedure_add_argument (procedure,
+	                             gimp_param_spec_string ("brush-callback",
+	                                                     "brush callback",
+	                                                     "The callback PDB proc to call when brush selection is made",
+	                                                     FALSE, FALSE, TRUE,
+	                                                     NULL,
+	                                                     GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             gimp_param_spec_string ("popup-title",
+	                                                     "popup title",
+	                                                     "Title of the brush selection dialog",
+	                                                     FALSE, FALSE, FALSE,
+	                                                     NULL,
+	                                                     GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             gimp_param_spec_string ("initial-brush",
+	                                                     "initial brush",
+	                                                     "The name of the brush to set as the first selected",
+	                                                     FALSE, TRUE, FALSE,
+	                                                     NULL,
+	                                                     GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             g_param_spec_double ("opacity",
+	                                                  "opacity",
+	                                                  "The initial opacity of the brush",
+	                                                  0, 100, 0,
+	                                                  GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             g_param_spec_int ("spacing",
+	                                               "spacing",
+	                                               "The initial spacing of the brush (if < 0 then use brush default spacing)",
+	                                               G_MININT32, 1000, 0,
+	                                               GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             g_param_spec_enum ("paint-mode",
+	                                                "paint mode",
+	                                                "The initial paint mode",
+	                                                GIMP_TYPE_LAYER_MODE,
+	                                                GIMP_LAYER_MODE_NORMAL,
+	                                                GIMP_PARAM_READWRITE));
+	gimp_pdb_register_procedure (pdb, procedure);
+	g_object_unref (procedure);
 
-    /*
-     * gimp-brushes-close-popup
-     */
-    procedure = gimp_procedure_new (brushes_close_popup_invoker);
-    gimp_object_set_static_name (GIMP_OBJECT (procedure),
-                                 "gimp-brushes-close-popup");
-    gimp_procedure_set_static_help (procedure,
-                                    "Close the brush selection dialog.",
-                                    "This procedure closes an opened brush selection dialog.",
-                                    NULL);
-    gimp_procedure_set_static_attribution (procedure,
-                                           "Andy Thomas",
-                                           "Andy Thomas",
-                                           "1998");
-    gimp_procedure_add_argument (procedure,
-                                 gimp_param_spec_string ("brush-callback",
-                                         "brush callback",
-                                         "The name of the callback registered for this pop-up",
-                                         FALSE, FALSE, TRUE,
-                                         NULL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_pdb_register_procedure (pdb, procedure);
-    g_object_unref (procedure);
+	/*
+	 * gimp-brushes-close-popup
+	 */
+	procedure = gimp_procedure_new (brushes_close_popup_invoker);
+	gimp_object_set_static_name (GIMP_OBJECT (procedure),
+	                             "gimp-brushes-close-popup");
+	gimp_procedure_set_static_help (procedure,
+	                                "Close the brush selection dialog.",
+	                                "This procedure closes an opened brush selection dialog.",
+	                                NULL);
+	gimp_procedure_set_static_attribution (procedure,
+	                                       "Andy Thomas",
+	                                       "Andy Thomas",
+	                                       "1998");
+	gimp_procedure_add_argument (procedure,
+	                             gimp_param_spec_string ("brush-callback",
+	                                                     "brush callback",
+	                                                     "The name of the callback registered for this pop-up",
+	                                                     FALSE, FALSE, TRUE,
+	                                                     NULL,
+	                                                     GIMP_PARAM_READWRITE));
+	gimp_pdb_register_procedure (pdb, procedure);
+	g_object_unref (procedure);
 
-    /*
-     * gimp-brushes-set-popup
-     */
-    procedure = gimp_procedure_new (brushes_set_popup_invoker);
-    gimp_object_set_static_name (GIMP_OBJECT (procedure),
-                                 "gimp-brushes-set-popup");
-    gimp_procedure_set_static_help (procedure,
-                                    "Sets the current brush in a brush selection dialog.",
-                                    "Sets the current brush in a brush selection dialog.",
-                                    NULL);
-    gimp_procedure_set_static_attribution (procedure,
-                                           "Andy Thomas",
-                                           "Andy Thomas",
-                                           "1998");
-    gimp_procedure_add_argument (procedure,
-                                 gimp_param_spec_string ("brush-callback",
-                                         "brush callback",
-                                         "The name of the callback registered for this pop-up",
-                                         FALSE, FALSE, TRUE,
-                                         NULL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 gimp_param_spec_string ("brush-name",
-                                         "brush name",
-                                         "The name of the brush to set as selected",
-                                         FALSE, FALSE, FALSE,
-                                         NULL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 g_param_spec_double ("opacity",
-                                         "opacity",
-                                         "The initial opacity of the brush",
-                                         0, 100, 0,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 g_param_spec_int ("spacing",
-                                         "spacing",
-                                         "The initial spacing of the brush (if < 0 then use brush default spacing)",
-                                         G_MININT32, 1000, 0,
-                                         GIMP_PARAM_READWRITE));
-    gimp_procedure_add_argument (procedure,
-                                 g_param_spec_enum ("paint-mode",
-                                         "paint mode",
-                                         "The initial paint mode",
-                                         GIMP_TYPE_LAYER_MODE,
-                                         GIMP_LAYER_MODE_NORMAL,
-                                         GIMP_PARAM_READWRITE));
-    gimp_pdb_register_procedure (pdb, procedure);
-    g_object_unref (procedure);
+	/*
+	 * gimp-brushes-set-popup
+	 */
+	procedure = gimp_procedure_new (brushes_set_popup_invoker);
+	gimp_object_set_static_name (GIMP_OBJECT (procedure),
+	                             "gimp-brushes-set-popup");
+	gimp_procedure_set_static_help (procedure,
+	                                "Sets the current brush in a brush selection dialog.",
+	                                "Sets the current brush in a brush selection dialog.",
+	                                NULL);
+	gimp_procedure_set_static_attribution (procedure,
+	                                       "Andy Thomas",
+	                                       "Andy Thomas",
+	                                       "1998");
+	gimp_procedure_add_argument (procedure,
+	                             gimp_param_spec_string ("brush-callback",
+	                                                     "brush callback",
+	                                                     "The name of the callback registered for this pop-up",
+	                                                     FALSE, FALSE, TRUE,
+	                                                     NULL,
+	                                                     GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             gimp_param_spec_string ("brush-name",
+	                                                     "brush name",
+	                                                     "The name of the brush to set as selected",
+	                                                     FALSE, FALSE, FALSE,
+	                                                     NULL,
+	                                                     GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             g_param_spec_double ("opacity",
+	                                                  "opacity",
+	                                                  "The initial opacity of the brush",
+	                                                  0, 100, 0,
+	                                                  GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             g_param_spec_int ("spacing",
+	                                               "spacing",
+	                                               "The initial spacing of the brush (if < 0 then use brush default spacing)",
+	                                               G_MININT32, 1000, 0,
+	                                               GIMP_PARAM_READWRITE));
+	gimp_procedure_add_argument (procedure,
+	                             g_param_spec_enum ("paint-mode",
+	                                                "paint mode",
+	                                                "The initial paint mode",
+	                                                GIMP_TYPE_LAYER_MODE,
+	                                                GIMP_LAYER_MODE_NORMAL,
+	                                                GIMP_PARAM_READWRITE));
+	gimp_pdb_register_procedure (pdb, procedure);
+	g_object_unref (procedure);
 }

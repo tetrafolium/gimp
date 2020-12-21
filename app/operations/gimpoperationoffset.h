@@ -30,22 +30,22 @@
 #define GIMP_OPERATION_OFFSET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_OFFSET, GimpOperationOffsetClass))
 
 
-typedef struct _GimpOperationOffset      GimpOperationOffset;
+typedef struct _GimpOperationOffset GimpOperationOffset;
 typedef struct _GimpOperationOffsetClass GimpOperationOffsetClass;
 
 struct _GimpOperationOffset
 {
-    GeglOperationFilter  parent_instance;
+	GeglOperationFilter parent_instance;
 
-    GimpContext         *context;
-    GimpOffsetType       type;
-    gint                 x;
-    gint                 y;
+	GimpContext         *context;
+	GimpOffsetType type;
+	gint x;
+	gint y;
 };
 
 struct _GimpOperationOffsetClass
 {
-    GeglOperationFilterClass  parent_class;
+	GeglOperationFilterClass parent_class;
 };
 
 

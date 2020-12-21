@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_DIVIDE_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_DIVIDE_LEGACY, GimpOperationDivideLegacyClass))
 
 
-typedef struct _GimpOperationDivideLegacy      GimpOperationDivideLegacy;
+typedef struct _GimpOperationDivideLegacy GimpOperationDivideLegacy;
 typedef struct _GimpOperationDivideLegacyClass GimpOperationDivideLegacyClass;
 
 struct _GimpOperationDivideLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationDivideLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

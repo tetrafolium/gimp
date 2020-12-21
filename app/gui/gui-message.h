@@ -21,7 +21,7 @@
 
 void gui_message (Gimp                *gimp,
                   GObject             *handler,
-                  GimpMessageSeverity  severity,
+                  GimpMessageSeverity severity,
                   const gchar         *domain,
                   const gchar         *message);
 

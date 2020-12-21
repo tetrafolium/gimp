@@ -20,29 +20,29 @@
 
 
 typedef void (* GimpConvertIndexedCallback) (GtkWidget              *dialog,
-        GimpImage              *image,
-        GimpConvertPaletteType  palette_type,
-        gint                    max_colors,
-        gboolean                remove_duplicates,
-        GimpConvertDitherType   dither_type,
-        gboolean                dither_alpha,
-        gboolean                dither_text_layers,
-        GimpPalette            *custom_palette,
-        gpointer                user_data);
+                                             GimpImage              *image,
+                                             GimpConvertPaletteType palette_type,
+                                             gint max_colors,
+                                             gboolean remove_duplicates,
+                                             GimpConvertDitherType dither_type,
+                                             gboolean dither_alpha,
+                                             gboolean dither_text_layers,
+                                             GimpPalette            *custom_palette,
+                                             gpointer user_data);
 
 
 GtkWidget * convert_indexed_dialog_new (GimpImage                  *image,
                                         GimpContext                *context,
                                         GtkWidget                  *parent,
-                                        GimpConvertPaletteType      palette_type,
-                                        gint                        max_colors,
-                                        gboolean                    remove_duplicates,
-                                        GimpConvertDitherType       dither_type,
-                                        gboolean                    dither_alpha,
-                                        gboolean                    dither_text_layers,
+                                        GimpConvertPaletteType palette_type,
+                                        gint max_colors,
+                                        gboolean remove_duplicates,
+                                        GimpConvertDitherType dither_type,
+                                        gboolean dither_alpha,
+                                        gboolean dither_text_layers,
                                         GimpPalette                *custom_palette,
-                                        GimpConvertIndexedCallback  callback,
-                                        gpointer                    user_data);
+                                        GimpConvertIndexedCallback callback,
+                                        gpointer user_data);
 
 
 #endif  /*  __CONVERT_INDEXED_DIALOG_H__  */

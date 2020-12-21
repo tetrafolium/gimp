@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY, GimpOperationGrainExtractLegacyClass))
 
 
-typedef struct _GimpOperationGrainExtractLegacy      GimpOperationGrainExtractLegacy;
+typedef struct _GimpOperationGrainExtractLegacy GimpOperationGrainExtractLegacy;
 typedef struct _GimpOperationGrainExtractLegacyClass GimpOperationGrainExtractLegacyClass;
 
 struct _GimpOperationGrainExtractLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationGrainExtractLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

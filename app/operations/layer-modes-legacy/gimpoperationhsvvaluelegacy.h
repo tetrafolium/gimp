@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_HSV_VALUE_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_HSV_VALUE_LEGACY, GimpOperationHsvValueLegacyClass))
 
 
-typedef struct _GimpOperationHsvValueLegacy      GimpOperationHsvValueLegacy;
+typedef struct _GimpOperationHsvValueLegacy GimpOperationHsvValueLegacy;
 typedef struct _GimpOperationHsvValueLegacyClass GimpOperationHsvValueLegacyClass;
 
 struct _GimpOperationHsvValueLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationHsvValueLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

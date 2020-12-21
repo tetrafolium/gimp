@@ -34,17 +34,17 @@ typedef struct _GimpEraserClass GimpEraserClass;
 
 struct _GimpEraser
 {
-    GimpPaintbrush  parent_instance;
+	GimpPaintbrush parent_instance;
 };
 
 struct _GimpEraserClass
 {
-    GimpPaintbrushClass  parent_class;
+	GimpPaintbrushClass parent_class;
 };
 
 
 void    gimp_eraser_register (Gimp                      *gimp,
-                              GimpPaintRegisterCallback  callback);
+                              GimpPaintRegisterCallback callback);
 
 GType   gimp_eraser_get_type (void) G_GNUC_CONST;
 

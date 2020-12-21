@@ -20,18 +20,18 @@
 
 
 const GimpTempBuf * gimp_brush_core_subsample_mask  (GimpBrushCore     *core,
-        const GimpTempBuf *mask,
-        gdouble            x,
-        gdouble            y);
+                                                     const GimpTempBuf *mask,
+                                                     gdouble x,
+                                                     gdouble y);
 const GimpTempBuf * gimp_brush_core_pressurize_mask (GimpBrushCore     *core,
-        const GimpTempBuf *brush_mask,
-        gdouble            x,
-        gdouble            y,
-        gdouble            pressure);
+                                                     const GimpTempBuf *brush_mask,
+                                                     gdouble x,
+                                                     gdouble y,
+                                                     gdouble pressure);
 const GimpTempBuf * gimp_brush_core_solidify_mask   (GimpBrushCore     *core,
-        const GimpTempBuf *brush_mask,
-        gdouble            x,
-        gdouble            y);
+                                                     const GimpTempBuf *brush_mask,
+                                                     gdouble x,
+                                                     gdouble y);
 
 
 #endif  /*  __GIMP_BRUSH_CORE_LOOPS_H__  */

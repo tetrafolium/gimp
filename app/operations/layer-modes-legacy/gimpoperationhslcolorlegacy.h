@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_HSL_COLOR_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_HSL_COLOR_LEGACY, GimpOperationHslColorLegacyClass))
 
 
-typedef struct _GimpOperationHslColorLegacy      GimpOperationHslColorLegacy;
+typedef struct _GimpOperationHslColorLegacy GimpOperationHslColorLegacy;
 typedef struct _GimpOperationHslColorLegacyClass GimpOperationHslColorLegacyClass;
 
 struct _GimpOperationHslColorLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationHslColorLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

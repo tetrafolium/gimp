@@ -32,20 +32,20 @@
 
 enum
 {
-    PROP_0,
-    PROP_ALIGN_MODE,
-    PROP_SAMPLE_MERGED
+	PROP_0,
+	PROP_ALIGN_MODE,
+	PROP_SAMPLE_MERGED
 };
 
 
 static void   gimp_source_options_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec);
+                                                guint property_id,
+                                                const GValue *value,
+                                                GParamSpec   *pspec);
 static void   gimp_source_options_get_property (GObject      *object,
-        guint         property_id,
-        GValue       *value,
-        GParamSpec   *pspec);
+                                                guint property_id,
+                                                GValue       *value,
+                                                GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpSourceOptions, gimp_source_options, GIMP_TYPE_PAINT_OPTIONS)
@@ -54,25 +54,25 @@ G_DEFINE_TYPE (GimpSourceOptions, gimp_source_options, GIMP_TYPE_PAINT_OPTIONS)
 static void
 gimp_source_options_class_init (GimpSourceOptionsClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->set_property = gimp_source_options_set_property;
-    object_class->get_property = gimp_source_options_get_property;
+	object_class->set_property = gimp_source_options_set_property;
+	object_class->get_property = gimp_source_options_get_property;
 
-    GIMP_CONFIG_PROP_ENUM (object_class, PROP_ALIGN_MODE,
-                           "align-mode",
-                           _("Alignment"),
-                           NULL,
-                           GIMP_TYPE_SOURCE_ALIGN_MODE,
-                           GIMP_SOURCE_ALIGN_NO,
-                           GIMP_PARAM_STATIC_STRINGS);
+	GIMP_CONFIG_PROP_ENUM (object_class, PROP_ALIGN_MODE,
+	                       "align-mode",
+	                       _("Alignment"),
+	                       NULL,
+	                       GIMP_TYPE_SOURCE_ALIGN_MODE,
+	                       GIMP_SOURCE_ALIGN_NO,
+	                       GIMP_PARAM_STATIC_STRINGS);
 
-    GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,
-                              "sample-merged",
-                              _("Sample merged"),
-                              NULL,
-                              FALSE,
-                              GIMP_PARAM_STATIC_STRINGS);
+	GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,
+	                          "sample-merged",
+	                          _("Sample merged"),
+	                          NULL,
+	                          FALSE,
+	                          GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -82,44 +82,44 @@ gimp_source_options_init (GimpSourceOptions *options)
 
 static void
 gimp_source_options_set_property (GObject      *object,
-                                  guint         property_id,
+                                  guint property_id,
                                   const GValue *value,
                                   GParamSpec   *pspec)
 {
-    GimpSourceOptions *options = GIMP_SOURCE_OPTIONS (object);
+	GimpSourceOptions *options = GIMP_SOURCE_OPTIONS (object);
 
-    switch (property_id)
-    {
-    case PROP_ALIGN_MODE:
-        options->align_mode = g_value_get_enum (value);
-        break;
-    case PROP_SAMPLE_MERGED:
-        options->sample_merged = g_value_get_boolean (value);
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	switch (property_id)
+	{
+	case PROP_ALIGN_MODE:
+		options->align_mode = g_value_get_enum (value);
+		break;
+	case PROP_SAMPLE_MERGED:
+		options->sample_merged = g_value_get_boolean (value);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_source_options_get_property (GObject    *object,
-                                  guint       property_id,
+                                  guint property_id,
                                   GValue     *value,
                                   GParamSpec *pspec)
 {
-    GimpSourceOptions *options = GIMP_SOURCE_OPTIONS (object);
+	GimpSourceOptions *options = GIMP_SOURCE_OPTIONS (object);
 
-    switch (property_id)
-    {
-    case PROP_ALIGN_MODE:
-        g_value_set_enum (value, options->align_mode);
-        break;
-    case PROP_SAMPLE_MERGED:
-        g_value_set_boolean (value, options->sample_merged);
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	switch (property_id)
+	{
+	case PROP_ALIGN_MODE:
+		g_value_set_enum (value, options->align_mode);
+		break;
+	case PROP_SAMPLE_MERGED:
+		g_value_set_boolean (value, options->sample_merged);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }

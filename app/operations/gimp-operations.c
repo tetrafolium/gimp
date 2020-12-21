@@ -99,135 +99,135 @@
 
 
 static void
-set_compat_file (GType        type,
+set_compat_file (GType type,
                  const gchar *basename)
 {
-    GFile *file  = gimp_directory_file ("tool-options", basename, NULL);
-    GQuark quark = g_quark_from_static_string ("compat-file");
+	GFile *file  = gimp_directory_file ("tool-options", basename, NULL);
+	GQuark quark = g_quark_from_static_string ("compat-file");
 
-    g_type_set_qdata (type, quark, file);
+	g_type_set_qdata (type, quark, file);
 }
 
 static void
-set_settings_folder (GType        type,
+set_settings_folder (GType type,
                      const gchar *basename)
 {
-    GFile *file  = gimp_directory_file (basename, NULL);
-    GQuark quark = g_quark_from_static_string ("settings-folder");
+	GFile *file  = gimp_directory_file (basename, NULL);
+	GQuark quark = g_quark_from_static_string ("settings-folder");
 
-    g_type_set_qdata (type, quark, file);
+	g_type_set_qdata (type, quark, file);
 }
 
 void
 gimp_operations_init (Gimp *gimp)
 {
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    gimp_layer_modes_init ();
+	gimp_layer_modes_init ();
 
-    g_type_class_ref (GIMP_TYPE_OPERATION_BORDER);
-    g_type_class_ref (GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_CAGE_COEF_CALC);
-    g_type_class_ref (GIMP_TYPE_OPERATION_CAGE_TRANSFORM);
-    g_type_class_ref (GIMP_TYPE_OPERATION_COMPOSE_CROP);
-    g_type_class_ref (GIMP_TYPE_OPERATION_EQUALIZE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_FILL_SOURCE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_FLOOD);
-    g_type_class_ref (GIMP_TYPE_OPERATION_GRADIENT);
-    g_type_class_ref (GIMP_TYPE_OPERATION_GROW);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HISTOGRAM_SINK);
-    g_type_class_ref (GIMP_TYPE_OPERATION_MASK_COMPONENTS);
-    g_type_class_ref (GIMP_TYPE_OPERATION_OFFSET);
-    g_type_class_ref (GIMP_TYPE_OPERATION_PROFILE_TRANSFORM);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SCALAR_MULTIPLY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SEMI_FLATTEN);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SET_ALPHA);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SHRINK);
-    g_type_class_ref (GIMP_TYPE_OPERATION_THRESHOLD_ALPHA);
+	g_type_class_ref (GIMP_TYPE_OPERATION_BORDER);
+	g_type_class_ref (GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_CAGE_COEF_CALC);
+	g_type_class_ref (GIMP_TYPE_OPERATION_CAGE_TRANSFORM);
+	g_type_class_ref (GIMP_TYPE_OPERATION_COMPOSE_CROP);
+	g_type_class_ref (GIMP_TYPE_OPERATION_EQUALIZE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_FILL_SOURCE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_FLOOD);
+	g_type_class_ref (GIMP_TYPE_OPERATION_GRADIENT);
+	g_type_class_ref (GIMP_TYPE_OPERATION_GROW);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HISTOGRAM_SINK);
+	g_type_class_ref (GIMP_TYPE_OPERATION_MASK_COMPONENTS);
+	g_type_class_ref (GIMP_TYPE_OPERATION_OFFSET);
+	g_type_class_ref (GIMP_TYPE_OPERATION_PROFILE_TRANSFORM);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SCALAR_MULTIPLY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SEMI_FLATTEN);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SET_ALPHA);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SHRINK);
+	g_type_class_ref (GIMP_TYPE_OPERATION_THRESHOLD_ALPHA);
 
-    g_type_class_ref (GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST);
-    g_type_class_ref (GIMP_TYPE_OPERATION_COLOR_BALANCE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_COLORIZE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_CURVES);
-    g_type_class_ref (GIMP_TYPE_OPERATION_DESATURATE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HUE_SATURATION);
-    g_type_class_ref (GIMP_TYPE_OPERATION_LEVELS);
-    g_type_class_ref (GIMP_TYPE_OPERATION_POSTERIZE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_THRESHOLD);
+	g_type_class_ref (GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST);
+	g_type_class_ref (GIMP_TYPE_OPERATION_COLOR_BALANCE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_COLORIZE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_CURVES);
+	g_type_class_ref (GIMP_TYPE_OPERATION_DESATURATE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HUE_SATURATION);
+	g_type_class_ref (GIMP_TYPE_OPERATION_LEVELS);
+	g_type_class_ref (GIMP_TYPE_OPERATION_POSTERIZE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_THRESHOLD);
 
-    g_type_class_ref (GIMP_TYPE_OPERATION_NORMAL);
-    g_type_class_ref (GIMP_TYPE_OPERATION_DISSOLVE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_BEHIND);
-    g_type_class_ref (GIMP_TYPE_OPERATION_MULTIPLY_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SCREEN_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_DIFFERENCE_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_ADDITION_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SUBTRACT_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_DARKEN_ONLY_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HSV_HUE_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HSV_SATURATION_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HSL_COLOR_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HSV_VALUE_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_DIVIDE_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_DODGE_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_BURN_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_HARDLIGHT_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SOFTLIGHT_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_GRAIN_MERGE_LEGACY);
-    g_type_class_ref (GIMP_TYPE_OPERATION_ERASE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_MERGE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_SPLIT);
-    g_type_class_ref (GIMP_TYPE_OPERATION_PASS_THROUGH);
-    g_type_class_ref (GIMP_TYPE_OPERATION_REPLACE);
-    g_type_class_ref (GIMP_TYPE_OPERATION_ANTI_ERASE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_NORMAL);
+	g_type_class_ref (GIMP_TYPE_OPERATION_DISSOLVE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_BEHIND);
+	g_type_class_ref (GIMP_TYPE_OPERATION_MULTIPLY_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SCREEN_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_DIFFERENCE_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_ADDITION_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SUBTRACT_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_DARKEN_ONLY_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HSV_HUE_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HSV_SATURATION_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HSL_COLOR_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HSV_VALUE_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_DIVIDE_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_DODGE_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_BURN_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_HARDLIGHT_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SOFTLIGHT_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_GRAIN_MERGE_LEGACY);
+	g_type_class_ref (GIMP_TYPE_OPERATION_ERASE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_MERGE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_SPLIT);
+	g_type_class_ref (GIMP_TYPE_OPERATION_PASS_THROUGH);
+	g_type_class_ref (GIMP_TYPE_OPERATION_REPLACE);
+	g_type_class_ref (GIMP_TYPE_OPERATION_ANTI_ERASE);
 
-    gimp_operation_config_register (gimp,
-                                    "gimp:brightness-contrast",
-                                    GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG);
-    set_compat_file (GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,
-                     "gimp-brightness-contrast-tool.settings");
-    set_settings_folder (GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,
-                         "brightness-contrast");
+	gimp_operation_config_register (gimp,
+	                                "gimp:brightness-contrast",
+	                                GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG);
+	set_compat_file (GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,
+	                 "gimp-brightness-contrast-tool.settings");
+	set_settings_folder (GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,
+	                     "brightness-contrast");
 
-    gimp_operation_config_register (gimp,
-                                    "gimp:color-balance",
-                                    GIMP_TYPE_COLOR_BALANCE_CONFIG);
-    set_compat_file (GIMP_TYPE_COLOR_BALANCE_CONFIG,
-                     "gimp-color-balance-tool.settings");
-    set_settings_folder (GIMP_TYPE_COLOR_BALANCE_CONFIG,
-                         "color-balance");
+	gimp_operation_config_register (gimp,
+	                                "gimp:color-balance",
+	                                GIMP_TYPE_COLOR_BALANCE_CONFIG);
+	set_compat_file (GIMP_TYPE_COLOR_BALANCE_CONFIG,
+	                 "gimp-color-balance-tool.settings");
+	set_settings_folder (GIMP_TYPE_COLOR_BALANCE_CONFIG,
+	                     "color-balance");
 
-    gimp_operation_config_register (gimp,
-                                    "gimp:curves",
-                                    GIMP_TYPE_CURVES_CONFIG);
-    set_compat_file (GIMP_TYPE_CURVES_CONFIG,
-                     "gimp-curves-tool.settings");
-    set_settings_folder (GIMP_TYPE_CURVES_CONFIG,
-                         "curves");
+	gimp_operation_config_register (gimp,
+	                                "gimp:curves",
+	                                GIMP_TYPE_CURVES_CONFIG);
+	set_compat_file (GIMP_TYPE_CURVES_CONFIG,
+	                 "gimp-curves-tool.settings");
+	set_settings_folder (GIMP_TYPE_CURVES_CONFIG,
+	                     "curves");
 
-    gimp_operation_config_register (gimp,
-                                    "gimp:hue-saturation",
-                                    GIMP_TYPE_HUE_SATURATION_CONFIG);
-    set_compat_file (GIMP_TYPE_HUE_SATURATION_CONFIG,
-                     "gimp-hue-saturation-tool.settings");
-    set_settings_folder (GIMP_TYPE_HUE_SATURATION_CONFIG,
-                         "hue-saturation");
+	gimp_operation_config_register (gimp,
+	                                "gimp:hue-saturation",
+	                                GIMP_TYPE_HUE_SATURATION_CONFIG);
+	set_compat_file (GIMP_TYPE_HUE_SATURATION_CONFIG,
+	                 "gimp-hue-saturation-tool.settings");
+	set_settings_folder (GIMP_TYPE_HUE_SATURATION_CONFIG,
+	                     "hue-saturation");
 
-    gimp_operation_config_register (gimp,
-                                    "gimp:levels",
-                                    GIMP_TYPE_LEVELS_CONFIG);
-    set_compat_file (GIMP_TYPE_LEVELS_CONFIG,
-                     "gimp-levels-tool.settings");
-    set_settings_folder (GIMP_TYPE_LEVELS_CONFIG,
-                         "levels");
+	gimp_operation_config_register (gimp,
+	                                "gimp:levels",
+	                                GIMP_TYPE_LEVELS_CONFIG);
+	set_compat_file (GIMP_TYPE_LEVELS_CONFIG,
+	                 "gimp-levels-tool.settings");
+	set_settings_folder (GIMP_TYPE_LEVELS_CONFIG,
+	                     "levels");
 }
 
 void
 gimp_operations_exit (Gimp *gimp)
 {
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    gimp_layer_modes_exit ();
+	gimp_layer_modes_exit ();
 }

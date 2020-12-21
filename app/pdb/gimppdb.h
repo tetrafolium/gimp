@@ -34,22 +34,22 @@ typedef struct _GimpPDBClass GimpPDBClass;
 
 struct _GimpPDB
 {
-    GimpObject  parent_instance;
+	GimpObject parent_instance;
 
-    Gimp       *gimp;
+	Gimp       *gimp;
 
-    GHashTable *procedures;
-    GHashTable *compat_proc_names;
+	GHashTable *procedures;
+	GHashTable *compat_proc_names;
 };
 
 struct _GimpPDBClass
 {
-    GimpObjectClass parent_class;
+	GimpObjectClass parent_class;
 
-    void (* register_procedure)   (GimpPDB       *pdb,
-                                   GimpProcedure *procedure);
-    void (* unregister_procedure) (GimpPDB       *pdb,
-                                   GimpProcedure *procedure);
+	void (* register_procedure)   (GimpPDB       *pdb,
+	                               GimpProcedure *procedure);
+	void (* unregister_procedure) (GimpPDB       *pdb,
+	                               GimpProcedure *procedure);
 };
 
 
@@ -58,31 +58,31 @@ GType            gimp_pdb_get_type                       (void) G_GNUC_CONST;
 GimpPDB        * gimp_pdb_new                            (Gimp           *gimp);
 
 void             gimp_pdb_register_procedure             (GimpPDB        *pdb,
-        GimpProcedure  *procedure);
+                                                          GimpProcedure  *procedure);
 void             gimp_pdb_unregister_procedure           (GimpPDB        *pdb,
-        GimpProcedure  *procedure);
+                                                          GimpProcedure  *procedure);
 
 GimpProcedure  * gimp_pdb_lookup_procedure               (GimpPDB        *pdb,
-        const gchar    *name);
+                                                          const gchar    *name);
 
 void             gimp_pdb_register_compat_proc_name      (GimpPDB        *pdb,
-        const gchar    *old_name,
-        const gchar    *new_name);
+                                                          const gchar    *old_name,
+                                                          const gchar    *new_name);
 const gchar    * gimp_pdb_lookup_compat_proc_name        (GimpPDB        *pdb,
-        const gchar    *old_name);
+                                                          const gchar    *old_name);
 
 GimpValueArray * gimp_pdb_execute_procedure_by_name_args (GimpPDB        *pdb,
-        GimpContext    *context,
-        GimpProgress   *progress,
-        GError        **error,
-        const gchar    *name,
-        GimpValueArray *args);
+                                                          GimpContext    *context,
+                                                          GimpProgress   *progress,
+                                                          GError        **error,
+                                                          const gchar    *name,
+                                                          GimpValueArray *args);
 GimpValueArray * gimp_pdb_execute_procedure_by_name      (GimpPDB        *pdb,
-        GimpContext    *context,
-        GimpProgress   *progress,
-        GError        **error,
-        const gchar    *name,
-        ...);
+                                                          GimpContext    *context,
+                                                          GimpProgress   *progress,
+                                                          GError        **error,
+                                                          const gchar    *name,
+                                                          ...);
 
 GList          * gimp_pdb_get_deprecated_procedures      (GimpPDB        *pdb);
 

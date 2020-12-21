@@ -36,78 +36,78 @@
 
 void
 gimp_display_shell_set_action_sensitive (GimpDisplayShell *shell,
-        const gchar      *action,
-        gboolean          sensitive)
+                                         const gchar      *action,
+                                         gboolean sensitive)
 {
-    GimpImageWindow *window;
-    GimpContext     *context;
+	GimpImageWindow *window;
+	GimpContext     *context;
 
-    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-    g_return_if_fail (action != NULL);
+	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+	g_return_if_fail (action != NULL);
 
-    window = gimp_display_shell_get_window (shell);
+	window = gimp_display_shell_get_window (shell);
 
-    if (window && gimp_image_window_get_active_shell (window) == shell)
-    {
-        GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
-        GimpActionGroup *action_group;
+	if (window && gimp_image_window_get_active_shell (window) == shell)
+	{
+		GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
+		GimpActionGroup *action_group;
 
-        action_group = gimp_ui_manager_get_action_group (manager, "view");
+		action_group = gimp_ui_manager_get_action_group (manager, "view");
 
-        if (action_group)
-            gimp_action_group_set_action_sensitive (action_group, action, sensitive);
-    }
+		if (action_group)
+			gimp_action_group_set_action_sensitive (action_group, action, sensitive);
+	}
 
-    context = gimp_get_user_context (shell->display->gimp);
+	context = gimp_get_user_context (shell->display->gimp);
 
-    if (shell->display == gimp_context_get_display (context))
-    {
-        GimpActionGroup *action_group;
+	if (shell->display == gimp_context_get_display (context))
+	{
+		GimpActionGroup *action_group;
 
-        action_group = gimp_ui_manager_get_action_group (shell->popup_manager,
-                       "view");
+		action_group = gimp_ui_manager_get_action_group (shell->popup_manager,
+		                                                 "view");
 
-        if (action_group)
-            gimp_action_group_set_action_sensitive (action_group, action, sensitive);
-    }
+		if (action_group)
+			gimp_action_group_set_action_sensitive (action_group, action, sensitive);
+	}
 }
 
 void
 gimp_display_shell_set_action_active (GimpDisplayShell *shell,
                                       const gchar      *action,
-                                      gboolean          active)
+                                      gboolean active)
 {
-    GimpImageWindow *window;
-    GimpContext     *context;
+	GimpImageWindow *window;
+	GimpContext     *context;
 
-    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-    g_return_if_fail (action != NULL);
+	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+	g_return_if_fail (action != NULL);
 
-    window = gimp_display_shell_get_window (shell);
+	window = gimp_display_shell_get_window (shell);
 
-    if (window && gimp_image_window_get_active_shell (window) == shell)
-    {
-        GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
-        GimpActionGroup *action_group;
+	if (window && gimp_image_window_get_active_shell (window) == shell)
+	{
+		GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
+		GimpActionGroup *action_group;
 
-        action_group = gimp_ui_manager_get_action_group (manager, "view");
+		action_group = gimp_ui_manager_get_action_group (manager, "view");
 
-        if (action_group)
-            gimp_action_group_set_action_active (action_group, action, active);
-    }
+		if (action_group)
+			gimp_action_group_set_action_active (action_group, action, active);
+	}
 
-    context = gimp_get_user_context (shell->display->gimp);
+	context = gimp_get_user_context (shell->display->gimp);
 
-    if (shell->display == gimp_context_get_display (context))
-    {
-        GimpActionGroup *action_group;
+	if (shell->display == gimp_context_get_display (context))
+	{
+		GimpActionGroup *action_group;
 
-        action_group = gimp_ui_manager_get_action_group (shell->popup_manager,
-                       "view");
+		action_group = gimp_ui_manager_get_action_group (shell->popup_manager,
+		                                                 "view");
 
-        if (action_group)
-            gimp_action_group_set_action_active (action_group, action, active);
-    }
+		if (action_group)
+			gimp_action_group_set_action_active (action_group, action, active);
+	}
 }
 
 void
@@ -115,35 +115,35 @@ gimp_display_shell_set_action_color (GimpDisplayShell *shell,
                                      const gchar      *action,
                                      const GimpRGB    *color)
 {
-    GimpImageWindow *window;
-    GimpContext     *context;
+	GimpImageWindow *window;
+	GimpContext     *context;
 
-    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-    g_return_if_fail (action != NULL);
+	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+	g_return_if_fail (action != NULL);
 
-    window = gimp_display_shell_get_window (shell);
+	window = gimp_display_shell_get_window (shell);
 
-    if (window && gimp_image_window_get_active_shell (window) == shell)
-    {
-        GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
-        GimpActionGroup *action_group;
+	if (window && gimp_image_window_get_active_shell (window) == shell)
+	{
+		GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
+		GimpActionGroup *action_group;
 
-        action_group = gimp_ui_manager_get_action_group (manager, "view");
+		action_group = gimp_ui_manager_get_action_group (manager, "view");
 
-        if (action_group)
-            gimp_action_group_set_action_color (action_group, action, color, FALSE);
-    }
+		if (action_group)
+			gimp_action_group_set_action_color (action_group, action, color, FALSE);
+	}
 
-    context = gimp_get_user_context (shell->display->gimp);
+	context = gimp_get_user_context (shell->display->gimp);
 
-    if (shell->display == gimp_context_get_display (context))
-    {
-        GimpActionGroup *action_group;
+	if (shell->display == gimp_context_get_display (context))
+	{
+		GimpActionGroup *action_group;
 
-        action_group = gimp_ui_manager_get_action_group (shell->popup_manager,
-                       "view");
+		action_group = gimp_ui_manager_get_action_group (shell->popup_manager,
+		                                                 "view");
 
-        if (action_group)
-            gimp_action_group_set_action_color (action_group, action, color, FALSE);
-    }
+		if (action_group)
+			gimp_action_group_set_action_color (action_group, action, color, FALSE);
+	}
 }

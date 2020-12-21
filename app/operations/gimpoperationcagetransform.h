@@ -33,22 +33,22 @@
 #define GIMP_OPERATION_CAGE_TRANSFORM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_CAGE_TRANSFORM, GimpOperationCageTransformClass))
 
 
-typedef struct _GimpOperationCageTransform      GimpOperationCageTransform;
+typedef struct _GimpOperationCageTransform GimpOperationCageTransform;
 typedef struct _GimpOperationCageTransformClass GimpOperationCageTransformClass;
 
 struct _GimpOperationCageTransform
 {
-    GeglOperationComposer  parent_instance;
+	GeglOperationComposer parent_instance;
 
-    GimpCageConfig        *config;
-    gboolean               fill_plain_color;
+	GimpCageConfig        *config;
+	gboolean fill_plain_color;
 
-    const Babl            *format_coords;
+	const Babl            *format_coords;
 };
 
 struct _GimpOperationCageTransformClass
 {
-    GeglOperationComposerClass  parent_class;
+	GeglOperationComposerClass parent_class;
 };
 
 

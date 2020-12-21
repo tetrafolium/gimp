@@ -34,15 +34,15 @@ typedef struct _GimpConvolveOptionsClass GimpConvolveOptionsClass;
 
 struct _GimpConvolveOptions
 {
-    GimpPaintOptions  parent_instance;
+	GimpPaintOptions parent_instance;
 
-    GimpConvolveType  type;
-    gdouble           rate;
+	GimpConvolveType type;
+	gdouble rate;
 };
 
 struct _GimpConvolveOptionsClass
 {
-    GimpPaintOptionsClass  parent_class;
+	GimpPaintOptionsClass parent_class;
 };
 
 

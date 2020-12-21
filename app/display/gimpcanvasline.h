@@ -33,33 +33,33 @@
 #define GIMP_CANVAS_LINE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_LINE, GimpCanvasLineClass))
 
 
-typedef struct _GimpCanvasLine      GimpCanvasLine;
+typedef struct _GimpCanvasLine GimpCanvasLine;
 typedef struct _GimpCanvasLineClass GimpCanvasLineClass;
 
 struct _GimpCanvasLine
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasLineClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_line_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_line_new      (GimpDisplayShell *shell,
-        gdouble           x1,
-        gdouble           y1,
-        gdouble           x2,
-        gdouble           y2);
+                                            gdouble x1,
+                                            gdouble y1,
+                                            gdouble x2,
+                                            gdouble y2);
 
 void             gimp_canvas_line_set      (GimpCanvasItem   *line,
-        gdouble           x1,
-        gdouble           y1,
-        gdouble           x2,
-        gdouble           y2);
+                                            gdouble x1,
+                                            gdouble y1,
+                                            gdouble x2,
+                                            gdouble y2);
 
 
 #endif /* __GIMP_CANVAS_LINE_H__ */

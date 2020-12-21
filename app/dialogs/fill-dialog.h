@@ -27,7 +27,7 @@ typedef void (* GimpFillCallback) (GtkWidget       *dialog,
                                    GList           *drawables,
                                    GimpContext     *context,
                                    GimpFillOptions *options,
-                                   gpointer         user_data);
+                                   gpointer user_data);
 
 
 GtkWidget * fill_dialog_new (GimpItem         *item,
@@ -38,8 +38,8 @@ GtkWidget * fill_dialog_new (GimpItem         *item,
                              const gchar      *help_id,
                              GtkWidget        *parent,
                              GimpFillOptions  *options,
-                             GimpFillCallback  callback,
-                             gpointer          user_data);
+                             GimpFillCallback callback,
+                             gpointer user_data);
 
 
 #endif  /*  __FILL_DIALOG_H__  */

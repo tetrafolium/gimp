@@ -33,21 +33,21 @@
 #define GIMP_OPERATION_EQUALIZE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_EQUALIZE, GimpOperationEqualizeClass))
 
 
-typedef struct _GimpOperationEqualize      GimpOperationEqualize;
+typedef struct _GimpOperationEqualize GimpOperationEqualize;
 typedef struct _GimpOperationEqualizeClass GimpOperationEqualizeClass;
 
 struct _GimpOperationEqualize
 {
-    GimpOperationPointFilter  parent_instance;
+	GimpOperationPointFilter parent_instance;
 
-    GimpHistogram            *histogram;
-    gdouble                  *values;
-    gint                      n_bins;
+	GimpHistogram            *histogram;
+	gdouble                  *values;
+	gint n_bins;
 };
 
 struct _GimpOperationEqualizeClass
 {
-    GimpOperationPointFilterClass  parent_class;
+	GimpOperationPointFilterClass parent_class;
 };
 
 

@@ -24,12 +24,12 @@ GtkWidget * scale_dialog_new (GimpViewable          *viewable,
                               const gchar           *title,
                               const gchar           *role,
                               GtkWidget             *parent,
-                              GimpHelpFunc           help_func,
+                              GimpHelpFunc help_func,
                               const gchar           *help_id,
-                              GimpUnit               unit,
-                              GimpInterpolationType  interpolation,
-                              GimpScaleCallback      callback,
-                              gpointer               user_data);
+                              GimpUnit unit,
+                              GimpInterpolationType interpolation,
+                              GimpScaleCallback callback,
+                              gpointer user_data);
 
 
 #endif  /*  __SCALE_DIALOG_H__  */

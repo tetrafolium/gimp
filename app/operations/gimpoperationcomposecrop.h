@@ -33,19 +33,19 @@
 #define GIMP_OPERATION_COMPOSE_CROP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_COMPOSE_CROP, GimpOperationComposeCropClass))
 
 
-typedef struct _GimpOperationComposeCrop      GimpOperationComposeCrop;
+typedef struct _GimpOperationComposeCrop GimpOperationComposeCrop;
 typedef struct _GimpOperationComposeCropClass GimpOperationComposeCropClass;
 
 struct _GimpOperationComposeCrop
 {
-    GeglOperationPointComposer  parent_instance;
+	GeglOperationPointComposer parent_instance;
 
-    GeglRectangle               rect;
+	GeglRectangle rect;
 };
 
 struct _GimpOperationComposeCropClass
 {
-    GeglOperationPointComposerClass  parent_class;
+	GeglOperationPointComposerClass parent_class;
 };
 
 

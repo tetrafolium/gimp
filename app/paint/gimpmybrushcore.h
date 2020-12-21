@@ -31,23 +31,23 @@
 
 
 typedef struct _GimpMybrushCorePrivate GimpMybrushCorePrivate;
-typedef struct _GimpMybrushCoreClass   GimpMybrushCoreClass;
+typedef struct _GimpMybrushCoreClass GimpMybrushCoreClass;
 
 struct _GimpMybrushCore
 {
-    GimpPaintCore           parent_instance;
+	GimpPaintCore parent_instance;
 
-    GimpMybrushCorePrivate *private;
+	GimpMybrushCorePrivate *private;
 };
 
 struct _GimpMybrushCoreClass
 {
-    GimpPaintCoreClass  parent_class;
+	GimpPaintCoreClass parent_class;
 };
 
 
 void    gimp_mybrush_core_register (Gimp                      *gimp,
-                                    GimpPaintRegisterCallback  callback);
+                                    GimpPaintRegisterCallback callback);
 
 GType   gimp_mybrush_core_get_type (void) G_GNUC_CONST;
 

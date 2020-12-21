@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_ANTI_ERASE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_ANTI_ERASE, GimpOperationAntiEraseClass))
 
 
-typedef struct _GimpOperationAntiErase      GimpOperationAntiErase;
+typedef struct _GimpOperationAntiErase GimpOperationAntiErase;
 typedef struct _GimpOperationAntiEraseClass GimpOperationAntiEraseClass;
 
 struct _GimpOperationAntiErase
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationAntiEraseClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

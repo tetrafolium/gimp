@@ -28,7 +28,7 @@ void       menus_exit    (Gimp               *gimp);
 
 void       menus_restore (Gimp               *gimp);
 void       menus_save    (Gimp               *gimp,
-                          gboolean            always_save);
+                          gboolean always_save);
 
 gboolean   menus_clear   (Gimp               *gimp,
                           GError            **error);

@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_DIFFERENCE_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_DIFFERENCE_LEGACY, GimpOperationDifferenceLegacyClass))
 
 
-typedef struct _GimpOperationDifferenceLegacy      GimpOperationDifferenceLegacy;
+typedef struct _GimpOperationDifferenceLegacy GimpOperationDifferenceLegacy;
 typedef struct _GimpOperationDifferenceLegacyClass GimpOperationDifferenceLegacyClass;
 
 struct _GimpOperationDifferenceLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationDifferenceLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

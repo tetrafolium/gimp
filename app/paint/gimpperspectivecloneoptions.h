@@ -34,14 +34,14 @@ typedef struct _GimpPerspectiveCloneOptionsClass GimpPerspectiveCloneOptionsClas
 
 struct _GimpPerspectiveCloneOptions
 {
-    GimpCloneOptions          paint_instance;
+	GimpCloneOptions paint_instance;
 
-    GimpPerspectiveCloneMode  clone_mode;
+	GimpPerspectiveCloneMode clone_mode;
 };
 
 struct _GimpPerspectiveCloneOptionsClass
 {
-    GimpCloneOptionsClass  parent_class;
+	GimpCloneOptionsClass parent_class;
 };
 
 

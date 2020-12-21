@@ -33,20 +33,20 @@
 #define GIMP_OPERATION_SCALAR_MULTIPLY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SCALAR_MULTIPLY, GimpOperationScalarMultiplyClass))
 
 
-typedef struct _GimpOperationScalarMultiply      GimpOperationScalarMultiply;
+typedef struct _GimpOperationScalarMultiply GimpOperationScalarMultiply;
 typedef struct _GimpOperationScalarMultiplyClass GimpOperationScalarMultiplyClass;
 
 struct _GimpOperationScalarMultiply
 {
-    GeglOperationPointFilter  parent_instance;
+	GeglOperationPointFilter parent_instance;
 
-    gint                      n_components;
-    gdouble                   factor;
+	gint n_components;
+	gdouble factor;
 };
 
 struct _GimpOperationScalarMultiplyClass
 {
-    GeglOperationPointFilterClass  parent_class;
+	GeglOperationPointFilterClass parent_class;
 };
 
 

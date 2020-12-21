@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_BRIGHTNESS_CONTRAST_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST, GimpOperationBrightnessContrastClass))
 
 
-typedef struct _GimpOperationBrightnessContrast      GimpOperationBrightnessContrast;
+typedef struct _GimpOperationBrightnessContrast GimpOperationBrightnessContrast;
 typedef struct _GimpOperationBrightnessContrastClass GimpOperationBrightnessContrastClass;
 
 struct _GimpOperationBrightnessContrast
 {
-    GimpOperationPointFilter  parent_instance;
+	GimpOperationPointFilter parent_instance;
 };
 
 struct _GimpOperationBrightnessContrastClass
 {
-    GimpOperationPointFilterClass  parent_class;
+	GimpOperationPointFilterClass parent_class;
 };
 
 

@@ -28,9 +28,9 @@
 
 enum
 {
-    GIMP_OPERATION_POINT_FILTER_PROP_0,
-    GIMP_OPERATION_POINT_FILTER_PROP_TRC,
-    GIMP_OPERATION_POINT_FILTER_PROP_CONFIG
+	GIMP_OPERATION_POINT_FILTER_PROP_0,
+	GIMP_OPERATION_POINT_FILTER_PROP_TRC,
+	GIMP_OPERATION_POINT_FILTER_PROP_CONFIG
 };
 
 
@@ -46,28 +46,28 @@ typedef struct _GimpOperationPointFilterClass GimpOperationPointFilterClass;
 
 struct _GimpOperationPointFilter
 {
-    GeglOperationPointFilter  parent_instance;
+	GeglOperationPointFilter parent_instance;
 
-    GimpTRCType               trc;
-    GObject                  *config;
+	GimpTRCType trc;
+	GObject                  *config;
 };
 
 struct _GimpOperationPointFilterClass
 {
-    GeglOperationPointFilterClass  parent_class;
+	GeglOperationPointFilterClass parent_class;
 };
 
 
 GType   gimp_operation_point_filter_get_type     (void) G_GNUC_CONST;
 
 void    gimp_operation_point_filter_get_property (GObject      *object,
-        guint         property_id,
-        GValue       *value,
-        GParamSpec   *pspec);
+                                                  guint property_id,
+                                                  GValue       *value,
+                                                  GParamSpec   *pspec);
 void    gimp_operation_point_filter_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec);
+                                                  guint property_id,
+                                                  const GValue *value,
+                                                  GParamSpec   *pspec);
 
 
 #endif /* __GIMP_OPERATION_POINT_FILTER_H__ */

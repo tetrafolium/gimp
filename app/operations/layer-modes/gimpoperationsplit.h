@@ -34,17 +34,17 @@
 #define GIMP_OPERATION_SPLIT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SPLIT, GimpOperationSplitClass))
 
 
-typedef struct _GimpOperationSplit      GimpOperationSplit;
+typedef struct _GimpOperationSplit GimpOperationSplit;
 typedef struct _GimpOperationSplitClass GimpOperationSplitClass;
 
 struct _GimpOperationSplit
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationSplitClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

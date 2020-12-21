@@ -23,8 +23,8 @@ void               gui_libs_init (GOptionContext *context);
 void               gui_abort     (const gchar    *abort_message);
 
 GimpInitStatusFunc gui_init      (Gimp           *gimp,
-                                  gboolean        no_splash);
+                                  gboolean no_splash);
 
-gboolean           gui_recover   (gint            n_recoveries);
+gboolean           gui_recover   (gint n_recoveries);
 
 #endif /* __GUI_H__ */

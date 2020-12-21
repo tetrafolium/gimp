@@ -33,19 +33,19 @@
 #define GIMP_OPERATION_SEMI_FLATTEN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SEMI_FLATTEN, GimpOperationSemiFlattenClass))
 
 
-typedef struct _GimpOperationSemiFlatten      GimpOperationSemiFlatten;
+typedef struct _GimpOperationSemiFlatten GimpOperationSemiFlatten;
 typedef struct _GimpOperationSemiFlattenClass GimpOperationSemiFlattenClass;
 
 struct _GimpOperationSemiFlatten
 {
-    GeglOperationPointFilter  parent_instance;
+	GeglOperationPointFilter parent_instance;
 
-    GimpRGB                   color;
+	GimpRGB color;
 };
 
 struct _GimpOperationSemiFlattenClass
 {
-    GeglOperationPointFilterClass  parent_class;
+	GeglOperationPointFilterClass parent_class;
 };
 
 

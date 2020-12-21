@@ -34,27 +34,27 @@
 
 enum
 {
-    PROP_0,
-    PROP_VALUE
+	PROP_0,
+	PROP_VALUE
 };
 
 
 static void       gimp_operation_threshold_alpha_get_property (GObject             *object,
-        guint                property_id,
-        GValue              *value,
-        GParamSpec          *pspec);
+                                                               guint property_id,
+                                                               GValue              *value,
+                                                               GParamSpec          *pspec);
 static void       gimp_operation_threshold_alpha_set_property (GObject             *object,
-        guint                property_id,
-        const GValue        *value,
-        GParamSpec          *pspec);
+                                                               guint property_id,
+                                                               const GValue        *value,
+                                                               GParamSpec          *pspec);
 
 static void       gimp_operation_threshold_alpha_prepare      (GeglOperation       *operation);
 static gboolean   gimp_operation_threshold_alpha_process      (GeglOperation       *operation,
-        void                *in_buf,
-        void                *out_buf,
-        glong                samples,
-        const GeglRectangle *roi,
-        gint                 level);
+                                                               void                *in_buf,
+                                                               void                *out_buf,
+                                                               glong samples,
+                                                               const GeglRectangle *roi,
+                                                               gint level);
 
 
 G_DEFINE_TYPE (GimpOperationThresholdAlpha, gimp_operation_threshold_alpha,
@@ -66,32 +66,32 @@ G_DEFINE_TYPE (GimpOperationThresholdAlpha, gimp_operation_threshold_alpha,
 static void
 gimp_operation_threshold_alpha_class_init (GimpOperationThresholdAlphaClass *klass)
 {
-    GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
-    GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
-    GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
+	GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
+	GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
+	GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
 
-    object_class->set_property = gimp_operation_threshold_alpha_set_property;
-    object_class->get_property = gimp_operation_threshold_alpha_get_property;
+	object_class->set_property = gimp_operation_threshold_alpha_set_property;
+	object_class->get_property = gimp_operation_threshold_alpha_get_property;
 
-    gegl_operation_class_set_keys (operation_class,
-                                   "name",        "gimp:threshold-alpha",
-                                   "categories",  "color",
-                                   "description",
-                                   _("Make transparency all-or-nothing, by "
-                                     "thresholding the alpha channel to a value"),
-                                   NULL);
+	gegl_operation_class_set_keys (operation_class,
+	                               "name",        "gimp:threshold-alpha",
+	                               "categories",  "color",
+	                               "description",
+	                               _("Make transparency all-or-nothing, by "
+	                                 "thresholding the alpha channel to a value"),
+	                               NULL);
 
-    operation_class->prepare = gimp_operation_threshold_alpha_prepare;
+	operation_class->prepare = gimp_operation_threshold_alpha_prepare;
 
-    point_class->process     = gimp_operation_threshold_alpha_process;
+	point_class->process     = gimp_operation_threshold_alpha_process;
 
-    g_object_class_install_property (object_class, PROP_VALUE,
-                                     g_param_spec_double ("value",
-                                             _("Value"),
-                                             _("The alpha value"),
-                                             0.0, 1.0, 0.5,
-                                             G_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class, PROP_VALUE,
+	                                 g_param_spec_double ("value",
+	                                                      _("Value"),
+	                                                      _("The alpha value"),
+	                                                      0.0, 1.0, 0.5,
+	                                                      G_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT));
 }
 
 static void
@@ -101,78 +101,78 @@ gimp_operation_threshold_alpha_init (GimpOperationThresholdAlpha *self)
 
 static void
 gimp_operation_threshold_alpha_get_property (GObject    *object,
-        guint       property_id,
-        GValue     *value,
-        GParamSpec *pspec)
+                                             guint property_id,
+                                             GValue     *value,
+                                             GParamSpec *pspec)
 {
-    GimpOperationThresholdAlpha *self = GIMP_OPERATION_THRESHOLD_ALPHA (object);
+	GimpOperationThresholdAlpha *self = GIMP_OPERATION_THRESHOLD_ALPHA (object);
 
-    switch (property_id)
-    {
-    case PROP_VALUE:
-        g_value_set_double (value, self->value);
-        break;
+	switch (property_id)
+	{
+	case PROP_VALUE:
+		g_value_set_double (value, self->value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_operation_threshold_alpha_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec)
+                                             guint property_id,
+                                             const GValue *value,
+                                             GParamSpec   *pspec)
 {
-    GimpOperationThresholdAlpha *self = GIMP_OPERATION_THRESHOLD_ALPHA (object);
+	GimpOperationThresholdAlpha *self = GIMP_OPERATION_THRESHOLD_ALPHA (object);
 
-    switch (property_id)
-    {
-    case PROP_VALUE:
-        self->value = g_value_get_double (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_VALUE:
+		self->value = g_value_get_double (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_operation_threshold_alpha_prepare (GeglOperation *operation)
 {
-    const Babl *space = gegl_operation_get_source_space (operation, "input");
-    gegl_operation_set_format (operation, "input",  babl_format_with_space ("RGBA float", space));
-    gegl_operation_set_format (operation, "output", babl_format_with_space ("RGBA float", space));
+	const Babl *space = gegl_operation_get_source_space (operation, "input");
+	gegl_operation_set_format (operation, "input",  babl_format_with_space ("RGBA float", space));
+	gegl_operation_set_format (operation, "output", babl_format_with_space ("RGBA float", space));
 }
 
 static gboolean
 gimp_operation_threshold_alpha_process (GeglOperation       *operation,
                                         void                *in_buf,
                                         void                *out_buf,
-                                        glong                samples,
+                                        glong samples,
                                         const GeglRectangle *roi,
-                                        gint                 level)
+                                        gint level)
 {
-    GimpOperationThresholdAlpha *self = GIMP_OPERATION_THRESHOLD_ALPHA (operation);
-    gfloat                      *src  = in_buf;
-    gfloat                      *dest = out_buf;
+	GimpOperationThresholdAlpha *self = GIMP_OPERATION_THRESHOLD_ALPHA (operation);
+	gfloat                      *src  = in_buf;
+	gfloat                      *dest = out_buf;
 
-    while (samples--)
-    {
-        dest[RED]   = src[RED];
-        dest[GREEN] = src[GREEN];
-        dest[BLUE]  = src[BLUE];
+	while (samples--)
+	{
+		dest[RED]   = src[RED];
+		dest[GREEN] = src[GREEN];
+		dest[BLUE]  = src[BLUE];
 
-        if (src[ALPHA] > self->value)
-            dest[ALPHA] = 1.0;
-        else
-            dest[ALPHA] = 0.0;
+		if (src[ALPHA] > self->value)
+			dest[ALPHA] = 1.0;
+		else
+			dest[ALPHA] = 0.0;
 
-        src  += 4;
-        dest += 4;
-    }
+		src  += 4;
+		dest += 4;
+	}
 
-    return TRUE;
+	return TRUE;
 }

@@ -30,113 +30,113 @@
 
 struct _GimpPlugInDebug
 {
-    gchar  *name;
-    guint   flags;
-    gchar **args;
+	gchar  *name;
+	guint flags;
+	gchar **args;
 };
 
 
 static const GDebugKey gimp_debug_wrap_keys[] =
 {
-    { "query", GIMP_DEBUG_WRAP_QUERY   },
-    { "init",  GIMP_DEBUG_WRAP_INIT    },
-    { "run",   GIMP_DEBUG_WRAP_RUN     },
-    { "on",    GIMP_DEBUG_WRAP_DEFAULT }
+	{ "query", GIMP_DEBUG_WRAP_QUERY   },
+	{ "init",  GIMP_DEBUG_WRAP_INIT    },
+	{ "run",   GIMP_DEBUG_WRAP_RUN     },
+	{ "on",    GIMP_DEBUG_WRAP_DEFAULT }
 };
 
 
 GimpPlugInDebug *
 gimp_plug_in_debug_new (void)
 {
-    GimpPlugInDebug  *debug;
-    const gchar      *wrap, *wrapper;
-    gchar            *debug_string;
-    gchar           **args;
-    GError           *error = NULL;
+	GimpPlugInDebug  *debug;
+	const gchar      *wrap, *wrapper;
+	gchar            *debug_string;
+	gchar           **args;
+	GError           *error = NULL;
 
-    wrap = g_getenv ("GIMP_PLUGIN_DEBUG_WRAP");
-    wrapper = g_getenv ("GIMP_PLUGIN_DEBUG_WRAPPER");
+	wrap = g_getenv ("GIMP_PLUGIN_DEBUG_WRAP");
+	wrapper = g_getenv ("GIMP_PLUGIN_DEBUG_WRAPPER");
 
-    if (!(wrap && wrapper))
-        return NULL;
+	if (!(wrap && wrapper))
+		return NULL;
 
-    if (!g_shell_parse_argv (wrapper, NULL, &args, &error))
-    {
-        g_warning ("Unable to parse debug wrapper: \"%s\"\n%s",
-                   wrapper, error->message);
-        g_error_free (error);
-        return NULL;
-    }
+	if (!g_shell_parse_argv (wrapper, NULL, &args, &error))
+	{
+		g_warning ("Unable to parse debug wrapper: \"%s\"\n%s",
+		           wrapper, error->message);
+		g_error_free (error);
+		return NULL;
+	}
 
-    debug = g_slice_new (GimpPlugInDebug);
+	debug = g_slice_new (GimpPlugInDebug);
 
-    debug->args  = args;
+	debug->args  = args;
 
-    debug_string = strchr (wrap, ',');
+	debug_string = strchr (wrap, ',');
 
-    if (debug_string)
-    {
-        debug->name = g_strndup (wrap, debug_string - wrap);
-        debug->flags = g_parse_debug_string (debug_string + 1,
-                                             gimp_debug_wrap_keys,
-                                             G_N_ELEMENTS (gimp_debug_wrap_keys));
-    }
-    else
-    {
-        debug->name = g_strdup (wrap);
-        debug->flags = GIMP_DEBUG_WRAP_DEFAULT;
-    }
+	if (debug_string)
+	{
+		debug->name = g_strndup (wrap, debug_string - wrap);
+		debug->flags = g_parse_debug_string (debug_string + 1,
+		                                     gimp_debug_wrap_keys,
+		                                     G_N_ELEMENTS (gimp_debug_wrap_keys));
+	}
+	else
+	{
+		debug->name = g_strdup (wrap);
+		debug->flags = GIMP_DEBUG_WRAP_DEFAULT;
+	}
 
-    return debug;
+	return debug;
 }
 
 void
 gimp_plug_in_debug_free (GimpPlugInDebug *debug)
 {
-    g_return_if_fail (debug != NULL);
+	g_return_if_fail (debug != NULL);
 
-    if (debug->name)
-        g_free (debug->name);
+	if (debug->name)
+		g_free (debug->name);
 
-    if (debug->args)
-        g_strfreev (debug->args);
+	if (debug->args)
+		g_strfreev (debug->args);
 
-    g_slice_free (GimpPlugInDebug, debug);
+	g_slice_free (GimpPlugInDebug, debug);
 }
 
 gchar **
 gimp_plug_in_debug_argv (GimpPlugInDebug    *debug,
                          const gchar        *name,
-                         GimpDebugWrapFlag   flag,
+                         GimpDebugWrapFlag flag,
                          const gchar       **args)
 {
-    GPtrArray  *argv;
-    gchar     **arg;
-    gchar      *basename;
+	GPtrArray  *argv;
+	gchar     **arg;
+	gchar      *basename;
 
-    g_return_val_if_fail (debug != NULL, NULL);
-    g_return_val_if_fail (name != NULL, NULL);
-    g_return_val_if_fail (args != NULL, NULL);
+	g_return_val_if_fail (debug != NULL, NULL);
+	g_return_val_if_fail (name != NULL, NULL);
+	g_return_val_if_fail (args != NULL, NULL);
 
-    basename = g_path_get_basename (name);
+	basename = g_path_get_basename (name);
 
-    if (!(debug->flags & flag) || (strcmp (debug->name, basename) != 0))
-    {
-        g_free (basename);
-        return NULL;
-    }
+	if (!(debug->flags & flag) || (strcmp (debug->name, basename) != 0))
+	{
+		g_free (basename);
+		return NULL;
+	}
 
-    g_free (basename);
+	g_free (basename);
 
-    argv = g_ptr_array_sized_new (8);
+	argv = g_ptr_array_sized_new (8);
 
-    for (arg = debug->args; *arg != NULL; arg++)
-        g_ptr_array_add (argv, *arg);
+	for (arg = debug->args; *arg != NULL; arg++)
+		g_ptr_array_add (argv, *arg);
 
-    for (arg = (gchar **) args; *arg != NULL; arg++)
-        g_ptr_array_add (argv, *arg);
+	for (arg = (gchar **) args; *arg != NULL; arg++)
+		g_ptr_array_add (argv, *arg);
 
-    g_ptr_array_add (argv, NULL);
+	g_ptr_array_add (argv, NULL);
 
-    return (gchar **) g_ptr_array_free (argv, FALSE);
+	return (gchar **) g_ptr_array_free (argv, FALSE);
 }

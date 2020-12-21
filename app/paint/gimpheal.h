@@ -34,17 +34,17 @@ typedef struct _GimpHealClass GimpHealClass;
 
 struct _GimpHeal
 {
-    GimpSourceCore  parent_instance;
+	GimpSourceCore parent_instance;
 };
 
 struct _GimpHealClass
 {
-    GimpSourceCoreClass  parent_class;
+	GimpSourceCoreClass parent_class;
 };
 
 
 void    gimp_heal_register (Gimp                      *gimp,
-                            GimpPaintRegisterCallback  callback);
+                            GimpPaintRegisterCallback callback);
 
 GType   gimp_heal_get_type (void) G_GNUC_CONST;
 

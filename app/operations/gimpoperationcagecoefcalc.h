@@ -27,8 +27,8 @@
 
 enum
 {
-    GIMP_OPERATION_CAGE_COEF_CALC_PROP_0,
-    GIMP_OPERATION_CAGE_COEF_CALC_PROP_CONFIG
+	GIMP_OPERATION_CAGE_COEF_CALC_PROP_0,
+	GIMP_OPERATION_CAGE_COEF_CALC_PROP_CONFIG
 };
 
 
@@ -40,19 +40,19 @@ enum
 #define GIMP_OPERATION_CAGE_COEF_CALC_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_CAGE_COEF_CALC, GimpOperationCageCoefCalcClass))
 
 
-typedef struct _GimpOperationCageCoefCalc      GimpOperationCageCoefCalc;
+typedef struct _GimpOperationCageCoefCalc GimpOperationCageCoefCalc;
 typedef struct _GimpOperationCageCoefCalcClass GimpOperationCageCoefCalcClass;
 
 struct _GimpOperationCageCoefCalc
 {
-    GeglOperationSource  parent_instance;
+	GeglOperationSource parent_instance;
 
-    GimpCageConfig      *config;
+	GimpCageConfig      *config;
 };
 
 struct _GimpOperationCageCoefCalcClass
 {
-    GeglOperationSourceClass  parent_class;
+	GeglOperationSourceClass parent_class;
 };
 
 

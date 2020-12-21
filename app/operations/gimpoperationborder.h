@@ -33,22 +33,22 @@
 #define GIMP_OPERATION_BORDER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BORDER, GimpOperationBorderClass))
 
 
-typedef struct _GimpOperationBorder      GimpOperationBorder;
+typedef struct _GimpOperationBorder GimpOperationBorder;
 typedef struct _GimpOperationBorderClass GimpOperationBorderClass;
 
 struct _GimpOperationBorder
 {
-    GeglOperationFilter  parent_instance;
+	GeglOperationFilter parent_instance;
 
-    gint                 radius_x;
-    gint                 radius_y;
-    gboolean             feather;
-    gboolean             edge_lock;
+	gint radius_x;
+	gint radius_y;
+	gboolean feather;
+	gboolean edge_lock;
 };
 
 struct _GimpOperationBorderClass
 {
-    GeglOperationFilterClass  parent_class;
+	GeglOperationFilterClass parent_class;
 };
 
 

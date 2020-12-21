@@ -33,31 +33,31 @@
 #define GIMP_CANVAS_PATH_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_PATH, GimpCanvasPathClass))
 
 
-typedef struct _GimpCanvasPath      GimpCanvasPath;
+typedef struct _GimpCanvasPath GimpCanvasPath;
 typedef struct _GimpCanvasPathClass GimpCanvasPathClass;
 
 struct _GimpCanvasPath
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasPathClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_path_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_path_new      (GimpDisplayShell     *shell,
-        const GimpBezierDesc *bezier,
-        gdouble               x,
-        gdouble               y,
-        gboolean              filled,
-        GimpPathStyle         style);
+                                            const GimpBezierDesc *bezier,
+                                            gdouble x,
+                                            gdouble y,
+                                            gboolean filled,
+                                            GimpPathStyle style);
 
 void             gimp_canvas_path_set      (GimpCanvasItem       *path,
-        const GimpBezierDesc *bezier);
+                                            const GimpBezierDesc *bezier);
 
 
 #endif /* __GIMP_CANVAS_PATH_H__ */

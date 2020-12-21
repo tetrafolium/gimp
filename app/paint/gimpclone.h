@@ -34,17 +34,17 @@ typedef struct _GimpCloneClass GimpCloneClass;
 
 struct _GimpClone
 {
-    GimpSourceCore  parent_instance;
+	GimpSourceCore parent_instance;
 };
 
 struct _GimpCloneClass
 {
-    GimpSourceCoreClass  parent_class;
+	GimpSourceCoreClass parent_class;
 };
 
 
 void    gimp_clone_register (Gimp                      *gimp,
-                             GimpPaintRegisterCallback  callback);
+                             GimpPaintRegisterCallback callback);
 
 GType   gimp_clone_get_type (void) G_GNUC_CONST;
 

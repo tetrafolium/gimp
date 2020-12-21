@@ -39,93 +39,93 @@
 GtkWidget *
 _gimp_prop_gui_new_channel_mixer (GObject                  *config,
                                   GParamSpec              **param_specs,
-                                  guint                     n_param_specs,
+                                  guint n_param_specs,
                                   GeglRectangle            *area,
                                   GimpContext              *context,
-                                  GimpCreatePickerFunc      create_picker_func,
-                                  GimpCreateControllerFunc  create_controller_func,
-                                  gpointer                  creator)
+                                  GimpCreatePickerFunc create_picker_func,
+                                  GimpCreateControllerFunc create_controller_func,
+                                  gpointer creator)
 {
-    GtkWidget   *main_vbox;
-    GtkWidget   *frame;
-    GtkWidget   *vbox;
-    GtkWidget   *checkbox;
-    GtkWidget   *scale;
-    const gchar *label;
+	GtkWidget   *main_vbox;
+	GtkWidget   *frame;
+	GtkWidget   *vbox;
+	GtkWidget   *checkbox;
+	GtkWidget   *scale;
+	const gchar *label;
 
-    g_return_val_if_fail (G_IS_OBJECT (config), NULL);
-    g_return_val_if_fail (param_specs != NULL, NULL);
-    g_return_val_if_fail (n_param_specs > 0, NULL);
-    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (G_IS_OBJECT (config), NULL);
+	g_return_val_if_fail (param_specs != NULL, NULL);
+	g_return_val_if_fail (n_param_specs > 0, NULL);
+	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-    main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+	main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
 
-    frame = gimp_frame_new (_("Red channel"));
-    gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-    gtk_widget_show (frame);
+	frame = gimp_frame_new (_("Red channel"));
+	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-    gtk_container_add (GTK_CONTAINER (frame), vbox);
-    gtk_widget_show (vbox);
+	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+	gtk_container_add (GTK_CONTAINER (frame), vbox);
+	gtk_widget_show (vbox);
 
-    scale = gimp_prop_widget_new (config, "rr-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+	scale = gimp_prop_widget_new (config, "rr-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
-    scale = gimp_prop_widget_new (config, "rg-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+	scale = gimp_prop_widget_new (config, "rg-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
-    scale = gimp_prop_widget_new (config, "rb-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
-
-
-    frame = gimp_frame_new (_("Green channel"));
-    gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-    gtk_widget_show (frame);
-
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-    gtk_container_add (GTK_CONTAINER (frame), vbox);
-    gtk_widget_show (vbox);
-
-    scale = gimp_prop_widget_new (config, "gr-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
-
-    scale = gimp_prop_widget_new (config, "gg-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
-
-    scale = gimp_prop_widget_new (config, "gb-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+	scale = gimp_prop_widget_new (config, "rb-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
 
-    frame = gimp_frame_new (_("Blue channel"));
-    gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-    gtk_widget_show (frame);
+	frame = gimp_frame_new (_("Green channel"));
+	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-    gtk_container_add (GTK_CONTAINER (frame), vbox);
-    gtk_widget_show (vbox);
+	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+	gtk_container_add (GTK_CONTAINER (frame), vbox);
+	gtk_widget_show (vbox);
 
-    scale = gimp_prop_widget_new (config, "br-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+	scale = gimp_prop_widget_new (config, "gr-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
-    scale = gimp_prop_widget_new (config, "bg-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+	scale = gimp_prop_widget_new (config, "gg-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
-    scale = gimp_prop_widget_new (config, "bb-gain",
-                                  area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+	scale = gimp_prop_widget_new (config, "gb-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
 
-    checkbox = gimp_prop_widget_new (config, "preserve-luminosity",
-                                     area, context, NULL, NULL, NULL, &label);
-    gtk_box_pack_start (GTK_BOX (main_vbox), checkbox, FALSE, FALSE, 0);
+	frame = gimp_frame_new (_("Blue channel"));
+	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
 
-    return main_vbox;
+	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+	gtk_container_add (GTK_CONTAINER (frame), vbox);
+	gtk_widget_show (vbox);
+
+	scale = gimp_prop_widget_new (config, "br-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+
+	scale = gimp_prop_widget_new (config, "bg-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+
+	scale = gimp_prop_widget_new (config, "bb-gain",
+	                              area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+
+
+	checkbox = gimp_prop_widget_new (config, "preserve-luminosity",
+	                                 area, context, NULL, NULL, NULL, &label);
+	gtk_box_pack_start (GTK_BOX (main_vbox), checkbox, FALSE, FALSE, 0);
+
+	return main_vbox;
 }

@@ -42,22 +42,22 @@
 #define GIMP_DBUS_SERVICE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DBUS_SERVICE, GimpDBusServiceClass))
 
 
-typedef struct _GimpDBusService      GimpDBusService;
+typedef struct _GimpDBusService GimpDBusService;
 typedef struct _GimpDBusServiceClass GimpDBusServiceClass;
 
 struct _GimpDBusService
 {
-    GimpDBusServiceUISkeleton  parent_instance;
+	GimpDBusServiceUISkeleton parent_instance;
 
-    Gimp     *gimp;
-    GQueue   *queue;
-    GSource  *source;
-    gboolean  timeout_source;
+	Gimp     *gimp;
+	GQueue   *queue;
+	GSource  *source;
+	gboolean timeout_source;
 };
 
 struct _GimpDBusServiceClass
 {
-    GimpDBusServiceUISkeletonClass  parent_class;
+	GimpDBusServiceUISkeletonClass parent_class;
 };
 
 

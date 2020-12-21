@@ -24,29 +24,29 @@
 #include "display/display-enums.h"
 
 
-typedef struct _GimpCanvas               GimpCanvas;
-typedef struct _GimpCanvasGroup          GimpCanvasGroup;
-typedef struct _GimpCanvasItem           GimpCanvasItem;
+typedef struct _GimpCanvas GimpCanvas;
+typedef struct _GimpCanvasGroup GimpCanvasGroup;
+typedef struct _GimpCanvasItem GimpCanvasItem;
 
-typedef struct _GimpDisplayShell         GimpDisplayShell;
-typedef struct _GimpMotionBuffer         GimpMotionBuffer;
+typedef struct _GimpDisplayShell GimpDisplayShell;
+typedef struct _GimpMotionBuffer GimpMotionBuffer;
 
-typedef struct _GimpImageWindow          GimpImageWindow;
-typedef struct _GimpMultiWindowStrategy  GimpMultiWindowStrategy;
+typedef struct _GimpImageWindow GimpImageWindow;
+typedef struct _GimpMultiWindowStrategy GimpMultiWindowStrategy;
 typedef struct _GimpSingleWindowStrategy GimpSingleWindowStrategy;
 
-typedef struct _GimpCursorView           GimpCursorView;
-typedef struct _GimpNavigationEditor     GimpNavigationEditor;
-typedef struct _GimpScaleComboBox        GimpScaleComboBox;
-typedef struct _GimpStatusbar            GimpStatusbar;
+typedef struct _GimpCursorView GimpCursorView;
+typedef struct _GimpNavigationEditor GimpNavigationEditor;
+typedef struct _GimpScaleComboBox GimpScaleComboBox;
+typedef struct _GimpStatusbar GimpStatusbar;
 
-typedef struct _GimpToolDialog           GimpToolDialog;
-typedef struct _GimpToolGui              GimpToolGui;
-typedef struct _GimpToolWidget           GimpToolWidget;
-typedef struct _GimpToolWidgetGroup      GimpToolWidgetGroup;
+typedef struct _GimpToolDialog GimpToolDialog;
+typedef struct _GimpToolGui GimpToolGui;
+typedef struct _GimpToolWidget GimpToolWidget;
+typedef struct _GimpToolWidgetGroup GimpToolWidgetGroup;
 
-typedef struct _GimpDisplayXfer          GimpDisplayXfer;
-typedef struct _Selection                Selection;
+typedef struct _GimpDisplayXfer GimpDisplayXfer;
+typedef struct _Selection Selection;
 
 
 #endif /* __DISPLAY_TYPES_H__ */

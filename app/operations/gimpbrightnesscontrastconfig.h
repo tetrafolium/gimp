@@ -37,15 +37,15 @@ typedef struct _GimpBrightnessContrastConfigClass GimpBrightnessContrastConfigCl
 
 struct _GimpBrightnessContrastConfig
 {
-    GimpOperationSettings  parent_instance;
+	GimpOperationSettings parent_instance;
 
-    gdouble                brightness;
-    gdouble                contrast;
+	gdouble brightness;
+	gdouble contrast;
 };
 
 struct _GimpBrightnessContrastConfigClass
 {
-    GimpOperationSettingsClass  parent_class;
+	GimpOperationSettingsClass parent_class;
 };
 
 

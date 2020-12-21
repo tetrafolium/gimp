@@ -33,27 +33,27 @@
 #define GIMP_TOOL_PATH_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_PATH, GimpToolPathClass))
 
 
-typedef struct _GimpToolPath        GimpToolPath;
+typedef struct _GimpToolPath GimpToolPath;
 typedef struct _GimpToolPathPrivate GimpToolPathPrivate;
-typedef struct _GimpToolPathClass   GimpToolPathClass;
+typedef struct _GimpToolPathClass GimpToolPathClass;
 
 struct _GimpToolPath
 {
-    GimpToolWidget       parent_instance;
+	GimpToolWidget parent_instance;
 
-    GimpToolPathPrivate *private;
+	GimpToolPathPrivate *private;
 };
 
 struct _GimpToolPathClass
 {
-    GimpToolWidgetClass  parent_class;
+	GimpToolWidgetClass parent_class;
 
-    void (* begin_change) (GimpToolPath    *path,
-                           const gchar     *desc);
-    void (* end_change)   (GimpToolPath    *path,
-                           gboolean         success);
-    void (* activate)     (GimpToolPath    *path,
-                           GdkModifierType  state);
+	void (* begin_change) (GimpToolPath    *path,
+	                       const gchar     *desc);
+	void (* end_change)   (GimpToolPath    *path,
+	                       gboolean success);
+	void (* activate)     (GimpToolPath    *path,
+	                       GdkModifierType state);
 };
 
 
@@ -62,11 +62,11 @@ GType            gimp_tool_path_get_type    (void) G_GNUC_CONST;
 GimpToolWidget * gimp_tool_path_new         (GimpDisplayShell *shell);
 
 void             gimp_tool_path_set_vectors (GimpToolPath     *path,
-        GimpVectors      *vectors);
+                                             GimpVectors      *vectors);
 
 void             gimp_tool_path_get_popup_state (GimpToolPath *path,
-        gboolean     *on_handle,
-        gboolean     *on_curve);
+                                                 gboolean     *on_handle,
+                                                 gboolean     *on_curve);
 
 void             gimp_tool_path_delete_anchor  (GimpToolPath *path);
 void             gimp_tool_path_shift_start    (GimpToolPath *path);

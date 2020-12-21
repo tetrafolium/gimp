@@ -20,27 +20,27 @@
 
 
 void       gimp_display_shell_canvas_realize          (GtkWidget        *widget,
-        GimpDisplayShell *shell);
+                                                       GimpDisplayShell *shell);
 void       gimp_display_shell_canvas_size_allocate    (GtkWidget        *widget,
-        GtkAllocation    *alloc,
-        GimpDisplayShell *shell);
+                                                       GtkAllocation    *alloc,
+                                                       GimpDisplayShell *shell);
 gboolean   gimp_display_shell_canvas_draw             (GtkWidget        *widget,
-        cairo_t          *cr,
-        GimpDisplayShell *shell);
+                                                       cairo_t          *cr,
+                                                       GimpDisplayShell *shell);
 
 gboolean   gimp_display_shell_origin_button_press     (GtkWidget        *widget,
-        GdkEventButton   *bevent,
-        GimpDisplayShell *shell);
+                                                       GdkEventButton   *bevent,
+                                                       GimpDisplayShell *shell);
 
 gboolean   gimp_display_shell_quick_mask_button_press (GtkWidget        *widget,
-        GdkEventButton   *bevent,
-        GimpDisplayShell *shell);
+                                                       GdkEventButton   *bevent,
+                                                       GimpDisplayShell *shell);
 void       gimp_display_shell_quick_mask_toggled      (GtkWidget        *widget,
-        GimpDisplayShell *shell);
+                                                       GimpDisplayShell *shell);
 
 gboolean   gimp_display_shell_navigation_button_press (GtkWidget        *widget,
-        GdkEventButton   *bevent,
-        GimpDisplayShell *shell);
+                                                       GdkEventButton   *bevent,
+                                                       GimpDisplayShell *shell);
 
 
 #endif /* __GIMP_DISPLAY_SHELL_CALLBACKS_H__ */

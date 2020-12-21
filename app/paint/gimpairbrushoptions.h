@@ -34,16 +34,16 @@ typedef struct _GimpAirbrushOptionsClass GimpAirbrushOptionsClass;
 
 struct _GimpAirbrushOptions
 {
-    GimpPaintOptions  parent_instance;
+	GimpPaintOptions parent_instance;
 
-    gdouble           rate;
-    gboolean          motion_only;
-    gdouble           flow;
+	gdouble rate;
+	gboolean motion_only;
+	gdouble flow;
 };
 
 struct _GimpAirbrushOptionsClass
 {
-    GimpPaintOptionsClass  parent_class;
+	GimpPaintOptionsClass parent_class;
 };
 
 

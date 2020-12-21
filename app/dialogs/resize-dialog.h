@@ -22,15 +22,15 @@
 typedef void (* GimpResizeCallback) (GtkWidget    *dialog,
                                      GimpViewable *viewable,
                                      GimpContext  *context,
-                                     gint          width,
-                                     gint          height,
-                                     GimpUnit      unit,
-                                     gint          offset_x,
-                                     gint          offset_y,
-                                     GimpFillType  fill_type,
-                                     GimpItemSet   layer_set,
-                                     gboolean      resize_text_layers,
-                                     gpointer      user_data);
+                                     gint width,
+                                     gint height,
+                                     GimpUnit unit,
+                                     gint offset_x,
+                                     gint offset_y,
+                                     GimpFillType fill_type,
+                                     GimpItemSet layer_set,
+                                     gboolean resize_text_layers,
+                                     gpointer user_data);
 
 
 GtkWidget * resize_dialog_new (GimpViewable       *viewable,
@@ -38,14 +38,14 @@ GtkWidget * resize_dialog_new (GimpViewable       *viewable,
                                const gchar        *title,
                                const gchar        *role,
                                GtkWidget          *parent,
-                               GimpHelpFunc        help_func,
+                               GimpHelpFunc help_func,
                                const gchar        *help_id,
-                               GimpUnit            unit,
-                               GimpFillType        fill_type,
-                               GimpItemSet         layer_set,
-                               gboolean            resize_text_layers,
-                               GimpResizeCallback  callback,
-                               gpointer            user_data);
+                               GimpUnit unit,
+                               GimpFillType fill_type,
+                               GimpItemSet layer_set,
+                               gboolean resize_text_layers,
+                               GimpResizeCallback callback,
+                               gpointer user_data);
 
 
 #endif  /*  __RESIZE_DIALOG_H__  */

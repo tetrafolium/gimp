@@ -45,8 +45,8 @@
 /*  local function prototypes  */
 
 static void   gimp_paint_register (Gimp        *gimp,
-                                   GType        paint_type,
-                                   GType        paint_options_type,
+                                   GType paint_type,
+                                   GType paint_options_type,
                                    const gchar *identifier,
                                    const gchar *blurb,
                                    const gchar *icon_name);
@@ -57,53 +57,53 @@ static void   gimp_paint_register (Gimp        *gimp,
 void
 gimp_paint_init (Gimp *gimp)
 {
-    GimpPaintRegisterFunc register_funcs[] =
-    {
-        gimp_dodge_burn_register,
-        gimp_smudge_register,
-        gimp_convolve_register,
-        gimp_perspective_clone_register,
-        gimp_heal_register,
-        gimp_clone_register,
-        gimp_mybrush_core_register,
-        gimp_ink_register,
-        gimp_airbrush_register,
-        gimp_eraser_register,
-        gimp_paintbrush_register,
-        gimp_pencil_register
-    };
+	GimpPaintRegisterFunc register_funcs[] =
+	{
+		gimp_dodge_burn_register,
+		gimp_smudge_register,
+		gimp_convolve_register,
+		gimp_perspective_clone_register,
+		gimp_heal_register,
+		gimp_clone_register,
+		gimp_mybrush_core_register,
+		gimp_ink_register,
+		gimp_airbrush_register,
+		gimp_eraser_register,
+		gimp_paintbrush_register,
+		gimp_pencil_register
+	};
 
-    gint i;
+	gint i;
 
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    gimp->paint_info_list = gimp_list_new (GIMP_TYPE_PAINT_INFO, FALSE);
-    gimp_object_set_static_name (GIMP_OBJECT (gimp->paint_info_list),
-                                 "paint infos");
+	gimp->paint_info_list = gimp_list_new (GIMP_TYPE_PAINT_INFO, FALSE);
+	gimp_object_set_static_name (GIMP_OBJECT (gimp->paint_info_list),
+	                             "paint infos");
 
-    gimp_container_freeze (gimp->paint_info_list);
+	gimp_container_freeze (gimp->paint_info_list);
 
-    for (i = 0; i < G_N_ELEMENTS (register_funcs); i++)
-    {
-        register_funcs[i] (gimp, gimp_paint_register);
-    }
+	for (i = 0; i < G_N_ELEMENTS (register_funcs); i++)
+	{
+		register_funcs[i] (gimp, gimp_paint_register);
+	}
 
-    gimp_container_thaw (gimp->paint_info_list);
+	gimp_container_thaw (gimp->paint_info_list);
 }
 
 void
 gimp_paint_exit (Gimp *gimp)
 {
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-    gimp_paint_info_set_standard (gimp, NULL);
+	gimp_paint_info_set_standard (gimp, NULL);
 
-    if (gimp->paint_info_list)
-    {
-        gimp_container_foreach (gimp->paint_info_list,
-                                (GFunc) g_object_run_dispose, NULL);
-        g_clear_object (&gimp->paint_info_list);
-    }
+	if (gimp->paint_info_list)
+	{
+		gimp_container_foreach (gimp->paint_info_list,
+		                        (GFunc) g_object_run_dispose, NULL);
+		g_clear_object (&gimp->paint_info_list);
+	}
 }
 
 
@@ -111,30 +111,30 @@ gimp_paint_exit (Gimp *gimp)
 
 static void
 gimp_paint_register (Gimp        *gimp,
-                     GType        paint_type,
-                     GType        paint_options_type,
+                     GType paint_type,
+                     GType paint_options_type,
                      const gchar *identifier,
                      const gchar *blurb,
                      const gchar *icon_name)
 {
-    GimpPaintInfo *paint_info;
+	GimpPaintInfo *paint_info;
 
-    g_return_if_fail (GIMP_IS_GIMP (gimp));
-    g_return_if_fail (g_type_is_a (paint_type, GIMP_TYPE_PAINT_CORE));
-    g_return_if_fail (g_type_is_a (paint_options_type, GIMP_TYPE_PAINT_OPTIONS));
-    g_return_if_fail (identifier != NULL);
-    g_return_if_fail (blurb != NULL);
+	g_return_if_fail (GIMP_IS_GIMP (gimp));
+	g_return_if_fail (g_type_is_a (paint_type, GIMP_TYPE_PAINT_CORE));
+	g_return_if_fail (g_type_is_a (paint_options_type, GIMP_TYPE_PAINT_OPTIONS));
+	g_return_if_fail (identifier != NULL);
+	g_return_if_fail (blurb != NULL);
 
-    paint_info = gimp_paint_info_new (gimp,
-                                      paint_type,
-                                      paint_options_type,
-                                      identifier,
-                                      blurb,
-                                      icon_name);
+	paint_info = gimp_paint_info_new (gimp,
+	                                  paint_type,
+	                                  paint_options_type,
+	                                  identifier,
+	                                  blurb,
+	                                  icon_name);
 
-    gimp_container_add (gimp->paint_info_list, GIMP_OBJECT (paint_info));
-    g_object_unref (paint_info);
+	gimp_container_add (gimp->paint_info_list, GIMP_OBJECT (paint_info));
+	g_object_unref (paint_info);
 
-    if (paint_type == GIMP_TYPE_PAINTBRUSH)
-        gimp_paint_info_set_standard (gimp, paint_info);
+	if (paint_type == GIMP_TYPE_PAINTBRUSH)
+		gimp_paint_info_set_standard (gimp, paint_info);
 }

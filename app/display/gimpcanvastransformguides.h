@@ -33,41 +33,41 @@
 #define GIMP_CANVAS_TRANSFORM_GUIDES_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_TRANSFORM_GUIDES, GimpCanvasTransformGuidesClass))
 
 
-typedef struct _GimpCanvasTransformGuides      GimpCanvasTransformGuides;
+typedef struct _GimpCanvasTransformGuides GimpCanvasTransformGuides;
 typedef struct _GimpCanvasTransformGuidesClass GimpCanvasTransformGuidesClass;
 
 struct _GimpCanvasTransformGuides
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasTransformGuidesClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_transform_guides_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_transform_guides_new      (GimpDisplayShell  *shell,
-        const GimpMatrix3 *transform,
-        gdouble            x1,
-        gdouble            y1,
-        gdouble            x2,
-        gdouble            y2,
-        GimpGuidesType     type,
-        gint               n_guides,
-        gboolean           clip);
+                                                        const GimpMatrix3 *transform,
+                                                        gdouble x1,
+                                                        gdouble y1,
+                                                        gdouble x2,
+                                                        gdouble y2,
+                                                        GimpGuidesType type,
+                                                        gint n_guides,
+                                                        gboolean clip);
 
 void             gimp_canvas_transform_guides_set      (GimpCanvasItem    *guides,
-        const GimpMatrix3 *transform,
-        gdouble            x1,
-        gdouble            y1,
-        gdouble            x2,
-        gdouble            y2,
-        GimpGuidesType     type,
-        gint               n_guides,
-        gboolean           clip);
+                                                        const GimpMatrix3 *transform,
+                                                        gdouble x1,
+                                                        gdouble y1,
+                                                        gdouble x2,
+                                                        gdouble y2,
+                                                        GimpGuidesType type,
+                                                        gint n_guides,
+                                                        gboolean clip);
 
 
 #endif /* __GIMP_CANVAS_TRANSFORM_GUIDES_H__ */

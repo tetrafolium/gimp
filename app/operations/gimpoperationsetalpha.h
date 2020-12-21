@@ -33,19 +33,19 @@
 #define GIMP_OPERATION_SET_ALPHA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SET_ALPHA, GimpOperationSetAlphaClass))
 
 
-typedef struct _GimpOperationSetAlpha      GimpOperationSetAlpha;
+typedef struct _GimpOperationSetAlpha GimpOperationSetAlpha;
 typedef struct _GimpOperationSetAlphaClass GimpOperationSetAlphaClass;
 
 struct _GimpOperationSetAlpha
 {
-    GeglOperationPointComposer  parent_instance;
+	GeglOperationPointComposer parent_instance;
 
-    gdouble                     value;
+	gdouble value;
 };
 
 struct _GimpOperationSetAlphaClass
 {
-    GeglOperationPointComposerClass  parent_class;
+	GeglOperationPointComposerClass parent_class;
 };
 
 

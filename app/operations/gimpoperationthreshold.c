@@ -37,28 +37,28 @@
 
 enum
 {
-    PROP_0,
-    PROP_CHANNEL,
-    PROP_LOW,
-    PROP_HIGH
+	PROP_0,
+	PROP_CHANNEL,
+	PROP_LOW,
+	PROP_HIGH
 };
 
 
 static void     gimp_operation_threshold_get_property (GObject      *object,
-        guint         property_id,
-        GValue       *value,
-        GParamSpec   *pspec);
+                                                       guint property_id,
+                                                       GValue       *value,
+                                                       GParamSpec   *pspec);
 static void     gimp_operation_threshold_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec);
+                                                       guint property_id,
+                                                       const GValue *value,
+                                                       GParamSpec   *pspec);
 
 static gboolean gimp_operation_threshold_process (GeglOperation       *operation,
-        void                *in_buf,
-        void                *out_buf,
-        glong                samples,
-        const GeglRectangle *roi,
-        gint                 level);
+                                                  void                *in_buf,
+                                                  void                *out_buf,
+                                                  glong samples,
+                                                  const GeglRectangle *roi,
+                                                  gint level);
 
 
 G_DEFINE_TYPE (GimpOperationThreshold, gimp_operation_threshold,
@@ -70,42 +70,42 @@ G_DEFINE_TYPE (GimpOperationThreshold, gimp_operation_threshold,
 static void
 gimp_operation_threshold_class_init (GimpOperationThresholdClass *klass)
 {
-    GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
-    GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
-    GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
+	GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
+	GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
+	GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
 
-    object_class->set_property = gimp_operation_threshold_set_property;
-    object_class->get_property = gimp_operation_threshold_get_property;
+	object_class->set_property = gimp_operation_threshold_set_property;
+	object_class->get_property = gimp_operation_threshold_get_property;
 
-    point_class->process       = gimp_operation_threshold_process;
+	point_class->process       = gimp_operation_threshold_process;
 
-    gegl_operation_class_set_keys (operation_class,
-                                   "name",        "gimp:threshold",
-                                   "categories",  "color",
-                                   "description", _("Reduce image to two colors using a threshold"),
-                                   NULL);
+	gegl_operation_class_set_keys (operation_class,
+	                               "name",        "gimp:threshold",
+	                               "categories",  "color",
+	                               "description", _("Reduce image to two colors using a threshold"),
+	                               NULL);
 
-    GIMP_CONFIG_PROP_ENUM (object_class, PROP_CHANNEL,
-                           "channel",
-                           _("Channel"),
-                           NULL,
-                           GIMP_TYPE_HISTOGRAM_CHANNEL,
-                           GIMP_HISTOGRAM_VALUE,
-                           GIMP_PARAM_STATIC_STRINGS);
+	GIMP_CONFIG_PROP_ENUM (object_class, PROP_CHANNEL,
+	                       "channel",
+	                       _("Channel"),
+	                       NULL,
+	                       GIMP_TYPE_HISTOGRAM_CHANNEL,
+	                       GIMP_HISTOGRAM_VALUE,
+	                       GIMP_PARAM_STATIC_STRINGS);
 
-    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_LOW,
-                             "low",
-                             _("Low threshold"),
-                             NULL,
-                             0.0, 1.0, 0.5,
-                             GIMP_PARAM_STATIC_STRINGS);
+	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_LOW,
+	                         "low",
+	                         _("Low threshold"),
+	                         NULL,
+	                         0.0, 1.0, 0.5,
+	                         GIMP_PARAM_STATIC_STRINGS);
 
-    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_HIGH,
-                             "high",
-                             _("High threshold"),
-                             NULL,
-                             0.0, 1.0, 1.0,
-                             GIMP_PARAM_STATIC_STRINGS);
+	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_HIGH,
+	                         "high",
+	                         _("High threshold"),
+	                         NULL,
+	                         0.0, 1.0, 1.0,
+	                         GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -115,119 +115,119 @@ gimp_operation_threshold_init (GimpOperationThreshold *self)
 
 static void
 gimp_operation_threshold_get_property (GObject    *object,
-                                       guint       property_id,
+                                       guint property_id,
                                        GValue     *value,
                                        GParamSpec *pspec)
 {
-    GimpOperationThreshold *self = GIMP_OPERATION_THRESHOLD (object);
+	GimpOperationThreshold *self = GIMP_OPERATION_THRESHOLD (object);
 
-    switch (property_id)
-    {
-    case PROP_CHANNEL:
-        g_value_set_enum (value, self->channel);
-        break;
+	switch (property_id)
+	{
+	case PROP_CHANNEL:
+		g_value_set_enum (value, self->channel);
+		break;
 
-    case PROP_LOW:
-        g_value_set_double (value, self->low);
-        break;
+	case PROP_LOW:
+		g_value_set_double (value, self->low);
+		break;
 
-    case PROP_HIGH:
-        g_value_set_double (value, self->high);
-        break;
+	case PROP_HIGH:
+		g_value_set_double (value, self->high);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_operation_threshold_set_property (GObject      *object,
-                                       guint         property_id,
+                                       guint property_id,
                                        const GValue *value,
                                        GParamSpec   *pspec)
 {
-    GimpOperationThreshold *self = GIMP_OPERATION_THRESHOLD (object);
+	GimpOperationThreshold *self = GIMP_OPERATION_THRESHOLD (object);
 
-    switch (property_id)
-    {
-    case PROP_CHANNEL:
-        self->channel = g_value_get_enum (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_CHANNEL:
+		self->channel = g_value_get_enum (value);
+		break;
 
-    case PROP_LOW:
-        self->low = g_value_get_double (value);
-        break;
+	case PROP_LOW:
+		self->low = g_value_get_double (value);
+		break;
 
-    case PROP_HIGH:
-        self->high = g_value_get_double (value);
-        break;
+	case PROP_HIGH:
+		self->high = g_value_get_double (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static gboolean
 gimp_operation_threshold_process (GeglOperation       *operation,
                                   void                *in_buf,
                                   void                *out_buf,
-                                  glong                samples,
+                                  glong samples,
                                   const GeglRectangle *roi,
-                                  gint                 level)
+                                  gint level)
 {
-    GimpOperationThreshold *threshold = GIMP_OPERATION_THRESHOLD (operation);
-    gfloat                 *src       = in_buf;
-    gfloat                 *dest      = out_buf;
+	GimpOperationThreshold *threshold = GIMP_OPERATION_THRESHOLD (operation);
+	gfloat                 *src       = in_buf;
+	gfloat                 *dest      = out_buf;
 
-    while (samples--)
-    {
-        gfloat value = 0.0;
+	while (samples--)
+	{
+		gfloat value = 0.0;
 
-        switch (threshold->channel)
-        {
-        case GIMP_HISTOGRAM_VALUE:
-            value = MAX (src[RED], src[GREEN]);
-            value = MAX (value, src[BLUE]);
-            break;
+		switch (threshold->channel)
+		{
+		case GIMP_HISTOGRAM_VALUE:
+			value = MAX (src[RED], src[GREEN]);
+			value = MAX (value, src[BLUE]);
+			break;
 
-        case GIMP_HISTOGRAM_RED:
-            value = src[RED];
-            break;
+		case GIMP_HISTOGRAM_RED:
+			value = src[RED];
+			break;
 
-        case GIMP_HISTOGRAM_GREEN:
-            value = src[GREEN];
-            break;
+		case GIMP_HISTOGRAM_GREEN:
+			value = src[GREEN];
+			break;
 
-        case GIMP_HISTOGRAM_BLUE:
-            value = src[BLUE];
-            break;
+		case GIMP_HISTOGRAM_BLUE:
+			value = src[BLUE];
+			break;
 
-        case GIMP_HISTOGRAM_ALPHA:
-            value = src[ALPHA];
-            break;
+		case GIMP_HISTOGRAM_ALPHA:
+			value = src[ALPHA];
+			break;
 
-        case GIMP_HISTOGRAM_RGB:
-            value = MIN (src[RED], src[GREEN]);
-            value = MIN (value, src[BLUE]);
-            break;
+		case GIMP_HISTOGRAM_RGB:
+			value = MIN (src[RED], src[GREEN]);
+			value = MIN (value, src[BLUE]);
+			break;
 
-        case GIMP_HISTOGRAM_LUMINANCE:
-            value = GIMP_RGB_LUMINANCE (src[RED], src[GREEN], src[BLUE]);
-            break;
-        }
+		case GIMP_HISTOGRAM_LUMINANCE:
+			value = GIMP_RGB_LUMINANCE (src[RED], src[GREEN], src[BLUE]);
+			break;
+		}
 
-        value = (value >= threshold->low && value <= threshold->high) ? 1.0 : 0.0;
+		value = (value >= threshold->low && value <= threshold->high) ? 1.0 : 0.0;
 
-        dest[RED]   = value;
-        dest[GREEN] = value;
-        dest[BLUE]  = value;
-        dest[ALPHA] = src[ALPHA];
+		dest[RED]   = value;
+		dest[GREEN] = value;
+		dest[BLUE]  = value;
+		dest[ALPHA] = src[ALPHA];
 
-        src  += 4;
-        dest += 4;
-    }
+		src  += 4;
+		dest += 4;
+	}
 
-    return TRUE;
+	return TRUE;
 }

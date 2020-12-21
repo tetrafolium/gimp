@@ -46,46 +46,46 @@ static gboolean
 file_utils_filename_is_uri (const gchar  *filename,
                             GError      **error)
 {
-    g_return_val_if_fail (filename != NULL, FALSE);
-    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (filename != NULL, FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-    if (strstr (filename, "://"))
-    {
-        gchar *scheme;
-        gchar *canon;
+	if (strstr (filename, "://"))
+	{
+		gchar *scheme;
+		gchar *canon;
 
-        scheme = g_strndup (filename, (strstr (filename, "://") - filename));
-        canon  = g_strdup (scheme);
+		scheme = g_strndup (filename, (strstr (filename, "://") - filename));
+		canon  = g_strdup (scheme);
 
-        g_strcanon (canon, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "+-.", '-');
+		g_strcanon (canon, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "+-.", '-');
 
-        if (strcmp (scheme, canon) || ! g_ascii_isgraph (canon[0]))
-        {
-            g_set_error (error, G_FILE_ERROR, 0,
-                         _("'%s:' is not a valid URI scheme"), scheme);
+		if (strcmp (scheme, canon) || !g_ascii_isgraph (canon[0]))
+		{
+			g_set_error (error, G_FILE_ERROR, 0,
+			             _("'%s:' is not a valid URI scheme"), scheme);
 
-            g_free (scheme);
-            g_free (canon);
+			g_free (scheme);
+			g_free (canon);
 
-            return FALSE;
-        }
+			return FALSE;
+		}
 
-        g_free (scheme);
-        g_free (canon);
+		g_free (scheme);
+		g_free (canon);
 
-        if (! g_utf8_validate (filename, -1, NULL))
-        {
-            g_set_error_literal (error,
-                                 G_CONVERT_ERROR,
-                                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                                 _("Invalid character sequence in URI"));
-            return FALSE;
-        }
+		if (!g_utf8_validate (filename, -1, NULL))
+		{
+			g_set_error_literal (error,
+			                     G_CONVERT_ERROR,
+			                     G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+			                     _("Invalid character sequence in URI"));
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 GFile *
@@ -93,152 +93,152 @@ file_utils_filename_to_file (Gimp         *gimp,
                              const gchar  *filename,
                              GError      **error)
 {
-    GFile  *file;
-    gchar  *absolute;
-    GError *temp_error = NULL;
+	GFile  *file;
+	gchar  *absolute;
+	GError *temp_error = NULL;
 
-    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-    g_return_val_if_fail (filename != NULL, NULL);
-    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+	g_return_val_if_fail (filename != NULL, NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-    file = g_file_new_for_uri (filename);
+	file = g_file_new_for_uri (filename);
 
-    if (! file)
-    {
-        /* Despite the docs says it never fails, it actually can on Windows.
-         * See issue #3093 (and glib#1819).
-         */
-        g_set_error_literal (error,
-                             G_CONVERT_ERROR,
-                             G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                             _("Invalid character sequence in URI"));
-        return NULL;
-    }
+	if (!file)
+	{
+		/* Despite the docs says it never fails, it actually can on Windows.
+		 * See issue #3093 (and glib#1819).
+		 */
+		g_set_error_literal (error,
+		                     G_CONVERT_ERROR,
+		                     G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+		                     _("Invalid character sequence in URI"));
+		return NULL;
+	}
 
-    /*  check for prefixes like http or ftp  */
-    if (gimp_plug_in_manager_file_procedure_find_by_prefix (gimp->plug_in_manager,
-            GIMP_FILE_PROCEDURE_GROUP_OPEN,
-            file))
-    {
-        if (g_utf8_validate (filename, -1, NULL))
-        {
-            return file;
-        }
-        else
-        {
-            g_set_error_literal (error,
-                                 G_CONVERT_ERROR,
-                                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                                 _("Invalid character sequence in URI"));
-            return NULL;
-        }
-    }
-    else if (file_utils_filename_is_uri (filename, &temp_error))
-    {
-        return file;
-    }
-    else if (temp_error)
-    {
-        g_propagate_error (error, temp_error);
-        g_object_unref (file);
+	/*  check for prefixes like http or ftp  */
+	if (gimp_plug_in_manager_file_procedure_find_by_prefix (gimp->plug_in_manager,
+	                                                        GIMP_FILE_PROCEDURE_GROUP_OPEN,
+	                                                        file))
+	{
+		if (g_utf8_validate (filename, -1, NULL))
+		{
+			return file;
+		}
+		else
+		{
+			g_set_error_literal (error,
+			                     G_CONVERT_ERROR,
+			                     G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+			                     _("Invalid character sequence in URI"));
+			return NULL;
+		}
+	}
+	else if (file_utils_filename_is_uri (filename, &temp_error))
+	{
+		return file;
+	}
+	else if (temp_error)
+	{
+		g_propagate_error (error, temp_error);
+		g_object_unref (file);
 
-        return NULL;
-    }
+		return NULL;
+	}
 
-    g_object_unref (file);
+	g_object_unref (file);
 
-    if (! g_path_is_absolute (filename))
-    {
-        gchar *current;
+	if (!g_path_is_absolute (filename))
+	{
+		gchar *current;
 
-        current = g_get_current_dir ();
-        absolute = g_build_filename (current, filename, NULL);
-        g_free (current);
-    }
-    else
-    {
-        absolute = g_strdup (filename);
-    }
+		current = g_get_current_dir ();
+		absolute = g_build_filename (current, filename, NULL);
+		g_free (current);
+	}
+	else
+	{
+		absolute = g_strdup (filename);
+	}
 
-    file = g_file_new_for_path (absolute);
+	file = g_file_new_for_path (absolute);
 
-    g_free (absolute);
+	g_free (absolute);
 
-    return file;
+	return file;
 }
 
 GdkPixbuf *
 file_utils_load_thumbnail (GFile *file)
 {
-    GimpThumbnail *thumbnail = NULL;
-    GdkPixbuf     *pixbuf    = NULL;
-    gchar         *uri;
+	GimpThumbnail *thumbnail = NULL;
+	GdkPixbuf     *pixbuf    = NULL;
+	gchar         *uri;
 
-    g_return_val_if_fail (G_IS_FILE (file), NULL);
+	g_return_val_if_fail (G_IS_FILE (file), NULL);
 
-    uri = g_file_get_uri (file);
+	uri = g_file_get_uri (file);
 
-    thumbnail = gimp_thumbnail_new ();
-    gimp_thumbnail_set_uri (thumbnail, uri);
+	thumbnail = gimp_thumbnail_new ();
+	gimp_thumbnail_set_uri (thumbnail, uri);
 
-    pixbuf = gimp_thumbnail_load_thumb (thumbnail,
-                                        (GimpThumbSize) GIMP_THUMBNAIL_SIZE_NORMAL,
-                                        NULL);
+	pixbuf = gimp_thumbnail_load_thumb (thumbnail,
+	                                    (GimpThumbSize) GIMP_THUMBNAIL_SIZE_NORMAL,
+	                                    NULL);
 
-    if (pixbuf)
-    {
-        gint width  = gdk_pixbuf_get_width (pixbuf);
-        gint height = gdk_pixbuf_get_height (pixbuf);
+	if (pixbuf)
+	{
+		gint width  = gdk_pixbuf_get_width (pixbuf);
+		gint height = gdk_pixbuf_get_height (pixbuf);
 
-        if (gdk_pixbuf_get_n_channels (pixbuf) != 3)
-        {
-            GdkPixbuf *tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
-                                             width, height);
+		if (gdk_pixbuf_get_n_channels (pixbuf) != 3)
+		{
+			GdkPixbuf *tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
+			                                 width, height);
 
-            gdk_pixbuf_composite_color (pixbuf, tmp,
-                                        0, 0, width, height, 0, 0, 1.0, 1.0,
-                                        GDK_INTERP_NEAREST, 255,
-                                        0, 0, GIMP_CHECK_SIZE_SM,
-                                        0x66666666, 0x99999999);
+			gdk_pixbuf_composite_color (pixbuf, tmp,
+			                            0, 0, width, height, 0, 0, 1.0, 1.0,
+			                            GDK_INTERP_NEAREST, 255,
+			                            0, 0, GIMP_CHECK_SIZE_SM,
+			                            0x66666666, 0x99999999);
 
-            g_object_unref (pixbuf);
-            pixbuf = tmp;
-        }
-    }
+			g_object_unref (pixbuf);
+			pixbuf = tmp;
+		}
+	}
 
-    return pixbuf;
+	return pixbuf;
 }
 
 gboolean
 file_utils_save_thumbnail (GimpImage *image,
                            GFile     *file)
 {
-    GFile    *image_file;
-    gboolean  success = FALSE;
+	GFile    *image_file;
+	gboolean success = FALSE;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-    g_return_val_if_fail (G_IS_FILE (file), FALSE);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+	g_return_val_if_fail (G_IS_FILE (file), FALSE);
 
-    image_file = gimp_image_get_file (image);
+	image_file = gimp_image_get_file (image);
 
-    if (image_file)
-    {
-        gchar *image_uri = g_file_get_uri (image_file);
-        gchar *uri       = g_file_get_uri (file);
+	if (image_file)
+	{
+		gchar *image_uri = g_file_get_uri (image_file);
+		gchar *uri       = g_file_get_uri (file);
 
-        if (uri && image_uri && ! strcmp (uri, image_uri))
-        {
-            GimpImagefile *imagefile;
+		if (uri && image_uri && !strcmp (uri, image_uri))
+		{
+			GimpImagefile *imagefile;
 
-            imagefile = gimp_imagefile_new (image->gimp, file);
-            success = gimp_imagefile_save_thumbnail (imagefile, NULL, image,
-                      NULL);
-            g_object_unref (imagefile);
-        }
+			imagefile = gimp_imagefile_new (image->gimp, file);
+			success = gimp_imagefile_save_thumbnail (imagefile, NULL, image,
+			                                         NULL);
+			g_object_unref (imagefile);
+		}
 
-        g_free (image_uri);
-        g_free (uri);
-    }
+		g_free (image_uri);
+		g_free (uri);
+	}
 
-    return success;
+	return success;
 }

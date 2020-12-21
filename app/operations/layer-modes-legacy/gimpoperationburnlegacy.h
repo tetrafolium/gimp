@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_BURN_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BURN_LEGACY, GimpOperationBurnLegacyClass))
 
 
-typedef struct _GimpOperationBurnLegacy      GimpOperationBurnLegacy;
+typedef struct _GimpOperationBurnLegacy GimpOperationBurnLegacy;
 typedef struct _GimpOperationBurnLegacyClass GimpOperationBurnLegacyClass;
 
 struct _GimpOperationBurnLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationBurnLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

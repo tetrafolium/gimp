@@ -33,37 +33,37 @@
 #define GIMP_CANVAS_ARC_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_ARC, GimpCanvasArcClass))
 
 
-typedef struct _GimpCanvasArc      GimpCanvasArc;
+typedef struct _GimpCanvasArc GimpCanvasArc;
 typedef struct _GimpCanvasArcClass GimpCanvasArcClass;
 
 struct _GimpCanvasArc
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasArcClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_arc_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_arc_new      (GimpDisplayShell *shell,
-        gdouble          center_x,
-        gdouble          center_y,
-        gdouble          radius_x,
-        gdouble          radius_y,
-        gdouble          start_angle,
-        gdouble          slice_angle,
-        gboolean         filled);
+                                           gdouble center_x,
+                                           gdouble center_y,
+                                           gdouble radius_x,
+                                           gdouble radius_y,
+                                           gdouble start_angle,
+                                           gdouble slice_angle,
+                                           gboolean filled);
 
 void             gimp_canvas_arc_set      (GimpCanvasItem  *arc,
-        gdouble          center_x,
-        gdouble          center_y,
-        gdouble          radius_x,
-        gdouble          radius_y,
-        gdouble          start_angle,
-        gdouble          slice_angle);
+                                           gdouble center_x,
+                                           gdouble center_y,
+                                           gdouble radius_x,
+                                           gdouble radius_y,
+                                           gdouble start_angle,
+                                           gdouble slice_angle);
 
 #endif /* __GIMP_CANVAS_ARC_H__ */

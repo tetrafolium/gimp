@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_GRAIN_MERGE_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_GRAIN_MERGE_LEGACY, GimpOperationGrainMergeLegacyClass))
 
 
-typedef struct _GimpOperationGrainMergeLegacy      GimpOperationGrainMergeLegacy;
+typedef struct _GimpOperationGrainMergeLegacy GimpOperationGrainMergeLegacy;
 typedef struct _GimpOperationGrainMergeLegacyClass GimpOperationGrainMergeLegacyClass;
 
 struct _GimpOperationGrainMergeLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationGrainMergeLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

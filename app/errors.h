@@ -25,8 +25,8 @@
 
 void    errors_init      (Gimp               *gimp,
                           const gchar        *full_prog_name,
-                          gboolean            use_debug_handler,
-                          GimpStackTraceMode  stack_trace_mode,
+                          gboolean use_debug_handler,
+                          GimpStackTraceMode stack_trace_mode,
                           const gchar        *backtrace_file);
 void    errors_exit      (void);
 

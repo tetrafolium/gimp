@@ -20,24 +20,24 @@
 
 
 void   gimp_display_shell_draw_selection_out (GimpDisplayShell   *shell,
-        cairo_t            *cr,
-        GimpSegment        *segs,
-        gint                n_segs);
+                                              cairo_t            *cr,
+                                              GimpSegment        *segs,
+                                              gint n_segs);
 void   gimp_display_shell_draw_selection_in  (GimpDisplayShell   *shell,
-        cairo_t            *cr,
-        cairo_pattern_t    *mask,
-        gint                index);
+                                              cairo_t            *cr,
+                                              cairo_pattern_t    *mask,
+                                              gint index);
 
 void   gimp_display_shell_draw_background    (GimpDisplayShell   *shell,
-        cairo_t            *cr);
+                                              cairo_t            *cr);
 void   gimp_display_shell_draw_checkerboard  (GimpDisplayShell   *shell,
-        cairo_t            *cr);
+                                              cairo_t            *cr);
 void   gimp_display_shell_draw_image         (GimpDisplayShell   *shell,
-        cairo_t            *cr,
-        gint                x,
-        gint                y,
-        gint                w,
-        gint                h);
+                                              cairo_t            *cr,
+                                              gint x,
+                                              gint y,
+                                              gint w,
+                                              gint h);
 
 
 #endif /* __GIMP_DISPLAY_SHELL_DRAW_H__ */

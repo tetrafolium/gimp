@@ -33,20 +33,20 @@
 #define GIMP_OPERATION_GROW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_GROW, GimpOperationGrowClass))
 
 
-typedef struct _GimpOperationGrow      GimpOperationGrow;
+typedef struct _GimpOperationGrow GimpOperationGrow;
 typedef struct _GimpOperationGrowClass GimpOperationGrowClass;
 
 struct _GimpOperationGrow
 {
-    GeglOperationFilter  parent_instance;
+	GeglOperationFilter parent_instance;
 
-    gint                 radius_x;
-    gint                 radius_y;
+	gint radius_x;
+	gint radius_y;
 };
 
 struct _GimpOperationGrowClass
 {
-    GeglOperationFilterClass  parent_class;
+	GeglOperationFilterClass parent_class;
 };
 
 

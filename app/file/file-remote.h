@@ -26,23 +26,23 @@
 
 
 gboolean   file_remote_mount_file           (Gimp          *gimp,
-        GFile         *file,
-        GimpProgress  *progress,
-        GError       **error);
+                                             GFile         *file,
+                                             GimpProgress  *progress,
+                                             GError       **error);
 
 GFile    * file_remote_download_image       (Gimp          *gimp,
-        GFile         *file,
-        GimpProgress  *progress,
-        GError       **error);
+                                             GFile         *file,
+                                             GimpProgress  *progress,
+                                             GError       **error);
 
 GFile    * file_remote_upload_image_prepare (Gimp          *gimp,
-        GFile         *file,
-        GimpProgress  *progress,
-        GError       **error);
+                                             GFile         *file,
+                                             GimpProgress  *progress,
+                                             GError       **error);
 gboolean   file_remote_upload_image_finish  (Gimp          *gimp,
-        GFile         *file,
-        GFile         *local_file,
-        GimpProgress  *progress,
-        GError       **error);
+                                             GFile         *file,
+                                             GFile         *local_file,
+                                             GimpProgress  *progress,
+                                             GError       **error);
 
 #endif /* __FILE_REMOTE_H__ */

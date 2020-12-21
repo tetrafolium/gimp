@@ -34,19 +34,19 @@ typedef struct _GimpConvolveClass GimpConvolveClass;
 
 struct _GimpConvolve
 {
-    GimpBrushCore  parent_instance;
-    gfloat         matrix[9];
-    gfloat         matrix_divisor;
+	GimpBrushCore parent_instance;
+	gfloat matrix[9];
+	gfloat matrix_divisor;
 };
 
 struct _GimpConvolveClass
 {
-    GimpBrushCoreClass parent_class;
+	GimpBrushCoreClass parent_class;
 };
 
 
 void    gimp_convolve_register (Gimp                      *gimp,
-                                GimpPaintRegisterCallback  callback);
+                                GimpPaintRegisterCallback callback);
 
 GType   gimp_convolve_get_type (void) G_GNUC_CONST;
 

@@ -33,30 +33,30 @@
 #define GIMP_CANVAS_GUIDE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_GUIDE, GimpCanvasGuideClass))
 
 
-typedef struct _GimpCanvasGuide      GimpCanvasGuide;
+typedef struct _GimpCanvasGuide GimpCanvasGuide;
 typedef struct _GimpCanvasGuideClass GimpCanvasGuideClass;
 
 struct _GimpCanvasGuide
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasGuideClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_guide_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_guide_new      (GimpDisplayShell    *shell,
-        GimpOrientationType  orientation,
-        gint                 position,
-        GimpGuideStyle       style);
+                                             GimpOrientationType orientation,
+                                             gint position,
+                                             GimpGuideStyle style);
 
 void             gimp_canvas_guide_set      (GimpCanvasItem      *guide,
-        GimpOrientationType  orientation,
-        gint                 position);
+                                             GimpOrientationType orientation,
+                                             gint position);
 
 
 #endif /* __GIMP_CANVAS_GUIDE_H__ */

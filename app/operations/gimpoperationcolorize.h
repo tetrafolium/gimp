@@ -33,21 +33,21 @@
 #define GIMP_OPERATION_COLORIZE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_COLORIZE, GimpOperationColorizeClass))
 
 
-typedef struct _GimpOperationColorize      GimpOperationColorize;
+typedef struct _GimpOperationColorize GimpOperationColorize;
 typedef struct _GimpOperationColorizeClass GimpOperationColorizeClass;
 
 struct _GimpOperationColorize
 {
-    GimpOperationPointFilter  parent_instance;
+	GimpOperationPointFilter parent_instance;
 
-    gdouble                   hue;
-    gdouble                   saturation;
-    gdouble                   lightness;
+	gdouble hue;
+	gdouble saturation;
+	gdouble lightness;
 };
 
 struct _GimpOperationColorizeClass
 {
-    GimpOperationPointFilterClass  parent_class;
+	GimpOperationPointFilterClass parent_class;
 };
 
 

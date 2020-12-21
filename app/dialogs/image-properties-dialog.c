@@ -48,55 +48,55 @@ image_properties_dialog_new (GimpImage   *image,
                              GimpContext *context,
                              GtkWidget   *parent)
 {
-    GtkWidget *dialog;
-    GtkWidget *notebook;
-    GtkWidget *view;
+	GtkWidget *dialog;
+	GtkWidget *notebook;
+	GtkWidget *view;
 
-    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-    g_return_val_if_fail (parent == NULL || GTK_IS_WIDGET (parent), NULL);
+	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (parent == NULL || GTK_IS_WIDGET (parent), NULL);
 
-    dialog = gimp_viewable_dialog_new (g_list_prepend (NULL, image), context,
-                                       _("Image Properties"),
-                                       "gimp-image-properties",
-                                       "dialog-information",
-                                       _("Image Properties"),
-                                       parent,
-                                       gimp_standard_help_func,
-                                       GIMP_HELP_IMAGE_PROPERTIES,
+	dialog = gimp_viewable_dialog_new (g_list_prepend (NULL, image), context,
+	                                   _("Image Properties"),
+	                                   "gimp-image-properties",
+	                                   "dialog-information",
+	                                   _("Image Properties"),
+	                                   parent,
+	                                   gimp_standard_help_func,
+	                                   GIMP_HELP_IMAGE_PROPERTIES,
 
-                                       _("_Close"), GTK_RESPONSE_CLOSE,
+	                                   _("_Close"), GTK_RESPONSE_CLOSE,
 
-                                       NULL);
+	                                   NULL);
 
-    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
 
-    g_signal_connect (dialog, "response",
-                      G_CALLBACK (gtk_widget_destroy),
-                      NULL);
+	g_signal_connect (dialog, "response",
+	                  G_CALLBACK (gtk_widget_destroy),
+	                  NULL);
 
-    notebook = gtk_notebook_new ();
-    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                        notebook, FALSE, FALSE, 0);
-    gtk_widget_show (notebook);
+	notebook = gtk_notebook_new ();
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+	                    notebook, FALSE, FALSE, 0);
+	gtk_widget_show (notebook);
 
-    view = gimp_image_prop_view_new (image);
-    gtk_container_set_border_width (GTK_CONTAINER (view), 12);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
-                              view, gtk_label_new_with_mnemonic (_("_Properties")));
-    gtk_widget_show (view);
+	view = gimp_image_prop_view_new (image);
+	gtk_container_set_border_width (GTK_CONTAINER (view), 12);
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+	                          view, gtk_label_new_with_mnemonic (_("_Properties")));
+	gtk_widget_show (view);
 
-    view = gimp_image_profile_view_new (image);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
-                              view, gtk_label_new_with_mnemonic (_("C_olor Profile")));
-    gtk_widget_show (view);
+	view = gimp_image_profile_view_new (image);
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+	                          view, gtk_label_new_with_mnemonic (_("C_olor Profile")));
+	gtk_widget_show (view);
 
-    view = gimp_image_comment_editor_new (image);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
-                              view, gtk_label_new_with_mnemonic (_("Co_mment")));
-    gtk_widget_show (view);
+	view = gimp_image_comment_editor_new (image);
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+	                          view, gtk_label_new_with_mnemonic (_("Co_mment")));
+	gtk_widget_show (view);
 
-    gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 0);
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 0);
 
-    return dialog;
+	return dialog;
 }

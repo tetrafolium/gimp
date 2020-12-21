@@ -34,27 +34,27 @@ typedef struct _GimpAirbrushClass GimpAirbrushClass;
 
 struct _GimpAirbrush
 {
-    GimpPaintbrush    parent_instance;
+	GimpPaintbrush parent_instance;
 
-    guint             timeout_id;
+	guint timeout_id;
 
-    GimpSymmetry     *sym;
-    GimpDrawable     *drawable;
-    GimpPaintOptions *paint_options;
-    GimpCoords        coords;
+	GimpSymmetry     *sym;
+	GimpDrawable     *drawable;
+	GimpPaintOptions *paint_options;
+	GimpCoords coords;
 };
 
 struct _GimpAirbrushClass
 {
-    GimpPaintbrushClass  parent_class;
+	GimpPaintbrushClass parent_class;
 
-    /*  signals  */
-    void (* stamp) (GimpAirbrush *airbrush);
+	/*  signals  */
+	void (* stamp) (GimpAirbrush *airbrush);
 };
 
 
 void    gimp_airbrush_register (Gimp                      *gimp,
-                                GimpPaintRegisterCallback  callback);
+                                GimpPaintRegisterCallback callback);
 
 GType   gimp_airbrush_get_type (void) G_GNUC_CONST;
 

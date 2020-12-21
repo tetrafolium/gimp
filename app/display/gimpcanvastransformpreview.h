@@ -33,29 +33,29 @@
 #define GIMP_CANVAS_TRANSFORM_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW, GimpCanvasTransformPreviewClass))
 
 
-typedef struct _GimpCanvasTransformPreview      GimpCanvasTransformPreview;
+typedef struct _GimpCanvasTransformPreview GimpCanvasTransformPreview;
 typedef struct _GimpCanvasTransformPreviewClass GimpCanvasTransformPreviewClass;
 
 struct _GimpCanvasTransformPreview
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasTransformPreviewClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_transform_preview_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_transform_preview_new      (GimpDisplayShell  *shell,
-        GimpPickable      *pickable,
-        const GimpMatrix3 *transform,
-        gdouble            x1,
-        gdouble            y1,
-        gdouble            x2,
-        gdouble            y2);
+                                                         GimpPickable      *pickable,
+                                                         const GimpMatrix3 *transform,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2);
 
 
 #endif /* __GIMP_CANVAS_TRANSFORM_PREVIEW_H__ */

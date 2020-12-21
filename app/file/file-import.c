@@ -46,66 +46,66 @@ void
 file_import_image (GimpImage    *image,
                    GimpContext  *context,
                    GFile        *file,
-                   gboolean      interactive,
+                   gboolean interactive,
                    GimpProgress *progress)
 {
-    GimpCoreConfig *config;
+	GimpCoreConfig *config;
 
-    g_return_if_fail (GIMP_IS_IMAGE (image));
-    g_return_if_fail (GIMP_IS_CONTEXT (context));
-    g_return_if_fail (G_IS_FILE (file));
-    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+	g_return_if_fail (GIMP_IS_IMAGE (image));
+	g_return_if_fail (GIMP_IS_CONTEXT (context));
+	g_return_if_fail (G_IS_FILE (file));
+	g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
-    config = image->gimp->config;
+	config = image->gimp->config;
 
-    if (interactive && gimp_image_get_base_type (image) != GIMP_INDEXED)
-    {
-        if (config->import_promote_float)
-        {
-            GimpPrecision old_precision = gimp_image_get_precision (image);
+	if (interactive && gimp_image_get_base_type (image) != GIMP_INDEXED)
+	{
+		if (config->import_promote_float)
+		{
+			GimpPrecision old_precision = gimp_image_get_precision (image);
 
-            if (old_precision != GIMP_PRECISION_FLOAT_LINEAR)
-            {
-                gimp_image_convert_precision (image,
-                                              GIMP_PRECISION_FLOAT_LINEAR,
-                                              GEGL_DITHER_NONE,
-                                              GEGL_DITHER_NONE,
-                                              GEGL_DITHER_NONE,
-                                              progress);
+			if (old_precision != GIMP_PRECISION_FLOAT_LINEAR)
+			{
+				gimp_image_convert_precision (image,
+				                              GIMP_PRECISION_FLOAT_LINEAR,
+				                              GEGL_DITHER_NONE,
+				                              GEGL_DITHER_NONE,
+				                              GEGL_DITHER_NONE,
+				                              progress);
 
-                if (config->import_promote_dither &&
-                        old_precision == GIMP_PRECISION_U8_NON_LINEAR)
-                {
-                    gimp_image_convert_dither_u8 (image, progress);
-                }
-            }
-        }
+				if (config->import_promote_dither &&
+				    old_precision == GIMP_PRECISION_U8_NON_LINEAR)
+				{
+					gimp_image_convert_dither_u8 (image, progress);
+				}
+			}
+		}
 
-        if (config->import_add_alpha)
-        {
-            GList *layers = gimp_image_get_layer_list (image);
-            GList *list;
+		if (config->import_add_alpha)
+		{
+			GList *layers = gimp_image_get_layer_list (image);
+			GList *list;
 
-            for (list = layers; list; list = g_list_next (list))
-            {
-                if (! gimp_viewable_get_children (list->data) &&
-                        ! gimp_item_is_text_layer (list->data)    &&
-                        ! gimp_drawable_has_alpha (list->data))
-                {
-                    gimp_layer_add_alpha (list->data);
-                }
-            }
+			for (list = layers; list; list = g_list_next (list))
+			{
+				if (!gimp_viewable_get_children (list->data) &&
+				    !gimp_item_is_text_layer (list->data)    &&
+				    !gimp_drawable_has_alpha (list->data))
+				{
+					gimp_layer_add_alpha (list->data);
+				}
+			}
 
-            g_list_free (layers);
-        }
-    }
+			g_list_free (layers);
+		}
+	}
 
-    gimp_image_import_color_profile (image, context, progress, interactive);
-    gimp_image_import_rotation_metadata (image, context, progress, interactive);
+	gimp_image_import_color_profile (image, context, progress, interactive);
+	gimp_image_import_rotation_metadata (image, context, progress, interactive);
 
-    /* Remember the import source */
-    gimp_image_set_imported_file (image, file);
+	/* Remember the import source */
+	gimp_image_set_imported_file (image, file);
 
-    /* We shall treat this file as an Untitled file */
-    gimp_image_set_file (image, NULL);
+	/* We shall treat this file as an Untitled file */
+	gimp_image_set_file (image, NULL);
 }

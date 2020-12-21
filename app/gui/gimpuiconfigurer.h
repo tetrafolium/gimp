@@ -33,25 +33,25 @@
 #define GIMP_UI_CONFIGURER_GET_CLASS(inst)   (G_TYPE_INSTANCE_GET_CLASS ((inst), GIMP_TYPE_UI_CONFIGURER, GimpUIConfigurerClass))
 
 
-typedef struct _GimpUIConfigurerClass   GimpUIConfigurerClass;
+typedef struct _GimpUIConfigurerClass GimpUIConfigurerClass;
 typedef struct _GimpUIConfigurerPrivate GimpUIConfigurerPrivate;
 
 struct _GimpUIConfigurer
 {
-    GimpObject parent_instance;
+	GimpObject parent_instance;
 
-    GimpUIConfigurerPrivate *p;
+	GimpUIConfigurerPrivate *p;
 };
 
 struct _GimpUIConfigurerClass
 {
-    GimpObjectClass parent_class;
+	GimpObjectClass parent_class;
 };
 
 
 GType         gimp_ui_configurer_get_type  (void) G_GNUC_CONST;
 void          gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
-        gboolean          single_window_mode);
+                                            gboolean single_window_mode);
 
 
 #endif  /* __GIMP_UI_CONFIGURER_H__ */

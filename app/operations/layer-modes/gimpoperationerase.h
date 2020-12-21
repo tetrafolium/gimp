@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_ERASE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_ERASE, GimpOperationEraseClass))
 
 
-typedef struct _GimpOperationErase      GimpOperationErase;
+typedef struct _GimpOperationErase GimpOperationErase;
 typedef struct _GimpOperationEraseClass GimpOperationEraseClass;
 
 struct _GimpOperationErase
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationEraseClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

@@ -33,37 +33,37 @@
 #define GIMP_CANVAS_RECTANGLE_GUIDES_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_RECTANGLE_GUIDES, GimpCanvasRectangleGuidesClass))
 
 
-typedef struct _GimpCanvasRectangleGuides      GimpCanvasRectangleGuides;
+typedef struct _GimpCanvasRectangleGuides GimpCanvasRectangleGuides;
 typedef struct _GimpCanvasRectangleGuidesClass GimpCanvasRectangleGuidesClass;
 
 struct _GimpCanvasRectangleGuides
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasRectangleGuidesClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_rectangle_guides_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_rectangle_guides_new      (GimpDisplayShell *shell,
-        gdouble           x,
-        gdouble           y,
-        gdouble           width,
-        gdouble           height,
-        GimpGuidesType    type,
-        gint              n_guides);
+                                                        gdouble x,
+                                                        gdouble y,
+                                                        gdouble width,
+                                                        gdouble height,
+                                                        GimpGuidesType type,
+                                                        gint n_guides);
 
 void             gimp_canvas_rectangle_guides_set      (GimpCanvasItem   *rectangle,
-        gdouble           x,
-        gdouble           y,
-        gdouble           width,
-        gdouble           height,
-        GimpGuidesType    type,
-        gint              n_guides);
+                                                        gdouble x,
+                                                        gdouble y,
+                                                        gdouble width,
+                                                        gdouble height,
+                                                        GimpGuidesType type,
+                                                        gint n_guides);
 
 
 #endif /* __GIMP_CANVAS_RECTANGLE_GUIDES_H__ */

@@ -35,22 +35,22 @@ typedef struct _GimpInkClass GimpInkClass;
 
 struct _GimpInk
 {
-    GimpPaintCore  parent_instance;
+	GimpPaintCore parent_instance;
 
-    GList         *start_blobs;  /*  starting blobs per stroke (for undo) */
+	GList         *start_blobs;/*  starting blobs per stroke (for undo) */
 
-    GimpBlob      *cur_blob;     /*  current blob                         */
-    GList         *last_blobs;   /*  blobs for last stroke positions      */
+	GimpBlob      *cur_blob; /*  current blob                         */
+	GList         *last_blobs;/*  blobs for last stroke positions      */
 };
 
 struct _GimpInkClass
 {
-    GimpPaintCoreClass  parent_class;
+	GimpPaintCoreClass parent_class;
 };
 
 
 void    gimp_ink_register (Gimp                      *gimp,
-                           GimpPaintRegisterCallback  callback);
+                           GimpPaintRegisterCallback callback);
 
 GType   gimp_ink_get_type (void) G_GNUC_CONST;
 

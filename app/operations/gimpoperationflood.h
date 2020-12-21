@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_FLOOD_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_FLOOD, GimpOperationFloodClass))
 
 
-typedef struct _GimpOperationFlood      GimpOperationFlood;
+typedef struct _GimpOperationFlood GimpOperationFlood;
 typedef struct _GimpOperationFloodClass GimpOperationFloodClass;
 
 struct _GimpOperationFlood
 {
-    GeglOperationFilter  parent_instance;
+	GeglOperationFilter parent_instance;
 };
 
 struct _GimpOperationFloodClass
 {
-    GeglOperationFilterClass  parent_class;
+	GeglOperationFilterClass parent_class;
 };
 
 

@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_SCREEN_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SCREEN_LEGACY, GimpOperationScreenLegacyClass))
 
 
-typedef struct _GimpOperationScreenLegacy      GimpOperationScreenLegacy;
+typedef struct _GimpOperationScreenLegacy GimpOperationScreenLegacy;
 typedef struct _GimpOperationScreenLegacyClass GimpOperationScreenLegacyClass;
 
 struct _GimpOperationScreenLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationScreenLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

@@ -34,16 +34,16 @@ typedef struct _GimpDodgeBurnOptionsClass GimpDodgeBurnOptionsClass;
 
 struct _GimpDodgeBurnOptions
 {
-    GimpPaintOptions   parent_instance;
+	GimpPaintOptions parent_instance;
 
-    GimpDodgeBurnType  type;
-    GimpTransferMode   mode;     /*highlights, midtones, shadows*/
-    gdouble            exposure;
+	GimpDodgeBurnType type;
+	GimpTransferMode mode;   /*highlights, midtones, shadows*/
+	gdouble exposure;
 };
 
 struct _GimpDodgeBurnOptionsClass
 {
-    GimpPaintOptionsClass  parent_class;
+	GimpPaintOptionsClass parent_class;
 };
 
 

@@ -37,49 +37,49 @@ typedef struct _GimpOperationLayerModeClass GimpOperationLayerModeClass;
 
 struct _GimpOperationLayerMode
 {
-    GeglOperationPointComposer3  parent_instance;
+	GeglOperationPointComposer3 parent_instance;
 
-    GimpLayerMode                layer_mode;
-    gdouble                      opacity;
-    GimpLayerColorSpace          blend_space;
-    GimpLayerColorSpace          composite_space;
-    GimpLayerCompositeMode       composite_mode;
-    const Babl                  *cached_fish_format;
-    const Babl                  *space_fish[3 /* from */][3 /* to */];
+	GimpLayerMode layer_mode;
+	gdouble opacity;
+	GimpLayerColorSpace blend_space;
+	GimpLayerColorSpace composite_space;
+	GimpLayerCompositeMode composite_mode;
+	const Babl                  *cached_fish_format;
+	const Babl                  *space_fish[3 /* from */][3 /* to */];
 
-    gdouble                      prop_opacity;
-    GimpLayerCompositeMode       prop_composite_mode;
+	gdouble prop_opacity;
+	GimpLayerCompositeMode prop_composite_mode;
 
-    GimpLayerModeFunc            function;
-    GimpLayerModeBlendFunc       blend_function;
-    gboolean                     is_last_node;
-    gboolean                     has_mask;
+	GimpLayerModeFunc function;
+	GimpLayerModeBlendFunc blend_function;
+	gboolean is_last_node;
+	gboolean has_mask;
 };
 
 struct _GimpOperationLayerModeClass
 {
-    GeglOperationPointComposer3Class  parent_class;
+	GeglOperationPointComposer3Class parent_class;
 
-    /*  virtual functions  */
-    gboolean                 (* parent_process)      (GeglOperation          *operation,
-            GeglOperationContext   *context,
-            const gchar            *output_prop,
-            const GeglRectangle    *result,
-            gint                    level);
-    gboolean                 (* process)             (GeglOperation          *operation,
-            void                   *in,
-            void                   *aux,
-            void                   *mask,
-            void                   *out,
-            glong                   samples,
-            const GeglRectangle    *roi,
-            gint                    level);
+	/*  virtual functions  */
+	gboolean (* parent_process)      (GeglOperation          *operation,
+	                                  GeglOperationContext   *context,
+	                                  const gchar            *output_prop,
+	                                  const GeglRectangle    *result,
+	                                  gint level);
+	gboolean (* process)             (GeglOperation          *operation,
+	                                  void                   *in,
+	                                  void                   *aux,
+	                                  void                   *mask,
+	                                  void                   *out,
+	                                  glong samples,
+	                                  const GeglRectangle    *roi,
+	                                  gint level);
 
-    /* Returns the composite region (any combination of the layer and the
-     * backdrop) that the layer mode affects.  Most modes only affect the
-     * overlapping region, and don't need to override this function.
-     */
-    GimpLayerCompositeRegion (* get_affected_region) (GimpOperationLayerMode *layer_mode);
+	/* Returns the composite region (any combination of the layer and the
+	 * backdrop) that the layer mode affects.  Most modes only affect the
+	 * overlapping region, and don't need to override this function.
+	 */
+	GimpLayerCompositeRegion (* get_affected_region) (GimpOperationLayerMode *layer_mode);
 };
 
 

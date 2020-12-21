@@ -34,18 +34,18 @@ typedef struct _GimpMybrushOptionsClass GimpMybrushOptionsClass;
 
 struct _GimpMybrushOptions
 {
-    GimpPaintOptions  parent_instance;
+	GimpPaintOptions parent_instance;
 
-    gdouble           radius;
-    gdouble           opaque;
-    gdouble           hardness;
-    gboolean          eraser;
-    gboolean          no_erasing;
+	gdouble radius;
+	gdouble opaque;
+	gdouble hardness;
+	gboolean eraser;
+	gboolean no_erasing;
 };
 
 struct _GimpMybrushOptionsClass
 {
-    GimpPaintOptionsClass  parent_instance;
+	GimpPaintOptionsClass parent_instance;
 };
 
 

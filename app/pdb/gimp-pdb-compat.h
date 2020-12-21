@@ -20,7 +20,7 @@
 
 
 void   gimp_pdb_compat_procs_register (GimpPDB           *pdb,
-                                       GimpPDBCompatMode  compat_mode);
+                                       GimpPDBCompatMode compat_mode);
 
 
 #endif  /*  __GIMP_PDB_COMPAT_H__  */

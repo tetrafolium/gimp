@@ -20,7 +20,7 @@
 
 
 void   gimp_display_shell_close (GimpDisplayShell *shell,
-                                 gboolean          kill_it);
+                                 gboolean kill_it);
 
 
 #endif /* __GIMP_DISPLAY_SHELL_CLOSE_H__ */

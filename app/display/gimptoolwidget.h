@@ -39,96 +39,96 @@
 
 
 typedef struct _GimpToolWidgetPrivate GimpToolWidgetPrivate;
-typedef struct _GimpToolWidgetClass   GimpToolWidgetClass;
+typedef struct _GimpToolWidgetClass GimpToolWidgetClass;
 
 struct _GimpToolWidget
 {
-    GimpObject             parent_instance;
+	GimpObject parent_instance;
 
-    GimpToolWidgetPrivate *private;
+	GimpToolWidgetPrivate *private;
 };
 
 struct _GimpToolWidgetClass
 {
-    GimpObjectClass  parent_class;
+	GimpObjectClass parent_class;
 
-    /*  signals  */
-    void     (* changed)         (GimpToolWidget        *widget);
-    void     (* response)        (GimpToolWidget        *widget,
-                                  gint                   response_id);
-    void     (* snap_offsets)    (GimpToolWidget        *widget,
-                                  gint                   offset_x,
-                                  gint                   offset_y,
-                                  gint                   width,
-                                  gint                   height);
-    void     (* status)          (GimpToolWidget        *widget,
-                                  const gchar           *status);
-    void     (* status_coords)   (GimpToolWidget        *widget,
-                                  const gchar           *title,
-                                  gdouble                x,
-                                  const gchar           *separator,
-                                  gdouble                y,
-                                  const gchar           *help);
-    void     (* message)         (GimpToolWidget        *widget,
-                                  const gchar           *message);
-    void     (* focus_changed)   (GimpToolWidget        *widget);
+	/*  signals  */
+	void (* changed)         (GimpToolWidget        *widget);
+	void (* response)        (GimpToolWidget        *widget,
+	                          gint response_id);
+	void (* snap_offsets)    (GimpToolWidget        *widget,
+	                          gint offset_x,
+	                          gint offset_y,
+	                          gint width,
+	                          gint height);
+	void (* status)          (GimpToolWidget        *widget,
+	                          const gchar           *status);
+	void (* status_coords)   (GimpToolWidget        *widget,
+	                          const gchar           *title,
+	                          gdouble x,
+	                          const gchar           *separator,
+	                          gdouble y,
+	                          const gchar           *help);
+	void (* message)         (GimpToolWidget        *widget,
+	                          const gchar           *message);
+	void (* focus_changed)   (GimpToolWidget        *widget);
 
-    /*  virtual functions  */
-    gint     (* button_press)    (GimpToolWidget        *widget,
-                                  const GimpCoords      *coords,
-                                  guint32                time,
-                                  GdkModifierType        state,
-                                  GimpButtonPressType    press_type);
-    void     (* button_release)  (GimpToolWidget        *widget,
-                                  const GimpCoords      *coords,
-                                  guint32                time,
-                                  GdkModifierType        state,
-                                  GimpButtonReleaseType  release_type);
-    void     (* motion)          (GimpToolWidget        *widget,
-                                  const GimpCoords      *coords,
-                                  guint32                time,
-                                  GdkModifierType        state);
+	/*  virtual functions  */
+	gint (* button_press)    (GimpToolWidget        *widget,
+	                          const GimpCoords      *coords,
+	                          guint32 time,
+	                          GdkModifierType state,
+	                          GimpButtonPressType press_type);
+	void (* button_release)  (GimpToolWidget        *widget,
+	                          const GimpCoords      *coords,
+	                          guint32 time,
+	                          GdkModifierType state,
+	                          GimpButtonReleaseType release_type);
+	void (* motion)          (GimpToolWidget        *widget,
+	                          const GimpCoords      *coords,
+	                          guint32 time,
+	                          GdkModifierType state);
 
-    GimpHit  (* hit)             (GimpToolWidget        *widget,
-                                  const GimpCoords      *coords,
-                                  GdkModifierType        state,
-                                  gboolean               proximity);
-    void     (* hover)           (GimpToolWidget        *widget,
-                                  const GimpCoords      *coords,
-                                  GdkModifierType        state,
-                                  gboolean               proximity);
-    void     (* leave_notify)    (GimpToolWidget        *widget);
+	GimpHit (* hit)             (GimpToolWidget        *widget,
+	                             const GimpCoords      *coords,
+	                             GdkModifierType state,
+	                             gboolean proximity);
+	void (* hover)           (GimpToolWidget        *widget,
+	                          const GimpCoords      *coords,
+	                          GdkModifierType state,
+	                          gboolean proximity);
+	void (* leave_notify)    (GimpToolWidget        *widget);
 
-    gboolean (* key_press)       (GimpToolWidget        *widget,
-                                  GdkEventKey           *kevent);
-    gboolean (* key_release)     (GimpToolWidget        *widget,
-                                  GdkEventKey           *kevent);
+	gboolean (* key_press)       (GimpToolWidget        *widget,
+	                              GdkEventKey           *kevent);
+	gboolean (* key_release)     (GimpToolWidget        *widget,
+	                              GdkEventKey           *kevent);
 
-    void     (* motion_modifier) (GimpToolWidget        *widget,
-                                  GdkModifierType        key,
-                                  gboolean               press,
-                                  GdkModifierType        state);
-    void     (* hover_modifier)  (GimpToolWidget        *widget,
-                                  GdkModifierType        key,
-                                  gboolean               press,
-                                  GdkModifierType        state);
+	void (* motion_modifier) (GimpToolWidget        *widget,
+	                          GdkModifierType key,
+	                          gboolean press,
+	                          GdkModifierType state);
+	void (* hover_modifier)  (GimpToolWidget        *widget,
+	                          GdkModifierType key,
+	                          gboolean press,
+	                          GdkModifierType state);
 
-    gboolean (* get_cursor)      (GimpToolWidget        *widget,
-                                  const GimpCoords      *coords,
-                                  GdkModifierType        state,
-                                  GimpCursorType        *cursor,
-                                  GimpToolCursorType    *tool_cursor,
-                                  GimpCursorModifier    *modifier);
+	gboolean (* get_cursor)      (GimpToolWidget        *widget,
+	                              const GimpCoords      *coords,
+	                              GdkModifierType state,
+	                              GimpCursorType        *cursor,
+	                              GimpToolCursorType    *tool_cursor,
+	                              GimpCursorModifier    *modifier);
 
-    GimpUIManager *
-    (* get_popup)       (GimpToolWidget        *widget,
-                         const GimpCoords      *coords,
-                         GdkModifierType        state,
-                         const gchar          **ui_path);
+	GimpUIManager *
+	(* get_popup)       (GimpToolWidget        *widget,
+	                     const GimpCoords      *coords,
+	                     GdkModifierType state,
+	                     const gchar          **ui_path);
 
-    gboolean update_on_scale;
-    gboolean update_on_scroll;
-    gboolean update_on_rotate;
+	gboolean update_on_scale;
+	gboolean update_on_scroll;
+	gboolean update_on_rotate;
 };
 
 
@@ -138,11 +138,11 @@ GimpDisplayShell * gimp_tool_widget_get_shell         (GimpToolWidget  *widget);
 GimpCanvasItem   * gimp_tool_widget_get_item          (GimpToolWidget  *widget);
 
 void               gimp_tool_widget_set_visible       (GimpToolWidget  *widget,
-        gboolean         visible);
+                                                       gboolean visible);
 gboolean           gimp_tool_widget_get_visible       (GimpToolWidget  *widget);
 
 void               gimp_tool_widget_set_focus         (GimpToolWidget  *widget,
-        gboolean         focus);
+                                                       gboolean focus);
 gboolean           gimp_tool_widget_get_focus         (GimpToolWidget  *widget);
 
 /*  for subclasses, to notify the handling tool
@@ -150,180 +150,180 @@ gboolean           gimp_tool_widget_get_focus         (GimpToolWidget  *widget);
 void               gimp_tool_widget_changed           (GimpToolWidget  *widget);
 
 void               gimp_tool_widget_response          (GimpToolWidget  *widget,
-        gint             response_id);
+                                                       gint response_id);
 
 void               gimp_tool_widget_set_snap_offsets  (GimpToolWidget  *widget,
-        gint             offset_x,
-        gint             offset_y,
-        gint             width,
-        gint             height);
+                                                       gint offset_x,
+                                                       gint offset_y,
+                                                       gint width,
+                                                       gint height);
 void               gimp_tool_widget_get_snap_offsets  (GimpToolWidget  *widget,
-        gint            *offset_x,
-        gint            *offset_y,
-        gint            *width,
-        gint            *height);
+                                                       gint            *offset_x,
+                                                       gint            *offset_y,
+                                                       gint            *width,
+                                                       gint            *height);
 
 void               gimp_tool_widget_set_status        (GimpToolWidget  *widget,
-        const gchar     *status);
+                                                       const gchar     *status);
 void               gimp_tool_widget_set_status_coords (GimpToolWidget  *widget,
-        const gchar     *title,
-        gdouble          x,
-        const gchar     *separator,
-        gdouble          y,
-        const gchar     *help);
+                                                       const gchar     *title,
+                                                       gdouble x,
+                                                       const gchar     *separator,
+                                                       gdouble y,
+                                                       const gchar     *help);
 
 void               gimp_tool_widget_message           (GimpToolWidget  *widget,
-        const gchar     *format,
-        ...) G_GNUC_PRINTF (2, 3);
+                                                       const gchar     *format,
+                                                       ...) G_GNUC_PRINTF (2, 3);
 void               gimp_tool_widget_message_literal   (GimpToolWidget  *widget,
-        const gchar     *message);
+                                                       const gchar     *message);
 
 /*  for subclasses, to add and manage their items
  */
 void               gimp_tool_widget_add_item         (GimpToolWidget  *widget,
-        GimpCanvasItem  *item);
+                                                      GimpCanvasItem  *item);
 void               gimp_tool_widget_remove_item      (GimpToolWidget  *widget,
-        GimpCanvasItem  *item);
+                                                      GimpCanvasItem  *item);
 
 GimpCanvasGroup  * gimp_tool_widget_add_group        (GimpToolWidget  *widget);
 GimpCanvasGroup  * gimp_tool_widget_add_stroke_group (GimpToolWidget  *widget);
 GimpCanvasGroup  * gimp_tool_widget_add_fill_group   (GimpToolWidget  *widget);
 
 void               gimp_tool_widget_push_group       (GimpToolWidget  *widget,
-        GimpCanvasGroup *group);
+                                                      GimpCanvasGroup *group);
 void               gimp_tool_widget_pop_group        (GimpToolWidget  *widget);
 
 /*  for subclasses, convenience functions to add specific items
  */
 GimpCanvasItem * gimp_tool_widget_add_line      (GimpToolWidget       *widget,
-        gdouble               x1,
-        gdouble               y1,
-        gdouble               x2,
-        gdouble               y2);
+                                                 gdouble x1,
+                                                 gdouble y1,
+                                                 gdouble x2,
+                                                 gdouble y2);
 GimpCanvasItem * gimp_tool_widget_add_rectangle (GimpToolWidget       *widget,
-        gdouble               x,
-        gdouble               y,
-        gdouble               width,
-        gdouble               height,
-        gboolean              filled);
+                                                 gdouble x,
+                                                 gdouble y,
+                                                 gdouble width,
+                                                 gdouble height,
+                                                 gboolean filled);
 GimpCanvasItem * gimp_tool_widget_add_arc       (GimpToolWidget       *widget,
-        gdouble               center_x,
-        gdouble               center_y,
-        gdouble               radius_x,
-        gdouble               radius_y,
-        gdouble               start_angle,
-        gdouble               slice_angle,
-        gboolean              filled);
+                                                 gdouble center_x,
+                                                 gdouble center_y,
+                                                 gdouble radius_x,
+                                                 gdouble radius_y,
+                                                 gdouble start_angle,
+                                                 gdouble slice_angle,
+                                                 gboolean filled);
 GimpCanvasItem * gimp_tool_widget_add_limit     (GimpToolWidget       *widget,
-        GimpLimitType         type,
-        gdouble               x,
-        gdouble               y,
-        gdouble               radius,
-        gdouble               aspect_ratio,
-        gdouble               angle,
-        gboolean              dashed);
+                                                 GimpLimitType type,
+                                                 gdouble x,
+                                                 gdouble y,
+                                                 gdouble radius,
+                                                 gdouble aspect_ratio,
+                                                 gdouble angle,
+                                                 gboolean dashed);
 GimpCanvasItem * gimp_tool_widget_add_polygon   (GimpToolWidget       *widget,
-        GimpMatrix3          *transform,
-        const GimpVector2    *points,
-        gint                  n_points,
-        gboolean              filled);
+                                                 GimpMatrix3          *transform,
+                                                 const GimpVector2    *points,
+                                                 gint n_points,
+                                                 gboolean filled);
 GimpCanvasItem * gimp_tool_widget_add_polygon_from_coords
-(GimpToolWidget       *widget,
- GimpMatrix3          *transform,
- const GimpCoords     *points,
- gint                  n_points,
- gboolean              filled);
+        (GimpToolWidget       *widget,
+        GimpMatrix3          *transform,
+        const GimpCoords     *points,
+        gint n_points,
+        gboolean filled);
 GimpCanvasItem * gimp_tool_widget_add_path      (GimpToolWidget       *widget,
-        const GimpBezierDesc *desc);
+                                                 const GimpBezierDesc *desc);
 
 GimpCanvasItem * gimp_tool_widget_add_handle    (GimpToolWidget       *widget,
-        GimpHandleType        type,
-        gdouble               x,
-        gdouble               y,
-        gint                  width,
-        gint                  height,
-        GimpHandleAnchor      anchor);
+                                                 GimpHandleType type,
+                                                 gdouble x,
+                                                 gdouble y,
+                                                 gint width,
+                                                 gint height,
+                                                 GimpHandleAnchor anchor);
 GimpCanvasItem * gimp_tool_widget_add_corner    (GimpToolWidget       *widget,
-        gdouble               x,
-        gdouble               y,
-        gdouble               width,
-        gdouble               height,
-        GimpHandleAnchor      anchor,
-        gint                  corner_width,
-        gint                  corner_height,
-        gboolean              outside);
+                                                 gdouble x,
+                                                 gdouble y,
+                                                 gdouble width,
+                                                 gdouble height,
+                                                 GimpHandleAnchor anchor,
+                                                 gint corner_width,
+                                                 gint corner_height,
+                                                 gboolean outside);
 
 GimpCanvasItem * gimp_tool_widget_add_rectangle_guides
-(GimpToolWidget       *widget,
- gdouble               x,
- gdouble               y,
- gdouble               width,
- gdouble               height,
- GimpGuidesType        type);
+        (GimpToolWidget       *widget,
+        gdouble x,
+        gdouble y,
+        gdouble width,
+        gdouble height,
+        GimpGuidesType type);
 GimpCanvasItem * gimp_tool_widget_add_transform_guides
-(GimpToolWidget       *widget,
- const GimpMatrix3    *transform,
- gdouble               x1,
- gdouble               y1,
- gdouble               x2,
- gdouble               y2,
- GimpGuidesType        type,
- gint                  n_guides,
- gboolean              clip);
+        (GimpToolWidget       *widget,
+        const GimpMatrix3    *transform,
+        gdouble x1,
+        gdouble y1,
+        gdouble x2,
+        gdouble y2,
+        GimpGuidesType type,
+        gint n_guides,
+        gboolean clip);
 
 /*  for tools, to be called from the respective GimpTool method
  *  implementations
  */
 gint       gimp_tool_widget_button_press    (GimpToolWidget        *widget,
-        const GimpCoords      *coords,
-        guint32                time,
-        GdkModifierType        state,
-        GimpButtonPressType    press_type);
+                                             const GimpCoords      *coords,
+                                             guint32 time,
+                                             GdkModifierType state,
+                                             GimpButtonPressType press_type);
 void       gimp_tool_widget_button_release  (GimpToolWidget        *widget,
-        const GimpCoords      *coords,
-        guint32                time,
-        GdkModifierType        state,
-        GimpButtonReleaseType  release_type);
+                                             const GimpCoords      *coords,
+                                             guint32 time,
+                                             GdkModifierType state,
+                                             GimpButtonReleaseType release_type);
 void       gimp_tool_widget_motion          (GimpToolWidget        *widget,
-        const GimpCoords      *coords,
-        guint32                time,
-        GdkModifierType        state);
+                                             const GimpCoords      *coords,
+                                             guint32 time,
+                                             GdkModifierType state);
 
 GimpHit    gimp_tool_widget_hit             (GimpToolWidget        *widget,
-        const GimpCoords      *coords,
-        GdkModifierType        state,
-        gboolean               proximity);
+                                             const GimpCoords      *coords,
+                                             GdkModifierType state,
+                                             gboolean proximity);
 void       gimp_tool_widget_hover           (GimpToolWidget        *widget,
-        const GimpCoords      *coords,
-        GdkModifierType        state,
-        gboolean               proximity);
+                                             const GimpCoords      *coords,
+                                             GdkModifierType state,
+                                             gboolean proximity);
 void       gimp_tool_widget_leave_notify    (GimpToolWidget        *widget);
 
 gboolean   gimp_tool_widget_key_press       (GimpToolWidget        *widget,
-        GdkEventKey           *kevent);
+                                             GdkEventKey           *kevent);
 gboolean   gimp_tool_widget_key_release     (GimpToolWidget        *widget,
-        GdkEventKey           *kevent);
+                                             GdkEventKey           *kevent);
 
 void       gimp_tool_widget_motion_modifier (GimpToolWidget        *widget,
-        GdkModifierType        key,
-        gboolean               press,
-        GdkModifierType        state);
+                                             GdkModifierType key,
+                                             gboolean press,
+                                             GdkModifierType state);
 void       gimp_tool_widget_hover_modifier  (GimpToolWidget        *widget,
-        GdkModifierType        key,
-        gboolean               press,
-        GdkModifierType        state);
+                                             GdkModifierType key,
+                                             gboolean press,
+                                             GdkModifierType state);
 
 gboolean   gimp_tool_widget_get_cursor      (GimpToolWidget        *widget,
-        const GimpCoords      *coords,
-        GdkModifierType        state,
-        GimpCursorType        *cursor,
-        GimpToolCursorType    *tool_cursor,
-        GimpCursorModifier    *modifier);
+                                             const GimpCoords      *coords,
+                                             GdkModifierType state,
+                                             GimpCursorType        *cursor,
+                                             GimpToolCursorType    *tool_cursor,
+                                             GimpCursorModifier    *modifier);
 
 GimpUIManager *
 gimp_tool_widget_get_popup       (GimpToolWidget        *widget,
                                   const GimpCoords      *coords,
-                                  GdkModifierType        state,
+                                  GdkModifierType state,
                                   const gchar          **ui_path);
 
 #endif /* __GIMP_TOOL_WIDGET_H__ */

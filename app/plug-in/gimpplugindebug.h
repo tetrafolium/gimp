@@ -23,11 +23,11 @@
 
 typedef enum
 {
-    GIMP_DEBUG_WRAP_QUERY = 1 << 0,
-    GIMP_DEBUG_WRAP_INIT  = 1 << 1,
-    GIMP_DEBUG_WRAP_RUN   = 1 << 2,
+	GIMP_DEBUG_WRAP_QUERY = 1 << 0,
+	GIMP_DEBUG_WRAP_INIT  = 1 << 1,
+	GIMP_DEBUG_WRAP_RUN   = 1 << 2,
 
-    GIMP_DEBUG_WRAP_DEFAULT = GIMP_DEBUG_WRAP_RUN
+	GIMP_DEBUG_WRAP_DEFAULT = GIMP_DEBUG_WRAP_RUN
 } GimpDebugWrapFlag;
 
 
@@ -35,9 +35,9 @@ GimpPlugInDebug  * gimp_plug_in_debug_new  (void);
 void               gimp_plug_in_debug_free (GimpPlugInDebug    *debug);
 
 gchar           ** gimp_plug_in_debug_argv (GimpPlugInDebug    *debug,
-        const gchar        *name,
-        GimpDebugWrapFlag   flag,
-        const gchar       **args);
+                                            const gchar        *name,
+                                            GimpDebugWrapFlag flag,
+                                            const gchar       **args);
 
 
 #endif /* __GIMP_PLUG_IN_DEBUG_H__ */

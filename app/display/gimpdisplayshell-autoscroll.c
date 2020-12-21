@@ -43,11 +43,11 @@
 
 typedef struct
 {
-    GdkEventMotion  *mevent;
-    GimpDeviceInfo  *device;
-    guint32          time;
-    GdkModifierType  state;
-    guint            timeout_id;
+	GdkEventMotion  *mevent;
+	GimpDeviceInfo  *device;
+	guint32 time;
+	GdkModifierType state;
+	guint timeout_id;
 } ScrollInfo;
 
 
@@ -60,49 +60,49 @@ static gboolean gimp_display_shell_autoscroll_timeout (gpointer data);
 
 void
 gimp_display_shell_autoscroll_start (GimpDisplayShell *shell,
-                                     GdkModifierType   state,
+                                     GdkModifierType state,
                                      GdkEventMotion   *mevent)
 {
-    ScrollInfo *info;
+	ScrollInfo *info;
 
-    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-    if (shell->scroll_info)
-        return;
+	if (shell->scroll_info)
+		return;
 
-    info = g_slice_new0 (ScrollInfo);
+	info = g_slice_new0 (ScrollInfo);
 
-    info->mevent     = mevent;
-    info->device     = gimp_device_info_get_by_device (mevent->device);
-    info->time       = gdk_event_get_time ((GdkEvent *) mevent);
-    info->state      = state;
-    info->timeout_id = g_timeout_add (AUTOSCROLL_DT,
-                                      gimp_display_shell_autoscroll_timeout,
-                                      shell);
+	info->mevent     = mevent;
+	info->device     = gimp_device_info_get_by_device (mevent->device);
+	info->time       = gdk_event_get_time ((GdkEvent *) mevent);
+	info->state      = state;
+	info->timeout_id = g_timeout_add (AUTOSCROLL_DT,
+	                                  gimp_display_shell_autoscroll_timeout,
+	                                  shell);
 
-    shell->scroll_info = info;
+	shell->scroll_info = info;
 }
 
 void
 gimp_display_shell_autoscroll_stop (GimpDisplayShell *shell)
 {
-    ScrollInfo *info;
+	ScrollInfo *info;
 
-    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-    if (! shell->scroll_info)
-        return;
+	if (!shell->scroll_info)
+		return;
 
-    info = shell->scroll_info;
+	info = shell->scroll_info;
 
-    if (info->timeout_id)
-    {
-        g_source_remove (info->timeout_id);
-        info->timeout_id = 0;
-    }
+	if (info->timeout_id)
+	{
+		g_source_remove (info->timeout_id);
+		info->timeout_id = 0;
+	}
 
-    g_slice_free (ScrollInfo, info);
-    shell->scroll_info = NULL;
+	g_slice_free (ScrollInfo, info);
+	shell->scroll_info = NULL;
 }
 
 
@@ -111,74 +111,74 @@ gimp_display_shell_autoscroll_stop (GimpDisplayShell *shell)
 static gboolean
 gimp_display_shell_autoscroll_timeout (gpointer data)
 {
-    GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
-    ScrollInfo       *info  = shell->scroll_info;
-    GimpCoords        device_coords;
-    GimpCoords        image_coords;
-    gint              dx = 0;
-    gint              dy = 0;
+	GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+	ScrollInfo       *info  = shell->scroll_info;
+	GimpCoords device_coords;
+	GimpCoords image_coords;
+	gint dx = 0;
+	gint dy = 0;
 
-    gimp_device_info_get_device_coords (info->device,
-                                        gtk_widget_get_window (shell->canvas),
-                                        &device_coords);
+	gimp_device_info_get_device_coords (info->device,
+	                                    gtk_widget_get_window (shell->canvas),
+	                                    &device_coords);
 
-    if (device_coords.x < 0)
-        dx = device_coords.x;
-    else if (device_coords.x > shell->disp_width)
-        dx = device_coords.x - shell->disp_width;
+	if (device_coords.x < 0)
+		dx = device_coords.x;
+	else if (device_coords.x > shell->disp_width)
+		dx = device_coords.x - shell->disp_width;
 
-    if (device_coords.y < 0)
-        dy = device_coords.y;
-    else if (device_coords.y > shell->disp_height)
-        dy = device_coords.y - shell->disp_height;
+	if (device_coords.y < 0)
+		dy = device_coords.y;
+	else if (device_coords.y > shell->disp_height)
+		dy = device_coords.y - shell->disp_height;
 
-    if (dx || dy)
-    {
-        GimpDisplay *display         = shell->display;
-        GimpTool    *active_tool     = tool_manager_get_active (display->gimp);
-        gint         scroll_amount_x = AUTOSCROLL_DX * dx;
-        gint         scroll_amount_y = AUTOSCROLL_DX * dy;
+	if (dx || dy)
+	{
+		GimpDisplay *display         = shell->display;
+		GimpTool    *active_tool     = tool_manager_get_active (display->gimp);
+		gint scroll_amount_x = AUTOSCROLL_DX * dx;
+		gint scroll_amount_y = AUTOSCROLL_DX * dy;
 
-        info->time += AUTOSCROLL_DT;
+		info->time += AUTOSCROLL_DT;
 
-        gimp_display_shell_scroll_unoverscrollify (shell,
-                scroll_amount_x,
-                scroll_amount_y,
-                &scroll_amount_x,
-                &scroll_amount_y);
+		gimp_display_shell_scroll_unoverscrollify (shell,
+		                                           scroll_amount_x,
+		                                           scroll_amount_y,
+		                                           &scroll_amount_x,
+		                                           &scroll_amount_y);
 
-        gimp_display_shell_scroll (shell,
-                                   scroll_amount_x,
-                                   scroll_amount_y);
+		gimp_display_shell_scroll (shell,
+		                           scroll_amount_x,
+		                           scroll_amount_y);
 
-        gimp_display_shell_untransform_coords (shell,
-                                               &device_coords,
-                                               &image_coords);
+		gimp_display_shell_untransform_coords (shell,
+		                                       &device_coords,
+		                                       &image_coords);
 
-        if (gimp_tool_control_get_snap_to (active_tool->control))
-        {
-            gint x, y, width, height;
+		if (gimp_tool_control_get_snap_to (active_tool->control))
+		{
+			gint x, y, width, height;
 
-            gimp_tool_control_get_snap_offsets (active_tool->control,
-                                                &x, &y, &width, &height);
+			gimp_tool_control_get_snap_offsets (active_tool->control,
+			                                    &x, &y, &width, &height);
 
-            gimp_display_shell_snap_coords (shell,
-                                            &image_coords,
-                                            x, y, width, height);
-        }
+			gimp_display_shell_snap_coords (shell,
+			                                &image_coords,
+			                                x, y, width, height);
+		}
 
-        tool_manager_motion_active (display->gimp,
-                                    &image_coords,
-                                    info->time, info->state,
-                                    display);
+		tool_manager_motion_active (display->gimp,
+		                            &image_coords,
+		                            info->time, info->state,
+		                            display);
 
-        return TRUE;
-    }
-    else
-    {
-        g_slice_free (ScrollInfo, info);
-        shell->scroll_info = NULL;
+		return TRUE;
+	}
+	else
+	{
+		g_slice_free (ScrollInfo, info);
+		shell->scroll_info = NULL;
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 }

@@ -34,17 +34,17 @@
 #define GIMP_OPERATION_MERGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_MERGE, GimpOperationMergeClass))
 
 
-typedef struct _GimpOperationMerge      GimpOperationMerge;
+typedef struct _GimpOperationMerge GimpOperationMerge;
 typedef struct _GimpOperationMergeClass GimpOperationMergeClass;
 
 struct _GimpOperationMerge
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationMergeClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

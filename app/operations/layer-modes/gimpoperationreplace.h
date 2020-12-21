@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_REPLACE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_REPLACE, GimpOperationReplaceClass))
 
 
-typedef struct _GimpOperationReplace      GimpOperationReplace;
+typedef struct _GimpOperationReplace GimpOperationReplace;
 typedef struct _GimpOperationReplaceClass GimpOperationReplaceClass;
 
 struct _GimpOperationReplace
 {
-    GimpOperationLayerMode parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationReplaceClass
 {
-    GimpOperationLayerModeClass parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

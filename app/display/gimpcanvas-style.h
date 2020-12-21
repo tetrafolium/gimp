@@ -23,59 +23,59 @@
 
 
 void   gimp_canvas_set_guide_style         (GtkWidget     *canvas,
-        cairo_t       *cr,
-        GimpGuideStyle style,
-        gboolean       active,
-        gdouble        offset_x,
-        gdouble        offset_y);
+                                            cairo_t       *cr,
+                                            GimpGuideStyle style,
+                                            gboolean active,
+                                            gdouble offset_x,
+                                            gdouble offset_y);
 void   gimp_canvas_set_sample_point_style  (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gboolean       active);
+                                            cairo_t       *cr,
+                                            gboolean active);
 void   gimp_canvas_set_grid_style          (GtkWidget     *canvas,
-        cairo_t       *cr,
-        GimpGrid      *grid,
-        gdouble        offset_x,
-        gdouble        offset_y);
+                                            cairo_t       *cr,
+                                            GimpGrid      *grid,
+                                            gdouble offset_x,
+                                            gdouble offset_y);
 void   gimp_canvas_set_pen_style           (GtkWidget     *canvas,
-        cairo_t       *cr,
-        const GimpRGB *color,
-        gint           width);
+                                            cairo_t       *cr,
+                                            const GimpRGB *color,
+                                            gint width);
 void   gimp_canvas_set_layer_style         (GtkWidget     *canvas,
-        cairo_t       *cr,
-        GimpLayer     *layer,
-        gdouble        offset_x,
-        gdouble        offset_y);
+                                            cairo_t       *cr,
+                                            GimpLayer     *layer,
+                                            gdouble offset_x,
+                                            gdouble offset_y);
 void   gimp_canvas_set_canvas_style        (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gdouble        offset_x,
-        gdouble        offset_y);
+                                            cairo_t       *cr,
+                                            gdouble offset_x,
+                                            gdouble offset_y);
 void   gimp_canvas_set_selection_out_style (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gdouble        offset_x,
-        gdouble        offset_y);
+                                            cairo_t       *cr,
+                                            gdouble offset_x,
+                                            gdouble offset_y);
 void   gimp_canvas_set_selection_in_style  (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gint           index,
-        gdouble        offset_x,
-        gdouble        offset_y);
+                                            cairo_t       *cr,
+                                            gint index,
+                                            gdouble offset_x,
+                                            gdouble offset_y);
 void   gimp_canvas_set_vectors_bg_style    (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gboolean       active);
+                                            cairo_t       *cr,
+                                            gboolean active);
 void   gimp_canvas_set_vectors_fg_style    (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gboolean       active);
+                                            cairo_t       *cr,
+                                            gboolean active);
 void   gimp_canvas_set_outline_bg_style    (GtkWidget     *canvas,
-        cairo_t       *cr);
+                                            cairo_t       *cr);
 void   gimp_canvas_set_outline_fg_style    (GtkWidget     *canvas,
-        cairo_t       *cr);
+                                            cairo_t       *cr);
 void   gimp_canvas_set_passe_partout_style (GtkWidget     *canvas,
-        cairo_t       *cr);
+                                            cairo_t       *cr);
 
 void   gimp_canvas_set_tool_bg_style       (GtkWidget     *canvas,
-        cairo_t       *cr);
+                                            cairo_t       *cr);
 void   gimp_canvas_set_tool_fg_style       (GtkWidget     *canvas,
-        cairo_t       *cr,
-        gboolean       highlight);
+                                            cairo_t       *cr,
+                                            gboolean highlight);
 
 
 #endif /* __GIMP_CANVAS_STYLE_H__ */

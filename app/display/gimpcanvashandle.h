@@ -40,53 +40,53 @@
 #define GIMP_CANVAS_HANDLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_HANDLE, GimpCanvasHandleClass))
 
 
-typedef struct _GimpCanvasHandle      GimpCanvasHandle;
+typedef struct _GimpCanvasHandle GimpCanvasHandle;
 typedef struct _GimpCanvasHandleClass GimpCanvasHandleClass;
 
 struct _GimpCanvasHandle
 {
-    GimpCanvasItem  parent_instance;
+	GimpCanvasItem parent_instance;
 };
 
 struct _GimpCanvasHandleClass
 {
-    GimpCanvasItemClass  parent_class;
+	GimpCanvasItemClass parent_class;
 };
 
 
 GType            gimp_canvas_handle_get_type     (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_handle_new          (GimpDisplayShell *shell,
-        GimpHandleType    type,
-        GimpHandleAnchor  anchor,
-        gdouble           x,
-        gdouble           y,
-        gint              width,
-        gint              height);
+                                                  GimpHandleType type,
+                                                  GimpHandleAnchor anchor,
+                                                  gdouble x,
+                                                  gdouble y,
+                                                  gint width,
+                                                  gint height);
 
 void             gimp_canvas_handle_get_position (GimpCanvasItem   *handle,
-        gdouble          *x,
-        gdouble          *y);
+                                                  gdouble          *x,
+                                                  gdouble          *y);
 void             gimp_canvas_handle_set_position (GimpCanvasItem   *handle,
-        gdouble           x,
-        gdouble           y);
+                                                  gdouble x,
+                                                  gdouble y);
 
 gint             gimp_canvas_handle_calc_size    (GimpCanvasItem   *item,
-        gdouble           mouse_x,
-        gdouble           mouse_y,
-        gint              normal_size,
-        gint              hover_size);
+                                                  gdouble mouse_x,
+                                                  gdouble mouse_y,
+                                                  gint normal_size,
+                                                  gint hover_size);
 
 void             gimp_canvas_handle_get_size     (GimpCanvasItem   *handle,
-        gint             *width,
-        gint             *height);
+                                                  gint             *width,
+                                                  gint             *height);
 void             gimp_canvas_handle_set_size     (GimpCanvasItem   *handle,
-        gint              width,
-        gint              height);
+                                                  gint width,
+                                                  gint height);
 
 void             gimp_canvas_handle_set_angles   (GimpCanvasItem   *handle,
-        gdouble           start_handle,
-        gdouble           slice_handle);
+                                                  gdouble start_handle,
+                                                  gdouble slice_handle);
 
 
 #endif /* __GIMP_CANVAS_HANDLE_H__ */

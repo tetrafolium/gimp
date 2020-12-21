@@ -33,23 +33,23 @@
 #define GIMP_TOOL_POLYGON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_POLYGON, GimpToolPolygonClass))
 
 
-typedef struct _GimpToolPolygon        GimpToolPolygon;
+typedef struct _GimpToolPolygon GimpToolPolygon;
 typedef struct _GimpToolPolygonPrivate GimpToolPolygonPrivate;
-typedef struct _GimpToolPolygonClass   GimpToolPolygonClass;
+typedef struct _GimpToolPolygonClass GimpToolPolygonClass;
 
 struct _GimpToolPolygon
 {
-    GimpToolWidget          parent_instance;
+	GimpToolWidget parent_instance;
 
-    GimpToolPolygonPrivate *private;
+	GimpToolPolygonPrivate *private;
 };
 
 struct _GimpToolPolygonClass
 {
-    GimpToolWidgetClass  parent_class;
+	GimpToolWidgetClass parent_class;
 
-    /*  signals  */
-    void (* change_complete) (GimpToolPolygon *polygon);
+	/*  signals  */
+	void (* change_complete) (GimpToolPolygon *polygon);
 };
 
 
@@ -59,8 +59,8 @@ GimpToolWidget * gimp_tool_polygon_new        (GimpDisplayShell   *shell);
 
 gboolean         gimp_tool_polygon_is_closed  (GimpToolPolygon    *polygon);
 void             gimp_tool_polygon_get_points (GimpToolPolygon    *polygon,
-        const GimpVector2 **points,
-        gint               *n_points);
+                                               const GimpVector2 **points,
+                                               gint               *n_points);
 
 
 #endif /* __GIMP_TOOL_POLYGON_H__ */

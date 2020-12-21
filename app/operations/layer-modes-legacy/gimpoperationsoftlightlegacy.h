@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_SOFTLIGHT_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SOFTLIGHT_LEGACY, GimpOperationSoftlightLegacyClass))
 
 
-typedef struct _GimpOperationSoftlightLegacy      GimpOperationSoftlightLegacy;
+typedef struct _GimpOperationSoftlightLegacy GimpOperationSoftlightLegacy;
 typedef struct _GimpOperationSoftlightLegacyClass GimpOperationSoftlightLegacyClass;
 
 struct _GimpOperationSoftlightLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationSoftlightLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

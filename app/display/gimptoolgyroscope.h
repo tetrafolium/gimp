@@ -33,20 +33,20 @@
 #define GIMP_TOOL_GYROSCOPE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_GYROSCOPE, GimpToolGyroscopeClass))
 
 
-typedef struct _GimpToolGyroscope        GimpToolGyroscope;
+typedef struct _GimpToolGyroscope GimpToolGyroscope;
 typedef struct _GimpToolGyroscopePrivate GimpToolGyroscopePrivate;
-typedef struct _GimpToolGyroscopeClass   GimpToolGyroscopeClass;
+typedef struct _GimpToolGyroscopeClass GimpToolGyroscopeClass;
 
 struct _GimpToolGyroscope
 {
-    GimpToolWidget            parent_instance;
+	GimpToolWidget parent_instance;
 
-    GimpToolGyroscopePrivate *private;
+	GimpToolGyroscopePrivate *private;
 };
 
 struct _GimpToolGyroscopeClass
 {
-    GimpToolWidgetClass  parent_class;
+	GimpToolWidgetClass parent_class;
 };
 
 

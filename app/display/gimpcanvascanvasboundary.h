@@ -33,17 +33,17 @@
 #define GIMP_CANVAS_CANVAS_BOUNDARY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_CANVAS_BOUNDARY, GimpCanvasCanvasBoundaryClass))
 
 
-typedef struct _GimpCanvasCanvasBoundary      GimpCanvasCanvasBoundary;
+typedef struct _GimpCanvasCanvasBoundary GimpCanvasCanvasBoundary;
 typedef struct _GimpCanvasCanvasBoundaryClass GimpCanvasCanvasBoundaryClass;
 
 struct _GimpCanvasCanvasBoundary
 {
-    GimpCanvasRectangle  parent_instance;
+	GimpCanvasRectangle parent_instance;
 };
 
 struct _GimpCanvasCanvasBoundaryClass
 {
-    GimpCanvasRectangleClass  parent_class;
+	GimpCanvasRectangleClass parent_class;
 };
 
 
@@ -52,7 +52,7 @@ GType            gimp_canvas_canvas_boundary_get_type  (void) G_GNUC_CONST;
 GimpCanvasItem * gimp_canvas_canvas_boundary_new       (GimpDisplayShell        *shell);
 
 void             gimp_canvas_canvas_boundary_set_image (GimpCanvasCanvasBoundary *boundary,
-        GimpImage                *image);
+                                                        GimpImage                *image);
 
 
 #endif /* __GIMP_CANVAS_CANVAS_BOUNDARY_H__ */

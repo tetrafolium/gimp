@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_DISSOLVE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_DISSOLVE, GimpOperationDissolveClass))
 
 
-typedef struct _GimpOperationDissolve      GimpOperationDissolve;
+typedef struct _GimpOperationDissolve GimpOperationDissolve;
 typedef struct _GimpOperationDissolveClass GimpOperationDissolveClass;
 
 struct _GimpOperationDissolveClass
 {
-    GimpOperationLayerModeClass parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 struct _GimpOperationDissolve
 {
-    GimpOperationLayerMode parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 

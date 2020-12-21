@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_ADDITION_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_ADDITION_LEGACY, GimpOperationAdditionLegacyClass))
 
 
-typedef struct _GimpOperationAdditionLegacy      GimpOperationAdditionLegacy;
+typedef struct _GimpOperationAdditionLegacy GimpOperationAdditionLegacy;
 typedef struct _GimpOperationAdditionLegacyClass GimpOperationAdditionLegacyClass;
 
 struct _GimpOperationAdditionLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationAdditionLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 

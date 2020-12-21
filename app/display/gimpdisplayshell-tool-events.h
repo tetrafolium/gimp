@@ -20,33 +20,33 @@
 
 
 gboolean   gimp_display_shell_events                  (GtkWidget        *widget,
-        GdkEvent         *event,
-        GimpDisplayShell *shell);
+                                                       GdkEvent         *event,
+                                                       GimpDisplayShell *shell);
 
 gboolean   gimp_display_shell_canvas_tool_events      (GtkWidget        *widget,
-        GdkEvent         *event,
-        GimpDisplayShell *shell);
+                                                       GdkEvent         *event,
+                                                       GimpDisplayShell *shell);
 void       gimp_display_shell_canvas_grab_notify      (GtkWidget        *widget,
-        gboolean          was_grabbed,
-        GimpDisplayShell *shell);
+                                                       gboolean was_grabbed,
+                                                       GimpDisplayShell *shell);
 
 void       gimp_display_shell_buffer_stroke           (GimpMotionBuffer *buffer,
-        const GimpCoords *coords,
-        guint32           time,
-        GdkModifierType   state,
-        GimpDisplayShell *shell);
+                                                       const GimpCoords *coords,
+                                                       guint32 time,
+                                                       GdkModifierType state,
+                                                       GimpDisplayShell *shell);
 void       gimp_display_shell_buffer_hover            (GimpMotionBuffer *buffer,
-        const GimpCoords *coords,
-        GdkModifierType   state,
-        gboolean          proximity,
-        GimpDisplayShell *shell);
+                                                       const GimpCoords *coords,
+                                                       GdkModifierType state,
+                                                       gboolean proximity,
+                                                       GimpDisplayShell *shell);
 
 gboolean   gimp_display_shell_hruler_button_press     (GtkWidget        *widget,
-        GdkEventButton   *bevent,
-        GimpDisplayShell *shell);
+                                                       GdkEventButton   *bevent,
+                                                       GimpDisplayShell *shell);
 gboolean   gimp_display_shell_vruler_button_press     (GtkWidget        *widget,
-        GdkEventButton   *bevent,
-        GimpDisplayShell *shell);
+                                                       GdkEventButton   *bevent,
+                                                       GimpDisplayShell *shell);
 
 
 #endif /* __GIMP_DISPLAY_SHELL_TOOL_EVENT_H__ */

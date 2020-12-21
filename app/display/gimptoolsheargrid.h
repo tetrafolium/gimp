@@ -33,33 +33,33 @@
 #define GIMP_TOOL_SHEAR_GRID_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_SHEAR_GRID, GimpToolShearGridClass))
 
 
-typedef struct _GimpToolShearGrid        GimpToolShearGrid;
+typedef struct _GimpToolShearGrid GimpToolShearGrid;
 typedef struct _GimpToolShearGridPrivate GimpToolShearGridPrivate;
-typedef struct _GimpToolShearGridClass   GimpToolShearGridClass;
+typedef struct _GimpToolShearGridClass GimpToolShearGridClass;
 
 struct _GimpToolShearGrid
 {
-    GimpToolTransformGrid     parent_instance;
+	GimpToolTransformGrid parent_instance;
 
-    GimpToolShearGridPrivate *private;
+	GimpToolShearGridPrivate *private;
 };
 
 struct _GimpToolShearGridClass
 {
-    GimpToolTransformGridClass  parent_class;
+	GimpToolTransformGridClass parent_class;
 };
 
 
 GType            gimp_tool_shear_grid_get_type (void) G_GNUC_CONST;
 
 GimpToolWidget * gimp_tool_shear_grid_new      (GimpDisplayShell    *shell,
-        gdouble              x1,
-        gdouble              y1,
-        gdouble              x2,
-        gdouble              y2,
-        GimpOrientationType  orientation,
-        gdouble              shear_x,
-        gdouble              shear_y);
+                                                gdouble x1,
+                                                gdouble y1,
+                                                gdouble x2,
+                                                gdouble y2,
+                                                GimpOrientationType orientation,
+                                                gdouble shear_x,
+                                                gdouble shear_y);
 
 
 #endif /* __GIMP_TOOL_SHEAR_GRID_H__ */

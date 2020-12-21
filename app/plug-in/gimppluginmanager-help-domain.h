@@ -25,19 +25,19 @@ void          gimp_plug_in_manager_help_domain_exit (GimpPlugInManager   *manage
 
 /* Add a help domain */
 void          gimp_plug_in_manager_add_help_domain  (GimpPlugInManager   *manager,
-        GFile               *file,
-        const gchar         *domain_name,
-        const gchar         *domain_uri);
+                                                     GFile               *file,
+                                                     const gchar         *domain_name,
+                                                     const gchar         *domain_uri);
 
 /* Retrieve a plug-ins help domain */
 const gchar * gimp_plug_in_manager_get_help_domain  (GimpPlugInManager   *manager,
-        GFile               *file,
-        const gchar        **help_uri);
+                                                     GFile               *file,
+                                                     const gchar        **help_uri);
 
 /* Retrieve all help domains */
 gint          gimp_plug_in_manager_get_help_domains (GimpPlugInManager   *manager,
-        gchar             ***help_domains,
-        gchar             ***help_uris);
+                                                     gchar             ***help_domains,
+                                                     gchar             ***help_uris);
 
 
 #endif /* __GIMP_PLUG_IN_MANAGER_HELP_DOMAIN_H__ */

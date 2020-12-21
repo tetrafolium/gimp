@@ -34,19 +34,19 @@
 #define GIMP_OPERATION_THRESHOLD_ALPHA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_THRESHOLD_ALPHA, GimpOperationThresholdAlphaClass))
 
 
-typedef struct _GimpOperationThresholdAlpha      GimpOperationThresholdAlpha;
+typedef struct _GimpOperationThresholdAlpha GimpOperationThresholdAlpha;
 typedef struct _GimpOperationThresholdAlphaClass GimpOperationThresholdAlphaClass;
 
 struct _GimpOperationThresholdAlpha
 {
-    GeglOperationPointFilter  parent_instance;
+	GeglOperationPointFilter parent_instance;
 
-    gdouble                   value;
+	gdouble value;
 };
 
 struct _GimpOperationThresholdAlphaClass
 {
-    GeglOperationPointFilterClass  parent_class;
+	GeglOperationPointFilterClass parent_class;
 };
 
 

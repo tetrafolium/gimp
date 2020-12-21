@@ -23,10 +23,10 @@
 
 
 GtkWidget * gimp_prop_kelvin_presets_new (GObject     *config,
-        const gchar *property_name);
+                                          const gchar *property_name);
 
 GtkWidget * gimp_prop_random_seed_new    (GObject     *config,
-        const gchar *property_name);
+                                          const gchar *property_name);
 
 
 #endif /* __GIMP_PROP_GUI_UTILS_H__ */

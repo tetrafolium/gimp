@@ -33,17 +33,17 @@
 #define GIMP_OPERATION_SUBTRACT_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SUBTRACT_LEGACY, GimpOperationSubtractLegacyClass))
 
 
-typedef struct _GimpOperationSubtractLegacy      GimpOperationSubtractLegacy;
+typedef struct _GimpOperationSubtractLegacy GimpOperationSubtractLegacy;
 typedef struct _GimpOperationSubtractLegacyClass GimpOperationSubtractLegacyClass;
 
 struct _GimpOperationSubtractLegacy
 {
-    GimpOperationLayerMode  parent_instance;
+	GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationSubtractLegacyClass
 {
-    GimpOperationLayerModeClass  parent_class;
+	GimpOperationLayerModeClass parent_class;
 };
 
 
