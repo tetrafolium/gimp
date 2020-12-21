@@ -20,18 +20,18 @@
 
 
 void   filters_apply_cmd_callback             (GimpAction *action,
-                                               GVariant   *value,
-                                               gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 void   filters_apply_interactive_cmd_callback (GimpAction *action,
-                                               GVariant   *value,
-                                               gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 
 void   filters_repeat_cmd_callback            (GimpAction *action,
-                                               GVariant   *value,
-                                               gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 void   filters_history_cmd_callback           (GimpAction *action,
-                                               GVariant   *value,
-                                               gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 
 
 #endif /* __FILTERS_COMMANDS_H__ */

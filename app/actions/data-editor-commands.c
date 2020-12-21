@@ -34,10 +34,10 @@ data_editor_edit_active_cmd_callback (GimpAction *action,
                                       GVariant   *value,
                                       gpointer    data)
 {
-  GimpDataEditor *editor = GIMP_DATA_EDITOR (data);
-  gboolean        edit_active;
+    GimpDataEditor *editor = GIMP_DATA_EDITOR (data);
+    gboolean        edit_active;
 
-  edit_active = g_variant_get_boolean (value);
+    edit_active = g_variant_get_boolean (value);
 
-  gimp_data_editor_set_edit_active (editor, edit_active);
+    gimp_data_editor_set_edit_active (editor, edit_active);
 }

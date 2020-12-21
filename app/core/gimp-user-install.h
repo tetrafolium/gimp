@@ -22,18 +22,18 @@
 typedef struct _GimpUserInstall GimpUserInstall;
 
 typedef void  (* GimpUserInstallLogFunc) (const gchar *message,
-                                          gboolean     error,
-                                          gpointer     user_data);
+        gboolean     error,
+        gpointer     user_data);
 
 
 GimpUserInstall * gimp_user_install_new  (GObject          *gimp,
-                                          gboolean          verbose);
+        gboolean          verbose);
 gboolean          gimp_user_install_run  (GimpUserInstall  *install);
 void              gimp_user_install_free (GimpUserInstall  *install);
 
 void   gimp_user_install_set_log_handler (GimpUserInstall        *install,
-                                          GimpUserInstallLogFunc  log,
-                                          gpointer                user_data);
+        GimpUserInstallLogFunc  log,
+        gpointer                user_data);
 
 
 #endif /* __USER_INSTALL_H__ */

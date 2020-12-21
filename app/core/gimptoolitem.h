@@ -38,27 +38,27 @@ typedef struct _GimpToolItemClass   GimpToolItemClass;
 
 struct _GimpToolItem
 {
-  GimpViewable         parent_instance;
+    GimpViewable         parent_instance;
 
-  GimpToolItemPrivate *priv;
+    GimpToolItemPrivate *priv;
 };
 
 struct _GimpToolItemClass
 {
-  GimpViewableClass  parent_class;
+    GimpViewableClass  parent_class;
 
-  /*  signals  */
-  void (* visible_changed) (GimpToolItem *tool_item);
-  void (* shown_changed)   (GimpToolItem *tool_item);
+    /*  signals  */
+    void (* visible_changed) (GimpToolItem *tool_item);
+    void (* shown_changed)   (GimpToolItem *tool_item);
 };
 
 
 GType      gimp_tool_item_get_type      (void) G_GNUC_CONST;
-                                        
+
 void       gimp_tool_item_set_visible   (GimpToolItem *tool_item,
-                                         gboolean      visible);
+        gboolean      visible);
 gboolean   gimp_tool_item_get_visible   (GimpToolItem *tool_item);
-                                        
+
 gboolean   gimp_tool_item_get_shown     (GimpToolItem *tool_item);
 
 

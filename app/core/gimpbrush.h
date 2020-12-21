@@ -35,103 +35,103 @@ typedef struct _GimpBrushClass   GimpBrushClass;
 
 struct _GimpBrush
 {
-  GimpData          parent_instance;
+    GimpData          parent_instance;
 
-  GimpBrushPrivate *priv;
+    GimpBrushPrivate *priv;
 };
 
 struct _GimpBrushClass
 {
-  GimpDataClass  parent_class;
+    GimpDataClass  parent_class;
 
-  /*  virtual functions  */
-  void             (* begin_use)          (GimpBrush        *brush);
-  void             (* end_use)            (GimpBrush        *brush);
-  GimpBrush      * (* select_brush)       (GimpBrush        *brush,
-                                           const GimpCoords *last_coords,
-                                           const GimpCoords *current_coords);
-  gboolean         (* want_null_motion)   (GimpBrush        *brush,
-                                           const GimpCoords *last_coords,
-                                           const GimpCoords *current_coords);
-  void             (* transform_size)     (GimpBrush        *brush,
-                                           gdouble           scale,
-                                           gdouble           aspect_ratio,
-                                           gdouble           angle,
-                                           gboolean          reflect,
-                                           gint             *width,
-                                           gint             *height);
-  GimpTempBuf    * (* transform_mask)     (GimpBrush        *brush,
-                                           gdouble           scale,
-                                           gdouble           aspect_ratio,
-                                           gdouble           angle,
-                                           gboolean          reflect,
-                                           gdouble           hardness);
-  GimpTempBuf    * (* transform_pixmap)   (GimpBrush        *brush,
-                                           gdouble           scale,
-                                           gdouble           aspect_ratio,
-                                           gdouble           angle,
-                                           gboolean          reflect,
-                                           gdouble           hardness);
-  GimpBezierDesc * (* transform_boundary) (GimpBrush        *brush,
-                                           gdouble           scale,
-                                           gdouble           aspect_ratio,
-                                           gdouble           angle,
-                                           gboolean          reflect,
-                                           gdouble           hardness,
-                                           gint             *width,
-                                           gint             *height);
+    /*  virtual functions  */
+    void             (* begin_use)          (GimpBrush        *brush);
+    void             (* end_use)            (GimpBrush        *brush);
+    GimpBrush      * (* select_brush)       (GimpBrush        *brush,
+            const GimpCoords *last_coords,
+            const GimpCoords *current_coords);
+    gboolean         (* want_null_motion)   (GimpBrush        *brush,
+            const GimpCoords *last_coords,
+            const GimpCoords *current_coords);
+    void             (* transform_size)     (GimpBrush        *brush,
+            gdouble           scale,
+            gdouble           aspect_ratio,
+            gdouble           angle,
+            gboolean          reflect,
+            gint             *width,
+            gint             *height);
+    GimpTempBuf    * (* transform_mask)     (GimpBrush        *brush,
+            gdouble           scale,
+            gdouble           aspect_ratio,
+            gdouble           angle,
+            gboolean          reflect,
+            gdouble           hardness);
+    GimpTempBuf    * (* transform_pixmap)   (GimpBrush        *brush,
+            gdouble           scale,
+            gdouble           aspect_ratio,
+            gdouble           angle,
+            gboolean          reflect,
+            gdouble           hardness);
+    GimpBezierDesc * (* transform_boundary) (GimpBrush        *brush,
+            gdouble           scale,
+            gdouble           aspect_ratio,
+            gdouble           angle,
+            gboolean          reflect,
+            gdouble           hardness,
+            gint             *width,
+            gint             *height);
 
-  /*  signals  */
-  void             (* spacing_changed)    (GimpBrush        *brush);
+    /*  signals  */
+    void             (* spacing_changed)    (GimpBrush        *brush);
 };
 
 
 GType                  gimp_brush_get_type           (void) G_GNUC_CONST;
 
 GimpData             * gimp_brush_new                (GimpContext      *context,
-                                                      const gchar      *name);
+        const gchar      *name);
 GimpData             * gimp_brush_get_standard       (GimpContext      *context);
 
 void                   gimp_brush_begin_use          (GimpBrush        *brush);
 void                   gimp_brush_end_use            (GimpBrush        *brush);
 
 GimpBrush            * gimp_brush_select_brush       (GimpBrush        *brush,
-                                                      const GimpCoords *last_coords,
-                                                      const GimpCoords *current_coords);
+        const GimpCoords *last_coords,
+        const GimpCoords *current_coords);
 gboolean               gimp_brush_want_null_motion   (GimpBrush        *brush,
-                                                      const GimpCoords *last_coords,
-                                                      const GimpCoords *current_coords);
+        const GimpCoords *last_coords,
+        const GimpCoords *current_coords);
 
 /* Gets width and height of a transformed mask of the brush, for
  * provided parameters.
  */
 void                   gimp_brush_transform_size     (GimpBrush        *brush,
-                                                      gdouble           scale,
-                                                      gdouble           aspect_ratio,
-                                                      gdouble           angle,
-                                                      gboolean          reflect,
-                                                      gint             *width,
-                                                      gint             *height);
+        gdouble           scale,
+        gdouble           aspect_ratio,
+        gdouble           angle,
+        gboolean          reflect,
+        gint             *width,
+        gint             *height);
 const GimpTempBuf    * gimp_brush_transform_mask     (GimpBrush        *brush,
-                                                      gdouble           scale,
-                                                      gdouble           aspect_ratio,
-                                                      gdouble           angle,
-                                                      gboolean          reflect,
-                                                      gdouble           hardness);
+        gdouble           scale,
+        gdouble           aspect_ratio,
+        gdouble           angle,
+        gboolean          reflect,
+        gdouble           hardness);
 const GimpTempBuf    * gimp_brush_transform_pixmap   (GimpBrush        *brush,
-                                                      gdouble           scale,
-                                                      gdouble           aspect_ratio,
-                                                      gdouble           angle,
-                                                      gboolean          reflect,
-                                                      gdouble           hardness);
+        gdouble           scale,
+        gdouble           aspect_ratio,
+        gdouble           angle,
+        gboolean          reflect,
+        gdouble           hardness);
 const GimpBezierDesc * gimp_brush_transform_boundary (GimpBrush        *brush,
-                                                      gdouble           scale,
-                                                      gdouble           aspect_ratio,
-                                                      gdouble           angle,
-                                                      gboolean          reflect,
-                                                      gdouble           hardness,
-                                                      gint             *width,
-                                                      gint             *height);
+        gdouble           scale,
+        gdouble           aspect_ratio,
+        gdouble           angle,
+        gboolean          reflect,
+        gdouble           hardness,
+        gint             *width,
+        gint             *height);
 
 GimpTempBuf          * gimp_brush_get_mask           (GimpBrush        *brush);
 GimpTempBuf          * gimp_brush_get_pixmap         (GimpBrush        *brush);
@@ -141,7 +141,7 @@ gint                   gimp_brush_get_height         (GimpBrush        *brush);
 
 gint                   gimp_brush_get_spacing        (GimpBrush        *brush);
 void                   gimp_brush_set_spacing        (GimpBrush        *brush,
-                                                      gint              spacing);
+        gint              spacing);
 
 GimpVector2            gimp_brush_get_x_axis         (GimpBrush        *brush);
 GimpVector2            gimp_brush_get_y_axis         (GimpBrush        *brush);

@@ -26,11 +26,11 @@ void   gimp_image_scale         (GimpImage             *image,
                                  GimpProgress          *progress);
 
 GimpImageScaleCheckType
-       gimp_image_scale_check   (GimpImage             *image,
-                                 gint                   new_width,
-                                 gint                   new_height,
-                                 gint64                 max_memsize,
-                                 gint64                *new_memsize);
+gimp_image_scale_check   (GimpImage             *image,
+                          gint                   new_width,
+                          gint                   new_height,
+                          gint64                 max_memsize,
+                          gint64                *new_memsize);
 
 
 #endif /* __GIMP_IMAGE_SCALE_H__ */

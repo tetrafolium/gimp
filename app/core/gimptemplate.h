@@ -57,12 +57,12 @@ typedef struct _GimpTemplateClass GimpTemplateClass;
 
 struct _GimpTemplate
 {
-  GimpViewable  parent_instance;
+    GimpViewable  parent_instance;
 };
 
 struct _GimpTemplateClass
 {
-  GimpViewableClass  parent_instance;
+    GimpViewableClass  parent_instance;
 };
 
 
@@ -71,7 +71,7 @@ GType               gimp_template_get_type            (void) G_GNUC_CONST;
 GimpTemplate      * gimp_template_new                 (const gchar  *name);
 
 void                gimp_template_set_from_image      (GimpTemplate *template,
-                                                       GimpImage    *image);
+        GimpImage    *image);
 
 gint                gimp_template_get_width           (GimpTemplate *template);
 gint                gimp_template_get_height          (GimpTemplate *template);

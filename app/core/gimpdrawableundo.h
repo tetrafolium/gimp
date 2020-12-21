@@ -35,16 +35,16 @@ typedef struct _GimpDrawableUndoClass GimpDrawableUndoClass;
 
 struct _GimpDrawableUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  GeglBuffer   *buffer;
-  gint          x;
-  gint          y;
+    GeglBuffer   *buffer;
+    gint          x;
+    gint          y;
 };
 
 struct _GimpDrawableUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

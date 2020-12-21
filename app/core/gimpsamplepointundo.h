@@ -35,16 +35,16 @@ typedef struct _GimpSamplePointUndoClass GimpSamplePointUndoClass;
 
 struct _GimpSamplePointUndo
 {
-  GimpAuxItemUndo    parent_instance;
+    GimpAuxItemUndo    parent_instance;
 
-  gint               x;
-  gint               y;
-  GimpColorPickMode  pick_mode;
+    gint               x;
+    gint               y;
+    GimpColorPickMode  pick_mode;
 };
 
 struct _GimpSamplePointUndoClass
 {
-  GimpAuxItemUndoClass  parent_class;
+    GimpAuxItemUndoClass  parent_class;
 };
 
 

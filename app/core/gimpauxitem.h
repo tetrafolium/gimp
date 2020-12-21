@@ -32,17 +32,17 @@ typedef struct _GimpAuxItemClass   GimpAuxItemClass;
 
 struct _GimpAuxItem
 {
-  GObject             parent_instance;
+    GObject             parent_instance;
 
-  GimpAuxItemPrivate *priv;
+    GimpAuxItemPrivate *priv;
 };
 
 struct _GimpAuxItemClass
 {
-  GObjectClass  parent_class;
+    GObjectClass  parent_class;
 
-  /*  signals  */
-  void (* removed) (GimpAuxItem *aux_item);
+    /*  signals  */
+    void (* removed) (GimpAuxItem *aux_item);
 };
 
 

@@ -36,29 +36,29 @@ typedef struct _GimpPdbProgressClass  GimpPdbProgressClass;
 
 struct _GimpPdbProgress
 {
-  GObject      object;
+    GObject      object;
 
-  gboolean     active;
-  gdouble      value;
+    gboolean     active;
+    gdouble      value;
 
-  GimpPDB     *pdb;
-  GimpContext *context;
-  gchar       *callback_name;
-  gboolean     callback_busy;
+    GimpPDB     *pdb;
+    GimpContext *context;
+    gchar       *callback_name;
+    gboolean     callback_busy;
 };
 
 struct _GimpPdbProgressClass
 {
-  GObjectClass  parent_class;
+    GObjectClass  parent_class;
 
-  GList        *progresses;
+    GList        *progresses;
 };
 
 
 GType             gimp_pdb_progress_get_type        (void) G_GNUC_CONST;
 
 GimpPdbProgress * gimp_pdb_progress_get_by_callback (GimpPdbProgressClass *klass,
-                                                     const gchar          *callback_name);
+        const gchar          *callback_name);
 
 
 G_END_DECLS

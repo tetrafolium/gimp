@@ -20,13 +20,13 @@
 
 
 void                 floating_sel_attach            (GimpLayer     *layer,
-                                                     GimpDrawable  *drawable);
+        GimpDrawable  *drawable);
 void                 floating_sel_anchor            (GimpLayer     *layer);
 gboolean             floating_sel_to_layer          (GimpLayer     *layer,
-                                                     GError       **error);
+        GError       **error);
 void                 floating_sel_activate_drawable (GimpLayer     *layer);
 const GimpBoundSeg * floating_sel_boundary          (GimpLayer     *layer,
-                                                     gint          *n_segs);
+        gint          *n_segs);
 void                 floating_sel_invalidate        (GimpLayer     *layer);
 
 

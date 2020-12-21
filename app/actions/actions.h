@@ -34,31 +34,31 @@ GtkWidget        * action_data_get_widget  (gpointer              data);
 gint               action_data_sel_count   (gpointer              data);
 
 gdouble            action_select_value     (GimpActionSelectType  select_type,
-                                            gdouble               value,
-                                            gdouble               min,
-                                            gdouble               max,
-                                            gdouble               def,
-                                            gdouble               small_inc,
-                                            gdouble               inc,
-                                            gdouble               skip_inc,
-                                            gdouble               delta_factor,
-                                            gboolean              wrap);
+        gdouble               value,
+        gdouble               min,
+        gdouble               max,
+        gdouble               def,
+        gdouble               small_inc,
+        gdouble               inc,
+        gdouble               skip_inc,
+        gdouble               delta_factor,
+        gboolean              wrap);
 void               action_select_property  (GimpActionSelectType  select_type,
-                                            GimpDisplay          *display,
-                                            GObject              *object,
-                                            const gchar          *property_name,
-                                            gdouble               small_inc,
-                                            gdouble               inc,
-                                            gdouble               skip_inc,
-                                            gdouble               delta_factor,
-                                            gboolean              wrap);
+        GimpDisplay          *display,
+        GObject              *object,
+        const gchar          *property_name,
+        gdouble               small_inc,
+        gdouble               inc,
+        gdouble               skip_inc,
+        gdouble               delta_factor,
+        gboolean              wrap);
 GimpObject       * action_select_object    (GimpActionSelectType  select_type,
-                                            GimpContainer        *container,
-                                            GimpObject           *current);
+        GimpContainer        *container,
+        GimpObject           *current);
 void               action_message          (GimpDisplay          *display,
-                                            GObject              *object,
-                                            const gchar          *format,
-                                            ...) G_GNUC_PRINTF(3,4);
+        GObject              *object,
+        const gchar          *format,
+        ...) G_GNUC_PRINTF(3,4);
 
 
 #define return_if_no_gimp(gimp,data) \

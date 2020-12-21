@@ -45,39 +45,39 @@
 
 enum
 {
-  ADD,
-  REMOVE,
-  REORDER,
-  FREEZE,
-  THAW,
-  LAST_SIGNAL
+    ADD,
+    REMOVE,
+    REORDER,
+    FREEZE,
+    THAW,
+    LAST_SIGNAL
 };
 
 enum
 {
-  PROP_0,
-  PROP_CHILDREN_TYPE,
-  PROP_POLICY
+    PROP_0,
+    PROP_CHILDREN_TYPE,
+    PROP_POLICY
 };
 
 
 typedef struct
 {
-  gchar     *signame;
-  GCallback  callback;
-  gpointer   callback_data;
+    gchar     *signame;
+    GCallback  callback;
+    gpointer   callback_data;
 
-  GQuark     quark;  /*  used to attach the signal id's of child signals  */
+    GQuark     quark;  /*  used to attach the signal id's of child signals  */
 } GimpContainerHandler;
 
 struct _GimpContainerPrivate
 {
-  GType                children_type;
-  GimpContainerPolicy  policy;
-  gint                 n_children;
+    GType                children_type;
+    GimpContainerPolicy  policy;
+    gint                 n_children;
 
-  GList               *handlers;
-  gint                 freeze_count;
+    GList               *handlers;
+    gint                 freeze_count;
 };
 
 
@@ -88,41 +88,41 @@ static void   gimp_container_config_iface_init   (GimpConfigInterface *iface);
 static void       gimp_container_dispose         (GObject          *object);
 
 static void       gimp_container_set_property    (GObject          *object,
-                                                  guint             property_id,
-                                                  const GValue     *value,
-                                                  GParamSpec       *pspec);
+        guint             property_id,
+        const GValue     *value,
+        GParamSpec       *pspec);
 static void       gimp_container_get_property    (GObject          *object,
-                                                  guint             property_id,
-                                                  GValue           *value,
-                                                  GParamSpec       *pspec);
+        guint             property_id,
+        GValue           *value,
+        GParamSpec       *pspec);
 
 static gint64     gimp_container_get_memsize     (GimpObject       *object,
-                                                  gint64           *gui_size);
+        gint64           *gui_size);
 
 static void       gimp_container_real_add        (GimpContainer    *container,
-                                                  GimpObject       *object);
+        GimpObject       *object);
 static void       gimp_container_real_remove     (GimpContainer    *container,
-                                                  GimpObject       *object);
+        GimpObject       *object);
 
 static gboolean   gimp_container_serialize       (GimpConfig       *config,
-                                                  GimpConfigWriter *writer,
-                                                  gpointer          data);
+        GimpConfigWriter *writer,
+        gpointer          data);
 static gboolean   gimp_container_deserialize     (GimpConfig       *config,
-                                                  GScanner         *scanner,
-                                                  gint              nest_level,
-                                                  gpointer          data);
+        GScanner         *scanner,
+        gint              nest_level,
+        gpointer          data);
 
 static void   gimp_container_disconnect_callback (GimpObject       *object,
-                                                  gpointer          data);
+        gpointer          data);
 
 static void       gimp_container_free_handler    (GimpContainer    *container,
-                                                  GimpContainerHandler *handler);
+        GimpContainerHandler *handler);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpContainer, gimp_container, GIMP_TYPE_OBJECT,
                          G_ADD_PRIVATE (GimpContainer)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
-                                                gimp_container_config_iface_init))
+                                 gimp_container_config_iface_init))
 
 #define parent_class gimp_container_parent_class
 
@@ -132,129 +132,129 @@ static guint container_signals[LAST_SIGNAL] = { 0, };
 static void
 gimp_container_class_init (GimpContainerClass *klass)
 {
-  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
-  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+    GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+    GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
 
-  container_signals[ADD] =
-    g_signal_new ("add",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpContainerClass, add),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  GIMP_TYPE_OBJECT);
+    container_signals[ADD] =
+        g_signal_new ("add",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpContainerClass, add),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      GIMP_TYPE_OBJECT);
 
-  container_signals[REMOVE] =
-    g_signal_new ("remove",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpContainerClass, remove),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  GIMP_TYPE_OBJECT);
+    container_signals[REMOVE] =
+        g_signal_new ("remove",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpContainerClass, remove),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      GIMP_TYPE_OBJECT);
 
-  container_signals[REORDER] =
-    g_signal_new ("reorder",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpContainerClass, reorder),
-                  NULL, NULL,
-                  gimp_marshal_VOID__OBJECT_INT,
-                  G_TYPE_NONE, 2,
-                  GIMP_TYPE_OBJECT,
-                  G_TYPE_INT);
+    container_signals[REORDER] =
+        g_signal_new ("reorder",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpContainerClass, reorder),
+                      NULL, NULL,
+                      gimp_marshal_VOID__OBJECT_INT,
+                      G_TYPE_NONE, 2,
+                      GIMP_TYPE_OBJECT,
+                      G_TYPE_INT);
 
-  container_signals[FREEZE] =
-    g_signal_new ("freeze",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GimpContainerClass, freeze),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
+    container_signals[FREEZE] =
+        g_signal_new ("freeze",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_LAST,
+                      G_STRUCT_OFFSET (GimpContainerClass, freeze),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 0);
 
-  container_signals[THAW] =
-    g_signal_new ("thaw",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GimpContainerClass, thaw),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
+    container_signals[THAW] =
+        g_signal_new ("thaw",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_LAST,
+                      G_STRUCT_OFFSET (GimpContainerClass, thaw),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 0);
 
-  object_class->dispose          = gimp_container_dispose;
-  object_class->set_property     = gimp_container_set_property;
-  object_class->get_property     = gimp_container_get_property;
+    object_class->dispose          = gimp_container_dispose;
+    object_class->set_property     = gimp_container_set_property;
+    object_class->get_property     = gimp_container_get_property;
 
-  gimp_object_class->get_memsize = gimp_container_get_memsize;
+    gimp_object_class->get_memsize = gimp_container_get_memsize;
 
-  klass->add                     = gimp_container_real_add;
-  klass->remove                  = gimp_container_real_remove;
-  klass->reorder                 = NULL;
-  klass->freeze                  = NULL;
-  klass->thaw                    = NULL;
+    klass->add                     = gimp_container_real_add;
+    klass->remove                  = gimp_container_real_remove;
+    klass->reorder                 = NULL;
+    klass->freeze                  = NULL;
+    klass->thaw                    = NULL;
 
-  klass->clear                   = NULL;
-  klass->have                    = NULL;
-  klass->foreach                 = NULL;
-  klass->search                  = NULL;
-  klass->get_unique_names        = NULL;
-  klass->get_child_by_name       = NULL;
-  klass->get_child_by_index      = NULL;
-  klass->get_child_index         = NULL;
+    klass->clear                   = NULL;
+    klass->have                    = NULL;
+    klass->foreach                 = NULL;
+    klass->search                  = NULL;
+    klass->get_unique_names        = NULL;
+    klass->get_child_by_name       = NULL;
+    klass->get_child_by_index      = NULL;
+    klass->get_child_index         = NULL;
 
-  g_object_class_install_property (object_class, PROP_CHILDREN_TYPE,
-                                   g_param_spec_gtype ("children-type",
-                                                       NULL, NULL,
-                                                       GIMP_TYPE_OBJECT,
-                                                       GIMP_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_CHILDREN_TYPE,
+                                     g_param_spec_gtype ("children-type",
+                                             NULL, NULL,
+                                             GIMP_TYPE_OBJECT,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 
-  g_object_class_install_property (object_class, PROP_POLICY,
-                                   g_param_spec_enum ("policy",
-                                                      NULL, NULL,
-                                                      GIMP_TYPE_CONTAINER_POLICY,
-                                                      GIMP_CONTAINER_POLICY_STRONG,
-                                                      GIMP_PARAM_READWRITE |
-                                                      G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_POLICY,
+                                     g_param_spec_enum ("policy",
+                                             NULL, NULL,
+                                             GIMP_TYPE_CONTAINER_POLICY,
+                                             GIMP_CONTAINER_POLICY_STRONG,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
 gimp_container_config_iface_init (GimpConfigInterface *iface)
 {
-  iface->serialize   = gimp_container_serialize;
-  iface->deserialize = gimp_container_deserialize;
+    iface->serialize   = gimp_container_serialize;
+    iface->deserialize = gimp_container_deserialize;
 }
 
 static void
 gimp_container_init (GimpContainer *container)
 {
-  container->priv = gimp_container_get_instance_private (container);
-  container->priv->handlers      = NULL;
-  container->priv->freeze_count  = 0;
+    container->priv = gimp_container_get_instance_private (container);
+    container->priv->handlers      = NULL;
+    container->priv->freeze_count  = 0;
 
-  container->priv->children_type = G_TYPE_NONE;
-  container->priv->policy        = GIMP_CONTAINER_POLICY_STRONG;
-  container->priv->n_children    = 0;
+    container->priv->children_type = G_TYPE_NONE;
+    container->priv->policy        = GIMP_CONTAINER_POLICY_STRONG;
+    container->priv->n_children    = 0;
 }
 
 static void
 gimp_container_dispose (GObject *object)
 {
-  GimpContainer *container = GIMP_CONTAINER (object);
+    GimpContainer *container = GIMP_CONTAINER (object);
 
-  gimp_container_clear (container);
+    gimp_container_clear (container);
 
-  while (container->priv->handlers)
-    gimp_container_remove_handler (container,
-                                   ((GimpContainerHandler *)
-                                    container->priv->handlers->data)->quark);
+    while (container->priv->handlers)
+        gimp_container_remove_handler (container,
+                                       ((GimpContainerHandler *)
+                                        container->priv->handlers->data)->quark);
 
-  if (container->priv->children_type != G_TYPE_NONE)
+    if (container->priv->children_type != G_TYPE_NONE)
     {
-      g_type_class_unref (g_type_class_peek (container->priv->children_type));
-      container->priv->children_type = G_TYPE_NONE;
+        g_type_class_unref (g_type_class_peek (container->priv->children_type));
+        container->priv->children_type = G_TYPE_NONE;
     }
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+    G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -263,20 +263,20 @@ gimp_container_set_property (GObject      *object,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
-  GimpContainer *container = GIMP_CONTAINER (object);
+    GimpContainer *container = GIMP_CONTAINER (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CHILDREN_TYPE:
-      container->priv->children_type = g_value_get_gtype (value);
-      g_type_class_ref (container->priv->children_type);
-      break;
+        container->priv->children_type = g_value_get_gtype (value);
+        g_type_class_ref (container->priv->children_type);
+        break;
     case PROP_POLICY:
-      container->priv->policy = g_value_get_enum (value);
-      break;
+        container->priv->policy = g_value_get_enum (value);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -286,19 +286,19 @@ gimp_container_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
-  GimpContainer *container = GIMP_CONTAINER (object);
+    GimpContainer *container = GIMP_CONTAINER (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CHILDREN_TYPE:
-      g_value_set_gtype (value, container->priv->children_type);
-      break;
+        g_value_set_gtype (value, container->priv->children_type);
+        break;
     case PROP_POLICY:
-      g_value_set_enum (value, container->priv->policy);
-      break;
+        g_value_set_enum (value, container->priv->policy);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -306,74 +306,74 @@ static gint64
 gimp_container_get_memsize (GimpObject *object,
                             gint64     *gui_size)
 {
-  GimpContainer *container = GIMP_CONTAINER (object);
-  gint64         memsize   = 0;
-  GList         *list;
+    GimpContainer *container = GIMP_CONTAINER (object);
+    gint64         memsize   = 0;
+    GList         *list;
 
-  for (list = container->priv->handlers; list; list = g_list_next (list))
+    for (list = container->priv->handlers; list; list = g_list_next (list))
     {
-      GimpContainerHandler *handler = list->data;
+        GimpContainerHandler *handler = list->data;
 
-      memsize += (sizeof (GList) +
-                  sizeof (GimpContainerHandler) +
-                  gimp_string_get_memsize (handler->signame));
+        memsize += (sizeof (GList) +
+                    sizeof (GimpContainerHandler) +
+                    gimp_string_get_memsize (handler->signame));
     }
 
-  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
-                                                                  gui_size);
+    return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+            gui_size);
 }
 
 static void
 gimp_container_real_add (GimpContainer *container,
                          GimpObject    *object)
 {
-  container->priv->n_children++;
+    container->priv->n_children++;
 }
 
 static void
 gimp_container_real_remove (GimpContainer *container,
                             GimpObject    *object)
 {
-  container->priv->n_children--;
+    container->priv->n_children--;
 }
 
 
 typedef struct
 {
-  GimpConfigWriter *writer;
-  gpointer          data;
-  gboolean          success;
+    GimpConfigWriter *writer;
+    gpointer          data;
+    gboolean          success;
 } SerializeData;
 
 static void
 gimp_container_serialize_foreach (GObject       *object,
                                   SerializeData *serialize_data)
 {
-  GimpConfigInterface *config_iface;
-  const gchar         *name;
+    GimpConfigInterface *config_iface;
+    const gchar         *name;
 
-  config_iface = GIMP_CONFIG_GET_IFACE (object);
+    config_iface = GIMP_CONFIG_GET_IFACE (object);
 
-  if (! config_iface)
-    serialize_data->success = FALSE;
+    if (! config_iface)
+        serialize_data->success = FALSE;
 
-  if (! serialize_data->success)
-    return;
+    if (! serialize_data->success)
+        return;
 
-  gimp_config_writer_open (serialize_data->writer,
-                           g_type_name (G_TYPE_FROM_INSTANCE (object)));
+    gimp_config_writer_open (serialize_data->writer,
+                             g_type_name (G_TYPE_FROM_INSTANCE (object)));
 
-  name = gimp_object_get_name (object);
+    name = gimp_object_get_name (object);
 
-  if (name)
-    gimp_config_writer_string (serialize_data->writer, name);
-  else
-    gimp_config_writer_print (serialize_data->writer, "NULL", 4);
+    if (name)
+        gimp_config_writer_string (serialize_data->writer, name);
+    else
+        gimp_config_writer_print (serialize_data->writer, "NULL", 4);
 
-  serialize_data->success = config_iface->serialize (GIMP_CONFIG (object),
-                                                     serialize_data->writer,
-                                                     serialize_data->data);
-  gimp_config_writer_close (serialize_data->writer);
+    serialize_data->success = config_iface->serialize (GIMP_CONFIG (object),
+                              serialize_data->writer,
+                              serialize_data->data);
+    gimp_config_writer_close (serialize_data->writer);
 }
 
 static gboolean
@@ -381,18 +381,18 @@ gimp_container_serialize (GimpConfig       *config,
                           GimpConfigWriter *writer,
                           gpointer          data)
 {
-  GimpContainer *container = GIMP_CONTAINER (config);
-  SerializeData  serialize_data;
+    GimpContainer *container = GIMP_CONTAINER (config);
+    SerializeData  serialize_data;
 
-  serialize_data.writer  = writer;
-  serialize_data.data    = data;
-  serialize_data.success = TRUE;
+    serialize_data.writer  = writer;
+    serialize_data.data    = data;
+    serialize_data.success = TRUE;
 
-  gimp_container_foreach (container,
-                          (GFunc) gimp_container_serialize_foreach,
-                          &serialize_data);
+    gimp_container_foreach (container,
+                            (GFunc) gimp_container_serialize_foreach,
+                            &serialize_data);
 
-  return serialize_data.success;
+    return serialize_data.success;
 }
 
 static gboolean
@@ -401,23 +401,23 @@ gimp_container_deserialize (GimpConfig *config,
                             gint        nest_level,
                             gpointer    data)
 {
-  GimpContainer *container = GIMP_CONTAINER (config);
-  GTokenType     token;
+    GimpContainer *container = GIMP_CONTAINER (config);
+    GTokenType     token;
 
-  token = G_TOKEN_LEFT_PAREN;
+    token = G_TOKEN_LEFT_PAREN;
 
-  while (g_scanner_peek_next_token (scanner) == token)
+    while (g_scanner_peek_next_token (scanner) == token)
     {
-      token = g_scanner_get_next_token (scanner);
+        token = g_scanner_get_next_token (scanner);
 
-      switch (token)
+        switch (token)
         {
         case G_TOKEN_LEFT_PAREN:
-          token = G_TOKEN_IDENTIFIER;
-          break;
+            token = G_TOKEN_IDENTIFIER;
+            break;
 
         case G_TOKEN_IDENTIFIER:
-          {
+        {
             GimpObject *child     = NULL;
             GType       type;
             gchar      *name      = NULL;
@@ -426,51 +426,51 @@ gimp_container_deserialize (GimpConfig *config,
             type = g_type_from_name (scanner->value.v_identifier);
 
             if (! type)
-              {
+            {
                 g_scanner_error (scanner,
                                  "unable to determine type of '%s'",
                                  scanner->value.v_identifier);
                 return FALSE;
-              }
+            }
 
             if (! g_type_is_a (type, container->priv->children_type))
-              {
+            {
                 g_scanner_error (scanner,
                                  "'%s' is not a subclass of '%s'",
                                  scanner->value.v_identifier,
                                  g_type_name (container->priv->children_type));
                 return FALSE;
-              }
+            }
 
             if (! g_type_is_a (type, GIMP_TYPE_CONFIG))
-              {
+            {
                 g_scanner_error (scanner,
                                  "'%s' does not implement GimpConfigInterface",
                                  scanner->value.v_identifier);
                 return FALSE;
-              }
+            }
 
             if (! gimp_scanner_parse_string (scanner, &name))
-              {
+            {
                 token = G_TOKEN_STRING;
                 break;
-              }
+            }
 
             if (! name)
-              name = g_strdup ("");
+                name = g_strdup ("");
 
             if (gimp_container_get_unique_names (container))
-              child = gimp_container_get_child_by_name (container, name);
+                child = gimp_container_get_child_by_name (container, name);
 
             if (! child)
-              {
+            {
                 if (GIMP_IS_GIMP (data))
-                  child = g_object_new (type, "gimp", data, NULL);
+                    child = g_object_new (type, "gimp", data, NULL);
                 else
-                  child = g_object_new (type, NULL);
+                    child = g_object_new (type, NULL);
 
                 add_child = TRUE;
-              }
+            }
 
             /*  always use the deserialized name. while it normally
              *  doesn't make a difference there are obscure case like
@@ -479,63 +479,63 @@ gimp_container_deserialize (GimpConfig *config,
             gimp_object_take_name (child, name);
 
             if (! GIMP_CONFIG_GET_IFACE (child)->deserialize (GIMP_CONFIG (child),
-                                                              scanner,
-                                                              nest_level + 1,
-                                                              NULL))
-              {
+                    scanner,
+                    nest_level + 1,
+                    NULL))
+            {
                 if (add_child)
-                  g_object_unref (child);
+                    g_object_unref (child);
 
                 /*  warning should be already set by child  */
                 return FALSE;
-              }
+            }
 
             if (add_child)
-              {
+            {
                 gimp_container_add (container, child);
 
                 if (container->priv->policy == GIMP_CONTAINER_POLICY_STRONG)
-                  g_object_unref (child);
-              }
-          }
-          token = G_TOKEN_RIGHT_PAREN;
-          break;
+                    g_object_unref (child);
+            }
+        }
+        token = G_TOKEN_RIGHT_PAREN;
+        break;
 
         case G_TOKEN_RIGHT_PAREN:
-          token = G_TOKEN_LEFT_PAREN;
-          break;
+            token = G_TOKEN_LEFT_PAREN;
+            break;
 
         default: /* do nothing */
-          break;
+            break;
         }
     }
 
-  return gimp_config_deserialize_return (scanner, token, nest_level);
+    return gimp_config_deserialize_return (scanner, token, nest_level);
 }
 
 static void
 gimp_container_disconnect_callback (GimpObject *object,
                                     gpointer    data)
 {
-  GimpContainer *container = GIMP_CONTAINER (data);
+    GimpContainer *container = GIMP_CONTAINER (data);
 
-  gimp_container_remove (container, object);
+    gimp_container_remove (container, object);
 }
 
 static void
 gimp_container_free_handler_foreach_func (GimpObject           *object,
-                                          GimpContainerHandler *handler)
+        GimpContainerHandler *handler)
 {
-  gulong handler_id;
+    gulong handler_id;
 
-  handler_id = GPOINTER_TO_UINT (g_object_get_qdata (G_OBJECT (object),
-                                                     handler->quark));
+    handler_id = GPOINTER_TO_UINT (g_object_get_qdata (G_OBJECT (object),
+                                   handler->quark));
 
-  if (handler_id)
+    if (handler_id)
     {
-      g_signal_handler_disconnect (object, handler_id);
+        g_signal_handler_disconnect (object, handler_id);
 
-      g_object_set_qdata (G_OBJECT (object), handler->quark, NULL);
+        g_object_set_qdata (G_OBJECT (object), handler->quark, NULL);
     }
 }
 
@@ -543,166 +543,166 @@ static void
 gimp_container_free_handler (GimpContainer        *container,
                              GimpContainerHandler *handler)
 {
-  D (g_print ("%s: id = %d\n", G_STRFUNC, handler->quark));
+    D (g_print ("%s: id = %d\n", G_STRFUNC, handler->quark));
 
-  gimp_container_foreach (container,
-                          (GFunc) gimp_container_free_handler_foreach_func,
-                          handler);
+    gimp_container_foreach (container,
+                            (GFunc) gimp_container_free_handler_foreach_func,
+                            handler);
 
-  g_free (handler->signame);
-  g_slice_free (GimpContainerHandler, handler);
+    g_free (handler->signame);
+    g_slice_free (GimpContainerHandler, handler);
 }
 
 GType
 gimp_container_get_children_type (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), G_TYPE_NONE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), G_TYPE_NONE);
 
-  return container->priv->children_type;
+    return container->priv->children_type;
 }
 
 GimpContainerPolicy
 gimp_container_get_policy (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
 
-  return container->priv->policy;
+    return container->priv->policy;
 }
 
 gint
 gimp_container_get_n_children (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
 
-  return container->priv->n_children;
+    return container->priv->n_children;
 }
 
 gboolean
 gimp_container_add (GimpContainer *container,
                     GimpObject    *object)
 {
-  GList *list;
-  gint   n_children;
+    GList *list;
+    gint   n_children;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
-  g_return_val_if_fail (object != NULL, FALSE);
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
-                                                    container->priv->children_type),
-                        FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (object != NULL, FALSE);
+    g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
+                          container->priv->children_type),
+                          FALSE);
 
-  if (gimp_container_have (container, object))
+    if (gimp_container_have (container, object))
     {
-      g_warning ("%s: container %p already contains object %p",
-                 G_STRFUNC, container, object);
-      return FALSE;
+        g_warning ("%s: container %p already contains object %p",
+                   G_STRFUNC, container, object);
+        return FALSE;
     }
 
-  for (list = container->priv->handlers; list; list = g_list_next (list))
+    for (list = container->priv->handlers; list; list = g_list_next (list))
     {
-      GimpContainerHandler *handler = list->data;
-      gulong                handler_id;
+        GimpContainerHandler *handler = list->data;
+        gulong                handler_id;
 
-      handler_id = g_signal_connect (object,
-                                     handler->signame,
-                                     handler->callback,
-                                     handler->callback_data);
+        handler_id = g_signal_connect (object,
+                                       handler->signame,
+                                       handler->callback,
+                                       handler->callback_data);
 
-      g_object_set_qdata (G_OBJECT (object), handler->quark,
-                          GUINT_TO_POINTER (handler_id));
+        g_object_set_qdata (G_OBJECT (object), handler->quark,
+                            GUINT_TO_POINTER (handler_id));
     }
 
-  switch (container->priv->policy)
+    switch (container->priv->policy)
     {
     case GIMP_CONTAINER_POLICY_STRONG:
-      g_object_ref (object);
-      break;
+        g_object_ref (object);
+        break;
 
     case GIMP_CONTAINER_POLICY_WEAK:
-      g_signal_connect (object, "disconnect",
-                        G_CALLBACK (gimp_container_disconnect_callback),
-                        container);
-      break;
+        g_signal_connect (object, "disconnect",
+                          G_CALLBACK (gimp_container_disconnect_callback),
+                          container);
+        break;
     }
 
-  n_children = container->priv->n_children;
+    n_children = container->priv->n_children;
 
-  g_signal_emit (container, container_signals[ADD], 0, object);
+    g_signal_emit (container, container_signals[ADD], 0, object);
 
-  if (n_children == container->priv->n_children)
+    if (n_children == container->priv->n_children)
     {
-      g_warning ("%s: GimpContainer::add() implementation did not "
-                 "chain up. Please report this at https://www.gimp.org/bugs/",
-                 G_STRFUNC);
+        g_warning ("%s: GimpContainer::add() implementation did not "
+                   "chain up. Please report this at https://www.gimp.org/bugs/",
+                   G_STRFUNC);
 
-      container->priv->n_children++;
+        container->priv->n_children++;
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
 gimp_container_remove (GimpContainer *container,
                        GimpObject    *object)
 {
-  GList *list;
-  gint   n_children;
+    GList *list;
+    gint   n_children;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
-  g_return_val_if_fail (object != NULL, FALSE);
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
-                                                    container->priv->children_type),
-                        FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (object != NULL, FALSE);
+    g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
+                          container->priv->children_type),
+                          FALSE);
 
-  if (! gimp_container_have (container, object))
+    if (! gimp_container_have (container, object))
     {
-      g_warning ("%s: container %p does not contain object %p",
-                 G_STRFUNC, container, object);
-      return FALSE;
+        g_warning ("%s: container %p does not contain object %p",
+                   G_STRFUNC, container, object);
+        return FALSE;
     }
 
-  for (list = container->priv->handlers; list; list = g_list_next (list))
+    for (list = container->priv->handlers; list; list = g_list_next (list))
     {
-      GimpContainerHandler *handler = list->data;
-      gulong                handler_id;
+        GimpContainerHandler *handler = list->data;
+        gulong                handler_id;
 
-      handler_id = GPOINTER_TO_UINT (g_object_get_qdata (G_OBJECT (object),
-                                                         handler->quark));
+        handler_id = GPOINTER_TO_UINT (g_object_get_qdata (G_OBJECT (object),
+                                       handler->quark));
 
-      if (handler_id)
+        if (handler_id)
         {
-          g_signal_handler_disconnect (object, handler_id);
+            g_signal_handler_disconnect (object, handler_id);
 
-          g_object_set_qdata (G_OBJECT (object), handler->quark, NULL);
+            g_object_set_qdata (G_OBJECT (object), handler->quark, NULL);
         }
     }
 
-  n_children = container->priv->n_children;
+    n_children = container->priv->n_children;
 
-  g_signal_emit (container, container_signals[REMOVE], 0, object);
+    g_signal_emit (container, container_signals[REMOVE], 0, object);
 
-  if (n_children == container->priv->n_children)
+    if (n_children == container->priv->n_children)
     {
-      g_warning ("%s: GimpContainer::remove() implementation did not "
-                 "chain up. Please report this at https://www.gimp.org/bugs/",
-                 G_STRFUNC);
+        g_warning ("%s: GimpContainer::remove() implementation did not "
+                   "chain up. Please report this at https://www.gimp.org/bugs/",
+                   G_STRFUNC);
 
-      container->priv->n_children--;
+        container->priv->n_children--;
     }
 
-  switch (container->priv->policy)
+    switch (container->priv->policy)
     {
     case GIMP_CONTAINER_POLICY_STRONG:
-      g_object_unref (object);
-      break;
+        g_object_unref (object);
+        break;
 
     case GIMP_CONTAINER_POLICY_WEAK:
-      g_signal_handlers_disconnect_by_func (object,
-                                            gimp_container_disconnect_callback,
-                                            container);
-      break;
+        g_signal_handlers_disconnect_by_func (object,
+                                              gimp_container_disconnect_callback,
+                                              container);
+        break;
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
@@ -710,28 +710,28 @@ gimp_container_insert (GimpContainer *container,
                        GimpObject    *object,
                        gint           index)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
-  g_return_val_if_fail (object != NULL, FALSE);
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
-                                                    container->priv->children_type),
-                        FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (object != NULL, FALSE);
+    g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
+                          container->priv->children_type),
+                          FALSE);
 
-  g_return_val_if_fail (index >= -1 &&
-                        index <= container->priv->n_children, FALSE);
+    g_return_val_if_fail (index >= -1 &&
+                          index <= container->priv->n_children, FALSE);
 
-  if (gimp_container_have (container, object))
+    if (gimp_container_have (container, object))
     {
-      g_warning ("%s: container %p already contains object %p",
-                 G_STRFUNC, container, object);
-      return FALSE;
+        g_warning ("%s: container %p already contains object %p",
+                   G_STRFUNC, container, object);
+        return FALSE;
     }
 
-  if (gimp_container_add (container, object))
+    if (gimp_container_add (container, object))
     {
-      return gimp_container_reorder (container, object, index);
+        return gimp_container_reorder (container, object, index);
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 gboolean
@@ -739,106 +739,106 @@ gimp_container_reorder (GimpContainer *container,
                         GimpObject    *object,
                         gint           new_index)
 {
-  gint index;
+    gint index;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
-  g_return_val_if_fail (object != NULL, FALSE);
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
-                                                    container->priv->children_type),
-                        FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (object != NULL, FALSE);
+    g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
+                          container->priv->children_type),
+                          FALSE);
 
-  g_return_val_if_fail (new_index >= -1 &&
-                        new_index < container->priv->n_children, FALSE);
+    g_return_val_if_fail (new_index >= -1 &&
+                          new_index < container->priv->n_children, FALSE);
 
-  if (new_index == -1)
-    new_index = container->priv->n_children - 1;
+    if (new_index == -1)
+        new_index = container->priv->n_children - 1;
 
-  index = gimp_container_get_child_index (container, object);
+    index = gimp_container_get_child_index (container, object);
 
-  if (index == -1)
+    if (index == -1)
     {
-      g_warning ("%s: container %p does not contain object %p",
-                 G_STRFUNC, container, object);
-      return FALSE;
+        g_warning ("%s: container %p does not contain object %p",
+                   G_STRFUNC, container, object);
+        return FALSE;
     }
 
-  if (index != new_index)
-    g_signal_emit (container, container_signals[REORDER], 0,
-                   object, new_index);
+    if (index != new_index)
+        g_signal_emit (container, container_signals[REORDER], 0,
+                       object, new_index);
 
-  return TRUE;
+    return TRUE;
 }
 
 void
 gimp_container_freeze (GimpContainer *container)
 {
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
 
-  container->priv->freeze_count++;
+    container->priv->freeze_count++;
 
-  if (container->priv->freeze_count == 1)
-    g_signal_emit (container, container_signals[FREEZE], 0);
+    if (container->priv->freeze_count == 1)
+        g_signal_emit (container, container_signals[FREEZE], 0);
 }
 
 void
 gimp_container_thaw (GimpContainer *container)
 {
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
 
-  if (container->priv->freeze_count > 0)
-    container->priv->freeze_count--;
+    if (container->priv->freeze_count > 0)
+        container->priv->freeze_count--;
 
-  if (container->priv->freeze_count == 0)
-    g_signal_emit (container, container_signals[THAW], 0);
+    if (container->priv->freeze_count == 0)
+        g_signal_emit (container, container_signals[THAW], 0);
 }
 
 gboolean
 gimp_container_frozen (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
 
-  return (container->priv->freeze_count > 0) ? TRUE : FALSE;
+    return (container->priv->freeze_count > 0) ? TRUE : FALSE;
 }
 
 gint
 gimp_container_freeze_count (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
 
-  return container->priv->freeze_count;
+    return container->priv->freeze_count;
 }
 
 void
 gimp_container_clear (GimpContainer *container)
 {
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
 
-  if (container->priv->n_children > 0)
+    if (container->priv->n_children > 0)
     {
-      gimp_container_freeze (container);
-      GIMP_CONTAINER_GET_CLASS (container)->clear (container);
-      gimp_container_thaw (container);
+        gimp_container_freeze (container);
+        GIMP_CONTAINER_GET_CLASS (container)->clear (container);
+        gimp_container_thaw (container);
     }
 }
 
 gboolean
 gimp_container_is_empty (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
 
-  return (container->priv->n_children == 0);
+    return (container->priv->n_children == 0);
 }
 
 gboolean
 gimp_container_have (GimpContainer *container,
                      GimpObject    *object)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
 
-  if (container->priv->n_children < 1)
-    return FALSE;
+    if (container->priv->n_children < 1)
+        return FALSE;
 
-  return GIMP_CONTAINER_GET_CLASS (container)->have (container, object);
+    return GIMP_CONTAINER_GET_CLASS (container)->have (container, object);
 }
 
 void
@@ -846,11 +846,11 @@ gimp_container_foreach (GimpContainer *container,
                         GFunc          func,
                         gpointer       user_data)
 {
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
-  g_return_if_fail (func != NULL);
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (func != NULL);
 
-  if (container->priv->n_children > 0)
-    GIMP_CONTAINER_GET_CLASS (container)->foreach (container, func, user_data);
+    if (container->priv->n_children > 0)
+        GIMP_CONTAINER_GET_CLASS (container)->foreach (container, func, user_data);
 }
 
 GimpObject *
@@ -858,53 +858,53 @@ gimp_container_search (GimpContainer           *container,
                        GimpContainerSearchFunc  func,
                        gpointer                 user_data)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-  g_return_val_if_fail (func != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (func != NULL, NULL);
 
-  if (container->priv->n_children > 0)
+    if (container->priv->n_children > 0)
     {
-      return GIMP_CONTAINER_GET_CLASS (container)->search (container,
-                                                           func, user_data);
+        return GIMP_CONTAINER_GET_CLASS (container)->search (container,
+                func, user_data);
     }
 
-  return NULL;
+    return NULL;
 }
 
 gboolean
 gimp_container_get_unique_names (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
 
-  if (GIMP_CONTAINER_GET_CLASS (container)->get_unique_names)
-    return GIMP_CONTAINER_GET_CLASS (container)->get_unique_names (container);
+    if (GIMP_CONTAINER_GET_CLASS (container)->get_unique_names)
+        return GIMP_CONTAINER_GET_CLASS (container)->get_unique_names (container);
 
-  return FALSE;
+    return FALSE;
 }
 
 GimpObject *
 gimp_container_get_child_by_name (GimpContainer *container,
                                   const gchar   *name)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
 
-  if (!name)
-    return NULL;
+    if (!name)
+        return NULL;
 
-  return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_name (container,
-                                                                  name);
+    return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_name (container,
+            name);
 }
 
 GimpObject *
 gimp_container_get_child_by_index (GimpContainer *container,
                                    gint           index)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
 
-  if (index < 0 || index >= container->priv->n_children)
-    return NULL;
+    if (index < 0 || index >= container->priv->n_children)
+        return NULL;
 
-  return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
-                                                                   index);
+    return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
+            index);
 }
 
 /**
@@ -917,13 +917,13 @@ gimp_container_get_child_by_index (GimpContainer *container,
 GimpObject *
 gimp_container_get_first_child (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
 
-  if (container->priv->n_children > 0)
-    return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
-                                                                     0);
+    if (container->priv->n_children > 0)
+        return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
+                0);
 
-  return NULL;
+    return NULL;
 }
 
 /**
@@ -936,101 +936,101 @@ gimp_container_get_first_child (GimpContainer *container)
 GimpObject *
 gimp_container_get_last_child (GimpContainer *container)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
 
-  if (container->priv->n_children > 0)
-    return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
-                                                                     container->priv->n_children - 1);
+    if (container->priv->n_children > 0)
+        return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
+                container->priv->n_children - 1);
 
-  return NULL;
+    return NULL;
 }
 
 gint
 gimp_container_get_child_index (GimpContainer *container,
                                 GimpObject    *object)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), -1);
-  g_return_val_if_fail (object != NULL, -1);
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
-                                                    container->priv->children_type),
-                        -1);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), -1);
+    g_return_val_if_fail (object != NULL, -1);
+    g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object,
+                          container->priv->children_type),
+                          -1);
 
-  return GIMP_CONTAINER_GET_CLASS (container)->get_child_index (container,
-                                                                object);
+    return GIMP_CONTAINER_GET_CLASS (container)->get_child_index (container,
+            object);
 }
 
 GimpObject *
 gimp_container_get_neighbor_of (GimpContainer *container,
                                 GimpObject    *object)
 {
-  gint index;
+    gint index;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-  g_return_val_if_fail (GIMP_IS_OBJECT (object), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (GIMP_IS_OBJECT (object), NULL);
 
-  index = gimp_container_get_child_index (container, object);
+    index = gimp_container_get_child_index (container, object);
 
-  if (index != -1)
+    if (index != -1)
     {
-      GimpObject *new;
+        GimpObject *new;
 
-      new = gimp_container_get_child_by_index (container, index + 1);
+        new = gimp_container_get_child_by_index (container, index + 1);
 
-      if (! new && index > 0)
-        new = gimp_container_get_child_by_index (container, index - 1);
+        if (! new && index > 0)
+            new = gimp_container_get_child_by_index (container, index - 1);
 
-      return new;
+        return new;
     }
 
-  return NULL;
+    return NULL;
 }
 
 static void
 gimp_container_get_name_array_foreach_func (GimpObject   *object,
-                                            gchar      ***iter)
+        gchar      ***iter)
 {
-  gchar **array = *iter;
+    gchar **array = *iter;
 
-  *array = g_strdup (gimp_object_get_name (object));
-  (*iter)++;
+    *array = g_strdup (gimp_object_get_name (object));
+    (*iter)++;
 }
 
 gchar **
 gimp_container_get_name_array (GimpContainer *container,
                                gint          *length)
 {
-  gchar **names;
-  gchar **iter;
+    gchar **names;
+    gchar **iter;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
-  g_return_val_if_fail (length != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+    g_return_val_if_fail (length != NULL, NULL);
 
-  *length = gimp_container_get_n_children (container);
-  if (*length == 0)
-    return NULL;
+    *length = gimp_container_get_n_children (container);
+    if (*length == 0)
+        return NULL;
 
-  names = iter = g_new (gchar *, *length);
+    names = iter = g_new (gchar *, *length);
 
-  gimp_container_foreach (container,
-                          (GFunc) gimp_container_get_name_array_foreach_func,
-                          &iter);
+    gimp_container_foreach (container,
+                            (GFunc) gimp_container_get_name_array_foreach_func,
+                            &iter);
 
-  return names;
+    return names;
 }
 
 static void
 gimp_container_add_handler_foreach_func (GimpObject           *object,
-                                         GimpContainerHandler *handler)
+        GimpContainerHandler *handler)
 {
-  gulong handler_id;
+    gulong handler_id;
 
-  handler_id = g_signal_connect (object,
-                                 handler->signame,
-                                 handler->callback,
-                                 handler->callback_data);
+    handler_id = g_signal_connect (object,
+                                   handler->signame,
+                                   handler->callback,
+                                   handler->callback_data);
 
-  g_object_set_qdata (G_OBJECT (object), handler->quark,
-                      GUINT_TO_POINTER (handler_id));
+    g_object_set_qdata (G_OBJECT (object), handler->quark,
+                        GUINT_TO_POINTER (handler_id));
 }
 
 GQuark
@@ -1039,71 +1039,71 @@ gimp_container_add_handler (GimpContainer *container,
                             GCallback      callback,
                             gpointer       callback_data)
 {
-  GimpContainerHandler *handler;
-  gchar                *key;
+    GimpContainerHandler *handler;
+    gchar                *key;
 
-  static gint           handler_id = 0;
+    static gint           handler_id = 0;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
-  g_return_val_if_fail (signame != NULL, 0);
-  g_return_val_if_fail (callback != NULL, 0);
+    g_return_val_if_fail (GIMP_IS_CONTAINER (container), 0);
+    g_return_val_if_fail (signame != NULL, 0);
+    g_return_val_if_fail (callback != NULL, 0);
 
-  if (! g_str_has_prefix (signame, "notify::"))
-    g_return_val_if_fail (g_signal_lookup (signame,
-                                           container->priv->children_type), 0);
+    if (! g_str_has_prefix (signame, "notify::"))
+        g_return_val_if_fail (g_signal_lookup (signame,
+                                               container->priv->children_type), 0);
 
-  handler = g_slice_new0 (GimpContainerHandler);
+    handler = g_slice_new0 (GimpContainerHandler);
 
-  /*  create a unique key for this handler  */
-  key = g_strdup_printf ("%s-%d", signame, handler_id++);
+    /*  create a unique key for this handler  */
+    key = g_strdup_printf ("%s-%d", signame, handler_id++);
 
-  handler->signame       = g_strdup (signame);
-  handler->callback      = callback;
-  handler->callback_data = callback_data;
-  handler->quark         = g_quark_from_string (key);
+    handler->signame       = g_strdup (signame);
+    handler->callback      = callback;
+    handler->callback_data = callback_data;
+    handler->quark         = g_quark_from_string (key);
 
-  D (g_print ("%s: key = %s, id = %d\n", G_STRFUNC, key, handler->quark));
+    D (g_print ("%s: key = %s, id = %d\n", G_STRFUNC, key, handler->quark));
 
-  g_free (key);
+    g_free (key);
 
-  container->priv->handlers = g_list_prepend (container->priv->handlers, handler);
+    container->priv->handlers = g_list_prepend (container->priv->handlers, handler);
 
-  gimp_container_foreach (container,
-                          (GFunc) gimp_container_add_handler_foreach_func,
-                          handler);
+    gimp_container_foreach (container,
+                            (GFunc) gimp_container_add_handler_foreach_func,
+                            handler);
 
-  return handler->quark;
+    return handler->quark;
 }
 
 void
 gimp_container_remove_handler (GimpContainer *container,
                                GQuark         id)
 {
-  GimpContainerHandler *handler;
-  GList                *list;
+    GimpContainerHandler *handler;
+    GList                *list;
 
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
-  g_return_if_fail (id != 0);
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (id != 0);
 
-  for (list = container->priv->handlers; list; list = g_list_next (list))
+    for (list = container->priv->handlers; list; list = g_list_next (list))
     {
-      handler = (GimpContainerHandler *) list->data;
+        handler = (GimpContainerHandler *) list->data;
 
-      if (handler->quark == id)
-        break;
+        if (handler->quark == id)
+            break;
     }
 
-  if (! list)
+    if (! list)
     {
-      g_warning ("%s: tried to remove handler which unknown id %d",
-                 G_STRFUNC, id);
-      return;
+        g_warning ("%s: tried to remove handler which unknown id %d",
+                   G_STRFUNC, id);
+        return;
     }
 
-  gimp_container_free_handler (container, handler);
+    gimp_container_free_handler (container, handler);
 
-  container->priv->handlers = g_list_delete_link (container->priv->handlers,
-                                                  list);
+    container->priv->handlers = g_list_delete_link (container->priv->handlers,
+                                list);
 }
 
 void
@@ -1111,28 +1111,28 @@ gimp_container_remove_handlers_by_func (GimpContainer *container,
                                         GCallback      callback,
                                         gpointer       callback_data)
 {
-  GList *list;
+    GList *list;
 
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
-  g_return_if_fail (callback != NULL);
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (callback != NULL);
 
-  list = container->priv->handlers;
+    list = container->priv->handlers;
 
-  while (list)
+    while (list)
     {
-      GimpContainerHandler *handler = list->data;
-      GList                *next    = g_list_next (list);
+        GimpContainerHandler *handler = list->data;
+        GList                *next    = g_list_next (list);
 
-      if (handler->callback      == callback &&
-          handler->callback_data == callback_data)
+        if (handler->callback      == callback &&
+                handler->callback_data == callback_data)
         {
-          gimp_container_free_handler (container, handler);
+            gimp_container_free_handler (container, handler);
 
-          container->priv->handlers = g_list_delete_link (
-            container->priv->handlers, list);
+            container->priv->handlers = g_list_delete_link (
+                                            container->priv->handlers, list);
         }
 
-      list = next;
+        list = next;
     }
 }
 
@@ -1140,25 +1140,25 @@ void
 gimp_container_remove_handlers_by_data (GimpContainer *container,
                                         gpointer       callback_data)
 {
-  GList *list;
+    GList *list;
 
-  g_return_if_fail (GIMP_IS_CONTAINER (container));
+    g_return_if_fail (GIMP_IS_CONTAINER (container));
 
-  list = container->priv->handlers;
+    list = container->priv->handlers;
 
-  while (list)
+    while (list)
     {
-      GimpContainerHandler *handler = list->data;
-      GList                *next    = g_list_next (list);
+        GimpContainerHandler *handler = list->data;
+        GList                *next    = g_list_next (list);
 
-      if (handler->callback_data == callback_data)
+        if (handler->callback_data == callback_data)
         {
-          gimp_container_free_handler (container, handler);
+            gimp_container_free_handler (container, handler);
 
-          container->priv->handlers = g_list_delete_link (
-            container->priv->handlers, list);
+            container->priv->handlers = g_list_delete_link (
+                                            container->priv->handlers, list);
         }
 
-      list = next;
+        list = next;
     }
 }

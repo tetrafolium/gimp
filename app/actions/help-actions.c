@@ -35,28 +35,30 @@
 
 static const GimpActionEntry help_actions[] =
 {
-  { "help-menu", NULL, NC_("help-action", "_Help") },
+    { "help-menu", NULL, NC_("help-action", "_Help") },
 
-  { "help-help", "gimp-prefs-help-system",
-    NC_("help-action", "_Help"), "F1",
-    NC_("help-action", "Open the GIMP user manual"),
-    help_help_cmd_callback,
-    GIMP_HELP_HELP },
+    {   "help-help", "gimp-prefs-help-system",
+        NC_("help-action", "_Help"), "F1",
+        NC_("help-action", "Open the GIMP user manual"),
+        help_help_cmd_callback,
+        GIMP_HELP_HELP
+    },
 
-  { "help-context-help", "gimp-prefs-help-system",
-    NC_("help-action", "_Context Help"), "<shift>F1",
-    NC_("help-action", "Show the help for a specific user interface item"),
-    help_context_help_cmd_callback,
-    GIMP_HELP_HELP_CONTEXT }
+    {   "help-context-help", "gimp-prefs-help-system",
+        NC_("help-action", "_Context Help"), "<shift>F1",
+        NC_("help-action", "Show the help for a specific user interface item"),
+        help_context_help_cmd_callback,
+        GIMP_HELP_HELP_CONTEXT
+    }
 };
 
 
 void
 help_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group, "help-action",
-                                 help_actions,
-                                 G_N_ELEMENTS (help_actions));
+    gimp_action_group_add_actions (group, "help-action",
+                                   help_actions,
+                                   G_N_ELEMENTS (help_actions));
 }
 
 void

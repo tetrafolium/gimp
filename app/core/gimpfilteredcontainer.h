@@ -38,31 +38,31 @@ typedef struct _GimpFilteredContainerClass GimpFilteredContainerClass;
 
 struct _GimpFilteredContainer
 {
-  GimpList              parent_instance;
+    GimpList              parent_instance;
 
-  GimpContainer        *src_container;
-  GimpObjectFilterFunc  filter_func;
-  gpointer              filter_data;
+    GimpContainer        *src_container;
+    GimpObjectFilterFunc  filter_func;
+    gpointer              filter_data;
 };
 
 struct _GimpFilteredContainerClass
 {
-  GimpContainerClass  parent_class;
+    GimpContainerClass  parent_class;
 
-  void (* src_add)    (GimpFilteredContainer *filtered_container,
-                       GimpObject            *object);
-  void (* src_remove) (GimpFilteredContainer *filtered_container,
-                       GimpObject            *object);
-  void (* src_freeze) (GimpFilteredContainer *filtered_container);
-  void (* src_thaw)   (GimpFilteredContainer *filtered_container);
+    void (* src_add)    (GimpFilteredContainer *filtered_container,
+                         GimpObject            *object);
+    void (* src_remove) (GimpFilteredContainer *filtered_container,
+                         GimpObject            *object);
+    void (* src_freeze) (GimpFilteredContainer *filtered_container);
+    void (* src_thaw)   (GimpFilteredContainer *filtered_container);
 };
 
 
 GType           gimp_filtered_container_get_type (void) G_GNUC_CONST;
 
 GimpContainer * gimp_filtered_container_new      (GimpContainer        *src_container,
-                                                  GimpObjectFilterFunc  filter_func,
-                                                  gpointer              filter_data);
+        GimpObjectFilterFunc  filter_func,
+        gpointer              filter_data);
 
 
 #endif  /* __GIMP_FILTERED_CONTAINER_H__ */

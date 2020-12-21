@@ -38,57 +38,57 @@ gimp_brush_transform_boundary_exact (GimpBrush *brush,
                                      gboolean   reflect,
                                      gdouble    hardness)
 {
-  const GimpTempBuf *mask;
+    const GimpTempBuf *mask;
 
-  mask = gimp_brush_transform_mask (brush,
-                                    scale, aspect_ratio,
-                                    angle, reflect, hardness);
+    mask = gimp_brush_transform_mask (brush,
+                                      scale, aspect_ratio,
+                                      angle, reflect, hardness);
 
-  if (mask)
+    if (mask)
     {
-      GeglBuffer    *buffer;
-      GimpBoundSeg  *bound_segs;
-      gint           n_bound_segs;
+        GeglBuffer    *buffer;
+        GimpBoundSeg  *bound_segs;
+        gint           n_bound_segs;
 
-      buffer = gimp_temp_buf_create_buffer ((GimpTempBuf *) mask);
+        buffer = gimp_temp_buf_create_buffer ((GimpTempBuf *) mask);
 
-      bound_segs = gimp_boundary_find (buffer, NULL,
-                                       babl_format ("Y float"),
-                                       GIMP_BOUNDARY_WITHIN_BOUNDS,
-                                       0, 0,
-                                       gegl_buffer_get_width  (buffer),
-                                       gegl_buffer_get_height (buffer),
-                                       0.0,
-                                       &n_bound_segs);
+        bound_segs = gimp_boundary_find (buffer, NULL,
+                                         babl_format ("Y float"),
+                                         GIMP_BOUNDARY_WITHIN_BOUNDS,
+                                         0, 0,
+                                         gegl_buffer_get_width  (buffer),
+                                         gegl_buffer_get_height (buffer),
+                                         0.0,
+                                         &n_bound_segs);
 
-      g_object_unref (buffer);
+        g_object_unref (buffer);
 
-      if (bound_segs)
+        if (bound_segs)
         {
-          GimpBoundSeg *stroke_segs;
-          gint          n_stroke_groups;
+            GimpBoundSeg *stroke_segs;
+            gint          n_stroke_groups;
 
-          stroke_segs = gimp_boundary_sort (bound_segs, n_bound_segs,
-                                            &n_stroke_groups);
+            stroke_segs = gimp_boundary_sort (bound_segs, n_bound_segs,
+                                              &n_stroke_groups);
 
-          g_free (bound_segs);
+            g_free (bound_segs);
 
-          if (stroke_segs)
+            if (stroke_segs)
             {
-              GimpBezierDesc *path;
+                GimpBezierDesc *path;
 
-              path = gimp_bezier_desc_new_from_bound_segs (stroke_segs,
-                                                           n_bound_segs,
-                                                           n_stroke_groups);
+                path = gimp_bezier_desc_new_from_bound_segs (stroke_segs,
+                        n_bound_segs,
+                        n_stroke_groups);
 
-              g_free (stroke_segs);
+                g_free (stroke_segs);
 
-              return path;
+                return path;
             }
         }
     }
 
-  return NULL;
+    return NULL;
 }
 
 static GimpBezierDesc *
@@ -99,9 +99,9 @@ gimp_brush_transform_boundary_approx (GimpBrush *brush,
                                       gboolean   reflect,
                                       gdouble    hardness)
 {
-  return gimp_brush_transform_boundary_exact (brush,
-                                              scale, aspect_ratio,
-                                              angle, reflect, hardness);
+    return gimp_brush_transform_boundary_exact (brush,
+            scale, aspect_ratio,
+            angle, reflect, hardness);
 }
 
 GimpBezierDesc *
@@ -114,17 +114,17 @@ gimp_brush_real_transform_boundary (GimpBrush *brush,
                                     gint      *width,
                                     gint      *height)
 {
-  gimp_brush_transform_size (brush, scale, aspect_ratio, angle, reflect,
-                             width, height);
+    gimp_brush_transform_size (brush, scale, aspect_ratio, angle, reflect,
+                               width, height);
 
-  if (*width < 256 && *height < 256)
+    if (*width < 256 && *height < 256)
     {
-      return gimp_brush_transform_boundary_exact (brush,
-                                                  scale, aspect_ratio,
-                                                  angle, reflect, hardness);
+        return gimp_brush_transform_boundary_exact (brush,
+                scale, aspect_ratio,
+                angle, reflect, hardness);
     }
 
-  return gimp_brush_transform_boundary_approx (brush,
-                                               scale, aspect_ratio,
-                                               angle, reflect, hardness);
+    return gimp_brush_transform_boundary_approx (brush,
+            scale, aspect_ratio,
+            angle, reflect, hardness);
 }

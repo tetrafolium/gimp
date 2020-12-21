@@ -25,19 +25,19 @@
 
 typedef enum
 {
-  GIMP_BOUNDARY_WITHIN_BOUNDS,
-  GIMP_BOUNDARY_IGNORE_BOUNDS
+    GIMP_BOUNDARY_WITHIN_BOUNDS,
+    GIMP_BOUNDARY_IGNORE_BOUNDS
 } GimpBoundaryType;
 
 
 struct _GimpBoundSeg
 {
-  gint   x1;
-  gint   y1;
-  gint   x2;
-  gint   y2;
-  guint  open    : 1;
-  guint  visited : 1;
+    gint   x1;
+    gint   y1;
+    gint   x2;
+    gint   y2;
+    guint  open    : 1;
+    guint  visited : 1;
 };
 
 

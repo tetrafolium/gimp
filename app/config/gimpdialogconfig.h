@@ -42,79 +42,79 @@ typedef struct _GimpDialogConfigClass GimpDialogConfigClass;
 
 struct _GimpDialogConfig
 {
-  GimpGuiConfig             parent_instance;
+    GimpGuiConfig             parent_instance;
 
-  GimpColorProfilePolicy     color_profile_policy;
-  GimpMetadataRotationPolicy metadata_rotation_policy;
+    GimpColorProfilePolicy     color_profile_policy;
+    GimpMetadataRotationPolicy metadata_rotation_policy;
 
-  gchar                    *color_profile_path;
+    gchar                    *color_profile_path;
 
-  GimpColorRenderingIntent  image_convert_profile_intent;
-  gboolean                  image_convert_profile_bpc;
+    GimpColorRenderingIntent  image_convert_profile_intent;
+    gboolean                  image_convert_profile_bpc;
 
-  GeglDitherMethod          image_convert_precision_layer_dither_method;
-  GeglDitherMethod          image_convert_precision_text_layer_dither_method;
-  GeglDitherMethod          image_convert_precision_channel_dither_method;
+    GeglDitherMethod          image_convert_precision_layer_dither_method;
+    GeglDitherMethod          image_convert_precision_text_layer_dither_method;
+    GeglDitherMethod          image_convert_precision_channel_dither_method;
 
-  GimpConvertPaletteType    image_convert_indexed_palette_type;
-  gint                      image_convert_indexed_max_colors;
-  gboolean                  image_convert_indexed_remove_duplicates;
-  GimpConvertDitherType     image_convert_indexed_dither_type;
-  gboolean                  image_convert_indexed_dither_alpha;
-  gboolean                  image_convert_indexed_dither_text_layers;
+    GimpConvertPaletteType    image_convert_indexed_palette_type;
+    gint                      image_convert_indexed_max_colors;
+    gboolean                  image_convert_indexed_remove_duplicates;
+    GimpConvertDitherType     image_convert_indexed_dither_type;
+    gboolean                  image_convert_indexed_dither_alpha;
+    gboolean                  image_convert_indexed_dither_text_layers;
 
-  GimpFillType              image_resize_fill_type;
-  GimpItemSet               image_resize_layer_set;
-  gboolean                  image_resize_resize_text_layers;
+    GimpFillType              image_resize_fill_type;
+    GimpItemSet               image_resize_layer_set;
+    gboolean                  image_resize_resize_text_layers;
 
-  gchar                    *layer_new_name;
-  GimpLayerMode             layer_new_mode;
-  GimpLayerColorSpace       layer_new_blend_space;
-  GimpLayerColorSpace       layer_new_composite_space;
-  GimpLayerCompositeMode    layer_new_composite_mode;
-  gdouble                   layer_new_opacity;
-  GimpFillType              layer_new_fill_type;
+    gchar                    *layer_new_name;
+    GimpLayerMode             layer_new_mode;
+    GimpLayerColorSpace       layer_new_blend_space;
+    GimpLayerColorSpace       layer_new_composite_space;
+    GimpLayerCompositeMode    layer_new_composite_mode;
+    gdouble                   layer_new_opacity;
+    GimpFillType              layer_new_fill_type;
 
-  GimpFillType              layer_resize_fill_type;
+    GimpFillType              layer_resize_fill_type;
 
-  GimpAddMaskType           layer_add_mask_type;
-  gboolean                  layer_add_mask_invert;
+    GimpAddMaskType           layer_add_mask_type;
+    gboolean                  layer_add_mask_invert;
 
-  GimpMergeType             layer_merge_type;
-  gboolean                  layer_merge_active_group_only;
-  gboolean                  layer_merge_discard_invisible;
+    GimpMergeType             layer_merge_type;
+    gboolean                  layer_merge_active_group_only;
+    gboolean                  layer_merge_discard_invisible;
 
-  gchar                    *channel_new_name;
-  GimpRGB                   channel_new_color;
+    gchar                    *channel_new_name;
+    GimpRGB                   channel_new_color;
 
-  gchar                    *vectors_new_name;
+    gchar                    *vectors_new_name;
 
-  gchar                    *vectors_export_path;
-  gboolean                  vectors_export_active_only;
+    gchar                    *vectors_export_path;
+    gboolean                  vectors_export_active_only;
 
-  gchar                    *vectors_import_path;
-  gboolean                  vectors_import_merge;
-  gboolean                  vectors_import_scale;
+    gchar                    *vectors_import_path;
+    gboolean                  vectors_import_merge;
+    gboolean                  vectors_import_scale;
 
-  gdouble                   selection_feather_radius;
-  gboolean                  selection_feather_edge_lock;
+    gdouble                   selection_feather_radius;
+    gboolean                  selection_feather_edge_lock;
 
-  gdouble                   selection_grow_radius;
+    gdouble                   selection_grow_radius;
 
-  gdouble                   selection_shrink_radius;
-  gboolean                  selection_shrink_edge_lock;
+    gdouble                   selection_shrink_radius;
+    gboolean                  selection_shrink_edge_lock;
 
-  gdouble                   selection_border_radius;
-  gboolean                  selection_border_edge_lock;
-  GimpChannelBorderStyle    selection_border_style;
+    gdouble                   selection_border_radius;
+    gboolean                  selection_border_edge_lock;
+    GimpChannelBorderStyle    selection_border_style;
 
-  GimpFillOptions          *fill_options;
-  GimpStrokeOptions        *stroke_options;
+    GimpFillOptions          *fill_options;
+    GimpStrokeOptions        *stroke_options;
 };
 
 struct _GimpDialogConfigClass
 {
-  GimpGuiConfigClass  parent_class;
+    GimpGuiConfigClass  parent_class;
 };
 
 

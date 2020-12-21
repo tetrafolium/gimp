@@ -20,26 +20,26 @@
 
 
 GimpTemplate * gimp_image_new_get_last_template (Gimp            *gimp,
-                                                 GimpImage       *image);
+        GimpImage       *image);
 void           gimp_image_new_set_last_template (Gimp            *gimp,
-                                                 GimpTemplate    *template);
+        GimpTemplate    *template);
 
 GimpImage    * gimp_image_new_from_template     (Gimp            *gimp,
-                                                 GimpTemplate    *template,
-                                                 GimpContext     *context);
+        GimpTemplate    *template,
+        GimpContext     *context);
 GimpImage    * gimp_image_new_from_drawable     (Gimp            *gimp,
-                                                 GimpDrawable    *drawable);
+        GimpDrawable    *drawable);
 GimpImage    * gimp_image_new_from_drawables    (Gimp            *gimp,
-                                                 GList           *drawables,
-                                                 gboolean         copy_selection);
+        GList           *drawables,
+        gboolean         copy_selection);
 GimpImage    * gimp_image_new_from_component    (Gimp            *gimp,
-                                                 GimpImage       *image,
-                                                 GimpChannelType  component);
+        GimpImage       *image,
+        GimpChannelType  component);
 GimpImage    * gimp_image_new_from_buffer       (Gimp            *gimp,
-                                                 GimpBuffer      *buffer);
+        GimpBuffer      *buffer);
 GimpImage    * gimp_image_new_from_pixbuf       (Gimp            *gimp,
-                                                 GdkPixbuf       *pixbuf,
-                                                 const gchar     *layer_name);
+        GdkPixbuf       *pixbuf,
+        const gchar     *layer_name);
 
 
 #endif /* __GIMP_IMAGE_NEW__ */

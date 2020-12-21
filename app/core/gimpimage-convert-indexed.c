@@ -103,30 +103,30 @@
  *  [Adam D. Moss - adam@gimp.org]
  */
 
-  /* TODO for Convert:
-   *
-   * . Tweak, tweak, tweak.  Old RGB code was tuned muchly.
-   *
-   * . Re-enable Heckbert locality for matching, benchmark it
-   *
-   * . Try faster fixed-point sRGB<->L*a*b* pixel conversion (see cpercep.c)
-   *
-   * . Use palette of another open INDEXED image?
-   *
-   * . Do error-splitting trick for GREY->INDEXED (hardly worth it)
-   */
+/* TODO for Convert:
+ *
+ * . Tweak, tweak, tweak.  Old RGB code was tuned muchly.
+ *
+ * . Re-enable Heckbert locality for matching, benchmark it
+ *
+ * . Try faster fixed-point sRGB<->L*a*b* pixel conversion (see cpercep.c)
+ *
+ * . Use palette of another open INDEXED image?
+ *
+ * . Do error-splitting trick for GREY->INDEXED (hardly worth it)
+ */
 
-  /* CODE READABILITY BUGS:
-   *
-   * . Most uses of variants of the R,G,B variable naming convention
-   *   are referring to L*a*b* coordinates, not RGB coordinates!
-   *
-   * . Each said variable is usually one of the following, but it is
-   *   rarely clear which one:
-   *     - (assumed sRGB) raw non-linear 8-bit RGB coordinates
-   *     - 'full'-precision (unshifted) 8-bit L*a*b* coordinates
-   *     - box-space (reduced-precision shifted L*a*b*) coordinates
-   */
+/* CODE READABILITY BUGS:
+ *
+ * . Most uses of variants of the R,G,B variable naming convention
+ *   are referring to L*a*b* coordinates, not RGB coordinates!
+ *
+ * . Each said variable is usually one of the following, but it is
+ *   rarely clear which one:
+ *     - (assumed sRGB) raw non-linear 8-bit RGB coordinates
+ *     - 'full'-precision (unshifted) 8-bit L*a*b* coordinates
+ *     - box-space (reduced-precision shifted L*a*b*) coordinates
+ */
 
 #include "config.h"
 
@@ -295,7 +295,7 @@ HIST_LIN (ColorFreq  *hist_ptr,
           const gint  g,
           const gint  b)
 {
-  return (&(hist_ptr) [REF_FUNC (r, g, b)]);
+    return (&(hist_ptr) [REF_FUNC (r, g, b)]);
 }
 
 
@@ -325,23 +325,23 @@ rgb_to_unshifted_lin (const guchar  r,
                       gint         *hg,
                       gint         *hb)
 {
-  gint   or, og, ob;
-  gfloat rgb[3] = { r / 255.0, g / 255.0, b / 255.0 };
-  gfloat lab[3];
+    gint   or, og, ob;
+    gfloat rgb[3] = { r / 255.0, g / 255.0, b / 255.0 };
+    gfloat lab[3];
 
-  babl_process (rgb_to_lab_fish, rgb, lab, 1);
+    babl_process (rgb_to_lab_fish, rgb, lab, 1);
 
-  /* fprintf(stderr, " %d-%d-%d -> %0.3f,%0.3f,%0.3f ", r, g, b, sL, sa, sb);*/
+    /* fprintf(stderr, " %d-%d-%d -> %0.3f,%0.3f,%0.3f ", r, g, b, sL, sa, sb);*/
 
-  or = RINT(lab[0] * LRAT);
-  og = RINT((lab[1] - LOWA) * ARAT);
-  ob = RINT((lab[2] - LOWB) * BRAT);
+    or = RINT(lab[0] * LRAT);
+    og = RINT((lab[1] - LOWA) * ARAT);
+    ob = RINT((lab[2] - LOWB) * BRAT);
 
-  *hr = CLAMP(or, 0, 255);
-  *hg = CLAMP(og, 0, 255);
-  *hb = CLAMP(ob, 0, 255);
+    *hr = CLAMP(or, 0, 255);
+    *hg = CLAMP(og, 0, 255);
+    *hb = CLAMP(ob, 0, 255);
 
-  /*  fprintf(stderr, " %d:%d:%d ", *hr, *hg, *hb); */
+    /*  fprintf(stderr, " %d:%d:%d ", *hr, *hg, *hb); */
 }
 
 
@@ -353,43 +353,43 @@ rgb_to_lin (const guchar  r,
             gint         *hg,
             gint         *hb)
 {
-  gint or, og, ob;
+    gint or, og, ob;
 
-  /*
-  double sL, sa, sb;
-  {
-    double low_l = 999.0, low_a = 999.9, low_b = 999.0;
-    double high_l = -999.0, high_a = -999.0, high_b = -999.0;
+    /*
+    double sL, sa, sb;
+    {
+      double low_l = 999.0, low_a = 999.9, low_b = 999.0;
+      double high_l = -999.0, high_a = -999.0, high_b = -999.0;
 
-    int r,g,b;
+      int r,g,b;
 
-    for (r=0; r<256; r++)
-      for (g=0; g<256; g++)
-        for (b=0; b<256; b++)
-          {
-            cpercep_rgb_to_space(r,g,b, &sL, &sa, &sb);
+      for (r=0; r<256; r++)
+        for (g=0; g<256; g++)
+          for (b=0; b<256; b++)
+            {
+              cpercep_rgb_to_space(r,g,b, &sL, &sa, &sb);
 
-            if (sL > high_l)
-              high_l = sL;
-            if (sL < low_l)
-              low_l = sL;
-            if (sa > high_a)
-              high_a = sa;
-            if (sa < low_a)
-              low_a = sa;
-            if (sb > high_b)
-              high_b = sb;
-            if (sb < low_b)
-              low_b = sb;
-          }
+              if (sL > high_l)
+                high_l = sL;
+              if (sL < low_l)
+                low_l = sL;
+              if (sa > high_a)
+                high_a = sa;
+              if (sa < low_a)
+                low_a = sa;
+              if (sb > high_b)
+                high_b = sb;
+              if (sb < low_b)
+                low_b = sb;
+            }
 
-    fprintf(stderr, " [L: %0.3f -> %0.3f / a: %0.3f -> %0.3f / b: %0.3f -> %0.3f]\t", low_l, high_l, low_a, high_a, low_b, high_b);
+      fprintf(stderr, " [L: %0.3f -> %0.3f / a: %0.3f -> %0.3f / b: %0.3f -> %0.3f]\t", low_l, high_l, low_a, high_a, low_b, high_b);
 
-    exit(-1);
-  }
-  */
+      exit(-1);
+    }
+    */
 
-  rgb_to_unshifted_lin (r, g, b, &or, &og, &ob);
+    rgb_to_unshifted_lin (r, g, b, &or, &og, &ob);
 
 #if 0
 #define RSDF(r) ((r) >= ((HIST_R_ELEMS-1) << R_SHIFT) ? HIST_R_ELEMS-1 : \
@@ -404,13 +404,13 @@ rgb_to_lin (const guchar  r,
 #define BSDF(b) ((b) >> B_SHIFT)
 #endif
 
-  or = RSDF (or);
-  og = GSDF (og);
-  ob = BSDF (ob);
+    or = RSDF (or);
+    og = GSDF (og);
+    ob = BSDF (ob);
 
-  *hr = or;
-  *hg = og;
-  *hb = ob;
+    *hr = or;
+    *hg = og;
+    *hb = ob;
 }
 
 
@@ -420,11 +420,11 @@ HIST_RGB (ColorFreq  *hist_ptr,
           const gint  g,
           const gint  b)
 {
-  gint hr, hg, hb;
+    gint hr, hg, hb;
 
-  rgb_to_lin (r, g, b, &hr, &hg, &hb);
+    rgb_to_lin (r, g, b, &hr, &hg, &hb);
 
-  return HIST_LIN (hist_ptr, hr, hg, hb);
+    return HIST_LIN (hist_ptr, hr, hg, hb);
 }
 
 
@@ -436,82 +436,82 @@ lin_to_rgb (const gdouble  hr,
             guchar        *g,
             guchar        *b)
 {
-  gfloat  rgb[3];
-  gfloat  lab[3];
-  gdouble ir, ig, ib;
+    gfloat  rgb[3];
+    gfloat  lab[3];
+    gdouble ir, ig, ib;
 
-  ir = ((gdouble) (hr)) * 255.0F / (gdouble) (HIST_R_ELEMS - 1);
-  ig = ((gdouble)( hg)) * 255.0F / (gdouble) (HIST_G_ELEMS - 1);
-  ib = ((gdouble)( hb)) * 255.0F / (gdouble) (HIST_B_ELEMS - 1);
+    ir = ((gdouble) (hr)) * 255.0F / (gdouble) (HIST_R_ELEMS - 1);
+    ig = ((gdouble)( hg)) * 255.0F / (gdouble) (HIST_G_ELEMS - 1);
+    ib = ((gdouble)( hb)) * 255.0F / (gdouble) (HIST_B_ELEMS - 1);
 
-  ir = ir / LRAT;
-  ig = (ig / ARAT) + LOWA;
-  ib = (ib / BRAT) + LOWB;
+    ir = ir / LRAT;
+    ig = (ig / ARAT) + LOWA;
+    ib = (ib / BRAT) + LOWB;
 
-  lab[0] = ir;
-  lab[1] = ig;
-  lab[2] = ib;
+    lab[0] = ir;
+    lab[1] = ig;
+    lab[2] = ib;
 
-  babl_process (lab_to_rgb_fish, lab, rgb, 1);
+    babl_process (lab_to_rgb_fish, lab, rgb, 1);
 
-  *r = RINT (CLAMP (rgb[0] * 255, 0.0F, 255.0F));
-  *g = RINT (CLAMP (rgb[1] * 255, 0.0F, 255.0F));
-  *b = RINT (CLAMP (rgb[2] * 255, 0.0F, 255.0F));
+    *r = RINT (CLAMP (rgb[0] * 255, 0.0F, 255.0F));
+    *g = RINT (CLAMP (rgb[1] * 255, 0.0F, 255.0F));
+    *b = RINT (CLAMP (rgb[2] * 255, 0.0F, 255.0F));
 }
 
 
 
 struct _Color
 {
-  gint red;
-  gint green;
-  gint blue;
+    gint red;
+    gint green;
+    gint blue;
 };
 
 struct _QuantizeObj
 {
-  Pass1Func     first_pass;       /* first pass over image data creates colormap  */
-  Pass2InitFunc second_pass_init; /* Initialize data which persists over invocations */
-  Pass2Func     second_pass;      /* second pass maps from image data to colormap */
-  CleanupFunc   delete_func;      /* function to clean up data associated with private */
+    Pass1Func     first_pass;       /* first pass over image data creates colormap  */
+    Pass2InitFunc second_pass_init; /* Initialize data which persists over invocations */
+    Pass2Func     second_pass;      /* second pass maps from image data to colormap */
+    CleanupFunc   delete_func;      /* function to clean up data associated with private */
 
-  GimpPalette  *custom_palette;           /* The custom palette, if any        */
+    GimpPalette  *custom_palette;           /* The custom palette, if any        */
 
-  gint          desired_number_of_colors; /* Number of colors we will allow    */
-  gint          actual_number_of_colors;  /* Number of colors actually needed  */
-  Color         cmap[256];                /* colormap created by quantization  */
-  Color         clin[256];                /* .. converted back to linear space */
-  gulong        index_used_count[256];    /* how many times an index was used  */
-  CFHistogram   histogram;                /* holds the histogram               */
+    gint          desired_number_of_colors; /* Number of colors we will allow    */
+    gint          actual_number_of_colors;  /* Number of colors actually needed  */
+    Color         cmap[256];                /* colormap created by quantization  */
+    Color         clin[256];                /* .. converted back to linear space */
+    gulong        index_used_count[256];    /* how many times an index was used  */
+    CFHistogram   histogram;                /* holds the histogram               */
 
-  gboolean      want_dither_alpha;
-  gint          error_freedom;            /* 0=much bleed, 1=controlled bleed */
+    gboolean      want_dither_alpha;
+    gint          error_freedom;            /* 0=much bleed, 1=controlled bleed */
 
-  GimpProgress *progress;
+    GimpProgress *progress;
 };
 
 typedef struct
 {
-  /*  The bounds of the box (inclusive); expressed as histogram indexes  */
-  gint    Rmin, Rmax;
-  gint    Rhalferror;
-  gint    Gmin, Gmax;
-  gint    Ghalferror;
-  gint    Bmin, Bmax;
-  gint    Bhalferror;
+    /*  The bounds of the box (inclusive); expressed as histogram indexes  */
+    gint    Rmin, Rmax;
+    gint    Rhalferror;
+    gint    Gmin, Gmax;
+    gint    Ghalferror;
+    gint    Bmin, Bmax;
+    gint    Bhalferror;
 
-  /*  The volume (actually 2-norm) of the box  */
-  gint    volume;
+    /*  The volume (actually 2-norm) of the box  */
+    gint    volume;
 
-  /*  The number of nonzero histogram cells within this box  */
-  glong   colorcount;
+    /*  The number of nonzero histogram cells within this box  */
+    glong   colorcount;
 
-  /* The sum of the weighted error within this box */
-  guint64 error;
-  /* The sum of the unweighted error within this box */
-  guint64 rerror;
-  guint64 gerror;
-  guint64 berror;
+    /* The sum of the weighted error within this box */
+    guint64 error;
+    /* The sum of the unweighted error within this box */
+    guint64 rerror;
+    guint64 gerror;
+    guint64 berror;
 
 } box, *boxptr;
 
@@ -519,26 +519,26 @@ typedef struct
 static void          zero_histogram_gray     (CFHistogram   histogram);
 static void          zero_histogram_rgb      (CFHistogram   histogram);
 static void          generate_histogram_gray (CFHistogram   hostogram,
-                                              GimpLayer    *layer,
-                                              gboolean      dither_alpha);
+        GimpLayer    *layer,
+        gboolean      dither_alpha);
 static void          generate_histogram_rgb  (CFHistogram   histogram,
-                                              GimpLayer    *layer,
-                                              gint          col_limit,
-                                              gboolean      dither_alpha,
-                                              GimpProgress *progress);
+        GimpLayer    *layer,
+        gint          col_limit,
+        gboolean      dither_alpha,
+        GimpProgress *progress);
 
 static QuantizeObj * initialize_median_cut   (GimpImageBaseType      old_type,
-                                              gint                   max_colors,
-                                              GimpConvertDitherType  dither_type,
-                                              GimpConvertPaletteType palette_type,
-                                              GimpPalette           *custom_palette,
-                                              gboolean               dither_alpha,
-                                              GimpProgress          *progress);
+        gint                   max_colors,
+        GimpConvertDitherType  dither_type,
+        GimpConvertPaletteType palette_type,
+        GimpPalette           *custom_palette,
+        gboolean               dither_alpha,
+        GimpProgress          *progress);
 
 static void          compute_color_lin8      (QuantizeObj           *quantobj,
-                                              CFHistogram            histogram,
-                                              boxptr                 boxp,
-                                              const int              icolor);
+        CFHistogram            histogram,
+        boxptr                 boxp,
+        const int              icolor);
 
 
 static guchar    found_cols[MAXNUMCOLORS][3];
@@ -551,18 +551,18 @@ static gboolean  had_black;
 /**********************************************************/
 typedef struct
 {
-  glong  used_count;
-  guchar initial_index;
+    glong  used_count;
+    guchar initial_index;
 } PalEntry;
 
 static int
 mapping_compare (const void *a,
                  const void *b)
 {
-  PalEntry *m1 = (PalEntry *) a;
-  PalEntry *m2 = (PalEntry *) b;
+    PalEntry *m1 = (PalEntry *) a;
+    PalEntry *m2 = (PalEntry *) b;
 
-  return (m2->used_count - m1->used_count);
+    return (m2->used_count - m1->used_count);
 }
 
 /* FWIW, the make_remap_table() and mapping_compare() function source
@@ -576,112 +576,112 @@ make_remap_table (const guchar  old_palette[],
                   guchar        remap_table[],
                   gint         *num_entries)
 {
-  gint      i, j, k;
-  guchar    temppal[256 * 3];
-  gulong    tempuse[256];
-  gulong    transmap[256];
-  PalEntry *palentries;
-  gint      used = 0;
+    gint      i, j, k;
+    guchar    temppal[256 * 3];
+    gulong    tempuse[256];
+    gulong    transmap[256];
+    PalEntry *palentries;
+    gint      used = 0;
 
-  memset (temppal, 0, 256 * 3);
-  memset (tempuse, 0, 256 * sizeof (gulong));
-  memset (transmap, 255, 256 * sizeof (gulong));
+    memset (temppal, 0, 256 * 3);
+    memset (tempuse, 0, 256 * sizeof (gulong));
+    memset (transmap, 255, 256 * sizeof (gulong));
 
-  /* First pass - only collect entries which are marked as being used
-   * at all in index_used_count.
-   */
-  for (i = 0; i < *num_entries; i++)
+    /* First pass - only collect entries which are marked as being used
+     * at all in index_used_count.
+     */
+    for (i = 0; i < *num_entries; i++)
     {
-      if (index_used_count[i])
+        if (index_used_count[i])
         {
-          temppal[used*3 + 0] = old_palette[i*3 + 0];
-          temppal[used*3 + 1] = old_palette[i*3 + 1];
-          temppal[used*3 + 2] = old_palette[i*3 + 2];
+            temppal[used*3 + 0] = old_palette[i*3 + 0];
+            temppal[used*3 + 1] = old_palette[i*3 + 1];
+            temppal[used*3 + 2] = old_palette[i*3 + 2];
 
-          tempuse[used] = index_used_count[i];
-          transmap[i] = used;
+            tempuse[used] = index_used_count[i];
+            transmap[i] = used;
 
-          used++;
+            used++;
         }
     }
 
-  /* Second pass - remove duplicates. (O(n^3), could do better!) */
-  for (i = 0; i < used; i++)
+    /* Second pass - remove duplicates. (O(n^3), could do better!) */
+    for (i = 0; i < used; i++)
     {
-      for (j = 0; j < i; j++)
+        for (j = 0; j < i; j++)
         {
-          if ((temppal[i*3 + 1] == temppal[j*3 + 1]) &&
-              (temppal[i*3 + 0] == temppal[j*3 + 0]) &&
-              (temppal[i*3 + 2] == temppal[j*3 + 2]) &&
-              tempuse[j] &&
-              tempuse[i])
+            if ((temppal[i*3 + 1] == temppal[j*3 + 1]) &&
+                    (temppal[i*3 + 0] == temppal[j*3 + 0]) &&
+                    (temppal[i*3 + 2] == temppal[j*3 + 2]) &&
+                    tempuse[j] &&
+                    tempuse[i])
             {
-              /* Move the 'used' tally from one to the other. */
-              tempuse[i] += tempuse[j];
-              /* zero one of them, deactivating its entry. */
-              tempuse[j] = 0;
+                /* Move the 'used' tally from one to the other. */
+                tempuse[i] += tempuse[j];
+                /* zero one of them, deactivating its entry. */
+                tempuse[j] = 0;
 
-              /* change all mappings from this dead index to the live
-               * one.
-               */
-              for (k = 0; k < *num_entries; k++)
+                /* change all mappings from this dead index to the live
+                 * one.
+                 */
+                for (k = 0; k < *num_entries; k++)
                 {
-                  if (index_used_count[k] && (transmap[k] == j))
-                    transmap[k] = i;
+                    if (index_used_count[k] && (transmap[k] == j))
+                        transmap[k] = i;
                 }
             }
         }
     }
 
-  /* Third pass - rank all used indices to the beginning of the
-   * palette.
-   */
-  palentries = g_new (PalEntry, used);
+    /* Third pass - rank all used indices to the beginning of the
+     * palette.
+     */
+    palentries = g_new (PalEntry, used);
 
-  for (i = 0; i < used; i++)
+    for (i = 0; i < used; i++)
     {
-      palentries[i].initial_index = i;
-      palentries[i].used_count    = tempuse[i];
+        palentries[i].initial_index = i;
+        palentries[i].used_count    = tempuse[i];
     }
 
-  qsort (palentries, used, sizeof (PalEntry), &mapping_compare);
+    qsort (palentries, used, sizeof (PalEntry), &mapping_compare);
 
-  for (i = 0; i < *num_entries; i++)
+    for (i = 0; i < *num_entries; i++)
     {
-      if (index_used_count[i])
+        if (index_used_count[i])
         {
-          for (j = 0; j < used; j++)
+            for (j = 0; j < used; j++)
             {
-              if ((transmap[i] == palentries[j].initial_index)
-                  && (palentries[j].used_count))
+                if ((transmap[i] == palentries[j].initial_index)
+                        && (palentries[j].used_count))
                 {
-                  remap_table[i] = j;
-                  break;
+                    remap_table[i] = j;
+                    break;
                 }
             }
         }
     }
-  for (i = 0; i < *num_entries; i++)
+    for (i = 0; i < *num_entries; i++)
     {
-      if (index_used_count[i])
+        if (index_used_count[i])
         {
-          new_palette[remap_table[i] * 3 + 0] = old_palette[i * 3 + 0];
-          new_palette[remap_table[i] * 3 + 1] = old_palette[i * 3 + 1];
-          new_palette[remap_table[i] * 3 + 2] = old_palette[i * 3 + 2];
+            new_palette[remap_table[i] * 3 + 0] = old_palette[i * 3 + 0];
+            new_palette[remap_table[i] * 3 + 1] = old_palette[i * 3 + 1];
+            new_palette[remap_table[i] * 3 + 2] = old_palette[i * 3 + 2];
         }
     }
 
-  *num_entries = 0;
+    *num_entries = 0;
 
-  for (j = 0; j < used; j++)
+    for (j = 0; j < used; j++)
     {
-      if (palentries[j].used_count)
+        if (palentries[j].used_count)
         {
-          (*num_entries)++;
+            (*num_entries)++;
         }
     }
 
-  g_free (palentries);
+    g_free (palentries);
 }
 
 static void
@@ -689,44 +689,44 @@ remap_indexed_layer (GimpLayer    *layer,
                      const guchar *remap_table,
                      gint          num_entries)
 {
-  GeglBufferIterator *iter;
-  const Babl         *format;
-  gint                bpp;
-  gboolean            has_alpha;
+    GeglBufferIterator *iter;
+    const Babl         *format;
+    gint                bpp;
+    gboolean            has_alpha;
 
-  format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
 
-  bpp       = babl_format_get_bytes_per_pixel (format);
-  has_alpha = babl_format_has_alpha (format);
+    bpp       = babl_format_get_bytes_per_pixel (format);
+    has_alpha = babl_format_has_alpha (format);
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, NULL,
-                                   GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE, 1);
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, NULL,
+                                     GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE, 1);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      guchar *data   = iter->items[0].data;
-      gint    length = iter->length;
+        guchar *data   = iter->items[0].data;
+        gint    length = iter->length;
 
-      if (has_alpha)
+        if (has_alpha)
         {
-          while (length--)
+            while (length--)
             {
-              if (data[ALPHA_I])
-                data[INDEXED] = remap_table[data[INDEXED]];
-              else
-                data[INDEXED] = 0;
+                if (data[ALPHA_I])
+                    data[INDEXED] = remap_table[data[INDEXED]];
+                else
+                    data[INDEXED] = 0;
 
-              data += bpp;
+                data += bpp;
             }
         }
-      else
+        else
         {
-          while (length--)
+            while (length--)
             {
-              data[INDEXED] = remap_table[data[INDEXED]];
+                data[INDEXED] = remap_table[data[INDEXED]];
 
-              data += bpp;
+                data += bpp;
             }
         }
     }
@@ -736,18 +736,18 @@ static gint
 color_quicksort (const void *c1,
                  const void *c2)
 {
-  Color *color1 = (Color *) c1;
-  Color *color2 = (Color *) c2;
+    Color *color1 = (Color *) c1;
+    Color *color2 = (Color *) c2;
 
-  gdouble v1 = GIMP_RGB_LUMINANCE (color1->red, color1->green, color1->blue);
-  gdouble v2 = GIMP_RGB_LUMINANCE (color2->red, color2->green, color2->blue);
+    gdouble v1 = GIMP_RGB_LUMINANCE (color1->red, color1->green, color1->blue);
+    gdouble v2 = GIMP_RGB_LUMINANCE (color2->red, color2->green, color2->blue);
 
-  if (v1 < v2)
-    return -1;
-  else if (v1 > v2)
-    return 1;
-  else
-    return 0;
+    if (v1 < v2)
+        return -1;
+    else if (v1 > v2)
+        return 1;
+    else
+        return 0;
 }
 
 gboolean
@@ -762,339 +762,342 @@ gimp_image_convert_indexed (GimpImage               *image,
                             GimpProgress            *progress,
                             GError                 **error)
 {
-  QuantizeObj       *quantobj     = NULL;
-  GimpObjectQueue   *queue        = NULL;
-  GimpProgress      *sub_progress = NULL;
-  GimpImageBaseType  old_type;
-  GList             *all_layers;
-  GList             *list;
-  GimpColorProfile  *src_profile  = NULL;
-  GimpColorProfile  *dest_profile = NULL;
+    QuantizeObj       *quantobj     = NULL;
+    GimpObjectQueue   *queue        = NULL;
+    GimpProgress      *sub_progress = NULL;
+    GimpImageBaseType  old_type;
+    GList             *all_layers;
+    GList             *list;
+    GimpColorProfile  *src_profile  = NULL;
+    GimpColorProfile  *dest_profile = NULL;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-  g_return_val_if_fail (gimp_image_get_base_type (image) != GIMP_INDEXED, FALSE);
-  g_return_val_if_fail (gimp_babl_is_valid (GIMP_INDEXED,
-                                            gimp_image_get_precision (image)),
-                        FALSE);
-  g_return_val_if_fail (custom_palette == NULL ||
-                        GIMP_IS_PALETTE (custom_palette), FALSE);
-  g_return_val_if_fail (custom_palette == NULL ||
-                        gimp_palette_get_n_colors (custom_palette) <= 256,
-                        FALSE);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+    g_return_val_if_fail (gimp_image_get_base_type (image) != GIMP_INDEXED, FALSE);
+    g_return_val_if_fail (gimp_babl_is_valid (GIMP_INDEXED,
+                          gimp_image_get_precision (image)),
+                          FALSE);
+    g_return_val_if_fail (custom_palette == NULL ||
+                          GIMP_IS_PALETTE (custom_palette), FALSE);
+    g_return_val_if_fail (custom_palette == NULL ||
+                          gimp_palette_get_n_colors (custom_palette) <= 256,
+                          FALSE);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (palette_type == GIMP_CONVERT_PALETTE_CUSTOM)
+    if (palette_type == GIMP_CONVERT_PALETTE_CUSTOM)
     {
-      if (! custom_palette)
-        palette_type = GIMP_CONVERT_PALETTE_MONO;
+        if (! custom_palette)
+            palette_type = GIMP_CONVERT_PALETTE_MONO;
 
-      if (gimp_palette_get_n_colors (custom_palette) == 0)
+        if (gimp_palette_get_n_colors (custom_palette) == 0)
         {
-          g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                               _("Cannot convert image: palette is empty."));
-          return FALSE;
+            g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                                 _("Cannot convert image: palette is empty."));
+            return FALSE;
         }
     }
 
-  gimp_set_busy (image->gimp);
+    gimp_set_busy (image->gimp);
 
-  all_layers = gimp_image_get_layer_list (image);
+    all_layers = gimp_image_get_layer_list (image);
 
-  g_object_freeze_notify (G_OBJECT (image));
+    g_object_freeze_notify (G_OBJECT (image));
 
-  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_CONVERT,
-                               C_("undo-type", "Convert Image to Indexed"));
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_CONVERT,
+                                 C_("undo-type", "Convert Image to Indexed"));
 
-  src_profile = gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (image));
+    src_profile = gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (image));
 
-  /*  Push the image type to the stack  */
-  gimp_image_undo_push_image_type (image, NULL);
+    /*  Push the image type to the stack  */
+    gimp_image_undo_push_image_type (image, NULL);
 
-  /*  Set the new base type  */
-  old_type = gimp_image_get_base_type (image);
+    /*  Set the new base type  */
+    old_type = gimp_image_get_base_type (image);
 
-  /*  Build histogram if necessary.  */
-  rgb_to_lab_fish = babl_fish (babl_format ("R'G'B' float"),
-                               babl_format ("CIE Lab float"));
-  lab_to_rgb_fish = babl_fish (babl_format ("CIE Lab float"),
-                               babl_format ("R'G'B' float"));
+    /*  Build histogram if necessary.  */
+    rgb_to_lab_fish = babl_fish (babl_format ("R'G'B' float"),
+                                 babl_format ("CIE Lab float"));
+    lab_to_rgb_fish = babl_fish (babl_format ("CIE Lab float"),
+                                 babl_format ("R'G'B' float"));
 
-  /* don't dither if the input is grayscale and we are simply mapping
-   * every color
-   */
-  if (old_type     == GIMP_GRAY &&
-      max_colors   == 256       &&
-      palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+    /* don't dither if the input is grayscale and we are simply mapping
+     * every color
+     */
+    if (old_type     == GIMP_GRAY &&
+            max_colors   == 256       &&
+            palette_type == GIMP_CONVERT_PALETTE_GENERATE)
     {
-      dither_type = GIMP_CONVERT_DITHER_NONE;
+        dither_type = GIMP_CONVERT_DITHER_NONE;
     }
 
-  if (progress)
+    if (progress)
     {
-      queue        = gimp_object_queue_new (progress);
-      sub_progress = GIMP_PROGRESS (queue);
+        queue        = gimp_object_queue_new (progress);
+        sub_progress = GIMP_PROGRESS (queue);
 
-      gimp_object_queue_push_list (queue, all_layers);
+        gimp_object_queue_push_list (queue, all_layers);
     }
 
-  quantobj = initialize_median_cut (old_type, max_colors, dither_type,
-                                    palette_type, custom_palette,
-                                    dither_alpha,
-                                    sub_progress);
+    quantobj = initialize_median_cut (old_type, max_colors, dither_type,
+                                      palette_type, custom_palette,
+                                      dither_alpha,
+                                      sub_progress);
 
-  if (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+    if (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
     {
-      if (old_type == GIMP_GRAY)
-        zero_histogram_gray (quantobj->histogram);
-      else
-        zero_histogram_rgb (quantobj->histogram);
+        if (old_type == GIMP_GRAY)
+            zero_histogram_gray (quantobj->histogram);
+        else
+            zero_histogram_rgb (quantobj->histogram);
 
-      /* To begin, assume that there are fewer colors in the image
-       *  than the user actually asked for.  In that case, we don't
-       *  need to quantize or color-dither.
-       */
-      needs_quantize = FALSE;
-      had_black = FALSE;
-      had_white = FALSE;
-      num_found_cols = 0;
+        /* To begin, assume that there are fewer colors in the image
+         *  than the user actually asked for.  In that case, we don't
+         *  need to quantize or color-dither.
+         */
+        needs_quantize = FALSE;
+        had_black = FALSE;
+        had_white = FALSE;
+        num_found_cols = 0;
 
-      /*  Build the histogram  */
-      for (list = all_layers;
-           list;
-           list = g_list_next (list))
+        /*  Build the histogram  */
+        for (list = all_layers;
+                list;
+                list = g_list_next (list))
         {
-          GimpLayer *layer = list->data;
+            GimpLayer *layer = list->data;
 
-          if (queue)
+            if (queue)
+                gimp_object_queue_pop (queue);
+
+            if (old_type == GIMP_GRAY)
+            {
+                generate_histogram_gray (quantobj->histogram,
+                                         layer, dither_alpha);
+            }
+            else
+            {
+                /* Note: generate_histogram_rgb may set needs_quantize
+                 * if the image contains more colors than the limit
+                 * specified by the user.
+                 */
+                generate_histogram_rgb (quantobj->histogram,
+                                        layer, max_colors, dither_alpha,
+                                        sub_progress);
+            }
+        }
+    }
+
+    if (progress)
+        gimp_progress_set_text_literal (progress,
+                                        _("Converting to indexed colors (stage 2)"));
+
+    if (old_type == GIMP_RGB &&
+            ! needs_quantize     &&
+            palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+    {
+        gint i;
+
+        /*  If this is an RGB image, and the user wanted a custom-built
+         *  generated palette, and this image has no more colors than
+         *  the user asked for, we don't need the first pass
+         *  (quantization).
+         *
+         *  There's also no point in dithering, since there's no error
+         *  to spread.  So we destroy the old quantobj and make a new
+         *  one with the remapping function set to a special LUT-based
+         *  no-dither remapper.
+         */
+
+        quantobj->delete_func (quantobj);
+        quantobj = initialize_median_cut (old_type, max_colors,
+                                          GIMP_CONVERT_DITHER_NODESTRUCT,
+                                          palette_type,
+                                          custom_palette,
+                                          dither_alpha,
+                                          sub_progress);
+        /* We can skip the first pass (palette creation) */
+
+        quantobj->actual_number_of_colors = num_found_cols;
+        for (i = 0; i < num_found_cols; i++)
+        {
+            quantobj->cmap[i].red   = found_cols[i][0];
+            quantobj->cmap[i].green = found_cols[i][1];
+            quantobj->cmap[i].blue  = found_cols[i][2];
+        }
+    }
+    else
+    {
+        quantobj->first_pass (quantobj);
+    }
+
+    if (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+        qsort (quantobj->cmap,
+               quantobj->actual_number_of_colors, sizeof (Color),
+               color_quicksort);
+
+    if (progress)
+    {
+        gimp_progress_set_text_literal (progress,
+                                        _("Converting to indexed colors (stage 3)"));
+
+        gimp_object_queue_clear (queue);
+        gimp_object_queue_push_list (queue, all_layers);
+    }
+
+    /* Initialise data which must persist across indexed layer iterations */
+    if (quantobj->second_pass_init)
+        quantobj->second_pass_init (quantobj);
+
+    /* Set the base type just before we also set the colormap. In
+     * particular we must not let any GUI code in-between (like progress
+     * update) in order to avoid any context switch. Some various pieces
+     * of the code are relying on proper image state, and an indexed image
+     * without a colormap is not a proper state (it will also have neither
+     * babl format nor profile).
+     * See #3070.
+     */
+    g_object_set (image, "base-type", GIMP_INDEXED, NULL);
+
+    /*  Set the generated palette on the image, we need it to
+     *  convert the layers. We optionally remove duplicate entries
+     *  after the layer conversion.
+     */
+    {
+        guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
+        gint   i, j;
+
+        for (i = 0, j = 0; i < quantobj->actual_number_of_colors; i++)
+        {
+            colormap[j++] = quantobj->cmap[i].red;
+            colormap[j++] = quantobj->cmap[i].green;
+            colormap[j++] = quantobj->cmap[i].blue;
+        }
+
+        gimp_image_set_colormap (image, colormap,
+                                 quantobj->actual_number_of_colors, TRUE);
+    }
+
+    /* when converting from GRAY, always convert to the new type's
+     * builtin profile
+     */
+    if (old_type == GIMP_GRAY)
+        dest_profile = gimp_image_get_builtin_color_profile (image);
+
+    /*  Convert all layers  */
+    for (list = all_layers;
+            list;
+            list = g_list_next (list))
+    {
+        GimpLayer *layer = list->data;
+        gboolean   quantize;
+
+        if (queue)
             gimp_object_queue_pop (queue);
 
-          if (old_type == GIMP_GRAY)
-            {
-              generate_histogram_gray (quantobj->histogram,
-                                       layer, dither_alpha);
-            }
-          else
-            {
-              /* Note: generate_histogram_rgb may set needs_quantize
-               * if the image contains more colors than the limit
-               * specified by the user.
-               */
-              generate_histogram_rgb (quantobj->histogram,
-                                      layer, max_colors, dither_alpha,
-                                      sub_progress);
-            }
+        if (gimp_item_is_text_layer (GIMP_ITEM (layer)))
+            quantize = dither_text_layers;
+        else
+            quantize = TRUE;
+
+        if (quantize)
+        {
+            GeglBuffer *new_buffer;
+            gboolean    has_alpha;
+
+            has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
+
+            new_buffer =
+                gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                                 gimp_item_get_width  (GIMP_ITEM (layer)),
+                                                 gimp_item_get_height (GIMP_ITEM (layer))),
+                                 gimp_image_get_layer_format (image,
+                                         has_alpha));
+
+            quantobj->second_pass (quantobj, layer, new_buffer);
+
+            gimp_drawable_set_buffer (GIMP_DRAWABLE (layer), TRUE, NULL,
+                                      new_buffer);
+            g_object_unref (new_buffer);
+        }
+        else
+        {
+            gimp_drawable_convert_type (GIMP_DRAWABLE (layer), image,
+                                        GIMP_INDEXED,
+                                        gimp_drawable_get_precision (GIMP_DRAWABLE (layer)),
+                                        gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)),
+                                        src_profile,
+                                        dest_profile,
+                                        GEGL_DITHER_NONE, GEGL_DITHER_NONE,
+                                        TRUE, sub_progress);
         }
     }
 
-  if (progress)
-    gimp_progress_set_text_literal (progress,
-                                    _("Converting to indexed colors (stage 2)"));
-
-  if (old_type == GIMP_RGB &&
-      ! needs_quantize     &&
-      palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+    /*  Set the final palette on the image  */
+    if (remove_duplicates &&
+            (palette_type != GIMP_CONVERT_PALETTE_GENERATE) &&
+            (palette_type != GIMP_CONVERT_PALETTE_MONO))
     {
-      gint i;
+        guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
+        gint   i, j;
+        guchar old_palette[256 * 3];
+        guchar new_palette[256 * 3];
+        guchar remap_table[256];
+        gint   num_entries;
 
-      /*  If this is an RGB image, and the user wanted a custom-built
-       *  generated palette, and this image has no more colors than
-       *  the user asked for, we don't need the first pass
-       *  (quantization).
-       *
-       *  There's also no point in dithering, since there's no error
-       *  to spread.  So we destroy the old quantobj and make a new
-       *  one with the remapping function set to a special LUT-based
-       *  no-dither remapper.
-       */
-
-      quantobj->delete_func (quantobj);
-      quantobj = initialize_median_cut (old_type, max_colors,
-                                        GIMP_CONVERT_DITHER_NODESTRUCT,
-                                        palette_type,
-                                        custom_palette,
-                                        dither_alpha,
-                                        sub_progress);
-      /* We can skip the first pass (palette creation) */
-
-      quantobj->actual_number_of_colors = num_found_cols;
-      for (i = 0; i < num_found_cols; i++)
+        for (i = 0, j = 0; i < quantobj->actual_number_of_colors; i++)
         {
-          quantobj->cmap[i].red   = found_cols[i][0];
-          quantobj->cmap[i].green = found_cols[i][1];
-          quantobj->cmap[i].blue  = found_cols[i][2];
+            old_palette[j++] = quantobj->cmap[i].red;
+            old_palette[j++] = quantobj->cmap[i].green;
+            old_palette[j++] = quantobj->cmap[i].blue;
         }
-    }
-  else
-    {
-      quantobj->first_pass (quantobj);
-    }
 
-  if (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
-    qsort (quantobj->cmap,
-           quantobj->actual_number_of_colors, sizeof (Color),
-           color_quicksort);
+        num_entries = quantobj->actual_number_of_colors;
 
-  if (progress)
-    {
-      gimp_progress_set_text_literal (progress,
-                                      _("Converting to indexed colors (stage 3)"));
+        /* Generate a remapping table */
+        make_remap_table (old_palette, new_palette,
+                          quantobj->index_used_count,
+                          remap_table, &num_entries);
 
-      gimp_object_queue_clear (queue);
-      gimp_object_queue_push_list (queue, all_layers);
+        /*  Convert all layers  */
+        for (list = all_layers; list; list = g_list_next (list))
+        {
+            remap_indexed_layer (list->data, remap_table, num_entries);
+        }
+
+        for (i = 0, j = 0; i < num_entries; i++)
+        {
+            colormap[j] = new_palette[j];
+            j++;
+            colormap[j] = new_palette[j];
+            j++;
+            colormap[j] = new_palette[j];
+            j++;
+        }
+
+        gimp_image_set_colormap (image, colormap, num_entries, TRUE);
     }
 
-  /* Initialise data which must persist across indexed layer iterations */
-  if (quantobj->second_pass_init)
-    quantobj->second_pass_init (quantobj);
+    /*  When converting from GRAY, set the new profile.
+     */
+    if (old_type == GIMP_GRAY)
+        gimp_image_set_color_profile (image, dest_profile, NULL);
 
-  /* Set the base type just before we also set the colormap. In
-   * particular we must not let any GUI code in-between (like progress
-   * update) in order to avoid any context switch. Some various pieces
-   * of the code are relying on proper image state, and an indexed image
-   * without a colormap is not a proper state (it will also have neither
-   * babl format nor profile).
-   * See #3070.
-   */
-  g_object_set (image, "base-type", GIMP_INDEXED, NULL);
+    /*  Delete the quantizer object, if there is one */
+    if (quantobj)
+        quantobj->delete_func (quantobj);
 
-  /*  Set the generated palette on the image, we need it to
-   *  convert the layers. We optionally remove duplicate entries
-   *  after the layer conversion.
-   */
-  {
-    guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
-    gint   i, j;
+    gimp_image_undo_group_end (image);
 
-    for (i = 0, j = 0; i < quantobj->actual_number_of_colors; i++)
-      {
-        colormap[j++] = quantobj->cmap[i].red;
-        colormap[j++] = quantobj->cmap[i].green;
-        colormap[j++] = quantobj->cmap[i].blue;
-      }
+    gimp_image_mode_changed (image);
+    g_object_thaw_notify (G_OBJECT (image));
 
-    gimp_image_set_colormap (image, colormap,
-                             quantobj->actual_number_of_colors, TRUE);
-  }
+    g_clear_object (&queue);
 
-  /* when converting from GRAY, always convert to the new type's
-   * builtin profile
-   */
-  if (old_type == GIMP_GRAY)
-    dest_profile = gimp_image_get_builtin_color_profile (image);
+    g_list_free (all_layers);
 
-  /*  Convert all layers  */
-  for (list = all_layers;
-       list;
-       list = g_list_next (list))
-    {
-      GimpLayer *layer = list->data;
-      gboolean   quantize;
+    gimp_unset_busy (image->gimp);
 
-      if (queue)
-        gimp_object_queue_pop (queue);
-
-      if (gimp_item_is_text_layer (GIMP_ITEM (layer)))
-        quantize = dither_text_layers;
-      else
-        quantize = TRUE;
-
-      if (quantize)
-        {
-          GeglBuffer *new_buffer;
-          gboolean    has_alpha;
-
-          has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
-
-          new_buffer =
-            gegl_buffer_new (GEGL_RECTANGLE (0, 0,
-                                             gimp_item_get_width  (GIMP_ITEM (layer)),
-                                             gimp_item_get_height (GIMP_ITEM (layer))),
-                             gimp_image_get_layer_format (image,
-                                                          has_alpha));
-
-          quantobj->second_pass (quantobj, layer, new_buffer);
-
-          gimp_drawable_set_buffer (GIMP_DRAWABLE (layer), TRUE, NULL,
-                                    new_buffer);
-          g_object_unref (new_buffer);
-        }
-      else
-        {
-          gimp_drawable_convert_type (GIMP_DRAWABLE (layer), image,
-                                      GIMP_INDEXED,
-                                      gimp_drawable_get_precision (GIMP_DRAWABLE (layer)),
-                                      gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)),
-                                      src_profile,
-                                      dest_profile,
-                                      GEGL_DITHER_NONE, GEGL_DITHER_NONE,
-                                      TRUE, sub_progress);
-        }
-    }
-
-  /*  Set the final palette on the image  */
-  if (remove_duplicates &&
-      (palette_type != GIMP_CONVERT_PALETTE_GENERATE) &&
-      (palette_type != GIMP_CONVERT_PALETTE_MONO))
-    {
-      guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
-      gint   i, j;
-      guchar old_palette[256 * 3];
-      guchar new_palette[256 * 3];
-      guchar remap_table[256];
-      gint   num_entries;
-
-      for (i = 0, j = 0; i < quantobj->actual_number_of_colors; i++)
-        {
-          old_palette[j++] = quantobj->cmap[i].red;
-          old_palette[j++] = quantobj->cmap[i].green;
-          old_palette[j++] = quantobj->cmap[i].blue;
-        }
-
-      num_entries = quantobj->actual_number_of_colors;
-
-      /* Generate a remapping table */
-      make_remap_table (old_palette, new_palette,
-                        quantobj->index_used_count,
-                        remap_table, &num_entries);
-
-      /*  Convert all layers  */
-      for (list = all_layers; list; list = g_list_next (list))
-        {
-          remap_indexed_layer (list->data, remap_table, num_entries);
-        }
-
-      for (i = 0, j = 0; i < num_entries; i++)
-        {
-          colormap[j] = new_palette[j]; j++;
-          colormap[j] = new_palette[j]; j++;
-          colormap[j] = new_palette[j]; j++;
-        }
-
-      gimp_image_set_colormap (image, colormap, num_entries, TRUE);
-    }
-
-  /*  When converting from GRAY, set the new profile.
-   */
-  if (old_type == GIMP_GRAY)
-    gimp_image_set_color_profile (image, dest_profile, NULL);
-
-  /*  Delete the quantizer object, if there is one */
-  if (quantobj)
-    quantobj->delete_func (quantobj);
-
-  gimp_image_undo_group_end (image);
-
-  gimp_image_mode_changed (image);
-  g_object_thaw_notify (G_OBJECT (image));
-
-  g_clear_object (&queue);
-
-  g_list_free (all_layers);
-
-  gimp_unset_busy (image->gimp);
-
-  return TRUE;
+    return TRUE;
 }
 
 /*
@@ -1104,18 +1107,18 @@ gimp_image_convert_indexed (GimpImage               *image,
 static void
 zero_histogram_gray (CFHistogram histogram)
 {
-  gint i;
+    gint i;
 
-  for (i = 0; i < 256; i++)
-    histogram[i] = 0;
+    for (i = 0; i < 256; i++)
+        histogram[i] = 0;
 }
 
 
 static void
 zero_histogram_rgb (CFHistogram histogram)
 {
-  memset (histogram, 0,
-          HIST_R_ELEMS * HIST_G_ELEMS * HIST_B_ELEMS * sizeof (ColorFreq));
+    memset (histogram, 0,
+            HIST_R_ELEMS * HIST_G_ELEMS * HIST_B_ELEMS * sizeof (ColorFreq));
 }
 
 
@@ -1124,45 +1127,45 @@ generate_histogram_gray (CFHistogram  histogram,
                          GimpLayer   *layer,
                          gboolean     dither_alpha)
 {
-  GeglBufferIterator *iter;
-  const Babl         *format;
-  gint                bpp;
-  gboolean            has_alpha;
+    GeglBufferIterator *iter;
+    const Babl         *format;
+    gint                bpp;
+    gboolean            has_alpha;
 
-  format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
 
-  g_return_if_fail (format == babl_format ("Y' u8") ||
-                    format == babl_format ("Y'A u8"));
+    g_return_if_fail (format == babl_format ("Y' u8") ||
+                      format == babl_format ("Y'A u8"));
 
-  bpp       = babl_format_get_bytes_per_pixel (format);
-  has_alpha = babl_format_has_alpha (format);
+    bpp       = babl_format_get_bytes_per_pixel (format);
+    has_alpha = babl_format_has_alpha (format);
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, format,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 1);
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, format,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 1);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *data   = iter->items[0].data;
-      gint          length = iter->length;
+        const guchar *data   = iter->items[0].data;
+        gint          length = iter->length;
 
-      if (has_alpha)
+        if (has_alpha)
         {
-          while (length--)
+            while (length--)
             {
-              if (data[ALPHA_G] > 127)
-                histogram[*data]++;
+                if (data[ALPHA_G] > 127)
+                    histogram[*data]++;
 
-              data += bpp;
+                data += bpp;
             }
         }
-      else
+        else
         {
-          while (length--)
+            while (length--)
             {
-              histogram[*data]++;
+                histogram[*data]++;
 
-              data += bpp;
+                data += bpp;
             }
         }
     }
@@ -1171,14 +1174,14 @@ generate_histogram_gray (CFHistogram  histogram,
 static void
 check_white_or_black (const guchar *data)
 {
-  if (data[RED]   == 255 &&
-      data[GREEN] == 255 &&
-      data[BLUE]  == 255)
-    had_white = TRUE;
-  if (data[RED]  ==0 &&
-      data[GREEN]==0 &&
-      data[BLUE] ==0)
-    had_black = TRUE;
+    if (data[RED]   == 255 &&
+            data[GREEN] == 255 &&
+            data[BLUE]  == 255)
+        had_white = TRUE;
+    if (data[RED]  ==0 &&
+            data[GREEN]==0 &&
+            data[BLUE] ==0)
+        had_black = TRUE;
 }
 
 static void
@@ -1188,204 +1191,204 @@ generate_histogram_rgb (CFHistogram   histogram,
                         gboolean      dither_alpha,
                         GimpProgress *progress)
 {
-  GeglBufferIterator *iter;
-  const Babl         *format;
-  GeglRectangle      *roi;
-  ColorFreq          *colfreq;
-  gint                nfc_iter;
-  gint                row, col, coledge;
-  gint                offsetx, offsety;
-  glong               layer_size;
-  glong               total_size = 0;
-  gint                count      = 0;
-  gint                bpp;
-  gboolean            has_alpha;
+    GeglBufferIterator *iter;
+    const Babl         *format;
+    GeglRectangle      *roi;
+    ColorFreq          *colfreq;
+    gint                nfc_iter;
+    gint                row, col, coledge;
+    gint                offsetx, offsety;
+    glong               layer_size;
+    glong               total_size = 0;
+    gint                count      = 0;
+    gint                bpp;
+    gboolean            has_alpha;
 
-  format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
 
-  g_return_if_fail (format == babl_format ("R'G'B' u8") ||
-                    format == babl_format ("R'G'B'A u8"));
+    g_return_if_fail (format == babl_format ("R'G'B' u8") ||
+                      format == babl_format ("R'G'B'A u8"));
 
-  bpp       = babl_format_get_bytes_per_pixel (format);
-  has_alpha = babl_format_has_alpha (format);
+    bpp       = babl_format_get_bytes_per_pixel (format);
+    has_alpha = babl_format_has_alpha (format);
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  layer_size = (gimp_item_get_width  (GIMP_ITEM (layer)) *
-                gimp_item_get_height (GIMP_ITEM (layer)));
+    layer_size = (gimp_item_get_width  (GIMP_ITEM (layer)) *
+                  gimp_item_get_height (GIMP_ITEM (layer)));
 
-  /*  g_printerr ("col_limit = %d, nfc = %d\n", col_limit, num_found_cols); */
+    /*  g_printerr ("col_limit = %d, nfc = %d\n", col_limit, num_found_cols); */
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, format,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 1);
-  roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, format,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 1);
+    roi = &iter->items[0].roi;
 
-  if (progress)
-    gimp_progress_set_value (progress, 0.0);
+    if (progress)
+        gimp_progress_set_value (progress, 0.0);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *data   = iter->items[0].data;
-      gint          length = iter->length;
+        const guchar *data   = iter->items[0].data;
+        gint          length = iter->length;
 
-      total_size += length;
+        total_size += length;
 
-      /* g_printerr (" [%d,%d - %d,%d]", srcPR.x, src_roi->y, offsetx, offsety); */
+        /* g_printerr (" [%d,%d - %d,%d]", srcPR.x, src_roi->y, offsetx, offsety); */
 
-      if (needs_quantize)
+        if (needs_quantize)
         {
-          if (dither_alpha)
+            if (dither_alpha)
             {
-              /* if alpha-dithering,
-                 we need to be deterministic w.r.t. offsets */
+                /* if alpha-dithering,
+                   we need to be deterministic w.r.t. offsets */
 
-              col = roi->x + offsetx;
-              coledge = col + roi->width;
-              row = roi->y + offsety;
+                col = roi->x + offsetx;
+                coledge = col + roi->width;
+                row = roi->y + offsety;
 
-              while (length--)
+                while (length--)
                 {
-                  gboolean transparent = FALSE;
+                    gboolean transparent = FALSE;
 
-                  if (has_alpha &&
-                      data[ALPHA] <
-                      DM[col & DM_WIDTHMASK][row & DM_HEIGHTMASK])
-                    transparent = TRUE;
+                    if (has_alpha &&
+                            data[ALPHA] <
+                            DM[col & DM_WIDTHMASK][row & DM_HEIGHTMASK])
+                        transparent = TRUE;
 
-                  if (! transparent)
+                    if (! transparent)
                     {
-                      colfreq = HIST_RGB (histogram,
-                                          data[RED],
-                                          data[GREEN],
-                                          data[BLUE]);
-                      check_white_or_black (data);
-                      (*colfreq)++;
+                        colfreq = HIST_RGB (histogram,
+                                            data[RED],
+                                            data[GREEN],
+                                            data[BLUE]);
+                        check_white_or_black (data);
+                        (*colfreq)++;
                     }
 
-                  col++;
-                  if (col == coledge)
+                    col++;
+                    if (col == coledge)
                     {
-                      col = roi->x + offsetx;
-                      row++;
+                        col = roi->x + offsetx;
+                        row++;
                     }
 
-                  data += bpp;
+                    data += bpp;
                 }
             }
-          else
+            else
             {
-              while (length--)
+                while (length--)
                 {
-                  if ((has_alpha && ((data[ALPHA] > 127)))
-                      || (!has_alpha))
+                    if ((has_alpha && ((data[ALPHA] > 127)))
+                            || (!has_alpha))
                     {
-                      colfreq = HIST_RGB (histogram,
-                                          data[RED],
-                                          data[GREEN],
-                                          data[BLUE]);
-                      check_white_or_black (data);
-                      (*colfreq)++;
+                        colfreq = HIST_RGB (histogram,
+                                            data[RED],
+                                            data[GREEN],
+                                            data[BLUE]);
+                        check_white_or_black (data);
+                        (*colfreq)++;
                     }
 
-                  data += bpp;
+                    data += bpp;
                 }
             }
         }
-      else
+        else
         {
-          /* if alpha-dithering, we need to be deterministic w.r.t. offsets */
-          col = roi->x + offsetx;
-          coledge = col + roi->width;
-          row = roi->y + offsety;
+            /* if alpha-dithering, we need to be deterministic w.r.t. offsets */
+            col = roi->x + offsetx;
+            coledge = col + roi->width;
+            row = roi->y + offsety;
 
-          while (length--)
+            while (length--)
             {
-              gboolean transparent = FALSE;
+                gboolean transparent = FALSE;
 
-              if (has_alpha)
+                if (has_alpha)
                 {
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      if (data[ALPHA] <
-                          DM[col & DM_WIDTHMASK][row & DM_HEIGHTMASK])
-                        transparent = TRUE;
+                        if (data[ALPHA] <
+                                DM[col & DM_WIDTHMASK][row & DM_HEIGHTMASK])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (data[ALPHA] <= 127)
-                        transparent = TRUE;
+                        if (data[ALPHA] <= 127)
+                            transparent = TRUE;
                     }
                 }
 
-              if (! transparent)
+                if (! transparent)
                 {
-                  colfreq = HIST_RGB (histogram,
-                                      data[RED],
-                                      data[GREEN],
-                                      data[BLUE]);
-                  (*colfreq)++;
+                    colfreq = HIST_RGB (histogram,
+                                        data[RED],
+                                        data[GREEN],
+                                        data[BLUE]);
+                    (*colfreq)++;
 
-                  if (!needs_quantize)
+                    if (!needs_quantize)
                     {
-                      for (nfc_iter = 0;
-                           nfc_iter < num_found_cols;
-                           nfc_iter++)
+                        for (nfc_iter = 0;
+                                nfc_iter < num_found_cols;
+                                nfc_iter++)
                         {
-                          if ((data[RED]   == found_cols[nfc_iter][0]) &&
-                              (data[GREEN] == found_cols[nfc_iter][1]) &&
-                              (data[BLUE]  == found_cols[nfc_iter][2]))
+                            if ((data[RED]   == found_cols[nfc_iter][0]) &&
+                                    (data[GREEN] == found_cols[nfc_iter][1]) &&
+                                    (data[BLUE]  == found_cols[nfc_iter][2]))
+                                goto already_found;
+                        }
+
+                        /* Color was not in the table of
+                         * existing colors
+                         */
+
+                        num_found_cols++;
+
+                        if (num_found_cols > col_limit)
+                        {
+                            /* There are more colors in the image than
+                             *  were allowed.  We switch to plain
+                             *  histogram calculation with a view to
+                             *  quantizing at a later stage.
+                             */
+                            needs_quantize = TRUE;
+                            /* g_print ("\nmax colors exceeded - needs quantize.\n");*/
                             goto already_found;
                         }
-
-                      /* Color was not in the table of
-                       * existing colors
-                       */
-
-                      num_found_cols++;
-
-                      if (num_found_cols > col_limit)
+                        else
                         {
-                          /* There are more colors in the image than
-                           *  were allowed.  We switch to plain
-                           *  histogram calculation with a view to
-                           *  quantizing at a later stage.
-                           */
-                          needs_quantize = TRUE;
-                          /* g_print ("\nmax colors exceeded - needs quantize.\n");*/
-                          goto already_found;
-                        }
-                      else
-                        {
-                          /* Remember the new color we just found.
-                           */
-                          found_cols[num_found_cols-1][0] = data[RED];
-                          found_cols[num_found_cols-1][1] = data[GREEN];
-                          found_cols[num_found_cols-1][2] = data[BLUE];
+                            /* Remember the new color we just found.
+                             */
+                            found_cols[num_found_cols-1][0] = data[RED];
+                            found_cols[num_found_cols-1][1] = data[GREEN];
+                            found_cols[num_found_cols-1][2] = data[BLUE];
 
-                          check_white_or_black (data);
+                            check_white_or_black (data);
                         }
                     }
                 }
-            already_found:
+already_found:
 
-              col++;
-              if (col == coledge)
+                col++;
+                if (col == coledge)
                 {
-                  col = roi->x + offsetx;
-                  row++;
+                    col = roi->x + offsetx;
+                    row++;
                 }
 
-              data += bpp;
+                data += bpp;
             }
         }
 
-      if (progress && (count % 16 == 0))
-        gimp_progress_set_value (progress,
-                                 (gdouble) total_size / (gdouble) layer_size);
+        if (progress && (count % 16 == 0))
+            gimp_progress_set_value (progress,
+                                     (gdouble) total_size / (gdouble) layer_size);
     }
 
-/*  g_print ("O: col_limit = %d, nfc = %d\n", col_limit, num_found_cols);*/
+    /*  g_print ("O: col_limit = %d, nfc = %d\n", col_limit, num_found_cols);*/
 }
 
 
@@ -1396,85 +1399,85 @@ find_split_candidate (const boxptr  boxlist,
                       AxisType     *which_axis,
                       const gint    desired_colors)
 {
-  boxptr  boxp;
-  gint    i;
-  etype   maxc = 0;
-  boxptr  which = NULL;
-  gdouble Lbias;
+    boxptr  boxp;
+    gint    i;
+    etype   maxc = 0;
+    boxptr  which = NULL;
+    gdouble Lbias;
 
-  *which_axis = AXIS_UNDEF;
+    *which_axis = AXIS_UNDEF;
 
-  /* we only perform the initial L-split bias /at all/ if the final
-     number of desired colors is quite low, otherwise it all comes
-     out in the wash anyway and this initial bias generally only hurts
-     us in the long run. */
-  if (desired_colors <= 16)
+    /* we only perform the initial L-split bias /at all/ if the final
+       number of desired colors is quite low, otherwise it all comes
+       out in the wash anyway and this initial bias generally only hurts
+       us in the long run. */
+    if (desired_colors <= 16)
     {
 #define BIAS_FACTOR 2.66F
 #define BIAS_NUMBER 2 /* 0 */
 
-      /* we bias towards splitting across L* for first few colors */
-      Lbias = (numboxes > BIAS_NUMBER) ? 1.0F : ((gdouble) (BIAS_NUMBER + 1) -
-                                                 ((gdouble) numboxes)) /
-        ((gdouble) BIAS_NUMBER / BIAS_FACTOR);
-      /*Lbias = 1.0;
-        fprintf(stderr, " [[%d]] ", numboxes);
-        fprintf(stderr, "Using ramped L-split bias.\n");
-        fprintf(stderr, "R\n");
-      */
+        /* we bias towards splitting across L* for first few colors */
+        Lbias = (numboxes > BIAS_NUMBER) ? 1.0F : ((gdouble) (BIAS_NUMBER + 1) -
+                ((gdouble) numboxes)) /
+                ((gdouble) BIAS_NUMBER / BIAS_FACTOR);
+        /*Lbias = 1.0;
+          fprintf(stderr, " [[%d]] ", numboxes);
+          fprintf(stderr, "Using ramped L-split bias.\n");
+          fprintf(stderr, "R\n");
+        */
     }
-  else
-    Lbias = 1.0F;
+    else
+        Lbias = 1.0F;
 
-  for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++)
+    for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++)
     {
-      if (boxp->volume > 0)
+        if (boxp->volume > 0)
         {
 #ifndef _MSC_VER
-          etype rpe = (double)((boxp->rerror) * R_SCALE * R_SCALE);
-          etype gpe = (double)((boxp->gerror) * G_SCALE * G_SCALE);
-          etype bpe = (double)((boxp->berror) * B_SCALE * B_SCALE);
+            etype rpe = (double)((boxp->rerror) * R_SCALE * R_SCALE);
+            etype gpe = (double)((boxp->gerror) * G_SCALE * G_SCALE);
+            etype bpe = (double)((boxp->berror) * B_SCALE * B_SCALE);
 #else
-          /*
-           * Sorry about the mess, otherwise would get :
-           * error C2520: conversion from unsigned __int64 to double
-           *              not implemented, use signed __int64
-           */
-          etype rpe = (double)(((__int64)boxp->rerror) * R_SCALE * R_SCALE);
-          etype gpe = (double)(((__int64)boxp->gerror) * G_SCALE * G_SCALE);
-          etype bpe = (double)(((__int64)boxp->berror) * B_SCALE * B_SCALE);
+            /*
+             * Sorry about the mess, otherwise would get :
+             * error C2520: conversion from unsigned __int64 to double
+             *              not implemented, use signed __int64
+             */
+            etype rpe = (double)(((__int64)boxp->rerror) * R_SCALE * R_SCALE);
+            etype gpe = (double)(((__int64)boxp->gerror) * G_SCALE * G_SCALE);
+            etype bpe = (double)(((__int64)boxp->berror) * B_SCALE * B_SCALE);
 #endif
 
-          if (Lbias * rpe > maxc &&
-              boxp->Rmin < boxp->Rmax)
+            if (Lbias * rpe > maxc &&
+                    boxp->Rmin < boxp->Rmax)
             {
-              which = boxp;
-              maxc  = Lbias * rpe;
-              *which_axis = AXIS_RED;
+                which = boxp;
+                maxc  = Lbias * rpe;
+                *which_axis = AXIS_RED;
             }
 
-          if (gpe > maxc &&
-              boxp->Gmin < boxp->Gmax)
+            if (gpe > maxc &&
+                    boxp->Gmin < boxp->Gmax)
             {
-              which = boxp;
-              maxc  = gpe;
-              *which_axis = AXIS_GREEN;
+                which = boxp;
+                maxc  = gpe;
+                *which_axis = AXIS_GREEN;
             }
 
-          if (bpe > maxc &&
-              boxp->Bmin < boxp->Bmax)
+            if (bpe > maxc &&
+                    boxp->Bmin < boxp->Bmax)
             {
-              which = boxp;
-              maxc  = bpe;
-              *which_axis = AXIS_BLUE;
+                which = boxp;
+                maxc  = bpe;
+                *which_axis = AXIS_BLUE;
             }
         }
     }
 
-  /*  fprintf(stderr, " %f,%p ", maxc, which); */
-  /*  fprintf(stderr, " %llu ", maxc); */
+    /*  fprintf(stderr, " %f,%p ", maxc, which); */
+    /*  fprintf(stderr, " %llu ", maxc); */
 
-  return which;
+    return which;
 }
 
 
@@ -1485,21 +1488,21 @@ static boxptr
 find_biggest_volume (const boxptr boxlist,
                      const gint   numboxes)
 {
-  boxptr boxp;
-  gint   i;
-  gint   maxv = 0;
-  boxptr which = NULL;
+    boxptr boxp;
+    gint   i;
+    gint   maxv = 0;
+    boxptr which = NULL;
 
-  for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++)
+    for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++)
     {
-      if (boxp->volume > maxv)
+        if (boxp->volume > maxv)
         {
-          which = boxp;
-          maxv = boxp->volume;
+            which = boxp;
+            maxv = boxp->volume;
         }
     }
 
-  return which;
+    return which;
 }
 
 
@@ -1510,50 +1513,50 @@ static void
 update_box_gray (const CFHistogram histogram,
                  boxptr            boxp)
 {
-  gint      i, min, max, dist;
-  ColorFreq ccount;
+    gint      i, min, max, dist;
+    ColorFreq ccount;
 
-  min = boxp->Rmin;
-  max = boxp->Rmax;
+    min = boxp->Rmin;
+    max = boxp->Rmax;
 
-  if (max > min)
+    if (max > min)
+        for (i = min; i <= max; i++)
+        {
+            if (histogram[i] != 0)
+            {
+                boxp->Rmin = min = i;
+                break;
+            }
+        }
+
+    if (max > min)
+        for (i = max; i >= min; i--)
+        {
+            if (histogram[i] != 0)
+            {
+                boxp->Rmax = max = i;
+                break;
+            }
+        }
+
+    /* Update box volume.
+     * We use 2-norm rather than real volume here; this biases the method
+     * against making long narrow boxes, and it has the side benefit that
+     * a box is splittable iff norm > 0.
+     * Since the differences are expressed in histogram-cell units,
+     * we have to shift back to JSAMPLE units to get consistent distances;
+     * after which, we scale according to the selected distance scale factors.
+     */
+    dist = max - min;
+    boxp->volume = dist * dist;
+
+    /* Now scan remaining volume of box and compute population */
+    ccount = 0;
     for (i = min; i <= max; i++)
-      {
         if (histogram[i] != 0)
-          {
-            boxp->Rmin = min = i;
-            break;
-          }
-      }
+            ccount++;
 
-  if (max > min)
-    for (i = max; i >= min; i--)
-      {
-        if (histogram[i] != 0)
-          {
-            boxp->Rmax = max = i;
-            break;
-          }
-      }
-
-  /* Update box volume.
-   * We use 2-norm rather than real volume here; this biases the method
-   * against making long narrow boxes, and it has the side benefit that
-   * a box is splittable iff norm > 0.
-   * Since the differences are expressed in histogram-cell units,
-   * we have to shift back to JSAMPLE units to get consistent distances;
-   * after which, we scale according to the selected distance scale factors.
-   */
-  dist = max - min;
-  boxp->volume = dist * dist;
-
-  /* Now scan remaining volume of box and compute population */
-  ccount = 0;
-  for (i = min; i <= max; i++)
-    if (histogram[i] != 0)
-      ccount++;
-
-  boxp->colorcount = ccount;
+    boxp->colorcount = ccount;
 }
 
 
@@ -1565,412 +1568,418 @@ update_box_rgb (const CFHistogram histogram,
                 boxptr            boxp,
                 const gint        cells_remaining)
 {
-  gint      R, G, B;
-  gint      Rmin, Rmax, Gmin, Gmax, Bmin, Bmax;
-  gint      dist0, dist1, dist2;
-  ColorFreq ccount;
-  /*
-  guint64 tempRerror;
-  guint64 tempGerror;
-  guint64 tempBerror;
-  */
-  QuantizeObj dummyqo;
-  box         dummybox;
+    gint      R, G, B;
+    gint      Rmin, Rmax, Gmin, Gmax, Bmin, Bmax;
+    gint      dist0, dist1, dist2;
+    ColorFreq ccount;
+    /*
+    guint64 tempRerror;
+    guint64 tempGerror;
+    guint64 tempBerror;
+    */
+    QuantizeObj dummyqo;
+    box         dummybox;
 
-  /* fprintf(stderr, "U"); */
+    /* fprintf(stderr, "U"); */
 
-  Rmin = boxp->Rmin;  Rmax = boxp->Rmax;
-  Gmin = boxp->Gmin;  Gmax = boxp->Gmax;
-  Bmin = boxp->Bmin;  Bmax = boxp->Bmax;
+    Rmin = boxp->Rmin;
+    Rmax = boxp->Rmax;
+    Gmin = boxp->Gmin;
+    Gmax = boxp->Gmax;
+    Bmin = boxp->Bmin;
+    Bmax = boxp->Bmax;
 
-  if (Rmax > Rmin)
+    if (Rmax > Rmin)
+        for (R = Rmin; R <= Rmax; R++)
+            for (G = Gmin; G <= Gmax; G++)
+            {
+                for (B = Bmin; B <= Bmax; B++)
+                {
+                    if (*HIST_LIN (histogram, R, G, B) != 0)
+                    {
+                        boxp->Rmin = Rmin = R;
+                        goto have_Rmin;
+                    }
+                }
+            }
+have_Rmin:
+    if (Rmax > Rmin)
+        for (R = Rmax; R >= Rmin; R--)
+            for (G = Gmin; G <= Gmax; G++)
+            {
+                for (B = Bmin; B <= Bmax; B++)
+                {
+                    if (*HIST_LIN (histogram, R, G, B) != 0)
+                    {
+                        boxp->Rmax = Rmax = R;
+                        goto have_Rmax;
+                    }
+                }
+            }
+have_Rmax:
+    if (Gmax > Gmin)
+        for (G = Gmin; G <= Gmax; G++)
+            for (R = Rmin; R <= Rmax; R++)
+            {
+                for (B = Bmin; B <= Bmax; B++)
+                {
+                    if (*HIST_LIN (histogram, R, G, B) != 0)
+                    {
+                        boxp->Gmin = Gmin = G;
+                        goto have_Gmin;
+                    }
+                }
+            }
+have_Gmin:
+    if (Gmax > Gmin)
+        for (G = Gmax; G >= Gmin; G--)
+            for (R = Rmin; R <= Rmax; R++)
+            {
+                for (B = Bmin; B <= Bmax; B++)
+                {
+                    if (*HIST_LIN (histogram, R, G, B) != 0)
+                    {
+                        boxp->Gmax = Gmax = G;
+                        goto have_Gmax;
+                    }
+                }
+            }
+have_Gmax:
+    if (Bmax > Bmin)
+        for (B = Bmin; B <= Bmax; B++)
+            for (R = Rmin; R <= Rmax; R++)
+            {
+                for (G = Gmin; G <= Gmax; G++)
+                {
+                    if (*HIST_LIN (histogram, R, G, B) != 0)
+                    {
+                        boxp->Bmin = Bmin = B;
+                        goto have_Bmin;
+                    }
+                }
+            }
+have_Bmin:
+    if (Bmax > Bmin)
+        for (B = Bmax; B >= Bmin; B--)
+            for (R = Rmin; R <= Rmax; R++)
+            {
+                for (G = Gmin; G <= Gmax; G++)
+                {
+                    if (*HIST_LIN (histogram, R, G, B) != 0)
+                    {
+                        boxp->Bmax = Bmax = B;
+                        goto have_Bmax;
+                    }
+                }
+            }
+have_Bmax:
+
+    /* Update box volume.
+     * We use 2-norm rather than real volume here; this biases the method
+     * against making long narrow boxes, and it has the side benefit that
+     * a box is splittable iff norm > 0. (ADM: note: this isn't true.)
+     * Since the differences are expressed in histogram-cell units,
+     * we have to shift back to JSAMPLE units to get consistent distances;
+     * after which, we scale according to the selected distance scale factors.
+     */
+    dist0 = ((1 + Rmax - Rmin) << R_SHIFT) * R_SCALE;
+    dist1 = ((1 + Gmax - Gmin) << G_SHIFT) * G_SCALE;
+    dist2 = ((1 + Bmax - Bmin) << B_SHIFT) * B_SCALE;
+    boxp->volume = dist0*dist0 + dist1*dist1 + dist2*dist2;
+    /*  boxp->volume = dist0 * dist1 * dist2; */
+
+    compute_color_lin8(&dummyqo, histogram, boxp, 0);
+
+    /*printf("(%d %d %d)\n", dummyqo.cmap[0].red,dummyqo.cmap[0].green,dummyqo.cmap[0].blue);
+      fflush(stdout);*/
+
+    /* Now scan remaining volume of box and compute population */
+    ccount = 0;
+    boxp->error = 0;
+    boxp->rerror = 0;
+    boxp->gerror = 0;
+    boxp->berror = 0;
     for (R = Rmin; R <= Rmax; R++)
-      for (G = Gmin; G <= Gmax; G++)
-        {
-          for (B = Bmin; B <= Bmax; B++)
-            {
-              if (*HIST_LIN (histogram, R, G, B) != 0)
-                {
-                  boxp->Rmin = Rmin = R;
-                  goto have_Rmin;
-                }
-            }
-        }
- have_Rmin:
-  if (Rmax > Rmin)
-    for (R = Rmax; R >= Rmin; R--)
-      for (G = Gmin; G <= Gmax; G++)
-        {
-          for (B = Bmin; B <= Bmax; B++)
-            {
-              if (*HIST_LIN (histogram, R, G, B) != 0)
-                {
-                  boxp->Rmax = Rmax = R;
-                  goto have_Rmax;
-                }
-            }
-        }
- have_Rmax:
-  if (Gmax > Gmin)
-    for (G = Gmin; G <= Gmax; G++)
-      for (R = Rmin; R <= Rmax; R++)
-        {
-          for (B = Bmin; B <= Bmax; B++)
-            {
-              if (*HIST_LIN (histogram, R, G, B) != 0)
-                {
-                  boxp->Gmin = Gmin = G;
-                  goto have_Gmin;
-                }
-            }
-        }
- have_Gmin:
-  if (Gmax > Gmin)
-    for (G = Gmax; G >= Gmin; G--)
-      for (R = Rmin; R <= Rmax; R++)
-        {
-          for (B = Bmin; B <= Bmax; B++)
-            {
-              if (*HIST_LIN (histogram, R, G, B) != 0)
-                {
-                  boxp->Gmax = Gmax = G;
-                  goto have_Gmax;
-                }
-            }
-        }
- have_Gmax:
-  if (Bmax > Bmin)
-    for (B = Bmin; B <= Bmax; B++)
-      for (R = Rmin; R <= Rmax; R++)
-        {
-          for (G = Gmin; G <= Gmax; G++)
-            {
-              if (*HIST_LIN (histogram, R, G, B) != 0)
-                {
-                  boxp->Bmin = Bmin = B;
-                  goto have_Bmin;
-                }
-            }
-        }
- have_Bmin:
-  if (Bmax > Bmin)
-    for (B = Bmax; B >= Bmin; B--)
-      for (R = Rmin; R <= Rmax; R++)
-        {
-          for (G = Gmin; G <= Gmax; G++)
-            {
-              if (*HIST_LIN (histogram, R, G, B) != 0)
-                {
-                  boxp->Bmax = Bmax = B;
-                  goto have_Bmax;
-                }
-            }
-        }
- have_Bmax:
-
-  /* Update box volume.
-   * We use 2-norm rather than real volume here; this biases the method
-   * against making long narrow boxes, and it has the side benefit that
-   * a box is splittable iff norm > 0. (ADM: note: this isn't true.)
-   * Since the differences are expressed in histogram-cell units,
-   * we have to shift back to JSAMPLE units to get consistent distances;
-   * after which, we scale according to the selected distance scale factors.
-   */
-  dist0 = ((1 + Rmax - Rmin) << R_SHIFT) * R_SCALE;
-  dist1 = ((1 + Gmax - Gmin) << G_SHIFT) * G_SCALE;
-  dist2 = ((1 + Bmax - Bmin) << B_SHIFT) * B_SCALE;
-  boxp->volume = dist0*dist0 + dist1*dist1 + dist2*dist2;
-  /*  boxp->volume = dist0 * dist1 * dist2; */
-
-  compute_color_lin8(&dummyqo, histogram, boxp, 0);
-
-  /*printf("(%d %d %d)\n", dummyqo.cmap[0].red,dummyqo.cmap[0].green,dummyqo.cmap[0].blue);
-    fflush(stdout);*/
-
-  /* Now scan remaining volume of box and compute population */
-  ccount = 0;
-  boxp->error = 0;
-  boxp->rerror = 0;
-  boxp->gerror = 0;
-  boxp->berror = 0;
-  for (R = Rmin; R <= Rmax; R++)
     {
-      for (G = Gmin; G <= Gmax; G++)
+        for (G = Gmin; G <= Gmax; G++)
         {
-          for (B = Bmin; B <= Bmax; B++)
+            for (B = Bmin; B <= Bmax; B++)
             {
-              ColorFreq freq_here;
+                ColorFreq freq_here;
 
-              freq_here = *HIST_LIN (histogram, R, G, B);
+                freq_here = *HIST_LIN (histogram, R, G, B);
 
-              if (freq_here != 0)
+                if (freq_here != 0)
                 {
-                  int ge, be, re;
+                    int ge, be, re;
 
-                  dummybox.Rmin = dummybox.Rmax = R;
-                  dummybox.Gmin = dummybox.Gmax = G;
-                  dummybox.Bmin = dummybox.Bmax = B;
-                  compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
+                    dummybox.Rmin = dummybox.Rmax = R;
+                    dummybox.Gmin = dummybox.Gmax = G;
+                    dummybox.Bmin = dummybox.Bmax = B;
+                    compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
 
-                  re = dummyqo.cmap[0].red   - dummyqo.cmap[1].red;
-                  ge = dummyqo.cmap[0].green - dummyqo.cmap[1].green;
-                  be = dummyqo.cmap[0].blue  - dummyqo.cmap[1].blue;
+                    re = dummyqo.cmap[0].red   - dummyqo.cmap[1].red;
+                    ge = dummyqo.cmap[0].green - dummyqo.cmap[1].green;
+                    be = dummyqo.cmap[0].blue  - dummyqo.cmap[1].blue;
 
-                  boxp->rerror += freq_here * (re) * (re);
-                  boxp->gerror += freq_here * (ge) * (ge);
-                  boxp->berror += freq_here * (be) * (be);
+                    boxp->rerror += freq_here * (re) * (re);
+                    boxp->gerror += freq_here * (ge) * (ge);
+                    boxp->berror += freq_here * (be) * (be);
 
-                  ccount += freq_here;
+                    ccount += freq_here;
                 }
             }
         }
     }
 
 #if 0
-  fg d;flg fd;kg fld;gflkfld
-  /* Scan again, taking note of halfway error point for red axis */
-  tempRerror = 0;
-  boxp->Rhalferror = Rmin;
+    fg d;
+    flg fd;
+    kg fld;
+    gflkfld
+    /* Scan again, taking note of halfway error point for red axis */
+    tempRerror = 0;
+    boxp->Rhalferror = Rmin;
 #warning r<=?
-  for (R = Rmin; R <= Rmax; R++)
+    for (R = Rmin; R <= Rmax; R++)
     {
-      for (G = Gmin; G <= Gmax; G++)
+        for (G = Gmin; G <= Gmax; G++)
         {
-          for (B = Bmin; B <= Bmax; B++)
+            for (B = Bmin; B <= Bmax; B++)
             {
-              ColorFreq freq_here;
-              freq_here = *HIST_LIN(histogram, R, G, B);
-              if (freq_here != 0)
+                ColorFreq freq_here;
+                freq_here = *HIST_LIN(histogram, R, G, B);
+                if (freq_here != 0)
                 {
-                  int re;
-                  int idist;
-                  double dist;
+                    int re;
+                    int idist;
+                    double dist;
 
-                  dummybox.Rmin = dummybox.Rmax = R;
-                  dummybox.Gmin = dummybox.Gmax = G;
-                  dummybox.Bmin = dummybox.Bmax = B;
-                  compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
+                    dummybox.Rmin = dummybox.Rmax = R;
+                    dummybox.Gmin = dummybox.Gmax = G;
+                    dummybox.Bmin = dummybox.Bmax = B;
+                    compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
 
-                  re = dummyqo.cmap[0].red   - dummyqo.cmap[1].red;
+                    re = dummyqo.cmap[0].red   - dummyqo.cmap[1].red;
 
-                  tempRerror += freq_here * (re) * (re);
+                    tempRerror += freq_here * (re) * (re);
 
-                  if (tempRerror*2 >= boxp->rerror)
-                    goto green_axisscan;
-                  else
-                    boxp->Rhalferror = R;
+                    if (tempRerror*2 >= boxp->rerror)
+                        goto green_axisscan;
+                    else
+                        boxp->Rhalferror = R;
                 }
             }
         }
     }
-  fprintf(stderr, " D:");
- green_axisscan:
+    fprintf(stderr, " D:");
+green_axisscan:
 
-  fprintf(stderr, "<%d: %llu/%llu> ", R, tempRerror, boxp->rerror);
-  /* Scan again, taking note of halfway error point for green axis */
-  tempGerror = 0;
-  boxp->Ghalferror = Gmin;
+    fprintf(stderr, "<%d: %llu/%llu> ", R, tempRerror, boxp->rerror);
+    /* Scan again, taking note of halfway error point for green axis */
+    tempGerror = 0;
+    boxp->Ghalferror = Gmin;
 #warning G<=?
-  for (G = Gmin; G <= Gmax; G++)
+    for (G = Gmin; G <= Gmax; G++)
     {
-      for (R = Rmin; R <= Rmax; R++)
+        for (R = Rmin; R <= Rmax; R++)
         {
-          for (B = Bmin; B <= Bmax; B++)
+            for (B = Bmin; B <= Bmax; B++)
             {
-              ColorFreq freq_here;
-              freq_here = *HIST_LIN(histogram, R, G, B);
-              if (freq_here != 0)
+                ColorFreq freq_here;
+                freq_here = *HIST_LIN(histogram, R, G, B);
+                if (freq_here != 0)
                 {
-                  int ge;
-                  dummybox.Rmin = dummybox.Rmax = R;
-                  dummybox.Gmin = dummybox.Gmax = G;
-                  dummybox.Bmin = dummybox.Bmax = B;
-                  compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
+                    int ge;
+                    dummybox.Rmin = dummybox.Rmax = R;
+                    dummybox.Gmin = dummybox.Gmax = G;
+                    dummybox.Bmin = dummybox.Bmax = B;
+                    compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
 
-                  ge = dummyqo.cmap[0].green - dummyqo.cmap[1].green;
+                    ge = dummyqo.cmap[0].green - dummyqo.cmap[1].green;
 
-                  tempGerror += freq_here * (ge) * (ge);
+                    tempGerror += freq_here * (ge) * (ge);
 
-                  if (tempGerror*2 >= boxp->gerror)
-                    goto blue_axisscan;
-                  else
-                    boxp->Ghalferror = G;
+                    if (tempGerror*2 >= boxp->gerror)
+                        goto blue_axisscan;
+                    else
+                        boxp->Ghalferror = G;
                 }
             }
         }
     }
 
- blue_axisscan:
-  /* Scan again, taking note of halfway error point for blue axis */
-  tempBerror = 0;
-  boxp->Bhalferror = Bmin;
+blue_axisscan:
+    /* Scan again, taking note of halfway error point for blue axis */
+    tempBerror = 0;
+    boxp->Bhalferror = Bmin;
 #warning B<=?
-  for (B = Bmin; B <= Bmax; B++)
+    for (B = Bmin; B <= Bmax; B++)
     {
-      for (R = Rmin; R <= Rmax; R++)
+        for (R = Rmin; R <= Rmax; R++)
         {
-          for (G = Gmin; G <= Gmax; G++)
+            for (G = Gmin; G <= Gmax; G++)
             {
-              ColorFreq freq_here;
-              freq_here = *HIST_LIN(histogram, R, G, B);
-              if (freq_here != 0)
+                ColorFreq freq_here;
+                freq_here = *HIST_LIN(histogram, R, G, B);
+                if (freq_here != 0)
                 {
-                  int be;
-                  dummybox.Rmin = dummybox.Rmax = R;
-                  dummybox.Gmin = dummybox.Gmax = G;
-                  dummybox.Bmin = dummybox.Bmax = B;
-                  compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
+                    int be;
+                    dummybox.Rmin = dummybox.Rmax = R;
+                    dummybox.Gmin = dummybox.Gmax = G;
+                    dummybox.Bmin = dummybox.Bmax = B;
+                    compute_color_lin8(&dummyqo, histogram, &dummybox, 1);
 
-                  be = dummyqo.cmap[0].blue  - dummyqo.cmap[1].blue;
+                    be = dummyqo.cmap[0].blue  - dummyqo.cmap[1].blue;
 
-                  tempBerror += freq_here * (be) * (be);
+                    tempBerror += freq_here * (be) * (be);
 
-                  if (tempBerror*2 >= boxp->berror)
-                    goto finished_axesscan;
-                  else
-                    boxp->Bhalferror = B;
+                    if (tempBerror*2 >= boxp->berror)
+                        goto finished_axesscan;
+                    else
+                        boxp->Bhalferror = B;
                 }
             }
         }
     }
- finished_axesscan:
+finished_axesscan:
 #else
 
-  boxp->Rhalferror = Rmin + (Rmax - Rmin + 1) / 2;
-  boxp->Ghalferror = Gmin + (Gmax - Gmin + 1) / 2;
-  boxp->Bhalferror = Bmin + (Bmax - Bmin + 1) / 2;
+    boxp->Rhalferror = Rmin + (Rmax - Rmin + 1) / 2;
+    boxp->Ghalferror = Gmin + (Gmax - Gmin + 1) / 2;
+    boxp->Bhalferror = Bmin + (Bmax - Bmin + 1) / 2;
 
-  if (dist0 && dist1 && dist2)
+    if (dist0 && dist1 && dist2)
     {
-      AxisType longest_ax      = AXIS_UNDEF;
-      gint     longest_length  = 0;
-      gint     longest_length2 = 0;
-      gint     ratio;
+        AxisType longest_ax      = AXIS_UNDEF;
+        gint     longest_length  = 0;
+        gint     longest_length2 = 0;
+        gint     ratio;
 
-      /*
-        fprintf(stderr, "[%d,%d,%d=%d,%d,%d] ",
-        (Rmax - Rmin), (Gmax - Gmin), (Bmax - Bmin),
-        dist0, dist1, dist2);
-      */
+        /*
+          fprintf(stderr, "[%d,%d,%d=%d,%d,%d] ",
+          (Rmax - Rmin), (Gmax - Gmin), (Bmax - Bmin),
+          dist0, dist1, dist2);
+        */
 
-      if (dist0 >= longest_length)
+        if (dist0 >= longest_length)
         {
-          longest_length2 = longest_length;
-          longest_length = dist0;
-          longest_ax = AXIS_RED;
+            longest_length2 = longest_length;
+            longest_length = dist0;
+            longest_ax = AXIS_RED;
         }
-      else if (dist0 >= longest_length2)
+        else if (dist0 >= longest_length2)
         {
-          longest_length2 = dist0;
-        }
-
-      if (dist1 >= longest_length)
-        {
-          longest_length2 = longest_length;
-          longest_length = dist1;
-          longest_ax = AXIS_GREEN;
-        }
-      else if (dist1 >= longest_length2)
-        {
-          longest_length2 = dist1;
+            longest_length2 = dist0;
         }
 
-      if (dist2 >= longest_length)
+        if (dist1 >= longest_length)
         {
-          longest_length2 = longest_length;
-          longest_length = dist2;
-          longest_ax = AXIS_BLUE;
+            longest_length2 = longest_length;
+            longest_length = dist1;
+            longest_ax = AXIS_GREEN;
         }
-      else if (dist2 >= longest_length2)
+        else if (dist1 >= longest_length2)
         {
-          longest_length2 = dist2;
+            longest_length2 = dist1;
         }
 
-      if (longest_length2 == 0)
-        longest_length2 = 1;
-
-      ratio = (longest_length + longest_length2/2) / longest_length2;
-      /* fprintf(stderr, " ratio:(%d/%d)=%d ", longest_length, longest_length2, ratio);
-         fprintf(stderr, "C%d ", cells_remaining); */
-
-      if (ratio > cells_remaining + 1)
-        ratio = cells_remaining + 1;
-
-      if (ratio > 2)
+        if (dist2 >= longest_length)
         {
-          switch (longest_ax)
+            longest_length2 = longest_length;
+            longest_length = dist2;
+            longest_ax = AXIS_BLUE;
+        }
+        else if (dist2 >= longest_length2)
+        {
+            longest_length2 = dist2;
+        }
+
+        if (longest_length2 == 0)
+            longest_length2 = 1;
+
+        ratio = (longest_length + longest_length2/2) / longest_length2;
+        /* fprintf(stderr, " ratio:(%d/%d)=%d ", longest_length, longest_length2, ratio);
+           fprintf(stderr, "C%d ", cells_remaining); */
+
+        if (ratio > cells_remaining + 1)
+            ratio = cells_remaining + 1;
+
+        if (ratio > 2)
+        {
+            switch (longest_ax)
             {
             case AXIS_RED:
-              if (Rmin + (Rmax - Rmin + ratio / 2) / ratio < Rmax)
+                if (Rmin + (Rmax - Rmin + ratio / 2) / ratio < Rmax)
                 {
-                  /* fprintf(stderr, "FR%d \007\n",ratio);*/
-                  boxp->Rhalferror = Rmin +  (Rmax - Rmin + ratio / 2) / ratio;
+                    /* fprintf(stderr, "FR%d \007\n",ratio);*/
+                    boxp->Rhalferror = Rmin +  (Rmax - Rmin + ratio / 2) / ratio;
                 }
-              break;
+                break;
             case AXIS_GREEN:
-              if (Gmin + (Gmax - Gmin + ratio / 2) / ratio < Gmax)
+                if (Gmin + (Gmax - Gmin + ratio / 2) / ratio < Gmax)
                 {
-                  /* fprintf(stderr, "FG%d \007\n",ratio);*/
-                  boxp->Ghalferror = Gmin + (Gmax - Gmin + ratio / 2) / ratio;
+                    /* fprintf(stderr, "FG%d \007\n",ratio);*/
+                    boxp->Ghalferror = Gmin + (Gmax - Gmin + ratio / 2) / ratio;
                 }
-              break;
+                break;
             case AXIS_BLUE:
-              if (Bmin + (Bmax - Bmin + ratio / 2) / ratio < Bmax)
+                if (Bmin + (Bmax - Bmin + ratio / 2) / ratio < Bmax)
                 {
-                  /* fprintf(stderr, "FB%d \007\n",ratio);*/
-                  boxp->Bhalferror = Bmin + (Bmax - Bmin + ratio / 2) / ratio;
+                    /* fprintf(stderr, "FB%d \007\n",ratio);*/
+                    boxp->Bhalferror = Bmin + (Bmax - Bmin + ratio / 2) / ratio;
                 }
-              break;
+                break;
             default:
-              g_warning ("GRR, UNDEF LONGEST AXIS\007\n");
+                g_warning ("GRR, UNDEF LONGEST AXIS\007\n");
             }
         }
     }
 
-  if (boxp->Rhalferror == Rmax)
-    boxp->Rhalferror = Rmin;
-  if (boxp->Ghalferror == Gmax)
-    boxp->Ghalferror = Gmin;
-  if (boxp->Bhalferror == Bmax)
-    boxp->Bhalferror = Bmin;
+    if (boxp->Rhalferror == Rmax)
+        boxp->Rhalferror = Rmin;
+    if (boxp->Ghalferror == Gmax)
+        boxp->Ghalferror = Gmin;
+    if (boxp->Bhalferror == Bmax)
+        boxp->Bhalferror = Bmin;
 
-  /*
-  boxp->Rhalferror = RSDF(dummyqo.cmap[0].red);
-  boxp->Ghalferror = GSDF(dummyqo.cmap[0].green);
-  boxp->Bhalferror = BSDF(dummyqo.cmap[0].blue);
-  */
+    /*
+    boxp->Rhalferror = RSDF(dummyqo.cmap[0].red);
+    boxp->Ghalferror = GSDF(dummyqo.cmap[0].green);
+    boxp->Bhalferror = BSDF(dummyqo.cmap[0].blue);
+    */
 
-  /*
-  boxp->Rhalferror = (RSDF(dummyqo.cmap[0].red) + (Rmin+Rmax)/2)/2;
-  boxp->Ghalferror = (GSDF(dummyqo.cmap[0].green) + (Gmin+Gmax)/2)/2;
-  boxp->Bhalferror = (BSDF(dummyqo.cmap[0].blue) + (Bmin+Bmax)/2)/2;
-  */
+    /*
+    boxp->Rhalferror = (RSDF(dummyqo.cmap[0].red) + (Rmin+Rmax)/2)/2;
+    boxp->Ghalferror = (GSDF(dummyqo.cmap[0].green) + (Gmin+Gmax)/2)/2;
+    boxp->Bhalferror = (BSDF(dummyqo.cmap[0].blue) + (Bmin+Bmax)/2)/2;
+    */
 
 
 #endif
-  /*
-  fprintf(stderr, " %d,%d", dummyqo.cmap[0].blue, boxp->Bmax);
+    /*
+    fprintf(stderr, " %d,%d", dummyqo.cmap[0].blue, boxp->Bmax);
 
-  gimp_assert (boxp->Rhalferror >= boxp->Rmin);
-  gimp_assert (boxp->Rhalferror < boxp->Rmax);
-  gimp_assert (boxp->Ghalferror >= boxp->Gmin);
-  gimp_assert (boxp->Ghalferror < boxp->Gmax);
-  gimp_assert (boxp->Bhalferror >= boxp->Bmin);
-  gimp_assert (boxp->Bhalferror < boxp->Bmax);*/
+    gimp_assert (boxp->Rhalferror >= boxp->Rmin);
+    gimp_assert (boxp->Rhalferror < boxp->Rmax);
+    gimp_assert (boxp->Ghalferror >= boxp->Gmin);
+    gimp_assert (boxp->Ghalferror < boxp->Gmax);
+    gimp_assert (boxp->Bhalferror >= boxp->Bmin);
+    gimp_assert (boxp->Bhalferror < boxp->Bmax);*/
 
-  /*boxp->error = (sqrt((double)(boxp->error/ccount)));*/
-  /*  boxp->rerror = (sqrt((double)((boxp->rerror)/ccount)));
-  boxp->gerror = (sqrt((double)((boxp->gerror)/ccount)));
-  boxp->berror = (sqrt((double)((boxp->berror)/ccount)));*/
-  /*printf(":%lld / %ld: ", boxp->error, ccount);
-  printf("(%d-%d-%d)(%d-%d-%d)(%d-%d-%d)\n",
-         Rmin, boxp->Rhalferror, Rmax,
-         Gmin, boxp->Ghalferror, Gmax,
-         Bmin, boxp->Bhalferror, Bmax
-         );
-         fflush(stdout);*/
+    /*boxp->error = (sqrt((double)(boxp->error/ccount)));*/
+    /*  boxp->rerror = (sqrt((double)((boxp->rerror)/ccount)));
+    boxp->gerror = (sqrt((double)((boxp->gerror)/ccount)));
+    boxp->berror = (sqrt((double)((boxp->berror)/ccount)));*/
+    /*printf(":%lld / %ld: ", boxp->error, ccount);
+    printf("(%d-%d-%d)(%d-%d-%d)(%d-%d-%d)\n",
+           Rmin, boxp->Rhalferror, Rmax,
+           Gmin, boxp->Ghalferror, Gmax,
+           Bmin, boxp->Bhalferror, Bmax
+           );
+           fflush(stdout);*/
 
-  boxp->colorcount = ccount;
+    boxp->colorcount = ccount;
 }
 
 
@@ -1983,41 +1992,41 @@ median_cut_gray (CFHistogram histogram,
                  gint        numboxes,
                  gint        desired_colors)
 {
-  gint   lb;
-  boxptr b1, b2;
+    gint   lb;
+    boxptr b1, b2;
 
-  while (numboxes < desired_colors)
+    while (numboxes < desired_colors)
     {
-      /* Select box to split.
-       * Current algorithm: by population for first half, then by volume.
-       */
+        /* Select box to split.
+         * Current algorithm: by population for first half, then by volume.
+         */
 
-      b1 = find_biggest_volume (boxlist, numboxes);
+        b1 = find_biggest_volume (boxlist, numboxes);
 
-      if (b1 == NULL)           /* no splittable boxes left! */
-        break;
+        if (b1 == NULL)           /* no splittable boxes left! */
+            break;
 
-      b2 = boxlist + numboxes;  /* where new box will go */
-      /* Copy the color bounds to the new box. */
-      b2->Rmax = b1->Rmax;
-      b2->Rmin = b1->Rmin;
+        b2 = boxlist + numboxes;  /* where new box will go */
+        /* Copy the color bounds to the new box. */
+        b2->Rmax = b1->Rmax;
+        b2->Rmin = b1->Rmin;
 
-      /* Current algorithm: split at halfway point.
-       * (Since the box has been shrunk to minimum volume,
-       * any split will produce two nonempty subboxes.)
-       * Note that lb value is max for lower box, so must be < old max.
-       */
-      lb = (b1->Rmax + b1->Rmin) / 2;
-      b1->Rmax = lb;
-      b2->Rmin = lb + 1;
+        /* Current algorithm: split at halfway point.
+         * (Since the box has been shrunk to minimum volume,
+         * any split will produce two nonempty subboxes.)
+         * Note that lb value is max for lower box, so must be < old max.
+         */
+        lb = (b1->Rmax + b1->Rmin) / 2;
+        b1->Rmax = lb;
+        b2->Rmin = lb + 1;
 
-      /* Update stats for boxes */
-      update_box_gray (histogram, b1);
-      update_box_gray (histogram, b2);
-      numboxes++;
+        /* Update stats for boxes */
+        update_box_gray (histogram, b1);
+        update_box_gray (histogram, b2);
+        numboxes++;
     }
 
-  return numboxes;
+    return numboxes;
 }
 
 /* Repeatedly select and split the largest box until we have enough
@@ -2030,63 +2039,67 @@ median_cut_rgb (CFHistogram   histogram,
                 gint          desired_colors,
                 GimpProgress *progress)
 {
-  gint     lb;
-  boxptr   b1, b2;
-  AxisType which_axis;
+    gint     lb;
+    boxptr   b1, b2;
+    AxisType which_axis;
 
-  while (numboxes < desired_colors)
+    while (numboxes < desired_colors)
     {
-      b1 = find_split_candidate (boxlist, numboxes, &which_axis, desired_colors);
+        b1 = find_split_candidate (boxlist, numboxes, &which_axis, desired_colors);
 
-      if (b1 == NULL)           /* no splittable boxes left! */
-        break;
+        if (b1 == NULL)           /* no splittable boxes left! */
+            break;
 
-      b2 = boxlist + numboxes;  /* where new box will go */
-      /* Copy the color bounds to the new box. */
-      b2->Rmax = b1->Rmax; b2->Gmax = b1->Gmax; b2->Bmax = b1->Bmax;
-      b2->Rmin = b1->Rmin; b2->Gmin = b1->Gmin; b2->Bmin = b1->Bmin;
+        b2 = boxlist + numboxes;  /* where new box will go */
+        /* Copy the color bounds to the new box. */
+        b2->Rmax = b1->Rmax;
+        b2->Gmax = b1->Gmax;
+        b2->Bmax = b1->Bmax;
+        b2->Rmin = b1->Rmin;
+        b2->Gmin = b1->Gmin;
+        b2->Bmin = b1->Bmin;
 
 
-      /* Choose split point along selected axis, and update box bounds.
-       * Note that lb value is max for lower box, so must be < old max.
-       */
-      switch (which_axis)
+        /* Choose split point along selected axis, and update box bounds.
+         * Note that lb value is max for lower box, so must be < old max.
+         */
+        switch (which_axis)
         {
         case AXIS_RED:
-          lb = b1->Rhalferror;/* *0 + (b1->Rmax + b1->Rmin) / 2; */
-          b1->Rmax = lb;
-          b2->Rmin = lb+1;
-          g_return_val_if_fail (b1->Rmax >= b1->Rmin, numboxes);
-          g_return_val_if_fail (b2->Rmax >= b2->Rmin, numboxes);
-          break;
+            lb = b1->Rhalferror;/* *0 + (b1->Rmax + b1->Rmin) / 2; */
+            b1->Rmax = lb;
+            b2->Rmin = lb+1;
+            g_return_val_if_fail (b1->Rmax >= b1->Rmin, numboxes);
+            g_return_val_if_fail (b2->Rmax >= b2->Rmin, numboxes);
+            break;
         case AXIS_GREEN:
-          lb = b1->Ghalferror;/* *0 + (b1->Gmax + b1->Gmin) / 2; */
-          b1->Gmax = lb;
-          b2->Gmin = lb+1;
-          g_return_val_if_fail (b1->Gmax >= b1->Gmin, numboxes);
-          g_return_val_if_fail (b2->Gmax >= b2->Gmin, numboxes);
-          break;
+            lb = b1->Ghalferror;/* *0 + (b1->Gmax + b1->Gmin) / 2; */
+            b1->Gmax = lb;
+            b2->Gmin = lb+1;
+            g_return_val_if_fail (b1->Gmax >= b1->Gmin, numboxes);
+            g_return_val_if_fail (b2->Gmax >= b2->Gmin, numboxes);
+            break;
         case AXIS_BLUE:
-          lb = b1->Bhalferror;/* *0 + (b1->Bmax + b1->Bmin) / 2; */
-          b1->Bmax = lb;
-          b2->Bmin = lb+1;
-          g_return_val_if_fail (b1->Bmax >= b1->Bmin, numboxes);
-          g_return_val_if_fail (b2->Bmax >= b2->Bmin, numboxes);
-          break;
+            lb = b1->Bhalferror;/* *0 + (b1->Bmax + b1->Bmin) / 2; */
+            b1->Bmax = lb;
+            b2->Bmin = lb+1;
+            g_return_val_if_fail (b1->Bmax >= b1->Bmin, numboxes);
+            g_return_val_if_fail (b2->Bmax >= b2->Bmin, numboxes);
+            break;
         default:
-          g_error ("Uh-oh.");
+            g_error ("Uh-oh.");
         }
-      /* Update stats for boxes */
-      numboxes++;
+        /* Update stats for boxes */
+        numboxes++;
 
-      if (progress && (numboxes % 16 == 0))
-        gimp_progress_set_value (progress, (gdouble) numboxes / desired_colors);
+        if (progress && (numboxes % 16 == 0))
+            gimp_progress_set_value (progress, (gdouble) numboxes / desired_colors);
 
-      update_box_rgb (histogram, b1, desired_colors - numboxes);
-      update_box_rgb (histogram, b2, desired_colors - numboxes);
+        update_box_rgb (histogram, b1, desired_colors - numboxes);
+        update_box_rgb (histogram, b2, desired_colors - numboxes);
     }
 
-  return numboxes;
+    return numboxes;
 }
 
 
@@ -2098,42 +2111,42 @@ compute_color_gray (QuantizeObj *quantobj,
                     boxptr       boxp,
                     int          icolor)
 {
-  gint    i, min, max;
-  guint64 count;
-  guint64 total;
-  guint64 gtotal;
+    gint    i, min, max;
+    guint64 count;
+    guint64 total;
+    guint64 gtotal;
 
-  min = boxp->Rmin;
-  max = boxp->Rmax;
+    min = boxp->Rmin;
+    max = boxp->Rmax;
 
-  total = 0;
-  gtotal = 0;
+    total = 0;
+    gtotal = 0;
 
-  for (i = min; i <= max; i++)
+    for (i = min; i <= max; i++)
     {
-      count = histogram[i];
-      if (count != 0)
+        count = histogram[i];
+        if (count != 0)
         {
-          total += count;
-          gtotal += i * count;
+            total += count;
+            gtotal += i * count;
         }
     }
 
-  if (total != 0)
+    if (total != 0)
     {
-      quantobj->cmap[icolor].red   =
-      quantobj->cmap[icolor].green =
-      quantobj->cmap[icolor].blue  = (gtotal + (total >> 1)) / total;
+        quantobj->cmap[icolor].red   =
+            quantobj->cmap[icolor].green =
+                quantobj->cmap[icolor].blue  = (gtotal + (total >> 1)) / total;
     }
-  else
+    else
     {
-      /* The only situation where total==0 is if the image was null or
-       *  all-transparent.  In that case we just put a dummy value in
-       *  the colormap.
-       */
-      quantobj->cmap[icolor].red   =
-      quantobj->cmap[icolor].green =
-      quantobj->cmap[icolor].blue  = 0;
+        /* The only situation where total==0 is if the image was null or
+         *  all-transparent.  In that case we just put a dummy value in
+         *  the colormap.
+         */
+        quantobj->cmap[icolor].red   =
+            quantobj->cmap[icolor].green =
+                quantobj->cmap[icolor].blue  = 0;
     }
 }
 
@@ -2146,63 +2159,66 @@ compute_color_rgb (QuantizeObj *quantobj,
                    boxptr       boxp,
                    int          icolor)
 {
-  /* Current algorithm: mean weighted by pixels (not colors) */
-  /* Note it is important to get the rounding correct! */
-  gint      R, G, B;
-  gint      Rmin, Rmax;
-  gint      Gmin, Gmax;
-  gint      Bmin, Bmax;
-  ColorFreq total  = 0;
-  ColorFreq Rtotal = 0;
-  ColorFreq Gtotal = 0;
-  ColorFreq Btotal = 0;
+    /* Current algorithm: mean weighted by pixels (not colors) */
+    /* Note it is important to get the rounding correct! */
+    gint      R, G, B;
+    gint      Rmin, Rmax;
+    gint      Gmin, Gmax;
+    gint      Bmin, Bmax;
+    ColorFreq total  = 0;
+    ColorFreq Rtotal = 0;
+    ColorFreq Gtotal = 0;
+    ColorFreq Btotal = 0;
 
-  Rmin = boxp->Rmin;  Rmax = boxp->Rmax;
-  Gmin = boxp->Gmin;  Gmax = boxp->Gmax;
-  Bmin = boxp->Bmin;  Bmax = boxp->Bmax;
+    Rmin = boxp->Rmin;
+    Rmax = boxp->Rmax;
+    Gmin = boxp->Gmin;
+    Gmax = boxp->Gmax;
+    Bmin = boxp->Bmin;
+    Bmax = boxp->Bmax;
 
-  for (R = Rmin; R <= Rmax; R++)
-    for (G = Gmin; G <= Gmax; G++)
-      {
-        for (B = Bmin; B <= Bmax; B++)
-          {
-            ColorFreq this_freq = *HIST_LIN (histogram, R, G, B);
+    for (R = Rmin; R <= Rmax; R++)
+        for (G = Gmin; G <= Gmax; G++)
+        {
+            for (B = Bmin; B <= Bmax; B++)
+            {
+                ColorFreq this_freq = *HIST_LIN (histogram, R, G, B);
 
-            if (this_freq != 0)
-              {
-                total += this_freq;
-                Rtotal += R * this_freq;
-                Gtotal += G * this_freq;
-                Btotal += B * this_freq;
-              }
-          }
-      }
+                if (this_freq != 0)
+                {
+                    total += this_freq;
+                    Rtotal += R * this_freq;
+                    Gtotal += G * this_freq;
+                    Btotal += B * this_freq;
+                }
+            }
+        }
 
-  if (total > 0)
+    if (total > 0)
     {
-      guchar red, green, blue;
+        guchar red, green, blue;
 
-      lin_to_rgb (/*(Rtotal + (total>>1)) / total,
+        lin_to_rgb (/*(Rtotal + (total>>1)) / total,
                     (Gtotal + (total>>1)) / total,
                     (Btotal + (total>>1)) / total,*/
-                  (double)Rtotal / (double)total,
-                  (double)Gtotal / (double)total,
-                  (double)Btotal / (double)total,
-                  &red, &green, &blue);
+            (double)Rtotal / (double)total,
+            (double)Gtotal / (double)total,
+            (double)Btotal / (double)total,
+            &red, &green, &blue);
 
-      quantobj->cmap[icolor].red   = red;
-      quantobj->cmap[icolor].green = green;
-      quantobj->cmap[icolor].blue  = blue;
+        quantobj->cmap[icolor].red   = red;
+        quantobj->cmap[icolor].green = green;
+        quantobj->cmap[icolor].blue  = blue;
     }
-  else
+    else
     {
-      /* The only situation where total==0 is if the image was null or
-       *  all-transparent.  In that case we just put a dummy value in
-       *  the colormap.
-       */
-      quantobj->cmap[icolor].red   = 0;
-      quantobj->cmap[icolor].green = 0;
-      quantobj->cmap[icolor].blue  = 0;
+        /* The only situation where total==0 is if the image was null or
+         *  all-transparent.  In that case we just put a dummy value in
+         *  the colormap.
+         */
+        quantobj->cmap[icolor].red   = 0;
+        quantobj->cmap[icolor].green = 0;
+        quantobj->cmap[icolor].blue  = 0;
     }
 }
 
@@ -2215,54 +2231,57 @@ compute_color_lin8 (QuantizeObj *quantobj,
                     boxptr       boxp,
                     const gint   icolor)
 {
-  /* Current algorithm: mean weighted by pixels (not colors) */
-  /* Note it is important to get the rounding correct! */
-  gint      R, G, B;
-  gint      Rmin, Rmax;
-  gint      Gmin, Gmax;
-  gint      Bmin, Bmax;
-  ColorFreq total  = 0;
-  ColorFreq Rtotal = 0;
-  ColorFreq Gtotal = 0;
-  ColorFreq Btotal = 0;
+    /* Current algorithm: mean weighted by pixels (not colors) */
+    /* Note it is important to get the rounding correct! */
+    gint      R, G, B;
+    gint      Rmin, Rmax;
+    gint      Gmin, Gmax;
+    gint      Bmin, Bmax;
+    ColorFreq total  = 0;
+    ColorFreq Rtotal = 0;
+    ColorFreq Gtotal = 0;
+    ColorFreq Btotal = 0;
 
-  Rmin = boxp->Rmin;  Rmax = boxp->Rmax;
-  Gmin = boxp->Gmin;  Gmax = boxp->Gmax;
-  Bmin = boxp->Bmin;  Bmax = boxp->Bmax;
+    Rmin = boxp->Rmin;
+    Rmax = boxp->Rmax;
+    Gmin = boxp->Gmin;
+    Gmax = boxp->Gmax;
+    Bmin = boxp->Bmin;
+    Bmax = boxp->Bmax;
 
-  for (R = Rmin; R <= Rmax; R++)
-    for (G = Gmin; G <= Gmax; G++)
-      {
-        for (B = Bmin; B <= Bmax; B++)
-          {
-            ColorFreq this_freq = *HIST_LIN (histogram, R, G, B);
+    for (R = Rmin; R <= Rmax; R++)
+        for (G = Gmin; G <= Gmax; G++)
+        {
+            for (B = Bmin; B <= Bmax; B++)
+            {
+                ColorFreq this_freq = *HIST_LIN (histogram, R, G, B);
 
-            if (this_freq != 0)
-              {
-                Rtotal += R * this_freq;
-                Gtotal += G * this_freq;
-                Btotal += B * this_freq;
-                total += this_freq;
-              }
-          }
-      }
+                if (this_freq != 0)
+                {
+                    Rtotal += R * this_freq;
+                    Gtotal += G * this_freq;
+                    Btotal += B * this_freq;
+                    total += this_freq;
+                }
+            }
+        }
 
-  if (total != 0)
+    if (total != 0)
     {
-      quantobj->cmap[icolor].red   = ((Rtotal << R_SHIFT) + (total>>1)) / total;
-      quantobj->cmap[icolor].green = ((Gtotal << G_SHIFT) + (total>>1)) / total;
-      quantobj->cmap[icolor].blue  = ((Btotal << B_SHIFT) + (total>>1)) / total;
+        quantobj->cmap[icolor].red   = ((Rtotal << R_SHIFT) + (total>>1)) / total;
+        quantobj->cmap[icolor].green = ((Gtotal << G_SHIFT) + (total>>1)) / total;
+        quantobj->cmap[icolor].blue  = ((Btotal << B_SHIFT) + (total>>1)) / total;
     }
-  else
+    else
     {
-      /* The only situation where total==0 is if the image was null or
-       *  all-transparent.  In that case we just put a dummy value in
-       *  the colormap.
-       */
-      g_warning ("eep.");
-      quantobj->cmap[icolor].red   = 0;
-      quantobj->cmap[icolor].green = 128;
-      quantobj->cmap[icolor].blue  = 128;
+        /* The only situation where total==0 is if the image was null or
+         *  all-transparent.  In that case we just put a dummy value in
+         *  the colormap.
+         */
+        g_warning ("eep.");
+        quantobj->cmap[icolor].red   = 0;
+        quantobj->cmap[icolor].green = 128;
+        quantobj->cmap[icolor].blue  = 128;
     }
 }
 
@@ -2273,27 +2292,27 @@ static void
 select_colors_gray (QuantizeObj *quantobj,
                     CFHistogram  histogram)
 {
-  boxptr boxlist;
-  gint   numboxes;
-  gint   desired = quantobj->desired_number_of_colors;
-  gint   i;
+    boxptr boxlist;
+    gint   numboxes;
+    gint   desired = quantobj->desired_number_of_colors;
+    gint   i;
 
-  /* Allocate workspace for box list */
-  boxlist = g_new (box, desired);
+    /* Allocate workspace for box list */
+    boxlist = g_new (box, desired);
 
-  /* Initialize one box containing whole space */
-  numboxes = 1;
-  boxlist[0].Rmin = 0;
-  boxlist[0].Rmax = 255;
-  /* Shrink it to actually-used volume and set its statistics */
-  update_box_gray (histogram, boxlist);
-  /* Perform median-cut to produce final box list */
-  numboxes = median_cut_gray (histogram, boxlist, numboxes, desired);
+    /* Initialize one box containing whole space */
+    numboxes = 1;
+    boxlist[0].Rmin = 0;
+    boxlist[0].Rmax = 255;
+    /* Shrink it to actually-used volume and set its statistics */
+    update_box_gray (histogram, boxlist);
+    /* Perform median-cut to produce final box list */
+    numboxes = median_cut_gray (histogram, boxlist, numboxes, desired);
 
-  quantobj->actual_number_of_colors = numboxes;
-  /* Compute the representative color for each box, fill colormap */
-  for (i = 0; i < numboxes; i++)
-    compute_color_gray (quantobj, histogram, boxlist + i, i);
+    quantobj->actual_number_of_colors = numboxes;
+    /* Compute the representative color for each box, fill colormap */
+    for (i = 0; i < numboxes; i++)
+        compute_color_gray (quantobj, histogram, boxlist + i, i);
 }
 
 
@@ -2303,36 +2322,36 @@ static void
 select_colors_rgb (QuantizeObj *quantobj,
                    CFHistogram  histogram)
 {
-  boxptr boxlist;
-  gint   numboxes;
-  gint   desired = quantobj->desired_number_of_colors;
-  gint  i;
+    boxptr boxlist;
+    gint   numboxes;
+    gint   desired = quantobj->desired_number_of_colors;
+    gint  i;
 
-  /* Allocate workspace for box list */
-  boxlist = g_new (box, desired);
+    /* Allocate workspace for box list */
+    boxlist = g_new (box, desired);
 
-  /* Initialize one box containing whole space */
-  numboxes = 1;
-  boxlist[0].Rmin = 0;
-  boxlist[0].Rmax = HIST_R_ELEMS - 1;
-  boxlist[0].Gmin = 0;
-  boxlist[0].Gmax = HIST_G_ELEMS - 1;
-  boxlist[0].Bmin = 0;
-  boxlist[0].Bmax = HIST_B_ELEMS - 1;
-  /* Shrink it to actually-used volume and set its statistics */
-  update_box_rgb (histogram, &boxlist[0], quantobj->desired_number_of_colors);
-  /* Perform median-cut to produce final box list */
-  numboxes = median_cut_rgb (histogram, boxlist, numboxes, desired,
-                             quantobj->progress);
+    /* Initialize one box containing whole space */
+    numboxes = 1;
+    boxlist[0].Rmin = 0;
+    boxlist[0].Rmax = HIST_R_ELEMS - 1;
+    boxlist[0].Gmin = 0;
+    boxlist[0].Gmax = HIST_G_ELEMS - 1;
+    boxlist[0].Bmin = 0;
+    boxlist[0].Bmax = HIST_B_ELEMS - 1;
+    /* Shrink it to actually-used volume and set its statistics */
+    update_box_rgb (histogram, &boxlist[0], quantobj->desired_number_of_colors);
+    /* Perform median-cut to produce final box list */
+    numboxes = median_cut_rgb (histogram, boxlist, numboxes, desired,
+                               quantobj->progress);
 
-  quantobj->actual_number_of_colors = numboxes;
-  /* Compute the representative color for each box, fill colormap */
-  for (i = 0; i < numboxes; i++)
+    quantobj->actual_number_of_colors = numboxes;
+    /* Compute the representative color for each box, fill colormap */
+    for (i = 0; i < numboxes; i++)
     {
-      compute_color_rgb (quantobj, histogram, &boxlist[i], i);
+        compute_color_rgb (quantobj, histogram, &boxlist[i], i);
     }
 
-  g_free (boxlist);
+    g_free (boxlist);
 }
 
 
@@ -2433,147 +2452,147 @@ find_nearby_colors (QuantizeObj *quantobj,
                     int          minB,
                     int          colorlist[])
 {
-  int numcolors = quantobj->actual_number_of_colors;
-  int maxR, maxG, maxB;
-  int centerR, centerG, centerB;
-  int i, x, ncolors;
-  int minmaxdist, min_dist, max_dist, tdist;
-  int mindist[MAXNUMCOLORS];    /* min distance to colormap entry i */
+    int numcolors = quantobj->actual_number_of_colors;
+    int maxR, maxG, maxB;
+    int centerR, centerG, centerB;
+    int i, x, ncolors;
+    int minmaxdist, min_dist, max_dist, tdist;
+    int mindist[MAXNUMCOLORS];    /* min distance to colormap entry i */
 
-  /* Compute true coordinates of update box's upper corner and center.
-   * Actually we compute the coordinates of the center of the upper-corner
-   * histogram cell, which are the upper bounds of the volume we care about.
-   * Note that since ">>" rounds down, the "center" values may be closer to
-   * min than to max; hence comparisons to them must be "<=", not "<".
-   */
-  maxR = minR + ((1 << BOX_R_SHIFT) - (1 << R_SHIFT));
-  centerR = (minR + maxR + 1) >> 1;
-  maxG = minG + ((1 << BOX_G_SHIFT) - (1 << G_SHIFT));
-  centerG = (minG + maxG + 1) >> 1;
-  maxB = minB + ((1 << BOX_B_SHIFT) - (1 << B_SHIFT));
-  centerB = (minB + maxB + 1) >> 1;
+    /* Compute true coordinates of update box's upper corner and center.
+     * Actually we compute the coordinates of the center of the upper-corner
+     * histogram cell, which are the upper bounds of the volume we care about.
+     * Note that since ">>" rounds down, the "center" values may be closer to
+     * min than to max; hence comparisons to them must be "<=", not "<".
+     */
+    maxR = minR + ((1 << BOX_R_SHIFT) - (1 << R_SHIFT));
+    centerR = (minR + maxR + 1) >> 1;
+    maxG = minG + ((1 << BOX_G_SHIFT) - (1 << G_SHIFT));
+    centerG = (minG + maxG + 1) >> 1;
+    maxB = minB + ((1 << BOX_B_SHIFT) - (1 << B_SHIFT));
+    centerB = (minB + maxB + 1) >> 1;
 
-  /* For each color in colormap, find:
-   *  1. its minimum squared-distance to any point in the update box
-   *     (zero if color is within update box);
-   *  2. its maximum squared-distance to any point in the update box.
-   * Both of these can be found by considering only the corners of the box.
-   * We save the minimum distance for each color in mindist[];
-   * only the smallest maximum distance is of interest.
-   */
-  minmaxdist = 0x7FFFFFFFL;
+    /* For each color in colormap, find:
+     *  1. its minimum squared-distance to any point in the update box
+     *     (zero if color is within update box);
+     *  2. its maximum squared-distance to any point in the update box.
+     * Both of these can be found by considering only the corners of the box.
+     * We save the minimum distance for each color in mindist[];
+     * only the smallest maximum distance is of interest.
+     */
+    minmaxdist = 0x7FFFFFFFL;
 
-  for (i = 0; i < numcolors; i++)
+    for (i = 0; i < numcolors; i++)
     {
-      /* We compute the squared-R-distance term, then add in the other two. */
-      x = quantobj->clin[i].red;
-      if (x < minR)
+        /* We compute the squared-R-distance term, then add in the other two. */
+        x = quantobj->clin[i].red;
+        if (x < minR)
         {
-          tdist = (x - minR) * R_SCALE;
-          min_dist = tdist*tdist;
-          tdist = (x - maxR) * R_SCALE;
-          max_dist = tdist*tdist;
+            tdist = (x - minR) * R_SCALE;
+            min_dist = tdist*tdist;
+            tdist = (x - maxR) * R_SCALE;
+            max_dist = tdist*tdist;
         }
-      else if (x > maxR)
+        else if (x > maxR)
         {
-          tdist = (x - maxR) * R_SCALE;
-          min_dist = tdist*tdist;
-          tdist = (x - minR) * R_SCALE;
-          max_dist = tdist*tdist;
+            tdist = (x - maxR) * R_SCALE;
+            min_dist = tdist*tdist;
+            tdist = (x - minR) * R_SCALE;
+            max_dist = tdist*tdist;
         }
-      else
+        else
         {
-          /* within cell range so no contribution to min_dist */
-          min_dist = 0;
-          if (x <= centerR)
+            /* within cell range so no contribution to min_dist */
+            min_dist = 0;
+            if (x <= centerR)
             {
-              tdist = (x - maxR) * R_SCALE;
-              max_dist = tdist*tdist;
+                tdist = (x - maxR) * R_SCALE;
+                max_dist = tdist*tdist;
             }
-          else
+            else
             {
-              tdist = (x - minR) * R_SCALE;
-              max_dist = tdist*tdist;
-            }
-        }
-
-      x = quantobj->clin[i].green;
-      if (x < minG)
-        {
-          tdist = (x - minG) * G_SCALE;
-          min_dist += tdist*tdist;
-          tdist = (x - maxG) * G_SCALE;
-          max_dist += tdist*tdist;
-        }
-      else if (x > maxG)
-        {
-          tdist = (x - maxG) * G_SCALE;
-          min_dist += tdist*tdist;
-          tdist = (x - minG) * G_SCALE;
-          max_dist += tdist*tdist;
-        }
-      else
-        {
-          /* within cell range so no contribution to min_dist */
-          if (x <= centerG)
-            {
-              tdist = (x - maxG) * G_SCALE;
-              max_dist += tdist*tdist;
-            }
-          else
-            {
-              tdist = (x - minG) * G_SCALE;
-              max_dist += tdist*tdist;
+                tdist = (x - minR) * R_SCALE;
+                max_dist = tdist*tdist;
             }
         }
 
-      x = quantobj->clin[i].blue;
-      if (x < minB)
+        x = quantobj->clin[i].green;
+        if (x < minG)
         {
-          tdist = (x - minB) * B_SCALE;
-          min_dist += tdist*tdist;
-          tdist = (x - maxB) * B_SCALE;
-          max_dist += tdist*tdist;
+            tdist = (x - minG) * G_SCALE;
+            min_dist += tdist*tdist;
+            tdist = (x - maxG) * G_SCALE;
+            max_dist += tdist*tdist;
         }
-      else if (x > maxB)
+        else if (x > maxG)
         {
-          tdist = (x - maxB) * B_SCALE;
-          min_dist += tdist*tdist;
-          tdist = (x - minB) * B_SCALE;
-          max_dist += tdist*tdist;
+            tdist = (x - maxG) * G_SCALE;
+            min_dist += tdist*tdist;
+            tdist = (x - minG) * G_SCALE;
+            max_dist += tdist*tdist;
         }
-      else
+        else
         {
-          /* within cell range so no contribution to min_dist */
-          if (x <= centerB)
+            /* within cell range so no contribution to min_dist */
+            if (x <= centerG)
             {
-              tdist = (x - maxB) * B_SCALE;
-              max_dist += tdist*tdist;
+                tdist = (x - maxG) * G_SCALE;
+                max_dist += tdist*tdist;
             }
-          else
+            else
             {
-              tdist = (x - minB) * B_SCALE;
-              max_dist += tdist*tdist;
+                tdist = (x - minG) * G_SCALE;
+                max_dist += tdist*tdist;
             }
         }
 
-      mindist[i] = min_dist;      /* save away the results */
-      if (max_dist < minmaxdist)
-        minmaxdist = max_dist;
+        x = quantobj->clin[i].blue;
+        if (x < minB)
+        {
+            tdist = (x - minB) * B_SCALE;
+            min_dist += tdist*tdist;
+            tdist = (x - maxB) * B_SCALE;
+            max_dist += tdist*tdist;
+        }
+        else if (x > maxB)
+        {
+            tdist = (x - maxB) * B_SCALE;
+            min_dist += tdist*tdist;
+            tdist = (x - minB) * B_SCALE;
+            max_dist += tdist*tdist;
+        }
+        else
+        {
+            /* within cell range so no contribution to min_dist */
+            if (x <= centerB)
+            {
+                tdist = (x - maxB) * B_SCALE;
+                max_dist += tdist*tdist;
+            }
+            else
+            {
+                tdist = (x - minB) * B_SCALE;
+                max_dist += tdist*tdist;
+            }
+        }
+
+        mindist[i] = min_dist;      /* save away the results */
+        if (max_dist < minmaxdist)
+            minmaxdist = max_dist;
     }
 
-  /* Now we know that no cell in the update box is more than minmaxdist
-   * away from some colormap entry.  Therefore, only colors that are
-   * within minmaxdist of some part of the box need be considered.
-   */
-  ncolors = 0;
-  for (i = 0; i < numcolors; i++)
+    /* Now we know that no cell in the update box is more than minmaxdist
+     * away from some colormap entry.  Therefore, only colors that are
+     * within minmaxdist of some part of the box need be considered.
+     */
+    ncolors = 0;
+    for (i = 0; i < numcolors; i++)
     {
-      if (mindist[i] <= minmaxdist)
-        colorlist[ncolors++] = i;
+        if (mindist[i] <= minmaxdist)
+            colorlist[ncolors++] = i;
     }
 
-  return ncolors;
+    return ncolors;
 }
 
 
@@ -2593,86 +2612,86 @@ find_best_colors (QuantizeObj *quantobj,
                   gint         colorlist[],
                   gint         bestcolor[])
 {
-  gint  iR, iG, iB;
-  gint  i, icolor;
-  gint *bptr;           /* pointer into bestdist[] array */
-  gint *cptr;           /* pointer into bestcolor[] array */
-  gint  dist0, dist1;     /* initial distance values */
-  gint  dist2;            /* current distance in inner loop */
-  gint  xx0, xx1;         /* distance increments */
-  gint  xx2;
-  gint  inR, inG, inB;    /* initial values for increments */
+    gint  iR, iG, iB;
+    gint  i, icolor;
+    gint *bptr;           /* pointer into bestdist[] array */
+    gint *cptr;           /* pointer into bestcolor[] array */
+    gint  dist0, dist1;     /* initial distance values */
+    gint  dist2;            /* current distance in inner loop */
+    gint  xx0, xx1;         /* distance increments */
+    gint  xx2;
+    gint  inR, inG, inB;    /* initial values for increments */
 
-  /* This array holds the distance to the nearest-so-far color for each cell */
-  gint  bestdist[BOX_R_ELEMS * BOX_G_ELEMS * BOX_B_ELEMS] = { 0, };
+    /* This array holds the distance to the nearest-so-far color for each cell */
+    gint  bestdist[BOX_R_ELEMS * BOX_G_ELEMS * BOX_B_ELEMS] = { 0, };
 
-  /* Initialize best-distance for each cell of the update box */
-  bptr = bestdist;
-  for (i = BOX_R_ELEMS*BOX_G_ELEMS*BOX_B_ELEMS-1; i >= 0; i--)
-    *bptr++ = 0x7FFFFFFFL;
+    /* Initialize best-distance for each cell of the update box */
+    bptr = bestdist;
+    for (i = BOX_R_ELEMS*BOX_G_ELEMS*BOX_B_ELEMS-1; i >= 0; i--)
+        *bptr++ = 0x7FFFFFFFL;
 
-  /* For each color selected by find_nearby_colors,
-   * compute its distance to the center of each cell in the box.
-   * If that's less than best-so-far, update best distance and color number.
-   */
+    /* For each color selected by find_nearby_colors,
+     * compute its distance to the center of each cell in the box.
+     * If that's less than best-so-far, update best distance and color number.
+     */
 
-  /* Nominal steps between cell centers ("x" in Thomas article) */
+    /* Nominal steps between cell centers ("x" in Thomas article) */
 #define STEP_R  ((1 << R_SHIFT) * R_SCALE)
 #define STEP_G  ((1 << G_SHIFT) * G_SCALE)
 #define STEP_B  ((1 << B_SHIFT) * B_SCALE)
 
-  for (i = 0; i < numcolors; i++)
+    for (i = 0; i < numcolors; i++)
     {
-      icolor = colorlist[i];
-      /* Compute (square of) distance from minR/G/B to this color */
-      inR = (minR - quantobj->clin[icolor].red) * R_SCALE;
-      dist0 = inR*inR;
-      /* special-case for L*==0: chroma diffs irrelevant */
-      /*    if (minR > 0 || quantobj->clin[icolor].red > 0) */
-      {
-        inG = (minG - quantobj->clin[icolor].green) * G_SCALE;
-        dist0 += inG*inG;
-        inB = (minB - quantobj->clin[icolor].blue) * B_SCALE;
-        dist0 += inB*inB;
-      }
-      /*    else
-            {
-            inG = 0;
-            inB = 0;
-            } */
-      /* Form the initial difference increments */
-      inR = inR * (2 * STEP_R) + STEP_R * STEP_R;
-      inG = inG * (2 * STEP_G) + STEP_G * STEP_G;
-      inB = inB * (2 * STEP_B) + STEP_B * STEP_B;
-      /* Now loop over all cells in box, updating distance per Thomas method */
-      bptr = bestdist;
-      cptr = bestcolor;
-      xx0 = inR;
-      for (iR = BOX_R_ELEMS-1; iR >= 0; iR--)
+        icolor = colorlist[i];
+        /* Compute (square of) distance from minR/G/B to this color */
+        inR = (minR - quantobj->clin[icolor].red) * R_SCALE;
+        dist0 = inR*inR;
+        /* special-case for L*==0: chroma diffs irrelevant */
+        /*    if (minR > 0 || quantobj->clin[icolor].red > 0) */
         {
-          dist1 = dist0;
-          xx1 = inG;
-          for (iG = BOX_G_ELEMS-1; iG >= 0; iG--)
+            inG = (minG - quantobj->clin[icolor].green) * G_SCALE;
+            dist0 += inG*inG;
+            inB = (minB - quantobj->clin[icolor].blue) * B_SCALE;
+            dist0 += inB*inB;
+        }
+        /*    else
+              {
+              inG = 0;
+              inB = 0;
+              } */
+        /* Form the initial difference increments */
+        inR = inR * (2 * STEP_R) + STEP_R * STEP_R;
+        inG = inG * (2 * STEP_G) + STEP_G * STEP_G;
+        inB = inB * (2 * STEP_B) + STEP_B * STEP_B;
+        /* Now loop over all cells in box, updating distance per Thomas method */
+        bptr = bestdist;
+        cptr = bestcolor;
+        xx0 = inR;
+        for (iR = BOX_R_ELEMS-1; iR >= 0; iR--)
+        {
+            dist1 = dist0;
+            xx1 = inG;
+            for (iG = BOX_G_ELEMS-1; iG >= 0; iG--)
             {
-              dist2 = dist1;
-              xx2 = inB;
-              for (iB = BOX_B_ELEMS-1; iB >= 0; iB--)
+                dist2 = dist1;
+                xx2 = inB;
+                for (iB = BOX_B_ELEMS-1; iB >= 0; iB--)
                 {
-                  if (dist2 < *bptr)
+                    if (dist2 < *bptr)
                     {
-                      *bptr = dist2;
-                      *cptr = icolor;
+                        *bptr = dist2;
+                        *cptr = icolor;
                     }
-                  dist2 += xx2;
-                  xx2 += 2 * STEP_B * STEP_B;
-                  bptr++;
-                  cptr++;
+                    dist2 += xx2;
+                    xx2 += 2 * STEP_B * STEP_B;
+                    bptr++;
+                    cptr++;
                 }
-              dist1 += xx1;
-              xx1 += 2 * STEP_G * STEP_G;
+                dist1 += xx1;
+                xx1 += 2 * STEP_G * STEP_G;
             }
-          dist0 += xx0;
-          xx0 += 2 * STEP_R * STEP_R;
+            dist0 += xx0;
+            xx0 += 2 * STEP_R * STEP_R;
         }
     }
 }
@@ -2687,27 +2706,27 @@ fill_inverse_cmap_gray (QuantizeObj *quantobj,
                         CFHistogram  histogram,
                         gint         pixel)
 {
-  Color *cmap = quantobj->cmap;
-  glong  mindist;
-  gint   mindisti;
-  gint   i;
+    Color *cmap = quantobj->cmap;
+    glong  mindist;
+    gint   mindisti;
+    gint   i;
 
-  mindist  = 65536;
-  mindisti = -1;
+    mindist  = 65536;
+    mindisti = -1;
 
-  for (i = 0; i < quantobj->actual_number_of_colors; i++)
+    for (i = 0; i < quantobj->actual_number_of_colors; i++)
     {
-      glong dist = ABS (pixel - cmap[i].red);
+        glong dist = ABS (pixel - cmap[i].red);
 
-      if (dist < mindist)
+        if (dist < mindist)
         {
-          mindist  = dist;
-          mindisti = i;
+            mindist  = dist;
+            mindisti = i;
         }
     }
 
-  if (i >= 0)
-    histogram[pixel] = mindisti + 1;
+    if (i >= 0)
+        histogram[pixel] = mindisti + 1;
 }
 
 
@@ -2722,49 +2741,49 @@ fill_inverse_cmap_rgb (QuantizeObj *quantobj,
                        gint         G,
                        gint         B)
 {
-  gint  minR, minG, minB; /* lower left corner of update box */
-  gint  iR, iG, iB;
-  gint *cptr;           /* pointer into bestcolor[] array */
-  /* This array lists the candidate colormap indexes. */
-  gint  colorlist[MAXNUMCOLORS];
-  gint  numcolors;                /* number of candidate colors */
-  /* This array holds the actually closest colormap index for each cell. */
-  gint  bestcolor[BOX_R_ELEMS * BOX_G_ELEMS * BOX_B_ELEMS] = { 0, };
+    gint  minR, minG, minB; /* lower left corner of update box */
+    gint  iR, iG, iB;
+    gint *cptr;           /* pointer into bestcolor[] array */
+    /* This array lists the candidate colormap indexes. */
+    gint  colorlist[MAXNUMCOLORS];
+    gint  numcolors;                /* number of candidate colors */
+    /* This array holds the actually closest colormap index for each cell. */
+    gint  bestcolor[BOX_R_ELEMS * BOX_G_ELEMS * BOX_B_ELEMS] = { 0, };
 
-  /* Convert cell coordinates to update box id */
-  R >>= BOX_R_LOG;
-  G >>= BOX_G_LOG;
-  B >>= BOX_B_LOG;
+    /* Convert cell coordinates to update box id */
+    R >>= BOX_R_LOG;
+    G >>= BOX_G_LOG;
+    B >>= BOX_B_LOG;
 
-  /* Compute true coordinates of update box's origin corner.
-   * Actually we compute the coordinates of the center of the corner
-   * histogram cell, which are the lower bounds of the volume we care about.
-   */
-  minR = (R << BOX_R_SHIFT) + ((1 << R_SHIFT) >> 1);
-  minG = (G << BOX_G_SHIFT) + ((1 << G_SHIFT) >> 1);
-  minB = (B << BOX_B_SHIFT) + ((1 << B_SHIFT) >> 1);
+    /* Compute true coordinates of update box's origin corner.
+     * Actually we compute the coordinates of the center of the corner
+     * histogram cell, which are the lower bounds of the volume we care about.
+     */
+    minR = (R << BOX_R_SHIFT) + ((1 << R_SHIFT) >> 1);
+    minG = (G << BOX_G_SHIFT) + ((1 << G_SHIFT) >> 1);
+    minB = (B << BOX_B_SHIFT) + ((1 << B_SHIFT) >> 1);
 
-  /* Determine which colormap entries are close enough to be candidates
-   * for the nearest entry to some cell in the update box.
-   */
-  numcolors = find_nearby_colors (quantobj, minR, minG, minB, colorlist);
+    /* Determine which colormap entries are close enough to be candidates
+     * for the nearest entry to some cell in the update box.
+     */
+    numcolors = find_nearby_colors (quantobj, minR, minG, minB, colorlist);
 
-  /* Determine the actually nearest colors. */
-  find_best_colors (quantobj, minR, minG, minB, numcolors, colorlist,
-                    bestcolor);
+    /* Determine the actually nearest colors. */
+    find_best_colors (quantobj, minR, minG, minB, numcolors, colorlist,
+                      bestcolor);
 
-  /* Save the best color numbers (plus 1) in the main cache array */
-  R <<= BOX_R_LOG;              /* convert id back to base cell indexes */
-  G <<= BOX_G_LOG;
-  B <<= BOX_B_LOG;
-  cptr = bestcolor;
-  for (iR = 0; iR < BOX_R_ELEMS; iR++)
+    /* Save the best color numbers (plus 1) in the main cache array */
+    R <<= BOX_R_LOG;              /* convert id back to base cell indexes */
+    G <<= BOX_G_LOG;
+    B <<= BOX_B_LOG;
+    cptr = bestcolor;
+    for (iR = 0; iR < BOX_R_ELEMS; iR++)
     {
-      for (iG = 0; iG < BOX_G_ELEMS; iG++)
+        for (iG = 0; iG < BOX_G_ELEMS; iG++)
         {
-          for (iB = 0; iB < BOX_B_ELEMS; iB++)
+            for (iB = 0; iB < BOX_B_ELEMS; iB++)
             {
-              *HIST_LIN (histogram, R + iR, G + iG, B + iB) = (*cptr++) + 1;
+                *HIST_LIN (histogram, R + iR, G + iG, B + iB) = (*cptr++) + 1;
             }
         }
     }
@@ -2776,128 +2795,128 @@ fill_inverse_cmap_rgb (QuantizeObj *quantobj,
 static void
 median_cut_pass1_gray (QuantizeObj *quantobj)
 {
-  select_colors_gray (quantobj, quantobj->histogram);
+    select_colors_gray (quantobj, quantobj->histogram);
 }
 
 static void
 snap_to_black_and_white (QuantizeObj *quantobj)
 {
-  /* find whitest and blackest colors in palette, if they are closer
-   * than 24 units of euclidean distance in sRGB snap them to pure
-   * black / white.
-   */
+    /* find whitest and blackest colors in palette, if they are closer
+     * than 24 units of euclidean distance in sRGB snap them to pure
+     * black / white.
+     */
 #define POW2(a) ((a)*(a))
-  gint   desired  = quantobj->desired_number_of_colors;
-  gint   whitest  = 0;
-  gint   blackest = 0;
+    gint   desired  = quantobj->desired_number_of_colors;
+    gint   whitest  = 0;
+    gint   blackest = 0;
 
-  glong  white_dist = POW2(255) * 3;
-  glong  black_dist = POW2(255) * 3;
-  gint   i;
+    glong  white_dist = POW2(255) * 3;
+    glong  black_dist = POW2(255) * 3;
+    gint   i;
 
-  for (i = 0; i < desired; i ++)
+    for (i = 0; i < desired; i ++)
     {
-       int dist;
+        int dist;
 
-       dist = POW2 (quantobj->cmap[i].red   - 255) +
-              POW2 (quantobj->cmap[i].green - 255) +
-              POW2( quantobj->cmap[i].blue  - 255);
-       if (dist < white_dist)
-         {
-           white_dist = dist;
-           whitest = i;
-         }
+        dist = POW2 (quantobj->cmap[i].red   - 255) +
+               POW2 (quantobj->cmap[i].green - 255) +
+               POW2( quantobj->cmap[i].blue  - 255);
+        if (dist < white_dist)
+        {
+            white_dist = dist;
+            whitest = i;
+        }
 
-       dist = POW2(quantobj->cmap[i].red   - 0) +
-              POW2(quantobj->cmap[i].green - 0) +
-              POW2(quantobj->cmap[i].blue  - 0);
-       if (dist < black_dist)
-         {
-           black_dist = dist;
-           blackest = i;
-         }
+        dist = POW2(quantobj->cmap[i].red   - 0) +
+               POW2(quantobj->cmap[i].green - 0) +
+               POW2(quantobj->cmap[i].blue  - 0);
+        if (dist < black_dist)
+        {
+            black_dist = dist;
+            blackest = i;
+        }
     }
 
-  if (desired > 2 &&
-      had_white   &&
-      white_dist < POW2(128))
-  {
-     quantobj->cmap[whitest].red   =
-     quantobj->cmap[whitest].green =
-     quantobj->cmap[whitest].blue  = 255;
-  }
-  if (desired > 2 &&
-      had_black   &&
-      black_dist < POW2(128))
-  {
-     quantobj->cmap[blackest].red   =
-     quantobj->cmap[blackest].green =
-     quantobj->cmap[blackest].blue  = 0;
-  }
+    if (desired > 2 &&
+            had_white   &&
+            white_dist < POW2(128))
+    {
+        quantobj->cmap[whitest].red   =
+            quantobj->cmap[whitest].green =
+                quantobj->cmap[whitest].blue  = 255;
+    }
+    if (desired > 2 &&
+            had_black   &&
+            black_dist < POW2(128))
+    {
+        quantobj->cmap[blackest].red   =
+            quantobj->cmap[blackest].green =
+                quantobj->cmap[blackest].blue  = 0;
+    }
 #undef POW2
 }
 
 static void
 median_cut_pass1_rgb (QuantizeObj *quantobj)
 {
-  select_colors_rgb (quantobj, quantobj->histogram);
-  snap_to_black_and_white (quantobj);
+    select_colors_rgb (quantobj, quantobj->histogram);
+    snap_to_black_and_white (quantobj);
 }
 
 
 static void
 monopal_pass1 (QuantizeObj *quantobj)
 {
-  quantobj->actual_number_of_colors = 2;
+    quantobj->actual_number_of_colors = 2;
 
-  quantobj->cmap[0].red   = 0;
-  quantobj->cmap[0].green = 0;
-  quantobj->cmap[0].blue  = 0;
-  quantobj->cmap[1].red   = 255;
-  quantobj->cmap[1].green = 255;
-  quantobj->cmap[1].blue  = 255;
+    quantobj->cmap[0].red   = 0;
+    quantobj->cmap[0].green = 0;
+    quantobj->cmap[0].blue  = 0;
+    quantobj->cmap[1].red   = 255;
+    quantobj->cmap[1].green = 255;
+    quantobj->cmap[1].blue  = 255;
 }
 
 static void
 webpal_pass1 (QuantizeObj *quantobj)
 {
-  int i;
+    int i;
 
-  quantobj->actual_number_of_colors = 216;
+    quantobj->actual_number_of_colors = 216;
 
-  for (i=0; i < 216; i++)
+    for (i=0; i < 216; i++)
     {
-      quantobj->cmap[i].red   = webpal[i * 3];
-      quantobj->cmap[i].green = webpal[i * 3 +1];
-      quantobj->cmap[i].blue  = webpal[i * 3 +2];
+        quantobj->cmap[i].red   = webpal[i * 3];
+        quantobj->cmap[i].green = webpal[i * 3 +1];
+        quantobj->cmap[i].blue  = webpal[i * 3 +2];
     }
 }
 
 static void
 custompal_pass1 (QuantizeObj *quantobj)
 {
-  gint   i;
-  GList *list;
+    gint   i;
+    GList *list;
 
-  /* fprintf(stderr,
-             "custompal_pass1: using (theCustomPalette %s) from (file %s)\n",
-             theCustomPalette->name, theCustomPalette->filename); */
+    /* fprintf(stderr,
+               "custompal_pass1: using (theCustomPalette %s) from (file %s)\n",
+               theCustomPalette->name, theCustomPalette->filename); */
 
-  for (i = 0, list = gimp_palette_get_colors (quantobj->custom_palette);
-       list;
-       i++, list = g_list_next (list))
+    for (i = 0, list = gimp_palette_get_colors (quantobj->custom_palette);
+            list;
+            i++, list = g_list_next (list))
     {
-      GimpPaletteEntry *entry = list->data;
-      guchar            r, g, b;
+        GimpPaletteEntry *entry = list->data;
+        guchar            r, g, b;
 
-      gimp_rgb_get_uchar (&entry->color, &r, &g, &b);
+        gimp_rgb_get_uchar (&entry->color, &r, &g, &b);
 
-      quantobj->cmap[i].red   = (gint) r;
-      quantobj->cmap[i].green = (gint) g;
-      quantobj->cmap[i].blue  = (gint) b;
+        quantobj->cmap[i].red   = (gint) r;
+        quantobj->cmap[i].green = (gint) g;
+        quantobj->cmap[i].blue  = (gint) b;
     }
 
-  quantobj -> actual_number_of_colors = i;
+    quantobj -> actual_number_of_colors = i;
 }
 
 /*
@@ -2909,96 +2928,96 @@ median_cut_pass2_no_dither_gray (QuantizeObj *quantobj,
                                  GimpLayer   *layer,
                                  GeglBuffer  *new_buffer)
 {
-  GeglBufferIterator *iter;
-  CFHistogram         histogram = quantobj->histogram;
-  ColorFreq          *cachep;
-  const Babl         *src_format;
-  const Babl         *dest_format;
-  GeglRectangle      *src_roi;
-  gint                src_bpp;
-  gint                dest_bpp;
-  gint                has_alpha;
-  gulong             *index_used_count = quantobj->index_used_count;
-  gboolean            dither_alpha     = quantobj->want_dither_alpha;
-  gint                offsetx, offsety;
+    GeglBufferIterator *iter;
+    CFHistogram         histogram = quantobj->histogram;
+    ColorFreq          *cachep;
+    const Babl         *src_format;
+    const Babl         *dest_format;
+    GeglRectangle      *src_roi;
+    gint                src_bpp;
+    gint                dest_bpp;
+    gint                has_alpha;
+    gulong             *index_used_count = quantobj->index_used_count;
+    gboolean            dither_alpha     = quantobj->want_dither_alpha;
+    gint                offsetx, offsety;
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, NULL,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
-  src_roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, NULL,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
+    src_roi = &iter->items[0].roi;
 
-  gegl_buffer_iterator_add (iter, new_buffer,
-                            NULL, 0, NULL,
-                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
+    gegl_buffer_iterator_add (iter, new_buffer,
+                              NULL, 0, NULL,
+                              GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *src  = iter->items[0].data;
-      guchar       *dest = iter->items[1].data;
-      gint          row;
+        const guchar *src  = iter->items[0].data;
+        guchar       *dest = iter->items[1].data;
+        gint          row;
 
-      for (row = 0; row < src_roi->height; row++)
+        for (row = 0; row < src_roi->height; row++)
         {
-          gint col;
+            gint col;
 
-          for (col = 0; col < src_roi->width; col++)
+            for (col = 0; col < src_roi->width; col++)
             {
-              /* get pixel value and index into the cache */
-              gint pixel = src[GRAY];
+                /* get pixel value and index into the cache */
+                gint pixel = src[GRAY];
 
-              cachep = &histogram[pixel];
-              /* If we have not seen this color before, find nearest
-               * colormap entry and update the cache
-               */
-              if (*cachep == 0)
-                fill_inverse_cmap_gray (quantobj, histogram, pixel);
+                cachep = &histogram[pixel];
+                /* If we have not seen this color before, find nearest
+                 * colormap entry and update the cache
+                 */
+                if (*cachep == 0)
+                    fill_inverse_cmap_gray (quantobj, histogram, pixel);
 
-              if (has_alpha)
+                if (has_alpha)
                 {
-                  gboolean transparent = FALSE;
+                    gboolean transparent = FALSE;
 
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = (col + offsetx + src_roi->x) & DM_WIDTHMASK;
-                      gint dither_y = (row + offsety + src_roi->y) & DM_HEIGHTMASK;
+                        gint dither_x = (col + offsetx + src_roi->x) & DM_WIDTHMASK;
+                        gint dither_y = (row + offsety + src_roi->y) & DM_HEIGHTMASK;
 
-                      if ((src[ALPHA_G]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[ALPHA_G]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[ALPHA_G] <= 127)
-                        transparent = TRUE;
+                        if (src[ALPHA_G] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
+                        dest[ALPHA_I] = 0;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
-                      index_used_count[dest[INDEXED] = *cachep - 1]++;
+                        dest[ALPHA_I] = 255;
+                        index_used_count[dest[INDEXED] = *cachep - 1]++;
                     }
                 }
-              else
+                else
                 {
-                  /* Now emit the colormap index for this cell */
-                  index_used_count[dest[INDEXED] = *cachep - 1]++;
+                    /* Now emit the colormap index for this cell */
+                    index_used_count[dest[INDEXED] = *cachep - 1]++;
                 }
 
-              src  += src_bpp;
-              dest += dest_bpp;
+                src  += src_bpp;
+                dest += dest_bpp;
             }
         }
     }
@@ -3009,164 +3028,164 @@ median_cut_pass2_fixed_dither_gray (QuantizeObj *quantobj,
                                     GimpLayer   *layer,
                                     GeglBuffer  *new_buffer)
 {
-  GeglBufferIterator *iter;
-  CFHistogram         histogram = quantobj->histogram;
-  ColorFreq          *cachep;
-  const Babl         *src_format;
-  const Babl         *dest_format;
-  GeglRectangle      *src_roi;
-  gint                src_bpp;
-  gint                dest_bpp;
-  gboolean            has_alpha;
-  gint                pixval1 = 0;
-  gint                pixval2 = 0;
-  gint                err1;
-  gint                err2;
-  Color              *color1;
-  Color              *color2;
-  gulong             *index_used_count = quantobj->index_used_count;
-  gboolean            dither_alpha     = quantobj->want_dither_alpha;
-  gint                offsetx, offsety;
+    GeglBufferIterator *iter;
+    CFHistogram         histogram = quantobj->histogram;
+    ColorFreq          *cachep;
+    const Babl         *src_format;
+    const Babl         *dest_format;
+    GeglRectangle      *src_roi;
+    gint                src_bpp;
+    gint                dest_bpp;
+    gboolean            has_alpha;
+    gint                pixval1 = 0;
+    gint                pixval2 = 0;
+    gint                err1;
+    gint                err2;
+    Color              *color1;
+    Color              *color2;
+    gulong             *index_used_count = quantobj->index_used_count;
+    gboolean            dither_alpha     = quantobj->want_dither_alpha;
+    gint                offsetx, offsety;
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, NULL,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
-  src_roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, NULL,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
+    src_roi = &iter->items[0].roi;
 
-  gegl_buffer_iterator_add (iter, new_buffer,
-                            NULL, 0, NULL,
-                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
+    gegl_buffer_iterator_add (iter, new_buffer,
+                              NULL, 0, NULL,
+                              GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *src  = iter->items[0].data;
-      guchar       *dest = iter->items[1].data;
-      gint          row;
+        const guchar *src  = iter->items[0].data;
+        guchar       *dest = iter->items[1].data;
+        gint          row;
 
-      for (row = 0; row < src_roi->height; row++)
+        for (row = 0; row < src_roi->height; row++)
         {
-          gint col;
+            gint col;
 
-          for (col = 0; col < src_roi->width; col++)
+            for (col = 0; col < src_roi->width; col++)
             {
-              gint       pixel;
-              const gint dmval =
-                DM[(col + offsetx + src_roi->x) & DM_WIDTHMASK]
-                [(row + offsety + src_roi->y) & DM_HEIGHTMASK];
+                gint       pixel;
+                const gint dmval =
+                    DM[(col + offsetx + src_roi->x) & DM_WIDTHMASK]
+                    [(row + offsety + src_roi->y) & DM_HEIGHTMASK];
 
-              /* get pixel value and index into the cache */
-              pixel = src[GRAY];
+                /* get pixel value and index into the cache */
+                pixel = src[GRAY];
 
-              cachep = &histogram[pixel];
-              /* If we have not seen this color before, find nearest
-               * colormap entry and update the cache
-               */
-              if (*cachep == 0)
-                fill_inverse_cmap_gray (quantobj, histogram, pixel);
+                cachep = &histogram[pixel];
+                /* If we have not seen this color before, find nearest
+                 * colormap entry and update the cache
+                 */
+                if (*cachep == 0)
+                    fill_inverse_cmap_gray (quantobj, histogram, pixel);
 
-              pixval1 = *cachep - 1;
-              color1 = &quantobj->cmap[pixval1];
+                pixval1 = *cachep - 1;
+                color1 = &quantobj->cmap[pixval1];
 
-              if (quantobj->actual_number_of_colors > 2)
+                if (quantobj->actual_number_of_colors > 2)
                 {
-                  const int re = src[GRAY] - (int)color1->red;
-                  int RV = src[GRAY] + re;
+                    const int re = src[GRAY] - (int)color1->red;
+                    int RV = src[GRAY] + re;
 
-                  do
+                    do
                     {
-                      const gint R = CLAMP0255 (RV);
+                        const gint R = CLAMP0255 (RV);
 
-                      cachep = &histogram[R];
-                      /* If we have not seen this color before, find
-                       * nearest colormap entry and update the cache
-                       */
-                      if (*cachep == 0)
-                        fill_inverse_cmap_gray (quantobj, histogram, R);
+                        cachep = &histogram[R];
+                        /* If we have not seen this color before, find
+                         * nearest colormap entry and update the cache
+                         */
+                        if (*cachep == 0)
+                            fill_inverse_cmap_gray (quantobj, histogram, R);
 
-                      pixval2 = *cachep - 1;
-                      RV += re;
+                        pixval2 = *cachep - 1;
+                        RV += re;
                     }
-                  while ((pixval1 == pixval2) &&
-                         (! (RV>255 || RV<0) ) &&
-                         re);
+                    while ((pixval1 == pixval2) &&
+                            (! (RV>255 || RV<0) ) &&
+                            re);
                 }
-              else
+                else
                 {
-                  /* not enough colors to bother looking for an 'alternative'
-                     color (we may fail to do so anyway), so decide that
-                     the alternative color is simply the other cmap entry. */
-                  pixval2 = (pixval1 + 1) %
-                    (quantobj->actual_number_of_colors);
-                }
-
-              /* always deterministically sort pixval1 and pixval2, to
-                 avoid artifacts in the dither range due to inverting our
-                 relative color viewpoint -- most obvious in 1-bit dither. */
-              if (pixval1 > pixval2)
-                {
-                  gint tmpval = pixval1;
-                  pixval1 = pixval2;
-                  pixval2 = tmpval;
-                  color1 = &quantobj->cmap[pixval1];
+                    /* not enough colors to bother looking for an 'alternative'
+                       color (we may fail to do so anyway), so decide that
+                       the alternative color is simply the other cmap entry. */
+                    pixval2 = (pixval1 + 1) %
+                              (quantobj->actual_number_of_colors);
                 }
 
-              color2 = &quantobj->cmap[pixval2];
-
-              err1 = ABS(color1->red - src[GRAY]);
-              err2 = ABS(color2->red - src[GRAY]);
-              if (err1 || err2)
+                /* always deterministically sort pixval1 and pixval2, to
+                   avoid artifacts in the dither range due to inverting our
+                   relative color viewpoint -- most obvious in 1-bit dither. */
+                if (pixval1 > pixval2)
                 {
-                  const int proportion2 = (256 * 255 * err2) / (err1 + err2);
+                    gint tmpval = pixval1;
+                    pixval1 = pixval2;
+                    pixval2 = tmpval;
+                    color1 = &quantobj->cmap[pixval1];
+                }
 
-                  if ((dmval * 256) > proportion2)
+                color2 = &quantobj->cmap[pixval2];
+
+                err1 = ABS(color1->red - src[GRAY]);
+                err2 = ABS(color2->red - src[GRAY]);
+                if (err1 || err2)
+                {
+                    const int proportion2 = (256 * 255 * err2) / (err1 + err2);
+
+                    if ((dmval * 256) > proportion2)
                     {
-                      pixval1 = pixval2; /* use color2 instead of color1*/
+                        pixval1 = pixval2; /* use color2 instead of color1*/
                     }
                 }
 
-              if (has_alpha)
+                if (has_alpha)
                 {
-                  gboolean transparent = FALSE;
+                    gboolean transparent = FALSE;
 
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      if (src[ALPHA_G] < dmval)
-                        transparent = TRUE;
+                        if (src[ALPHA_G] < dmval)
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[ALPHA_G] <= 127)
-                        transparent = TRUE;
+                        if (src[ALPHA_G] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
+                        dest[ALPHA_I] = 0;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
-                      index_used_count[dest[INDEXED] = pixval1]++;
+                        dest[ALPHA_I] = 255;
+                        index_used_count[dest[INDEXED] = pixval1]++;
                     }
                 }
-              else
+                else
                 {
-                  /* Now emit the colormap index for this cell, barfbarf */
-                  index_used_count[dest[INDEXED] = pixval1]++;
+                    /* Now emit the colormap index for this cell, barfbarf */
+                    index_used_count[dest[INDEXED] = pixval1]++;
                 }
 
-              src  += src_bpp;
-              dest += dest_bpp;
+                src  += src_bpp;
+                dest += dest_bpp;
             }
         }
     }
@@ -3177,125 +3196,125 @@ median_cut_pass2_no_dither_rgb (QuantizeObj *quantobj,
                                 GimpLayer   *layer,
                                 GeglBuffer  *new_buffer)
 {
-  GeglBufferIterator *iter;
-  CFHistogram         histogram = quantobj->histogram;
-  ColorFreq          *cachep;
-  const Babl         *src_format;
-  const Babl         *dest_format;
-  GeglRectangle      *src_roi;
-  gint                src_bpp;
-  gint                dest_bpp;
-  gint                has_alpha;
-  gint                R, G, B;
-  gint                red_pix          = RED;
-  gint                green_pix        = GREEN;
-  gint                blue_pix         = BLUE;
-  gint                alpha_pix        = ALPHA;
-  gboolean            dither_alpha     = quantobj->want_dither_alpha;
-  gint                offsetx, offsety;
-  gulong             *index_used_count = quantobj->index_used_count;
-  glong               total_size       = 0;
-  glong               layer_size;
-  gint                count            = 0;
+    GeglBufferIterator *iter;
+    CFHistogram         histogram = quantobj->histogram;
+    ColorFreq          *cachep;
+    const Babl         *src_format;
+    const Babl         *dest_format;
+    GeglRectangle      *src_roi;
+    gint                src_bpp;
+    gint                dest_bpp;
+    gint                has_alpha;
+    gint                R, G, B;
+    gint                red_pix          = RED;
+    gint                green_pix        = GREEN;
+    gint                blue_pix         = BLUE;
+    gint                alpha_pix        = ALPHA;
+    gboolean            dither_alpha     = quantobj->want_dither_alpha;
+    gint                offsetx, offsety;
+    gulong             *index_used_count = quantobj->index_used_count;
+    glong               total_size       = 0;
+    glong               layer_size;
+    gint                count            = 0;
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  /*  In the case of web/mono palettes, we actually force
-   *   grayscale drawables through the rgb pass2 functions
-   */
-  if (gimp_drawable_is_gray (GIMP_DRAWABLE (layer)))
+    /*  In the case of web/mono palettes, we actually force
+     *   grayscale drawables through the rgb pass2 functions
+     */
+    if (gimp_drawable_is_gray (GIMP_DRAWABLE (layer)))
     {
-      red_pix = green_pix = blue_pix = GRAY;
-      alpha_pix = ALPHA_G;
+        red_pix = green_pix = blue_pix = GRAY;
+        alpha_pix = ALPHA_G;
     }
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, NULL,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
-  src_roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, NULL,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
+    src_roi = &iter->items[0].roi;
 
-  gegl_buffer_iterator_add (iter, new_buffer,
-                            NULL, 0, NULL,
-                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
+    gegl_buffer_iterator_add (iter, new_buffer,
+                              NULL, 0, NULL,
+                              GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  layer_size = (gimp_item_get_width  (GIMP_ITEM (layer)) *
-                gimp_item_get_height (GIMP_ITEM (layer)));
+    layer_size = (gimp_item_get_width  (GIMP_ITEM (layer)) *
+                  gimp_item_get_height (GIMP_ITEM (layer)));
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *src  = iter->items[0].data;
-      guchar       *dest = iter->items[1].data;
-      gint          row;
+        const guchar *src  = iter->items[0].data;
+        guchar       *dest = iter->items[1].data;
+        gint          row;
 
-      total_size += src_roi->height * src_roi->width;
+        total_size += src_roi->height * src_roi->width;
 
-      for (row = 0; row < src_roi->height; row++)
+        for (row = 0; row < src_roi->height; row++)
         {
-          gint col;
+            gint col;
 
-          for (col = 0; col < src_roi->width; col++)
+            for (col = 0; col < src_roi->width; col++)
             {
-              if (has_alpha)
+                if (has_alpha)
                 {
-                  gboolean transparent = FALSE;
+                    gboolean transparent = FALSE;
 
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = (col + offsetx + src_roi->x) & DM_WIDTHMASK;
-                      gint dither_y = (row + offsety + src_roi->y) & DM_HEIGHTMASK;
+                        gint dither_x = (col + offsetx + src_roi->x) & DM_WIDTHMASK;
+                        gint dither_y = (row + offsety + src_roi->y) & DM_HEIGHTMASK;
 
-                      if ((src[alpha_pix]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[alpha_pix]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[alpha_pix] <= 127)
-                        transparent = TRUE;
+                        if (src[alpha_pix] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
-                      goto next_pixel;
+                        dest[ALPHA_I] = 0;
+                        goto next_pixel;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
+                        dest[ALPHA_I] = 255;
                     }
                 }
 
-              /* get pixel value and index into the cache */
-              rgb_to_lin (src[red_pix], src[green_pix], src[blue_pix],
-                          &R, &G, &B);
+                /* get pixel value and index into the cache */
+                rgb_to_lin (src[red_pix], src[green_pix], src[blue_pix],
+                            &R, &G, &B);
 
-              cachep = HIST_LIN (histogram, R, G, B);
-              /* If we have not seen this color before, find nearest
-               * colormap entry and update the cache
-               */
-              if (*cachep == 0)
-                fill_inverse_cmap_rgb (quantobj, histogram, R, G, B);
+                cachep = HIST_LIN (histogram, R, G, B);
+                /* If we have not seen this color before, find nearest
+                 * colormap entry and update the cache
+                 */
+                if (*cachep == 0)
+                    fill_inverse_cmap_rgb (quantobj, histogram, R, G, B);
 
-              /* Now emit the colormap index for this cell, barfbarf */
-              index_used_count[dest[INDEXED] = *cachep - 1]++;
+                /* Now emit the colormap index for this cell, barfbarf */
+                index_used_count[dest[INDEXED] = *cachep - 1]++;
 
-            next_pixel:
+next_pixel:
 
-              src  += src_bpp;
-              dest += dest_bpp;
+                src  += src_bpp;
+                dest += dest_bpp;
             }
         }
 
-      if (quantobj->progress && (count % 16 == 0))
-         gimp_progress_set_value (quantobj->progress,
-                                  (gdouble) total_size / (gdouble) layer_size);
+        if (quantobj->progress && (count % 16 == 0))
+            gimp_progress_set_value (quantobj->progress,
+                                     (gdouble) total_size / (gdouble) layer_size);
     }
 }
 
@@ -3304,186 +3323,188 @@ median_cut_pass2_fixed_dither_rgb (QuantizeObj *quantobj,
                                    GimpLayer   *layer,
                                    GeglBuffer  *new_buffer)
 {
-  GeglBufferIterator *iter;
-  CFHistogram         histogram = quantobj->histogram;
-  ColorFreq          *cachep;
-  const Babl         *src_format;
-  const Babl         *dest_format;
-  GeglRectangle      *src_roi;
-  gint                src_bpp;
-  gint                dest_bpp;
-  gint                has_alpha;
-  gint                pixval1 = 0;
-  gint                pixval2 = 0;
-  Color              *color1;
-  Color              *color2;
-  gint                R, G, B;
-  gint                err1;
-  gint                err2;
-  gint                red_pix          = RED;
-  gint                green_pix        = GREEN;
-  gint                blue_pix         = BLUE;
-  gint                alpha_pix        = ALPHA;
-  gboolean            dither_alpha     = quantobj->want_dither_alpha;
-  gint                offsetx, offsety;
-  gulong             *index_used_count = quantobj->index_used_count;
-  glong               total_size       = 0;
-  glong               layer_size;
-  gint                count            = 0;
+    GeglBufferIterator *iter;
+    CFHistogram         histogram = quantobj->histogram;
+    ColorFreq          *cachep;
+    const Babl         *src_format;
+    const Babl         *dest_format;
+    GeglRectangle      *src_roi;
+    gint                src_bpp;
+    gint                dest_bpp;
+    gint                has_alpha;
+    gint                pixval1 = 0;
+    gint                pixval2 = 0;
+    Color              *color1;
+    Color              *color2;
+    gint                R, G, B;
+    gint                err1;
+    gint                err2;
+    gint                red_pix          = RED;
+    gint                green_pix        = GREEN;
+    gint                blue_pix         = BLUE;
+    gint                alpha_pix        = ALPHA;
+    gboolean            dither_alpha     = quantobj->want_dither_alpha;
+    gint                offsetx, offsety;
+    gulong             *index_used_count = quantobj->index_used_count;
+    glong               total_size       = 0;
+    glong               layer_size;
+    gint                count            = 0;
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  /*  In the case of web/mono palettes, we actually force
-   *   grayscale drawables through the rgb pass2 functions
-   */
-  if (gimp_drawable_is_gray (GIMP_DRAWABLE (layer)))
+    /*  In the case of web/mono palettes, we actually force
+     *   grayscale drawables through the rgb pass2 functions
+     */
+    if (gimp_drawable_is_gray (GIMP_DRAWABLE (layer)))
     {
-      red_pix = green_pix = blue_pix = GRAY;
-      alpha_pix = ALPHA_G;
+        red_pix = green_pix = blue_pix = GRAY;
+        alpha_pix = ALPHA_G;
     }
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, NULL,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
-  src_roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, NULL,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
+    src_roi = &iter->items[0].roi;
 
-  gegl_buffer_iterator_add (iter, new_buffer,
-                            NULL, 0, NULL,
-                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
+    gegl_buffer_iterator_add (iter, new_buffer,
+                              NULL, 0, NULL,
+                              GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  layer_size = (gimp_item_get_width  (GIMP_ITEM (layer)) *
-                gimp_item_get_height (GIMP_ITEM (layer)));
+    layer_size = (gimp_item_get_width  (GIMP_ITEM (layer)) *
+                  gimp_item_get_height (GIMP_ITEM (layer)));
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *src  = iter->items[0].data;
-      guchar       *dest = iter->items[1].data;
-      gint          row;
+        const guchar *src  = iter->items[0].data;
+        guchar       *dest = iter->items[1].data;
+        gint          row;
 
-      total_size += src_roi->height * src_roi->width;
+        total_size += src_roi->height * src_roi->width;
 
-      for (row = 0; row < src_roi->height; row++)
+        for (row = 0; row < src_roi->height; row++)
         {
-          gint col;
+            gint col;
 
-          for (col = 0; col < src_roi->width; col++)
+            for (col = 0; col < src_roi->width; col++)
             {
-              const int dmval =
-                DM[(col + offsetx + src_roi->x) & DM_WIDTHMASK]
-                [(row + offsety + src_roi->y) & DM_HEIGHTMASK];
+                const int dmval =
+                    DM[(col + offsetx + src_roi->x) & DM_WIDTHMASK]
+                    [(row + offsety + src_roi->y) & DM_HEIGHTMASK];
 
-              if (has_alpha)
+                if (has_alpha)
                 {
-                  gboolean transparent = FALSE;
+                    gboolean transparent = FALSE;
 
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      if (src[alpha_pix] < dmval)
-                        transparent = TRUE;
+                        if (src[alpha_pix] < dmval)
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[alpha_pix] <= 127)
-                        transparent = TRUE;
+                        if (src[alpha_pix] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
-                      goto next_pixel;
+                        dest[ALPHA_I] = 0;
+                        goto next_pixel;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
+                        dest[ALPHA_I] = 255;
                     }
                 }
 
-              /* get pixel value and index into the cache */
-              rgb_to_lin (src[red_pix], src[green_pix], src[blue_pix],
-                          &R, &G, &B);
+                /* get pixel value and index into the cache */
+                rgb_to_lin (src[red_pix], src[green_pix], src[blue_pix],
+                            &R, &G, &B);
 
-              cachep = HIST_LIN (histogram, R, G, B);
-              /* If we have not seen this color before, find nearest
-               * colormap entry and update the cache
-               */
-              if (*cachep == 0)
-                fill_inverse_cmap_rgb (quantobj, histogram, R, G, B);
+                cachep = HIST_LIN (histogram, R, G, B);
+                /* If we have not seen this color before, find nearest
+                 * colormap entry and update the cache
+                 */
+                if (*cachep == 0)
+                    fill_inverse_cmap_rgb (quantobj, histogram, R, G, B);
 
-              /* We now try to find a color which, when mixed in some
-               * fashion with the closest match, yields something
-               * closer to the desired color.  We do this by
-               * repeatedly extrapolating the color vector from one to
-               * the other until we find another color cell.  Then we
-               * assess the distance of both mixer colors from the
-               * intended color to determine their relative
-               * probabilities of being chosen.
-               */
-              pixval1 = *cachep - 1;
-              color1 = &quantobj->cmap[pixval1];
+                /* We now try to find a color which, when mixed in some
+                 * fashion with the closest match, yields something
+                 * closer to the desired color.  We do this by
+                 * repeatedly extrapolating the color vector from one to
+                 * the other until we find another color cell.  Then we
+                 * assess the distance of both mixer colors from the
+                 * intended color to determine their relative
+                 * probabilities of being chosen.
+                 */
+                pixval1 = *cachep - 1;
+                color1 = &quantobj->cmap[pixval1];
 
-              if (quantobj->actual_number_of_colors > 2)
+                if (quantobj->actual_number_of_colors > 2)
                 {
-                  const gint re = src[red_pix]   - (gint) color1->red;
-                  const gint ge = src[green_pix] - (gint) color1->green;
-                  const gint be = src[blue_pix]  - (gint) color1->blue;
-                  gint       RV = src[red_pix]   + re;
-                  gint       GV = src[green_pix] + ge;
-                  gint       BV = src[blue_pix]  + be;
+                    const gint re = src[red_pix]   - (gint) color1->red;
+                    const gint ge = src[green_pix] - (gint) color1->green;
+                    const gint be = src[blue_pix]  - (gint) color1->blue;
+                    gint       RV = src[red_pix]   + re;
+                    gint       GV = src[green_pix] + ge;
+                    gint       BV = src[blue_pix]  + be;
 
-                  do
+                    do
                     {
-                      rgb_to_lin ((CLAMP0255(RV)),
-                                  (CLAMP0255(GV)),
-                                  (CLAMP0255(BV)),
-                                  &R, &G, &B);
+                        rgb_to_lin ((CLAMP0255(RV)),
+                                    (CLAMP0255(GV)),
+                                    (CLAMP0255(BV)),
+                                    &R, &G, &B);
 
-                      cachep = HIST_LIN (histogram, R, G, B);
-                      /* If we have not seen this color before, find
-                       * nearest colormap entry and update the cache
-                       */
-                      if (*cachep == 0)
-                        fill_inverse_cmap_rgb (quantobj, histogram, R, G, B);
+                        cachep = HIST_LIN (histogram, R, G, B);
+                        /* If we have not seen this color before, find
+                         * nearest colormap entry and update the cache
+                         */
+                        if (*cachep == 0)
+                            fill_inverse_cmap_rgb (quantobj, histogram, R, G, B);
 
-                      pixval2 = *cachep - 1;
-                      RV += re;  GV += ge;  BV += be;
+                        pixval2 = *cachep - 1;
+                        RV += re;
+                        GV += ge;
+                        BV += be;
                     }
-                  while ((pixval1 == pixval2) &&
-                         (!( (RV>255 || RV<0) || (GV>255 || GV<0) || (BV>255 || BV<0) )) &&
-                         (re || ge || be));
+                    while ((pixval1 == pixval2) &&
+                            (!( (RV>255 || RV<0) || (GV>255 || GV<0) || (BV>255 || BV<0) )) &&
+                            (re || ge || be));
                 }
 
-              if (quantobj->actual_number_of_colors <= 2
-                  /* || pixval1 == pixval2 */) {
-                /* not enough colors to bother looking for an 'alternative'
-                   color (we may fail to do so anyway), so decide that
-                   the alternative color is simply the other cmap entry. */
-                pixval2 = (pixval1 + 1) %
-                  (quantobj->actual_number_of_colors);
-              }
+                if (quantobj->actual_number_of_colors <= 2
+                        /* || pixval1 == pixval2 */) {
+                    /* not enough colors to bother looking for an 'alternative'
+                       color (we may fail to do so anyway), so decide that
+                       the alternative color is simply the other cmap entry. */
+                    pixval2 = (pixval1 + 1) %
+                              (quantobj->actual_number_of_colors);
+                }
 
-              /* always deterministically sort pixval1 and pixval2, to
-                 avoid artifacts in the dither range due to inverting our
-                 relative color viewpoint -- most obvious in 1-bit dither. */
-              if (pixval1 > pixval2)
+                /* always deterministically sort pixval1 and pixval2, to
+                   avoid artifacts in the dither range due to inverting our
+                   relative color viewpoint -- most obvious in 1-bit dither. */
+                if (pixval1 > pixval2)
                 {
-                  gint tmpval = pixval1;
-                  pixval1 = pixval2;
-                  pixval2 = tmpval;
-                  color1 = &quantobj->cmap[pixval1];
+                    gint tmpval = pixval1;
+                    pixval1 = pixval2;
+                    pixval2 = tmpval;
+                    color1 = &quantobj->cmap[pixval1];
                 }
 
-              color2 = &quantobj->cmap[pixval2];
+                color2 = &quantobj->cmap[pixval2];
 
-              /* now figure out the relative probabilities of choosing
-                 either of our candidates. */
+                /* now figure out the relative probabilities of choosing
+                   either of our candidates. */
 #define DISTP(R1,G1,B1,R2,G2,B2,D) do {D = sqrt( 30*SQR((R1)-(R2)) + \
                                                  59*SQR((G1)-(G2)) + \
                                                  11*SQR((B1)-(B2)) ); }while(0)
@@ -3497,37 +3518,37 @@ median_cut_pass2_fixed_dither_rgb (QuantizeObj *quantobj,
                          B_SCALE * SQR((spaceb1)-(spaceb2))); \
               } while(0)
 
-              /* although LIN_DISTP is more correct, DISTP is much faster and
-                 barely distinguishable. */
-              DISTP (color1->red, color1->green, color1->blue,
-                     src[red_pix], src[green_pix], src[blue_pix],
-                     err1);
-              DISTP (color2->red, color2->green, color2->blue,
-                     src[red_pix], src[green_pix], src[blue_pix],
-                     err2);
+                /* although LIN_DISTP is more correct, DISTP is much faster and
+                   barely distinguishable. */
+                DISTP (color1->red, color1->green, color1->blue,
+                       src[red_pix], src[green_pix], src[blue_pix],
+                       err1);
+                DISTP (color2->red, color2->green, color2->blue,
+                       src[red_pix], src[green_pix], src[blue_pix],
+                       err2);
 
-              if (err1 || err2)
+                if (err1 || err2)
                 {
-                  const int proportion2 = (255 * err2) / (err1 + err2);
-                  if (dmval > proportion2)
+                    const int proportion2 = (255 * err2) / (err1 + err2);
+                    if (dmval > proportion2)
                     {
-                      pixval1 = pixval2; /* use color2 instead of color1*/
+                        pixval1 = pixval2; /* use color2 instead of color1*/
                     }
                 }
 
-              /* Now emit the colormap index for this cell, barfbarf */
-              index_used_count[dest[INDEXED] = pixval1]++;
+                /* Now emit the colormap index for this cell, barfbarf */
+                index_used_count[dest[INDEXED] = pixval1]++;
 
-            next_pixel:
+next_pixel:
 
-              src  += src_bpp;
-              dest += dest_bpp;
+                src  += src_bpp;
+                dest += dest_bpp;
             }
         }
 
-      if (quantobj->progress && (count % 16 == 0))
-        gimp_progress_set_value (quantobj->progress,
-                                 (gdouble) total_size / (gdouble) layer_size);
+        if (quantobj->progress && (count % 16 == 0))
+            gimp_progress_set_value (quantobj->progress,
+                                     (gdouble) total_size / (gdouble) layer_size);
     }
 }
 
@@ -3536,120 +3557,120 @@ median_cut_pass2_nodestruct_dither_rgb (QuantizeObj *quantobj,
                                         GimpLayer   *layer,
                                         GeglBuffer  *new_buffer)
 {
-  GeglBufferIterator *iter;
-  const Babl         *src_format;
-  const Babl         *dest_format;
-  GeglRectangle      *src_roi;
-  gint                src_bpp;
-  gint                dest_bpp;
-  gint                has_alpha;
-  gboolean            dither_alpha = quantobj->want_dither_alpha;
-  gint                red_pix      = RED;
-  gint                green_pix    = GREEN;
-  gint                blue_pix     = BLUE;
-  gint                alpha_pix    = ALPHA;
-  gint                lastindex    = 0;
-  gint                lastred      = -1;
-  gint                lastgreen    = -1;
-  gint                lastblue     = -1;
-  gint                offsetx, offsety;
+    GeglBufferIterator *iter;
+    const Babl         *src_format;
+    const Babl         *dest_format;
+    GeglRectangle      *src_roi;
+    gint                src_bpp;
+    gint                dest_bpp;
+    gint                has_alpha;
+    gboolean            dither_alpha = quantobj->want_dither_alpha;
+    gint                red_pix      = RED;
+    gint                green_pix    = GREEN;
+    gint                blue_pix     = BLUE;
+    gint                alpha_pix    = ALPHA;
+    gint                lastindex    = 0;
+    gint                lastred      = -1;
+    gint                lastgreen    = -1;
+    gint                lastblue     = -1;
+    gint                offsetx, offsety;
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
-                                   NULL, 0, NULL,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
-  src_roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                     NULL, 0, NULL,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
+    src_roi = &iter->items[0].roi;
 
-  gegl_buffer_iterator_add (iter, new_buffer,
-                            NULL, 0, NULL,
-                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
+    gegl_buffer_iterator_add (iter, new_buffer,
+                              NULL, 0, NULL,
+                              GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *src  = iter->items[0].data;
-      guchar       *dest = iter->items[1].data;
-      gint          row;
+        const guchar *src  = iter->items[0].data;
+        guchar       *dest = iter->items[1].data;
+        gint          row;
 
-      for (row = 0; row < src_roi->height; row++)
+        for (row = 0; row < src_roi->height; row++)
         {
-          gint col;
+            gint col;
 
-          for (col = 0; col < src_roi->width; col++)
+            for (col = 0; col < src_roi->width; col++)
             {
-              gboolean transparent = FALSE;
+                gboolean transparent = FALSE;
 
-              if (has_alpha)
+                if (has_alpha)
                 {
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = (col + src_roi->x + offsetx) & DM_WIDTHMASK;
-                      gint dither_y = (row + src_roi->y + offsety) & DM_HEIGHTMASK;
+                        gint dither_x = (col + src_roi->x + offsetx) & DM_WIDTHMASK;
+                        gint dither_y = (row + src_roi->y + offsety) & DM_HEIGHTMASK;
 
-                      if ((src[alpha_pix]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[alpha_pix]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[alpha_pix] < 128)
-                        transparent = TRUE;
+                        if (src[alpha_pix] < 128)
+                            transparent = TRUE;
                     }
                 }
 
-              if (! transparent)
+                if (! transparent)
                 {
-                  if ((lastred   == src[red_pix]) &&
-                      (lastgreen == src[green_pix]) &&
-                      (lastblue  == src[blue_pix]))
+                    if ((lastred   == src[red_pix]) &&
+                            (lastgreen == src[green_pix]) &&
+                            (lastblue  == src[blue_pix]))
                     {
-                      /*  same pixel color as last time  */
-                      dest[INDEXED] = lastindex;
-                      if (has_alpha)
-                        dest[ALPHA_I] = 255;
+                        /*  same pixel color as last time  */
+                        dest[INDEXED] = lastindex;
+                        if (has_alpha)
+                            dest[ALPHA_I] = 255;
                     }
-                  else
+                    else
                     {
-                      gint i;
+                        gint i;
 
-                      for (i = 0 ;
-                           i < quantobj->actual_number_of_colors;
-                           i++)
+                        for (i = 0 ;
+                                i < quantobj->actual_number_of_colors;
+                                i++)
                         {
-                          if ((quantobj->cmap[i].green == src[green_pix]) &&
-                              (quantobj->cmap[i].red   == src[red_pix]) &&
-                              (quantobj->cmap[i].blue  == src[blue_pix]))
-                          {
-                            lastred   = src[red_pix];
-                            lastgreen = src[green_pix];
-                            lastblue  = src[blue_pix];
-                            lastindex = i;
+                            if ((quantobj->cmap[i].green == src[green_pix]) &&
+                                    (quantobj->cmap[i].red   == src[red_pix]) &&
+                                    (quantobj->cmap[i].blue  == src[blue_pix]))
+                            {
+                                lastred   = src[red_pix];
+                                lastgreen = src[green_pix];
+                                lastblue  = src[blue_pix];
+                                lastindex = i;
 
-                            goto got_color;
-                          }
+                                goto got_color;
+                            }
                         }
-                      g_error ("Non-existent color was expected to "
-                               "be in non-destructive colormap.");
-                    got_color:
-                      dest[INDEXED] = lastindex;
-                      if (has_alpha)
-                        dest[ALPHA_I] = 255;
+                        g_error ("Non-existent color was expected to "
+                                 "be in non-destructive colormap.");
+got_color:
+                        dest[INDEXED] = lastindex;
+                        if (has_alpha)
+                            dest[ALPHA_I] = 255;
                     }
                 }
-              else
-                { /*  have alpha, and transparent  */
-                  dest[ALPHA_I] = 0;
+                else
+                {   /*  have alpha, and transparent  */
+                    dest[ALPHA_I] = 0;
                 }
 
-              src  += src_bpp;
-              dest += dest_bpp;
+                src  += src_bpp;
+                dest += dest_bpp;
             }
         }
     }
@@ -3677,64 +3698,64 @@ static gint *
 init_error_limit (const int error_freedom)
 /* Allocate and fill in the error_limiter table */
 {
-  gint *table;
-  gint  in, out;
+    gint *table;
+    gint  in, out;
 
-  /* #define STEPSIZE 16 */
-  /* #define STEPSIZE 200 */
+    /* #define STEPSIZE 16 */
+    /* #define STEPSIZE 200 */
 
-  table = g_new (gint, 255 * 2 + 1);
-  table += 255;                 /* so we can index -255 ... +255 */
+    table = g_new (gint, 255 * 2 + 1);
+    table += 255;                 /* so we can index -255 ... +255 */
 
-  if (error_freedom == 0)
+    if (error_freedom == 0)
     {
-      /* Coarse function, much bleeding. */
+        /* Coarse function, much bleeding. */
 
-      const gint STEPSIZE = 190;
+        const gint STEPSIZE = 190;
 
-      for (in = 0; in < STEPSIZE; in++)
+        for (in = 0; in < STEPSIZE; in++)
         {
-          table[in] = in;
-          table[-in] = -in;
+            table[in] = in;
+            table[-in] = -in;
         }
 
-      for (; in <= 255; in++)
+        for (; in <= 255; in++)
         {
-          table[in] = STEPSIZE;
-          table[-in] = -STEPSIZE;
+            table[in] = STEPSIZE;
+            table[-in] = -STEPSIZE;
         }
 
-      return (table);
+        return (table);
     }
-  else
+    else
     {
-      /* Smooth function, bleeding more constrained */
+        /* Smooth function, bleeding more constrained */
 
-      const gint STEPSIZE = 24;
+        const gint STEPSIZE = 24;
 
-      /* Map errors 1:1 up to +- STEPSIZE */
-      out = 0;
-      for (in = 0; in < STEPSIZE; in++, out++)
+        /* Map errors 1:1 up to +- STEPSIZE */
+        out = 0;
+        for (in = 0; in < STEPSIZE; in++, out++)
         {
-          table[in] = out;
-          table[-in] = -out;
+            table[in] = out;
+            table[-in] = -out;
         }
 
-      /* Map errors 1:2 up to +- 3*STEPSIZE */
-      for (; in < STEPSIZE*3; in++, out += (in&1) ? 0 : 1)
+        /* Map errors 1:2 up to +- 3*STEPSIZE */
+        for (; in < STEPSIZE*3; in++, out += (in&1) ? 0 : 1)
         {
-          table[in] = out;
-          table[-in] = -out;
+            table[in] = out;
+            table[-in] = -out;
         }
 
-      /* Clamp the rest to final out value (which is STEPSIZE*2) */
-      for (; in <= 255; in++)
+        /* Clamp the rest to final out value (which is STEPSIZE*2) */
+        for (; in <= 255; in++)
         {
-          table[in] = out;
-          table[-in] = -out;
+            table[in] = out;
+            table[-in] = -out;
         }
 
-      return table;
+        return table;
     }
 }
 
@@ -3749,252 +3770,252 @@ median_cut_pass2_fs_dither_gray (QuantizeObj *quantobj,
                                  GimpLayer   *layer,
                                  GeglBuffer  *new_buffer)
 {
-  GeglBuffer   *src_buffer;
-  CFHistogram   histogram = quantobj->histogram;
-  ColorFreq    *cachep;
-  Color        *color;
-  gint         *error_limiter;
-  const gshort *fs_err1, *fs_err2;
-  const gshort *fs_err3, *fs_err4;
-  const guchar *range_limiter;
-  const Babl   *src_format;
-  const Babl   *dest_format;
-  gint          src_bpp;
-  gint          dest_bpp;
-  guchar       *src_buf, *dest_buf;
-  gint         *next_row, *prev_row;
-  gint         *nr, *pr;
-  gint         *tmp;
-  gint          pixel;
-  gint          pixele;
-  gint          row, col;
-  gint          index;
-  gint          step_dest, step_src;
-  gint          odd_row;
-  gboolean      has_alpha;
-  gint          offsetx, offsety;
-  gboolean      dither_alpha = quantobj->want_dither_alpha;
-  gint          width, height;
-  gulong       *index_used_count = quantobj->index_used_count;
+    GeglBuffer   *src_buffer;
+    CFHistogram   histogram = quantobj->histogram;
+    ColorFreq    *cachep;
+    Color        *color;
+    gint         *error_limiter;
+    const gshort *fs_err1, *fs_err2;
+    const gshort *fs_err3, *fs_err4;
+    const guchar *range_limiter;
+    const Babl   *src_format;
+    const Babl   *dest_format;
+    gint          src_bpp;
+    gint          dest_bpp;
+    guchar       *src_buf, *dest_buf;
+    gint         *next_row, *prev_row;
+    gint         *nr, *pr;
+    gint         *tmp;
+    gint          pixel;
+    gint          pixele;
+    gint          row, col;
+    gint          index;
+    gint          step_dest, step_src;
+    gint          odd_row;
+    gboolean      has_alpha;
+    gint          offsetx, offsety;
+    gboolean      dither_alpha = quantobj->want_dither_alpha;
+    gint          width, height;
+    gulong       *index_used_count = quantobj->index_used_count;
 
-  src_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
+    src_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  width  = gimp_item_get_width  (GIMP_ITEM (layer));
-  height = gimp_item_get_height (GIMP_ITEM (layer));
+    width  = gimp_item_get_width  (GIMP_ITEM (layer));
+    height = gimp_item_get_height (GIMP_ITEM (layer));
 
-  error_limiter = init_error_limit (quantobj->error_freedom);
-  range_limiter = range_array + 256;
+    error_limiter = init_error_limit (quantobj->error_freedom);
+    range_limiter = range_array + 256;
 
-  src_buf  = g_malloc (width * src_bpp);
-  dest_buf = g_malloc (width * dest_bpp);
+    src_buf  = g_malloc (width * src_bpp);
+    dest_buf = g_malloc (width * dest_bpp);
 
-  next_row = g_new (gint, width + 2);
-  prev_row = g_new0 (gint, width + 2);
+    next_row = g_new (gint, width + 2);
+    prev_row = g_new0 (gint, width + 2);
 
-  fs_err1 = floyd_steinberg_error1 + 511;
-  fs_err2 = floyd_steinberg_error2 + 511;
-  fs_err3 = floyd_steinberg_error3 + 511;
-  fs_err4 = floyd_steinberg_error4 + 511;
+    fs_err1 = floyd_steinberg_error1 + 511;
+    fs_err2 = floyd_steinberg_error2 + 511;
+    fs_err3 = floyd_steinberg_error3 + 511;
+    fs_err4 = floyd_steinberg_error4 + 511;
 
-  odd_row = 0;
+    odd_row = 0;
 
-  for (row = 0; row < height; row++)
+    for (row = 0; row < height; row++)
     {
-      const guchar *src;
-      guchar       *dest;
+        const guchar *src;
+        guchar       *dest;
 
-      gegl_buffer_get (src_buffer, GEGL_RECTANGLE (0, row, width, 1),
-                       1.0, NULL, src_buf,
-                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+        gegl_buffer_get (src_buffer, GEGL_RECTANGLE (0, row, width, 1),
+                         1.0, NULL, src_buf,
+                         GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-      src  = src_buf;
-      dest = dest_buf;
+        src  = src_buf;
+        dest = dest_buf;
 
-      nr = next_row;
-      pr = prev_row + 1;
+        nr = next_row;
+        pr = prev_row + 1;
 
-      if (odd_row)
+        if (odd_row)
         {
-          step_dest = -dest_bpp;
-          step_src  = -src_bpp;
+            step_dest = -dest_bpp;
+            step_src  = -src_bpp;
 
-          src  += (width * src_bpp) - src_bpp;
-          dest += (width * dest_bpp) - dest_bpp;
+            src  += (width * src_bpp) - src_bpp;
+            dest += (width * dest_bpp) - dest_bpp;
 
-          nr += width + 1;
-          pr += width;
+            nr += width + 1;
+            pr += width;
 
-          *(nr - 1) = 0;
+            *(nr - 1) = 0;
         }
-      else
+        else
         {
-          step_dest = dest_bpp;
-          step_src  = src_bpp;
+            step_dest = dest_bpp;
+            step_src  = src_bpp;
 
-          *(nr + 1) = 0;
+            *(nr + 1) = 0;
         }
 
-      *nr = 0;
+        *nr = 0;
 
-      for (col = 0; col < width; col++)
+        for (col = 0; col < width; col++)
         {
-          pixel = range_limiter[src[GRAY] + error_limiter[*pr]];
+            pixel = range_limiter[src[GRAY] + error_limiter[*pr]];
 
-          cachep = &histogram[pixel];
-          /* If we have not seen this color before, find nearest
-           * colormap entry and update the cache
-           */
-          if (*cachep == 0)
-            fill_inverse_cmap_gray (quantobj, histogram, pixel);
+            cachep = &histogram[pixel];
+            /* If we have not seen this color before, find nearest
+             * colormap entry and update the cache
+             */
+            if (*cachep == 0)
+                fill_inverse_cmap_gray (quantobj, histogram, pixel);
 
-          if (has_alpha)
+            if (has_alpha)
             {
-              gboolean transparent = FALSE;
+                gboolean transparent = FALSE;
 
-              if (odd_row)
+                if (odd_row)
                 {
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = ((width-col)+offsetx-1) & DM_WIDTHMASK;
-                      gint dither_y = (row+offsety) & DM_HEIGHTMASK;
+                        gint dither_x = ((width-col)+offsetx-1) & DM_WIDTHMASK;
+                        gint dither_y = (row+offsety) & DM_HEIGHTMASK;
 
-                      if ((src[ALPHA_G]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[ALPHA_G]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[ALPHA_G] <= 127)
-                        transparent = TRUE;
+                        if (src[ALPHA_G] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
-                      pr--;
-                      nr--;
-                      *(nr - 1) = 0;
-                      goto next_pixel;
+                        dest[ALPHA_I] = 0;
+                        pr--;
+                        nr--;
+                        *(nr - 1) = 0;
+                        goto next_pixel;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
+                        dest[ALPHA_I] = 255;
                     }
                 }
-              else
+                else
                 {
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = (col + offsetx) & DM_WIDTHMASK;
-                      gint dither_y = (row + offsety) & DM_HEIGHTMASK;
+                        gint dither_x = (col + offsetx) & DM_WIDTHMASK;
+                        gint dither_y = (row + offsety) & DM_HEIGHTMASK;
 
-                      if ((src[ALPHA_G]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[ALPHA_G]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[ALPHA_G] <= 127)
-                        transparent = TRUE;
+                        if (src[ALPHA_G] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
-                      pr++;
-                      nr++;
-                      *(nr + 1) = 0;
-                      goto next_pixel;
+                        dest[ALPHA_I] = 0;
+                        pr++;
+                        nr++;
+                        *(nr + 1) = 0;
+                        goto next_pixel;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
+                        dest[ALPHA_I] = 255;
                     }
                 }
             }
 
-          index = *cachep - 1;
-          index_used_count[dest[INDEXED] = index]++;
+            index = *cachep - 1;
+            index_used_count[dest[INDEXED] = index]++;
 
-          color = &quantobj->cmap[index];
-          pixele = pixel - color->red;
+            color = &quantobj->cmap[index];
+            pixele = pixel - color->red;
 
-          if (odd_row)
+            if (odd_row)
             {
-              *(--pr) += fs_err1[pixele];
-              *nr-- += fs_err2[pixele];
-              *nr += fs_err3[pixele];
-              *(nr-1) = fs_err4[pixele];
+                *(--pr) += fs_err1[pixele];
+                *nr-- += fs_err2[pixele];
+                *nr += fs_err3[pixele];
+                *(nr-1) = fs_err4[pixele];
             }
-          else
+            else
             {
-              *(++pr) += fs_err1[pixele];
-              *nr++ += fs_err2[pixele];
-              *nr += fs_err3[pixele];
-              *(nr+1) = fs_err4[pixele];
+                *(++pr) += fs_err1[pixele];
+                *nr++ += fs_err2[pixele];
+                *nr += fs_err3[pixele];
+                *(nr+1) = fs_err4[pixele];
             }
 
-        next_pixel:
+next_pixel:
 
-          dest += step_dest;
-          src += step_src;
+            dest += step_dest;
+            src += step_src;
         }
 
-      tmp = next_row;
-      next_row = prev_row;
-      prev_row = tmp;
+        tmp = next_row;
+        next_row = prev_row;
+        prev_row = tmp;
 
-      odd_row = !odd_row;
+        odd_row = !odd_row;
 
-      gegl_buffer_set (new_buffer, GEGL_RECTANGLE (0, row, width, 1),
-                       0, NULL, dest_buf,
-                       GEGL_AUTO_ROWSTRIDE);
+        gegl_buffer_set (new_buffer, GEGL_RECTANGLE (0, row, width, 1),
+                         0, NULL, dest_buf,
+                         GEGL_AUTO_ROWSTRIDE);
     }
 
-  g_free (error_limiter - 255); /* good lord. */
-  g_free (next_row);
-  g_free (prev_row);
-  g_free (src_buf);
-  g_free (dest_buf);
+    g_free (error_limiter - 255); /* good lord. */
+    g_free (next_row);
+    g_free (prev_row);
+    g_free (src_buf);
+    g_free (dest_buf);
 }
 
 static void
 median_cut_pass2_rgb_init (QuantizeObj *quantobj)
 {
-  int i;
+    int i;
 
-  zero_histogram_rgb (quantobj->histogram);
+    zero_histogram_rgb (quantobj->histogram);
 
-  /* Mark all indices as currently unused */
-  memset (quantobj->index_used_count, 0, 256 * sizeof (gulong));
+    /* Mark all indices as currently unused */
+    memset (quantobj->index_used_count, 0, 256 * sizeof (gulong));
 
-  /* Make a version of our discovered colormap in linear space */
-  for (i = 0; i < quantobj->actual_number_of_colors; i++)
+    /* Make a version of our discovered colormap in linear space */
+    for (i = 0; i < quantobj->actual_number_of_colors; i++)
     {
-      rgb_to_unshifted_lin (quantobj->cmap[i].red,
-                            quantobj->cmap[i].green,
-                            quantobj->cmap[i].blue,
-                            &quantobj->clin[i].red,
-                            &quantobj->clin[i].green,
-                            &quantobj->clin[i].blue);
+        rgb_to_unshifted_lin (quantobj->cmap[i].red,
+                              quantobj->cmap[i].green,
+                              quantobj->cmap[i].blue,
+                              &quantobj->clin[i].red,
+                              &quantobj->clin[i].green,
+                              &quantobj->clin[i].blue);
     }
 }
 
 static void
 median_cut_pass2_gray_init (QuantizeObj *quantobj)
 {
-  zero_histogram_gray (quantobj->histogram);
+    zero_histogram_gray (quantobj->histogram);
 
-  /* Mark all indices as currently unused */
-  memset (quantobj->index_used_count, 0, 256 * sizeof (gulong));
+    /* Mark all indices as currently unused */
+    memset (quantobj->index_used_count, 0, 256 * sizeof (gulong));
 }
 
 static void
@@ -4002,407 +4023,415 @@ median_cut_pass2_fs_dither_rgb (QuantizeObj *quantobj,
                                 GimpLayer   *layer,
                                 GeglBuffer  *new_buffer)
 {
-  GeglBuffer   *src_buffer;
-  CFHistogram   histogram = quantobj->histogram;
-  ColorFreq    *cachep;
-  Color        *color;
-  gint         *error_limiter;
-  const gshort *fs_err1, *fs_err2;
-  const gshort *fs_err3, *fs_err4;
-  const guchar *range_limiter;
-  const Babl   *src_format;
-  const Babl   *dest_format;
-  gint          src_bpp;
-  gint          dest_bpp;
-  guchar       *src_buf, *dest_buf;
-  gint         *red_n_row, *red_p_row;
-  gint         *grn_n_row, *grn_p_row;
-  gint         *blu_n_row, *blu_p_row;
-  gint         *rnr, *rpr;
-  gint         *gnr, *gpr;
-  gint         *bnr, *bpr;
-  gint         *tmp;
-  gint          re, ge, be;
-  gint          row, col;
-  gint          index;
-  gint          step_dest, step_src;
-  gint          odd_row;
-  gboolean      has_alpha;
-  gint          width, height;
-  gint          red_pix   = RED;
-  gint          green_pix = GREEN;
-  gint          blue_pix  = BLUE;
-  gint          alpha_pix = ALPHA;
-  gint          offsetx, offsety;
-  gboolean      dither_alpha     = quantobj->want_dither_alpha;
-  gulong       *index_used_count = quantobj->index_used_count;
-  gint          global_rmax = 0, global_rmin = G_MAXINT;
-  gint          global_gmax = 0, global_gmin = G_MAXINT;
-  gint          global_bmax = 0, global_bmin = G_MAXINT;
+    GeglBuffer   *src_buffer;
+    CFHistogram   histogram = quantobj->histogram;
+    ColorFreq    *cachep;
+    Color        *color;
+    gint         *error_limiter;
+    const gshort *fs_err1, *fs_err2;
+    const gshort *fs_err3, *fs_err4;
+    const guchar *range_limiter;
+    const Babl   *src_format;
+    const Babl   *dest_format;
+    gint          src_bpp;
+    gint          dest_bpp;
+    guchar       *src_buf, *dest_buf;
+    gint         *red_n_row, *red_p_row;
+    gint         *grn_n_row, *grn_p_row;
+    gint         *blu_n_row, *blu_p_row;
+    gint         *rnr, *rpr;
+    gint         *gnr, *gpr;
+    gint         *bnr, *bpr;
+    gint         *tmp;
+    gint          re, ge, be;
+    gint          row, col;
+    gint          index;
+    gint          step_dest, step_src;
+    gint          odd_row;
+    gboolean      has_alpha;
+    gint          width, height;
+    gint          red_pix   = RED;
+    gint          green_pix = GREEN;
+    gint          blue_pix  = BLUE;
+    gint          alpha_pix = ALPHA;
+    gint          offsetx, offsety;
+    gboolean      dither_alpha     = quantobj->want_dither_alpha;
+    gulong       *index_used_count = quantobj->index_used_count;
+    gint          global_rmax = 0, global_rmin = G_MAXINT;
+    gint          global_gmax = 0, global_gmin = G_MAXINT;
+    gint          global_bmax = 0, global_bmin = G_MAXINT;
 
-  src_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
+    src_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
 
-  gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
+    gimp_item_get_offset (GIMP_ITEM (layer), &offsetx, &offsety);
 
-  /*  In the case of web/mono palettes, we actually force
-   *   grayscale drawables through the rgb pass2 functions
-   */
-  if (gimp_drawable_is_gray (GIMP_DRAWABLE (layer)))
-    red_pix = green_pix = blue_pix = GRAY;
+    /*  In the case of web/mono palettes, we actually force
+     *   grayscale drawables through the rgb pass2 functions
+     */
+    if (gimp_drawable_is_gray (GIMP_DRAWABLE (layer)))
+        red_pix = green_pix = blue_pix = GRAY;
 
-  src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-  dest_format = gegl_buffer_get_format (new_buffer);
+    src_format  = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+    dest_format = gegl_buffer_get_format (new_buffer);
 
-  src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-  dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-  has_alpha = babl_format_has_alpha (src_format);
+    has_alpha = babl_format_has_alpha (src_format);
 
-  width  = gimp_item_get_width  (GIMP_ITEM (layer));
-  height = gimp_item_get_height (GIMP_ITEM (layer));
+    width  = gimp_item_get_width  (GIMP_ITEM (layer));
+    height = gimp_item_get_height (GIMP_ITEM (layer));
 
-  error_limiter = init_error_limit (quantobj->error_freedom);
-  range_limiter = range_array + 256;
+    error_limiter = init_error_limit (quantobj->error_freedom);
+    range_limiter = range_array + 256;
 
-  /* find the bounding box of the palette colors --
-     we use this for hard-clamping our error-corrected
-     values so that we can't continuously accelerate outside
-     of our attainable gamut, which looks icky. */
-  for (index = 0; index < quantobj->actual_number_of_colors; index++)
+    /* find the bounding box of the palette colors --
+       we use this for hard-clamping our error-corrected
+       values so that we can't continuously accelerate outside
+       of our attainable gamut, which looks icky. */
+    for (index = 0; index < quantobj->actual_number_of_colors; index++)
     {
-      global_rmax = MAX(global_rmax, quantobj->clin[index].red);
-      global_rmin = MIN(global_rmin, quantobj->clin[index].red);
-      global_gmax = MAX(global_gmax, quantobj->clin[index].green);
-      global_gmin = MIN(global_gmin, quantobj->clin[index].green);
-      global_bmax = MAX(global_bmax, quantobj->clin[index].blue);
-      global_bmin = MIN(global_bmin, quantobj->clin[index].blue);
+        global_rmax = MAX(global_rmax, quantobj->clin[index].red);
+        global_rmin = MIN(global_rmin, quantobj->clin[index].red);
+        global_gmax = MAX(global_gmax, quantobj->clin[index].green);
+        global_gmin = MIN(global_gmin, quantobj->clin[index].green);
+        global_bmax = MAX(global_bmax, quantobj->clin[index].blue);
+        global_bmin = MIN(global_bmin, quantobj->clin[index].blue);
     }
 
-  src_buf  = g_malloc (width * src_bpp);
-  dest_buf = g_malloc (width * dest_bpp);
+    src_buf  = g_malloc (width * src_bpp);
+    dest_buf = g_malloc (width * dest_bpp);
 
-  red_n_row = g_new (gint, width + 2);
-  red_p_row = g_new0 (gint, width + 2);
-  grn_n_row = g_new (gint, width + 2);
-  grn_p_row = g_new0 (gint, width + 2);
-  blu_n_row = g_new (gint, width + 2);
-  blu_p_row = g_new0 (gint, width + 2);
+    red_n_row = g_new (gint, width + 2);
+    red_p_row = g_new0 (gint, width + 2);
+    grn_n_row = g_new (gint, width + 2);
+    grn_p_row = g_new0 (gint, width + 2);
+    blu_n_row = g_new (gint, width + 2);
+    blu_p_row = g_new0 (gint, width + 2);
 
-  fs_err1 = floyd_steinberg_error1 + 511;
-  fs_err2 = floyd_steinberg_error2 + 511;
-  fs_err3 = floyd_steinberg_error3 + 511;
-  fs_err4 = floyd_steinberg_error4 + 511;
+    fs_err1 = floyd_steinberg_error1 + 511;
+    fs_err2 = floyd_steinberg_error2 + 511;
+    fs_err3 = floyd_steinberg_error3 + 511;
+    fs_err4 = floyd_steinberg_error4 + 511;
 
-  odd_row = 0;
+    odd_row = 0;
 
-  for (row = 0; row < height; row++)
+    for (row = 0; row < height; row++)
     {
-      const guchar *src;
-      guchar       *dest;
+        const guchar *src;
+        guchar       *dest;
 
-      gegl_buffer_get (src_buffer, GEGL_RECTANGLE (0, row, width, 1),
-                       1.0, NULL, src_buf,
-                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+        gegl_buffer_get (src_buffer, GEGL_RECTANGLE (0, row, width, 1),
+                         1.0, NULL, src_buf,
+                         GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-      src  = src_buf;
-      dest = dest_buf;
+        src  = src_buf;
+        dest = dest_buf;
 
-      rnr = red_n_row;
-      gnr = grn_n_row;
-      bnr = blu_n_row;
-      rpr = red_p_row + 1;
-      gpr = grn_p_row + 1;
-      bpr = blu_p_row + 1;
+        rnr = red_n_row;
+        gnr = grn_n_row;
+        bnr = blu_n_row;
+        rpr = red_p_row + 1;
+        gpr = grn_p_row + 1;
+        bpr = blu_p_row + 1;
 
-      if (odd_row)
+        if (odd_row)
         {
-          step_dest = -dest_bpp;
-          step_src  = -src_bpp;
+            step_dest = -dest_bpp;
+            step_src  = -src_bpp;
 
-          src += (width * src_bpp) - src_bpp;
-          dest += (width * dest_bpp) - dest_bpp;
+            src += (width * src_bpp) - src_bpp;
+            dest += (width * dest_bpp) - dest_bpp;
 
-          rnr += width + 1;
-          gnr += width + 1;
-          bnr += width + 1;
-          rpr += width;
-          gpr += width;
-          bpr += width;
+            rnr += width + 1;
+            gnr += width + 1;
+            bnr += width + 1;
+            rpr += width;
+            gpr += width;
+            bpr += width;
 
-          *(rnr - 1) = *(gnr - 1) = *(bnr - 1) = 0;
+            *(rnr - 1) = *(gnr - 1) = *(bnr - 1) = 0;
         }
-      else
+        else
         {
-          step_dest = dest_bpp;
-          step_src  = src_bpp;
+            step_dest = dest_bpp;
+            step_src  = src_bpp;
 
-          *(rnr + 1) = *(gnr + 1) = *(bnr + 1) = 0;
+            *(rnr + 1) = *(gnr + 1) = *(bnr + 1) = 0;
         }
 
-      *rnr = *gnr = *bnr = 0;
+        *rnr = *gnr = *bnr = 0;
 
-      for (col = 0; col < width; col++)
+        for (col = 0; col < width; col++)
         {
-          if (has_alpha)
+            if (has_alpha)
             {
-              gboolean transparent = FALSE;
+                gboolean transparent = FALSE;
 
-              if (odd_row)
+                if (odd_row)
                 {
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = ((width-col)+offsetx-1) & DM_WIDTHMASK;
-                      gint dither_y = (row+offsety) & DM_HEIGHTMASK;
+                        gint dither_x = ((width-col)+offsetx-1) & DM_WIDTHMASK;
+                        gint dither_y = (row+offsety) & DM_HEIGHTMASK;
 
-                      if ((src[alpha_pix]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[alpha_pix]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[alpha_pix] <= 127)
-                        transparent = TRUE;
+                        if (src[alpha_pix] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
-                      rpr--; gpr--; bpr--;
-                      rnr--; gnr--; bnr--;
-                      *(rnr - 1) = *(gnr - 1) = *(bnr - 1) = 0;
-                      goto next_pixel;
+                        dest[ALPHA_I] = 0;
+                        rpr--;
+                        gpr--;
+                        bpr--;
+                        rnr--;
+                        gnr--;
+                        bnr--;
+                        *(rnr - 1) = *(gnr - 1) = *(bnr - 1) = 0;
+                        goto next_pixel;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
+                        dest[ALPHA_I] = 255;
                     }
                 }
-              else
+                else
                 {
-                  if (dither_alpha)
+                    if (dither_alpha)
                     {
-                      gint dither_x = (col + offsetx) & DM_WIDTHMASK;
-                      gint dither_y = (row + offsety) & DM_HEIGHTMASK;
+                        gint dither_x = (col + offsetx) & DM_WIDTHMASK;
+                        gint dither_y = (row + offsety) & DM_HEIGHTMASK;
 
-                      if ((src[alpha_pix]) < DM[dither_x][dither_y])
-                        transparent = TRUE;
+                        if ((src[alpha_pix]) < DM[dither_x][dither_y])
+                            transparent = TRUE;
                     }
-                  else
+                    else
                     {
-                      if (src[alpha_pix] <= 127)
-                        transparent = TRUE;
+                        if (src[alpha_pix] <= 127)
+                            transparent = TRUE;
                     }
 
-                  if (transparent)
+                    if (transparent)
                     {
-                      dest[ALPHA_I] = 0;
-                      rpr++; gpr++; bpr++;
-                      rnr++; gnr++; bnr++;
-                      *(rnr + 1) = *(gnr + 1) = *(bnr + 1) = 0;
-                      goto next_pixel;
+                        dest[ALPHA_I] = 0;
+                        rpr++;
+                        gpr++;
+                        bpr++;
+                        rnr++;
+                        gnr++;
+                        bnr++;
+                        *(rnr + 1) = *(gnr + 1) = *(bnr + 1) = 0;
+                        goto next_pixel;
                     }
-                  else
+                    else
                     {
-                      dest[ALPHA_I] = 255;
+                        dest[ALPHA_I] = 255;
                     }
                 }
             }
 
 #if 0
-          /* hmm. */
+            /* hmm. */
 
-          r = range_limiter[src[red_pix] + error_limiter[*rpr]];
-          g = range_limiter[src[green_pix] + error_limiter[*gpr]];
-          b = range_limiter[src[blue_pix] + error_limiter[*bpr]];
+            r = range_limiter[src[red_pix] + error_limiter[*rpr]];
+            g = range_limiter[src[green_pix] + error_limiter[*gpr]];
+            b = range_limiter[src[blue_pix] + error_limiter[*bpr]];
 
-          re = r >> R_SHIFT;
-          ge = g >> G_SHIFT;
-          be = b >> B_SHIFT;
+            re = r >> R_SHIFT;
+            ge = g >> G_SHIFT;
+            be = b >> B_SHIFT;
 
-          rgb_to_lin (r, g, b, &re, &ge, &be);
+            rgb_to_lin (r, g, b, &re, &ge, &be);
 #endif
-          rgb_to_unshifted_lin (src[red_pix], src[green_pix], src[blue_pix],
-                                &re, &ge, &be);
+            rgb_to_unshifted_lin (src[red_pix], src[green_pix], src[blue_pix],
+                                  &re, &ge, &be);
 
-          /*
-            re = CLAMP(re, global_rmin, global_rmax);
-            ge = CLAMP(ge, global_gmin, global_gmax);
-            be = CLAMP(be, global_bmin, global_bmax);*/
+            /*
+              re = CLAMP(re, global_rmin, global_rmax);
+              ge = CLAMP(ge, global_gmin, global_gmax);
+              be = CLAMP(be, global_bmin, global_bmax);*/
 
-          re = range_limiter[re + error_limiter[*rpr]];
-          ge = range_limiter[ge + error_limiter[*gpr]];
-          be = range_limiter[be + error_limiter[*bpr]];
+            re = range_limiter[re + error_limiter[*rpr]];
+            ge = range_limiter[ge + error_limiter[*gpr]];
+            be = range_limiter[be + error_limiter[*bpr]];
 
-          cachep = HIST_LIN (histogram,
-                             RSDF (re),
-                             GSDF (ge),
-                             BSDF (be));
-          /* If we have not seen this color before, find nearest
-           * colormap entry and update the cache
-           */
-          if (*cachep == 0)
-            fill_inverse_cmap_rgb (quantobj, histogram,
-                                   RSDF (re),
-                                   GSDF (ge),
-                                   BSDF (be));
+            cachep = HIST_LIN (histogram,
+                               RSDF (re),
+                               GSDF (ge),
+                               BSDF (be));
+            /* If we have not seen this color before, find nearest
+             * colormap entry and update the cache
+             */
+            if (*cachep == 0)
+                fill_inverse_cmap_rgb (quantobj, histogram,
+                                       RSDF (re),
+                                       GSDF (ge),
+                                       BSDF (be));
 
-          index = *cachep - 1;
-          index_used_count[index]++;
-          dest[INDEXED] = index;
+            index = *cachep - 1;
+            index_used_count[index]++;
+            dest[INDEXED] = index;
 
-          /*if (re > global_rmax)
-            re = (re + 3*global_rmax) / 4;
-          else if (re < global_rmin)
-          re = (re + 3*global_rmin) / 4;*/
+            /*if (re > global_rmax)
+              re = (re + 3*global_rmax) / 4;
+            else if (re < global_rmin)
+            re = (re + 3*global_rmin) / 4;*/
 
-          /* We constrain chroma error extra-hard so that it
-             doesn't run away and steal the thunder from the
-             lightness error where all the detail usually is. */
-          if (ge > global_gmax)
-            ge = (ge + 3*global_gmax) / 4;
-          else if (ge < global_gmin)
-            ge = (ge + 3*global_gmin) / 4;
-          if (be > global_bmax)
-            be = (be + 3*global_bmax) / 4;
-          else if (be < global_bmin)
-            be = (be + 3*global_bmin) / 4;
+            /* We constrain chroma error extra-hard so that it
+               doesn't run away and steal the thunder from the
+               lightness error where all the detail usually is. */
+            if (ge > global_gmax)
+                ge = (ge + 3*global_gmax) / 4;
+            else if (ge < global_gmin)
+                ge = (ge + 3*global_gmin) / 4;
+            if (be > global_bmax)
+                be = (be + 3*global_bmax) / 4;
+            else if (be < global_bmin)
+                be = (be + 3*global_bmin) / 4;
 
-          color = &quantobj->clin[index];
+            color = &quantobj->clin[index];
 
 #if 0
-          if ((re > 0 && re < 255) /* HMM &&
+            if ((re > 0 && re < 255) /* HMM &&
               ge >= 0 && ge <= 255 &&
               be >= 0 && be <= 255*/)
             {
-              ge = ge - color->green;
-              be = be - color->blue;
-              re = re - color->red;
+                ge = ge - color->green;
+                be = be - color->blue;
+                re = re - color->red;
             }
-          else
+            else
             {
-              /* color pretty much undefined now; nullify error. */
-              re = ge = be = 0;
+                /* color pretty much undefined now; nullify error. */
+                re = ge = be = 0;
             }
 #endif
 
-          if (re <= 0 || re >= 255)
-            re = ge = be = 0;
-          else
+            if (re <= 0 || re >= 255)
+                re = ge = be = 0;
+            else
             {
-              re = re - color->red;
-              ge = ge - color->green;
-              be = be - color->blue;
+                re = re - color->red;
+                ge = ge - color->green;
+                be = be - color->blue;
             }
 
-          if (odd_row)
+            if (odd_row)
             {
-              *(--rpr) += fs_err1[re];
-              *(--gpr) += fs_err1[ge];
-              *(--bpr) += fs_err1[be];
+                *(--rpr) += fs_err1[re];
+                *(--gpr) += fs_err1[ge];
+                *(--bpr) += fs_err1[be];
 
-              *rnr-- += fs_err2[re];
-              *gnr-- += fs_err2[ge];
-              *bnr-- += fs_err2[be];
+                *rnr-- += fs_err2[re];
+                *gnr-- += fs_err2[ge];
+                *bnr-- += fs_err2[be];
 
-              *rnr += fs_err3[re];
-              *gnr += fs_err3[ge];
-              *bnr += fs_err3[be];
+                *rnr += fs_err3[re];
+                *gnr += fs_err3[ge];
+                *bnr += fs_err3[be];
 
-              *(rnr-1) = fs_err4[re];
-              *(gnr-1) = fs_err4[ge];
-              *(bnr-1) = fs_err4[be];
+                *(rnr-1) = fs_err4[re];
+                *(gnr-1) = fs_err4[ge];
+                *(bnr-1) = fs_err4[be];
             }
-          else
+            else
             {
-              *(++rpr) += fs_err1[re];
-              *(++gpr) += fs_err1[ge];
-              *(++bpr) += fs_err1[be];
+                *(++rpr) += fs_err1[re];
+                *(++gpr) += fs_err1[ge];
+                *(++bpr) += fs_err1[be];
 
-              *rnr++ += fs_err2[re];
-              *gnr++ += fs_err2[ge];
-              *bnr++ += fs_err2[be];
+                *rnr++ += fs_err2[re];
+                *gnr++ += fs_err2[ge];
+                *bnr++ += fs_err2[be];
 
-              *rnr += fs_err3[re];
-              *gnr += fs_err3[ge];
-              *bnr += fs_err3[be];
+                *rnr += fs_err3[re];
+                *gnr += fs_err3[ge];
+                *bnr += fs_err3[be];
 
-              *(rnr+1) = fs_err4[re];
-              *(gnr+1) = fs_err4[ge];
-              *(bnr+1) = fs_err4[be];
+                *(rnr+1) = fs_err4[re];
+                *(gnr+1) = fs_err4[ge];
+                *(bnr+1) = fs_err4[be];
             }
 
-        next_pixel:
+next_pixel:
 
-          dest += step_dest;
-          src += step_src;
+            dest += step_dest;
+            src += step_src;
         }
 
-      tmp = red_n_row;
-      red_n_row = red_p_row;
-      red_p_row = tmp;
+        tmp = red_n_row;
+        red_n_row = red_p_row;
+        red_p_row = tmp;
 
-      tmp = grn_n_row;
-      grn_n_row = grn_p_row;
-      grn_p_row = tmp;
+        tmp = grn_n_row;
+        grn_n_row = grn_p_row;
+        grn_p_row = tmp;
 
-      tmp = blu_n_row;
-      blu_n_row = blu_p_row;
-      blu_p_row = tmp;
+        tmp = blu_n_row;
+        blu_n_row = blu_p_row;
+        blu_p_row = tmp;
 
-      odd_row = !odd_row;
+        odd_row = !odd_row;
 
-      gegl_buffer_set (new_buffer, GEGL_RECTANGLE (0, row, width, 1),
-                       0, NULL, dest_buf,
-                       GEGL_AUTO_ROWSTRIDE);
+        gegl_buffer_set (new_buffer, GEGL_RECTANGLE (0, row, width, 1),
+                         0, NULL, dest_buf,
+                         GEGL_AUTO_ROWSTRIDE);
 
-      if (quantobj->progress && (row % 16 == 0))
-        gimp_progress_set_value (quantobj->progress,
-                                 (gdouble) row / (gdouble) height);
+        if (quantobj->progress && (row % 16 == 0))
+            gimp_progress_set_value (quantobj->progress,
+                                     (gdouble) row / (gdouble) height);
     }
 
-  g_free (error_limiter - 255);
-  g_free (red_n_row);
-  g_free (red_p_row);
-  g_free (grn_n_row);
-  g_free (grn_p_row);
-  g_free (blu_n_row);
-  g_free (blu_p_row);
-  g_free (src_buf);
-  g_free (dest_buf);
+    g_free (error_limiter - 255);
+    g_free (red_n_row);
+    g_free (red_p_row);
+    g_free (grn_n_row);
+    g_free (grn_p_row);
+    g_free (blu_n_row);
+    g_free (blu_p_row);
+    g_free (src_buf);
+    g_free (dest_buf);
 }
 
 
 static void
 delete_median_cut (QuantizeObj *quantobj)
 {
-  g_free (quantobj->histogram);
-  g_free (quantobj);
+    g_free (quantobj->histogram);
+    g_free (quantobj);
 }
 
 
 void
 gimp_image_convert_indexed_set_dither_matrix (const guchar *matrix,
-                                              gint          width,
-                                              gint          height)
+        gint          width,
+        gint          height)
 {
-  gint x;
-  gint y;
+    gint x;
+    gint y;
 
-  /* if matrix is invalid, restore the default matrix */
-  if (matrix == NULL || width == 0 || height == 0)
+    /* if matrix is invalid, restore the default matrix */
+    if (matrix == NULL || width == 0 || height == 0)
     {
-      matrix = (const guchar *) DM_ORIGINAL;
-      width  = DM_WIDTH;
-      height = DM_HEIGHT;
+        matrix = (const guchar *) DM_ORIGINAL;
+        width  = DM_WIDTH;
+        height = DM_HEIGHT;
     }
 
-  g_return_if_fail ((DM_WIDTH % width) == 0);
-  g_return_if_fail ((DM_HEIGHT % height) == 0);
+    g_return_if_fail ((DM_WIDTH % width) == 0);
+    g_return_if_fail ((DM_HEIGHT % height) == 0);
 
-  for (y = 0; y < DM_HEIGHT; y++)
+    for (y = 0; y < DM_HEIGHT; y++)
     {
-      for (x = 0; x < DM_WIDTH; x++)
+        for (x = 0; x < DM_WIDTH; x++)
         {
-          DM[x][y] = matrix[((x % width) * height) + (y % height)];
+            DM[x][y] = matrix[((x % width) * height) + (y % height)];
         }
     }
 }
@@ -4418,150 +4447,150 @@ initialize_median_cut (GimpImageBaseType       type,
                        gboolean                want_dither_alpha,
                        GimpProgress           *progress)
 {
-  QuantizeObj *quantobj;
+    QuantizeObj *quantobj;
 
-  /* Initialize the data structures */
-  quantobj = g_new (QuantizeObj, 1);
+    /* Initialize the data structures */
+    quantobj = g_new (QuantizeObj, 1);
 
-  if (type == GIMP_GRAY && palette_type == GIMP_CONVERT_PALETTE_GENERATE)
-    quantobj->histogram = g_new (ColorFreq, 256);
-  else
-    quantobj->histogram = g_new (ColorFreq,
-                                 HIST_R_ELEMS * HIST_G_ELEMS * HIST_B_ELEMS);
+    if (type == GIMP_GRAY && palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+        quantobj->histogram = g_new (ColorFreq, 256);
+    else
+        quantobj->histogram = g_new (ColorFreq,
+                                     HIST_R_ELEMS * HIST_G_ELEMS * HIST_B_ELEMS);
 
-  quantobj->custom_palette           = custom_palette;
-  quantobj->desired_number_of_colors = num_colors;
-  quantobj->want_dither_alpha        = want_dither_alpha;
-  quantobj->progress                 = progress;
+    quantobj->custom_palette           = custom_palette;
+    quantobj->desired_number_of_colors = num_colors;
+    quantobj->want_dither_alpha        = want_dither_alpha;
+    quantobj->progress                 = progress;
 
-  switch (type)
+    switch (type)
     {
     case GIMP_GRAY:
-      switch (palette_type)
+        switch (palette_type)
         {
         case GIMP_CONVERT_PALETTE_GENERATE:
-          quantobj->first_pass = median_cut_pass1_gray;
-          break;
+            quantobj->first_pass = median_cut_pass1_gray;
+            break;
         case GIMP_CONVERT_PALETTE_WEB:
-          quantobj->first_pass = webpal_pass1;
-          break;
+            quantobj->first_pass = webpal_pass1;
+            break;
         case GIMP_CONVERT_PALETTE_CUSTOM:
-          quantobj->first_pass = custompal_pass1;
-          needs_quantize = TRUE;
-          break;
+            quantobj->first_pass = custompal_pass1;
+            needs_quantize = TRUE;
+            break;
         case GIMP_CONVERT_PALETTE_MONO:
         default:
-          quantobj->first_pass = monopal_pass1;
+            quantobj->first_pass = monopal_pass1;
         }
 
-      if (palette_type == GIMP_CONVERT_PALETTE_WEB ||
-          palette_type == GIMP_CONVERT_PALETTE_CUSTOM)
+        if (palette_type == GIMP_CONVERT_PALETTE_WEB ||
+                palette_type == GIMP_CONVERT_PALETTE_CUSTOM)
         {
-          switch (dither_type)
+            switch (dither_type)
             {
             case GIMP_CONVERT_DITHER_NODESTRUCT:
             default:
-              g_warning("Uh-oh, bad dither type, W1");
+                g_warning("Uh-oh, bad dither type, W1");
             case GIMP_CONVERT_DITHER_NONE:
-              quantobj->second_pass_init = median_cut_pass2_rgb_init;
-              quantobj->second_pass = median_cut_pass2_no_dither_rgb;
-              break;
+                quantobj->second_pass_init = median_cut_pass2_rgb_init;
+                quantobj->second_pass = median_cut_pass2_no_dither_rgb;
+                break;
             case GIMP_CONVERT_DITHER_FS:
-              quantobj->error_freedom = 0;
-              quantobj->second_pass_init = median_cut_pass2_rgb_init;
-              quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
-              break;
+                quantobj->error_freedom = 0;
+                quantobj->second_pass_init = median_cut_pass2_rgb_init;
+                quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
+                break;
             case GIMP_CONVERT_DITHER_FS_LOWBLEED:
-              quantobj->error_freedom = 1;
-              quantobj->second_pass_init = median_cut_pass2_rgb_init;
-              quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
-              break;
+                quantobj->error_freedom = 1;
+                quantobj->second_pass_init = median_cut_pass2_rgb_init;
+                quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
+                break;
             case GIMP_CONVERT_DITHER_FIXED:
-              quantobj->second_pass_init = median_cut_pass2_rgb_init;
-              quantobj->second_pass = median_cut_pass2_fixed_dither_rgb;
-              break;
+                quantobj->second_pass_init = median_cut_pass2_rgb_init;
+                quantobj->second_pass = median_cut_pass2_fixed_dither_rgb;
+                break;
             }
         }
-      else
+        else
         {
-          switch (dither_type)
+            switch (dither_type)
             {
             case GIMP_CONVERT_DITHER_NODESTRUCT:
             default:
-              g_warning("Uh-oh, bad dither type, W2");
+                g_warning("Uh-oh, bad dither type, W2");
             case GIMP_CONVERT_DITHER_NONE:
-              quantobj->second_pass_init = median_cut_pass2_gray_init;
-              quantobj->second_pass = median_cut_pass2_no_dither_gray;
-              break;
+                quantobj->second_pass_init = median_cut_pass2_gray_init;
+                quantobj->second_pass = median_cut_pass2_no_dither_gray;
+                break;
             case GIMP_CONVERT_DITHER_FS:
-              quantobj->error_freedom = 0;
-              quantobj->second_pass_init = median_cut_pass2_gray_init;
-              quantobj->second_pass = median_cut_pass2_fs_dither_gray;
-              break;
+                quantobj->error_freedom = 0;
+                quantobj->second_pass_init = median_cut_pass2_gray_init;
+                quantobj->second_pass = median_cut_pass2_fs_dither_gray;
+                break;
             case GIMP_CONVERT_DITHER_FS_LOWBLEED:
-              quantobj->error_freedom = 1;
-              quantobj->second_pass_init = median_cut_pass2_gray_init;
-              quantobj->second_pass = median_cut_pass2_fs_dither_gray;
-              break;
+                quantobj->error_freedom = 1;
+                quantobj->second_pass_init = median_cut_pass2_gray_init;
+                quantobj->second_pass = median_cut_pass2_fs_dither_gray;
+                break;
             case GIMP_CONVERT_DITHER_FIXED:
-              quantobj->second_pass_init = median_cut_pass2_gray_init;
-              quantobj->second_pass = median_cut_pass2_fixed_dither_gray;
-              break;
+                quantobj->second_pass_init = median_cut_pass2_gray_init;
+                quantobj->second_pass = median_cut_pass2_fixed_dither_gray;
+                break;
             }
         }
-      break;
+        break;
 
     case GIMP_RGB:
-      switch (palette_type)
+        switch (palette_type)
         {
         case GIMP_CONVERT_PALETTE_GENERATE:
-          quantobj->first_pass = median_cut_pass1_rgb;
-          break;
+            quantobj->first_pass = median_cut_pass1_rgb;
+            break;
         case GIMP_CONVERT_PALETTE_WEB:
-          quantobj->first_pass = webpal_pass1;
-          needs_quantize = TRUE;
-          break;
+            quantobj->first_pass = webpal_pass1;
+            needs_quantize = TRUE;
+            break;
         case GIMP_CONVERT_PALETTE_CUSTOM:
-          quantobj->first_pass = custompal_pass1;
-          needs_quantize = TRUE;
-          break;
+            quantobj->first_pass = custompal_pass1;
+            needs_quantize = TRUE;
+            break;
         case GIMP_CONVERT_PALETTE_MONO:
         default:
-          quantobj->first_pass = monopal_pass1;
+            quantobj->first_pass = monopal_pass1;
         }
 
-      switch (dither_type)
+        switch (dither_type)
         {
         case GIMP_CONVERT_DITHER_NONE:
-          quantobj->second_pass_init = median_cut_pass2_rgb_init;
-          quantobj->second_pass = median_cut_pass2_no_dither_rgb;
-          break;
+            quantobj->second_pass_init = median_cut_pass2_rgb_init;
+            quantobj->second_pass = median_cut_pass2_no_dither_rgb;
+            break;
         case GIMP_CONVERT_DITHER_FS:
-          quantobj->error_freedom = 0;
-          quantobj->second_pass_init = median_cut_pass2_rgb_init;
-          quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
-          break;
+            quantobj->error_freedom = 0;
+            quantobj->second_pass_init = median_cut_pass2_rgb_init;
+            quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
+            break;
         case GIMP_CONVERT_DITHER_FS_LOWBLEED:
-          quantobj->error_freedom = 1;
-          quantobj->second_pass_init = median_cut_pass2_rgb_init;
-          quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
-          break;
+            quantobj->error_freedom = 1;
+            quantobj->second_pass_init = median_cut_pass2_rgb_init;
+            quantobj->second_pass = median_cut_pass2_fs_dither_rgb;
+            break;
         case GIMP_CONVERT_DITHER_NODESTRUCT:
-          quantobj->second_pass_init = NULL;
-          quantobj->second_pass = median_cut_pass2_nodestruct_dither_rgb;
-          break;
+            quantobj->second_pass_init = NULL;
+            quantobj->second_pass = median_cut_pass2_nodestruct_dither_rgb;
+            break;
         case GIMP_CONVERT_DITHER_FIXED:
-          quantobj->second_pass_init = median_cut_pass2_rgb_init;
-          quantobj->second_pass = median_cut_pass2_fixed_dither_rgb;
-          break;
+            quantobj->second_pass_init = median_cut_pass2_rgb_init;
+            quantobj->second_pass = median_cut_pass2_fixed_dither_rgb;
+            break;
         }
-      break;
+        break;
 
     default:
-      break;
+        break;
     }
 
-  quantobj->delete_func = delete_median_cut;
+    quantobj->delete_func = delete_median_cut;
 
-  return quantobj;
+    return quantobj;
 }

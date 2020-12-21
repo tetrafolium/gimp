@@ -28,13 +28,13 @@ G_DECLARE_INTERFACE (GimpWaitable, gimp_waitable, GIMP, WAITABLE, GObject)
 
 struct _GimpWaitableInterface
 {
-  GTypeInterface base_iface;
+    GTypeInterface base_iface;
 
-  /*  virtual functions  */
-  void       (* wait)       (GimpWaitable *waitable);
-  gboolean   (* try_wait)   (GimpWaitable *waitable);
-  gboolean   (* wait_until) (GimpWaitable *waitable,
-                             gint64        end_time);
+    /*  virtual functions  */
+    void       (* wait)       (GimpWaitable *waitable);
+    gboolean   (* try_wait)   (GimpWaitable *waitable);
+    gboolean   (* wait_until) (GimpWaitable *waitable,
+                               gint64        end_time);
 };
 
 

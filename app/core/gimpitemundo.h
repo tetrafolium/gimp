@@ -35,14 +35,14 @@ typedef struct _GimpItemUndoClass GimpItemUndoClass;
 
 struct _GimpItemUndo
 {
-  GimpUndo  parent_instance;
+    GimpUndo  parent_instance;
 
-  GimpItem *item;  /* the item this undo is for */
+    GimpItem *item;  /* the item this undo is for */
 };
 
 struct _GimpItemUndoClass
 {
-  GimpUndoClass  parent_class;
+    GimpUndoClass  parent_class;
 };
 
 

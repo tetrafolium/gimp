@@ -30,7 +30,7 @@ extern gint                        n_dialogs_dockable_actions;
 
 void       dialogs_actions_setup          (GimpActionGroup *group);
 void       dialogs_actions_update         (GimpActionGroup *group,
-                                           gpointer         data);
+        gpointer         data);
 
 gboolean   dialogs_actions_toolbox_exists (Gimp            *gimp);
 

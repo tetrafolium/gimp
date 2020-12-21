@@ -34,10 +34,10 @@
 
 
 static gboolean gimp_rc_serialize_properties_diff (GimpConfig       *config,
-                                                   GimpConfig       *compare,
-                                                   GimpConfigWriter *writer);
+        GimpConfig       *compare,
+        GimpConfigWriter *writer);
 static gboolean gimp_rc_serialize_unknown_tokens  (GimpConfig       *config,
-                                                   GimpConfigWriter *writer);
+        GimpConfigWriter *writer);
 
 
 gboolean
@@ -45,18 +45,18 @@ gimp_rc_serialize (GimpConfig       *config,
                    GimpConfigWriter *writer,
                    gpointer          data)
 {
-  if (data && GIMP_IS_RC (data))
+    if (data && GIMP_IS_RC (data))
     {
-      if (! gimp_rc_serialize_properties_diff (config, data, writer))
-        return FALSE;
+        if (! gimp_rc_serialize_properties_diff (config, data, writer))
+            return FALSE;
     }
-  else
+    else
     {
-      if (! gimp_config_serialize_properties (config, writer))
-        return FALSE;
+        if (! gimp_config_serialize_properties (config, writer))
+            return FALSE;
     }
 
-  return gimp_rc_serialize_unknown_tokens (config, writer);
+    return gimp_rc_serialize_unknown_tokens (config, writer);
 }
 
 static gboolean
@@ -64,35 +64,35 @@ gimp_rc_serialize_properties_diff (GimpConfig       *config,
                                    GimpConfig       *compare,
                                    GimpConfigWriter *writer)
 {
-  GList    *diff;
-  GList    *list;
-  gboolean  retval = TRUE;
+    GList    *diff;
+    GList    *list;
+    gboolean  retval = TRUE;
 
-  g_return_val_if_fail (G_IS_OBJECT (config), FALSE);
-  g_return_val_if_fail (G_IS_OBJECT (compare), FALSE);
-  g_return_val_if_fail (G_TYPE_FROM_INSTANCE (config) ==
-                        G_TYPE_FROM_INSTANCE (compare), FALSE);
+    g_return_val_if_fail (G_IS_OBJECT (config), FALSE);
+    g_return_val_if_fail (G_IS_OBJECT (compare), FALSE);
+    g_return_val_if_fail (G_TYPE_FROM_INSTANCE (config) ==
+                          G_TYPE_FROM_INSTANCE (compare), FALSE);
 
-  diff = gimp_config_diff (G_OBJECT (config),
-                           G_OBJECT (compare), GIMP_CONFIG_PARAM_SERIALIZE);
+    diff = gimp_config_diff (G_OBJECT (config),
+                             G_OBJECT (compare), GIMP_CONFIG_PARAM_SERIALIZE);
 
-  for (list = diff; list; list = g_list_next (list))
+    for (list = diff; list; list = g_list_next (list))
     {
-      GParamSpec *prop_spec = list->data;
+        GParamSpec *prop_spec = list->data;
 
-      if (! (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE))
-        continue;
+        if (! (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE))
+            continue;
 
-      if (! gimp_config_serialize_property (config, prop_spec, writer))
+        if (! gimp_config_serialize_property (config, prop_spec, writer))
         {
-          retval = FALSE;
-          break;
+            retval = FALSE;
+            break;
         }
     }
 
-  g_list_free (diff);
+    g_list_free (diff);
 
-  return retval;
+    return retval;
 }
 
 static void
@@ -100,21 +100,21 @@ serialize_unknown_token (const gchar *key,
                          const gchar *value,
                          gpointer     data)
 {
-  GimpConfigWriter *writer = data;
+    GimpConfigWriter *writer = data;
 
-  gimp_config_writer_open (writer, key);
-  gimp_config_writer_string (writer, value);
-  gimp_config_writer_close (writer);
+    gimp_config_writer_open (writer, key);
+    gimp_config_writer_string (writer, value);
+    gimp_config_writer_close (writer);
 }
 
 static gboolean
 gimp_rc_serialize_unknown_tokens (GimpConfig       *config,
                                   GimpConfigWriter *writer)
 {
-  g_return_val_if_fail (G_IS_OBJECT (config), FALSE);
+    g_return_val_if_fail (G_IS_OBJECT (config), FALSE);
 
-  gimp_config_writer_linefeed (writer);
-  gimp_rc_foreach_unknown_token (config, serialize_unknown_token, writer);
+    gimp_config_writer_linefeed (writer);
+    gimp_rc_foreach_unknown_token (config, serialize_unknown_token, writer);
 
-  return TRUE;
+    return TRUE;
 }

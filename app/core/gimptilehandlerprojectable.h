@@ -45,14 +45,14 @@ typedef struct _GimpTileHandlerProjectableClass GimpTileHandlerProjectableClass;
 
 struct _GimpTileHandlerProjectable
 {
-  GimpTileHandlerValidate  parent_instance;
+    GimpTileHandlerValidate  parent_instance;
 
-  GimpProjectable         *projectable;
+    GimpProjectable         *projectable;
 };
 
 struct _GimpTileHandlerProjectableClass
 {
-  GimpTileHandlerValidateClass  parent_class;
+    GimpTileHandlerValidateClass  parent_class;
 };
 
 

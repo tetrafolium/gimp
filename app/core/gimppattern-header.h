@@ -31,12 +31,12 @@ typedef struct _GimpPatternHeader GimpPatternHeader;
 
 struct _GimpPatternHeader
 {
-  guint32   header_size;  /*  = sizeof (GimpPatternHeader) + pattern name  */
-  guint32   version;      /*  pattern file version #  */
-  guint32   width;        /*  width of pattern  */
-  guint32   height;       /*  height of pattern  */
-  guint32   bytes;        /*  depth of pattern in bytes  */
-  guint32   magic_number; /*  GIMP pattern magic number  */
+    guint32   header_size;  /*  = sizeof (GimpPatternHeader) + pattern name  */
+    guint32   version;      /*  pattern file version #  */
+    guint32   width;        /*  width of pattern  */
+    guint32   height;       /*  height of pattern  */
+    guint32   bytes;        /*  depth of pattern in bytes  */
+    guint32   magic_number; /*  GIMP pattern magic number  */
 };
 
 /*  In a pattern file, next comes the pattern name, null-terminated.

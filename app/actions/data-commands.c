@@ -59,37 +59,37 @@ data_open_as_image_cmd_callback (GimpAction *action,
                                  GVariant   *value,
                                  gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  GimpContext         *context;
-  GimpData            *data;
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpContext         *context;
+    GimpData            *data;
 
-  context =
-    gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+    context =
+        gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-  data = (GimpData *)
-    gimp_context_get_by_type (context,
-                              gimp_data_factory_view_get_children_type (view));
+    data = (GimpData *)
+           gimp_context_get_by_type (context,
+                                     gimp_data_factory_view_get_children_type (view));
 
-  if (data && gimp_data_get_file (data))
+    if (data && gimp_data_get_file (data))
     {
-      GFile             *file   = gimp_data_get_file (data);
-      GtkWidget         *widget = GTK_WIDGET (view);
-      GimpImage         *image;
-      GimpPDBStatusType  status;
-      GError            *error = NULL;
+        GFile             *file   = gimp_data_get_file (data);
+        GtkWidget         *widget = GTK_WIDGET (view);
+        GimpImage         *image;
+        GimpPDBStatusType  status;
+        GError            *error = NULL;
 
-      image = file_open_with_display (context->gimp, context, NULL,
-                                      file, FALSE,
-                                      G_OBJECT (gimp_widget_get_monitor (widget)),
-                                      &status, &error);
+        image = file_open_with_display (context->gimp, context, NULL,
+                                        file, FALSE,
+                                        G_OBJECT (gimp_widget_get_monitor (widget)),
+                                        &status, &error);
 
-      if (! image && status != GIMP_PDB_CANCEL)
+        if (! image && status != GIMP_PDB_CANCEL)
         {
-          gimp_message (context->gimp, G_OBJECT (view),
-                        GIMP_MESSAGE_ERROR,
-                        _("Opening '%s' failed:\n\n%s"),
-                        gimp_file_get_utf8_name (file), error->message);
-          g_clear_error (&error);
+            gimp_message (context->gimp, G_OBJECT (view),
+                          GIMP_MESSAGE_ERROR,
+                          _("Opening '%s' failed:\n\n%s"),
+                          gimp_file_get_utf8_name (file), error->message);
+            g_clear_error (&error);
         }
     }
 }
@@ -99,28 +99,28 @@ data_new_cmd_callback (GimpAction *action,
                        GVariant   *value,
                        gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
 
-  if (gimp_data_factory_view_has_data_new_func (view))
+    if (gimp_data_factory_view_has_data_new_func (view))
     {
-      GimpDataFactory *factory;
-      GimpContext     *context;
-      GimpData        *data;
+        GimpDataFactory *factory;
+        GimpContext     *context;
+        GimpData        *data;
 
-      factory = gimp_data_factory_view_get_data_factory (view);
+        factory = gimp_data_factory_view_get_data_factory (view);
 
-      context =
-        gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+        context =
+            gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-      data = gimp_data_factory_data_new (factory, context, _("Untitled"));
+        data = gimp_data_factory_data_new (factory, context, _("Untitled"));
 
-      if (data)
+        if (data)
         {
-          gimp_context_set_by_type (context,
-                                    gimp_data_factory_view_get_children_type (view),
-                                    GIMP_OBJECT (data));
+            gimp_context_set_by_type (context,
+                                      gimp_data_factory_view_get_children_type (view),
+                                      GIMP_OBJECT (data));
 
-          gtk_button_clicked (GTK_BUTTON (gimp_data_factory_view_get_edit_button (view)));
+            gtk_button_clicked (GTK_BUTTON (gimp_data_factory_view_get_edit_button (view)));
         }
     }
 }
@@ -130,29 +130,29 @@ data_duplicate_cmd_callback (GimpAction *action,
                              GVariant   *value,
                              gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  GimpContext         *context;
-  GimpData            *data;
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpContext         *context;
+    GimpData            *data;
 
-  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+    context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-  data = (GimpData *)
-    gimp_context_get_by_type (context,
-                              gimp_data_factory_view_get_children_type (view));
+    data = (GimpData *)
+           gimp_context_get_by_type (context,
+                                     gimp_data_factory_view_get_children_type (view));
 
-  if (data && gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
+    if (data && gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
     {
-      GimpData *new_data;
+        GimpData *new_data;
 
-      new_data = gimp_data_factory_data_duplicate (gimp_data_factory_view_get_data_factory (view), data);
+        new_data = gimp_data_factory_data_duplicate (gimp_data_factory_view_get_data_factory (view), data);
 
-      if (new_data)
+        if (new_data)
         {
-          gimp_context_set_by_type (context,
-                                    gimp_data_factory_view_get_children_type (view),
-                                    GIMP_OBJECT (new_data));
+            gimp_context_set_by_type (context,
+                                      gimp_data_factory_view_get_children_type (view),
+                                      GIMP_OBJECT (new_data));
 
-          gtk_button_clicked (GTK_BUTTON (gimp_data_factory_view_get_edit_button (view)));
+            gtk_button_clicked (GTK_BUTTON (gimp_data_factory_view_get_edit_button (view)));
         }
     }
 }
@@ -162,26 +162,26 @@ data_copy_location_cmd_callback (GimpAction *action,
                                  GVariant   *value,
                                  gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  GimpContext         *context;
-  GimpData            *data;
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpContext         *context;
+    GimpData            *data;
 
-  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+    context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-  data = (GimpData *)
-    gimp_context_get_by_type (context,
-                              gimp_data_factory_view_get_children_type (view));
+    data = (GimpData *)
+           gimp_context_get_by_type (context,
+                                     gimp_data_factory_view_get_children_type (view));
 
-  if (data)
+    if (data)
     {
-      GFile *file = gimp_data_get_file (data);
+        GFile *file = gimp_data_get_file (data);
 
-      if (file)
+        if (file)
         {
-          gchar *uri = g_file_get_uri (file);
+            gchar *uri = g_file_get_uri (file);
 
-          gimp_clipboard_set_text (context->gimp, uri);
-          g_free (uri);
+            gimp_clipboard_set_text (context->gimp, uri);
+            g_free (uri);
         }
     }
 }
@@ -191,31 +191,31 @@ data_show_in_file_manager_cmd_callback (GimpAction *action,
                                         GVariant   *value,
                                         gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  GimpContext         *context;
-  GimpData            *data;
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpContext         *context;
+    GimpData            *data;
 
-  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+    context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-  data = (GimpData *)
-    gimp_context_get_by_type (context,
-                              gimp_data_factory_view_get_children_type (view));
+    data = (GimpData *)
+           gimp_context_get_by_type (context,
+                                     gimp_data_factory_view_get_children_type (view));
 
-  if (data)
+    if (data)
     {
-      GFile *file = gimp_data_get_file (data);
+        GFile *file = gimp_data_get_file (data);
 
-      if (file)
+        if (file)
         {
-          GError *error = NULL;
+            GError *error = NULL;
 
-          if (! gimp_file_show_in_file_manager (file, &error))
+            if (! gimp_file_show_in_file_manager (file, &error))
             {
-              gimp_message (context->gimp, G_OBJECT (view),
-                            GIMP_MESSAGE_ERROR,
-                            _("Can't show file in file manager: %s"),
-                            error->message);
-              g_clear_error (&error);
+                gimp_message (context->gimp, G_OBJECT (view),
+                              GIMP_MESSAGE_ERROR,
+                              _("Can't show file in file manager: %s"),
+                              error->message);
+                g_clear_error (&error);
             }
         }
     }
@@ -226,29 +226,29 @@ data_delete_cmd_callback (GimpAction *action,
                           GVariant   *value,
                           gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  GimpContext         *context;
-  GimpData            *data;
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpContext         *context;
+    GimpData            *data;
 
-  context =
-    gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+    context =
+        gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-  data = (GimpData *)
-    gimp_context_get_by_type (context,
-                              gimp_data_factory_view_get_children_type (view));
+    data = (GimpData *)
+           gimp_context_get_by_type (context,
+                                     gimp_data_factory_view_get_children_type (view));
 
-  if (data                          &&
-      gimp_data_is_deletable (data) &&
-      gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
+    if (data                          &&
+            gimp_data_is_deletable (data) &&
+            gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
     {
-      GimpDataFactory *factory;
-      GtkWidget       *dialog;
+        GimpDataFactory *factory;
+        GtkWidget       *dialog;
 
-      factory = gimp_data_factory_view_get_data_factory (view);
+        factory = gimp_data_factory_view_get_data_factory (view);
 
-      dialog = data_delete_dialog_new (factory, data, context,
-                                       GTK_WIDGET (view));
-      gtk_widget_show (dialog);
+        dialog = data_delete_dialog_new (factory, data, context,
+                                         GTK_WIDGET (view));
+        gtk_widget_show (dialog);
     }
 }
 
@@ -257,14 +257,14 @@ data_refresh_cmd_callback (GimpAction *action,
                            GVariant   *value,
                            gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  Gimp                *gimp;
-  return_if_no_gimp (gimp, user_data);
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    Gimp                *gimp;
+    return_if_no_gimp (gimp, user_data);
 
-  gimp_set_busy (gimp);
-  gimp_data_factory_data_refresh (gimp_data_factory_view_get_data_factory (view),
-                                  action_data_get_context (user_data));
-  gimp_unset_busy (gimp);
+    gimp_set_busy (gimp);
+    gimp_data_factory_data_refresh (gimp_data_factory_view_get_data_factory (view),
+                                    action_data_get_context (user_data));
+    gimp_unset_busy (gimp);
 }
 
 void
@@ -272,30 +272,30 @@ data_edit_cmd_callback (GimpAction *action,
                         GVariant   *value,
                         gpointer    user_data)
 {
-  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
-  GimpContext         *context;
-  GimpData            *data;
+    GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+    GimpContext         *context;
+    GimpData            *data;
 
-  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+    context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
 
-  data = (GimpData *)
-    gimp_context_get_by_type (context,
-                              gimp_data_factory_view_get_children_type (view));
+    data = (GimpData *)
+           gimp_context_get_by_type (context,
+                                     gimp_data_factory_view_get_children_type (view));
 
-  if (data && gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
+    if (data && gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
     {
-      GdkMonitor *monitor = gimp_widget_get_monitor (GTK_WIDGET (view));
-      GtkWidget  *dockable;
+        GdkMonitor *monitor = gimp_widget_get_monitor (GTK_WIDGET (view));
+        GtkWidget  *dockable;
 
-      dockable =
-        gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
-                                                   context->gimp,
-                                                   gimp_dialog_factory_get_singleton (),
-                                                   monitor,
-                                                   g_variant_get_string (value,
-                                                                         NULL));
+        dockable =
+            gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
+                    context->gimp,
+                    gimp_dialog_factory_get_singleton (),
+                    monitor,
+                    g_variant_get_string (value,
+                                          NULL));
 
-      gimp_data_editor_set_data (GIMP_DATA_EDITOR (gtk_bin_get_child (GTK_BIN (dockable))),
-                                 data);
+        gimp_data_editor_set_data (GIMP_DATA_EDITOR (gtk_bin_get_child (GTK_BIN (dockable))),
+                                   data);
     }
 }

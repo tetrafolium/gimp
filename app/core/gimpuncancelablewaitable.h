@@ -35,14 +35,14 @@ typedef struct _GimpUncancelableWaitableClass   GimpUncancelableWaitableClass;
 
 struct _GimpUncancelableWaitable
 {
-  GObject       parent_instance;
+    GObject       parent_instance;
 
-  GimpWaitable *waitable;
+    GimpWaitable *waitable;
 };
 
 struct _GimpUncancelableWaitableClass
 {
-  GObjectClass  parent_class;
+    GObjectClass  parent_class;
 };
 
 

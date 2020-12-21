@@ -31,8 +31,8 @@
 static void   gimp_guide_undo_constructed  (GObject            *object);
 
 static void   gimp_guide_undo_pop          (GimpUndo            *undo,
-                                            GimpUndoMode         undo_mode,
-                                            GimpUndoAccumulator *accum);
+        GimpUndoMode         undo_mode,
+        GimpUndoAccumulator *accum);
 
 
 G_DEFINE_TYPE (GimpGuideUndo, gimp_guide_undo,
@@ -44,12 +44,12 @@ G_DEFINE_TYPE (GimpGuideUndo, gimp_guide_undo,
 static void
 gimp_guide_undo_class_init (GimpGuideUndoClass *klass)
 {
-  GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-  GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
+    GObjectClass  *object_class = G_OBJECT_CLASS (klass);
+    GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructed = gimp_guide_undo_constructed;
+    object_class->constructed = gimp_guide_undo_constructed;
 
-  undo_class->pop           = gimp_guide_undo_pop;
+    undo_class->pop           = gimp_guide_undo_pop;
 }
 
 static void
@@ -60,17 +60,17 @@ gimp_guide_undo_init (GimpGuideUndo *undo)
 static void
 gimp_guide_undo_constructed (GObject *object)
 {
-  GimpGuideUndo *guide_undo = GIMP_GUIDE_UNDO (object);
-  GimpGuide     *guide;
+    GimpGuideUndo *guide_undo = GIMP_GUIDE_UNDO (object);
+    GimpGuide     *guide;
 
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  guide = GIMP_GUIDE (GIMP_AUX_ITEM_UNDO (object)->aux_item);
+    guide = GIMP_GUIDE (GIMP_AUX_ITEM_UNDO (object)->aux_item);
 
-  gimp_assert (GIMP_IS_GUIDE (guide));
+    gimp_assert (GIMP_IS_GUIDE (guide));
 
-  guide_undo->orientation = gimp_guide_get_orientation (guide);
-  guide_undo->position    = gimp_guide_get_position (guide);
+    guide_undo->orientation = gimp_guide_get_orientation (guide);
+    guide_undo->position    = gimp_guide_get_position (guide);
 }
 
 static void
@@ -78,39 +78,39 @@ gimp_guide_undo_pop (GimpUndo              *undo,
                      GimpUndoMode           undo_mode,
                      GimpUndoAccumulator   *accum)
 {
-  GimpGuideUndo       *guide_undo = GIMP_GUIDE_UNDO (undo);
-  GimpGuide           *guide;
-  GimpOrientationType  orientation;
-  gint                 position;
-  gboolean             moved = FALSE;
+    GimpGuideUndo       *guide_undo = GIMP_GUIDE_UNDO (undo);
+    GimpGuide           *guide;
+    GimpOrientationType  orientation;
+    gint                 position;
+    gboolean             moved = FALSE;
 
-  GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
+    GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
-  guide = GIMP_GUIDE (GIMP_AUX_ITEM_UNDO (undo)->aux_item);
+    guide = GIMP_GUIDE (GIMP_AUX_ITEM_UNDO (undo)->aux_item);
 
-  orientation = gimp_guide_get_orientation (guide);
-  position    = gimp_guide_get_position (guide);
+    orientation = gimp_guide_get_orientation (guide);
+    position    = gimp_guide_get_position (guide);
 
-  if (position == GIMP_GUIDE_POSITION_UNDEFINED)
+    if (position == GIMP_GUIDE_POSITION_UNDEFINED)
     {
-      gimp_image_add_guide (undo->image, guide, guide_undo->position);
+        gimp_image_add_guide (undo->image, guide, guide_undo->position);
     }
-  else if (guide_undo->position == GIMP_GUIDE_POSITION_UNDEFINED)
+    else if (guide_undo->position == GIMP_GUIDE_POSITION_UNDEFINED)
     {
-      gimp_image_remove_guide (undo->image, guide, FALSE);
+        gimp_image_remove_guide (undo->image, guide, FALSE);
     }
-  else
+    else
     {
-      gimp_guide_set_position (guide, guide_undo->position);
+        gimp_guide_set_position (guide, guide_undo->position);
 
-      moved = TRUE;
+        moved = TRUE;
     }
 
-  gimp_guide_set_orientation (guide, guide_undo->orientation);
+    gimp_guide_set_orientation (guide, guide_undo->orientation);
 
-  if (moved || guide_undo->orientation != orientation)
-    gimp_image_guide_moved (undo->image, guide);
+    if (moved || guide_undo->orientation != orientation)
+        gimp_image_guide_moved (undo->image, guide);
 
-  guide_undo->position    = position;
-  guide_undo->orientation = orientation;
+    guide_undo->position    = position;
+    guide_undo->orientation = orientation;
 }

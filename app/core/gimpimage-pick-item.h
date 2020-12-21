@@ -20,38 +20,38 @@
 
 
 GimpLayer       * gimp_image_pick_layer           (GimpImage *image,
-                                                   gint       x,
-                                                   gint       y,
-                                                   GimpLayer *previously_picked);
+        gint       x,
+        gint       y,
+        GimpLayer *previously_picked);
 GimpLayer       * gimp_image_pick_layer_by_bounds (GimpImage *image,
-                                                   gint       x,
-                                                   gint       y);
+        gint       x,
+        gint       y);
 GimpTextLayer   * gimp_image_pick_text_layer      (GimpImage *image,
-                                                   gint       x,
-                                                   gint       y);
+        gint       x,
+        gint       y);
 
 GimpVectors     * gimp_image_pick_vectors         (GimpImage *image,
-                                                   gdouble    x,
-                                                   gdouble    y,
-                                                   gdouble    epsilon_x,
-                                                   gdouble    epsilon_y);
+        gdouble    x,
+        gdouble    y,
+        gdouble    epsilon_x,
+        gdouble    epsilon_y);
 
 GimpGuide       * gimp_image_pick_guide           (GimpImage *image,
-                                                   gdouble    x,
-                                                   gdouble    y,
-                                                   gdouble    epsilon_x,
-                                                   gdouble    epsilon_y);
+        gdouble    x,
+        gdouble    y,
+        gdouble    epsilon_x,
+        gdouble    epsilon_y);
 GList           * gimp_image_pick_guides          (GimpImage *image,
-                                                   gdouble    x,
-                                                   gdouble    y,
-                                                   gdouble    epsilon_x,
-                                                   gdouble    epsilon_y);
+        gdouble    x,
+        gdouble    y,
+        gdouble    epsilon_x,
+        gdouble    epsilon_y);
 
 GimpSamplePoint * gimp_image_pick_sample_point    (GimpImage *image,
-                                                   gdouble    x,
-                                                   gdouble    y,
-                                                   gdouble    epsilon_x,
-                                                   gdouble    epsilon_y);
+        gdouble    x,
+        gdouble    y,
+        gdouble    epsilon_x,
+        gdouble    epsilon_y);
 
 
 #endif /* __GIMP_IMAGE_PICK_ITEM_H__ */

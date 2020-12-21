@@ -35,31 +35,31 @@ gimp_config_connect_notify (GObject    *src,
                             GParamSpec *param_spec,
                             GObject    *dest)
 {
-  if (param_spec->flags & G_PARAM_READABLE)
+    if (param_spec->flags & G_PARAM_READABLE)
     {
-      GParamSpec *dest_spec;
+        GParamSpec *dest_spec;
 
-      dest_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (dest),
-                                                param_spec->name);
+        dest_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (dest),
+                    param_spec->name);
 
-      if (dest_spec                                         &&
-          (dest_spec->value_type == param_spec->value_type) &&
-          (dest_spec->flags & G_PARAM_WRITABLE)             &&
-          (dest_spec->flags & G_PARAM_CONSTRUCT_ONLY) == 0)
+        if (dest_spec                                         &&
+                (dest_spec->value_type == param_spec->value_type) &&
+                (dest_spec->flags & G_PARAM_WRITABLE)             &&
+                (dest_spec->flags & G_PARAM_CONSTRUCT_ONLY) == 0)
         {
-          GValue value = G_VALUE_INIT;
+            GValue value = G_VALUE_INIT;
 
-          g_value_init (&value, param_spec->value_type);
+            g_value_init (&value, param_spec->value_type);
 
-          g_object_get_property (src,  param_spec->name, &value);
+            g_object_get_property (src,  param_spec->name, &value);
 
-          g_signal_handlers_block_by_func (dest,
-                                           gimp_config_connect_notify, src);
-          g_object_set_property (dest, param_spec->name, &value);
-          g_signal_handlers_unblock_by_func (dest,
+            g_signal_handlers_block_by_func (dest,
                                              gimp_config_connect_notify, src);
+            g_object_set_property (dest, param_spec->name, &value);
+            g_signal_handlers_unblock_by_func (dest,
+                                               gimp_config_connect_notify, src);
 
-          g_value_unset (&value);
+            g_value_unset (&value);
         }
     }
 }
@@ -83,25 +83,25 @@ gimp_config_connect (GObject     *a,
                      GObject     *b,
                      const gchar *property_name)
 {
-  gchar *signal_name;
+    gchar *signal_name;
 
-  g_return_if_fail (a != b);
-  g_return_if_fail (G_IS_OBJECT (a) && G_IS_OBJECT (b));
+    g_return_if_fail (a != b);
+    g_return_if_fail (G_IS_OBJECT (a) && G_IS_OBJECT (b));
 
-  if (property_name)
-    signal_name = g_strconcat ("notify::", property_name, NULL);
-  else
-    signal_name = "notify";
+    if (property_name)
+        signal_name = g_strconcat ("notify::", property_name, NULL);
+    else
+        signal_name = "notify";
 
-  g_signal_connect_object (a, signal_name,
-                           G_CALLBACK (gimp_config_connect_notify),
-                           b, 0);
-  g_signal_connect_object (b, signal_name,
-                           G_CALLBACK (gimp_config_connect_notify),
-                           a, 0);
+    g_signal_connect_object (a, signal_name,
+                             G_CALLBACK (gimp_config_connect_notify),
+                             b, 0);
+    g_signal_connect_object (b, signal_name,
+                             G_CALLBACK (gimp_config_connect_notify),
+                             a, 0);
 
-  if (property_name)
-    g_free (signal_name);
+    if (property_name)
+        g_free (signal_name);
 }
 
 static void
@@ -109,38 +109,38 @@ gimp_config_connect_full_notify (GObject    *src,
                                  GParamSpec *param_spec,
                                  GObject    *dest)
 {
-  if (param_spec->flags & G_PARAM_READABLE)
+    if (param_spec->flags & G_PARAM_READABLE)
     {
-      gchar      *attach_key;
-      gchar      *dest_prop_name;
-      GParamSpec *dest_spec = NULL;
+        gchar      *attach_key;
+        gchar      *dest_prop_name;
+        GParamSpec *dest_spec = NULL;
 
-      attach_key = g_strdup_printf ("%p-%s", dest, param_spec->name);
-      dest_prop_name = g_object_get_data (src, attach_key);
-      g_free (attach_key);
+        attach_key = g_strdup_printf ("%p-%s", dest, param_spec->name);
+        dest_prop_name = g_object_get_data (src, attach_key);
+        g_free (attach_key);
 
-      if (dest_prop_name)
-        dest_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (dest),
-                                                  dest_prop_name);
+        if (dest_prop_name)
+            dest_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (dest),
+                        dest_prop_name);
 
-      if (dest_spec                                         &&
-          (dest_spec->value_type == param_spec->value_type) &&
-          (dest_spec->flags & G_PARAM_WRITABLE)             &&
-          (dest_spec->flags & G_PARAM_CONSTRUCT_ONLY) == 0)
+        if (dest_spec                                         &&
+                (dest_spec->value_type == param_spec->value_type) &&
+                (dest_spec->flags & G_PARAM_WRITABLE)             &&
+                (dest_spec->flags & G_PARAM_CONSTRUCT_ONLY) == 0)
         {
-          GValue value = G_VALUE_INIT;
+            GValue value = G_VALUE_INIT;
 
-          g_value_init (&value, param_spec->value_type);
+            g_value_init (&value, param_spec->value_type);
 
-          g_object_get_property (src,  param_spec->name, &value);
+            g_object_get_property (src,  param_spec->name, &value);
 
-          g_signal_handlers_block_by_func (dest,
-                                           gimp_config_connect_full_notify, src);
-          g_object_set_property (dest, dest_prop_name, &value);
-          g_signal_handlers_unblock_by_func (dest,
+            g_signal_handlers_block_by_func (dest,
                                              gimp_config_connect_full_notify, src);
+            g_object_set_property (dest, dest_prop_name, &value);
+            g_signal_handlers_unblock_by_func (dest,
+                                               gimp_config_connect_full_notify, src);
 
-          g_value_unset (&value);
+            g_value_unset (&value);
         }
     }
 }
@@ -166,37 +166,37 @@ gimp_config_connect_full (GObject     *a,
                           const gchar *property_name_a,
                           const gchar *property_name_b)
 {
-  gchar *signal_name;
-  gchar *attach_key;
+    gchar *signal_name;
+    gchar *attach_key;
 
-  g_return_if_fail (a != b);
-  g_return_if_fail (G_IS_OBJECT (a) && G_IS_OBJECT (b));
-  g_return_if_fail (property_name_a != NULL);
-  g_return_if_fail (property_name_b != NULL);
+    g_return_if_fail (a != b);
+    g_return_if_fail (G_IS_OBJECT (a) && G_IS_OBJECT (b));
+    g_return_if_fail (property_name_a != NULL);
+    g_return_if_fail (property_name_b != NULL);
 
-  signal_name = g_strconcat ("notify::", property_name_a, NULL);
-  attach_key  = g_strdup_printf ("%p-%s", b, property_name_a);
+    signal_name = g_strconcat ("notify::", property_name_a, NULL);
+    attach_key  = g_strdup_printf ("%p-%s", b, property_name_a);
 
-  g_signal_connect_object (a, signal_name,
-                           G_CALLBACK (gimp_config_connect_full_notify),
-                           b, 0);
-  g_object_set_data_full (a, attach_key, g_strdup (property_name_b),
-                          (GDestroyNotify) g_free);
+    g_signal_connect_object (a, signal_name,
+                             G_CALLBACK (gimp_config_connect_full_notify),
+                             b, 0);
+    g_object_set_data_full (a, attach_key, g_strdup (property_name_b),
+                            (GDestroyNotify) g_free);
 
-  g_free (signal_name);
-  g_free (attach_key);
+    g_free (signal_name);
+    g_free (attach_key);
 
-  signal_name = g_strconcat ("notify::", property_name_b, NULL);
-  attach_key  = g_strdup_printf ("%p-%s", a, property_name_b);
+    signal_name = g_strconcat ("notify::", property_name_b, NULL);
+    attach_key  = g_strdup_printf ("%p-%s", a, property_name_b);
 
-  g_signal_connect_object (b, signal_name,
-                           G_CALLBACK (gimp_config_connect_full_notify),
-                           a, 0);
-  g_object_set_data_full (b, attach_key, g_strdup (property_name_a),
-                          (GDestroyNotify) g_free);
+    g_signal_connect_object (b, signal_name,
+                             G_CALLBACK (gimp_config_connect_full_notify),
+                             a, 0);
+    g_object_set_data_full (b, attach_key, g_strdup (property_name_a),
+                            (GDestroyNotify) g_free);
 
-  g_free (signal_name);
-  g_free (attach_key);
+    g_free (signal_name);
+    g_free (attach_key);
 }
 
 /**
@@ -211,13 +211,13 @@ void
 gimp_config_disconnect (GObject *a,
                         GObject *b)
 {
-  g_return_if_fail (G_IS_OBJECT (a) && G_IS_OBJECT (b));
+    g_return_if_fail (G_IS_OBJECT (a) && G_IS_OBJECT (b));
 
-  g_signal_handlers_disconnect_by_func (b,
-                                        G_CALLBACK (gimp_config_connect_notify),
-                                        a);
-  g_signal_handlers_disconnect_by_func (a,
-                                        G_CALLBACK (gimp_config_connect_notify),
-                                        b);
+    g_signal_handlers_disconnect_by_func (b,
+                                          G_CALLBACK (gimp_config_connect_notify),
+                                          a);
+    g_signal_handlers_disconnect_by_func (a,
+                                          G_CALLBACK (gimp_config_connect_notify),
+                                          b);
 }
 

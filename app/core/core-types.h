@@ -258,43 +258,43 @@ typedef void * GimpBezierDesc;
 /*  functions  */
 
 typedef void     (* GimpInitStatusFunc)    (const gchar *text1,
-                                            const gchar *text2,
-                                            gdouble      percentage);
+        const gchar *text2,
+        gdouble      percentage);
 
 typedef gboolean (* GimpObjectFilterFunc)  (GimpObject  *object,
-                                            gpointer     user_data);
+        gpointer     user_data);
 
 typedef gint64   (* GimpMemsizeFunc)       (gpointer     instance,
-                                            gint64      *gui_size);
+        gint64      *gui_size);
 
 typedef void     (* GimpRunAsyncFunc)      (GimpAsync   *async,
-                                            gpointer     user_data);
+        gpointer     user_data);
 
 
 /*  structs  */
 
 struct _GimpCoords
 {
-  /* axes as reported by the device */
-  gdouble  x;
-  gdouble  y;
-  gdouble  pressure;
-  gdouble  xtilt;
-  gdouble  ytilt;
-  gdouble  wheel;
-  gdouble  distance;
-  gdouble  rotation;
-  gdouble  slider;
+    /* axes as reported by the device */
+    gdouble  x;
+    gdouble  y;
+    gdouble  pressure;
+    gdouble  xtilt;
+    gdouble  ytilt;
+    gdouble  wheel;
+    gdouble  distance;
+    gdouble  rotation;
+    gdouble  slider;
 
-  /* synthetic axes */
-  gdouble  velocity;
-  gdouble  direction;
+    /* synthetic axes */
+    gdouble  velocity;
+    gdouble  direction;
 
-  /* view transform */
-  gdouble  xscale;  /* the view scale                */
-  gdouble  yscale;
-  gdouble  angle;   /* the view rotation angle       */
-  gboolean reflect; /* whether the view is reflected */
+    /* view transform */
+    gdouble  xscale;  /* the view scale                */
+    gdouble  yscale;
+    gdouble  angle;   /* the view rotation angle       */
+    gboolean reflect; /* whether the view is reflected */
 };
 
 /*  temp hack as replacement for GdkSegment  */
@@ -303,10 +303,10 @@ typedef struct _GimpSegment GimpSegment;
 
 struct _GimpSegment
 {
-  gint x1;
-  gint y1;
-  gint x2;
-  gint y2;
+    gint x1;
+    gint y1;
+    gint x2;
+    gint y2;
 };
 
 

@@ -25,11 +25,11 @@ GType gimp_canvas_padding_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_CANVAS_PADDING_MODE_DEFAULT,      /*< desc="From theme"        >*/
-  GIMP_CANVAS_PADDING_MODE_LIGHT_CHECK,  /*< desc="Light check color" >*/
-  GIMP_CANVAS_PADDING_MODE_DARK_CHECK,   /*< desc="Dark check color"  >*/
-  GIMP_CANVAS_PADDING_MODE_CUSTOM,       /*< desc="Custom color"      >*/
-  GIMP_CANVAS_PADDING_MODE_RESET = -1    /*< skip >*/
+    GIMP_CANVAS_PADDING_MODE_DEFAULT,      /*< desc="From theme"        >*/
+    GIMP_CANVAS_PADDING_MODE_LIGHT_CHECK,  /*< desc="Light check color" >*/
+    GIMP_CANVAS_PADDING_MODE_DARK_CHECK,   /*< desc="Dark check color"  >*/
+    GIMP_CANVAS_PADDING_MODE_CUSTOM,       /*< desc="Custom color"      >*/
+    GIMP_CANVAS_PADDING_MODE_RESET = -1    /*< skip >*/
 } GimpCanvasPaddingMode;
 
 
@@ -39,8 +39,8 @@ GType gimp_cursor_format_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_CURSOR_FORMAT_BITMAP, /*< desc="Black & white" >*/
-  GIMP_CURSOR_FORMAT_PIXBUF  /*< desc="Fancy"         >*/
+    GIMP_CURSOR_FORMAT_BITMAP, /*< desc="Black & white" >*/
+    GIMP_CURSOR_FORMAT_PIXBUF  /*< desc="Fancy"         >*/
 } GimpCursorFormat;
 
 
@@ -50,9 +50,9 @@ GType gimp_cursor_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_CURSOR_MODE_TOOL_ICON,       /*< desc="Tool icon"                >*/
-  GIMP_CURSOR_MODE_TOOL_CROSSHAIR,  /*< desc="Tool icon with crosshair" >*/
-  GIMP_CURSOR_MODE_CROSSHAIR        /*< desc="Crosshair only"           >*/
+    GIMP_CURSOR_MODE_TOOL_ICON,       /*< desc="Tool icon"                >*/
+    GIMP_CURSOR_MODE_TOOL_CROSSHAIR,  /*< desc="Tool icon with crosshair" >*/
+    GIMP_CURSOR_MODE_CROSSHAIR        /*< desc="Crosshair only"           >*/
 } GimpCursorMode;
 
 
@@ -62,14 +62,14 @@ GType gimp_export_file_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_EXPORT_FILE_PNG,  /*< desc="PNG Image"                >*/
-  GIMP_EXPORT_FILE_JPG,  /*< desc="JPEG Image"               >*/
-  GIMP_EXPORT_FILE_ORA,  /*< desc="OpenRaster Image"         >*/
-  GIMP_EXPORT_FILE_PSD,  /*< desc="Photoshop Image"          >*/
-  GIMP_EXPORT_FILE_PDF,  /*< desc="Portable Document Format" >*/
-  GIMP_EXPORT_FILE_TIF,  /*< desc="TIFF Image"               >*/
-  GIMP_EXPORT_FILE_BMP,  /*< desc="Windows BMP Image"        >*/
-  GIMP_EXPORT_FILE_WEBP, /*< desc="WebP Image"               >*/
+    GIMP_EXPORT_FILE_PNG,  /*< desc="PNG Image"                >*/
+    GIMP_EXPORT_FILE_JPG,  /*< desc="JPEG Image"               >*/
+    GIMP_EXPORT_FILE_ORA,  /*< desc="OpenRaster Image"         >*/
+    GIMP_EXPORT_FILE_PSD,  /*< desc="Photoshop Image"          >*/
+    GIMP_EXPORT_FILE_PDF,  /*< desc="Portable Document Format" >*/
+    GIMP_EXPORT_FILE_TIF,  /*< desc="TIFF Image"               >*/
+    GIMP_EXPORT_FILE_BMP,  /*< desc="Windows BMP Image"        >*/
+    GIMP_EXPORT_FILE_WEBP, /*< desc="WebP Image"               >*/
 } GimpExportFileType;
 
 
@@ -79,8 +79,8 @@ GType gimp_handedness_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_HANDEDNESS_LEFT, /*< desc="Left-handed"  >*/
-  GIMP_HANDEDNESS_RIGHT /*< desc="Right-handed" >*/
+    GIMP_HANDEDNESS_LEFT, /*< desc="Left-handed"  >*/
+    GIMP_HANDEDNESS_RIGHT /*< desc="Right-handed" >*/
 } GimpHandedness;
 
 
@@ -90,8 +90,8 @@ GType gimp_help_browser_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_HELP_BROWSER_GIMP,        /*< desc="GIMP help browser" >*/
-  GIMP_HELP_BROWSER_WEB_BROWSER  /*< desc="Web browser"       >*/
+    GIMP_HELP_BROWSER_GIMP,        /*< desc="GIMP help browser" >*/
+    GIMP_HELP_BROWSER_WEB_BROWSER  /*< desc="Web browser"       >*/
 } GimpHelpBrowserType;
 
 
@@ -101,10 +101,10 @@ GType gimp_position_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_POSITION_TOP,    /*< desc="Top" >*/
-  GIMP_POSITION_BOTTOM, /*< desc="Bottom" >*/
-  GIMP_POSITION_LEFT,   /*< desc="Left"  >*/
-  GIMP_POSITION_RIGHT   /*< desc="Right" >*/
+    GIMP_POSITION_TOP,    /*< desc="Top" >*/
+    GIMP_POSITION_BOTTOM, /*< desc="Bottom" >*/
+    GIMP_POSITION_LEFT,   /*< desc="Left"  >*/
+    GIMP_POSITION_RIGHT   /*< desc="Right" >*/
 } GimpPosition;
 
 
@@ -114,9 +114,9 @@ GType gimp_space_bar_action_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_SPACE_BAR_ACTION_NONE,  /*< desc="No action"           >*/
-  GIMP_SPACE_BAR_ACTION_PAN,   /*< desc="Pan view"            >*/
-  GIMP_SPACE_BAR_ACTION_MOVE   /*< desc="Switch to Move tool" >*/
+    GIMP_SPACE_BAR_ACTION_NONE,  /*< desc="No action"           >*/
+    GIMP_SPACE_BAR_ACTION_PAN,   /*< desc="Pan view"            >*/
+    GIMP_SPACE_BAR_ACTION_MOVE   /*< desc="Switch to Move tool" >*/
 } GimpSpaceBarAction;
 
 
@@ -126,9 +126,9 @@ GType gimp_window_hint_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_WINDOW_HINT_NORMAL,     /*< desc="Normal window"  >*/
-  GIMP_WINDOW_HINT_UTILITY,    /*< desc="Utility window" >*/
-  GIMP_WINDOW_HINT_KEEP_ABOVE  /*< desc="Keep above"     >*/
+    GIMP_WINDOW_HINT_NORMAL,     /*< desc="Normal window"  >*/
+    GIMP_WINDOW_HINT_UTILITY,    /*< desc="Utility window" >*/
+    GIMP_WINDOW_HINT_KEEP_ABOVE  /*< desc="Keep above"     >*/
 } GimpWindowHint;
 
 
@@ -138,8 +138,8 @@ GType gimp_zoom_quality_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_ZOOM_QUALITY_LOW,   /*< desc="Low"  >*/
-  GIMP_ZOOM_QUALITY_HIGH   /*< desc="High" >*/
+    GIMP_ZOOM_QUALITY_LOW,   /*< desc="Low"  >*/
+    GIMP_ZOOM_QUALITY_HIGH   /*< desc="High" >*/
 } GimpZoomQuality;
 
 

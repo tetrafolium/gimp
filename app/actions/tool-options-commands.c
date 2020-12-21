@@ -55,26 +55,26 @@
 /*  local function prototypes  */
 
 static void   tool_options_show_preset_editor (Gimp           *gimp,
-                                               GimpEditor     *editor,
-                                               GimpToolPreset *preset);
+        GimpEditor     *editor,
+        GimpToolPreset *preset);
 
 
 /*  public functions  */
 
 void
 tool_options_save_new_preset_cmd_callback (GimpAction *action,
-                                           GVariant   *value,
-                                           gpointer    user_data)
+        GVariant   *value,
+        gpointer    user_data)
 {
-  GimpEditor  *editor  = GIMP_EDITOR (user_data);
-  Gimp        *gimp    = gimp_editor_get_ui_manager (editor)->gimp;
-  GimpContext *context = gimp_get_user_context (gimp);
-  GimpData    *data;
+    GimpEditor  *editor  = GIMP_EDITOR (user_data);
+    Gimp        *gimp    = gimp_editor_get_ui_manager (editor)->gimp;
+    GimpContext *context = gimp_get_user_context (gimp);
+    GimpData    *data;
 
-  data = gimp_data_factory_data_new (context->gimp->tool_preset_factory,
-                                     context, _("Untitled"));
+    data = gimp_data_factory_data_new (context->gimp->tool_preset_factory,
+                                       context, _("Untitled"));
 
-  tool_options_show_preset_editor (gimp, editor, GIMP_TOOL_PRESET (data));
+    tool_options_show_preset_editor (gimp, editor, GIMP_TOOL_PRESET (data));
 }
 
 void
@@ -82,50 +82,50 @@ tool_options_save_preset_cmd_callback (GimpAction *action,
                                        GVariant   *value,
                                        gpointer    data)
 {
-  GimpEditor     *editor    = GIMP_EDITOR (data);
-  Gimp           *gimp      = gimp_editor_get_ui_manager (editor)->gimp;
-  GimpContext    *context   = gimp_get_user_context (gimp);
-  GimpToolInfo   *tool_info = gimp_context_get_tool (context);
-  GimpToolPreset *preset;
-  gint            index;
+    GimpEditor     *editor    = GIMP_EDITOR (data);
+    Gimp           *gimp      = gimp_editor_get_ui_manager (editor)->gimp;
+    GimpContext    *context   = gimp_get_user_context (gimp);
+    GimpToolInfo   *tool_info = gimp_context_get_tool (context);
+    GimpToolPreset *preset;
+    gint            index;
 
-  index = g_variant_get_int32 (value);
+    index = g_variant_get_int32 (value);
 
-  preset = (GimpToolPreset *)
-    gimp_container_get_child_by_index (tool_info->presets, index);
+    preset = (GimpToolPreset *)
+             gimp_container_get_child_by_index (tool_info->presets, index);
 
-  if (preset)
+    if (preset)
     {
-      gimp_config_sync (G_OBJECT (tool_info->tool_options),
-                        G_OBJECT (preset->tool_options), 0);
+        gimp_config_sync (G_OBJECT (tool_info->tool_options),
+                          G_OBJECT (preset->tool_options), 0);
 
-      tool_options_show_preset_editor (gimp, editor, preset);
+        tool_options_show_preset_editor (gimp, editor, preset);
     }
 }
 
 void
 tool_options_restore_preset_cmd_callback (GimpAction *action,
-                                          GVariant   *value,
-                                          gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpEditor     *editor    = GIMP_EDITOR (data);
-  Gimp           *gimp      = gimp_editor_get_ui_manager (editor)->gimp;
-  GimpContext    *context   = gimp_get_user_context (gimp);
-  GimpToolInfo   *tool_info = gimp_context_get_tool (context);
-  GimpToolPreset *preset;
-  gint            index;
+    GimpEditor     *editor    = GIMP_EDITOR (data);
+    Gimp           *gimp      = gimp_editor_get_ui_manager (editor)->gimp;
+    GimpContext    *context   = gimp_get_user_context (gimp);
+    GimpToolInfo   *tool_info = gimp_context_get_tool (context);
+    GimpToolPreset *preset;
+    gint            index;
 
-  index = g_variant_get_int32 (value);
+    index = g_variant_get_int32 (value);
 
-  preset = (GimpToolPreset *)
-    gimp_container_get_child_by_index (tool_info->presets, index);
+    preset = (GimpToolPreset *)
+             gimp_container_get_child_by_index (tool_info->presets, index);
 
-  if (preset)
+    if (preset)
     {
-      if (gimp_context_get_tool_preset (context) != preset)
-        gimp_context_set_tool_preset (context, preset);
-      else
-        gimp_context_tool_preset_changed (context);
+        if (gimp_context_get_tool_preset (context) != preset)
+            gimp_context_set_tool_preset (context, preset);
+        else
+            gimp_context_tool_preset_changed (context);
     }
 }
 
@@ -134,49 +134,49 @@ tool_options_edit_preset_cmd_callback (GimpAction *action,
                                        GVariant   *value,
                                        gpointer    data)
 {
-  GimpEditor     *editor    = GIMP_EDITOR (data);
-  Gimp           *gimp      = gimp_editor_get_ui_manager (editor)->gimp;
-  GimpContext    *context   = gimp_get_user_context (gimp);
-  GimpToolInfo   *tool_info = gimp_context_get_tool (context);
-  GimpToolPreset *preset;
-  gint            index;
+    GimpEditor     *editor    = GIMP_EDITOR (data);
+    Gimp           *gimp      = gimp_editor_get_ui_manager (editor)->gimp;
+    GimpContext    *context   = gimp_get_user_context (gimp);
+    GimpToolInfo   *tool_info = gimp_context_get_tool (context);
+    GimpToolPreset *preset;
+    gint            index;
 
-  index = g_variant_get_int32 (value);
+    index = g_variant_get_int32 (value);
 
-  preset = (GimpToolPreset *)
-    gimp_container_get_child_by_index (tool_info->presets, index);
+    preset = (GimpToolPreset *)
+             gimp_container_get_child_by_index (tool_info->presets, index);
 
-  if (preset)
+    if (preset)
     {
-      tool_options_show_preset_editor (gimp, editor, preset);
+        tool_options_show_preset_editor (gimp, editor, preset);
     }
 }
 
 void
 tool_options_delete_preset_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpEditor     *editor    = GIMP_EDITOR (data);
-  GimpContext    *context   = gimp_get_user_context (gimp_editor_get_ui_manager (editor)->gimp);
-  GimpToolInfo   *tool_info = gimp_context_get_tool (context);
-  GimpToolPreset *preset;
-  gint            index;
+    GimpEditor     *editor    = GIMP_EDITOR (data);
+    GimpContext    *context   = gimp_get_user_context (gimp_editor_get_ui_manager (editor)->gimp);
+    GimpToolInfo   *tool_info = gimp_context_get_tool (context);
+    GimpToolPreset *preset;
+    gint            index;
 
-  index = g_variant_get_int32 (value);
+    index = g_variant_get_int32 (value);
 
-  preset = (GimpToolPreset *)
-    gimp_container_get_child_by_index (tool_info->presets, index);
+    preset = (GimpToolPreset *)
+             gimp_container_get_child_by_index (tool_info->presets, index);
 
-  if (preset &&
-      gimp_data_is_deletable (GIMP_DATA (preset)))
+    if (preset &&
+            gimp_data_is_deletable (GIMP_DATA (preset)))
     {
-      GimpDataFactory *factory = context->gimp->tool_preset_factory;
-      GtkWidget       *dialog;
+        GimpDataFactory *factory = context->gimp->tool_preset_factory;
+        GtkWidget       *dialog;
 
-      dialog = data_delete_dialog_new (factory, GIMP_DATA (preset), NULL,
-                                       GTK_WIDGET (editor));
-      gtk_widget_show (dialog);
+        dialog = data_delete_dialog_new (factory, GIMP_DATA (preset), NULL,
+                                         GTK_WIDGET (editor));
+        gtk_widget_show (dialog);
     }
 }
 
@@ -185,11 +185,11 @@ tool_options_reset_cmd_callback (GimpAction *action,
                                  GVariant   *value,
                                  gpointer    data)
 {
-  GimpEditor   *editor    = GIMP_EDITOR (data);
-  GimpContext  *context   = gimp_get_user_context (gimp_editor_get_ui_manager (editor)->gimp);
-  GimpToolInfo *tool_info = gimp_context_get_tool (context);
+    GimpEditor   *editor    = GIMP_EDITOR (data);
+    GimpContext  *context   = gimp_get_user_context (gimp_editor_get_ui_manager (editor)->gimp);
+    GimpToolInfo *tool_info = gimp_context_get_tool (context);
 
-  gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
+    gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
 }
 
 void
@@ -197,52 +197,52 @@ tool_options_reset_all_cmd_callback (GimpAction *action,
                                      GVariant   *value,
                                      gpointer    data)
 {
-  GimpEditor *editor = GIMP_EDITOR (data);
-  GtkWidget  *dialog;
+    GimpEditor *editor = GIMP_EDITOR (data);
+    GtkWidget  *dialog;
 
-  dialog = gimp_message_dialog_new (_("Reset All Tool Options"),
-                                    GIMP_ICON_DIALOG_QUESTION,
-                                    GTK_WIDGET (editor),
-                                    GTK_DIALOG_MODAL |
-                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    gimp_standard_help_func, NULL,
+    dialog = gimp_message_dialog_new (_("Reset All Tool Options"),
+                                      GIMP_ICON_DIALOG_QUESTION,
+                                      GTK_WIDGET (editor),
+                                      GTK_DIALOG_MODAL |
+                                      GTK_DIALOG_DESTROY_WITH_PARENT,
+                                      gimp_standard_help_func, NULL,
 
-                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                    _("_Reset"),  GTK_RESPONSE_OK,
+                                      _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                      _("_Reset"),  GTK_RESPONSE_OK,
 
-                                    NULL);
+                                      NULL);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
-  gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
+    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+    gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+            GTK_RESPONSE_OK,
+            GTK_RESPONSE_CANCEL,
+            -1);
 
-  g_signal_connect_object (gtk_widget_get_toplevel (GTK_WIDGET (editor)),
-                           "unmap",
-                           G_CALLBACK (gtk_widget_destroy),
-                           dialog, G_CONNECT_SWAPPED);
+    g_signal_connect_object (gtk_widget_get_toplevel (GTK_WIDGET (editor)),
+                             "unmap",
+                             G_CALLBACK (gtk_widget_destroy),
+                             dialog, G_CONNECT_SWAPPED);
 
-  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                     _("Do you really want to reset all "
-                                       "tool options to default values?"));
+    gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                       _("Do you really want to reset all "
+                                         "tool options to default values?"));
 
-  if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
+    if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
     {
-      Gimp  *gimp = gimp_editor_get_ui_manager (editor)->gimp;
-      GList *list;
+        Gimp  *gimp = gimp_editor_get_ui_manager (editor)->gimp;
+        GList *list;
 
-      for (list = gimp_get_tool_info_iter (gimp);
-           list;
-           list = g_list_next (list))
+        for (list = gimp_get_tool_info_iter (gimp);
+                list;
+                list = g_list_next (list))
         {
-          GimpToolInfo *tool_info = list->data;
+            GimpToolInfo *tool_info = list->data;
 
-          gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
+            gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
         }
     }
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 }
 
 
@@ -253,15 +253,15 @@ tool_options_show_preset_editor (Gimp           *gimp,
                                  GimpEditor     *editor,
                                  GimpToolPreset *preset)
 {
-  GtkWidget *dockable;
+    GtkWidget *dockable;
 
-  dockable =
-    gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
-                                               gimp,
-                                               gimp_dialog_factory_get_singleton (),
-                                               gimp_widget_get_monitor (GTK_WIDGET (editor)),
-                                               "gimp-tool-preset-editor");
+    dockable =
+        gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
+                gimp,
+                gimp_dialog_factory_get_singleton (),
+                gimp_widget_get_monitor (GTK_WIDGET (editor)),
+                "gimp-tool-preset-editor");
 
-  gimp_data_editor_set_data (GIMP_DATA_EDITOR (gtk_bin_get_child (GTK_BIN (dockable))),
-                             GIMP_DATA (preset));
+    gimp_data_editor_set_data (GIMP_DATA_EDITOR (gtk_bin_get_child (GTK_BIN (dockable))),
+                               GIMP_DATA (preset));
 }

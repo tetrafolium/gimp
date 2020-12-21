@@ -23,23 +23,23 @@
 
 
 void       gimp_drawable_stroke_boundary     (GimpDrawable       *drawable,
-                                              GimpStrokeOptions  *options,
-                                              const GimpBoundSeg *bound_segs,
-                                              gint                n_bound_segs,
-                                              gint                offset_x,
-                                              gint                offset_y,
-                                              gboolean            push_undo);
+        GimpStrokeOptions  *options,
+        const GimpBoundSeg *bound_segs,
+        gint                n_bound_segs,
+        gint                offset_x,
+        gint                offset_y,
+        gboolean            push_undo);
 
 gboolean   gimp_drawable_stroke_vectors      (GimpDrawable       *drawable,
-                                              GimpStrokeOptions  *options,
-                                              GimpVectors        *vectors,
-                                              gboolean            push_undo,
-                                              GError            **error);
+        GimpStrokeOptions  *options,
+        GimpVectors        *vectors,
+        gboolean            push_undo,
+        GError            **error);
 
 void       gimp_drawable_stroke_scan_convert (GimpDrawable      *drawable,
-                                              GimpStrokeOptions *options,
-                                              GimpScanConvert   *scan_convert,
-                                              gboolean           push_undo);
+        GimpStrokeOptions *options,
+        GimpScanConvert   *scan_convert,
+        gboolean           push_undo);
 
 
 #endif  /*  __GIMP_DRAWABLE_STROKE_H__  */

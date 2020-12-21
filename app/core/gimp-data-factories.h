@@ -25,11 +25,11 @@ void      gimp_data_factories_clear       (Gimp               *gimp);
 void      gimp_data_factories_exit        (Gimp               *gimp);
 
 gint64    gimp_data_factories_get_memsize (Gimp   *gimp,
-                                           gint64 *gui_size);
+        gint64 *gui_size);
 void      gimp_data_factories_data_clean  (Gimp   *gimp);
 
 void      gimp_data_factories_load        (Gimp               *gimp,
-                                           GimpInitStatusFunc  status_callback);
+        GimpInitStatusFunc  status_callback);
 void      gimp_data_factories_save        (Gimp               *gimp);
 
 

@@ -52,24 +52,24 @@ gimp_drawable_stroke_boundary (GimpDrawable       *drawable,
                                gint                offset_y,
                                gboolean            push_undo)
 {
-  GimpScanConvert *scan_convert;
+    GimpScanConvert *scan_convert;
 
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-  g_return_if_fail (GIMP_IS_STROKE_OPTIONS (options));
-  g_return_if_fail (bound_segs == NULL || n_bound_segs != 0);
-  g_return_if_fail (gimp_fill_options_get_style (GIMP_FILL_OPTIONS (options)) !=
-                    GIMP_FILL_STYLE_PATTERN ||
-                    gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL);
+    g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+    g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
+    g_return_if_fail (GIMP_IS_STROKE_OPTIONS (options));
+    g_return_if_fail (bound_segs == NULL || n_bound_segs != 0);
+    g_return_if_fail (gimp_fill_options_get_style (GIMP_FILL_OPTIONS (options)) !=
+                      GIMP_FILL_STYLE_PATTERN ||
+                      gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL);
 
-  scan_convert = gimp_scan_convert_new_from_boundary (bound_segs, n_bound_segs,
-                                                      offset_x, offset_y);
+    scan_convert = gimp_scan_convert_new_from_boundary (bound_segs, n_bound_segs,
+                   offset_x, offset_y);
 
-  if (scan_convert)
+    if (scan_convert)
     {
-      gimp_drawable_stroke_scan_convert (drawable, options,
-                                         scan_convert, push_undo);
-      gimp_scan_convert_free (scan_convert);
+        gimp_drawable_stroke_scan_convert (drawable, options,
+                                           scan_convert, push_undo);
+        gimp_scan_convert_free (scan_convert);
     }
 }
 
@@ -80,37 +80,37 @@ gimp_drawable_stroke_vectors (GimpDrawable       *drawable,
                               gboolean            push_undo,
                               GError            **error)
 {
-  const GimpBezierDesc *bezier;
+    const GimpBezierDesc *bezier;
 
-  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
-  g_return_val_if_fail (GIMP_IS_STROKE_OPTIONS (options), FALSE);
-  g_return_val_if_fail (GIMP_IS_VECTORS (vectors), FALSE);
-  g_return_val_if_fail (gimp_fill_options_get_style (GIMP_FILL_OPTIONS (options)) !=
-                        GIMP_FILL_STYLE_PATTERN ||
-                        gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL,
-                        FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
+    g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
+    g_return_val_if_fail (GIMP_IS_STROKE_OPTIONS (options), FALSE);
+    g_return_val_if_fail (GIMP_IS_VECTORS (vectors), FALSE);
+    g_return_val_if_fail (gimp_fill_options_get_style (GIMP_FILL_OPTIONS (options)) !=
+                          GIMP_FILL_STYLE_PATTERN ||
+                          gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL,
+                          FALSE);
+    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  bezier = gimp_vectors_get_bezier (vectors);
+    bezier = gimp_vectors_get_bezier (vectors);
 
-  if (bezier && bezier->num_data >= 2)
+    if (bezier && bezier->num_data >= 2)
     {
-      GimpScanConvert *scan_convert = gimp_scan_convert_new ();
+        GimpScanConvert *scan_convert = gimp_scan_convert_new ();
 
-      gimp_scan_convert_add_bezier (scan_convert, bezier);
-      gimp_drawable_stroke_scan_convert (drawable, options,
-                                         scan_convert, push_undo);
+        gimp_scan_convert_add_bezier (scan_convert, bezier);
+        gimp_drawable_stroke_scan_convert (drawable, options,
+                                           scan_convert, push_undo);
 
-      gimp_scan_convert_free (scan_convert);
+        gimp_scan_convert_free (scan_convert);
 
-      return TRUE;
+        return TRUE;
     }
 
-  g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-                       _("Not enough points to stroke"));
+    g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                         _("Not enough points to stroke"));
 
-  return FALSE;
+    return FALSE;
 }
 
 void
@@ -119,43 +119,43 @@ gimp_drawable_stroke_scan_convert (GimpDrawable      *drawable,
                                    GimpScanConvert   *scan_convert,
                                    gboolean           push_undo)
 {
-  gdouble  width;
-  GimpUnit unit;
+    gdouble  width;
+    GimpUnit unit;
 
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-  g_return_if_fail (GIMP_IS_STROKE_OPTIONS (options));
-  g_return_if_fail (scan_convert != NULL);
-  g_return_if_fail (gimp_fill_options_get_style (GIMP_FILL_OPTIONS (options)) !=
-                    GIMP_FILL_STYLE_PATTERN ||
-                    gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL);
+    g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+    g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
+    g_return_if_fail (GIMP_IS_STROKE_OPTIONS (options));
+    g_return_if_fail (scan_convert != NULL);
+    g_return_if_fail (gimp_fill_options_get_style (GIMP_FILL_OPTIONS (options)) !=
+                      GIMP_FILL_STYLE_PATTERN ||
+                      gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL);
 
-  if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), NULL, NULL, NULL, NULL))
-    return;
+    if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), NULL, NULL, NULL, NULL))
+        return;
 
-  width = gimp_stroke_options_get_width (options);
-  unit  = gimp_stroke_options_get_unit (options);
+    width = gimp_stroke_options_get_width (options);
+    unit  = gimp_stroke_options_get_unit (options);
 
-  if (unit != GIMP_UNIT_PIXEL)
+    if (unit != GIMP_UNIT_PIXEL)
     {
-      GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-      gdouble    xres;
-      gdouble    yres;
+        GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+        gdouble    xres;
+        gdouble    yres;
 
-      gimp_image_get_resolution (image, &xres, &yres);
+        gimp_image_get_resolution (image, &xres, &yres);
 
-      gimp_scan_convert_set_pixel_ratio (scan_convert, yres / xres);
+        gimp_scan_convert_set_pixel_ratio (scan_convert, yres / xres);
 
-      width = gimp_units_to_pixels (width, unit, yres);
+        width = gimp_units_to_pixels (width, unit, yres);
     }
 
-  gimp_scan_convert_stroke (scan_convert, width,
-                            gimp_stroke_options_get_join_style (options),
-                            gimp_stroke_options_get_cap_style (options),
-                            gimp_stroke_options_get_miter_limit (options),
-                            gimp_stroke_options_get_dash_offset (options),
-                            gimp_stroke_options_get_dash_info (options));
+    gimp_scan_convert_stroke (scan_convert, width,
+                              gimp_stroke_options_get_join_style (options),
+                              gimp_stroke_options_get_cap_style (options),
+                              gimp_stroke_options_get_miter_limit (options),
+                              gimp_stroke_options_get_dash_offset (options),
+                              gimp_stroke_options_get_dash_info (options));
 
-  gimp_drawable_fill_scan_convert (drawable, GIMP_FILL_OPTIONS (options),
-                                   scan_convert, push_undo);
+    gimp_drawable_fill_scan_convert (drawable, GIMP_FILL_OPTIONS (options),
+                                     scan_convert, push_undo);
 }

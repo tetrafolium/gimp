@@ -37,12 +37,12 @@ typedef struct _GimpPaletteMruClass GimpPaletteMruClass;
 
 struct _GimpPaletteMru
 {
-  GimpPalette  parent_instance;
+    GimpPalette  parent_instance;
 };
 
 struct _GimpPaletteMruClass
 {
-  GimpPaletteClass  parent_class;
+    GimpPaletteClass  parent_class;
 };
 
 

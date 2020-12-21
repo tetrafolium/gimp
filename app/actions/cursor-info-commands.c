@@ -34,8 +34,8 @@ cursor_info_sample_merged_cmd_callback (GimpAction *action,
                                         GVariant   *value,
                                         gpointer    data)
 {
-  GimpCursorView *view   = GIMP_CURSOR_VIEW (data);
-  gboolean        active = g_variant_get_boolean (value);
+    GimpCursorView *view   = GIMP_CURSOR_VIEW (data);
+    gboolean        active = g_variant_get_boolean (value);
 
-  gimp_cursor_view_set_sample_merged (view, active);
+    gimp_cursor_view_set_sample_merged (view, active);
 }

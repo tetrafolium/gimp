@@ -32,8 +32,8 @@
 static void   gimp_channel_prop_undo_constructed (GObject             *object);
 
 static void   gimp_channel_prop_undo_pop         (GimpUndo            *undo,
-                                                  GimpUndoMode         undo_mode,
-                                                  GimpUndoAccumulator *accum);
+        GimpUndoMode         undo_mode,
+        GimpUndoAccumulator *accum);
 
 
 G_DEFINE_TYPE (GimpChannelPropUndo, gimp_channel_prop_undo, GIMP_TYPE_ITEM_UNDO)
@@ -44,12 +44,12 @@ G_DEFINE_TYPE (GimpChannelPropUndo, gimp_channel_prop_undo, GIMP_TYPE_ITEM_UNDO)
 static void
 gimp_channel_prop_undo_class_init (GimpChannelPropUndoClass *klass)
 {
-  GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-  GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
+    GObjectClass  *object_class = G_OBJECT_CLASS (klass);
+    GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructed = gimp_channel_prop_undo_constructed;
+    object_class->constructed = gimp_channel_prop_undo_constructed;
 
-  undo_class->pop           = gimp_channel_prop_undo_pop;
+    undo_class->pop           = gimp_channel_prop_undo_pop;
 }
 
 static void
@@ -60,23 +60,23 @@ gimp_channel_prop_undo_init (GimpChannelPropUndo *undo)
 static void
 gimp_channel_prop_undo_constructed (GObject *object)
 {
-  GimpChannelPropUndo *channel_prop_undo = GIMP_CHANNEL_PROP_UNDO (object);
-  GimpChannel         *channel;
+    GimpChannelPropUndo *channel_prop_undo = GIMP_CHANNEL_PROP_UNDO (object);
+    GimpChannel         *channel;
 
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  gimp_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
+    gimp_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
 
-  channel = GIMP_CHANNEL (GIMP_ITEM_UNDO (object)->item);
+    channel = GIMP_CHANNEL (GIMP_ITEM_UNDO (object)->item);
 
-  switch (GIMP_UNDO (object)->undo_type)
+    switch (GIMP_UNDO (object)->undo_type)
     {
     case GIMP_UNDO_CHANNEL_COLOR:
-      gimp_channel_get_color (channel, &channel_prop_undo->color);
-      break;
+        gimp_channel_get_color (channel, &channel_prop_undo->color);
+        break;
 
     default:
-      g_return_if_reached ();
+        g_return_if_reached ();
     }
 }
 
@@ -85,24 +85,24 @@ gimp_channel_prop_undo_pop (GimpUndo            *undo,
                             GimpUndoMode         undo_mode,
                             GimpUndoAccumulator *accum)
 {
-  GimpChannelPropUndo *channel_prop_undo = GIMP_CHANNEL_PROP_UNDO (undo);
-  GimpChannel         *channel           = GIMP_CHANNEL (GIMP_ITEM_UNDO (undo)->item);
+    GimpChannelPropUndo *channel_prop_undo = GIMP_CHANNEL_PROP_UNDO (undo);
+    GimpChannel         *channel           = GIMP_CHANNEL (GIMP_ITEM_UNDO (undo)->item);
 
-  GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
+    GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
-  switch (undo->undo_type)
+    switch (undo->undo_type)
     {
     case GIMP_UNDO_CHANNEL_COLOR:
-      {
+    {
         GimpRGB color;
 
         gimp_channel_get_color (channel, &color);
         gimp_channel_set_color (channel, &channel_prop_undo->color, FALSE);
         channel_prop_undo->color = color;
-      }
-      break;
+    }
+    break;
 
     default:
-      g_return_if_reached ();
+        g_return_if_reached ();
     }
 }

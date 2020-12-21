@@ -26,16 +26,16 @@ void        gimp_parallel_init                       (Gimp             *gimp);
 void        gimp_parallel_exit                       (Gimp             *gimp);
 
 GimpAsync * gimp_parallel_run_async                  (GimpRunAsyncFunc  func,
-                                                      gpointer          user_data);
+        gpointer          user_data);
 GimpAsync * gimp_parallel_run_async_full             (gint              priority,
-                                                      GimpRunAsyncFunc  func,
-                                                      gpointer          user_data,
-                                                      GDestroyNotify    user_data_destroy_func);
+        GimpRunAsyncFunc  func,
+        gpointer          user_data,
+        GDestroyNotify    user_data_destroy_func);
 GimpAsync * gimp_parallel_run_async_independent      (GimpRunAsyncFunc  func,
-                                                      gpointer          user_data);
+        gpointer          user_data);
 GimpAsync * gimp_parallel_run_async_independent_full (gint              priority,
-                                                      GimpRunAsyncFunc  func,
-                                                      gpointer          user_data);
+        GimpRunAsyncFunc  func,
+        gpointer          user_data);
 
 
 #ifdef __cplusplus
@@ -45,109 +45,109 @@ extern "C++"
 
 #include <new>
 
-template <class RunAsyncFunc>
-inline GimpAsync *
-gimp_parallel_run_async (RunAsyncFunc func)
-{
-  RunAsyncFunc *func_copy = g_new (RunAsyncFunc, 1);
+    template <class RunAsyncFunc>
+    inline GimpAsync *
+    gimp_parallel_run_async (RunAsyncFunc func)
+    {
+        RunAsyncFunc *func_copy = g_new (RunAsyncFunc, 1);
 
-  new (func_copy) RunAsyncFunc (func);
+        new (func_copy) RunAsyncFunc (func);
 
-  return gimp_parallel_run_async_full (0,
-                                       [] (GimpAsync *async,
-                                           gpointer   user_data)
-                                       {
-                                         RunAsyncFunc *func_copy =
-                                           (RunAsyncFunc *) user_data;
+        return gimp_parallel_run_async_full (0,
+                                             [] (GimpAsync *async,
+                                                     gpointer   user_data)
+        {
+            RunAsyncFunc *func_copy =
+            (RunAsyncFunc *) user_data;
 
-                                         (*func_copy) (async);
+            (*func_copy) (async);
 
-                                         func_copy->~RunAsyncFunc ();
-                                         g_free (func_copy);
-                                       },
-                                       func_copy,
-                                       [] (gpointer user_data)
-                                       {
-                                         RunAsyncFunc *func_copy =
-                                           (RunAsyncFunc *) user_data;
+            func_copy->~RunAsyncFunc ();
+            g_free (func_copy);
+        },
+        func_copy,
+        [] (gpointer user_data)
+        {
+            RunAsyncFunc *func_copy =
+                (RunAsyncFunc *) user_data;
 
-                                         func_copy->~RunAsyncFunc ();
-                                         g_free (func_copy);
-                                       });
-}
+            func_copy->~RunAsyncFunc ();
+            g_free (func_copy);
+        });
+    }
 
-template <class RunAsyncFunc,
-          class DestroyFunc>
-inline GimpAsync *
-gimp_parallel_run_async_full (gint         priority,
-                              RunAsyncFunc func,
-                              DestroyFunc  destroy_func)
-{
-  typedef struct
-  {
-    RunAsyncFunc func;
-    DestroyFunc  destroy_func;
-  } Funcs;
+    template <class RunAsyncFunc,
+              class DestroyFunc>
+    inline GimpAsync *
+    gimp_parallel_run_async_full (gint         priority,
+                                  RunAsyncFunc func,
+                                  DestroyFunc  destroy_func)
+    {
+        typedef struct
+        {
+            RunAsyncFunc func;
+            DestroyFunc  destroy_func;
+        } Funcs;
 
-  Funcs *funcs_copy = g_new (Funcs, 1);
+        Funcs *funcs_copy = g_new (Funcs, 1);
 
-  new (funcs_copy) Funcs {func, destroy_func};
+        new (funcs_copy) Funcs {func, destroy_func};
 
-  return gimp_parallel_run_async_full (priority,
-                                       [] (GimpAsync *async,
-                                           gpointer   user_data)
-                                       {
-                                         Funcs *funcs_copy =
-                                           (Funcs *) user_data;
+        return gimp_parallel_run_async_full (priority,
+                                             [] (GimpAsync *async,
+                                                     gpointer   user_data)
+        {
+            Funcs *funcs_copy =
+                (Funcs *) user_data;
 
-                                         funcs_copy->func (async);
+            funcs_copy->func (async);
 
-                                         funcs_copy->~Funcs ();
-                                         g_free (funcs_copy);
-                                       },
-                                       funcs_copy,
-                                       [] (gpointer user_data)
-                                       {
-                                         Funcs *funcs_copy =
-                                           (Funcs *) user_data;
+            funcs_copy->~Funcs ();
+            g_free (funcs_copy);
+        },
+        funcs_copy,
+        [] (gpointer user_data)
+        {
+            Funcs *funcs_copy =
+                (Funcs *) user_data;
 
-                                         funcs_copy->destroy_func ();
+            funcs_copy->destroy_func ();
 
-                                         funcs_copy->~Funcs ();
-                                         g_free (funcs_copy);
-                                       });
-}
+            funcs_copy->~Funcs ();
+            g_free (funcs_copy);
+        });
+    }
 
-template <class RunAsyncFunc>
-inline GimpAsync *
-gimp_parallel_run_async_independent_full (gint         priority,
-                                          RunAsyncFunc func)
-{
-  RunAsyncFunc *func_copy = g_new (RunAsyncFunc, 1);
+    template <class RunAsyncFunc>
+    inline GimpAsync *
+    gimp_parallel_run_async_independent_full (gint         priority,
+            RunAsyncFunc func)
+    {
+        RunAsyncFunc *func_copy = g_new (RunAsyncFunc, 1);
 
-  new (func_copy) RunAsyncFunc (func);
+        new (func_copy) RunAsyncFunc (func);
 
-  return gimp_parallel_run_async_independent_full (priority,
-                                                   [] (GimpAsync *async,
-                                                       gpointer   user_data)
-                                                   {
-                                                     RunAsyncFunc *func_copy =
-                                                       (RunAsyncFunc *) user_data;
+        return gimp_parallel_run_async_independent_full (priority,
+                [] (GimpAsync *async,
+                    gpointer   user_data)
+        {
+            RunAsyncFunc *func_copy =
+                (RunAsyncFunc *) user_data;
 
-                                                     (*func_copy) (async);
+            (*func_copy) (async);
 
-                                                     func_copy->~RunAsyncFunc ();
-                                                     g_free (func_copy);
-                                                   },
-                                                   func_copy);
-}
+            func_copy->~RunAsyncFunc ();
+            g_free (func_copy);
+        },
+        func_copy);
+    }
 
-template <class RunAsyncFunc>
-inline GimpAsync *
-gimp_parallel_run_async_independent (RunAsyncFunc func)
-{
-  return gimp_parallel_run_async_independent_full (0, func);
-}
+    template <class RunAsyncFunc>
+    inline GimpAsync *
+    gimp_parallel_run_async_independent (RunAsyncFunc func)
+    {
+        return gimp_parallel_run_async_independent_full (0, func);
+    }
 
 }
 

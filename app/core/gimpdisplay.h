@@ -35,17 +35,17 @@ typedef struct _GimpDisplayPrivate GimpDisplayPrivate;
 
 struct _GimpDisplay
 {
-  GimpObject          parent_instance;
+    GimpObject          parent_instance;
 
-  Gimp               *gimp;
-  GimpDisplayConfig  *config;
+    Gimp               *gimp;
+    GimpDisplayConfig  *config;
 
-  GimpDisplayPrivate *priv;
+    GimpDisplayPrivate *priv;
 };
 
 struct _GimpDisplayClass
 {
-  GimpObjectClass     parent_class;
+    GimpObjectClass     parent_class;
 };
 
 

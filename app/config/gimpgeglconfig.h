@@ -33,19 +33,19 @@ typedef struct _GimpGeglConfigClass GimpGeglConfigClass;
 
 struct _GimpGeglConfig
 {
-  GObject   parent_instance;
+    GObject   parent_instance;
 
-  gchar    *temp_path;
-  gchar    *swap_path;
-  gchar    *swap_compression;
-  gint      num_processors;
-  guint64   tile_cache_size;
-  gboolean  use_opencl;
+    gchar    *temp_path;
+    gchar    *swap_path;
+    gchar    *swap_compression;
+    gint      num_processors;
+    guint64   tile_cache_size;
+    gboolean  use_opencl;
 };
 
 struct _GimpGeglConfigClass
 {
-  GObjectClass  parent_class;
+    GObjectClass  parent_class;
 };
 
 

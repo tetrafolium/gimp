@@ -21,8 +21,8 @@
 
 GimpMetadata * gimp_image_get_metadata                    (GimpImage    *image);
 void           gimp_image_set_metadata                    (GimpImage    *image,
-                                                           GimpMetadata *metadata,
-                                                           gboolean      push_undo);
+        GimpMetadata *metadata,
+        gboolean      push_undo);
 
 void           gimp_image_metadata_update_pixel_size      (GimpImage    *image);
 void           gimp_image_metadata_update_bits_per_sample (GimpImage    *image);

@@ -34,37 +34,37 @@ typedef struct _GimpBufferClass GimpBufferClass;
 
 struct _GimpBuffer
 {
-  GimpViewable      parent_instance;
+    GimpViewable      parent_instance;
 
-  GeglBuffer       *buffer;
-  gint              offset_x;
-  gint              offset_y;
+    GeglBuffer       *buffer;
+    gint              offset_x;
+    gint              offset_y;
 
-  gdouble           resolution_x;
-  gdouble           resolution_y;
-  GimpUnit          unit;
+    gdouble           resolution_x;
+    gdouble           resolution_y;
+    GimpUnit          unit;
 
-  GimpColorProfile *color_profile;
-  GimpColorProfile *format_profile;
+    GimpColorProfile *color_profile;
+    GimpColorProfile *format_profile;
 };
 
 struct _GimpBufferClass
 {
-  GimpViewableClass  parent_class;
+    GimpViewableClass  parent_class;
 };
 
 
 GType              gimp_buffer_get_type          (void) G_GNUC_CONST;
 
 GimpBuffer       * gimp_buffer_new               (GeglBuffer       *buffer,
-                                                  const gchar      *name,
-                                                  gint              offset_x,
-                                                  gint              offset_y,
-                                                  gboolean          copy_pixels);
+        const gchar      *name,
+        gint              offset_x,
+        gint              offset_y,
+        gboolean          copy_pixels);
 GimpBuffer       * gimp_buffer_new_from_pixbuf   (GdkPixbuf        *pixbuf,
-                                                  const gchar      *name,
-                                                  gint              offset_x,
-                                                  gint              offset_y);
+        const gchar      *name,
+        gint              offset_x,
+        gint              offset_y);
 
 gint               gimp_buffer_get_width         (GimpBuffer       *buffer);
 gint               gimp_buffer_get_height        (GimpBuffer       *buffer);
@@ -73,18 +73,18 @@ const Babl       * gimp_buffer_get_format        (GimpBuffer       *buffer);
 GeglBuffer       * gimp_buffer_get_buffer        (GimpBuffer       *buffer);
 
 void               gimp_buffer_set_resolution    (GimpBuffer       *buffer,
-                                                  gdouble           resolution_x,
-                                                  gdouble           resolution_y);
+        gdouble           resolution_x,
+        gdouble           resolution_y);
 gboolean           gimp_buffer_get_resolution    (GimpBuffer       *buffer,
-                                                  gdouble          *resolution_x,
-                                                  gdouble          *resolution_y);
+        gdouble          *resolution_x,
+        gdouble          *resolution_y);
 
 void               gimp_buffer_set_unit          (GimpBuffer       *buffer,
-                                                  GimpUnit          unit);
+        GimpUnit          unit);
 GimpUnit           gimp_buffer_get_unit          (GimpBuffer       *buffer);
 
 void               gimp_buffer_set_color_profile (GimpBuffer       *buffer,
-                                                  GimpColorProfile *profile);
+        GimpColorProfile *profile);
 GimpColorProfile * gimp_buffer_get_color_profile (GimpBuffer       *buffer);
 
 

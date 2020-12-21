@@ -35,12 +35,12 @@ typedef struct _GimpLayerStackClass GimpLayerStackClass;
 
 struct _GimpLayerStack
 {
-  GimpDrawableStack  parent_instance;
+    GimpDrawableStack  parent_instance;
 };
 
 struct _GimpLayerStackClass
 {
-  GimpDrawableStackClass  parent_class;
+    GimpDrawableStackClass  parent_class;
 };
 
 

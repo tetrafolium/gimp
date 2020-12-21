@@ -37,36 +37,36 @@ typedef struct _GimpExtensionClass    GimpExtensionClass;
 
 struct _GimpExtension
 {
-  GimpObject            parent_instance;
+    GimpObject            parent_instance;
 
-  GimpExtensionPrivate *p;
+    GimpExtensionPrivate *p;
 };
 
 struct _GimpExtensionClass
 {
-  GimpObjectClass       parent_class;
+    GimpObjectClass       parent_class;
 };
 
 
 GType           gimp_extension_get_type (void) G_GNUC_CONST;
 
 GimpExtension * gimp_extension_new                     (const gchar    *dir,
-                                                        gboolean        writable);
+        gboolean        writable);
 const gchar   * gimp_extension_get_name                (GimpExtension  *extension);
 const gchar   * gimp_extension_get_comment             (GimpExtension  *extension);
 const gchar   * gimp_extension_get_description         (GimpExtension  *extension);
 GdkPixbuf     * gimp_extension_get_screenshot          (GimpExtension  *extension,
-                                                        gint            width,
-                                                        gint            height,
-                                                        const gchar   **caption);
+        gint            width,
+        gint            height,
+        const gchar   **caption);
 const gchar   * gimp_extension_get_path                (GimpExtension  *extension);
 
 gchar         * gimp_extension_get_markup_description  (GimpExtension  *extension);
 
 gboolean        gimp_extension_load                    (GimpExtension  *extension,
-                                                        GError        **error);
+        GError        **error);
 gboolean        gimp_extension_run                     (GimpExtension  *extension,
-                                                        GError        **error);
+        GError        **error);
 void            gimp_extension_stop                    (GimpExtension  *extension);
 
 GList         * gimp_extension_get_brush_paths         (GimpExtension  *extension);
@@ -81,8 +81,8 @@ GList         * gimp_extension_get_theme_paths         (GimpExtension  *extensio
 GList         * gimp_extension_get_plug_in_paths       (GimpExtension  *extension);
 
 gint            gimp_extension_cmp                     (GimpExtension  *extension1,
-                                                        GimpExtension  *extension2);
+        GimpExtension  *extension2);
 gint            gimp_extension_id_cmp                  (GimpExtension  *extension1,
-                                                        const gchar    *id);
+        const gchar    *id);
 
 #endif  /* __GIMP_EXTENSION_H__ */

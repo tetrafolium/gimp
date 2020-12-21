@@ -32,14 +32,14 @@ typedef struct _GimpDocumentListClass GimpDocumentListClass;
 
 struct _GimpDocumentList
 {
-  GimpList  parent_instance;
+    GimpList  parent_instance;
 
-  Gimp     *gimp;
+    Gimp     *gimp;
 };
 
 struct _GimpDocumentListClass
 {
-  GimpListClass  parent_class;
+    GimpListClass  parent_class;
 };
 
 
@@ -47,8 +47,8 @@ GType           gimp_document_list_get_type (void) G_GNUC_CONST;
 GimpContainer * gimp_document_list_new      (Gimp             *gimp);
 
 GimpImagefile * gimp_document_list_add_file (GimpDocumentList *document_list,
-                                             GFile            *file,
-                                             const gchar      *mime_type);
+        GFile            *file,
+        const gchar      *mime_type);
 
 
 #endif  /*  __GIMP_DOCUMENT_LIST_H__  */

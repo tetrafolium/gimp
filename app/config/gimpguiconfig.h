@@ -39,62 +39,62 @@ typedef struct _GimpGuiConfigClass GimpGuiConfigClass;
 
 struct _GimpGuiConfig
 {
-  GimpDisplayConfig    parent_instance;
+    GimpDisplayConfig    parent_instance;
 
-  gboolean             edit_non_visible;
-  gboolean             move_tool_changes_active;
-  gint                 filter_tool_max_recent;
-  gboolean             filter_tool_use_last_settings;
-  gboolean             filter_tool_show_color_options;
-  gboolean             trust_dirty_flag;
-  gboolean             save_device_status;
-  gboolean             devices_share_tool;
-  gboolean             save_session_info;
-  gboolean             restore_session;
-  gboolean             restore_monitor;
-  gboolean             save_tool_options;
-  gboolean             can_change_accels;
-  gboolean             save_accels;
-  gboolean             restore_accels;
-  gint                 last_opened_size;
-  guint64              max_new_image_size;
-  gboolean             toolbox_color_area;
-  gboolean             toolbox_foo_area;
-  gboolean             toolbox_image_area;
-  gboolean             toolbox_wilber;
-  gboolean             toolbox_groups;
-  gchar               *theme_path;
-  gchar               *theme;
-  gboolean             prefer_dark_theme;
-  gchar               *icon_theme_path;
-  gchar               *icon_theme;
-  gboolean             prefer_symbolic_icons;
-  gboolean             use_help;
-  gboolean             show_help_button;
-  gchar               *help_locales;
-  GimpHelpBrowserType  help_browser;
-  gboolean             user_manual_online;
-  gchar               *user_manual_online_uri;
-  gint                 action_history_size;
-  GimpWindowHint       dock_window_hint;
-  GimpHandedness       cursor_handedness;
+    gboolean             edit_non_visible;
+    gboolean             move_tool_changes_active;
+    gint                 filter_tool_max_recent;
+    gboolean             filter_tool_use_last_settings;
+    gboolean             filter_tool_show_color_options;
+    gboolean             trust_dirty_flag;
+    gboolean             save_device_status;
+    gboolean             devices_share_tool;
+    gboolean             save_session_info;
+    gboolean             restore_session;
+    gboolean             restore_monitor;
+    gboolean             save_tool_options;
+    gboolean             can_change_accels;
+    gboolean             save_accels;
+    gboolean             restore_accels;
+    gint                 last_opened_size;
+    guint64              max_new_image_size;
+    gboolean             toolbox_color_area;
+    gboolean             toolbox_foo_area;
+    gboolean             toolbox_image_area;
+    gboolean             toolbox_wilber;
+    gboolean             toolbox_groups;
+    gchar               *theme_path;
+    gchar               *theme;
+    gboolean             prefer_dark_theme;
+    gchar               *icon_theme_path;
+    gchar               *icon_theme;
+    gboolean             prefer_symbolic_icons;
+    gboolean             use_help;
+    gboolean             show_help_button;
+    gchar               *help_locales;
+    GimpHelpBrowserType  help_browser;
+    gboolean             user_manual_online;
+    gchar               *user_manual_online_uri;
+    gint                 action_history_size;
+    GimpWindowHint       dock_window_hint;
+    GimpHandedness       cursor_handedness;
 
-  /* experimental playground */
-  gboolean             playground_npd_tool;
-  gboolean             playground_seamless_clone_tool;
-  gboolean             playground_paint_select_tool;
+    /* experimental playground */
+    gboolean             playground_npd_tool;
+    gboolean             playground_seamless_clone_tool;
+    gboolean             playground_paint_select_tool;
 
-  /* saved in sessionrc */
-  gboolean             hide_docks;
-  gboolean             single_window_mode;
-  gboolean             show_tabs;
-  GimpPosition         tabs_position;
-  gint                 last_tip_shown;
+    /* saved in sessionrc */
+    gboolean             hide_docks;
+    gboolean             single_window_mode;
+    gboolean             show_tabs;
+    GimpPosition         tabs_position;
+    gint                 last_tip_shown;
 };
 
 struct _GimpGuiConfigClass
 {
-  GimpDisplayConfigClass  parent_class;
+    GimpDisplayConfigClass  parent_class;
 };
 
 

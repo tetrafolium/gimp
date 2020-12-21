@@ -36,18 +36,18 @@ typedef struct _GimpFilterClass GimpFilterClass;
 
 struct _GimpFilter
 {
-  GimpViewable  parent_instance;
+    GimpViewable  parent_instance;
 };
 
 struct _GimpFilterClass
 {
-  GimpViewableClass  parent_class;
+    GimpViewableClass  parent_class;
 
-  /*  signals  */
-  void       (* active_changed) (GimpFilter *filter);
+    /*  signals  */
+    void       (* active_changed) (GimpFilter *filter);
 
-  /*  virtual functions  */
-  GeglNode * (* get_node)       (GimpFilter *filter);
+    /*  virtual functions  */
+    GeglNode * (* get_node)       (GimpFilter *filter);
 };
 
 
@@ -58,15 +58,15 @@ GeglNode       * gimp_filter_get_node         (GimpFilter     *filter);
 GeglNode       * gimp_filter_peek_node        (GimpFilter     *filter);
 
 void             gimp_filter_set_active       (GimpFilter     *filter,
-                                               gboolean        active);
+        gboolean        active);
 gboolean         gimp_filter_get_active       (GimpFilter     *filter);
 
 void             gimp_filter_set_is_last_node (GimpFilter     *filter,
-                                               gboolean        is_last_node);
+        gboolean        is_last_node);
 gboolean         gimp_filter_get_is_last_node (GimpFilter     *filter);
 
 void             gimp_filter_set_applicator   (GimpFilter     *filter,
-                                               GimpApplicator *applicator);
+        GimpApplicator *applicator);
 GimpApplicator * gimp_filter_get_applicator   (GimpFilter     *filter);
 
 

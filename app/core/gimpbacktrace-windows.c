@@ -52,41 +52,41 @@ typedef struct _GimpBacktraceThread GimpBacktraceThread;
 
 struct _Thread
 {
-  DWORD  tid;
+    DWORD  tid;
 
-  union
-  {
-    gchar   *name;
-    guint64  time;
-  };
+    union
+    {
+        gchar   *name;
+        guint64  time;
+    };
 };
 
 struct _GimpBacktraceThread
 {
-  DWORD        tid;
-  const gchar *name;
-  guint64      time;
-  guint64      last_time;
+    DWORD        tid;
+    const gchar *name;
+    guint64      time;
+    guint64      last_time;
 
-  guintptr     frames[MAX_N_FRAMES];
-  gint         n_frames;
+    guintptr     frames[MAX_N_FRAMES];
+    gint         n_frames;
 };
 
 struct _GimpBacktrace
 {
-  GimpBacktraceThread *threads;
-  gint                 n_threads;
+    GimpBacktraceThread *threads;
+    gint                 n_threads;
 };
 
 
 /*  local function prototypes  */
 
 static inline gint   gimp_backtrace_normalize_frame   (GimpBacktrace       *backtrace,
-                                                       gint                 thread,
-                                                       gint                 frame);
+        gint                 thread,
+        gint                 frame);
 
 static void          gimp_backtrace_set_thread_name   (DWORD                tid,
-                                                       const gchar         *name);
+        const gchar         *name);
 
 static gboolean      gimp_backtrace_enumerate_threads (void);
 
@@ -109,17 +109,17 @@ gint             n_thread_times;
 
 DWORD   WINAPI (* gimp_backtrace_SymSetOptions)        (DWORD            SymOptions);
 BOOL    WINAPI (* gimp_backtrace_SymInitialize)        (HANDLE           hProcess,
-                                                        PCSTR            UserSearchPath,
-                                                        BOOL             fInvadeProcess);
+        PCSTR            UserSearchPath,
+        BOOL             fInvadeProcess);
 BOOL    WINAPI (* gimp_backtrace_SymCleanup)           (HANDLE           hProcess);
 BOOL    WINAPI (* gimp_backtrace_SymFromAddr)          (HANDLE           hProcess,
-                                                        DWORD64          Address,
-                                                        PDWORD64         Displacement,
-                                                        PSYMBOL_INFO     Symbol);
+        DWORD64          Address,
+        PDWORD64         Displacement,
+        PSYMBOL_INFO     Symbol);
 BOOL    WINAPI (* gimp_backtrace_SymGetLineFromAddr64) (HANDLE           hProcess,
-                                                        DWORD64          qwAddr,
-                                                        PDWORD           pdwDisplacement,
-                                                        PIMAGEHLP_LINE64 Line64);
+        DWORD64          qwAddr,
+        PDWORD           pdwDisplacement,
+        PIMAGEHLP_LINE64 Line64);
 
 
 /*  private functions  */
@@ -130,137 +130,137 @@ gimp_backtrace_normalize_frame (GimpBacktrace *backtrace,
                                 gint           thread,
                                 gint           frame)
 {
-  if (frame >= 0)
-    return frame;
-  else
-    return backtrace->threads[thread].n_frames + frame;
+    if (frame >= 0)
+        return frame;
+    else
+        return backtrace->threads[thread].n_frames + frame;
 }
 
 static void
 gimp_backtrace_set_thread_name (DWORD        tid,
                                 const gchar *name)
 {
-  while (! g_atomic_int_compare_and_exchange (&thread_names_spinlock,
-                                              0, 1));
+    while (! g_atomic_int_compare_and_exchange (&thread_names_spinlock,
+            0, 1));
 
-  if (n_thread_names < MAX_N_THREADS)
+    if (n_thread_names < MAX_N_THREADS)
     {
-      Thread *thread = &thread_names[n_thread_names++];
+        Thread *thread = &thread_names[n_thread_names++];
 
-      thread->tid  = tid;
-      thread->name = g_strdup (name);
+        thread->tid  = tid;
+        thread->name = g_strdup (name);
     }
 
-  g_atomic_int_set (&thread_names_spinlock, 0);
+    g_atomic_int_set (&thread_names_spinlock, 0);
 }
 
 static gboolean
 gimp_backtrace_enumerate_threads (void)
 {
-  HANDLE        hThreadSnap;
-  THREADENTRY32 te32;
-  DWORD         pid;
-  gint64        time;
+    HANDLE        hThreadSnap;
+    THREADENTRY32 te32;
+    DWORD         pid;
+    gint64        time;
 
-  time = g_get_monotonic_time ();
+    time = g_get_monotonic_time ();
 
-  if (time - last_thread_enumeration_time < THREAD_ENUMERATION_INTERVAL)
-    return n_threads > 0;
+    if (time - last_thread_enumeration_time < THREAD_ENUMERATION_INTERVAL)
+        return n_threads > 0;
 
-  last_thread_enumeration_time = time;
+    last_thread_enumeration_time = time;
 
-  n_threads = 0;
+    n_threads = 0;
 
-  hThreadSnap = CreateToolhelp32Snapshot (TH32CS_SNAPTHREAD, 0);
+    hThreadSnap = CreateToolhelp32Snapshot (TH32CS_SNAPTHREAD, 0);
 
-  if (hThreadSnap == INVALID_HANDLE_VALUE)
-    return FALSE;
+    if (hThreadSnap == INVALID_HANDLE_VALUE)
+        return FALSE;
 
-  te32.dwSize = sizeof (te32);
+    te32.dwSize = sizeof (te32);
 
-  if (! Thread32First (hThreadSnap, &te32))
+    if (! Thread32First (hThreadSnap, &te32))
     {
-      CloseHandle (hThreadSnap);
+        CloseHandle (hThreadSnap);
 
-      return FALSE;
+        return FALSE;
     }
 
-  pid = GetCurrentProcessId ();
+    pid = GetCurrentProcessId ();
 
-  while (! g_atomic_int_compare_and_exchange (&thread_names_spinlock, 0, 1));
+    while (! g_atomic_int_compare_and_exchange (&thread_names_spinlock, 0, 1));
 
-  do
+    do
     {
-      if (n_threads == MAX_N_THREADS)
-        break;
+        if (n_threads == MAX_N_THREADS)
+            break;
 
-      if (te32.th32OwnerProcessID == pid)
+        if (te32.th32OwnerProcessID == pid)
         {
-          Thread *thread = &threads[n_threads++];
-          gint    i;
+            Thread *thread = &threads[n_threads++];
+            gint    i;
 
-          thread->tid  = te32.th32ThreadID;
-          thread->name = NULL;
+            thread->tid  = te32.th32ThreadID;
+            thread->name = NULL;
 
-          for (i = n_thread_names - 1; i >= 0; i--)
+            for (i = n_thread_names - 1; i >= 0; i--)
             {
-              if (thread->tid == thread_names[i].tid)
+                if (thread->tid == thread_names[i].tid)
                 {
-                  thread->name = thread_names[i].name;
+                    thread->name = thread_names[i].name;
 
-                  break;
+                    break;
                 }
             }
         }
     }
-  while (Thread32Next (hThreadSnap, &te32));
+    while (Thread32Next (hThreadSnap, &te32));
 
-  g_atomic_int_set (&thread_names_spinlock, 0);
+    g_atomic_int_set (&thread_names_spinlock, 0);
 
-  CloseHandle (hThreadSnap);
+    CloseHandle (hThreadSnap);
 
-  return n_threads > 0;
+    return n_threads > 0;
 }
 
 static LONG WINAPI
 gimp_backtrace_exception_handler (PEXCEPTION_POINTERS info)
 {
-  #define EXCEPTION_SET_THREAD_NAME ((DWORD) 0x406D1388)
+#define EXCEPTION_SET_THREAD_NAME ((DWORD) 0x406D1388)
 
-  typedef struct _THREADNAME_INFO
-  {
-    DWORD  dwType;	    /* must be 0x1000                        */
-    LPCSTR szName;	    /* pointer to name (in user addr space)  */
-    DWORD  dwThreadID;	/* thread ID (-1=caller thread)          */
-    DWORD  dwFlags;	    /* reserved for future use, must be zero */
-  } THREADNAME_INFO;
-
-  if (info->ExceptionRecord                   != NULL                      &&
-      info->ExceptionRecord->ExceptionCode    == EXCEPTION_SET_THREAD_NAME &&
-      info->ExceptionRecord->NumberParameters * 
-      sizeof (ULONG_PTR)                      == sizeof (THREADNAME_INFO))
+    typedef struct _THREADNAME_INFO
     {
-      THREADNAME_INFO name_info;
+        DWORD  dwType;	    /* must be 0x1000                        */
+        LPCSTR szName;	    /* pointer to name (in user addr space)  */
+        DWORD  dwThreadID;	/* thread ID (-1=caller thread)          */
+        DWORD  dwFlags;	    /* reserved for future use, must be zero */
+    } THREADNAME_INFO;
 
-      memcpy (&name_info, info->ExceptionRecord->ExceptionInformation,
-              sizeof (name_info));
+    if (info->ExceptionRecord                   != NULL                      &&
+            info->ExceptionRecord->ExceptionCode    == EXCEPTION_SET_THREAD_NAME &&
+            info->ExceptionRecord->NumberParameters *
+            sizeof (ULONG_PTR)                      == sizeof (THREADNAME_INFO))
+    {
+        THREADNAME_INFO name_info;
 
-      if (name_info.dwType == 0x1000)
+        memcpy (&name_info, info->ExceptionRecord->ExceptionInformation,
+                sizeof (name_info));
+
+        if (name_info.dwType == 0x1000)
         {
-          DWORD tid = name_info.dwThreadID;
+            DWORD tid = name_info.dwThreadID;
 
-          if (tid == -1)
-            tid = GetCurrentThreadId ();
+            if (tid == -1)
+                tid = GetCurrentThreadId ();
 
-          gimp_backtrace_set_thread_name (tid, name_info.szName);
+            gimp_backtrace_set_thread_name (tid, name_info.szName);
 
-          return EXCEPTION_CONTINUE_EXECUTION;
+            return EXCEPTION_CONTINUE_EXECUTION;
         }
     }
 
-  return EXCEPTION_CONTINUE_SEARCH;
+    return EXCEPTION_CONTINUE_SEARCH;
 
-  #undef EXCEPTION_SET_THREAD_NAME
+#undef EXCEPTION_SET_THREAD_NAME
 }
 
 
@@ -270,24 +270,24 @@ gimp_backtrace_exception_handler (PEXCEPTION_POINTERS info)
 void
 gimp_backtrace_init (void)
 {
-  gimp_backtrace_set_thread_name (GetCurrentThreadId (), g_get_prgname ());
+    gimp_backtrace_set_thread_name (GetCurrentThreadId (), g_get_prgname ());
 
-  AddVectoredExceptionHandler (TRUE, gimp_backtrace_exception_handler);
+    AddVectoredExceptionHandler (TRUE, gimp_backtrace_exception_handler);
 }
 
 gboolean
 gimp_backtrace_start (void)
 {
-  g_mutex_lock (&mutex);
+    g_mutex_lock (&mutex);
 
-  if (n_initializations == 0)
+    if (n_initializations == 0)
     {
-      HMODULE hModule;
-      DWORD   options;
+        HMODULE hModule;
+        DWORD   options;
 
-      hModule = LoadLibraryA ("mgwhelp.dll");
+        hModule = LoadLibraryA ("mgwhelp.dll");
 
-      #define INIT_PROC(name)                                    \
+#define INIT_PROC(name)                                    \
         G_STMT_START                                             \
           {                                                      \
             gimp_backtrace_##name = name;                        \
@@ -302,283 +302,283 @@ gimp_backtrace_start (void)
           }                                                      \
         G_STMT_END
 
-      INIT_PROC (SymSetOptions);
-      INIT_PROC (SymInitialize);
-      INIT_PROC (SymCleanup);
-      INIT_PROC (SymFromAddr);
-      INIT_PROC (SymGetLineFromAddr64);
+        INIT_PROC (SymSetOptions);
+        INIT_PROC (SymInitialize);
+        INIT_PROC (SymCleanup);
+        INIT_PROC (SymFromAddr);
+        INIT_PROC (SymGetLineFromAddr64);
 
-      #undef INIT_PROC
+#undef INIT_PROC
 
-      options = SymGetOptions ();
+        options = SymGetOptions ();
 
-      options &= ~SYMOPT_UNDNAME;
-      options |= SYMOPT_OMAP_FIND_NEAREST |
-                 SYMOPT_DEFERRED_LOADS    |
-                 SYMOPT_DEBUG;
+        options &= ~SYMOPT_UNDNAME;
+        options |= SYMOPT_OMAP_FIND_NEAREST |
+                   SYMOPT_DEFERRED_LOADS    |
+                   SYMOPT_DEBUG;
 
 #ifdef ARCH_X86_64
-      options |= SYMOPT_INCLUDE_32BIT_MODULES;
+        options |= SYMOPT_INCLUDE_32BIT_MODULES;
 #endif
 
-      gimp_backtrace_SymSetOptions (options);
+        gimp_backtrace_SymSetOptions (options);
 
-      if (gimp_backtrace_SymInitialize (GetCurrentProcess (), NULL, TRUE))
+        if (gimp_backtrace_SymInitialize (GetCurrentProcess (), NULL, TRUE))
         {
-          n_threads                    = 0;
-          last_thread_enumeration_time = 0;
-          n_thread_times               = 0;
+            n_threads                    = 0;
+            last_thread_enumeration_time = 0;
+            n_thread_times               = 0;
 
-          initialized = TRUE;
+            initialized = TRUE;
         }
     }
 
-  n_initializations++;
+    n_initializations++;
 
-  g_mutex_unlock (&mutex);
+    g_mutex_unlock (&mutex);
 
-  return initialized;
+    return initialized;
 }
 
 void
 gimp_backtrace_stop (void)
 {
-  g_return_if_fail (n_initializations > 0);
+    g_return_if_fail (n_initializations > 0);
 
-  g_mutex_lock (&mutex);
+    g_mutex_lock (&mutex);
 
-  n_initializations--;
+    n_initializations--;
 
-  if (n_initializations == 0)
+    if (n_initializations == 0)
     {
-      if (initialized)
+        if (initialized)
         {
-          gimp_backtrace_SymCleanup (GetCurrentProcess ());
+            gimp_backtrace_SymCleanup (GetCurrentProcess ());
 
-          initialized = FALSE;
+            initialized = FALSE;
         }
     }
 
-  g_mutex_unlock (&mutex);
+    g_mutex_unlock (&mutex);
 }
 
 GimpBacktrace *
 gimp_backtrace_new (gboolean include_current_thread)
 {
-  GimpBacktrace *backtrace;
-  HANDLE         hProcess;
-  DWORD          tid;
-  gint           i;
+    GimpBacktrace *backtrace;
+    HANDLE         hProcess;
+    DWORD          tid;
+    gint           i;
 
-  if (! initialized)
-    return NULL;
+    if (! initialized)
+        return NULL;
 
-  g_mutex_lock (&mutex);
+    g_mutex_lock (&mutex);
 
-  if (! gimp_backtrace_enumerate_threads ())
+    if (! gimp_backtrace_enumerate_threads ())
     {
-      g_mutex_unlock (&mutex);
+        g_mutex_unlock (&mutex);
 
-      return NULL;
+        return NULL;
     }
 
-  hProcess = GetCurrentProcess ();
-  tid      = GetCurrentThreadId ();
+    hProcess = GetCurrentProcess ();
+    tid      = GetCurrentThreadId ();
 
-  backtrace = g_slice_new (GimpBacktrace);
+    backtrace = g_slice_new (GimpBacktrace);
 
-  backtrace->threads   = g_new (GimpBacktraceThread, n_threads);
-  backtrace->n_threads = 0;
+    backtrace->threads   = g_new (GimpBacktraceThread, n_threads);
+    backtrace->n_threads = 0;
 
-  for (i = 0; i < n_threads; i++)
+    for (i = 0; i < n_threads; i++)
     {
-      GimpBacktraceThread *thread  = &backtrace->threads[backtrace->n_threads];
-      HANDLE               hThread;
-      CONTEXT              context = {};
-      STACKFRAME64         frame   = {};
-      DWORD                machine_type;
-      FILETIME             creation_time;
-      FILETIME             exit_time;
-      FILETIME             kernel_time;
-      FILETIME             user_time;
+        GimpBacktraceThread *thread  = &backtrace->threads[backtrace->n_threads];
+        HANDLE               hThread;
+        CONTEXT              context = {};
+        STACKFRAME64         frame   = {};
+        DWORD                machine_type;
+        FILETIME             creation_time;
+        FILETIME             exit_time;
+        FILETIME             kernel_time;
+        FILETIME             user_time;
 
-      if (! include_current_thread && threads[i].tid == tid)
-        continue;
+        if (! include_current_thread && threads[i].tid == tid)
+            continue;
 
-      hThread = OpenThread (THREAD_QUERY_INFORMATION |
-                            THREAD_GET_CONTEXT       |
-                            THREAD_SUSPEND_RESUME,
-                            FALSE,
-                            threads[i].tid);
+        hThread = OpenThread (THREAD_QUERY_INFORMATION |
+                              THREAD_GET_CONTEXT       |
+                              THREAD_SUSPEND_RESUME,
+                              FALSE,
+                              threads[i].tid);
 
-      if (hThread == INVALID_HANDLE_VALUE)
-        continue;
+        if (hThread == INVALID_HANDLE_VALUE)
+            continue;
 
-      if (threads[i].tid != tid && SuspendThread (hThread) == (DWORD) -1)
+        if (threads[i].tid != tid && SuspendThread (hThread) == (DWORD) -1)
         {
-          CloseHandle (hThread);
+            CloseHandle (hThread);
 
-          continue;
+            continue;
         }
 
-      context.ContextFlags = CONTEXT_FULL;
+        context.ContextFlags = CONTEXT_FULL;
 
-      if (! GetThreadContext (hThread, &context))
+        if (! GetThreadContext (hThread, &context))
         {
-          if (threads[i].tid != tid)
-            ResumeThread (hThread);
+            if (threads[i].tid != tid)
+                ResumeThread (hThread);
 
-          CloseHandle (hThread);
+            CloseHandle (hThread);
 
-          continue;
+            continue;
         }
 
 #ifdef ARCH_X86_64
-      machine_type = IMAGE_FILE_MACHINE_AMD64;
-      frame.AddrPC.Offset    = context.Rip;
-      frame.AddrPC.Mode      = AddrModeFlat;
-      frame.AddrStack.Offset = context.Rsp;
-      frame.AddrStack.Mode   = AddrModeFlat;
-      frame.AddrFrame.Offset = context.Rbp;
-      frame.AddrFrame.Mode   = AddrModeFlat;
+        machine_type = IMAGE_FILE_MACHINE_AMD64;
+        frame.AddrPC.Offset    = context.Rip;
+        frame.AddrPC.Mode      = AddrModeFlat;
+        frame.AddrStack.Offset = context.Rsp;
+        frame.AddrStack.Mode   = AddrModeFlat;
+        frame.AddrFrame.Offset = context.Rbp;
+        frame.AddrFrame.Mode   = AddrModeFlat;
 #elif defined (ARCH_X86)
-      machine_type = IMAGE_FILE_MACHINE_I386;
-      frame.AddrPC.Offset    = context.Eip;
-      frame.AddrPC.Mode      = AddrModeFlat;
-      frame.AddrStack.Offset = context.Esp;
-      frame.AddrStack.Mode   = AddrModeFlat;
-      frame.AddrFrame.Offset = context.Ebp;
-      frame.AddrFrame.Mode   = AddrModeFlat;
+        machine_type = IMAGE_FILE_MACHINE_I386;
+        frame.AddrPC.Offset    = context.Eip;
+        frame.AddrPC.Mode      = AddrModeFlat;
+        frame.AddrStack.Offset = context.Esp;
+        frame.AddrStack.Mode   = AddrModeFlat;
+        frame.AddrFrame.Offset = context.Ebp;
+        frame.AddrFrame.Mode   = AddrModeFlat;
 #else
 #error unsupported architecture
 #endif
 
-      thread->tid       = threads[i].tid;
-      thread->name      = threads[i].name;
-      thread->last_time = 0;
-      thread->time      = 0;
+        thread->tid       = threads[i].tid;
+        thread->name      = threads[i].name;
+        thread->last_time = 0;
+        thread->time      = 0;
 
-      thread->n_frames = 0;
+        thread->n_frames = 0;
 
-      while (thread->n_frames < MAX_N_FRAMES &&
-             StackWalk64 (machine_type, hProcess, hThread, &frame, &context,
-                          NULL,
-                          SymFunctionTableAccess64,
-                          SymGetModuleBase64,
-                          NULL))
+        while (thread->n_frames < MAX_N_FRAMES &&
+                StackWalk64 (machine_type, hProcess, hThread, &frame, &context,
+                             NULL,
+                             SymFunctionTableAccess64,
+                             SymGetModuleBase64,
+                             NULL))
         {
-          thread->frames[thread->n_frames++] = frame.AddrPC.Offset;
+            thread->frames[thread->n_frames++] = frame.AddrPC.Offset;
 
-          if (frame.AddrPC.Offset == frame.AddrReturn.Offset)
-            break;
+            if (frame.AddrPC.Offset == frame.AddrReturn.Offset)
+                break;
         }
 
-      if (GetThreadTimes (hThread,
-                          &creation_time, &exit_time,
-                          &kernel_time, &user_time))
+        if (GetThreadTimes (hThread,
+                            &creation_time, &exit_time,
+                            &kernel_time, &user_time))
         {
-          thread->time = (((guint64) kernel_time.dwHighDateTime << 32) |
-                          ((guint64) kernel_time.dwLowDateTime))       +
-                         (((guint64) user_time.dwHighDateTime   << 32) |
-                          ((guint64) user_time.dwLowDateTime));
+            thread->time = (((guint64) kernel_time.dwHighDateTime << 32) |
+                            ((guint64) kernel_time.dwLowDateTime))       +
+                           (((guint64) user_time.dwHighDateTime   << 32) |
+                            ((guint64) user_time.dwLowDateTime));
 
-          if (i < n_thread_times && thread->tid == thread_times[i].tid)
+            if (i < n_thread_times && thread->tid == thread_times[i].tid)
             {
-              thread->last_time = thread_times[i].time;
+                thread->last_time = thread_times[i].time;
             }
-          else
+            else
             {
-              gint j;
+                gint j;
 
-              for (j = 0; j < n_thread_times; j++)
+                for (j = 0; j < n_thread_times; j++)
                 {
-                  if (thread->tid == thread_times[j].tid)
+                    if (thread->tid == thread_times[j].tid)
                     {
-                      thread->last_time = thread_times[j].time;
+                        thread->last_time = thread_times[j].time;
 
-                      break;
+                        break;
                     }
                 }
             }
         }
 
-      if (threads[i].tid != tid)
-        ResumeThread (hThread);
+        if (threads[i].tid != tid)
+            ResumeThread (hThread);
 
-      CloseHandle (hThread);
+        CloseHandle (hThread);
 
-      if (thread->n_frames > 0)
-        backtrace->n_threads++;
+        if (thread->n_frames > 0)
+            backtrace->n_threads++;
     }
 
-  n_thread_times = backtrace->n_threads;
+    n_thread_times = backtrace->n_threads;
 
-  for (i = 0; i < backtrace->n_threads; i++)
+    for (i = 0; i < backtrace->n_threads; i++)
     {
-      thread_times[i].tid  = backtrace->threads[i].tid;
-      thread_times[i].time = backtrace->threads[i].time;
+        thread_times[i].tid  = backtrace->threads[i].tid;
+        thread_times[i].time = backtrace->threads[i].time;
     }
 
-  g_mutex_unlock (&mutex);
+    g_mutex_unlock (&mutex);
 
-  if (backtrace->n_threads == 0)
+    if (backtrace->n_threads == 0)
     {
-      gimp_backtrace_free (backtrace);
+        gimp_backtrace_free (backtrace);
 
-      return NULL;
+        return NULL;
     }
 
-  return backtrace;
+    return backtrace;
 }
 
 void
 gimp_backtrace_free (GimpBacktrace *backtrace)
 {
-  if (backtrace)
+    if (backtrace)
     {
-      g_free (backtrace->threads);
+        g_free (backtrace->threads);
 
-      g_slice_free (GimpBacktrace, backtrace);
+        g_slice_free (GimpBacktrace, backtrace);
     }
 }
 
 gint
 gimp_backtrace_get_n_threads (GimpBacktrace *backtrace)
 {
-  g_return_val_if_fail (backtrace != NULL, 0);
+    g_return_val_if_fail (backtrace != NULL, 0);
 
-  return backtrace->n_threads;
+    return backtrace->n_threads;
 }
 
 guintptr
 gimp_backtrace_get_thread_id (GimpBacktrace *backtrace,
                               gint           thread)
 {
-  g_return_val_if_fail (backtrace != NULL, 0);
-  g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, 0);
+    g_return_val_if_fail (backtrace != NULL, 0);
+    g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, 0);
 
-  return backtrace->threads[thread].tid;
+    return backtrace->threads[thread].tid;
 }
 
 const gchar *
 gimp_backtrace_get_thread_name (GimpBacktrace *backtrace,
                                 gint           thread)
 {
-  g_return_val_if_fail (backtrace != NULL, NULL);
-  g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, NULL);
+    g_return_val_if_fail (backtrace != NULL, NULL);
+    g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, NULL);
 
-  return backtrace->threads[thread].name;
+    return backtrace->threads[thread].name;
 }
 
 gboolean
 gimp_backtrace_is_thread_running (GimpBacktrace *backtrace,
                                   gint           thread)
 {
-  g_return_val_if_fail (backtrace != NULL, FALSE);
-  g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, FALSE);
+    g_return_val_if_fail (backtrace != NULL, FALSE);
+    g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, FALSE);
 
-  return backtrace->threads[thread].time >
-         backtrace->threads[thread].last_time;
+    return backtrace->threads[thread].time >
+           backtrace->threads[thread].last_time;
 }
 
 gint
@@ -586,35 +586,35 @@ gimp_backtrace_find_thread_by_id (GimpBacktrace *backtrace,
                                   guintptr       thread_id,
                                   gint           thread_hint)
 {
-  DWORD tid = thread_id;
-  gint  i;
+    DWORD tid = thread_id;
+    gint  i;
 
-  g_return_val_if_fail (backtrace != NULL, -1);
+    g_return_val_if_fail (backtrace != NULL, -1);
 
-  if (thread_hint >= 0                    &&
-      thread_hint <  backtrace->n_threads &&
-      backtrace->threads[thread_hint].tid == tid)
+    if (thread_hint >= 0                    &&
+            thread_hint <  backtrace->n_threads &&
+            backtrace->threads[thread_hint].tid == tid)
     {
-      return thread_hint;
+        return thread_hint;
     }
 
-  for (i = 0; i < backtrace->n_threads; i++)
+    for (i = 0; i < backtrace->n_threads; i++)
     {
-      if (backtrace->threads[i].tid == tid)
-        return i;
+        if (backtrace->threads[i].tid == tid)
+            return i;
     }
 
-  return -1;
+    return -1;
 }
 
 gint
 gimp_backtrace_get_n_frames (GimpBacktrace *backtrace,
                              gint           thread)
 {
-  g_return_val_if_fail (backtrace != NULL, 0);
-  g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, 0);
+    g_return_val_if_fail (backtrace != NULL, 0);
+    g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, 0);
 
-  return backtrace->threads[thread].n_frames;
+    return backtrace->threads[thread].n_frames;
 }
 
 guintptr
@@ -622,84 +622,84 @@ gimp_backtrace_get_frame_address (GimpBacktrace *backtrace,
                                   gint           thread,
                                   gint           frame)
 {
-  g_return_val_if_fail (backtrace != NULL, 0);
-  g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, 0);
+    g_return_val_if_fail (backtrace != NULL, 0);
+    g_return_val_if_fail (thread >= 0 && thread < backtrace->n_threads, 0);
 
-  frame = gimp_backtrace_normalize_frame (backtrace, thread, frame);
+    frame = gimp_backtrace_normalize_frame (backtrace, thread, frame);
 
-  g_return_val_if_fail (frame >= 0 &&
-                        frame <  backtrace->threads[thread].n_frames, 0);
+    g_return_val_if_fail (frame >= 0 &&
+                          frame <  backtrace->threads[thread].n_frames, 0);
 
-  return backtrace->threads[thread].frames[frame];
+    return backtrace->threads[thread].frames[frame];
 }
 
 gboolean
 gimp_backtrace_get_address_info (guintptr                  address,
                                  GimpBacktraceAddressInfo *info)
 {
-  SYMBOL_INFO     *symbol_info;
-  HANDLE           hProcess;
-  HMODULE          hModule;
-  DWORD64          offset      = 0;
-  IMAGEHLP_LINE64  line        = {};
-  DWORD            line_offset = 0;
-  gboolean         result      = FALSE;
+    SYMBOL_INFO     *symbol_info;
+    HANDLE           hProcess;
+    HMODULE          hModule;
+    DWORD64          offset      = 0;
+    IMAGEHLP_LINE64  line        = {};
+    DWORD            line_offset = 0;
+    gboolean         result      = FALSE;
 
-  hProcess = GetCurrentProcess ();
-  hModule  = (HMODULE) (guintptr) SymGetModuleBase64 (hProcess, address);
+    hProcess = GetCurrentProcess ();
+    hModule  = (HMODULE) (guintptr) SymGetModuleBase64 (hProcess, address);
 
-  if (hModule && GetModuleFileNameExA (hProcess, hModule,
-                                       info->object_name,
-                                       sizeof (info->object_name)))
+    if (hModule && GetModuleFileNameExA (hProcess, hModule,
+                                         info->object_name,
+                                         sizeof (info->object_name)))
     {
-      result = TRUE;
+        result = TRUE;
     }
-  else
+    else
     {
-      info->object_name[0] = '\0';
-    }
-
-  symbol_info = g_malloc (sizeof (SYMBOL_INFO)       +
-                          sizeof (info->symbol_name) - 1);
-
-  symbol_info->SizeOfStruct = sizeof (SYMBOL_INFO);
-  symbol_info->MaxNameLen   = sizeof (info->symbol_name);
-
-  if (gimp_backtrace_SymFromAddr (hProcess, address,
-                                  &offset, symbol_info))
-    {
-      g_strlcpy (info->symbol_name, symbol_info->Name,
-                 sizeof (info->symbol_name));
-
-      info->symbol_address = offset ? address - offset : 0;
-
-      result = TRUE;
-    }
-  else
-    {
-      info->symbol_name[0] = '\0';
-      info->symbol_address = 0;
+        info->object_name[0] = '\0';
     }
 
-  g_free (symbol_info);
+    symbol_info = g_malloc (sizeof (SYMBOL_INFO)       +
+                            sizeof (info->symbol_name) - 1);
 
-  if (gimp_backtrace_SymGetLineFromAddr64 (hProcess, address,
-                                           &line_offset, &line))
+    symbol_info->SizeOfStruct = sizeof (SYMBOL_INFO);
+    symbol_info->MaxNameLen   = sizeof (info->symbol_name);
+
+    if (gimp_backtrace_SymFromAddr (hProcess, address,
+                                    &offset, symbol_info))
     {
-      g_strlcpy (info->source_file, line.FileName,
-                 sizeof (info->source_file));
+        g_strlcpy (info->symbol_name, symbol_info->Name,
+                   sizeof (info->symbol_name));
 
-      info->source_line = line.LineNumber;
+        info->symbol_address = offset ? address - offset : 0;
 
-      result = TRUE;
+        result = TRUE;
     }
-  else
+    else
     {
-      info->source_file[0] = '\0';
-      info->source_line    = 0;
+        info->symbol_name[0] = '\0';
+        info->symbol_address = 0;
     }
 
-  return result;
+    g_free (symbol_info);
+
+    if (gimp_backtrace_SymGetLineFromAddr64 (hProcess, address,
+            &line_offset, &line))
+    {
+        g_strlcpy (info->source_file, line.FileName,
+                   sizeof (info->source_file));
+
+        info->source_line = line.LineNumber;
+
+        result = TRUE;
+    }
+    else
+    {
+        info->source_file[0] = '\0';
+        info->source_line    = 0;
+    }
+
+    return result;
 }
 
 

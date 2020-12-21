@@ -28,22 +28,22 @@ G_DECLARE_INTERFACE (GimpTagged, gimp_tagged, GIMP, TAGGED, GObject)
 
 struct _GimpTaggedInterface
 {
-  GTypeInterface base_iface;
+    GTypeInterface base_iface;
 
-  /*  signals            */
-  void       (* tag_added)      (GimpTagged *tagged,
-                                 GimpTag    *tag);
-  void       (* tag_removed)    (GimpTagged *tagged,
-                                 GimpTag    *tag);
+    /*  signals            */
+    void       (* tag_added)      (GimpTagged *tagged,
+                                   GimpTag    *tag);
+    void       (* tag_removed)    (GimpTagged *tagged,
+                                   GimpTag    *tag);
 
-  /*  virtual functions  */
-  gboolean   (* add_tag)        (GimpTagged *tagged,
-                                 GimpTag    *tag);
-  gboolean   (* remove_tag)     (GimpTagged *tagged,
-                                 GimpTag    *tag);
-  GList    * (* get_tags)       (GimpTagged *tagged);
-  gchar    * (* get_identifier) (GimpTagged *tagged);
-  gchar    * (* get_checksum)   (GimpTagged *tagged);
+    /*  virtual functions  */
+    gboolean   (* add_tag)        (GimpTagged *tagged,
+                                   GimpTag    *tag);
+    gboolean   (* remove_tag)     (GimpTagged *tagged,
+                                   GimpTag    *tag);
+    GList    * (* get_tags)       (GimpTagged *tagged);
+    gchar    * (* get_identifier) (GimpTagged *tagged);
+    gchar    * (* get_checksum)   (GimpTagged *tagged);
 };
 
 

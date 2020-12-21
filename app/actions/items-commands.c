@@ -67,21 +67,21 @@ items_visible_cmd_callback (GimpAction *action,
                             GimpImage  *image,
                             GimpItem   *item)
 {
-  gboolean visible = g_variant_get_boolean (value);
+    gboolean visible = g_variant_get_boolean (value);
 
-  if (visible != gimp_item_get_visible (item))
+    if (visible != gimp_item_get_visible (item))
     {
-      GimpUndo *undo;
-      gboolean  push_undo = TRUE;
+        GimpUndo *undo;
+        gboolean  push_undo = TRUE;
 
-      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
-                                           GIMP_UNDO_ITEM_VISIBILITY);
+        undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                             GIMP_UNDO_ITEM_VISIBILITY);
 
-      if (undo && GIMP_ITEM_UNDO (undo)->item == item)
-        push_undo = FALSE;
+        if (undo && GIMP_ITEM_UNDO (undo)->item == item)
+            push_undo = FALSE;
 
-      gimp_item_set_visible (item, visible, push_undo);
-      gimp_image_flush (image);
+        gimp_item_set_visible (item, visible, push_undo);
+        gimp_image_flush (image);
     }
 }
 
@@ -91,21 +91,21 @@ items_linked_cmd_callback (GimpAction *action,
                            GimpImage  *image,
                            GimpItem   *item)
 {
-  gboolean linked = g_variant_get_boolean (value);
+    gboolean linked = g_variant_get_boolean (value);
 
-  if (linked != gimp_item_get_linked (item))
+    if (linked != gimp_item_get_linked (item))
     {
-      GimpUndo *undo;
-      gboolean  push_undo = TRUE;
+        GimpUndo *undo;
+        gboolean  push_undo = TRUE;
 
-      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
-                                           GIMP_UNDO_ITEM_LINKED);
+        undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                             GIMP_UNDO_ITEM_LINKED);
 
-      if (undo && GIMP_ITEM_UNDO (undo)->item == item)
-        push_undo = FALSE;
+        if (undo && GIMP_ITEM_UNDO (undo)->item == item)
+            push_undo = FALSE;
 
-      gimp_item_set_linked (item, linked, push_undo);
-      gimp_image_flush (image);
+        gimp_item_set_linked (item, linked, push_undo);
+        gimp_image_flush (image);
     }
 }
 
@@ -115,21 +115,21 @@ items_lock_content_cmd_callback (GimpAction *action,
                                  GimpImage  *image,
                                  GimpItem   *item)
 {
-  gboolean locked = g_variant_get_boolean (value);
+    gboolean locked = g_variant_get_boolean (value);
 
-  if (locked != gimp_item_get_lock_content (item))
+    if (locked != gimp_item_get_lock_content (item))
     {
-      GimpUndo *undo;
-      gboolean  push_undo = TRUE;
+        GimpUndo *undo;
+        gboolean  push_undo = TRUE;
 
-      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
-                                           GIMP_UNDO_ITEM_LINKED);
+        undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                             GIMP_UNDO_ITEM_LINKED);
 
-      if (undo && GIMP_ITEM_UNDO (undo)->item == item)
-        push_undo = FALSE;
+        if (undo && GIMP_ITEM_UNDO (undo)->item == item)
+            push_undo = FALSE;
 
-      gimp_item_set_lock_content (item, locked, push_undo);
-      gimp_image_flush (image);
+        gimp_item_set_lock_content (item, locked, push_undo);
+        gimp_image_flush (image);
     }
 }
 
@@ -139,22 +139,22 @@ items_lock_position_cmd_callback (GimpAction *action,
                                   GimpImage  *image,
                                   GimpItem   *item)
 {
-  gboolean locked = g_variant_get_boolean (value);
+    gboolean locked = g_variant_get_boolean (value);
 
-  if (locked != gimp_item_get_lock_position (item))
+    if (locked != gimp_item_get_lock_position (item))
     {
-      GimpUndo *undo;
-      gboolean  push_undo = TRUE;
+        GimpUndo *undo;
+        gboolean  push_undo = TRUE;
 
-      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
-                                           GIMP_UNDO_ITEM_LOCK_POSITION);
+        undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                             GIMP_UNDO_ITEM_LOCK_POSITION);
 
-      if (undo && GIMP_ITEM_UNDO (undo)->item == item)
-        push_undo = FALSE;
+        if (undo && GIMP_ITEM_UNDO (undo)->item == item)
+            push_undo = FALSE;
 
 
-      gimp_item_set_lock_position (item, locked, push_undo);
-      gimp_image_flush (image);
+        gimp_item_set_lock_position (item, locked, push_undo);
+        gimp_image_flush (image);
     }
 }
 
@@ -164,19 +164,19 @@ items_color_tag_cmd_callback (GimpAction   *action,
                               GimpItem     *item,
                               GimpColorTag  color_tag)
 {
-  if (color_tag != gimp_item_get_color_tag (item))
+    if (color_tag != gimp_item_get_color_tag (item))
     {
-      GimpUndo *undo;
-      gboolean  push_undo = TRUE;
+        GimpUndo *undo;
+        gboolean  push_undo = TRUE;
 
-      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
-                                           GIMP_UNDO_ITEM_COLOR_TAG);
+        undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                             GIMP_UNDO_ITEM_COLOR_TAG);
 
-      if (undo && GIMP_ITEM_UNDO (undo)->item == item)
-        push_undo = FALSE;
+        if (undo && GIMP_ITEM_UNDO (undo)->item == item)
+            push_undo = FALSE;
 
-      gimp_item_set_color_tag (item, color_tag, push_undo);
-      gimp_image_flush (image);
+        gimp_item_set_color_tag (item, color_tag, push_undo);
+        gimp_image_flush (image);
     }
 }
 
@@ -190,43 +190,43 @@ items_fill_cmd_callback (GimpAction  *action,
                          const gchar *dialog_help_id,
                          gpointer     data)
 {
-  GList        *drawables;
-  GtkWidget    *dialog;
-  GtkWidget    *widget;
-  return_if_no_widget (widget, data);
+    GList        *drawables;
+    GtkWidget    *dialog;
+    GtkWidget    *widget;
+    return_if_no_widget (widget, data);
 
-  drawables = gimp_image_get_selected_drawables (image);
+    drawables = gimp_image_get_selected_drawables (image);
 
-  if (! drawables)
+    if (! drawables)
     {
-      gimp_message_literal (image->gimp,
-                            G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                            _("There are no selected layers or channels to fill."));
-      return;
+        gimp_message_literal (image->gimp,
+                              G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                              _("There are no selected layers or channels to fill."));
+        return;
     }
 
-  dialog = dialogs_get_dialog (G_OBJECT (item), dialog_key);
+    dialog = dialogs_get_dialog (G_OBJECT (item), dialog_key);
 
-  if (! dialog)
+    if (! dialog)
     {
-      GimpDialogConfig *config = GIMP_DIALOG_CONFIG (image->gimp->config);
+        GimpDialogConfig *config = GIMP_DIALOG_CONFIG (image->gimp->config);
 
-      dialog = fill_dialog_new (item,
-                                drawables,
-                                action_data_get_context (data),
-                                dialog_title,
-                                dialog_icon_name,
-                                dialog_help_id,
-                                widget,
-                                config->fill_options,
-                                items_fill_callback,
-                                NULL);
+        dialog = fill_dialog_new (item,
+                                  drawables,
+                                  action_data_get_context (data),
+                                  dialog_title,
+                                  dialog_icon_name,
+                                  dialog_help_id,
+                                  widget,
+                                  config->fill_options,
+                                  items_fill_callback,
+                                  NULL);
 
-      dialogs_attach_dialog (G_OBJECT (item), dialog_key, dialog);
+        dialogs_attach_dialog (G_OBJECT (item), dialog_key, dialog);
     }
 
-  gtk_window_present (GTK_WINDOW (dialog));
-  g_list_free (drawables);
+    gtk_window_present (GTK_WINDOW (dialog));
+    g_list_free (drawables);
 }
 
 void
@@ -235,36 +235,36 @@ items_fill_last_vals_cmd_callback (GimpAction *action,
                                    GimpItem   *item,
                                    gpointer    data)
 {
-  GList            *drawables;
-  GimpDialogConfig *config;
-  GtkWidget        *widget;
-  GError           *error = NULL;
-  return_if_no_widget (widget, data);
+    GList            *drawables;
+    GimpDialogConfig *config;
+    GtkWidget        *widget;
+    GError           *error = NULL;
+    return_if_no_widget (widget, data);
 
-  drawables = gimp_image_get_selected_drawables (image);
+    drawables = gimp_image_get_selected_drawables (image);
 
-  if (! drawables)
+    if (! drawables)
     {
-      gimp_message_literal (image->gimp,
-                            G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                            _("There are no selected layers or channels to fill."));
-      return;
+        gimp_message_literal (image->gimp,
+                              G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                              _("There are no selected layers or channels to fill."));
+        return;
     }
 
-  config = GIMP_DIALOG_CONFIG (image->gimp->config);
+    config = GIMP_DIALOG_CONFIG (image->gimp->config);
 
-  if (! gimp_item_fill (item, drawables,
-                        config->fill_options, TRUE, NULL, &error))
+    if (! gimp_item_fill (item, drawables,
+                          config->fill_options, TRUE, NULL, &error))
     {
-      gimp_message_literal (image->gimp, G_OBJECT (widget),
-                            GIMP_MESSAGE_WARNING, error->message);
-      g_clear_error (&error);
+        gimp_message_literal (image->gimp, G_OBJECT (widget),
+                              GIMP_MESSAGE_WARNING, error->message);
+        g_clear_error (&error);
     }
-  else
+    else
     {
-      gimp_image_flush (image);
+        gimp_image_flush (image);
     }
-  g_list_free (drawables);
+    g_list_free (drawables);
 }
 
 void
@@ -277,43 +277,43 @@ items_stroke_cmd_callback (GimpAction  *action,
                            const gchar *dialog_help_id,
                            gpointer     data)
 {
-  GList        *drawables;
-  GtkWidget    *dialog;
-  GtkWidget    *widget;
-  return_if_no_widget (widget, data);
+    GList        *drawables;
+    GtkWidget    *dialog;
+    GtkWidget    *widget;
+    return_if_no_widget (widget, data);
 
-  drawables = gimp_image_get_selected_drawables (image);
+    drawables = gimp_image_get_selected_drawables (image);
 
-  if (! drawables)
+    if (! drawables)
     {
-      gimp_message_literal (image->gimp,
-                            G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                            _("There are no selected layers or channels to stroke to."));
-      return;
+        gimp_message_literal (image->gimp,
+                              G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                              _("There are no selected layers or channels to stroke to."));
+        return;
     }
 
-  dialog = dialogs_get_dialog (G_OBJECT (item), dialog_key);
+    dialog = dialogs_get_dialog (G_OBJECT (item), dialog_key);
 
-  if (! dialog)
+    if (! dialog)
     {
-      GimpDialogConfig *config = GIMP_DIALOG_CONFIG (image->gimp->config);
+        GimpDialogConfig *config = GIMP_DIALOG_CONFIG (image->gimp->config);
 
-      dialog = stroke_dialog_new (item,
-                                  drawables,
-                                  action_data_get_context (data),
-                                  dialog_title,
-                                  dialog_icon_name,
-                                  dialog_help_id,
-                                  widget,
-                                  config->stroke_options,
-                                  items_stroke_callback,
-                                  NULL);
+        dialog = stroke_dialog_new (item,
+                                    drawables,
+                                    action_data_get_context (data),
+                                    dialog_title,
+                                    dialog_icon_name,
+                                    dialog_help_id,
+                                    widget,
+                                    config->stroke_options,
+                                    items_stroke_callback,
+                                    NULL);
 
-      dialogs_attach_dialog (G_OBJECT (item), dialog_key, dialog);
+        dialogs_attach_dialog (G_OBJECT (item), dialog_key, dialog);
     }
 
-  gtk_window_present (GTK_WINDOW (dialog));
-  g_list_free (drawables);
+    gtk_window_present (GTK_WINDOW (dialog));
+    g_list_free (drawables);
 }
 
 void
@@ -322,39 +322,39 @@ items_stroke_last_vals_cmd_callback (GimpAction *action,
                                      GimpItem   *item,
                                      gpointer    data)
 {
-  GList            *drawables;
-  GimpDialogConfig *config;
-  GtkWidget        *widget;
-  GError           *error = NULL;
-  return_if_no_widget (widget, data);
+    GList            *drawables;
+    GimpDialogConfig *config;
+    GtkWidget        *widget;
+    GError           *error = NULL;
+    return_if_no_widget (widget, data);
 
-  drawables = gimp_image_get_selected_drawables (image);
+    drawables = gimp_image_get_selected_drawables (image);
 
-  if (! drawables)
+    if (! drawables)
     {
-      gimp_message_literal (image->gimp,
-                            G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                            _("There are no selected layers or channels to stroke to."));
-      return;
+        gimp_message_literal (image->gimp,
+                              G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                              _("There are no selected layers or channels to stroke to."));
+        return;
     }
 
-  config = GIMP_DIALOG_CONFIG (image->gimp->config);
+    config = GIMP_DIALOG_CONFIG (image->gimp->config);
 
-  if (! gimp_item_stroke (item, drawables,
-                          action_data_get_context (data),
-                          config->stroke_options, NULL,
-                          TRUE, NULL, &error))
+    if (! gimp_item_stroke (item, drawables,
+                            action_data_get_context (data),
+                            config->stroke_options, NULL,
+                            TRUE, NULL, &error))
     {
-      gimp_message_literal (image->gimp, G_OBJECT (widget),
-                            GIMP_MESSAGE_WARNING, error->message);
-      g_clear_error (&error);
+        gimp_message_literal (image->gimp, G_OBJECT (widget),
+                              GIMP_MESSAGE_WARNING, error->message);
+        g_clear_error (&error);
     }
-  else
+    else
     {
-      gimp_image_flush (image);
+        gimp_image_flush (image);
     }
 
-  g_list_free (drawables);
+    g_list_free (drawables);
 }
 
 
@@ -368,27 +368,27 @@ items_fill_callback (GtkWidget       *dialog,
                      GimpFillOptions *options,
                      gpointer         user_data)
 {
-  GimpDialogConfig *config = GIMP_DIALOG_CONFIG (context->gimp->config);
-  GimpImage        *image  = gimp_item_get_image (item);
-  GError           *error  = NULL;
+    GimpDialogConfig *config = GIMP_DIALOG_CONFIG (context->gimp->config);
+    GimpImage        *image  = gimp_item_get_image (item);
+    GError           *error  = NULL;
 
-  gimp_config_sync (G_OBJECT (options),
-                    G_OBJECT (config->fill_options), 0);
+    gimp_config_sync (G_OBJECT (options),
+                      G_OBJECT (config->fill_options), 0);
 
-  if (! gimp_item_fill (item, drawables, options, TRUE, NULL, &error))
+    if (! gimp_item_fill (item, drawables, options, TRUE, NULL, &error))
     {
-      gimp_message_literal (context->gimp,
-                            G_OBJECT (dialog),
-                            GIMP_MESSAGE_WARNING,
-                            error ? error->message : "NULL");
+        gimp_message_literal (context->gimp,
+                              G_OBJECT (dialog),
+                              GIMP_MESSAGE_WARNING,
+                              error ? error->message : "NULL");
 
-      g_clear_error (&error);
-      return;
+        g_clear_error (&error);
+        return;
     }
 
-  gimp_image_flush (image);
+    gimp_image_flush (image);
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 }
 
 static void
@@ -399,26 +399,26 @@ items_stroke_callback (GtkWidget         *dialog,
                        GimpStrokeOptions *options,
                        gpointer           data)
 {
-  GimpDialogConfig *config = GIMP_DIALOG_CONFIG (context->gimp->config);
-  GimpImage        *image  = gimp_item_get_image (item);
-  GError           *error  = NULL;
+    GimpDialogConfig *config = GIMP_DIALOG_CONFIG (context->gimp->config);
+    GimpImage        *image  = gimp_item_get_image (item);
+    GError           *error  = NULL;
 
-  gimp_config_sync (G_OBJECT (options),
-                    G_OBJECT (config->stroke_options), 0);
+    gimp_config_sync (G_OBJECT (options),
+                      G_OBJECT (config->stroke_options), 0);
 
-  if (! gimp_item_stroke (item, drawables, context, options, NULL,
-                          TRUE, NULL, &error))
+    if (! gimp_item_stroke (item, drawables, context, options, NULL,
+                            TRUE, NULL, &error))
     {
-      gimp_message_literal (context->gimp,
-                            G_OBJECT (dialog),
-                            GIMP_MESSAGE_WARNING,
-                            error ? error->message : "NULL");
+        gimp_message_literal (context->gimp,
+                              G_OBJECT (dialog),
+                              GIMP_MESSAGE_WARNING,
+                              error ? error->message : "NULL");
 
-      g_clear_error (&error);
-      return;
+        g_clear_error (&error);
+        return;
     }
 
-  gimp_image_flush (image);
+    gimp_image_flush (image);
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 }

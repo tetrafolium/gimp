@@ -35,18 +35,18 @@ typedef struct _GimpPluginConfigClass GimpPluginConfigClass;
 
 struct _GimpPluginConfig
 {
-  GimpDialogConfig    parent_instance;
+    GimpDialogConfig    parent_instance;
 
-  gchar              *fractalexplorer_path;
-  gchar              *gfig_path;
-  gchar              *gflare_path;
-  gchar              *gimpressionist_path;
-  gchar              *script_fu_path;
+    gchar              *fractalexplorer_path;
+    gchar              *gfig_path;
+    gchar              *gflare_path;
+    gchar              *gimpressionist_path;
+    gchar              *script_fu_path;
 };
 
 struct _GimpPluginConfigClass
 {
-  GimpGuiConfigClass  parent_class;
+    GimpGuiConfigClass  parent_class;
 };
 
 

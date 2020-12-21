@@ -40,8 +40,8 @@
 /*  local function prototypes  */
 
 static void   text_editor_load_response (GtkWidget      *dialog,
-                                         gint            response_id,
-                                         GimpTextEditor *editor);
+        gint            response_id,
+        GimpTextEditor *editor);
 
 
 /*  public functions  */
@@ -51,44 +51,44 @@ text_editor_load_cmd_callback (GimpAction *action,
                                GVariant   *value,
                                gpointer    data)
 {
-  GimpTextEditor *editor = GIMP_TEXT_EDITOR (data);
+    GimpTextEditor *editor = GIMP_TEXT_EDITOR (data);
 
-  if (! editor->file_dialog)
+    if (! editor->file_dialog)
     {
-      GtkWidget *dialog;
+        GtkWidget *dialog;
 
-      dialog = editor->file_dialog =
-        gtk_file_chooser_dialog_new (_("Open Text File (UTF-8)"),
-                                     GTK_WINDOW (editor),
-                                     GTK_FILE_CHOOSER_ACTION_OPEN,
+        dialog = editor->file_dialog =
+                     gtk_file_chooser_dialog_new (_("Open Text File (UTF-8)"),
+                             GTK_WINDOW (editor),
+                             GTK_FILE_CHOOSER_ACTION_OPEN,
 
-                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                     _("_Open"),   GTK_RESPONSE_OK,
+                             _("_Cancel"), GTK_RESPONSE_CANCEL,
+                             _("_Open"),   GTK_RESPONSE_OK,
 
-                                     NULL);
+                             NULL);
 
-      gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-      gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                               GTK_RESPONSE_OK,
-                                               GTK_RESPONSE_CANCEL,
-                                               -1);
+        gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+        gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                GTK_RESPONSE_OK,
+                GTK_RESPONSE_CANCEL,
+                -1);
 
-      gtk_window_set_role (GTK_WINDOW (dialog), "gimp-text-load-file");
-      gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-      gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
+        gtk_window_set_role (GTK_WINDOW (dialog), "gimp-text-load-file");
+        gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+        gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
 
-      g_object_add_weak_pointer (G_OBJECT (dialog),
-                                 (gpointer) &editor->file_dialog);
+        g_object_add_weak_pointer (G_OBJECT (dialog),
+                                   (gpointer) &editor->file_dialog);
 
-      g_signal_connect (dialog, "response",
-                        G_CALLBACK (text_editor_load_response),
-                        editor);
-      g_signal_connect (dialog, "delete-event",
-                        G_CALLBACK (gtk_true),
-                        NULL);
+        g_signal_connect (dialog, "response",
+                          G_CALLBACK (text_editor_load_response),
+                          editor);
+        g_signal_connect (dialog, "delete-event",
+                          G_CALLBACK (gtk_true),
+                          NULL);
     }
 
-  gtk_window_present (GTK_WINDOW (editor->file_dialog));
+    gtk_window_present (GTK_WINDOW (editor->file_dialog));
 }
 
 void
@@ -96,12 +96,12 @@ text_editor_clear_cmd_callback (GimpAction *action,
                                 GVariant   *value,
                                 gpointer    data)
 {
-  GimpTextEditor *editor = GIMP_TEXT_EDITOR (data);
-  GtkTextBuffer  *buffer;
+    GimpTextEditor *editor = GIMP_TEXT_EDITOR (data);
+    GtkTextBuffer  *buffer;
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
+    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
 
-  gtk_text_buffer_set_text (buffer, "", 0);
+    gtk_text_buffer_set_text (buffer, "", 0);
 }
 
 void
@@ -109,12 +109,12 @@ text_editor_direction_cmd_callback (GimpAction *action,
                                     GVariant   *value,
                                     gpointer    data)
 {
-  GimpTextEditor    *editor = GIMP_TEXT_EDITOR (data);
-  GimpTextDirection  direction;
+    GimpTextEditor    *editor = GIMP_TEXT_EDITOR (data);
+    GimpTextDirection  direction;
 
-  direction = (GimpTextDirection) g_variant_get_int32 (value);
+    direction = (GimpTextDirection) g_variant_get_int32 (value);
 
-  gimp_text_editor_set_direction (editor, direction);
+    gimp_text_editor_set_direction (editor, direction);
 }
 
 
@@ -125,29 +125,29 @@ text_editor_load_response (GtkWidget      *dialog,
                            gint            response_id,
                            GimpTextEditor *editor)
 {
-  if (response_id == GTK_RESPONSE_OK)
+    if (response_id == GTK_RESPONSE_OK)
     {
-      GtkTextBuffer *buffer;
-      GFile         *file;
-      GError        *error = NULL;
+        GtkTextBuffer *buffer;
+        GFile         *file;
+        GError        *error = NULL;
 
-      buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
-      file   = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+        buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
+        file   = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
 
-      if (! gimp_text_buffer_load (GIMP_TEXT_BUFFER (buffer), file, &error))
+        if (! gimp_text_buffer_load (GIMP_TEXT_BUFFER (buffer), file, &error))
         {
-          gimp_message (editor->ui_manager->gimp, G_OBJECT (dialog),
-                        GIMP_MESSAGE_ERROR,
-                        _("Could not open '%s' for reading: %s"),
-                        gimp_file_get_utf8_name (file),
-                        error->message);
-          g_clear_error (&error);
-          g_object_unref (file);
-          return;
+            gimp_message (editor->ui_manager->gimp, G_OBJECT (dialog),
+                          GIMP_MESSAGE_ERROR,
+                          _("Could not open '%s' for reading: %s"),
+                          gimp_file_get_utf8_name (file),
+                          error->message);
+            g_clear_error (&error);
+            g_object_unref (file);
+            return;
         }
 
-      g_object_unref (file);
+        g_object_unref (file);
     }
 
-  gtk_widget_hide (dialog);
+    gtk_widget_hide (dialog);
 }

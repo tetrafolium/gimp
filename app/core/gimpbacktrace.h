@@ -27,13 +27,13 @@ typedef struct _GimpBacktraceAddressInfo GimpBacktraceAddressInfo;
 
 struct _GimpBacktraceAddressInfo
 {
-  gchar    object_name[256];
+    gchar    object_name[256];
 
-  gchar    symbol_name[256];
-  guintptr symbol_address;
+    gchar    symbol_name[256];
+    guintptr symbol_address;
 
-  gchar    source_file[256];
-  gint     source_line;
+    gchar    source_file[256];
+    gint     source_line;
 };
 
 
@@ -47,24 +47,24 @@ void            gimp_backtrace_free              (GimpBacktrace           *backt
 
 gint            gimp_backtrace_get_n_threads     (GimpBacktrace           *backtrace);
 guintptr        gimp_backtrace_get_thread_id     (GimpBacktrace           *backtrace,
-                                                  gint                     thread);
+        gint                     thread);
 const gchar   * gimp_backtrace_get_thread_name   (GimpBacktrace           *backtrace,
-                                                  gint                     thread);
+        gint                     thread);
 gboolean        gimp_backtrace_is_thread_running (GimpBacktrace           *backtrace,
-                                                  gint                     thread);
+        gint                     thread);
 
 gint            gimp_backtrace_find_thread_by_id (GimpBacktrace           *backtrace,
-                                                  guintptr                 thread_id,
-                                                  gint                     thread_hint);
+        guintptr                 thread_id,
+        gint                     thread_hint);
 
 gint            gimp_backtrace_get_n_frames      (GimpBacktrace           *backtrace,
-                                                  gint                     thread);
+        gint                     thread);
 guintptr        gimp_backtrace_get_frame_address (GimpBacktrace           *backtrace,
-                                                  gint                     thread,
-                                                  gint                     frame);
+        gint                     thread,
+        gint                     frame);
 
 gboolean        gimp_backtrace_get_address_info  (guintptr                  address,
-                                                  GimpBacktraceAddressInfo *info);
+        GimpBacktraceAddressInfo *info);
 
 
 #endif  /*  __GIMP_BACKTRACE_H__  */

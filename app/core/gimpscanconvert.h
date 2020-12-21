@@ -20,62 +20,62 @@
 
 
 GimpScanConvert *
-          gimp_scan_convert_new               (void);
+gimp_scan_convert_new               (void);
 
 GimpScanConvert *
-          gimp_scan_convert_new_from_boundary (const GimpBoundSeg *bound_segs,
-                                               gint                n_bound_segs,
-                                               gint                offset_x,
-                                               gint                offset_y);
+gimp_scan_convert_new_from_boundary (const GimpBoundSeg *bound_segs,
+                                     gint                n_bound_segs,
+                                     gint                offset_x,
+                                     gint                offset_y);
 
 void      gimp_scan_convert_free               (GimpScanConvert   *sc);
 void      gimp_scan_convert_set_pixel_ratio    (GimpScanConvert   *sc,
-                                                gdouble            ratio_xy);
+        gdouble            ratio_xy);
 void      gimp_scan_convert_set_clip_rectangle (GimpScanConvert   *sc,
-                                                gint               x,
-                                                gint               y,
-                                                gint               width,
-                                                gint               height);
+        gint               x,
+        gint               y,
+        gint               width,
+        gint               height);
 void      gimp_scan_convert_add_polyline       (GimpScanConvert   *sc,
-                                                guint              n_points,
-                                                const GimpVector2 *points,
-                                                gboolean           closed);
+        guint              n_points,
+        const GimpVector2 *points,
+        gboolean           closed);
 void      gimp_scan_convert_add_bezier         (GimpScanConvert      *sc,
-                                                const GimpBezierDesc *bezier);
+        const GimpBezierDesc *bezier);
 void      gimp_scan_convert_stroke             (GimpScanConvert   *sc,
-                                                gdouble            width,
-                                                GimpJoinStyle      join,
-                                                GimpCapStyle       cap,
-                                                gdouble            miter,
-                                                gdouble            dash_offset,
-                                                GArray            *dash_info);
+        gdouble            width,
+        GimpJoinStyle      join,
+        GimpCapStyle       cap,
+        gdouble            miter,
+        gdouble            dash_offset,
+        GArray            *dash_info);
 void      gimp_scan_convert_render_full        (GimpScanConvert   *sc,
-                                                GeglBuffer        *buffer,
-                                                gint               off_x,
-                                                gint               off_y,
-                                                gboolean           replace,
-                                                gboolean           antialias,
-                                                gdouble            value);
+        GeglBuffer        *buffer,
+        gint               off_x,
+        gint               off_y,
+        gboolean           replace,
+        gboolean           antialias,
+        gdouble            value);
 
 void      gimp_scan_convert_render             (GimpScanConvert   *sc,
-                                                GeglBuffer        *buffer,
-                                                gint               off_x,
-                                                gint               off_y,
-                                                gboolean           antialias);
+        GeglBuffer        *buffer,
+        gint               off_x,
+        gint               off_y,
+        gboolean           antialias);
 void      gimp_scan_convert_render_value       (GimpScanConvert   *sc,
-                                                GeglBuffer        *buffer,
-                                                gint               off_x,
-                                                gint               off_y,
-                                                gdouble            value);
+        GeglBuffer        *buffer,
+        gint               off_x,
+        gint               off_y,
+        gdouble            value);
 void      gimp_scan_convert_compose            (GimpScanConvert   *sc,
-                                                GeglBuffer        *buffer,
-                                                gint               off_x,
-                                                gint               off_y);
+        GeglBuffer        *buffer,
+        gint               off_x,
+        gint               off_y);
 void      gimp_scan_convert_compose_value      (GimpScanConvert   *sc,
-                                                GeglBuffer        *buffer,
-                                                gint               off_x,
-                                                gint               off_y,
-                                                gdouble            value);
+        GeglBuffer        *buffer,
+        gint               off_x,
+        gint               off_y,
+        gdouble            value);
 
 
 #endif /* __GIMP_SCAN_CONVERT_H__ */

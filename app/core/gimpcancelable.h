@@ -28,10 +28,10 @@ G_DECLARE_INTERFACE (GimpCancelable, gimp_cancelable, GIMP, CANCELABLE, GObject)
 
 struct _GimpCancelableInterface
 {
-  GTypeInterface base_iface;
+    GTypeInterface base_iface;
 
-  /*  signals  */
-  void   (* cancel) (GimpCancelable *cancelable);
+    /*  signals  */
+    void   (* cancel) (GimpCancelable *cancelable);
 };
 
 

@@ -57,8 +57,8 @@
 
 typedef struct
 {
-  const gchar *name;
-  gboolean     found;
+    const gchar *name;
+    gboolean     found;
 } RaiseClosure;
 
 
@@ -79,23 +79,23 @@ documents_open_cmd_callback (GimpAction *action,
                              GVariant   *value,
                              gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpContainer       *container;
-  GimpImagefile       *imagefile;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context;
+    GimpContainer       *container;
+    GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  container = gimp_container_view_get_container (editor->view);
+    context   = gimp_container_view_get_context (editor->view);
+    container = gimp_container_view_get_container (editor->view);
 
-  imagefile = gimp_context_get_imagefile (context);
+    imagefile = gimp_context_get_imagefile (context);
 
-  if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
+    if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
     {
-      documents_open_image (GTK_WIDGET (editor), context, imagefile);
+        documents_open_image (GTK_WIDGET (editor), context, imagefile);
     }
-  else
+    else
     {
-      file_file_open_dialog (context->gimp, NULL, GTK_WIDGET (editor));
+        file_file_open_dialog (context->gimp, NULL, GTK_WIDGET (editor));
     }
 }
 
@@ -104,52 +104,52 @@ documents_raise_or_open_cmd_callback (GimpAction *action,
                                       GVariant   *value,
                                       gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpContainer       *container;
-  GimpImagefile       *imagefile;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context;
+    GimpContainer       *container;
+    GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  container = gimp_container_view_get_container (editor->view);
+    context   = gimp_container_view_get_context (editor->view);
+    container = gimp_container_view_get_container (editor->view);
 
-  imagefile = gimp_context_get_imagefile (context);
+    imagefile = gimp_context_get_imagefile (context);
 
-  if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
+    if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
     {
-      RaiseClosure closure;
+        RaiseClosure closure;
 
-      closure.name  = gimp_object_get_name (imagefile);
-      closure.found = FALSE;
+        closure.name  = gimp_object_get_name (imagefile);
+        closure.found = FALSE;
 
-      gimp_container_foreach (context->gimp->displays,
-                              (GFunc) documents_raise_display,
-                              &closure);
+        gimp_container_foreach (context->gimp->displays,
+                                (GFunc) documents_raise_display,
+                                &closure);
 
-      if (! closure.found)
-        documents_open_image (GTK_WIDGET (editor), context, imagefile);
+        if (! closure.found)
+            documents_open_image (GTK_WIDGET (editor), context, imagefile);
     }
 }
 
 void
 documents_file_open_dialog_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpContainer       *container;
-  GimpImagefile       *imagefile;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context;
+    GimpContainer       *container;
+    GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  container = gimp_container_view_get_container (editor->view);
+    context   = gimp_container_view_get_context (editor->view);
+    container = gimp_container_view_get_container (editor->view);
 
-  imagefile = gimp_context_get_imagefile (context);
+    imagefile = gimp_context_get_imagefile (context);
 
-  if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
+    if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
     {
-      file_file_open_dialog (context->gimp,
-                             gimp_imagefile_get_file (imagefile),
-                             GTK_WIDGET (editor));
+        file_file_open_dialog (context->gimp,
+                               gimp_imagefile_get_file (imagefile),
+                               GTK_WIDGET (editor));
     }
 }
 
@@ -158,45 +158,45 @@ documents_copy_location_cmd_callback (GimpAction *action,
                                       GVariant   *value,
                                       gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpImagefile       *imagefile;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context;
+    GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  imagefile = gimp_context_get_imagefile (context);
+    context   = gimp_container_view_get_context (editor->view);
+    imagefile = gimp_context_get_imagefile (context);
 
-  if (imagefile)
-    gimp_clipboard_set_text (context->gimp,
-                             gimp_object_get_name (imagefile));
+    if (imagefile)
+        gimp_clipboard_set_text (context->gimp,
+                                 gimp_object_get_name (imagefile));
 }
 
 void
 documents_show_in_file_manager_cmd_callback (GimpAction *action,
-                                             GVariant   *value,
-                                             gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpImagefile       *imagefile;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context;
+    GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  imagefile = gimp_context_get_imagefile (context);
+    context   = gimp_container_view_get_context (editor->view);
+    imagefile = gimp_context_get_imagefile (context);
 
-  if (imagefile)
+    if (imagefile)
     {
-      GFile  *file  = g_file_new_for_uri (gimp_object_get_name (imagefile));
-      GError *error = NULL;
+        GFile  *file  = g_file_new_for_uri (gimp_object_get_name (imagefile));
+        GError *error = NULL;
 
-      if (! gimp_file_show_in_file_manager (file, &error))
+        if (! gimp_file_show_in_file_manager (file, &error))
         {
-          gimp_message (context->gimp, G_OBJECT (editor),
-                        GIMP_MESSAGE_ERROR,
-                        _("Can't show file in file manager: %s"),
-                        error->message);
-          g_clear_error (&error);
+            gimp_message (context->gimp, G_OBJECT (editor),
+                          GIMP_MESSAGE_ERROR,
+                          _("Can't show file in file manager: %s"),
+                          error->message);
+            g_clear_error (&error);
         }
 
-      g_object_unref (file);
+        g_object_unref (file);
     }
 }
 
@@ -205,16 +205,16 @@ documents_remove_cmd_callback (GimpAction *action,
                                GVariant   *value,
                                gpointer    data)
 {
-  GimpContainerEditor *editor  = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context = gimp_container_view_get_context (editor->view);
-  GimpImagefile       *imagefile = gimp_context_get_imagefile (context);
-  const gchar         *uri;
+    GimpContainerEditor *editor  = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context = gimp_container_view_get_context (editor->view);
+    GimpImagefile       *imagefile = gimp_context_get_imagefile (context);
+    const gchar         *uri;
 
-  uri = gimp_object_get_name (imagefile);
+    uri = gimp_object_get_name (imagefile);
 
-  gtk_recent_manager_remove_item (gtk_recent_manager_get_default (), uri, NULL);
+    gtk_recent_manager_remove_item (gtk_recent_manager_get_default (), uri, NULL);
 
-  gimp_container_view_remove_active (editor->view);
+    gimp_container_view_remove_active (editor->view);
 }
 
 void
@@ -222,100 +222,100 @@ documents_clear_cmd_callback (GimpAction *action,
                               GVariant   *value,
                               gpointer    data)
 {
-  GimpContainerEditor *editor  = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context = gimp_container_view_get_context (editor->view);
-  Gimp                *gimp    = context->gimp;
-  GtkWidget           *dialog;
+    GimpContainerEditor *editor  = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context = gimp_container_view_get_context (editor->view);
+    Gimp                *gimp    = context->gimp;
+    GtkWidget           *dialog;
 
-  dialog = gimp_message_dialog_new (_("Clear Document History"),
-                                    GIMP_ICON_SHRED,
-                                    GTK_WIDGET (editor),
-                                    GTK_DIALOG_MODAL |
-                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    gimp_standard_help_func, NULL,
+    dialog = gimp_message_dialog_new (_("Clear Document History"),
+                                      GIMP_ICON_SHRED,
+                                      GTK_WIDGET (editor),
+                                      GTK_DIALOG_MODAL |
+                                      GTK_DIALOG_DESTROY_WITH_PARENT,
+                                      gimp_standard_help_func, NULL,
 
-                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                    _("Cl_ear"),  GTK_RESPONSE_OK,
+                                      _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                      _("Cl_ear"),  GTK_RESPONSE_OK,
 
-                                    NULL);
+                                      NULL);
 
-  gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
+    gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+            GTK_RESPONSE_OK,
+            GTK_RESPONSE_CANCEL,
+            -1);
 
-  g_signal_connect_object (gtk_widget_get_toplevel (GTK_WIDGET (editor)),
-                           "unmap",
-                           G_CALLBACK (gtk_widget_destroy),
-                           dialog, G_CONNECT_SWAPPED);
+    g_signal_connect_object (gtk_widget_get_toplevel (GTK_WIDGET (editor)),
+                             "unmap",
+                             G_CALLBACK (gtk_widget_destroy),
+                             dialog, G_CONNECT_SWAPPED);
 
-  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                     _("Clear the Recent Documents list?"));
+    gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                       _("Clear the Recent Documents list?"));
 
-  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                             _("Clearing the document history will "
-                               "permanently remove all images from "
-                               "the recent documents list."));
+    gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                               _("Clearing the document history will "
+                                 "permanently remove all images from "
+                                 "the recent documents list."));
 
-  if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
+    if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
     {
-      GtkRecentManager *manager = gtk_recent_manager_get_default ();
-      GList            *items;
-      GList            *list;
+        GtkRecentManager *manager = gtk_recent_manager_get_default ();
+        GList            *items;
+        GList            *list;
 
-      items = gtk_recent_manager_get_items (manager);
+        items = gtk_recent_manager_get_items (manager);
 
-      for (list = items; list; list = list->next)
+        for (list = items; list; list = list->next)
         {
-          GtkRecentInfo *info = list->data;
+            GtkRecentInfo *info = list->data;
 
-          if (gtk_recent_info_has_application (info,
-                                               "GNU Image Manipulation Program"))
+            if (gtk_recent_info_has_application (info,
+                                                 "GNU Image Manipulation Program"))
             {
-              gtk_recent_manager_remove_item (manager,
-                                              gtk_recent_info_get_uri (info),
-                                              NULL);
+                gtk_recent_manager_remove_item (manager,
+                                                gtk_recent_info_get_uri (info),
+                                                NULL);
             }
 
-          gtk_recent_info_unref (info);
+            gtk_recent_info_unref (info);
         }
 
-      g_list_free (items);
+        g_list_free (items);
 
-      gimp_container_clear (gimp->documents);
+        gimp_container_clear (gimp->documents);
     }
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 }
 
 void
 documents_recreate_preview_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpContainer       *container;
-  GimpImagefile       *imagefile;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContext         *context;
+    GimpContainer       *container;
+    GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  container = gimp_container_view_get_container (editor->view);
+    context   = gimp_container_view_get_context (editor->view);
+    container = gimp_container_view_get_container (editor->view);
 
-  imagefile = gimp_context_get_imagefile (context);
+    imagefile = gimp_context_get_imagefile (context);
 
-  if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
+    if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
     {
-      GError *error = NULL;
+        GError *error = NULL;
 
-      if (! gimp_imagefile_create_thumbnail (imagefile,
-                                             context, NULL,
-                                             context->gimp->config->thumbnail_size,
-                                             FALSE, &error))
+        if (! gimp_imagefile_create_thumbnail (imagefile,
+                                               context, NULL,
+                                               context->gimp->config->thumbnail_size,
+                                               FALSE, &error))
         {
-          gimp_message_literal (context->gimp,
-                                NULL , GIMP_MESSAGE_ERROR,
-                                error->message);
-          g_clear_error (&error);
+            gimp_message_literal (context->gimp,
+                                  NULL, GIMP_MESSAGE_ERROR,
+                                  error->message);
+            g_clear_error (&error);
         }
     }
 }
@@ -325,30 +325,30 @@ documents_reload_previews_cmd_callback (GimpAction *action,
                                         GVariant   *value,
                                         gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContainer       *container;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContainer       *container;
 
-  container = gimp_container_view_get_container (editor->view);
+    container = gimp_container_view_get_container (editor->view);
 
-  gimp_container_foreach (container,
-                          (GFunc) gimp_imagefile_update,
-                          editor->view);
+    gimp_container_foreach (container,
+                            (GFunc) gimp_imagefile_update,
+                            editor->view);
 }
 
 static void
 documents_remove_dangling_foreach (GimpImagefile *imagefile,
                                    GimpContainer *container)
 {
-  GimpThumbnail *thumbnail = gimp_imagefile_get_thumbnail (imagefile);
+    GimpThumbnail *thumbnail = gimp_imagefile_get_thumbnail (imagefile);
 
-  if (gimp_thumbnail_peek_image (thumbnail) == GIMP_THUMB_STATE_NOT_FOUND)
+    if (gimp_thumbnail_peek_image (thumbnail) == GIMP_THUMB_STATE_NOT_FOUND)
     {
-      const gchar *uri = gimp_object_get_name (imagefile);
+        const gchar *uri = gimp_object_get_name (imagefile);
 
-      gtk_recent_manager_remove_item (gtk_recent_manager_get_default (), uri,
-                                      NULL);
+        gtk_recent_manager_remove_item (gtk_recent_manager_get_default (), uri,
+                                        NULL);
 
-      gimp_container_remove (container, GIMP_OBJECT (imagefile));
+        gimp_container_remove (container, GIMP_OBJECT (imagefile));
     }
 }
 
@@ -357,14 +357,14 @@ documents_remove_dangling_cmd_callback (GimpAction *action,
                                         GVariant   *value,
                                         gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContainer       *container;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContainer       *container;
 
-  container = gimp_container_view_get_container (editor->view);
+    container = gimp_container_view_get_container (editor->view);
 
-  gimp_container_foreach (container,
-                          (GFunc) documents_remove_dangling_foreach,
-                          container);
+    gimp_container_foreach (container,
+                            (GFunc) documents_remove_dangling_foreach,
+                            container);
 }
 
 
@@ -375,23 +375,23 @@ documents_open_image (GtkWidget     *editor,
                       GimpContext   *context,
                       GimpImagefile *imagefile)
 {
-  GFile              *file;
-  GimpImage          *image;
-  GimpPDBStatusType   status;
-  GError             *error = NULL;
+    GFile              *file;
+    GimpImage          *image;
+    GimpPDBStatusType   status;
+    GError             *error = NULL;
 
-  file = gimp_imagefile_get_file (imagefile);
+    file = gimp_imagefile_get_file (imagefile);
 
-  image = file_open_with_display (context->gimp, context, NULL, file, FALSE,
-                                  G_OBJECT (gimp_widget_get_monitor (editor)),
-                                  &status, &error);
+    image = file_open_with_display (context->gimp, context, NULL, file, FALSE,
+                                    G_OBJECT (gimp_widget_get_monitor (editor)),
+                                    &status, &error);
 
-  if (! image && status != GIMP_PDB_CANCEL)
+    if (! image && status != GIMP_PDB_CANCEL)
     {
-      gimp_message (context->gimp, G_OBJECT (editor), GIMP_MESSAGE_ERROR,
-                    _("Opening '%s' failed:\n\n%s"),
-                    gimp_file_get_utf8_name (file), error->message);
-      g_clear_error (&error);
+        gimp_message (context->gimp, G_OBJECT (editor), GIMP_MESSAGE_ERROR,
+                      _("Opening '%s' failed:\n\n%s"),
+                      gimp_file_get_utf8_name (file), error->message);
+        g_clear_error (&error);
     }
 }
 
@@ -399,11 +399,11 @@ static void
 documents_raise_display (GimpDisplay  *display,
                          RaiseClosure *closure)
 {
-  const gchar *uri = gimp_object_get_name (gimp_display_get_image (display));
+    const gchar *uri = gimp_object_get_name (gimp_display_get_image (display));
 
-  if (! g_strcmp0 (closure->name, uri))
+    if (! g_strcmp0 (closure->name, uri))
     {
-      closure->found = TRUE;
-      gimp_display_shell_present (gimp_display_get_shell (display));
+        closure->found = TRUE;
+        gimp_display_shell_present (gimp_display_get_shell (display));
     }
 }

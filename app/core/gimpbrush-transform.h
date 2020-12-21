@@ -24,36 +24,36 @@
 /*  virtual functions of GimpBrush, don't call directly  */
 
 void          gimp_brush_real_transform_size   (GimpBrush   *brush,
-                                                gdouble      scale,
-                                                gdouble      aspect_ratio,
-                                                gdouble      angle,
-                                                gboolean     reflect,
-                                                gint        *scaled_width,
-                                                gint        *scaled_height);
+        gdouble      scale,
+        gdouble      aspect_ratio,
+        gdouble      angle,
+        gboolean     reflect,
+        gint        *scaled_width,
+        gint        *scaled_height);
 GimpTempBuf * gimp_brush_real_transform_mask   (GimpBrush   *brush,
-                                                gdouble      scale,
-                                                gdouble      aspect_ratio,
-                                                gdouble      angle,
-                                                gboolean     reflect,
-                                                gdouble      hardness);
+        gdouble      scale,
+        gdouble      aspect_ratio,
+        gdouble      angle,
+        gboolean     reflect,
+        gdouble      hardness);
 GimpTempBuf * gimp_brush_real_transform_pixmap (GimpBrush   *brush,
-                                                gdouble      scale,
-                                                gdouble      aspect_ratio,
-                                                gdouble      angle,
-                                                gboolean     reflect,
-                                                gdouble      hardness);
+        gdouble      scale,
+        gdouble      aspect_ratio,
+        gdouble      angle,
+        gboolean     reflect,
+        gdouble      hardness);
 
 void          gimp_brush_transform_get_scale   (gdouble      scale,
-                                                gdouble      aspect_ratio,
-                                                gdouble     *scale_x,
-                                                gdouble     *scale_y);
+        gdouble      aspect_ratio,
+        gdouble     *scale_x,
+        gdouble     *scale_y);
 void          gimp_brush_transform_matrix      (gdouble      width,
-                                                gdouble      height,
-                                                gdouble      scale_x,
-                                                gdouble      scale_y,
-                                                gdouble      angle,
-                                                gboolean     reflect,
-                                                GimpMatrix3 *matrix);
+        gdouble      height,
+        gdouble      scale_x,
+        gdouble      scale_y,
+        gdouble      angle,
+        gboolean     reflect,
+        GimpMatrix3 *matrix);
 
 
 #endif  /*  __GIMP_BRUSH_TRANSFORM_H__  */

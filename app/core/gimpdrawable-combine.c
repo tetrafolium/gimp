@@ -49,96 +49,98 @@ gimp_drawable_real_apply_buffer (GimpDrawable           *drawable,
                                  gint                    base_x,
                                  gint                    base_y)
 {
-  GimpItem          *item  = GIMP_ITEM (drawable);
-  GimpImage         *image = gimp_item_get_image (item);
-  GimpChannel       *mask  = gimp_image_get_mask (image);
-  GimpApplicator    *applicator;
-  GimpChunkIterator *iter;
-  gint               x, y, width, height;
-  gint               offset_x, offset_y;
+    GimpItem          *item  = GIMP_ITEM (drawable);
+    GimpImage         *image = gimp_item_get_image (item);
+    GimpChannel       *mask  = gimp_image_get_mask (image);
+    GimpApplicator    *applicator;
+    GimpChunkIterator *iter;
+    gint               x, y, width, height;
+    gint               offset_x, offset_y;
 
-  /*  don't apply the mask to itself and don't apply an empty mask  */
-  if (GIMP_DRAWABLE (mask) == drawable || gimp_channel_is_empty (mask))
-    mask = NULL;
+    /*  don't apply the mask to itself and don't apply an empty mask  */
+    if (GIMP_DRAWABLE (mask) == drawable || gimp_channel_is_empty (mask))
+        mask = NULL;
 
-  if (! base_buffer)
-    base_buffer = gimp_drawable_get_buffer (drawable);
+    if (! base_buffer)
+        base_buffer = gimp_drawable_get_buffer (drawable);
 
-  /*  get the layer offsets  */
-  gimp_item_get_offset (item, &offset_x, &offset_y);
+    /*  get the layer offsets  */
+    gimp_item_get_offset (item, &offset_x, &offset_y);
 
-  /*  make sure the image application coordinates are within drawable bounds  */
-  if (! gimp_rectangle_intersect (base_x, base_y,
-                                  buffer_region->width, buffer_region->height,
-                                  0, 0,
-                                  gimp_item_get_width  (item),
-                                  gimp_item_get_height (item),
-                                  &x, &y, &width, &height))
+    /*  make sure the image application coordinates are within drawable bounds  */
+    if (! gimp_rectangle_intersect (base_x, base_y,
+                                    buffer_region->width, buffer_region->height,
+                                    0, 0,
+                                    gimp_item_get_width  (item),
+                                    gimp_item_get_height (item),
+                                    &x, &y, &width, &height))
     {
-      return;
+        return;
     }
 
-  if (mask)
+    if (mask)
     {
-      GimpItem *mask_item = GIMP_ITEM (mask);
+        GimpItem *mask_item = GIMP_ITEM (mask);
 
-      /*  make sure coordinates are in mask bounds ...
-       *  we need to add the layer offset to transform coords
-       *  into the mask coordinate system
-       */
-      if (! gimp_rectangle_intersect (x, y, width, height,
-                                      -offset_x, -offset_y,
-                                      gimp_item_get_width  (mask_item),
-                                      gimp_item_get_height (mask_item),
-                                      &x, &y, &width, &height))
+        /*  make sure coordinates are in mask bounds ...
+         *  we need to add the layer offset to transform coords
+         *  into the mask coordinate system
+         */
+        if (! gimp_rectangle_intersect (x, y, width, height,
+                                        -offset_x, -offset_y,
+                                        gimp_item_get_width  (mask_item),
+                                        gimp_item_get_height (mask_item),
+                                        &x, &y, &width, &height))
         {
-          return;
+            return;
         }
     }
 
-  if (push_undo)
+    if (push_undo)
     {
-      gimp_drawable_push_undo (drawable, undo_desc,
-                               NULL, x, y, width, height);
+        gimp_drawable_push_undo (drawable, undo_desc,
+                                 NULL, x, y, width, height);
     }
 
-  applicator = gimp_applicator_new (NULL);
+    applicator = gimp_applicator_new (NULL);
 
-  if (mask)
+    if (mask)
     {
-      GeglBuffer *mask_buffer;
+        GeglBuffer *mask_buffer;
 
-      mask_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
+        mask_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
 
-      gimp_applicator_set_mask_buffer (applicator, mask_buffer);
-      gimp_applicator_set_mask_offset (applicator, -offset_x, -offset_y);
+        gimp_applicator_set_mask_buffer (applicator, mask_buffer);
+        gimp_applicator_set_mask_offset (applicator, -offset_x, -offset_y);
     }
 
-  gimp_applicator_set_src_buffer (applicator, base_buffer);
-  gimp_applicator_set_dest_buffer (applicator,
-                                   gimp_drawable_get_buffer (drawable));
+    gimp_applicator_set_src_buffer (applicator, base_buffer);
+    gimp_applicator_set_dest_buffer (applicator,
+                                     gimp_drawable_get_buffer (drawable));
 
-  gimp_applicator_set_apply_buffer (applicator, buffer);
-  gimp_applicator_set_apply_offset (applicator,
-                                    base_x - buffer_region->x,
-                                    base_y - buffer_region->y);
+    gimp_applicator_set_apply_buffer (applicator, buffer);
+    gimp_applicator_set_apply_offset (applicator,
+                                      base_x - buffer_region->x,
+                                      base_y - buffer_region->y);
 
-  gimp_applicator_set_opacity (applicator, opacity);
-  gimp_applicator_set_mode (applicator, mode,
-                            blend_space, composite_space, composite_mode);
-  gimp_applicator_set_affect (applicator,
-                              gimp_drawable_get_active_mask (drawable));
+    gimp_applicator_set_opacity (applicator, opacity);
+    gimp_applicator_set_mode (applicator, mode,
+                              blend_space, composite_space, composite_mode);
+    gimp_applicator_set_affect (applicator,
+                                gimp_drawable_get_active_mask (drawable));
 
-  iter = gimp_chunk_iterator_new (cairo_region_create_rectangle (
-    &(cairo_rectangle_int_t) {x, y, width, height}));
+    iter = gimp_chunk_iterator_new (cairo_region_create_rectangle (
+    &(cairo_rectangle_int_t) {
+        x, y, width, height
+    }));
 
-  while (gimp_chunk_iterator_next (iter))
+    while (gimp_chunk_iterator_next (iter))
     {
-      GeglRectangle rect;
+        GeglRectangle rect;
 
-      while (gimp_chunk_iterator_get_rect (iter, &rect))
-        gimp_applicator_blit (applicator, &rect);
+        while (gimp_chunk_iterator_get_rect (iter, &rect))
+            gimp_applicator_blit (applicator, &rect);
     }
 
-  g_object_unref (applicator);
+    g_object_unref (applicator);
 }

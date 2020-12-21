@@ -38,34 +38,34 @@ gimp_tool_preset_load (GimpContext   *context,
                        GInputStream  *input,
                        GError       **error)
 {
-  GimpToolPreset *tool_preset;
+    GimpToolPreset *tool_preset;
 
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-  g_return_val_if_fail (G_IS_FILE (file), NULL);
-  g_return_val_if_fail (G_IS_INPUT_STREAM (input), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+    g_return_val_if_fail (G_IS_FILE (file), NULL);
+    g_return_val_if_fail (G_IS_INPUT_STREAM (input), NULL);
+    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  tool_preset = g_object_new (GIMP_TYPE_TOOL_PRESET,
-                              "gimp", context->gimp,
-                              NULL);
+    tool_preset = g_object_new (GIMP_TYPE_TOOL_PRESET,
+                                "gimp", context->gimp,
+                                NULL);
 
-  if (gimp_config_deserialize_stream (GIMP_CONFIG (tool_preset),
-                                      input,
-                                      NULL, error))
+    if (gimp_config_deserialize_stream (GIMP_CONFIG (tool_preset),
+                                        input,
+                                        NULL, error))
     {
-      if (GIMP_IS_CONTEXT (tool_preset->tool_options))
+        if (GIMP_IS_CONTEXT (tool_preset->tool_options))
         {
-          return g_list_prepend (NULL, tool_preset);
+            return g_list_prepend (NULL, tool_preset);
         }
-      else
+        else
         {
-          g_set_error_literal (error,
-                               GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
-                               _("Tool preset file is corrupt."));
+            g_set_error_literal (error,
+                                 GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+                                 _("Tool preset file is corrupt."));
         }
     }
 
-  g_object_unref (tool_preset);
+    g_object_unref (tool_preset);
 
-  return NULL;
+    return NULL;
 }

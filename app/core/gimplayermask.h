@@ -34,27 +34,27 @@ typedef struct _GimpLayerMaskClass  GimpLayerMaskClass;
 
 struct _GimpLayerMask
 {
-  GimpChannel  parent_instance;
+    GimpChannel  parent_instance;
 
-  GimpLayer   *layer;
+    GimpLayer   *layer;
 };
 
 struct _GimpLayerMaskClass
 {
-  GimpChannelClass  parent_class;
+    GimpChannelClass  parent_class;
 };
 
 
 GType           gimp_layer_mask_get_type  (void) G_GNUC_CONST;
 
 GimpLayerMask * gimp_layer_mask_new       (GimpImage     *image,
-                                           gint           width,
-                                           gint           height,
-                                           const gchar   *name,
-                                           const GimpRGB *color);
+        gint           width,
+        gint           height,
+        const gchar   *name,
+        const GimpRGB *color);
 
 void            gimp_layer_mask_set_layer (GimpLayerMask *layer_mask,
-                                           GimpLayer     *layer);
+        GimpLayer     *layer);
 GimpLayer     * gimp_layer_mask_get_layer (GimpLayerMask *layer_mask);
 
 

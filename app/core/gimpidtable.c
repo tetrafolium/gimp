@@ -35,14 +35,14 @@
 
 struct _GimpIdTablePrivate
 {
-  GHashTable *id_table;
-  gint        next_id;
+    GHashTable *id_table;
+    gint        next_id;
 };
 
 
 static void    gimp_id_table_finalize    (GObject    *object);
 static gint64  gimp_id_table_get_memsize (GimpObject *object,
-                                          gint64     *gui_size);
+        gint64     *gui_size);
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpIdTable, gimp_id_table, GIMP_TYPE_OBJECT)
@@ -53,44 +53,44 @@ G_DEFINE_TYPE_WITH_PRIVATE (GimpIdTable, gimp_id_table, GIMP_TYPE_OBJECT)
 static void
 gimp_id_table_class_init (GimpIdTableClass *klass)
 {
-  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
-  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+    GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+    GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
 
-  object_class->finalize         = gimp_id_table_finalize;
+    object_class->finalize         = gimp_id_table_finalize;
 
-  gimp_object_class->get_memsize = gimp_id_table_get_memsize;
+    gimp_object_class->get_memsize = gimp_id_table_get_memsize;
 }
 
 static void
 gimp_id_table_init (GimpIdTable *id_table)
 {
-  id_table->priv = gimp_id_table_get_instance_private (id_table);
+    id_table->priv = gimp_id_table_get_instance_private (id_table);
 
-  id_table->priv->id_table = g_hash_table_new (g_direct_hash, NULL);
-  id_table->priv->next_id  = GIMP_ID_TABLE_START_ID;
+    id_table->priv->id_table = g_hash_table_new (g_direct_hash, NULL);
+    id_table->priv->next_id  = GIMP_ID_TABLE_START_ID;
 }
 
 static void
 gimp_id_table_finalize (GObject *object)
 {
-  GimpIdTable *id_table = GIMP_ID_TABLE (object);
+    GimpIdTable *id_table = GIMP_ID_TABLE (object);
 
-  g_clear_pointer (&id_table->priv->id_table, g_hash_table_unref);
+    g_clear_pointer (&id_table->priv->id_table, g_hash_table_unref);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static gint64
 gimp_id_table_get_memsize (GimpObject *object,
                            gint64     *gui_size)
 {
-  GimpIdTable *id_table = GIMP_ID_TABLE (object);
-  gint64       memsize  = 0;
+    GimpIdTable *id_table = GIMP_ID_TABLE (object);
+    gint64       memsize  = 0;
 
-  memsize += gimp_g_hash_table_get_memsize (id_table->priv->id_table, 0);
+    memsize += gimp_g_hash_table_get_memsize (id_table->priv->id_table, 0);
 
-  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
-                                                                  gui_size);
+    return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+            gui_size);
 }
 
 /**
@@ -101,7 +101,7 @@ gimp_id_table_get_memsize (GimpObject *object,
 GimpIdTable *
 gimp_id_table_new (void)
 {
-  return g_object_new (GIMP_TYPE_ID_TABLE, NULL);
+    return g_object_new (GIMP_TYPE_ID_TABLE, NULL);
 }
 
 /**
@@ -117,32 +117,32 @@ gimp_id_table_new (void)
 gint
 gimp_id_table_insert (GimpIdTable *id_table, gpointer data)
 {
-  gint new_id;
-  gint start_id;
+    gint new_id;
+    gint start_id;
 
-  g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), 0);
+    g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), 0);
 
-  start_id = id_table->priv->next_id;
+    start_id = id_table->priv->next_id;
 
-  do
+    do
     {
-      new_id = id_table->priv->next_id++;
+        new_id = id_table->priv->next_id++;
 
-      if (id_table->priv->next_id == GIMP_ID_TABLE_END_ID)
-        id_table->priv->next_id = GIMP_ID_TABLE_START_ID;
+        if (id_table->priv->next_id == GIMP_ID_TABLE_END_ID)
+            id_table->priv->next_id = GIMP_ID_TABLE_START_ID;
 
-      if (start_id == id_table->priv->next_id)
+        if (start_id == id_table->priv->next_id)
         {
-          /* We looped once over all used ids. Very unlikely to happen.
-             And if it does, there is probably not much to be done.
-             It is just good design not to allow a theoretical infinite loop. */
-          g_error ("%s: out of ids!", G_STRFUNC);
-          break;
+            /* We looped once over all used ids. Very unlikely to happen.
+               And if it does, there is probably not much to be done.
+               It is just good design not to allow a theoretical infinite loop. */
+            g_error ("%s: out of ids!", G_STRFUNC);
+            break;
         }
     }
-  while (gimp_id_table_lookup (id_table, new_id));
+    while (gimp_id_table_lookup (id_table, new_id));
 
-  return gimp_id_table_insert_with_id (id_table, new_id, data);
+    return gimp_id_table_insert_with_id (id_table, new_id, data);
 }
 
 /**
@@ -159,15 +159,15 @@ gimp_id_table_insert (GimpIdTable *id_table, gpointer data)
 gint
 gimp_id_table_insert_with_id (GimpIdTable *id_table, gint id, gpointer data)
 {
-  g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), 0);
-  g_return_val_if_fail (id > 0, 0);
+    g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), 0);
+    g_return_val_if_fail (id > 0, 0);
 
-  if (gimp_id_table_lookup (id_table, id))
-    return -1;
+    if (gimp_id_table_lookup (id_table, id))
+        return -1;
 
-  g_hash_table_insert (id_table->priv->id_table, GINT_TO_POINTER (id), data);
+    g_hash_table_insert (id_table->priv->id_table, GINT_TO_POINTER (id), data);
 
-  return id;
+    return id;
 }
 
 /**
@@ -182,10 +182,10 @@ gimp_id_table_insert_with_id (GimpIdTable *id_table, gint id, gpointer data)
 void
 gimp_id_table_replace (GimpIdTable *id_table, gint id, gpointer data)
 {
-  g_return_if_fail (GIMP_IS_ID_TABLE (id_table));
-  g_return_if_fail (id > 0);
+    g_return_if_fail (GIMP_IS_ID_TABLE (id_table));
+    g_return_if_fail (id > 0);
 
-  g_hash_table_replace (id_table->priv->id_table, GINT_TO_POINTER (id), data);
+    g_hash_table_replace (id_table->priv->id_table, GINT_TO_POINTER (id), data);
 }
 
 /**
@@ -201,9 +201,9 @@ gimp_id_table_replace (GimpIdTable *id_table, gint id, gpointer data)
 gpointer
 gimp_id_table_lookup (GimpIdTable *id_table, gint id)
 {
-  g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), NULL);
+    g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), NULL);
 
-  return g_hash_table_lookup (id_table->priv->id_table, GINT_TO_POINTER (id));
+    return g_hash_table_lookup (id_table->priv->id_table, GINT_TO_POINTER (id));
 }
 
 
@@ -220,9 +220,9 @@ gimp_id_table_lookup (GimpIdTable *id_table, gint id)
 gboolean
 gimp_id_table_remove (GimpIdTable *id_table, gint id)
 {
-  g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), FALSE);
+    g_return_val_if_fail (GIMP_IS_ID_TABLE (id_table), FALSE);
 
-  g_return_val_if_fail (id_table != NULL, FALSE);
+    g_return_val_if_fail (id_table != NULL, FALSE);
 
-  return g_hash_table_remove (id_table->priv->id_table, GINT_TO_POINTER (id));
+    return g_hash_table_remove (id_table->priv->id_table, GINT_TO_POINTER (id));
 }

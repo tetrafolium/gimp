@@ -38,31 +38,31 @@ typedef struct _GimpIdTablePrivate GimpIdTablePrivate;
 
 struct _GimpIdTable
 {
-  GimpObject          parent_instance;
+    GimpObject          parent_instance;
 
-  GimpIdTablePrivate *priv;
+    GimpIdTablePrivate *priv;
 };
 
 struct _GimpIdTableClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 };
 
 
 GType          gimp_id_table_get_type       (void) G_GNUC_CONST;
 GimpIdTable *  gimp_id_table_new            (void);
 gint           gimp_id_table_insert         (GimpIdTable *id_table,
-                                             gpointer     data);
+        gpointer     data);
 gint           gimp_id_table_insert_with_id (GimpIdTable *id_table,
-                                             gint         id,
-                                             gpointer     data);
+        gint         id,
+        gpointer     data);
 void           gimp_id_table_replace        (GimpIdTable *id_table,
-                                             gint         id,
-                                             gpointer     data);
+        gint         id,
+        gpointer     data);
 gpointer       gimp_id_table_lookup         (GimpIdTable *id_table,
-                                             gint         id);
+        gint         id);
 gboolean       gimp_id_table_remove         (GimpIdTable *id_table,
-                                             gint         id);
+        gint         id);
 
 
 #endif  /*  __GIMP_ID_TABLE_H__  */

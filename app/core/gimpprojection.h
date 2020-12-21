@@ -35,21 +35,21 @@ typedef struct _GimpProjectionClass   GimpProjectionClass;
 
 struct _GimpProjection
 {
-  GimpObject             parent_instance;
+    GimpObject             parent_instance;
 
-  GimpProjectionPrivate *priv;
+    GimpProjectionPrivate *priv;
 };
 
 struct _GimpProjectionClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 
-  void (* update) (GimpProjection *proj,
-                   gboolean        now,
-                   gint            x,
-                   gint            y,
-                   gint            width,
-                   gint            height);
+    void (* update) (GimpProjection *proj,
+                     gboolean        now,
+                     gint            x,
+                     gint            y,
+                     gint            width,
+                     gint            height);
 };
 
 
@@ -58,26 +58,26 @@ GType            gimp_projection_get_type          (void) G_GNUC_CONST;
 GimpProjection * gimp_projection_new               (GimpProjectable   *projectable);
 
 void             gimp_projection_set_priority      (GimpProjection    *projection,
-                                                    gint               priority);
+        gint               priority);
 gint             gimp_projection_get_priority      (GimpProjection    *projection);
 
 void             gimp_projection_set_priority_rect (GimpProjection    *proj,
-                                                    gint               x,
-                                                    gint               y,
-                                                    gint               width,
-                                                    gint               height);
+        gint               x,
+        gint               y,
+        gint               width,
+        gint               height);
 
 void             gimp_projection_stop_rendering    (GimpProjection    *proj);
 
 void             gimp_projection_flush             (GimpProjection    *proj);
 void             gimp_projection_flush_now         (GimpProjection    *proj,
-                                                    gboolean           direct);
+        gboolean           direct);
 void             gimp_projection_finish_draw       (GimpProjection    *proj);
 
 gint64           gimp_projection_estimate_memsize  (GimpImageBaseType  type,
-                                                    GimpComponentType  component_type,
-                                                    gint               width,
-                                                    gint               height);
+        GimpComponentType  component_type,
+        gint               width,
+        gint               height);
 
 
 #endif /*  __GIMP_PROJECTION_H__  */

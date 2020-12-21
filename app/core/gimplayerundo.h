@@ -35,16 +35,16 @@ typedef struct _GimpLayerUndoClass GimpLayerUndoClass;
 
 struct _GimpLayerUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  GimpLayer    *prev_parent;
-  gint          prev_position;   /*  former position in list  */
-  GList        *prev_layers;     /*  previous selected layers */
+    GimpLayer    *prev_parent;
+    gint          prev_position;   /*  former position in list  */
+    GList        *prev_layers;     /*  previous selected layers */
 };
 
 struct _GimpLayerUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

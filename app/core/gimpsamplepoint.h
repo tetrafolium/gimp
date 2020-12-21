@@ -38,14 +38,14 @@ typedef struct _GimpSamplePointClass   GimpSamplePointClass;
 
 struct _GimpSamplePoint
 {
-  GimpAuxItem             parent_instance;
+    GimpAuxItem             parent_instance;
 
-  GimpSamplePointPrivate *priv;
+    GimpSamplePointPrivate *priv;
 };
 
 struct _GimpSamplePointClass
 {
-  GimpAuxItemClass  parent_class;
+    GimpAuxItemClass  parent_class;
 };
 
 
@@ -54,15 +54,15 @@ GType             gimp_sample_point_get_type      (void) G_GNUC_CONST;
 GimpSamplePoint * gimp_sample_point_new           (guint32            sample_point_ID);
 
 void              gimp_sample_point_get_position  (GimpSamplePoint   *sample_point,
-                                                   gint              *position_x,
-                                                   gint              *position_y);
+        gint              *position_x,
+        gint              *position_y);
 void              gimp_sample_point_set_position  (GimpSamplePoint   *sample_point,
-                                                   gint               position_x,
-                                                   gint               position_y);
+        gint               position_x,
+        gint               position_y);
 
 GimpColorPickMode gimp_sample_point_get_pick_mode (GimpSamplePoint   *sample_point);
 void              gimp_sample_point_set_pick_mode (GimpSamplePoint   *sample_point,
-                                                   GimpColorPickMode  pick_mode);
+        GimpColorPickMode  pick_mode);
 
 
 #endif /* __GIMP_SAMPLE_POINT_H__ */

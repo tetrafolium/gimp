@@ -37,21 +37,21 @@ typedef struct _GimpMandalaClass GimpMandalaClass;
 
 struct _GimpMandala
 {
-  GimpSymmetry  parent_instance;
+    GimpSymmetry  parent_instance;
 
-  gdouble       center_x;
-  gdouble       center_y;
-  gint          size;
-  gboolean      disable_transformation;
-  gboolean      enable_reflection;
+    gdouble       center_x;
+    gdouble       center_y;
+    gint          size;
+    gboolean      disable_transformation;
+    gboolean      enable_reflection;
 
-  GimpGuide    *horizontal_guide;
-  GimpGuide    *vertical_guide;
+    GimpGuide    *horizontal_guide;
+    GimpGuide    *vertical_guide;
 };
 
 struct _GimpMandalaClass
 {
-  GimpSymmetryClass  parent_class;
+    GimpSymmetryClass  parent_class;
 };
 
 

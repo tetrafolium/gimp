@@ -34,16 +34,16 @@ typedef struct _GimpObjectQueueClass GimpObjectQueueClass;
 
 struct _GimpObjectQueue
 {
-  GimpSubProgress  parent_instance;
+    GimpSubProgress  parent_instance;
 
-  GQueue           items;
-  gint64           processed_memsize;
-  gint64           total_memsize;
+    GQueue           items;
+    gint64           processed_memsize;
+    gint64           total_memsize;
 };
 
 struct _GimpObjectQueueClass
 {
-  GimpSubProgressClass  parent_class;
+    GimpSubProgressClass  parent_class;
 };
 
 
@@ -54,11 +54,11 @@ GimpObjectQueue * gimp_object_queue_new            (GimpProgress    *progress);
 void              gimp_object_queue_clear          (GimpObjectQueue *queue);
 
 void              gimp_object_queue_push           (GimpObjectQueue *queue,
-                                                    gpointer         object);
+        gpointer         object);
 void              gimp_object_queue_push_container (GimpObjectQueue *queue,
-                                                    GimpContainer   *container);
+        GimpContainer   *container);
 void              gimp_object_queue_push_list      (GimpObjectQueue *queue,
-                                                    GList           *list);
+        GList           *list);
 
 gpointer          gimp_object_queue_pop            (GimpObjectQueue *queue);
 

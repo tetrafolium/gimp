@@ -35,18 +35,18 @@ typedef struct _GimpRcClass GimpRcClass;
 
 struct _GimpRc
 {
-  GimpPluginConfig  parent_instance;
+    GimpPluginConfig  parent_instance;
 
-  GFile            *user_gimprc;
-  GFile            *system_gimprc;
-  gboolean          verbose;
-  gboolean          autosave;
-  guint             save_idle_id;
+    GFile            *user_gimprc;
+    GFile            *system_gimprc;
+    gboolean          verbose;
+    gboolean          autosave;
+    guint             save_idle_id;
 };
 
 struct _GimpRcClass
 {
-  GimpPluginConfigClass  parent_class;
+    GimpPluginConfigClass  parent_class;
 };
 
 

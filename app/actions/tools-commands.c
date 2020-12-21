@@ -59,7 +59,7 @@
 /*  local function prototypes  */
 
 static void   tools_activate_enum_action (const gchar *action_desc,
-                                          GVariant    *value);
+        GVariant    *value);
 
 
 /*  local variables  */
@@ -77,101 +77,101 @@ tools_select_cmd_callback (GimpAction *action,
                            GVariant   *value,
                            gpointer    data)
 {
-  Gimp              *gimp;
-  GimpToolInfo      *tool_info;
-  GimpContext       *context;
-  GimpDisplay       *display;
-  const gchar       *tool_name;
-  gboolean           set_transform_type = FALSE;
-  GimpTransformType  transform_type;
-  return_if_no_gimp (gimp, data);
+    Gimp              *gimp;
+    GimpToolInfo      *tool_info;
+    GimpContext       *context;
+    GimpDisplay       *display;
+    const gchar       *tool_name;
+    gboolean           set_transform_type = FALSE;
+    GimpTransformType  transform_type;
+    return_if_no_gimp (gimp, data);
 
-  tool_name = g_variant_get_string (value, NULL);
+    tool_name = g_variant_get_string (value, NULL);
 
-  /*  special case gimp-rotate-tool being called from the Image or Layer
-   *  menus
-   */
-  if (strcmp (tool_name, "gimp-rotate-layer") == 0)
+    /*  special case gimp-rotate-tool being called from the Image or Layer
+     *  menus
+     */
+    if (strcmp (tool_name, "gimp-rotate-layer") == 0)
     {
-      tool_name          = "gimp-rotate-tool";
-      set_transform_type = TRUE;
-      transform_type     = GIMP_TRANSFORM_TYPE_LAYER;
+        tool_name          = "gimp-rotate-tool";
+        set_transform_type = TRUE;
+        transform_type     = GIMP_TRANSFORM_TYPE_LAYER;
     }
-  else if (strcmp (tool_name, "gimp-rotate-image") == 0)
+    else if (strcmp (tool_name, "gimp-rotate-image") == 0)
     {
-      tool_name          = "gimp-rotate-tool";
-      set_transform_type = TRUE;
-      transform_type     = GIMP_TRANSFORM_TYPE_IMAGE;
-    }
-
-  tool_info = gimp_get_tool_info (gimp, tool_name);
-
-  context = gimp_get_user_context (gimp);
-
-  /*  always allocate a new tool when selected from the image menu
-   */
-  if (gimp_context_get_tool (context) != tool_info ||
-      tools_select_cmd_initialize_blocked)
-    {
-      gimp_context_set_tool (context, tool_info);
-    }
-  else
-    {
-      gimp_context_tool_changed (context);
+        tool_name          = "gimp-rotate-tool";
+        set_transform_type = TRUE;
+        transform_type     = GIMP_TRANSFORM_TYPE_IMAGE;
     }
 
-  if (set_transform_type)
-    {
-      GimpTool *tool = tool_manager_get_active (gimp);
+    tool_info = gimp_get_tool_info (gimp, tool_name);
 
-      gimp_transform_tool_set_type (GIMP_TRANSFORM_TOOL (tool),
-                                    transform_type);
+    context = gimp_get_user_context (gimp);
+
+    /*  always allocate a new tool when selected from the image menu
+     */
+    if (gimp_context_get_tool (context) != tool_info ||
+            tools_select_cmd_initialize_blocked)
+    {
+        gimp_context_set_tool (context, tool_info);
+    }
+    else
+    {
+        gimp_context_tool_changed (context);
     }
 
-  if (! tools_select_cmd_initialize_blocked)
+    if (set_transform_type)
     {
-      display = gimp_context_get_display (context);
+        GimpTool *tool = tool_manager_get_active (gimp);
 
-      if (display && gimp_display_get_image (display))
-        tool_manager_initialize_active (gimp, display);
+        gimp_transform_tool_set_type (GIMP_TRANSFORM_TOOL (tool),
+                                      transform_type);
+    }
+
+    if (! tools_select_cmd_initialize_blocked)
+    {
+        display = gimp_context_get_display (context);
+
+        if (display && gimp_display_get_image (display))
+            tool_manager_initialize_active (gimp, display);
     }
 }
 
 void
 tools_select_cmd_block_initialize (void)
 {
-  tools_select_cmd_initialize_blocked++;
+    tools_select_cmd_initialize_blocked++;
 }
 
 void
 tools_select_cmd_unblock_initialize (void)
 {
-  g_return_if_fail (tools_select_cmd_initialize_blocked > 0);
+    g_return_if_fail (tools_select_cmd_initialize_blocked > 0);
 
-  tools_select_cmd_initialize_blocked--;
+    tools_select_cmd_initialize_blocked--;
 }
 
 void
 tools_color_average_radius_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_COLOR_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_COLOR_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "average-radius",
-                              1.0, 1.0, 10.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "average-radius",
+                                1.0, 1.0, 10.0, 0.1, FALSE);
     }
 }
 
@@ -180,22 +180,22 @@ tools_paintbrush_size_cmd_callback (GimpAction *action,
                                     GVariant   *value,
                                     gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "brush-size",
-                              0.1, 1.0, 10.0, 1.0, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "brush-size",
+                                0.1, 1.0, 10.0, 1.0, FALSE);
     }
 }
 
@@ -204,46 +204,46 @@ tools_paintbrush_angle_cmd_callback (GimpAction *action,
                                      GVariant   *value,
                                      gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "brush-angle",
-                              0.1, 1.0, 15.0, 0.1, TRUE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "brush-angle",
+                                0.1, 1.0, 15.0, 0.1, TRUE);
     }
 }
 
 void
 tools_paintbrush_aspect_ratio_cmd_callback (GimpAction *action,
-                                            GVariant   *value,
-                                            gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "brush-aspect-ratio",
-                              0.01, 0.1, 1.0, 0.1, TRUE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "brush-aspect-ratio",
+                                0.01, 0.1, 1.0, 0.1, TRUE);
     }
 }
 
@@ -252,22 +252,22 @@ tools_paintbrush_spacing_cmd_callback (GimpAction *action,
                                        GVariant   *value,
                                        gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "brush-spacing",
-                              0.001, 0.01, 0.1, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "brush-spacing",
+                                0.001, 0.01, 0.1, 0.1, FALSE);
     }
 }
 
@@ -276,22 +276,22 @@ tools_paintbrush_hardness_cmd_callback (GimpAction *action,
                                         GVariant   *value,
                                         gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "brush-hardness",
-                              0.001, 0.01, 0.1, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "brush-hardness",
+                                0.001, 0.01, 0.1, 0.1, FALSE);
     }
 }
 
@@ -300,22 +300,22 @@ tools_paintbrush_force_cmd_callback (GimpAction *action,
                                      GVariant   *value,
                                      gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "brush-force",
-                              0.001, 0.01, 0.1, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "brush-force",
+                                0.001, 0.01, 0.1, 0.1, FALSE);
     }
 }
 
@@ -324,22 +324,22 @@ tools_ink_blob_size_cmd_callback (GimpAction *action,
                                   GVariant   *value,
                                   gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "size",
-                              0.1, 1.0, 10.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "size",
+                                0.1, 1.0, 10.0, 0.1, FALSE);
     }
 }
 
@@ -348,22 +348,22 @@ tools_ink_blob_aspect_cmd_callback (GimpAction *action,
                                     GVariant   *value,
                                     gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "blob-aspect",
-                              1.0, 0.1, 1.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "blob-aspect",
+                                1.0, 0.1, 1.0, 0.1, FALSE);
     }
 }
 
@@ -372,25 +372,25 @@ tools_ink_blob_angle_cmd_callback (GimpAction *action,
                                    GVariant   *value,
                                    gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "blob-angle",
-                              gimp_deg_to_rad (0.1),
-                              gimp_deg_to_rad (1.0),
-                              gimp_deg_to_rad (15.0),
-                              0.1, TRUE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "blob-angle",
+                                gimp_deg_to_rad (0.1),
+                                gimp_deg_to_rad (1.0),
+                                gimp_deg_to_rad (15.0),
+                                0.1, TRUE);
     }
 }
 
@@ -399,22 +399,22 @@ tools_airbrush_rate_cmd_callback (GimpAction *action,
                                   GVariant   *value,
                                   gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_AIRBRUSH_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_AIRBRUSH_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "rate",
-                              0.1, 1.0, 10.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "rate",
+                                0.1, 1.0, 10.0, 0.1, FALSE);
     }
 }
 
@@ -423,22 +423,22 @@ tools_airbrush_flow_cmd_callback (GimpAction *action,
                                   GVariant   *value,
                                   gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_AIRBRUSH_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_AIRBRUSH_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "flow",
-                              0.1, 1.0, 10.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "flow",
+                                0.1, 1.0, 10.0, 0.1, FALSE);
     }
 }
 
@@ -447,22 +447,22 @@ tools_mybrush_radius_cmd_callback (GimpAction *action,
                                    GVariant   *value,
                                    gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_MYBRUSH_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_MYBRUSH_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "radius",
-                              0.1, 0.1, 0.5, 1.0, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "radius",
+                                0.1, 0.1, 0.5, 1.0, FALSE);
     }
 }
 
@@ -471,70 +471,70 @@ tools_mybrush_hardness_cmd_callback (GimpAction *action,
                                      GVariant   *value,
                                      gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_MYBRUSH_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_MYBRUSH_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "hardness",
-                              0.001, 0.01, 0.1, 1.0, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "hardness",
+                                0.001, 0.01, 0.1, 1.0, FALSE);
     }
 }
 
 void
 tools_fg_select_brush_size_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_FOREGROUND_SELECT_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_FOREGROUND_SELECT_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "stroke-width",
-                              1.0, 4.0, 16.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "stroke-width",
+                                1.0, 4.0, 16.0, 0.1, FALSE);
     }
 }
 
 void
 tools_transform_preview_opacity_cmd_callback (GimpAction *action,
-                                              GVariant   *value,
-                                              gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_TRANSFORM_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_TRANSFORM_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "preview-opacity",
-                              0.01, 0.1, 0.5, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "preview-opacity",
+                                0.01, 0.1, 0.5, 0.1, FALSE);
     }
 }
 
@@ -543,46 +543,46 @@ tools_warp_effect_size_cmd_callback (GimpAction *action,
                                      GVariant   *value,
                                      gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_WARP_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_WARP_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "effect-size",
-                              1.0, 4.0, 16.0, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "effect-size",
+                                1.0, 4.0, 16.0, 0.1, FALSE);
     }
 }
 
 void
 tools_warp_effect_hardness_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpActionSelectType  select_type;
-  return_if_no_context (context, data);
+    GimpContext          *context;
+    GimpToolInfo         *tool_info;
+    GimpActionSelectType  select_type;
+    return_if_no_context (context, data);
 
-  select_type = (GimpActionSelectType) g_variant_get_int32 (value);
+    select_type = (GimpActionSelectType) g_variant_get_int32 (value);
 
-  tool_info = gimp_context_get_tool (context);
+    tool_info = gimp_context_get_tool (context);
 
-  if (tool_info && GIMP_IS_WARP_OPTIONS (tool_info->tool_options))
+    if (tool_info && GIMP_IS_WARP_OPTIONS (tool_info->tool_options))
     {
-      action_select_property (select_type,
-                              action_data_get_display (data),
-                              G_OBJECT (tool_info->tool_options),
-                              "effect-hardness",
-                              0.001, 0.01, 0.1, 0.1, FALSE);
+        action_select_property (select_type,
+                                action_data_get_display (data),
+                                G_OBJECT (tool_info->tool_options),
+                                "effect-hardness",
+                                0.001, 0.01, 0.1, 0.1, FALSE);
     }
 }
 
@@ -591,20 +591,20 @@ tools_opacity_cmd_callback (GimpAction *action,
                             GVariant   *value,
                             gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_opacity (tool->control);
+        action_desc = gimp_tool_control_get_action_opacity (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -613,20 +613,20 @@ tools_size_cmd_callback (GimpAction *action,
                          GVariant   *value,
                          gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_size (tool->control);
+        action_desc = gimp_tool_control_get_action_size (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -635,20 +635,20 @@ tools_aspect_cmd_callback (GimpAction *action,
                            GVariant   *value,
                            gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_aspect (tool->control);
+        action_desc = gimp_tool_control_get_action_aspect (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -657,20 +657,20 @@ tools_angle_cmd_callback (GimpAction *action,
                           GVariant   *value,
                           gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_angle (tool->control);
+        action_desc = gimp_tool_control_get_action_angle (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -679,20 +679,20 @@ tools_spacing_cmd_callback (GimpAction *action,
                             GVariant   *value,
                             gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_spacing (tool->control);
+        action_desc = gimp_tool_control_get_action_spacing (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -701,20 +701,20 @@ tools_hardness_cmd_callback (GimpAction *action,
                              GVariant   *value,
                              gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_hardness (tool->control);
+        action_desc = gimp_tool_control_get_action_hardness (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -723,20 +723,20 @@ tools_force_cmd_callback (GimpAction *action,
                           GVariant   *value,
                           gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_force (tool->control);
+        action_desc = gimp_tool_control_get_action_force (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -745,20 +745,20 @@ tools_object_1_cmd_callback (GimpAction *action,
                              GVariant   *value,
                              gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_object_1 (tool->control);
+        action_desc = gimp_tool_control_get_action_object_1 (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -767,20 +767,20 @@ tools_object_2_cmd_callback (GimpAction *action,
                              GVariant   *value,
                              gpointer    data)
 {
-  GimpContext *context;
-  GimpTool    *tool;
-  return_if_no_context (context, data);
+    GimpContext *context;
+    GimpTool    *tool;
+    return_if_no_context (context, data);
 
-  tool = tool_manager_get_active (context->gimp);
+    tool = tool_manager_get_active (context->gimp);
 
-  if (tool)
+    if (tool)
     {
-      const gchar *action_desc;
+        const gchar *action_desc;
 
-      action_desc = gimp_tool_control_get_action_object_2 (tool->control);
+        action_desc = gimp_tool_control_get_action_object_2 (tool->control);
 
-      if (action_desc)
-        tools_activate_enum_action (action_desc, value);
+        if (action_desc)
+            tools_activate_enum_action (action_desc, value);
     }
 }
 
@@ -791,30 +791,30 @@ static void
 tools_activate_enum_action (const gchar *action_desc,
                             GVariant    *value)
 {
-  gchar *group_name;
-  gchar *action_name;
+    gchar *group_name;
+    gchar *action_name;
 
-  group_name  = g_strdup (action_desc);
-  action_name = strchr (group_name, '/');
+    group_name  = g_strdup (action_desc);
+    action_name = strchr (group_name, '/');
 
-  if (action_name)
+    if (action_name)
     {
-      GList      *managers;
-      GimpAction *action;
+        GList      *managers;
+        GimpAction *action;
 
-      *action_name++ = '\0';
+        *action_name++ = '\0';
 
-      managers = gimp_ui_managers_from_name ("<Image>");
+        managers = gimp_ui_managers_from_name ("<Image>");
 
-      action = gimp_ui_manager_find_action (managers->data,
-                                            group_name, action_name);
+        action = gimp_ui_manager_find_action (managers->data,
+                                              group_name, action_name);
 
-      if (GIMP_IS_ENUM_ACTION (action) &&
-          GIMP_ENUM_ACTION (action)->value_variable)
+        if (GIMP_IS_ENUM_ACTION (action) &&
+                GIMP_ENUM_ACTION (action)->value_variable)
         {
-          gimp_action_emit_activate (GIMP_ACTION (action), value);
+            gimp_action_emit_activate (GIMP_ACTION (action), value);
         }
     }
 
-  g_free (group_name);
+    g_free (group_name);
 }

@@ -20,29 +20,29 @@
 
 
 GimpPalette * gimp_palette_import_from_gradient      (GimpGradient *gradient,
-                                                      GimpContext  *context,
-                                                      gboolean      reverse,
-                                                      GimpGradientBlendColorSpace  blend_color_space,
-                                                      const gchar  *palette_name,
-                                                      gint          n_colors);
+        GimpContext  *context,
+        gboolean      reverse,
+        GimpGradientBlendColorSpace  blend_color_space,
+        const gchar  *palette_name,
+        gint          n_colors);
 GimpPalette * gimp_palette_import_from_image         (GimpImage    *image,
-                                                      GimpContext  *context,
-                                                      const gchar  *palette_name,
-                                                      gint          n_colors,
-                                                      gint          threshold,
-                                                      gboolean      selection_only);
+        GimpContext  *context,
+        const gchar  *palette_name,
+        gint          n_colors,
+        gint          threshold,
+        gboolean      selection_only);
 GimpPalette * gimp_palette_import_from_indexed_image (GimpImage    *image,
-                                                      GimpContext  *context,
-                                                      const gchar  *palette_name);
+        GimpContext  *context,
+        const gchar  *palette_name);
 GimpPalette * gimp_palette_import_from_drawables     (GList        *drawables,
-                                                      GimpContext  *context,
-                                                      const gchar  *palette_name,
-                                                      gint          n_colors,
-                                                      gint          threshold,
-                                                      gboolean      selection_only);
+        GimpContext  *context,
+        const gchar  *palette_name,
+        gint          n_colors,
+        gint          threshold,
+        gboolean      selection_only);
 GimpPalette * gimp_palette_import_from_file          (GimpContext  *context,
-                                                      GFile        *file,
-                                                      const gchar  *palette_name,
-                                                      GError      **error);
+        GFile        *file,
+        const gchar  *palette_name,
+        GError      **error);
 
 #endif  /* __GIMP_PALETTE_IMPORT_H__ */

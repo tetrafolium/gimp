@@ -35,15 +35,15 @@ typedef struct _GimpLayerMaskPropUndoClass GimpLayerMaskPropUndoClass;
 
 struct _GimpLayerMaskPropUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  gboolean      apply;
-  gboolean      show;
+    gboolean      apply;
+    gboolean      show;
 };
 
 struct _GimpLayerMaskPropUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

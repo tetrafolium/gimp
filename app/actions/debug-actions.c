@@ -34,67 +34,75 @@
 
 static const GimpActionEntry debug_actions[] =
 {
-  { "debug-menu", NULL, "_Debug" },
+    { "debug-menu", NULL, "_Debug" },
 
-  { "debug-gtk-inspector", NULL,
-    "Start _GtkInspector", NULL, NULL,
-    debug_gtk_inspector_cmd_callback,
-    NULL },
+    {   "debug-gtk-inspector", NULL,
+        "Start _GtkInspector", NULL, NULL,
+        debug_gtk_inspector_cmd_callback,
+        NULL
+    },
 
-  { "debug-mem-profile", NULL,
-    "_Memory Profile", NULL, NULL,
-    debug_mem_profile_cmd_callback,
-    NULL },
+    {   "debug-mem-profile", NULL,
+        "_Memory Profile", NULL, NULL,
+        debug_mem_profile_cmd_callback,
+        NULL
+    },
 
-  { "debug-benchmark-projection", NULL,
-    "Benchmark _Projection", NULL,
-    "Invalidates the entire projection, measures the time it takes to "
-    "validate (render) the part that is visible in the active display, "
-    "and print the result to stdout.",
-    debug_benchmark_projection_cmd_callback,
-    NULL },
+    {   "debug-benchmark-projection", NULL,
+        "Benchmark _Projection", NULL,
+        "Invalidates the entire projection, measures the time it takes to "
+        "validate (render) the part that is visible in the active display, "
+        "and print the result to stdout.",
+        debug_benchmark_projection_cmd_callback,
+        NULL
+    },
 
-  { "debug-show-image-graph", NULL,
-    "Show Image _Graph", NULL,
-    "Creates a new image showing the GEGL graph of this image",
-    debug_show_image_graph_cmd_callback,
-    NULL },
+    {   "debug-show-image-graph", NULL,
+        "Show Image _Graph", NULL,
+        "Creates a new image showing the GEGL graph of this image",
+        debug_show_image_graph_cmd_callback,
+        NULL
+    },
 
-  { "debug-dump-items", NULL,
-    "_Dump Items", NULL, NULL,
-    debug_dump_menus_cmd_callback,
-    NULL },
+    {   "debug-dump-items", NULL,
+        "_Dump Items", NULL, NULL,
+        debug_dump_menus_cmd_callback,
+        NULL
+    },
 
-  { "debug-dump-managers", NULL,
-    "Dump _UI Managers", NULL, NULL,
-    debug_dump_managers_cmd_callback,
-    NULL },
+    {   "debug-dump-managers", NULL,
+        "Dump _UI Managers", NULL, NULL,
+        debug_dump_managers_cmd_callback,
+        NULL
+    },
 
-  { "debug-dump-keyboard-shortcuts", NULL,
-    "Dump _Keyboard Shortcuts", NULL, NULL,
-    debug_dump_keyboard_shortcuts_cmd_callback,
-    NULL },
+    {   "debug-dump-keyboard-shortcuts", NULL,
+        "Dump _Keyboard Shortcuts", NULL, NULL,
+        debug_dump_keyboard_shortcuts_cmd_callback,
+        NULL
+    },
 
-  { "debug-dump-attached-data", NULL,
-    "Dump Attached Data", NULL, NULL,
-    debug_dump_attached_data_cmd_callback,
-    NULL }
+    {   "debug-dump-attached-data", NULL,
+        "Dump Attached Data", NULL, NULL,
+        debug_dump_attached_data_cmd_callback,
+        NULL
+    }
 };
 
 void
 debug_actions_setup (GimpActionGroup *group)
 {
-  gint i;
+    gint i;
 
-  gimp_action_group_add_actions (group, NULL,
-                                 debug_actions,
-                                 G_N_ELEMENTS (debug_actions));
+    gimp_action_group_add_actions (group, NULL,
+                                   debug_actions,
+                                   G_N_ELEMENTS (debug_actions));
 
 #define SET_VISIBLE(action,condition) \
         gimp_action_group_set_action_visible (group, action, (condition) != 0)
 
-  for (i = 0; i < G_N_ELEMENTS (debug_actions); i++)
-    SET_VISIBLE (debug_actions[i].name, group->gimp->show_debug_menu);
+    for (i = 0; i < G_N_ELEMENTS (debug_actions); i++)
+        SET_VISIBLE (debug_actions[i].name, group->gimp->show_debug_menu);
 
 #undef SET_VISIBLE
 }
@@ -106,7 +114,7 @@ debug_actions_update (GimpActionGroup *group,
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("debug-show-image-graph", gegl_has_operation ("gegl:introspect"));
+    SET_SENSITIVE ("debug-show-image-graph", gegl_has_operation ("gegl:introspect"));
 
 #undef SET_SENSITIVE
 }

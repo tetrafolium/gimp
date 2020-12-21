@@ -35,25 +35,25 @@ typedef struct _GimpItemPropUndoClass GimpItemPropUndoClass;
 
 struct _GimpItemPropUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  GimpItem     *parent;
-  gint          position;
-  gchar        *name;
-  gint          offset_x;
-  gint          offset_y;
-  guint         visible       : 1;
-  guint         linked        : 1;
-  guint         lock_content  : 1;
-  guint         lock_position : 1;
-  GimpColorTag  color_tag;
-  gchar        *parasite_name;
-  GimpParasite *parasite;
+    GimpItem     *parent;
+    gint          position;
+    gchar        *name;
+    gint          offset_x;
+    gint          offset_y;
+    guint         visible       : 1;
+    guint         linked        : 1;
+    guint         lock_content  : 1;
+    guint         lock_position : 1;
+    GimpColorTag  color_tag;
+    gchar        *parasite_name;
+    GimpParasite *parasite;
 };
 
 struct _GimpItemPropUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

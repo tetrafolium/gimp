@@ -38,58 +38,58 @@ void
 gimp_atomic_slist_push_head (GSList   * volatile *list,
                              gpointer             data)
 {
-  GSList *old_head;
-  GSList *new_head;
+    GSList *old_head;
+    GSList *new_head;
 
-  g_return_if_fail (list != NULL);
+    g_return_if_fail (list != NULL);
 
-  new_head = g_slist_alloc ();
+    new_head = g_slist_alloc ();
 
-  new_head->data = data;
+    new_head->data = data;
 
-  do
+    do
     {
-      do
+        do
         {
-          old_head = g_atomic_pointer_get (list);
+            old_head = g_atomic_pointer_get (list);
         }
-      while (old_head == &gimp_atomic_slist_sentinel);
+        while (old_head == &gimp_atomic_slist_sentinel);
 
-      new_head->next = old_head;
+        new_head->next = old_head;
     }
-  while (! g_atomic_pointer_compare_and_exchange (list, old_head, new_head));
+    while (! g_atomic_pointer_compare_and_exchange (list, old_head, new_head));
 }
 
 gpointer
 gimp_atomic_slist_pop_head (GSList * volatile *list)
 {
-  GSList   *old_head;
-  GSList   *new_head;
-  gpointer  data;
+    GSList   *old_head;
+    GSList   *new_head;
+    gpointer  data;
 
-  g_return_val_if_fail (list != NULL, NULL);
+    g_return_val_if_fail (list != NULL, NULL);
 
-  do
+    do
     {
-      do
+        do
         {
-          old_head = g_atomic_pointer_get (list);
+            old_head = g_atomic_pointer_get (list);
         }
-      while (old_head == &gimp_atomic_slist_sentinel);
+        while (old_head == &gimp_atomic_slist_sentinel);
 
-      if (! old_head)
-        return NULL;
+        if (! old_head)
+            return NULL;
     }
-  while (! g_atomic_pointer_compare_and_exchange (list,
-                                                  old_head,
-                                                  &gimp_atomic_slist_sentinel));
+    while (! g_atomic_pointer_compare_and_exchange (list,
+            old_head,
+            &gimp_atomic_slist_sentinel));
 
-  new_head = old_head->next;
-  data     = old_head->data;
+    new_head = old_head->next;
+    data     = old_head->data;
 
-  g_atomic_pointer_set (list, new_head);
+    g_atomic_pointer_set (list, new_head);
 
-  g_slist_free1 (old_head);
+    g_slist_free1 (old_head);
 
-  return data;
+    return data;
 }

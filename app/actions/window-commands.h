@@ -20,14 +20,14 @@
 
 
 void   window_close_cmd_callback          (GimpAction *action,
-                                           GVariant   *value,
-                                           gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 void   window_open_display_cmd_callback   (GimpAction *action,
-                                           GVariant   *value,
-                                           gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 void   window_move_to_screen_cmd_callback (GimpAction *action,
-                                           GVariant   *value,
-                                           gpointer    data);
+        GVariant   *value,
+        gpointer    data);
 
 
 #endif /* __WINDOW_COMMANDS_H__ */

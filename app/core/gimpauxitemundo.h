@@ -35,14 +35,14 @@ typedef struct _GimpAuxItemUndoClass GimpAuxItemUndoClass;
 
 struct _GimpAuxItemUndo
 {
-  GimpUndo     parent_instance;
+    GimpUndo     parent_instance;
 
-  GimpAuxItem *aux_item;
+    GimpAuxItem *aux_item;
 };
 
 struct _GimpAuxItemUndoClass
 {
-  GimpUndoClass  parent_class;
+    GimpUndoClass  parent_class;
 };
 
 

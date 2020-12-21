@@ -35,14 +35,14 @@ typedef struct _GimpFloatingSelectionUndoClass GimpFloatingSelectionUndoClass;
 
 struct _GimpFloatingSelectionUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  GimpDrawable *drawable;
+    GimpDrawable *drawable;
 };
 
 struct _GimpFloatingSelectionUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

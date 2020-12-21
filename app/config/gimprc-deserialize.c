@@ -37,7 +37,7 @@
 
 
 static GTokenType gimp_rc_deserialize_unknown (GimpConfig *config,
-                                               GScanner   *scanner);
+        GScanner   *scanner);
 
 
 gboolean
@@ -46,129 +46,129 @@ gimp_rc_deserialize (GimpConfig *config,
                      gint        nest_level,
                      gpointer    data)
 {
-  GObjectClass  *klass;
-  GParamSpec   **property_specs;
-  guint          n_property_specs;
-  guint          i;
-  guint          scope_id;
-  guint          old_scope_id;
-  GTokenType     token;
-  GTokenType     next;
+    GObjectClass  *klass;
+    GParamSpec   **property_specs;
+    guint          n_property_specs;
+    guint          i;
+    guint          scope_id;
+    guint          old_scope_id;
+    GTokenType     token;
+    GTokenType     next;
 
-  g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
 
-  klass = G_OBJECT_GET_CLASS (config);
+    klass = G_OBJECT_GET_CLASS (config);
 
-  property_specs = g_object_class_list_properties (klass, &n_property_specs);
-  if (! property_specs)
-    return TRUE;
+    property_specs = g_object_class_list_properties (klass, &n_property_specs);
+    if (! property_specs)
+        return TRUE;
 
-  scope_id = g_type_qname (G_TYPE_FROM_INSTANCE (config));
-  old_scope_id = g_scanner_set_scope (scanner, scope_id);
+    scope_id = g_type_qname (G_TYPE_FROM_INSTANCE (config));
+    old_scope_id = g_scanner_set_scope (scanner, scope_id);
 
-  for (i = 0; i < n_property_specs; i++)
+    for (i = 0; i < n_property_specs; i++)
     {
-      GParamSpec *prop_spec = property_specs[i];
+        GParamSpec *prop_spec = property_specs[i];
 
-      if (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE)
+        if (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE)
         {
-          g_scanner_scope_add_symbol (scanner, scope_id,
-                                      prop_spec->name, prop_spec);
+            g_scanner_scope_add_symbol (scanner, scope_id,
+                                        prop_spec->name, prop_spec);
         }
     }
 
-  g_free (property_specs);
+    g_free (property_specs);
 
-  g_object_freeze_notify (G_OBJECT (config));
+    g_object_freeze_notify (G_OBJECT (config));
 
-  token = G_TOKEN_LEFT_PAREN;
+    token = G_TOKEN_LEFT_PAREN;
 
-  while (TRUE)
+    while (TRUE)
     {
-      next = g_scanner_peek_next_token (scanner);
+        next = g_scanner_peek_next_token (scanner);
 
-      if (G_UNLIKELY (next != token && ! (token == G_TOKEN_SYMBOL &&
-                                          next  == G_TOKEN_IDENTIFIER)))
+        if (G_UNLIKELY (next != token && ! (token == G_TOKEN_SYMBOL &&
+                                            next  == G_TOKEN_IDENTIFIER)))
         {
-          break;
+            break;
         }
 
-      token = g_scanner_get_next_token (scanner);
+        token = g_scanner_get_next_token (scanner);
 
-      switch (token)
+        switch (token)
         {
         case G_TOKEN_LEFT_PAREN:
-          token = G_TOKEN_SYMBOL;
-          break;
+            token = G_TOKEN_SYMBOL;
+            break;
 
         case G_TOKEN_IDENTIFIER:
-          token = gimp_rc_deserialize_unknown (config, scanner);
-          break;
+            token = gimp_rc_deserialize_unknown (config, scanner);
+            break;
 
         case G_TOKEN_SYMBOL:
-          token = gimp_config_deserialize_property (config,
-                                                    scanner, nest_level);
-          break;
+            token = gimp_config_deserialize_property (config,
+                    scanner, nest_level);
+            break;
 
         case G_TOKEN_RIGHT_PAREN:
-          token = G_TOKEN_LEFT_PAREN;
-          break;
+            token = G_TOKEN_LEFT_PAREN;
+            break;
 
         default: /* do nothing */
-          break;
+            break;
         }
     }
 
-  g_scanner_set_scope (scanner, old_scope_id);
+    g_scanner_set_scope (scanner, old_scope_id);
 
-  g_object_thaw_notify (G_OBJECT (config));
+    g_object_thaw_notify (G_OBJECT (config));
 
-  if (token == G_TOKEN_NONE)
-    return FALSE;
+    if (token == G_TOKEN_NONE)
+        return FALSE;
 
-  /* If the unknown token value couldn't be parsed the default error
-     message is rather confusing.  We try to produce something more
-     meaningful here ...
-   */
-  if (token == G_TOKEN_STRING && next == G_TOKEN_IDENTIFIER)
+    /* If the unknown token value couldn't be parsed the default error
+       message is rather confusing.  We try to produce something more
+       meaningful here ...
+     */
+    if (token == G_TOKEN_STRING && next == G_TOKEN_IDENTIFIER)
     {
-      g_scanner_unexp_token (scanner, G_TOKEN_SYMBOL, NULL, NULL, NULL,
-                             _("fatal parse error"), TRUE);
-      return FALSE;
+        g_scanner_unexp_token (scanner, G_TOKEN_SYMBOL, NULL, NULL, NULL,
+                               _("fatal parse error"), TRUE);
+        return FALSE;
     }
 
-  return gimp_config_deserialize_return (scanner, token, nest_level);
+    return gimp_config_deserialize_return (scanner, token, nest_level);
 }
 
 static GTokenType
 gimp_rc_deserialize_unknown (GimpConfig *config,
                              GScanner   *scanner)
 {
-  gchar *key;
-  guint  old_scope_id;
+    gchar *key;
+    guint  old_scope_id;
 
-  old_scope_id = g_scanner_set_scope (scanner, 0);
+    old_scope_id = g_scanner_set_scope (scanner, 0);
 
-  if (g_scanner_peek_next_token (scanner) != G_TOKEN_STRING)
-    return G_TOKEN_STRING;
+    if (g_scanner_peek_next_token (scanner) != G_TOKEN_STRING)
+        return G_TOKEN_STRING;
 
-  key = g_strdup (scanner->value.v_identifier);
+    key = g_strdup (scanner->value.v_identifier);
 
-  g_scanner_get_next_token (scanner);
+    g_scanner_get_next_token (scanner);
 
-  g_scanner_set_scope (scanner, old_scope_id);
+    g_scanner_set_scope (scanner, old_scope_id);
 
-  if (! g_utf8_validate (scanner->value.v_string, -1, NULL))
+    if (! g_utf8_validate (scanner->value.v_string, -1, NULL))
     {
-      g_scanner_error (scanner,
-                       _("value for token %s is not a valid UTF-8 string"),
-                       key);
-      g_free (key);
-      return G_TOKEN_NONE;
+        g_scanner_error (scanner,
+                         _("value for token %s is not a valid UTF-8 string"),
+                         key);
+        g_free (key);
+        return G_TOKEN_NONE;
     }
 
-  gimp_rc_add_unknown_token (config, key, scanner->value.v_string);
-  g_free (key);
+    gimp_rc_add_unknown_token (config, key, scanner->value.v_string);
+    g_free (key);
 
-  return G_TOKEN_RIGHT_PAREN;
+    return G_TOKEN_RIGHT_PAREN;
 }

@@ -36,22 +36,22 @@ GimpPalette  * gimp_image_get_colormap_palette     (GimpImage     *image);
 const guchar * gimp_image_get_colormap             (GimpImage     *image);
 gint           gimp_image_get_colormap_size        (GimpImage     *image);
 void           gimp_image_set_colormap             (GimpImage     *image,
-                                                    const guchar  *colormap,
-                                                    gint           n_colors,
-                                                    gboolean       push_undo);
+        const guchar  *colormap,
+        gint           n_colors,
+        gboolean       push_undo);
 void           gimp_image_unset_colormap           (GimpImage     *image,
-                                                    gboolean       push_undo);
+        gboolean       push_undo);
 
 void           gimp_image_get_colormap_entry       (GimpImage     *image,
-                                                    gint           color_index,
-                                                    GimpRGB       *color);
+        gint           color_index,
+        GimpRGB       *color);
 void           gimp_image_set_colormap_entry       (GimpImage     *image,
-                                                    gint           color_index,
-                                                    const GimpRGB *color,
-                                                    gboolean       push_undo);
+        gint           color_index,
+        const GimpRGB *color,
+        gboolean       push_undo);
 
 void           gimp_image_add_colormap_entry       (GimpImage     *image,
-                                                    const GimpRGB *color);
+        const GimpRGB *color);
 
 
 #endif /* __GIMP_IMAGE_COLORMAP_H__ */

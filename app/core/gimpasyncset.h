@@ -35,14 +35,14 @@ typedef struct _GimpAsyncSetClass   GimpAsyncSetClass;
 
 struct _GimpAsyncSet
 {
-  GObject              parent_instance;
+    GObject              parent_instance;
 
-  GimpAsyncSetPrivate *priv;
+    GimpAsyncSetPrivate *priv;
 };
 
 struct _GimpAsyncSetClass
 {
-  GObjectClass  parent_class;
+    GObjectClass  parent_class;
 };
 
 

@@ -39,39 +39,39 @@ typedef struct _GimpDisplayConfigClass GimpDisplayConfigClass;
 
 struct _GimpDisplayConfig
 {
-  GimpCoreConfig      parent_instance;
+    GimpCoreConfig      parent_instance;
 
-  GimpCheckSize       transparency_size;
-  GimpCheckType       transparency_type;
-  gint                snap_distance;
-  gint                marching_ants_speed;
-  gboolean            resize_windows_on_zoom;
-  gboolean            resize_windows_on_resize;
-  gboolean            default_show_all;
-  gboolean            default_dot_for_dot;
-  gboolean            initial_zoom_to_fit;
-  GimpCursorMode      cursor_mode;
-  gboolean            cursor_updating;
-  gboolean            show_brush_outline;
-  gboolean            snap_brush_outline;
-  gboolean            show_paint_tool_cursor;
-  gchar              *image_title_format;
-  gchar              *image_status_format;
-  gdouble             monitor_xres;
-  gdouble             monitor_yres;
-  gboolean            monitor_res_from_gdk;
-  GimpViewSize        nav_preview_size;
-  GimpDisplayOptions *default_view;
-  GimpDisplayOptions *default_fullscreen_view;
-  gboolean            activate_on_focus;
-  GimpSpaceBarAction  space_bar_action;
-  GimpZoomQuality     zoom_quality;
-  gboolean            use_event_history;
+    GimpCheckSize       transparency_size;
+    GimpCheckType       transparency_type;
+    gint                snap_distance;
+    gint                marching_ants_speed;
+    gboolean            resize_windows_on_zoom;
+    gboolean            resize_windows_on_resize;
+    gboolean            default_show_all;
+    gboolean            default_dot_for_dot;
+    gboolean            initial_zoom_to_fit;
+    GimpCursorMode      cursor_mode;
+    gboolean            cursor_updating;
+    gboolean            show_brush_outline;
+    gboolean            snap_brush_outline;
+    gboolean            show_paint_tool_cursor;
+    gchar              *image_title_format;
+    gchar              *image_status_format;
+    gdouble             monitor_xres;
+    gdouble             monitor_yres;
+    gboolean            monitor_res_from_gdk;
+    GimpViewSize        nav_preview_size;
+    GimpDisplayOptions *default_view;
+    GimpDisplayOptions *default_fullscreen_view;
+    gboolean            activate_on_focus;
+    GimpSpaceBarAction  space_bar_action;
+    GimpZoomQuality     zoom_quality;
+    gboolean            use_event_history;
 };
 
 struct _GimpDisplayConfigClass
 {
-  GimpCoreConfigClass  parent_class;
+    GimpCoreConfigClass  parent_class;
 };
 
 

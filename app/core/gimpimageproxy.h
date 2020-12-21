@@ -38,14 +38,14 @@ typedef struct _GimpImageProxyClass   GimpImageProxyClass;
 
 struct _GimpImageProxy
 {
-  GimpViewable           parent_instance;
+    GimpViewable           parent_instance;
 
-  GimpImageProxyPrivate *priv;
+    GimpImageProxyPrivate *priv;
 };
 
 struct _GimpImageProxyClass
 {
-  GimpViewableClass  parent_class;
+    GimpViewableClass  parent_class;
 };
 
 
@@ -54,11 +54,11 @@ GType            gimp_image_proxy_get_type         (void) G_GNUC_CONST;
 GimpImageProxy * gimp_image_proxy_new              (GimpImage      *image);
 
 GimpImage      * gimp_image_proxy_get_image        (GimpImageProxy *image_proxy);
-              
+
 void             gimp_image_proxy_set_show_all     (GimpImageProxy *image_proxy,
-                                                    gboolean        show_all);
+        gboolean        show_all);
 gboolean         gimp_image_proxy_get_show_all     (GimpImageProxy *image_proxy);
-              
+
 GeglRectangle    gimp_image_proxy_get_bounding_box (GimpImageProxy *image_proxy);
 
 

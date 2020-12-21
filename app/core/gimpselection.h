@@ -34,14 +34,14 @@ typedef struct _GimpSelectionClass GimpSelectionClass;
 
 struct _GimpSelection
 {
-  GimpChannel parent_instance;
+    GimpChannel parent_instance;
 
-  gint        suspend_count;
+    gint        suspend_count;
 };
 
 struct _GimpSelectionClass
 {
-  GimpChannelClass parent_class;
+    GimpChannelClass parent_class;
 };
 
 

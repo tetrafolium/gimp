@@ -38,14 +38,14 @@ typedef struct _GimpTagCachePrivate GimpTagCachePrivate;
 
 struct _GimpTagCache
 {
-  GimpObject           parent_instance;
+    GimpObject           parent_instance;
 
-  GimpTagCachePrivate *priv;
+    GimpTagCachePrivate *priv;
 };
 
 struct _GimpTagCacheClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 };
 
 
@@ -57,7 +57,7 @@ void            gimp_tag_cache_save          (GimpTagCache  *cache);
 void            gimp_tag_cache_load          (GimpTagCache  *cache);
 
 void            gimp_tag_cache_add_container (GimpTagCache  *cache,
-                                              GimpContainer *container);
+        GimpContainer *container);
 
 
 #endif  /*  __GIMP_TAG_CACHE_H__  */

@@ -23,12 +23,12 @@
 
 struct _GimpMybrushPrivate
 {
-  gchar   *brush_json;
-  gdouble  radius;
-  gdouble  opaque;
-  gdouble  hardness;
-  gdouble  offset_by_random;
-  gboolean eraser;
+    gchar   *brush_json;
+    gdouble  radius;
+    gdouble  opaque;
+    gdouble  hardness;
+    gdouble  offset_by_random;
+    gboolean eraser;
 };
 
 

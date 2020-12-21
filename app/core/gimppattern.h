@@ -34,21 +34,21 @@ typedef struct _GimpPatternClass GimpPatternClass;
 
 struct _GimpPattern
 {
-  GimpData     parent_instance;
+    GimpData     parent_instance;
 
-  GimpTempBuf *mask;
+    GimpTempBuf *mask;
 };
 
 struct _GimpPatternClass
 {
-  GimpDataClass  parent_class;
+    GimpDataClass  parent_class;
 };
 
 
 GType         gimp_pattern_get_type      (void) G_GNUC_CONST;
 
 GimpData    * gimp_pattern_new           (GimpContext *context,
-                                          const gchar *name);
+        const gchar *name);
 GimpData    * gimp_pattern_get_standard  (GimpContext *context);
 
 GimpTempBuf * gimp_pattern_get_mask      (GimpPattern *pattern);

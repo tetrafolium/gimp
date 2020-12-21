@@ -38,29 +38,29 @@ gchar      * gimp_get_default_language             (const gchar     *category);
 GimpUnit     gimp_get_default_unit                 (void);
 
 gchar     ** gimp_properties_append                (GType            object_type,
-                                                    gint            *n_properties,
-                                                    gchar          **names,
-                                                    GValue         **values,
-                                                    ...) G_GNUC_NULL_TERMINATED;
+        gint            *n_properties,
+        gchar          **names,
+        GValue         **values,
+        ...) G_GNUC_NULL_TERMINATED;
 gchar     ** gimp_properties_append_valist         (GType            object_type,
-                                                    gint            *n_properties,
-                                                    gchar          **names,
-                                                    GValue         **values,
-                                                    va_list          args);
+        gint            *n_properties,
+        gchar          **names,
+        GValue         **values,
+        va_list          args);
 void         gimp_properties_free                  (gint             n_properties,
-                                                    gchar          **names,
-                                                    GValue          *values);
+        gchar          **names,
+        GValue          *values);
 
 gchar      * gimp_markup_extract_text              (const gchar     *markup);
 
 const gchar* gimp_enum_get_value_name              (GType            enum_type,
-                                                    gint             value);
+        gint             value);
 
 gboolean     gimp_get_fill_params                  (GimpContext      *context,
-                                                    GimpFillType      fill_type,
-                                                    GimpRGB          *color,
-                                                    GimpPattern     **pattern,
-                                                    GError          **error);
+        GimpFillType      fill_type,
+        GimpRGB          *color,
+        GimpPattern     **pattern,
+        GError          **error);
 
 /* Common values for the n_snap_lines parameter of
  * gimp_constrain_line.
@@ -70,53 +70,53 @@ gboolean     gimp_get_fill_params                  (GimpContext      *context,
 #define GIMP_CONSTRAIN_LINE_15_DEGREES 12
 
 void         gimp_constrain_line                   (gdouble            start_x,
-                                                    gdouble            start_y,
-                                                    gdouble           *end_x,
-                                                    gdouble           *end_y,
-                                                    gint               n_snap_lines,
-                                                    gdouble            offset_angle,
-                                                    gdouble            xres,
-                                                    gdouble            yres);
+        gdouble            start_y,
+        gdouble           *end_x,
+        gdouble           *end_y,
+        gint               n_snap_lines,
+        gdouble            offset_angle,
+        gdouble            xres,
+        gdouble            yres);
 
 gint         gimp_file_compare                     (GFile             *file1,
-                                                    GFile             *file2);
+        GFile             *file2);
 gboolean     gimp_file_is_executable               (GFile             *file);
 gchar      * gimp_file_get_extension               (GFile             *file);
 GFile      * gimp_file_with_new_extension          (GFile             *file,
-                                                    GFile             *ext_file);
+        GFile             *ext_file);
 gboolean     gimp_file_delete_recursive            (GFile             *file,
-                                                    GError           **error);
+        GError           **error);
 
 gchar      * gimp_data_input_stream_read_line_always
-                                                   (GDataInputStream  *stream,
-                                                    gsize             *length,
-                                                    GCancellable      *cancellable,
-                                                    GError           **error);
+(GDataInputStream  *stream,
+ gsize             *length,
+ GCancellable      *cancellable,
+ GError           **error);
 
 gboolean     gimp_ascii_strtoi                     (const gchar       *nptr,
-                                                    gchar            **endptr,
-                                                    gint               base,
-                                                    gint              *result);
+        gchar            **endptr,
+        gint               base,
+        gint              *result);
 gboolean     gimp_ascii_strtod                     (const gchar       *nptr,
-                                                    gchar            **endptr,
-                                                    gdouble           *result);
+        gchar            **endptr,
+        gdouble           *result);
 
 gint         gimp_g_list_compare                   (GList             *list1,
-                                                    GList             *list2);
+        GList             *list2);
 
 GimpTRCType  gimp_suggest_trc_for_component_type   (GimpComponentType  component_type,
-                                                    GimpTRCType        old_trc);
+        GimpTRCType        old_trc);
 
 GimpAsync  * gimp_idle_run_async                   (GimpRunAsyncFunc func,
-                                                    gpointer         user_data);
+        gpointer         user_data);
 GimpAsync  * gimp_idle_run_async_full              (gint             priority,
-                                                    GimpRunAsyncFunc func,
-                                                    gpointer         user_data,
-                                                    GDestroyNotify   user_data_destroy_func);
+        GimpRunAsyncFunc func,
+        gpointer         user_data,
+        GDestroyNotify   user_data_destroy_func);
 
 GimpImage  * gimp_create_image_from_buffer         (Gimp              *gimp,
-                                                    GeglBuffer        *buffer,
-                                                    const gchar       *image_name);
+        GeglBuffer        *buffer,
+        const gchar       *image_name);
 
 
 #endif /* __APP_GIMP_UTILS_H__ */

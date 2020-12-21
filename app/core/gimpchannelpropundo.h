@@ -35,14 +35,14 @@ typedef struct _GimpChannelPropUndoClass GimpChannelPropUndoClass;
 
 struct _GimpChannelPropUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  GimpRGB       color;
+    GimpRGB       color;
 };
 
 struct _GimpChannelPropUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

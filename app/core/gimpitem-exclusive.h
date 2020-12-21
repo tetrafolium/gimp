@@ -23,9 +23,9 @@
 
 
 void   gimp_item_toggle_exclusive_visible (GimpItem    *item,
-                                           GimpContext *context);
+        GimpContext *context);
 void   gimp_item_toggle_exclusive_linked  (GimpItem    *item,
-                                           GimpContext *context);
+        GimpContext *context);
 
 
 #endif /* __GIMP_ITEM_EXCLUSIVE_H__ */

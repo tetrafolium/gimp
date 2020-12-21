@@ -35,14 +35,14 @@ typedef struct _GimpDrawablePropUndoClass GimpDrawablePropUndoClass;
 
 struct _GimpDrawablePropUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  const Babl   *format;
+    const Babl   *format;
 };
 
 struct _GimpDrawablePropUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

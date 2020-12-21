@@ -45,7 +45,7 @@ gimp_backtrace_init (void)
 gboolean
 gimp_backtrace_start (void)
 {
-  return FALSE;
+    return FALSE;
 }
 
 void
@@ -56,40 +56,40 @@ gimp_backtrace_stop (void)
 GimpBacktrace *
 gimp_backtrace_new (gboolean include_current_thread)
 {
-  return NULL;
+    return NULL;
 }
 
 void
 gimp_backtrace_free (GimpBacktrace *backtrace)
 {
-  g_return_if_fail (backtrace == NULL);
+    g_return_if_fail (backtrace == NULL);
 }
 
 gint
 gimp_backtrace_get_n_threads (GimpBacktrace *backtrace)
 {
-  g_return_val_if_reached (0);
+    g_return_val_if_reached (0);
 }
 
 guintptr
 gimp_backtrace_get_thread_id (GimpBacktrace *backtrace,
                               gint           thread)
 {
-  g_return_val_if_reached (0);
+    g_return_val_if_reached (0);
 }
 
 const gchar *
 gimp_backtrace_get_thread_name (GimpBacktrace *backtrace,
                                 gint           thread)
 {
-  g_return_val_if_reached (NULL);
+    g_return_val_if_reached (NULL);
 }
 
 gboolean
 gimp_backtrace_is_thread_running (GimpBacktrace *backtrace,
                                   gint           thread)
 {
-  g_return_val_if_reached (FALSE);
+    g_return_val_if_reached (FALSE);
 }
 
 gint
@@ -97,14 +97,14 @@ gimp_backtrace_find_thread_by_id (GimpBacktrace *backtrace,
                                   guintptr       thread_id,
                                   gint           thread_hint)
 {
-  g_return_val_if_reached (-1);
+    g_return_val_if_reached (-1);
 }
 
 gint
 gimp_backtrace_get_n_frames (GimpBacktrace *backtrace,
                              gint           thread)
 {
-  g_return_val_if_reached (0);
+    g_return_val_if_reached (0);
 }
 
 guintptr
@@ -112,14 +112,14 @@ gimp_backtrace_get_frame_address (GimpBacktrace *backtrace,
                                   gint           thread,
                                   gint           frame)
 {
-  g_return_val_if_reached (0);
+    g_return_val_if_reached (0);
 }
 
 gboolean
 gimp_backtrace_get_address_info (guintptr                  address,
                                  GimpBacktraceAddressInfo *info)
 {
-  return FALSE;
+    return FALSE;
 }
 
 

@@ -35,19 +35,19 @@ typedef struct _GimpGroupLayerUndoClass GimpGroupLayerUndoClass;
 
 struct _GimpGroupLayerUndo
 {
-  GimpItemUndo       parent_instance;
+    GimpItemUndo       parent_instance;
 
-  GeglBuffer        *mask_buffer;
-  GeglRectangle      mask_bounds;
+    GeglBuffer        *mask_buffer;
+    GeglRectangle      mask_bounds;
 
-  GimpImageBaseType  prev_type;
-  GimpPrecision      prev_precision;
-  gboolean           prev_has_alpha;
+    GimpImageBaseType  prev_type;
+    GimpPrecision      prev_precision;
+    gboolean           prev_has_alpha;
 };
 
 struct _GimpGroupLayerUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

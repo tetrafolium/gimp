@@ -40,38 +40,38 @@ void
 gimp_drawable_levels_stretch (GimpDrawable *drawable,
                               GimpProgress *progress)
 {
-  GimpLevelsConfig *config;
-  GimpHistogram    *histogram;
-  GeglNode         *levels;
+    GimpLevelsConfig *config;
+    GimpHistogram    *histogram;
+    GeglNode         *levels;
 
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+    g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
-  if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), NULL, NULL, NULL, NULL))
-    return;
+    if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), NULL, NULL, NULL, NULL))
+        return;
 
-  config = g_object_new (GIMP_TYPE_LEVELS_CONFIG, NULL);
+    config = g_object_new (GIMP_TYPE_LEVELS_CONFIG, NULL);
 
-  histogram = gimp_histogram_new (FALSE);
-  gimp_drawable_calculate_histogram (drawable, histogram, FALSE);
+    histogram = gimp_histogram_new (FALSE);
+    gimp_drawable_calculate_histogram (drawable, histogram, FALSE);
 
-  gimp_levels_config_stretch (config, histogram,
-                              gimp_drawable_is_rgb (drawable));
+    gimp_levels_config_stretch (config, histogram,
+                                gimp_drawable_is_rgb (drawable));
 
-  g_object_unref (histogram);
+    g_object_unref (histogram);
 
-  levels = g_object_new (GEGL_TYPE_NODE,
-                         "operation", "gimp:levels",
-                         NULL);
+    levels = g_object_new (GEGL_TYPE_NODE,
+                           "operation", "gimp:levels",
+                           NULL);
 
-  gegl_node_set (levels,
-                 "config", config,
-                 NULL);
+    gegl_node_set (levels,
+                   "config", config,
+                   NULL);
 
-  gimp_drawable_apply_operation (drawable, progress, _("Levels"),
-                                 levels);
+    gimp_drawable_apply_operation (drawable, progress, _("Levels"),
+                                   levels);
 
-  g_object_unref (levels);
-  g_object_unref (config);
+    g_object_unref (levels);
+    g_object_unref (config);
 }

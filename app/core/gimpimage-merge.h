@@ -20,27 +20,27 @@
 
 
 GList       * gimp_image_merge_visible_layers  (GimpImage      *image,
-                                                GimpContext    *context,
-                                                GimpMergeType   merge_type,
-                                                gboolean        merge_active_group,
-                                                gboolean        discard_invisible,
-                                                GimpProgress   *progress);
+        GimpContext    *context,
+        GimpMergeType   merge_type,
+        gboolean        merge_active_group,
+        gboolean        discard_invisible,
+        GimpProgress   *progress);
 GList       * gimp_image_merge_down            (GimpImage      *image,
-                                                GList          *layers,
-                                                GimpContext    *context,
-                                                GimpMergeType   merge_type,
-                                                GimpProgress   *progress,
-                                                GError        **error);
+        GList          *layers,
+        GimpContext    *context,
+        GimpMergeType   merge_type,
+        GimpProgress   *progress,
+        GError        **error);
 GimpLayer   * gimp_image_merge_group_layer     (GimpImage      *image,
-                                                GimpGroupLayer *group);
+        GimpGroupLayer *group);
 
 GimpLayer   * gimp_image_flatten               (GimpImage      *image,
-                                                GimpContext    *context,
-                                                GimpProgress   *progress,
-                                                GError        **error);
+        GimpContext    *context,
+        GimpProgress   *progress,
+        GError        **error);
 
 GimpVectors * gimp_image_merge_visible_vectors (GimpImage      *image,
-                                                GError        **error);
+        GError        **error);
 
 
 #endif /* __GIMP_IMAGE_MERGE_H__ */

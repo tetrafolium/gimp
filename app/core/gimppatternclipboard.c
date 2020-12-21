@@ -41,8 +41,8 @@
 
 enum
 {
-  PROP_0,
-  PROP_GIMP
+    PROP_0,
+    PROP_GIMP
 };
 
 
@@ -50,17 +50,17 @@ enum
 
 static void       gimp_pattern_clipboard_constructed  (GObject      *object);
 static void       gimp_pattern_clipboard_set_property (GObject      *object,
-                                                       guint         property_id,
-                                                       const GValue *value,
-                                                       GParamSpec   *pspec);
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec);
 static void       gimp_pattern_clipboard_get_property (GObject      *object,
-                                                       guint         property_id,
-                                                       GValue       *value,
-                                                       GParamSpec   *pspec);
+        guint         property_id,
+        GValue       *value,
+        GParamSpec   *pspec);
 static GimpData * gimp_pattern_clipboard_duplicate    (GimpData     *data);
 
 static void       gimp_pattern_clipboard_changed      (Gimp         *gimp,
-                                                       GimpPattern  *pattern);
+        GimpPattern  *pattern);
 
 
 G_DEFINE_TYPE (GimpPatternClipboard, gimp_pattern_clipboard, GIMP_TYPE_PATTERN)
@@ -71,20 +71,20 @@ G_DEFINE_TYPE (GimpPatternClipboard, gimp_pattern_clipboard, GIMP_TYPE_PATTERN)
 static void
 gimp_pattern_clipboard_class_init (GimpPatternClipboardClass *klass)
 {
-  GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-  GimpDataClass *data_class   = GIMP_DATA_CLASS (klass);
+    GObjectClass  *object_class = G_OBJECT_CLASS (klass);
+    GimpDataClass *data_class   = GIMP_DATA_CLASS (klass);
 
-  object_class->constructed  = gimp_pattern_clipboard_constructed;
-  object_class->set_property = gimp_pattern_clipboard_set_property;
-  object_class->get_property = gimp_pattern_clipboard_get_property;
+    object_class->constructed  = gimp_pattern_clipboard_constructed;
+    object_class->set_property = gimp_pattern_clipboard_set_property;
+    object_class->get_property = gimp_pattern_clipboard_get_property;
 
-  data_class->duplicate      = gimp_pattern_clipboard_duplicate;
+    data_class->duplicate      = gimp_pattern_clipboard_duplicate;
 
-  g_object_class_install_property (object_class, PROP_GIMP,
-                                   g_param_spec_object ("gimp", NULL, NULL,
-                                                        GIMP_TYPE_GIMP,
-                                                        GIMP_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_GIMP,
+                                     g_param_spec_object ("gimp", NULL, NULL,
+                                             GIMP_TYPE_GIMP,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -95,17 +95,17 @@ gimp_pattern_clipboard_init (GimpPatternClipboard *pattern)
 static void
 gimp_pattern_clipboard_constructed (GObject *object)
 {
-  GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
+    GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
 
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  gimp_assert (GIMP_IS_GIMP (pattern->gimp));
+    gimp_assert (GIMP_IS_GIMP (pattern->gimp));
 
-  g_signal_connect_object (pattern->gimp, "clipboard-changed",
-                           G_CALLBACK (gimp_pattern_clipboard_changed),
-                           pattern, 0);
+    g_signal_connect_object (pattern->gimp, "clipboard-changed",
+                             G_CALLBACK (gimp_pattern_clipboard_changed),
+                             pattern, 0);
 
-  gimp_pattern_clipboard_changed (pattern->gimp, GIMP_PATTERN (pattern));
+    gimp_pattern_clipboard_changed (pattern->gimp, GIMP_PATTERN (pattern));
 }
 
 static void
@@ -114,16 +114,16 @@ gimp_pattern_clipboard_set_property (GObject      *object,
                                      const GValue *value,
                                      GParamSpec   *pspec)
 {
-  GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
+    GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_GIMP:
-      pattern->gimp = g_value_get_object (value);
-      break;
+        pattern->gimp = g_value_get_object (value);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -133,38 +133,38 @@ gimp_pattern_clipboard_get_property (GObject    *object,
                                      GValue     *value,
                                      GParamSpec *pspec)
 {
-  GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
+    GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_GIMP:
-      g_value_set_object (value, pattern->gimp);
-      break;
+        g_value_set_object (value, pattern->gimp);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
 static GimpData *
 gimp_pattern_clipboard_duplicate (GimpData *data)
 {
-  GimpData *new = g_object_new (GIMP_TYPE_PATTERN, NULL);
+    GimpData *new = g_object_new (GIMP_TYPE_PATTERN, NULL);
 
-  gimp_data_copy (new, data);
+    gimp_data_copy (new, data);
 
-  return new;
+    return new;
 }
 
 GimpData *
 gimp_pattern_clipboard_new (Gimp *gimp)
 {
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-  return g_object_new (GIMP_TYPE_PATTERN_CLIPBOARD,
-                       "name", _("Clipboard Image"),
-                       "gimp", gimp,
-                       NULL);
+    return g_object_new (GIMP_TYPE_PATTERN_CLIPBOARD,
+                         "name", _("Clipboard Image"),
+                         "gimp", gimp,
+                         NULL);
 }
 
 
@@ -174,42 +174,42 @@ static void
 gimp_pattern_clipboard_changed (Gimp        *gimp,
                                 GimpPattern *pattern)
 {
-  GimpObject *paste;
-  GeglBuffer *buffer = NULL;
+    GimpObject *paste;
+    GeglBuffer *buffer = NULL;
 
-  g_clear_pointer (&pattern->mask, gimp_temp_buf_unref);
+    g_clear_pointer (&pattern->mask, gimp_temp_buf_unref);
 
-  paste = gimp_get_clipboard_object (gimp);
+    paste = gimp_get_clipboard_object (gimp);
 
-  if (GIMP_IS_IMAGE (paste))
+    if (GIMP_IS_IMAGE (paste))
     {
-      gimp_pickable_flush (GIMP_PICKABLE (paste));
-      buffer = gimp_pickable_get_buffer (GIMP_PICKABLE (paste));
+        gimp_pickable_flush (GIMP_PICKABLE (paste));
+        buffer = gimp_pickable_get_buffer (GIMP_PICKABLE (paste));
     }
-  else if (GIMP_IS_BUFFER (paste))
+    else if (GIMP_IS_BUFFER (paste))
     {
-      buffer = gimp_buffer_get_buffer (GIMP_BUFFER (paste));
-    }
-
-  if (buffer)
-    {
-      gint width  = MIN (gegl_buffer_get_width  (buffer), PATTERN_MAX_SIZE);
-      gint height = MIN (gegl_buffer_get_height (buffer), PATTERN_MAX_SIZE);
-
-      pattern->mask = gimp_temp_buf_new (width, height,
-                                         gegl_buffer_get_format (buffer));
-
-      gegl_buffer_get (buffer,
-                       GEGL_RECTANGLE (0, 0, width, height), 1.0,
-                       NULL,
-                       gimp_temp_buf_get_data (pattern->mask),
-                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-    }
-  else
-    {
-      pattern->mask = gimp_temp_buf_new (16, 16, babl_format ("R'G'B' u8"));
-      memset (gimp_temp_buf_get_data (pattern->mask), 255, 16 * 16 * 3);
+        buffer = gimp_buffer_get_buffer (GIMP_BUFFER (paste));
     }
 
-  gimp_data_dirty (GIMP_DATA (pattern));
+    if (buffer)
+    {
+        gint width  = MIN (gegl_buffer_get_width  (buffer), PATTERN_MAX_SIZE);
+        gint height = MIN (gegl_buffer_get_height (buffer), PATTERN_MAX_SIZE);
+
+        pattern->mask = gimp_temp_buf_new (width, height,
+                                           gegl_buffer_get_format (buffer));
+
+        gegl_buffer_get (buffer,
+                         GEGL_RECTANGLE (0, 0, width, height), 1.0,
+                         NULL,
+                         gimp_temp_buf_get_data (pattern->mask),
+                         GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+    }
+    else
+    {
+        pattern->mask = gimp_temp_buf_new (16, 16, babl_format ("R'G'B' u8"));
+        memset (gimp_temp_buf_get_data (pattern->mask), 255, 16 * 16 * 3);
+    }
+
+    gimp_data_dirty (GIMP_DATA (pattern));
 }

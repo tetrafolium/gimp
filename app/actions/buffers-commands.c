@@ -50,83 +50,83 @@ buffers_paste_cmd_callback (GimpAction *action,
                             GVariant   *value,
                             gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContainer       *container;
-  GimpContext         *context;
-  GimpBuffer          *buffer;
-  GimpPasteType        paste_type = (GimpPasteType) g_variant_get_int32 (value);
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContainer       *container;
+    GimpContext         *context;
+    GimpBuffer          *buffer;
+    GimpPasteType        paste_type = (GimpPasteType) g_variant_get_int32 (value);
 
-  container = gimp_container_view_get_container (editor->view);
-  context   = gimp_container_view_get_context (editor->view);
+    container = gimp_container_view_get_container (editor->view);
+    context   = gimp_container_view_get_context (editor->view);
 
-  buffer = gimp_context_get_buffer (context);
+    buffer = gimp_context_get_buffer (context);
 
-  if (buffer && gimp_container_have (container, GIMP_OBJECT (buffer)))
+    if (buffer && gimp_container_have (container, GIMP_OBJECT (buffer)))
     {
-      GimpDisplay *display = gimp_context_get_display (context);
-      GimpImage   *image   = NULL;
-      gint         x       = -1;
-      gint         y       = -1;
-      gint         width   = -1;
-      gint         height  = -1;
+        GimpDisplay *display = gimp_context_get_display (context);
+        GimpImage   *image   = NULL;
+        gint         x       = -1;
+        gint         y       = -1;
+        gint         width   = -1;
+        gint         height  = -1;
 
-      if (display)
+        if (display)
         {
-          GimpDisplayShell *shell = gimp_display_get_shell (display);
+            GimpDisplayShell *shell = gimp_display_get_shell (display);
 
-          gimp_display_shell_untransform_viewport (
-            shell,
-            ! gimp_display_shell_get_infinite_canvas (shell),
-            &x, &y, &width, &height);
+            gimp_display_shell_untransform_viewport (
+                shell,
+                ! gimp_display_shell_get_infinite_canvas (shell),
+                &x, &y, &width, &height);
 
-          image = gimp_display_get_image (display);
+            image = gimp_display_get_image (display);
         }
-      else
+        else
         {
-          image = gimp_context_get_image (context);
+            image = gimp_context_get_image (context);
         }
 
-      if (image)
+        if (image)
         {
-          GList *drawables = gimp_image_get_selected_drawables (image);
+            GList *drawables = gimp_image_get_selected_drawables (image);
 
-          gimp_edit_paste (image,
-                           g_list_length (drawables) == 1 ? drawables->data : NULL,
-                           GIMP_OBJECT (buffer), paste_type,
-                           x, y, width, height);
+            gimp_edit_paste (image,
+                             g_list_length (drawables) == 1 ? drawables->data : NULL,
+                             GIMP_OBJECT (buffer), paste_type,
+                             x, y, width, height);
 
-          gimp_image_flush (image);
-          g_list_free (drawables);
+            gimp_image_flush (image);
+            g_list_free (drawables);
         }
     }
 }
 
 void
 buffers_paste_as_new_image_cmd_callback (GimpAction *action,
-                                         GVariant   *value,
-                                         gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContainer       *container;
-  GimpContext         *context;
-  GimpBuffer          *buffer;
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContainer       *container;
+    GimpContext         *context;
+    GimpBuffer          *buffer;
 
-  container = gimp_container_view_get_container (editor->view);
-  context   = gimp_container_view_get_context (editor->view);
+    container = gimp_container_view_get_container (editor->view);
+    context   = gimp_container_view_get_context (editor->view);
 
-  buffer = gimp_context_get_buffer (context);
+    buffer = gimp_context_get_buffer (context);
 
-  if (buffer && gimp_container_have (container, GIMP_OBJECT (buffer)))
+    if (buffer && gimp_container_have (container, GIMP_OBJECT (buffer)))
     {
-      GtkWidget *widget = GTK_WIDGET (editor);
-      GimpImage *new_image;
+        GtkWidget *widget = GTK_WIDGET (editor);
+        GimpImage *new_image;
 
-      new_image = gimp_edit_paste_as_new_image (context->gimp,
-                                                GIMP_OBJECT (buffer));
-      gimp_create_display (context->gimp, new_image,
-                           GIMP_UNIT_PIXEL, 1.0,
-                           G_OBJECT (gimp_widget_get_monitor (widget)));
-      g_object_unref (new_image);
+        new_image = gimp_edit_paste_as_new_image (context->gimp,
+                    GIMP_OBJECT (buffer));
+        gimp_create_display (context->gimp, new_image,
+                             GIMP_UNIT_PIXEL, 1.0,
+                             G_OBJECT (gimp_widget_get_monitor (widget)));
+        g_object_unref (new_image);
     }
 }
 
@@ -135,7 +135,7 @@ buffers_delete_cmd_callback (GimpAction *action,
                              GVariant   *value,
                              gpointer    data)
 {
-  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+    GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
 
-  gimp_container_view_remove_active (editor->view);
+    gimp_container_view_remove_active (editor->view);
 }

@@ -26,12 +26,12 @@
 
 
 typedef GimpData * (* GimpDataNewFunc)         (GimpContext     *context,
-                                                const gchar     *name);
+        const gchar     *name);
 typedef GimpData * (* GimpDataGetStandardFunc) (GimpContext     *context);
 
 typedef void       (* GimpDataForeachFunc)     (GimpDataFactory *factory,
-                                                GimpData        *data,
-                                                gpointer         user_data);
+        GimpData        *data,
+        gpointer         user_data);
 
 
 #define GIMP_TYPE_DATA_FACTORY            (gimp_data_factory_get_type ())
@@ -47,40 +47,40 @@ typedef struct _GimpDataFactoryClass   GimpDataFactoryClass;
 
 struct _GimpDataFactory
 {
-  GimpObject              parent_instance;
+    GimpObject              parent_instance;
 
-  GimpDataFactoryPrivate *priv;
+    GimpDataFactoryPrivate *priv;
 };
 
 struct _GimpDataFactoryClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 
-  void           (* data_init)      (GimpDataFactory *factory,
-                                     GimpContext     *context);
-  void           (* data_refresh)   (GimpDataFactory *factory,
-                                     GimpContext     *context);
-  void           (* data_save)      (GimpDataFactory *factory);
+    void           (* data_init)      (GimpDataFactory *factory,
+                                       GimpContext     *context);
+    void           (* data_refresh)   (GimpDataFactory *factory,
+                                       GimpContext     *context);
+    void           (* data_save)      (GimpDataFactory *factory);
 
-  void           (* data_cancel)    (GimpDataFactory *factory);
+    void           (* data_cancel)    (GimpDataFactory *factory);
 
-  GimpData     * (* data_duplicate) (GimpDataFactory  *factory,
-                                     GimpData         *data);
-  gboolean       (* data_delete)    (GimpDataFactory  *factory,
-                                     GimpData         *data,
-                                     gboolean          delete_from_disk,
-                                     GError          **error);
+    GimpData     * (* data_duplicate) (GimpDataFactory  *factory,
+                                       GimpData         *data);
+    gboolean       (* data_delete)    (GimpDataFactory  *factory,
+                                       GimpData         *data,
+                                       gboolean          delete_from_disk,
+                                       GError          **error);
 };
 
 
 GType           gimp_data_factory_get_type          (void) G_GNUC_CONST;
 
 void            gimp_data_factory_data_init         (GimpDataFactory  *factory,
-                                                     GimpContext      *context,
-                                                     gboolean          no_data);
+        GimpContext      *context,
+        gboolean          no_data);
 void            gimp_data_factory_data_clean        (GimpDataFactory  *factory);
 void            gimp_data_factory_data_refresh      (GimpDataFactory  *factory,
-                                                     GimpContext      *context);
+        GimpContext      *context);
 void            gimp_data_factory_data_save         (GimpDataFactory  *factory);
 void            gimp_data_factory_data_free         (GimpDataFactory  *factory);
 
@@ -90,35 +90,35 @@ void            gimp_data_factory_data_cancel       (GimpDataFactory  *factory);
 
 gboolean        gimp_data_factory_has_data_new_func (GimpDataFactory  *factory);
 GimpData      * gimp_data_factory_data_new          (GimpDataFactory  *factory,
-                                                     GimpContext      *context,
-                                                     const gchar      *name);
+        GimpContext      *context,
+        const gchar      *name);
 GimpData      * gimp_data_factory_data_get_standard (GimpDataFactory  *factory,
-                                                     GimpContext      *context);
+        GimpContext      *context);
 
 GimpData      * gimp_data_factory_data_duplicate    (GimpDataFactory  *factory,
-                                                     GimpData         *data);
+        GimpData         *data);
 gboolean        gimp_data_factory_data_delete       (GimpDataFactory  *factory,
-                                                     GimpData         *data,
-                                                     gboolean          delete_from_disk,
-                                                     GError          **error);
+        GimpData         *data,
+        gboolean          delete_from_disk,
+        GError          **error);
 
 gboolean        gimp_data_factory_data_save_single  (GimpDataFactory  *factory,
-                                                     GimpData         *data,
-                                                     GError          **error);
+        GimpData         *data,
+        GError          **error);
 
 void            gimp_data_factory_data_foreach      (GimpDataFactory  *factory,
-                                                     gboolean          skip_internal,
-                                                     GimpDataForeachFunc  callback,
-                                                     gpointer          user_data);
+        gboolean          skip_internal,
+        GimpDataForeachFunc  callback,
+        gpointer          user_data);
 
 Gimp          * gimp_data_factory_get_gimp          (GimpDataFactory  *factory);
 GType           gimp_data_factory_get_data_type     (GimpDataFactory  *factory);
 GimpContainer * gimp_data_factory_get_container     (GimpDataFactory  *factory);
 GimpContainer * gimp_data_factory_get_container_obsolete
-                                                    (GimpDataFactory  *factory);
+(GimpDataFactory  *factory);
 GList         * gimp_data_factory_get_data_path     (GimpDataFactory  *factory);
 GList         * gimp_data_factory_get_data_path_writable
-                                                    (GimpDataFactory  *factory);
+(GimpDataFactory  *factory);
 const GList   * gimp_data_factory_get_data_path_ext (GimpDataFactory  *factory);
 
 

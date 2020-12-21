@@ -39,8 +39,8 @@
 /*  local function prototypes  */
 
 static void   error_console_save_response (GtkWidget        *dialog,
-                                           gint              response_id,
-                                           GimpErrorConsole *console);
+        gint              response_id,
+        GimpErrorConsole *console);
 
 
 /*  public functions  */
@@ -50,12 +50,12 @@ error_console_clear_cmd_callback (GimpAction *action,
                                   GVariant   *value,
                                   gpointer    data)
 {
-  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
-  GtkTextIter       start_iter;
-  GtkTextIter       end_iter;
+    GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+    GtkTextIter       start_iter;
+    GtkTextIter       end_iter;
 
-  gtk_text_buffer_get_bounds (console->text_buffer, &start_iter, &end_iter);
-  gtk_text_buffer_delete (console->text_buffer, &start_iter, &end_iter);
+    gtk_text_buffer_get_bounds (console->text_buffer, &start_iter, &end_iter);
+    gtk_text_buffer_delete (console->text_buffer, &start_iter, &end_iter);
 }
 
 void
@@ -63,12 +63,12 @@ error_console_select_all_cmd_callback (GimpAction *action,
                                        GVariant   *value,
                                        gpointer    data)
 {
-  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
-  GtkTextIter       start_iter;
-  GtkTextIter       end_iter;
+    GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+    GtkTextIter       start_iter;
+    GtkTextIter       end_iter;
 
-  gtk_text_buffer_get_bounds (console->text_buffer, &start_iter, &end_iter);
-  gtk_text_buffer_select_range (console->text_buffer, &start_iter, &end_iter);
+    gtk_text_buffer_get_bounds (console->text_buffer, &start_iter, &end_iter);
+    gtk_text_buffer_select_range (console->text_buffer, &start_iter, &end_iter);
 }
 
 void
@@ -76,96 +76,96 @@ error_console_save_cmd_callback (GimpAction *action,
                                  GVariant   *value,
                                  gpointer    data)
 {
-  GimpErrorConsole *console   = GIMP_ERROR_CONSOLE (data);
-  gboolean          selection = (gboolean) g_variant_get_int32 (value);
+    GimpErrorConsole *console   = GIMP_ERROR_CONSOLE (data);
+    gboolean          selection = (gboolean) g_variant_get_int32 (value);
 
-  if (selection &&
-      ! gtk_text_buffer_get_selection_bounds (console->text_buffer,
-                                              NULL, NULL))
+    if (selection &&
+            ! gtk_text_buffer_get_selection_bounds (console->text_buffer,
+                    NULL, NULL))
     {
-      gimp_message_literal (console->gimp,
-                            G_OBJECT (console), GIMP_MESSAGE_WARNING,
-                            _("Cannot save. Nothing is selected."));
-      return;
+        gimp_message_literal (console->gimp,
+                              G_OBJECT (console), GIMP_MESSAGE_WARNING,
+                              _("Cannot save. Nothing is selected."));
+        return;
     }
 
-  if (! console->file_dialog)
+    if (! console->file_dialog)
     {
-      GtkWidget *dialog;
+        GtkWidget *dialog;
 
-      dialog = console->file_dialog =
-        gtk_file_chooser_dialog_new (_("Save Error Log to File"), NULL,
-                                     GTK_FILE_CHOOSER_ACTION_SAVE,
+        dialog = console->file_dialog =
+                     gtk_file_chooser_dialog_new (_("Save Error Log to File"), NULL,
+                             GTK_FILE_CHOOSER_ACTION_SAVE,
 
-                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                     _("_Save"),   GTK_RESPONSE_OK,
+                             _("_Cancel"), GTK_RESPONSE_CANCEL,
+                             _("_Save"),   GTK_RESPONSE_OK,
 
-                                     NULL);
+                             NULL);
 
-      gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-      gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                               GTK_RESPONSE_OK,
-                                               GTK_RESPONSE_CANCEL,
-                                               -1);
+        gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+        gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                GTK_RESPONSE_OK,
+                GTK_RESPONSE_CANCEL,
+                -1);
 
-      console->save_selection = selection;
+        console->save_selection = selection;
 
-      g_object_add_weak_pointer (G_OBJECT (dialog),
-                                 (gpointer) &console->file_dialog);
+        g_object_add_weak_pointer (G_OBJECT (dialog),
+                                   (gpointer) &console->file_dialog);
 
-      gtk_window_set_screen (GTK_WINDOW (dialog),
-                             gtk_widget_get_screen (GTK_WIDGET (console)));
-      gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-      gtk_window_set_role (GTK_WINDOW (dialog), "gimp-save-errors");
+        gtk_window_set_screen (GTK_WINDOW (dialog),
+                               gtk_widget_get_screen (GTK_WIDGET (console)));
+        gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+        gtk_window_set_role (GTK_WINDOW (dialog), "gimp-save-errors");
 
-      gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog),
-                                                      TRUE);
+        gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog),
+                TRUE);
 
-      g_signal_connect (dialog, "response",
-                        G_CALLBACK (error_console_save_response),
-                        console);
-      g_signal_connect (dialog, "delete-event",
-                        G_CALLBACK (gtk_true),
-                        NULL);
+        g_signal_connect (dialog, "response",
+                          G_CALLBACK (error_console_save_response),
+                          console);
+        g_signal_connect (dialog, "delete-event",
+                          G_CALLBACK (gtk_true),
+                          NULL);
 
-      gimp_help_connect (dialog, gimp_standard_help_func,
-                         GIMP_HELP_ERRORS_DIALOG, NULL, NULL);
+        gimp_help_connect (dialog, gimp_standard_help_func,
+                           GIMP_HELP_ERRORS_DIALOG, NULL, NULL);
     }
 
-  gtk_window_present (GTK_WINDOW (console->file_dialog));
+    gtk_window_present (GTK_WINDOW (console->file_dialog));
 }
 
 void
 error_console_highlight_error_cmd_callback (GimpAction *action,
-                                            GVariant   *value,
-                                            gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
-  gboolean          active  = g_variant_get_boolean (value);
+    GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+    gboolean          active  = g_variant_get_boolean (value);
 
-  console->highlight[GIMP_MESSAGE_ERROR] = active;
+    console->highlight[GIMP_MESSAGE_ERROR] = active;
 }
 
 void
 error_console_highlight_warning_cmd_callback (GimpAction *action,
-                                              GVariant   *value,
-                                              gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
-  gboolean          active  = g_variant_get_boolean (value);
+    GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+    gboolean          active  = g_variant_get_boolean (value);
 
-  console->highlight[GIMP_MESSAGE_WARNING] = active;
+    console->highlight[GIMP_MESSAGE_WARNING] = active;
 }
 
 void
 error_console_highlight_info_cmd_callback (GimpAction *action,
-                                           GVariant   *value,
-                                           gpointer    data)
+        GVariant   *value,
+        gpointer    data)
 {
-  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
-  gboolean          active  = g_variant_get_boolean (value);
+    GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+    gboolean          active  = g_variant_get_boolean (value);
 
-  console->highlight[GIMP_MESSAGE_INFO] = active;
+    console->highlight[GIMP_MESSAGE_INFO] = active;
 }
 
 
@@ -176,26 +176,26 @@ error_console_save_response (GtkWidget        *dialog,
                              gint              response_id,
                              GimpErrorConsole *console)
 {
-  if (response_id == GTK_RESPONSE_OK)
+    if (response_id == GTK_RESPONSE_OK)
     {
-      GFile  *file  = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
-      GError *error = NULL;
+        GFile  *file  = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+        GError *error = NULL;
 
-      if (! gimp_text_buffer_save (GIMP_TEXT_BUFFER (console->text_buffer),
-                                   file,
-                                   console->save_selection, &error))
+        if (! gimp_text_buffer_save (GIMP_TEXT_BUFFER (console->text_buffer),
+                                     file,
+                                     console->save_selection, &error))
         {
-          gimp_message (console->gimp, G_OBJECT (dialog), GIMP_MESSAGE_ERROR,
-                        _("Error writing file '%s':\n%s"),
-                        gimp_file_get_utf8_name (file),
-                        error->message);
-          g_clear_error (&error);
-          g_object_unref (file);
-          return;
+            gimp_message (console->gimp, G_OBJECT (dialog), GIMP_MESSAGE_ERROR,
+                          _("Error writing file '%s':\n%s"),
+                          gimp_file_get_utf8_name (file),
+                          error->message);
+            g_clear_error (&error);
+            g_object_unref (file);
+            return;
         }
 
-      g_object_unref (file);
+        g_object_unref (file);
     }
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 }

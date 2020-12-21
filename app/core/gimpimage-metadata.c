@@ -39,13 +39,13 @@
 GimpMetadata *
 gimp_image_get_metadata (GimpImage *image)
 {
-  GimpImagePrivate *private;
+    GimpImagePrivate *private;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-  private = GIMP_IMAGE_GET_PRIVATE (image);
+    private = GIMP_IMAGE_GET_PRIVATE (image);
 
-  return private->metadata;
+    return private->metadata;
 }
 
 void
@@ -53,78 +53,78 @@ gimp_image_set_metadata (GimpImage    *image,
                          GimpMetadata *metadata,
                          gboolean      push_undo)
 {
-  GimpImagePrivate *private;
+    GimpImagePrivate *private;
 
-  g_return_if_fail (GIMP_IS_IMAGE (image));
+    g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  private = GIMP_IMAGE_GET_PRIVATE (image);
+    private = GIMP_IMAGE_GET_PRIVATE (image);
 
-  if (metadata != private->metadata)
+    if (metadata != private->metadata)
     {
-      if (push_undo)
-        gimp_image_undo_push_image_metadata (image, NULL);
+        if (push_undo)
+            gimp_image_undo_push_image_metadata (image, NULL);
 
-      g_set_object (&private->metadata, metadata);
+        g_set_object (&private->metadata, metadata);
 
-      if (private->metadata)
+        if (private->metadata)
         {
-          gimp_image_metadata_update_pixel_size      (image);
-          gimp_image_metadata_update_bits_per_sample (image);
-          gimp_image_metadata_update_resolution      (image);
-          gimp_image_metadata_update_colorspace      (image);
+            gimp_image_metadata_update_pixel_size      (image);
+            gimp_image_metadata_update_bits_per_sample (image);
+            gimp_image_metadata_update_resolution      (image);
+            gimp_image_metadata_update_colorspace      (image);
         }
 
-      g_object_notify (G_OBJECT (image), "metadata");
+        g_object_notify (G_OBJECT (image), "metadata");
     }
 }
 
 void
 gimp_image_metadata_update_pixel_size (GimpImage *image)
 {
-  GimpMetadata *metadata;
+    GimpMetadata *metadata;
 
-  g_return_if_fail (GIMP_IS_IMAGE (image));
+    g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  metadata = gimp_image_get_metadata (image);
+    metadata = gimp_image_get_metadata (image);
 
-  if (metadata)
+    if (metadata)
     {
-      gimp_metadata_set_pixel_size (metadata,
-                                    gimp_image_get_width  (image),
-                                    gimp_image_get_height (image));
+        gimp_metadata_set_pixel_size (metadata,
+                                      gimp_image_get_width  (image),
+                                      gimp_image_get_height (image));
     }
 }
 
 void
 gimp_image_metadata_update_bits_per_sample (GimpImage *image)
 {
-  GimpMetadata *metadata;
+    GimpMetadata *metadata;
 
-  g_return_if_fail (GIMP_IS_IMAGE (image));
+    g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  metadata = gimp_image_get_metadata (image);
+    metadata = gimp_image_get_metadata (image);
 
-  if (metadata)
+    if (metadata)
     {
-      switch (gimp_image_get_component_type (image))
+        switch (gimp_image_get_component_type (image))
         {
         case GIMP_COMPONENT_TYPE_U8:
-          gimp_metadata_set_bits_per_sample (metadata, 8);
-          break;
+            gimp_metadata_set_bits_per_sample (metadata, 8);
+            break;
 
         case GIMP_COMPONENT_TYPE_U16:
         case GIMP_COMPONENT_TYPE_HALF:
-          gimp_metadata_set_bits_per_sample (metadata, 16);
-          break;
+            gimp_metadata_set_bits_per_sample (metadata, 16);
+            break;
 
         case GIMP_COMPONENT_TYPE_U32:
         case GIMP_COMPONENT_TYPE_FLOAT:
-          gimp_metadata_set_bits_per_sample (metadata, 32);
-          break;
+            gimp_metadata_set_bits_per_sample (metadata, 32);
+            break;
 
         case GIMP_COMPONENT_TYPE_DOUBLE:
-          gimp_metadata_set_bits_per_sample (metadata, 64);
-          break;
+            gimp_metadata_set_bits_per_sample (metadata, 64);
+            break;
         }
     }
 }
@@ -132,53 +132,53 @@ gimp_image_metadata_update_bits_per_sample (GimpImage *image)
 void
 gimp_image_metadata_update_resolution (GimpImage *image)
 {
-  GimpMetadata *metadata;
+    GimpMetadata *metadata;
 
-  g_return_if_fail (GIMP_IS_IMAGE (image));
+    g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  metadata = gimp_image_get_metadata (image);
+    metadata = gimp_image_get_metadata (image);
 
-  if (metadata)
+    if (metadata)
     {
-      gdouble xres, yres;
+        gdouble xres, yres;
 
-      gimp_image_get_resolution (image, &xres, &yres);
-      gimp_metadata_set_resolution (metadata, xres, yres,
-                                    gimp_image_get_unit (image));
+        gimp_image_get_resolution (image, &xres, &yres);
+        gimp_metadata_set_resolution (metadata, xres, yres,
+                                      gimp_image_get_unit (image));
     }
 }
 
 void
 gimp_image_metadata_update_colorspace (GimpImage *image)
 {
-  GimpMetadata *metadata;
+    GimpMetadata *metadata;
 
-  g_return_if_fail (GIMP_IS_IMAGE (image));
+    g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  metadata = gimp_image_get_metadata (image);
+    metadata = gimp_image_get_metadata (image);
 
-  if (metadata)
+    if (metadata)
     {
-      /*  See the discussions in issue #3532 and issue #301  */
+        /*  See the discussions in issue #3532 and issue #301  */
 
-      GimpColorProfile       *profile = gimp_image_get_color_profile (image);
-      GimpMetadataColorspace  space   = GIMP_METADATA_COLORSPACE_UNSPECIFIED;
+        GimpColorProfile       *profile = gimp_image_get_color_profile (image);
+        GimpMetadataColorspace  space   = GIMP_METADATA_COLORSPACE_UNSPECIFIED;
 
-      if (profile)
+        if (profile)
         {
-          static GimpColorProfile *adobe = NULL;
+            static GimpColorProfile *adobe = NULL;
 
-          if (! adobe)
-            adobe = gimp_color_profile_new_rgb_adobe ();
+            if (! adobe)
+                adobe = gimp_color_profile_new_rgb_adobe ();
 
-          if (gimp_color_profile_is_equal (profile, adobe))
-            space = GIMP_METADATA_COLORSPACE_ADOBERGB;
+            if (gimp_color_profile_is_equal (profile, adobe))
+                space = GIMP_METADATA_COLORSPACE_ADOBERGB;
         }
-      else
+        else
         {
-          space = GIMP_METADATA_COLORSPACE_SRGB;
+            space = GIMP_METADATA_COLORSPACE_SRGB;
         }
 
-      gimp_metadata_set_colorspace (metadata, space);
+        gimp_metadata_set_colorspace (metadata, space);
     }
 }

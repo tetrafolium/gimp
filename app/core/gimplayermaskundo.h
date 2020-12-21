@@ -35,14 +35,14 @@ typedef struct _GimpLayerMaskUndoClass GimpLayerMaskUndoClass;
 
 struct _GimpLayerMaskUndo
 {
-  GimpItemUndo   parent_instance;
+    GimpItemUndo   parent_instance;
 
-  GimpLayerMask *layer_mask;
+    GimpLayerMask *layer_mask;
 };
 
 struct _GimpLayerMaskUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 
