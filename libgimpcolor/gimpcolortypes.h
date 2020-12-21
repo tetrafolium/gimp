@@ -29,8 +29,8 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
-typedef struct _GimpColorManaged   GimpColorManaged;  /* dummy typedef */
-typedef struct _GimpColorProfile   GimpColorProfile;
+typedef struct _GimpColorManaged GimpColorManaged;    /* dummy typedef */
+typedef struct _GimpColorProfile GimpColorProfile;
 typedef struct _GimpColorTransform GimpColorTransform;
 
 
@@ -38,9 +38,9 @@ typedef struct _GimpColorTransform GimpColorTransform;
  *  but GimpRGB appears in too many header files...
  */
 
-typedef struct _GimpRGB  GimpRGB;
-typedef struct _GimpHSV  GimpHSV;
-typedef struct _GimpHSL  GimpHSL;
+typedef struct _GimpRGB GimpRGB;
+typedef struct _GimpHSV GimpHSV;
+typedef struct _GimpHSL GimpHSL;
 typedef struct _GimpCMYK GimpCMYK;
 
 /**
@@ -55,7 +55,7 @@ typedef struct _GimpCMYK GimpCMYK;
  **/
 struct _GimpRGB
 {
-    gdouble r, g, b, a;
+	gdouble r, g, b, a;
 };
 
 /**
@@ -70,7 +70,7 @@ struct _GimpRGB
  **/
 struct _GimpHSV
 {
-    gdouble h, s, v, a;
+	gdouble h, s, v, a;
 };
 
 /**
@@ -85,7 +85,7 @@ struct _GimpHSV
  **/
 struct _GimpHSL
 {
-    gdouble h, s, l, a;
+	gdouble h, s, l, a;
 };
 
 /**
@@ -103,7 +103,7 @@ struct _GimpHSL
  **/
 struct _GimpCMYK
 {
-    gdouble c, m, y, k, a;
+	gdouble c, m, y, k, a;
 };
 
 

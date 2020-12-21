@@ -55,14 +55,14 @@ typedef struct _GimpParamSpecRGB GimpParamSpecRGB;
 GType        gimp_param_rgb_get_type         (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_rgb             (const gchar    *name,
-        const gchar    *nick,
-        const gchar    *blurb,
-        gboolean        has_alpha,
-        const GimpRGB  *default_value,
-        GParamFlags     flags);
+                                              const gchar    *nick,
+                                              const gchar    *blurb,
+                                              gboolean has_alpha,
+                                              const GimpRGB  *default_value,
+                                              GParamFlags flags);
 
 void         gimp_param_spec_rgb_get_default (GParamSpec     *pspec,
-        GimpRGB        *default_value);
+                                              GimpRGB        *default_value);
 gboolean     gimp_param_spec_rgb_has_alpha   (GParamSpec     *pspec);
 
 
@@ -76,30 +76,30 @@ gboolean     gimp_param_spec_rgb_has_alpha   (GParamSpec     *pspec);
  **/
 typedef enum
 {
-    GIMP_RGB_COMPOSITE_NONE = 0,
-    GIMP_RGB_COMPOSITE_NORMAL,
-    GIMP_RGB_COMPOSITE_BEHIND
+	GIMP_RGB_COMPOSITE_NONE = 0,
+	GIMP_RGB_COMPOSITE_NORMAL,
+	GIMP_RGB_COMPOSITE_BEHIND
 } GimpRGBCompositeMode;
 
 
 void      gimp_rgb_set             (GimpRGB       *rgb,
-                                    gdouble        red,
-                                    gdouble        green,
-                                    gdouble        blue);
+                                    gdouble red,
+                                    gdouble green,
+                                    gdouble blue);
 void      gimp_rgb_set_alpha       (GimpRGB       *rgb,
-                                    gdouble        alpha);
+                                    gdouble alpha);
 
 void      gimp_rgb_set_pixel       (GimpRGB       *rgb,
                                     const Babl    *format,
-                                    gconstpointer  pixel);
+                                    gconstpointer pixel);
 void      gimp_rgb_get_pixel       (const GimpRGB *rgb,
                                     const Babl    *format,
-                                    gpointer       pixel);
+                                    gpointer pixel);
 
 void      gimp_rgb_set_uchar       (GimpRGB       *rgb,
-                                    guchar         red,
-                                    guchar         green,
-                                    guchar         blue);
+                                    guchar red,
+                                    guchar green,
+                                    guchar blue);
 void      gimp_rgb_get_uchar       (const GimpRGB *rgb,
                                     guchar        *red,
                                     guchar        *green,
@@ -107,20 +107,20 @@ void      gimp_rgb_get_uchar       (const GimpRGB *rgb,
 
 gboolean  gimp_rgb_parse_name      (GimpRGB       *rgb,
                                     const gchar   *name,
-                                    gint           len);
+                                    gint len);
 gboolean  gimp_rgb_parse_hex       (GimpRGB       *rgb,
                                     const gchar   *hex,
-                                    gint           len);
+                                    gint len);
 gboolean  gimp_rgb_parse_css       (GimpRGB       *rgb,
                                     const gchar   *css,
-                                    gint           len);
+                                    gint len);
 
 void      gimp_rgb_add             (GimpRGB       *rgb1,
                                     const GimpRGB *rgb2);
 void      gimp_rgb_subtract        (GimpRGB       *rgb1,
                                     const GimpRGB *rgb2);
 void      gimp_rgb_multiply        (GimpRGB       *rgb1,
-                                    gdouble        factor);
+                                    gdouble factor);
 gdouble   gimp_rgb_distance        (const GimpRGB *rgb1,
                                     const GimpRGB *rgb2);
 
@@ -129,14 +129,14 @@ gdouble   gimp_rgb_min             (const GimpRGB *rgb);
 void      gimp_rgb_clamp           (GimpRGB       *rgb);
 
 void      gimp_rgb_gamma           (GimpRGB       *rgb,
-                                    gdouble        gamma);
+                                    gdouble gamma);
 
 gdouble   gimp_rgb_luminance       (const GimpRGB *rgb);
 guchar    gimp_rgb_luminance_uchar (const GimpRGB *rgb);
 
 void      gimp_rgb_composite       (GimpRGB              *color1,
                                     const GimpRGB        *color2,
-                                    GimpRGBCompositeMode  mode);
+                                    GimpRGBCompositeMode mode);
 
 /*  access to the list of color names  */
 gint      gimp_rgb_list_names      (const gchar ***names,
@@ -144,23 +144,23 @@ gint      gimp_rgb_list_names      (const gchar ***names,
 
 
 void      gimp_rgba_set            (GimpRGB       *rgba,
-                                    gdouble        red,
-                                    gdouble        green,
-                                    gdouble        blue,
-                                    gdouble        alpha);
+                                    gdouble red,
+                                    gdouble green,
+                                    gdouble blue,
+                                    gdouble alpha);
 
 void      gimp_rgba_set_pixel      (GimpRGB       *rgba,
                                     const Babl    *format,
-                                    gconstpointer  pixel);
+                                    gconstpointer pixel);
 void      gimp_rgba_get_pixel      (const GimpRGB *rgba,
                                     const Babl    *format,
-                                    gpointer       pixel);
+                                    gpointer pixel);
 
 void      gimp_rgba_set_uchar      (GimpRGB       *rgba,
-                                    guchar         red,
-                                    guchar         green,
-                                    guchar         blue,
-                                    guchar         alpha);
+                                    guchar red,
+                                    guchar green,
+                                    guchar blue,
+                                    guchar alpha);
 void      gimp_rgba_get_uchar      (const GimpRGB *rgba,
                                     guchar        *red,
                                     guchar        *green,
@@ -169,14 +169,14 @@ void      gimp_rgba_get_uchar      (const GimpRGB *rgba,
 
 gboolean  gimp_rgba_parse_css      (GimpRGB       *rgba,
                                     const gchar   *css,
-                                    gint           len);
+                                    gint len);
 
 void      gimp_rgba_add            (GimpRGB       *rgba1,
                                     const GimpRGB *rgba2);
 void      gimp_rgba_subtract       (GimpRGB       *rgba1,
                                     const GimpRGB *rgba2);
 void      gimp_rgba_multiply       (GimpRGB       *rgba,
-                                    gdouble        factor);
+                                    gdouble factor);
 
 gdouble   gimp_rgba_distance       (const GimpRGB *rgba1,
                                     const GimpRGB *rgba2);
@@ -198,8 +198,8 @@ gdouble   gimp_rgba_distance       (const GimpRGB *rgba1,
 #define GIMP_RGB_LUMINANCE_BLUE   (0.06060791)
 
 #define GIMP_RGB_LUMINANCE(r,g,b) ((r) * GIMP_RGB_LUMINANCE_RED   + \
-                                   (g) * GIMP_RGB_LUMINANCE_GREEN + \
-                                   (b) * GIMP_RGB_LUMINANCE_BLUE)
+	                           (g) * GIMP_RGB_LUMINANCE_GREEN + \
+	                           (b) * GIMP_RGB_LUMINANCE_BLUE)
 
 
 G_END_DECLS

@@ -33,28 +33,28 @@ G_BEGIN_DECLS
 
 
 gboolean      gimp_image_grid_get_spacing          (GimpImage     *image,
-        gdouble       *xspacing,
-        gdouble       *yspacing);
+                                                    gdouble       *xspacing,
+                                                    gdouble       *yspacing);
 gboolean      gimp_image_grid_set_spacing          (GimpImage     *image,
-        gdouble        xspacing,
-        gdouble        yspacing);
+                                                    gdouble xspacing,
+                                                    gdouble yspacing);
 gboolean      gimp_image_grid_get_offset           (GimpImage     *image,
-        gdouble       *xoffset,
-        gdouble       *yoffset);
+                                                    gdouble       *xoffset,
+                                                    gdouble       *yoffset);
 gboolean      gimp_image_grid_set_offset           (GimpImage     *image,
-        gdouble        xoffset,
-        gdouble        yoffset);
+                                                    gdouble xoffset,
+                                                    gdouble yoffset);
 gboolean      gimp_image_grid_get_foreground_color (GimpImage     *image,
-        GimpRGB       *fgcolor);
+                                                    GimpRGB       *fgcolor);
 gboolean      gimp_image_grid_set_foreground_color (GimpImage     *image,
-        const GimpRGB *fgcolor);
+                                                    const GimpRGB *fgcolor);
 gboolean      gimp_image_grid_get_background_color (GimpImage     *image,
-        GimpRGB       *bgcolor);
+                                                    GimpRGB       *bgcolor);
 gboolean      gimp_image_grid_set_background_color (GimpImage     *image,
-        const GimpRGB *bgcolor);
+                                                    const GimpRGB *bgcolor);
 GimpGridStyle gimp_image_grid_get_style            (GimpImage     *image);
 gboolean      gimp_image_grid_set_style            (GimpImage     *image,
-        GimpGridStyle  style);
+                                                    GimpGridStyle style);
 
 
 G_END_DECLS

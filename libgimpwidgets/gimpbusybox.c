@@ -44,27 +44,27 @@
 
 enum
 {
-    PROP_0,
-    PROP_MESSAGE
+	PROP_0,
+	PROP_MESSAGE
 };
 
 
 struct _GimpBusyBoxPrivate
 {
-    GtkLabel *label;
+	GtkLabel *label;
 };
 
 
 /*  local function prototypes  */
 
 static void   gimp_busy_box_set_property (GObject      *object,
-        guint         property_id,
-        const GValue *value,
-        GParamSpec   *pspec);
+                                          guint property_id,
+                                          const GValue *value,
+                                          GParamSpec   *pspec);
 static void   gimp_busy_box_get_property (GObject      *object,
-        guint         property_id,
-        GValue       *value,
-        GParamSpec   *pspec);
+                                          guint property_id,
+                                          GValue       *value,
+                                          GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpBusyBox, gimp_busy_box, GTK_TYPE_BOX)
@@ -78,93 +78,93 @@ G_DEFINE_TYPE_WITH_PRIVATE (GimpBusyBox, gimp_busy_box, GTK_TYPE_BOX)
 static void
 gimp_busy_box_class_init (GimpBusyBoxClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->set_property = gimp_busy_box_set_property;
-    object_class->get_property = gimp_busy_box_get_property;
+	object_class->set_property = gimp_busy_box_set_property;
+	object_class->get_property = gimp_busy_box_get_property;
 
-    /**
-     * GimpBusyBox:message:
-     *
-     * Specifies the displayed message.
-     *
-     * Since: 2.10.4
-     **/
-    g_object_class_install_property (object_class, PROP_MESSAGE,
-                                     g_param_spec_string ("message",
-                                             "Message",
-                                             "The message to display",
-                                             NULL,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	/**
+	 * GimpBusyBox:message:
+	 *
+	 * Specifies the displayed message.
+	 *
+	 * Since: 2.10.4
+	 **/
+	g_object_class_install_property (object_class, PROP_MESSAGE,
+	                                 g_param_spec_string ("message",
+	                                                      "Message",
+	                                                      "The message to display",
+	                                                      NULL,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT));
 }
 
 static void
 gimp_busy_box_init (GimpBusyBox *box)
 {
-    GtkWidget *spinner;
-    GtkWidget *label;
+	GtkWidget *spinner;
+	GtkWidget *label;
 
-    box->priv = gimp_busy_box_get_instance_private (box);
+	box->priv = gimp_busy_box_get_instance_private (box);
 
-    gtk_widget_set_halign (GTK_WIDGET (box), GTK_ALIGN_CENTER);
-    gtk_widget_set_valign (GTK_WIDGET (box), GTK_ALIGN_CENTER);
-    gtk_box_set_spacing (GTK_BOX (box), 8);
+	gtk_widget_set_halign (GTK_WIDGET (box), GTK_ALIGN_CENTER);
+	gtk_widget_set_valign (GTK_WIDGET (box), GTK_ALIGN_CENTER);
+	gtk_box_set_spacing (GTK_BOX (box), 8);
 
-    /* the spinner */
-    spinner = gtk_spinner_new ();
-    gtk_spinner_start (GTK_SPINNER (spinner));
-    gtk_box_pack_start (GTK_BOX (box), spinner, FALSE, FALSE, 0);
-    gtk_widget_show (spinner);
+	/* the spinner */
+	spinner = gtk_spinner_new ();
+	gtk_spinner_start (GTK_SPINNER (spinner));
+	gtk_box_pack_start (GTK_BOX (box), spinner, FALSE, FALSE, 0);
+	gtk_widget_show (spinner);
 
-    /* the label */
-    label = gtk_label_new (NULL);
-    box->priv->label = GTK_LABEL (label);
-    gimp_label_set_attributes (GTK_LABEL (label),
-                               PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
-                               -1);
-    gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
-    gtk_widget_show (label);
+	/* the label */
+	label = gtk_label_new (NULL);
+	box->priv->label = GTK_LABEL (label);
+	gimp_label_set_attributes (GTK_LABEL (label),
+	                           PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+	                           -1);
+	gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
+	gtk_widget_show (label);
 }
 
 static void
 gimp_busy_box_set_property (GObject      *object,
-                            guint         property_id,
+                            guint property_id,
                             const GValue *value,
                             GParamSpec   *pspec)
 {
-    GimpBusyBox *box = GIMP_BUSY_BOX (object);
+	GimpBusyBox *box = GIMP_BUSY_BOX (object);
 
-    switch (property_id)
-    {
-    case PROP_MESSAGE:
-        gtk_label_set_text (box->priv->label, g_value_get_string (value));
-        break;
+	switch (property_id)
+	{
+	case PROP_MESSAGE:
+		gtk_label_set_text (box->priv->label, g_value_get_string (value));
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_busy_box_get_property (GObject    *object,
-                            guint       property_id,
+                            guint property_id,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-    GimpBusyBox *box = GIMP_BUSY_BOX (object);
+	GimpBusyBox *box = GIMP_BUSY_BOX (object);
 
-    switch (property_id)
-    {
-    case PROP_MESSAGE:
-        g_value_set_string (value, gtk_label_get_text (box->priv->label));
-        break;
+	switch (property_id)
+	{
+	case PROP_MESSAGE:
+		g_value_set_string (value, gtk_label_get_text (box->priv->label));
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 
@@ -184,12 +184,12 @@ gimp_busy_box_get_property (GObject    *object,
 GtkWidget *
 gimp_busy_box_new (const gchar *message)
 {
-    if (message == NULL)
-        message = "";
+	if (message == NULL)
+		message = "";
 
-    return g_object_new (GIMP_TYPE_BUSY_BOX,
-                         "message", message,
-                         NULL);
+	return g_object_new (GIMP_TYPE_BUSY_BOX,
+	                     "message", message,
+	                     NULL);
 }
 
 /**
@@ -205,12 +205,12 @@ void
 gimp_busy_box_set_message (GimpBusyBox *box,
                            const gchar *message)
 {
-    g_return_if_fail (GIMP_IS_BUSY_BOX (box));
-    g_return_if_fail (message != NULL);
+	g_return_if_fail (GIMP_IS_BUSY_BOX (box));
+	g_return_if_fail (message != NULL);
 
-    g_object_set (box,
-                  "message", message,
-                  NULL);
+	g_object_set (box,
+	              "message", message,
+	              NULL);
 }
 
 /**
@@ -226,7 +226,7 @@ gimp_busy_box_set_message (GimpBusyBox *box,
 const gchar *
 gimp_busy_box_get_message (GimpBusyBox *box)
 {
-    g_return_val_if_fail (GIMP_IS_BUSY_BOX (box), NULL);
+	g_return_val_if_fail (GIMP_IS_BUSY_BOX (box), NULL);
 
-    return gtk_label_get_text (box->priv->label);
+	return gtk_label_get_text (box->priv->label);
 }

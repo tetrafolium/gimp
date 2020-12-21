@@ -50,25 +50,25 @@
 gboolean
 gimp_item_id_is_valid (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean valid = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean valid = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-valid",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-valid",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        valid = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		valid = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return valid;
+	return valid;
 }
 
 /**
@@ -86,25 +86,25 @@ gimp_item_id_is_valid (gint item_id)
 gboolean
 gimp_item_id_is_drawable (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean drawable = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean drawable = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-drawable",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-drawable",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        drawable = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		drawable = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return drawable;
+	return drawable;
 }
 
 /**
@@ -122,25 +122,25 @@ gimp_item_id_is_drawable (gint item_id)
 gboolean
 gimp_item_id_is_layer (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean layer = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean layer = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-layer",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-layer",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -159,25 +159,25 @@ gimp_item_id_is_layer (gint item_id)
 gboolean
 gimp_item_id_is_text_layer (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean text_layer = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean text_layer = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-text-layer",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-text-layer",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        text_layer = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		text_layer = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return text_layer;
+	return text_layer;
 }
 
 /**
@@ -195,25 +195,25 @@ gimp_item_id_is_text_layer (gint item_id)
 gboolean
 gimp_item_id_is_channel (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean channel = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean channel = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-channel",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-channel",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        channel = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		channel = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return channel;
+	return channel;
 }
 
 /**
@@ -232,25 +232,25 @@ gimp_item_id_is_channel (gint item_id)
 gboolean
 gimp_item_id_is_layer_mask (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean layer_mask = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean layer_mask = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-layer-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-layer-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer_mask;
+	return layer_mask;
 }
 
 /**
@@ -268,25 +268,25 @@ gimp_item_id_is_layer_mask (gint item_id)
 gboolean
 gimp_item_id_is_selection (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean selection = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean selection = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-selection",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-selection",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        selection = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		selection = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return selection;
+	return selection;
 }
 
 /**
@@ -304,25 +304,25 @@ gimp_item_id_is_selection (gint item_id)
 gboolean
 gimp_item_id_is_vectors (gint item_id)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean vectors = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean vectors = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_INT, item_id,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_INT, item_id,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-id-is-vectors",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-id-is-vectors",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        vectors = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		vectors = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return vectors;
+	return vectors;
 }
 
 /**
@@ -340,25 +340,25 @@ gimp_item_id_is_vectors (gint item_id)
 GimpImage *
 gimp_item_get_image (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpImage *image = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpImage *image = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-image",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-image",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        image = GIMP_VALUES_GET_IMAGE (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		image = GIMP_VALUES_GET_IMAGE (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return image;
+	return image;
 }
 
 /**
@@ -380,24 +380,24 @@ gimp_item_get_image (GimpItem *item)
 gboolean
 gimp_item_delete (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-delete",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-delete",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -416,25 +416,25 @@ gimp_item_delete (GimpItem *item)
 gboolean
 gimp_item_is_group (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean group = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean group = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-is-group",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-is-group",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        group = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		group = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return group;
+	return group;
 }
 
 /**
@@ -452,25 +452,25 @@ gimp_item_is_group (GimpItem *item)
 GimpItem *
 gimp_item_get_parent (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpItem *parent = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpItem *parent = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-parent",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-parent",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        parent = GIMP_VALUES_GET_ITEM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		parent = GIMP_VALUES_GET_ITEM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return parent;
+	return parent;
 }
 
 /**
@@ -493,33 +493,33 @@ GimpItem **
 gimp_item_get_children (GimpItem *item,
                         gint     *num_children)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpItem **children = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpItem **children = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-children",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-children",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    *num_children = 0;
+	*num_children = 0;
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    {
-        *num_children = GIMP_VALUES_GET_INT (return_vals, 1);
-        {
-            GimpObjectArray *a = g_value_get_boxed (gimp_value_array_index (return_vals, 2));
-            if (a) children = g_memdup (a->data, a->length * sizeof (gpointer));
-        };
-    }
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+	{
+		*num_children = GIMP_VALUES_GET_INT (return_vals, 1);
+		{
+			GimpObjectArray *a = g_value_get_boxed (gimp_value_array_index (return_vals, 2));
+			if (a) children = g_memdup (a->data, a->length * sizeof (gpointer));
+		};
+	}
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return children;
+	return children;
 }
 
 /**
@@ -537,25 +537,25 @@ gimp_item_get_children (GimpItem *item,
 gboolean
 gimp_item_get_expanded (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean expanded = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean expanded = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-expanded",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-expanded",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        expanded = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		expanded = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return expanded;
+	return expanded;
 }
 
 /**
@@ -573,27 +573,27 @@ gimp_item_get_expanded (GimpItem *item)
  **/
 gboolean
 gimp_item_set_expanded (GimpItem *item,
-                        gboolean  expanded)
+                        gboolean expanded)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_BOOLEAN, expanded,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_BOOLEAN, expanded,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-expanded",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-expanded",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -612,25 +612,25 @@ gimp_item_set_expanded (GimpItem *item,
 gchar *
 gimp_item_get_name (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar *name = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar *name = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-name",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-name",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        name = GIMP_VALUES_DUP_STRING (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		name = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return name;
+	return name;
 }
 
 /**
@@ -650,25 +650,25 @@ gboolean
 gimp_item_set_name (GimpItem    *item,
                     const gchar *name)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_STRING, name,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_STRING, name,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-name",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-name",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -686,25 +686,25 @@ gimp_item_set_name (GimpItem    *item,
 gboolean
 gimp_item_get_visible (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean visible = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean visible = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-visible",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-visible",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        visible = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		visible = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return visible;
+	return visible;
 }
 
 /**
@@ -722,27 +722,27 @@ gimp_item_get_visible (GimpItem *item)
  **/
 gboolean
 gimp_item_set_visible (GimpItem *item,
-                       gboolean  visible)
+                       gboolean visible)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_BOOLEAN, visible,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_BOOLEAN, visible,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-visible",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-visible",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -760,25 +760,25 @@ gimp_item_set_visible (GimpItem *item,
 gboolean
 gimp_item_get_linked (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean linked = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean linked = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-linked",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-linked",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        linked = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		linked = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return linked;
+	return linked;
 }
 
 /**
@@ -796,27 +796,27 @@ gimp_item_get_linked (GimpItem *item)
  **/
 gboolean
 gimp_item_set_linked (GimpItem *item,
-                      gboolean  linked)
+                      gboolean linked)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_BOOLEAN, linked,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_BOOLEAN, linked,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-linked",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-linked",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -834,25 +834,25 @@ gimp_item_set_linked (GimpItem *item,
 gboolean
 gimp_item_get_lock_content (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean lock_content = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean lock_content = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-lock-content",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-lock-content",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        lock_content = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		lock_content = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return lock_content;
+	return lock_content;
 }
 
 /**
@@ -870,27 +870,27 @@ gimp_item_get_lock_content (GimpItem *item)
  **/
 gboolean
 gimp_item_set_lock_content (GimpItem *item,
-                            gboolean  lock_content)
+                            gboolean lock_content)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_BOOLEAN, lock_content,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_BOOLEAN, lock_content,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-lock-content",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-lock-content",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -908,25 +908,25 @@ gimp_item_set_lock_content (GimpItem *item,
 gboolean
 gimp_item_get_lock_position (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean lock_position = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean lock_position = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-lock-position",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-lock-position",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        lock_position = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		lock_position = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return lock_position;
+	return lock_position;
 }
 
 /**
@@ -944,27 +944,27 @@ gimp_item_get_lock_position (GimpItem *item)
  **/
 gboolean
 gimp_item_set_lock_position (GimpItem *item,
-                             gboolean  lock_position)
+                             gboolean lock_position)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_BOOLEAN, lock_position,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_BOOLEAN, lock_position,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-lock-position",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-lock-position",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -982,25 +982,25 @@ gimp_item_set_lock_position (GimpItem *item,
 GimpColorTag
 gimp_item_get_color_tag (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpColorTag color_tag = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpColorTag color_tag = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-color-tag",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-color-tag",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        color_tag = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		color_tag = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return color_tag;
+	return color_tag;
 }
 
 /**
@@ -1018,27 +1018,27 @@ gimp_item_get_color_tag (GimpItem *item)
  **/
 gboolean
 gimp_item_set_color_tag (GimpItem     *item,
-                         GimpColorTag  color_tag)
+                         GimpColorTag color_tag)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            GIMP_TYPE_COLOR_TAG, color_tag,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        GIMP_TYPE_COLOR_TAG, color_tag,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-color-tag",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-color-tag",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1058,25 +1058,25 @@ gimp_item_set_color_tag (GimpItem     *item,
 guint
 gimp_item_get_tattoo (GimpItem *item)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    guint tattoo = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	guint tattoo = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-tattoo",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-tattoo",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        tattoo = GIMP_VALUES_GET_UINT (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		tattoo = GIMP_VALUES_GET_UINT (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return tattoo;
+	return tattoo;
 }
 
 /**
@@ -1096,27 +1096,27 @@ gimp_item_get_tattoo (GimpItem *item)
  **/
 gboolean
 gimp_item_set_tattoo (GimpItem *item,
-                      guint     tattoo)
+                      guint tattoo)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_UINT, tattoo,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_UINT, tattoo,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-set-tattoo",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-set-tattoo",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1137,25 +1137,25 @@ gboolean
 gimp_item_attach_parasite (GimpItem           *item,
                            const GimpParasite *parasite)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            GIMP_TYPE_PARASITE, parasite,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        GIMP_TYPE_PARASITE, parasite,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-attach-parasite",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-attach-parasite",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1176,25 +1176,25 @@ gboolean
 gimp_item_detach_parasite (GimpItem    *item,
                            const gchar *name)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_STRING, name,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_STRING, name,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-detach-parasite",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-detach-parasite",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1214,26 +1214,26 @@ GimpParasite *
 gimp_item_get_parasite (GimpItem    *item,
                         const gchar *name)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpParasite *parasite = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpParasite *parasite = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_STRING, name,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_STRING, name,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-parasite",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-parasite",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        parasite = GIMP_VALUES_DUP_PARASITE (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		parasite = GIMP_VALUES_DUP_PARASITE (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return parasite;
+	return parasite;
 }
 
 /**
@@ -1255,28 +1255,28 @@ gchar **
 gimp_item_get_parasite_list (GimpItem *item,
                              gint     *num_parasites)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar **parasites = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar **parasites = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_ITEM, item,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_ITEM, item,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-item-get-parasite-list",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-item-get-parasite-list",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    *num_parasites = 0;
+	*num_parasites = 0;
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    {
-        *num_parasites = GIMP_VALUES_GET_INT (return_vals, 1);
-        parasites = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
-    }
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+	{
+		*num_parasites = GIMP_VALUES_GET_INT (return_vals, 1);
+		parasites = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
+	}
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return parasites;
+	return parasites;
 }

@@ -41,7 +41,7 @@ extern gint grid_gc_type;
 void gfig_grid_colors (GtkWidget *widget);
 void find_grid_pos     (GdkPoint  *p,
                         GdkPoint  *gp,
-                        guint      state);
+                        guint state);
 void draw_grid         (cairo_t *cr);
 
 #endif /* __GFIG_GRID_H__ */

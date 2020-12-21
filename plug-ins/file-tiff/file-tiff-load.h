@@ -26,16 +26,16 @@
 
 typedef struct
 {
-    gint                    o_pages;
-    gint                    n_pages;
-    gint                   *pages;
-    GimpPageSelectorTarget  target;
-    gboolean                keep_empty_space;
+	gint o_pages;
+	gint n_pages;
+	gint                   *pages;
+	GimpPageSelectorTarget target;
+	gboolean keep_empty_space;
 } TiffSelectedPages;
 
 
 GimpPDBStatusType load_image  (GFile        *file,
-                               GimpRunMode   run_mode,
+                               GimpRunMode run_mode,
                                GimpImage   **image,
                                gboolean     *resolution_loaded,
                                gboolean     *profile_loaded,

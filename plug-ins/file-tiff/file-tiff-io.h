@@ -33,12 +33,12 @@
 
 
 static const TIFFFieldInfo geotifftags_fieldinfo[] = {
-    { GEOTIFF_MODELPIXELSCALE,      -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoModelPixelScale" },
-    { GEOTIFF_MODELTIEPOINT,        -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoTiePoints" },
-    { GEOTIFF_MODELTRANSFORMATION,  -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoModelTransformation" },
-    { GEOTIFF_KEYDIRECTORY,         -1, -1, TIFF_SHORT,  FIELD_CUSTOM, TRUE, TRUE,  "GeoKeyDirectory" },
-    { GEOTIFF_DOUBLEPARAMS,         -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoDoubleParams" },
-    { GEOTIFF_ASCIIPARAMS,          -1, -1, TIFF_ASCII,  FIELD_CUSTOM, TRUE, FALSE, "GeoAsciiParams" }
+	{ GEOTIFF_MODELPIXELSCALE,      -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoModelPixelScale" },
+	{ GEOTIFF_MODELTIEPOINT,        -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoTiePoints" },
+	{ GEOTIFF_MODELTRANSFORMATION,  -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoModelTransformation" },
+	{ GEOTIFF_KEYDIRECTORY,         -1, -1, TIFF_SHORT,  FIELD_CUSTOM, TRUE, TRUE,  "GeoKeyDirectory" },
+	{ GEOTIFF_DOUBLEPARAMS,         -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, TRUE, TRUE,  "GeoDoubleParams" },
+	{ GEOTIFF_ASCIIPARAMS,          -1, -1, TIFF_ASCII,  FIELD_CUSTOM, TRUE, FALSE, "GeoAsciiParams" }
 };
 
 TIFF * tiff_open (GFile        *file,

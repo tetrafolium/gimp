@@ -77,10 +77,10 @@
  **/
 
 static gboolean gimp_utils_generic_available (const gchar *program,
-        gint         major,
-        gint         minor);
-static gboolean gimp_utils_gdb_available     (gint         major,
-        gint         minor);
+                                              gint major,
+                                              gint minor);
+static gboolean gimp_utils_gdb_available     (gint major,
+                                              gint minor);
 
 /**
  * gimp_utf8_strtrim:
@@ -97,57 +97,57 @@ static gboolean gimp_utils_gdb_available     (gint         major,
  **/
 gchar *
 gimp_utf8_strtrim (const gchar *str,
-                   gint         max_chars)
+                   gint max_chars)
 {
-    /* FIXME: should we make this translatable? */
-    const gchar ellipsis[] = "...";
-    const gint  e_len      = strlen (ellipsis);
+	/* FIXME: should we make this translatable? */
+	const gchar ellipsis[] = "...";
+	const gint e_len      = strlen (ellipsis);
 
-    if (str)
-    {
-        const gchar *p;
-        const gchar *newline = NULL;
-        gint         chars   = 0;
-        gunichar     unichar;
+	if (str)
+	{
+		const gchar *p;
+		const gchar *newline = NULL;
+		gint chars   = 0;
+		gunichar unichar;
 
-        for (p = str; *p; p = g_utf8_next_char (p))
-        {
-            if (++chars > max_chars)
-                break;
+		for (p = str; *p; p = g_utf8_next_char (p))
+		{
+			if (++chars > max_chars)
+				break;
 
-            unichar = g_utf8_get_char (p);
+			unichar = g_utf8_get_char (p);
 
-            switch (g_unichar_break_type (unichar))
-            {
-            case G_UNICODE_BREAK_MANDATORY:
-            case G_UNICODE_BREAK_LINE_FEED:
-                newline = p;
-                break;
-            default:
-                continue;
-            }
+			switch (g_unichar_break_type (unichar))
+			{
+			case G_UNICODE_BREAK_MANDATORY:
+			case G_UNICODE_BREAK_LINE_FEED:
+				newline = p;
+				break;
+			default:
+				continue;
+			}
 
-            break;
-        }
+			break;
+		}
 
-        if (*p)
-        {
-            gsize  len     = p - str;
-            gchar *trimmed = g_new (gchar, len + e_len + 2);
+		if (*p)
+		{
+			gsize len     = p - str;
+			gchar *trimmed = g_new (gchar, len + e_len + 2);
 
-            memcpy (trimmed, str, len);
-            if (newline)
-                trimmed[len++] = ' ';
+			memcpy (trimmed, str, len);
+			if (newline)
+				trimmed[len++] = ' ';
 
-            g_strlcpy (trimmed + len, ellipsis, e_len + 1);
+			g_strlcpy (trimmed + len, ellipsis, e_len + 1);
 
-            return trimmed;
-        }
+			return trimmed;
+		}
 
-        return g_strdup (str);
-    }
+		return g_strdup (str);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -176,56 +176,56 @@ gimp_utf8_strtrim (const gchar *str,
  **/
 gchar *
 gimp_any_to_utf8 (const gchar  *str,
-                  gssize        len,
+                  gssize len,
                   const gchar  *warning_format,
                   ...)
 {
-    const gchar *start_invalid;
-    gchar       *utf8;
+	const gchar *start_invalid;
+	gchar       *utf8;
 
-    g_return_val_if_fail (str != NULL, NULL);
+	g_return_val_if_fail (str != NULL, NULL);
 
-    if (g_utf8_validate (str, len, &start_invalid))
-    {
-        if (len < 0)
-            utf8 = g_strdup (str);
-        else
-            utf8 = g_strndup (str, len);
-    }
-    else
-    {
-        utf8 = g_locale_to_utf8 (str, len, NULL, NULL, NULL);
-    }
+	if (g_utf8_validate (str, len, &start_invalid))
+	{
+		if (len < 0)
+			utf8 = g_strdup (str);
+		else
+			utf8 = g_strndup (str, len);
+	}
+	else
+	{
+		utf8 = g_locale_to_utf8 (str, len, NULL, NULL, NULL);
+	}
 
-    if (! utf8)
-    {
-        if (warning_format)
-        {
-            va_list warning_args;
+	if (!utf8)
+	{
+		if (warning_format)
+		{
+			va_list warning_args;
 
-            va_start (warning_args, warning_format);
+			va_start (warning_args, warning_format);
 
-            g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,
-                    warning_format, warning_args);
+			g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,
+			        warning_format, warning_args);
 
-            va_end (warning_args);
-        }
+			va_end (warning_args);
+		}
 
-        if (start_invalid > str)
-        {
-            gchar *tmp;
+		if (start_invalid > str)
+		{
+			gchar *tmp;
 
-            tmp = g_strndup (str, start_invalid - str);
-            utf8 = g_strconcat (tmp, " ", _("(invalid UTF-8 string)"), NULL);
-            g_free (tmp);
-        }
-        else
-        {
-            utf8 = g_strdup (_("(invalid UTF-8 string)"));
-        }
-    }
+			tmp = g_strndup (str, start_invalid - str);
+			utf8 = g_strconcat (tmp, " ", _("(invalid UTF-8 string)"), NULL);
+			g_free (tmp);
+		}
+		else
+		{
+			utf8 = g_strdup (_("(invalid UTF-8 string)"));
+		}
+	}
 
-    return utf8;
+	return utf8;
 }
 
 /**
@@ -247,31 +247,31 @@ gimp_any_to_utf8 (const gchar  *str,
 const gchar *
 gimp_filename_to_utf8 (const gchar *filename)
 {
-    /* Simpleminded implementation, but at least allocates just one copy
-     * of each translation. Could check if already UTF-8, and if so
-     * return filename as is. Could perhaps (re)use a suitably large
-     * cyclic buffer, but then would have to verify that all calls
-     * really need the return value just for a "short" time.
-     */
+	/* Simpleminded implementation, but at least allocates just one copy
+	 * of each translation. Could check if already UTF-8, and if so
+	 * return filename as is. Could perhaps (re)use a suitably large
+	 * cyclic buffer, but then would have to verify that all calls
+	 * really need the return value just for a "short" time.
+	 */
 
-    static GHashTable *ht = NULL;
-    gchar             *filename_utf8;
+	static GHashTable *ht = NULL;
+	gchar             *filename_utf8;
 
-    if (! filename)
-        return NULL;
+	if (!filename)
+		return NULL;
 
-    if (! ht)
-        ht = g_hash_table_new (g_str_hash, g_str_equal);
+	if (!ht)
+		ht = g_hash_table_new (g_str_hash, g_str_equal);
 
-    filename_utf8 = g_hash_table_lookup (ht, filename);
+	filename_utf8 = g_hash_table_lookup (ht, filename);
 
-    if (! filename_utf8)
-    {
-        filename_utf8 = g_filename_display_name (filename);
-        g_hash_table_insert (ht, g_strdup (filename), filename_utf8);
-    }
+	if (!filename_utf8)
+	{
+		filename_utf8 = g_filename_display_name (filename);
+		g_hash_table_insert (ht, g_strdup (filename), filename_utf8);
+	}
 
-    return filename_utf8;
+	return filename_utf8;
 }
 
 /**
@@ -299,16 +299,16 @@ gimp_filename_to_utf8 (const gchar *filename)
 const gchar *
 gimp_file_get_utf8_name (GFile *file)
 {
-    gchar *name;
+	gchar *name;
 
-    g_return_val_if_fail (G_IS_FILE (file), NULL);
+	g_return_val_if_fail (G_IS_FILE (file), NULL);
 
-    name = g_file_get_parse_name (file);
+	name = g_file_get_parse_name (file);
 
-    g_object_set_data_full (G_OBJECT (file), "gimp-parse-name", name,
-                            (GDestroyNotify) g_free);
+	g_object_set_data_full (G_OBJECT (file), "gimp-parse-name", name,
+	                        (GDestroyNotify) g_free);
 
-    return name;
+	return name;
 }
 
 /**
@@ -329,28 +329,28 @@ gboolean
 gimp_file_has_extension (GFile       *file,
                          const gchar *extension)
 {
-    gchar    *uri;
-    gint      uri_len;
-    gint      ext_len;
-    gboolean  result = FALSE;
+	gchar    *uri;
+	gint uri_len;
+	gint ext_len;
+	gboolean result = FALSE;
 
-    g_return_val_if_fail (G_IS_FILE (file), FALSE);
-    g_return_val_if_fail (extension != NULL, FALSE);
+	g_return_val_if_fail (G_IS_FILE (file), FALSE);
+	g_return_val_if_fail (extension != NULL, FALSE);
 
-    uri = g_file_get_uri (file);
+	uri = g_file_get_uri (file);
 
-    uri_len = strlen (uri);
-    ext_len = strlen (extension);
+	uri_len = strlen (uri);
+	ext_len = strlen (extension);
 
-    if (uri_len && ext_len && (uri_len > ext_len))
-    {
-        if (g_ascii_strcasecmp (uri + uri_len - ext_len, extension) == 0)
-            result = TRUE;
-    }
+	if (uri_len && ext_len && (uri_len > ext_len))
+	{
+		if (g_ascii_strcasecmp (uri + uri_len - ext_len, extension) == 0)
+			result = TRUE;
+	}
 
-    g_free (uri);
+	g_free (uri);
 
-    return result;
+	return result;
 }
 
 /**
@@ -369,153 +369,153 @@ gboolean
 gimp_file_show_in_file_manager (GFile   *file,
                                 GError **error)
 {
-    g_return_val_if_fail (G_IS_FILE (file), FALSE);
-    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (G_IS_FILE (file), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
 #if defined(G_OS_WIN32)
 
-    {
-        gboolean ret;
-        char *filename;
-        int n;
-        LPWSTR w_filename = NULL;
-        ITEMIDLIST *pidl = NULL;
+	{
+		gboolean ret;
+		char *filename;
+		int n;
+		LPWSTR w_filename = NULL;
+		ITEMIDLIST *pidl = NULL;
 
-        ret = FALSE;
+		ret = FALSE;
 
-        /* Calling this function multiple times should do no harm, but it is
-           easier to put this here as it needs linking against ole32. */
-        CoInitialize (NULL);
+		/* Calling this function multiple times should do no harm, but it is
+		   easier to put this here as it needs linking against ole32. */
+		CoInitialize (NULL);
 
-        filename = g_file_get_path (file);
-        if (!filename)
-        {
-            g_set_error_literal (error, G_FILE_ERROR, 0,
-                                 _("File path is NULL"));
-            goto out;
-        }
+		filename = g_file_get_path (file);
+		if (!filename)
+		{
+			g_set_error_literal (error, G_FILE_ERROR, 0,
+			                     _("File path is NULL"));
+			goto out;
+		}
 
-        n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
-                                 filename, -1, NULL, 0);
-        if (n == 0)
-        {
-            g_set_error_literal (error, G_FILE_ERROR, 0,
-                                 _("Error converting UTF-8 filename to wide char"));
-            goto out;
-        }
+		n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
+		                         filename, -1, NULL, 0);
+		if (n == 0)
+		{
+			g_set_error_literal (error, G_FILE_ERROR, 0,
+			                     _("Error converting UTF-8 filename to wide char"));
+			goto out;
+		}
 
-        w_filename = g_malloc_n (n + 1, sizeof (wchar_t));
-        n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
-                                 filename, -1,
-                                 w_filename, (n + 1) * sizeof (wchar_t));
-        if (n == 0)
-        {
-            g_set_error_literal (error, G_FILE_ERROR, 0,
-                                 _("Error converting UTF-8 filename to wide char"));
-            goto out;
-        }
+		w_filename = g_malloc_n (n + 1, sizeof (wchar_t));
+		n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
+		                         filename, -1,
+		                         w_filename, (n + 1) * sizeof (wchar_t));
+		if (n == 0)
+		{
+			g_set_error_literal (error, G_FILE_ERROR, 0,
+			                     _("Error converting UTF-8 filename to wide char"));
+			goto out;
+		}
 
-        pidl = ILCreateFromPathW (w_filename);
-        if (!pidl)
-        {
-            g_set_error_literal (error, G_FILE_ERROR, 0,
-                                 _("ILCreateFromPath() failed"));
-            goto out;
-        }
+		pidl = ILCreateFromPathW (w_filename);
+		if (!pidl)
+		{
+			g_set_error_literal (error, G_FILE_ERROR, 0,
+			                     _("ILCreateFromPath() failed"));
+			goto out;
+		}
 
-        SHOpenFolderAndSelectItems (pidl, 0, NULL, 0);
-        ret = TRUE;
+		SHOpenFolderAndSelectItems (pidl, 0, NULL, 0);
+		ret = TRUE;
 
 out:
-        if (pidl)
-            ILFree (pidl);
-        g_free (w_filename);
-        g_free (filename);
+		if (pidl)
+			ILFree (pidl);
+		g_free (w_filename);
+		g_free (filename);
 
-        return ret;
-    }
+		return ret;
+	}
 
 #elif defined(PLATFORM_OSX)
 
-    {
-        gchar    *uri;
-        NSString *filename;
-        NSURL    *url;
-        gboolean  retval = TRUE;
+	{
+		gchar    *uri;
+		NSString *filename;
+		NSURL    *url;
+		gboolean retval = TRUE;
 
-        uri = g_file_get_uri (file);
-        filename = [NSString stringWithUTF8String:uri];
+		uri = g_file_get_uri (file);
+		filename = [NSString stringWithUTF8String:uri];
 
-        url = [NSURL URLWithString:filename];
-        if (url)
-        {
-            NSArray *url_array = [NSArray arrayWithObject:url];
+		url = [NSURL URLWithString:filename];
+		if (url)
+		{
+			NSArray *url_array = [NSArray arrayWithObject:url];
 
-            [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:url_array];
-        }
-        else
-        {
-            g_set_error (error, G_FILE_ERROR, 0,
-                         _("Cannot convert '%s' into a valid NSURL."), uri);
-            retval = FALSE;
-        }
+			[[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: url_array];
+		}
+		else
+		{
+			g_set_error (error, G_FILE_ERROR, 0,
+			             _("Cannot convert '%s' into a valid NSURL."), uri);
+			retval = FALSE;
+		}
 
-        g_free (uri);
+		g_free (uri);
 
-        return retval;
-    }
+		return retval;
+	}
 
 #else /* UNIX */
 
-    {
-        GDBusProxy      *proxy;
-        GVariant        *retval;
-        GVariantBuilder *builder;
-        gchar           *uri;
+	{
+		GDBusProxy      *proxy;
+		GVariant        *retval;
+		GVariantBuilder *builder;
+		gchar           *uri;
 
-        proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                               G_DBUS_PROXY_FLAGS_NONE,
-                                               NULL,
-                                               "org.freedesktop.FileManager1",
-                                               "/org/freedesktop/FileManager1",
-                                               "org.freedesktop.FileManager1",
-                                               NULL, error);
+		proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+		                                       G_DBUS_PROXY_FLAGS_NONE,
+		                                       NULL,
+		                                       "org.freedesktop.FileManager1",
+		                                       "/org/freedesktop/FileManager1",
+		                                       "org.freedesktop.FileManager1",
+		                                       NULL, error);
 
-        if (! proxy)
-        {
-            g_prefix_error (error,
-                            _("Connecting to org.freedesktop.FileManager1 failed: "));
-            return FALSE;
-        }
+		if (!proxy)
+		{
+			g_prefix_error (error,
+			                _("Connecting to org.freedesktop.FileManager1 failed: "));
+			return FALSE;
+		}
 
-        uri = g_file_get_uri (file);
+		uri = g_file_get_uri (file);
 
-        builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
-        g_variant_builder_add (builder, "s", uri);
+		builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
+		g_variant_builder_add (builder, "s", uri);
 
-        g_free (uri);
+		g_free (uri);
 
-        retval = g_dbus_proxy_call_sync (proxy,
-                                         "ShowItems",
-                                         g_variant_new ("(ass)",
-                                                 builder,
-                                                 ""),
-                                         G_DBUS_CALL_FLAGS_NONE,
-                                         -1, NULL, error);
+		retval = g_dbus_proxy_call_sync (proxy,
+		                                 "ShowItems",
+		                                 g_variant_new ("(ass)",
+		                                                builder,
+		                                                ""),
+		                                 G_DBUS_CALL_FLAGS_NONE,
+		                                 -1, NULL, error);
 
-        g_variant_builder_unref (builder);
-        g_object_unref (proxy);
+		g_variant_builder_unref (builder);
+		g_object_unref (proxy);
 
-        if (! retval)
-        {
-            g_prefix_error (error, _("Calling ShowItems failed: "));
-            return FALSE;
-        }
+		if (!retval)
+		{
+			g_prefix_error (error, _("Calling ShowItems failed: "));
+			return FALSE;
+		}
 
-        g_variant_unref (retval);
+		g_variant_unref (retval);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 #endif
 }
@@ -539,49 +539,49 @@ out:
 gchar *
 gimp_strip_uline (const gchar *str)
 {
-    gchar    *escaped;
-    gchar    *p;
-    gboolean  past_bracket = FALSE;
+	gchar    *escaped;
+	gchar    *p;
+	gboolean past_bracket = FALSE;
 
-    if (! str)
-        return NULL;
+	if (!str)
+		return NULL;
 
-    p = escaped = g_strdup (str);
+	p = escaped = g_strdup (str);
 
-    while (*str)
-    {
-        if (*str == '_')
-        {
-            /*  "__" means a literal "_" in the menu path  */
-            if (str[1] == '_')
-            {
-                *p++ = *str++;
-                str++;
-                continue;
-            }
+	while (*str)
+	{
+		if (*str == '_')
+		{
+			/*  "__" means a literal "_" in the menu path  */
+			if (str[1] == '_')
+			{
+				*p++ = *str++;
+				str++;
+				continue;
+			}
 
-            /*  find the "(_X)" construct and remove it entirely  */
-            if (past_bracket && str[1] && *(g_utf8_next_char (str + 1)) == ')')
-            {
-                str = g_utf8_next_char (str + 1) + 1;
-                p--;
-            }
-            else
-            {
-                str++;
-            }
-        }
-        else
-        {
-            past_bracket = (*str == '(');
+			/*  find the "(_X)" construct and remove it entirely  */
+			if (past_bracket && str[1] && *(g_utf8_next_char (str + 1)) == ')')
+			{
+				str = g_utf8_next_char (str + 1) + 1;
+				p--;
+			}
+			else
+			{
+				str++;
+			}
+		}
+		else
+		{
+			past_bracket = (*str == '(');
 
-            *p++ = *str++;
-        }
-    }
+			*p++ = *str++;
+		}
+	}
 
-    *p = '\0';
+	*p = '\0';
 
-    return escaped;
+	return escaped;
 }
 
 /**
@@ -601,30 +601,30 @@ gimp_strip_uline (const gchar *str)
 gchar *
 gimp_escape_uline (const gchar *str)
 {
-    gchar *escaped;
-    gchar *p;
-    gint   n_ulines = 0;
+	gchar *escaped;
+	gchar *p;
+	gint n_ulines = 0;
 
-    if (! str)
-        return NULL;
+	if (!str)
+		return NULL;
 
-    for (p = (gchar *) str; *p; p++)
-        if (*p == '_')
-            n_ulines++;
+	for (p = (gchar *) str; *p; p++)
+		if (*p == '_')
+			n_ulines++;
 
-    p = escaped = g_malloc (strlen (str) + n_ulines + 1);
+	p = escaped = g_malloc (strlen (str) + n_ulines + 1);
 
-    while (*str)
-    {
-        if (*str == '_')
-            *p++ = '_';
+	while (*str)
+	{
+		if (*str == '_')
+			*p++ = '_';
 
-        *p++ = *str++;
-    }
+		*p++ = *str++;
+	}
 
-    *p = '\0';
+	*p = '\0';
 
-    return escaped;
+	return escaped;
 }
 
 /**
@@ -644,27 +644,27 @@ gimp_escape_uline (const gchar *str)
 gboolean
 gimp_is_canonical_identifier (const gchar *identifier)
 {
-    if (identifier)
-    {
-        const gchar *p;
+	if (identifier)
+	{
+		const gchar *p;
 
-        for (p = identifier; *p != 0; p++)
-        {
-            const gchar c = *p;
+		for (p = identifier; *p != 0; p++)
+		{
+			const gchar c = *p;
 
-            if (! (c == '-' ||
-                    (c >= '0' && c <= '9') ||
-                    (c >= 'A' && c <= 'Z') ||
-                    (c >= 'a' && c <= 'z')))
-            {
-                return FALSE;
-            }
-        }
+			if (!(c == '-' ||
+			      (c >= '0' && c <= '9') ||
+			      (c >= 'A' && c <= 'Z') ||
+			      (c >= 'a' && c <= 'z')))
+			{
+				return FALSE;
+			}
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 /**
@@ -686,29 +686,29 @@ gimp_is_canonical_identifier (const gchar *identifier)
 gchar *
 gimp_canonicalize_identifier (const gchar *identifier)
 {
-    gchar *canonicalized = NULL;
+	gchar *canonicalized = NULL;
 
-    if (identifier)
-    {
-        gchar *p;
+	if (identifier)
+	{
+		gchar *p;
 
-        canonicalized = g_strdup (identifier);
+		canonicalized = g_strdup (identifier);
 
-        for (p = canonicalized; *p != 0; p++)
-        {
-            gchar c = *p;
+		for (p = canonicalized; *p != 0; p++)
+		{
+			gchar c = *p;
 
-            if (c != '-' &&
-                    (c < '0' || c > '9') &&
-                    (c < 'A' || c > 'Z') &&
-                    (c < 'a' || c > 'z'))
-            {
-                *p = '-';
-            }
-        }
-    }
+			if (c != '-' &&
+			    (c < '0' || c > '9') &&
+			    (c < 'A' || c > 'Z') &&
+			    (c < 'a' || c > 'z'))
+			{
+				*p = '-';
+			}
+		}
+	}
 
-    return canonicalized;
+	return canonicalized;
 }
 
 /**
@@ -724,27 +724,27 @@ gimp_canonicalize_identifier (const gchar *identifier)
  **/
 const GimpEnumDesc *
 gimp_enum_get_desc (GEnumClass *enum_class,
-                    gint        value)
+                    gint value)
 {
-    const GimpEnumDesc *value_desc;
+	const GimpEnumDesc *value_desc;
 
-    g_return_val_if_fail (G_IS_ENUM_CLASS (enum_class), NULL);
+	g_return_val_if_fail (G_IS_ENUM_CLASS (enum_class), NULL);
 
-    value_desc =
-        gimp_enum_get_value_descriptions (G_TYPE_FROM_CLASS (enum_class));
+	value_desc =
+		gimp_enum_get_value_descriptions (G_TYPE_FROM_CLASS (enum_class));
 
-    if (value_desc)
-    {
-        while (value_desc->value_desc)
-        {
-            if (value_desc->value == value)
-                return value_desc;
+	if (value_desc)
+	{
+		while (value_desc->value_desc)
+		{
+			if (value_desc->value == value)
+				return value_desc;
 
-            value_desc++;
-        }
-    }
+			value_desc++;
+		}
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -768,74 +768,74 @@ gimp_enum_get_desc (GEnumClass *enum_class,
  * Since: 2.2
  **/
 gboolean
-gimp_enum_get_value (GType         enum_type,
-                     gint          value,
+gimp_enum_get_value (GType enum_type,
+                     gint value,
                      const gchar **value_name,
                      const gchar **value_nick,
                      const gchar **value_desc,
                      const gchar **value_help)
 {
-    GEnumClass       *enum_class;
-    const GEnumValue *enum_value;
-    gboolean          success = FALSE;
+	GEnumClass       *enum_class;
+	const GEnumValue *enum_value;
+	gboolean success = FALSE;
 
-    g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), FALSE);
+	g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), FALSE);
 
-    enum_class = g_type_class_ref (enum_type);
-    enum_value = g_enum_get_value (enum_class, value);
+	enum_class = g_type_class_ref (enum_type);
+	enum_value = g_enum_get_value (enum_class, value);
 
-    if (enum_value)
-    {
-        if (value_name)
-            *value_name = enum_value->value_name;
+	if (enum_value)
+	{
+		if (value_name)
+			*value_name = enum_value->value_name;
 
-        if (value_nick)
-            *value_nick = enum_value->value_nick;
+		if (value_nick)
+			*value_nick = enum_value->value_nick;
 
-        if (value_desc || value_help)
-        {
-            const GimpEnumDesc *enum_desc;
+		if (value_desc || value_help)
+		{
+			const GimpEnumDesc *enum_desc;
 
-            enum_desc = gimp_enum_get_desc (enum_class, value);
+			enum_desc = gimp_enum_get_desc (enum_class, value);
 
-            if (value_desc)
-            {
-                if (enum_desc && enum_desc->value_desc)
-                {
-                    const gchar *context;
+			if (value_desc)
+			{
+				if (enum_desc && enum_desc->value_desc)
+				{
+					const gchar *context;
 
-                    context = gimp_type_get_translation_context (enum_type);
+					context = gimp_type_get_translation_context (enum_type);
 
-                    if (context)  /*  the new way, using NC_()    */
-                        *value_desc = g_dpgettext2 (gimp_type_get_translation_domain (enum_type),
-                                                    context,
-                                                    enum_desc->value_desc);
-                    else          /*  for backward compatibility  */
-                        *value_desc = g_strip_context (enum_desc->value_desc,
-                                                       dgettext (gimp_type_get_translation_domain (enum_type),
-                                                               enum_desc->value_desc));
-                }
-                else
-                {
-                    *value_desc = NULL;
-                }
-            }
+					if (context) /*  the new way, using NC_()    */
+						*value_desc = g_dpgettext2 (gimp_type_get_translation_domain (enum_type),
+						                            context,
+						                            enum_desc->value_desc);
+					else /*  for backward compatibility  */
+						*value_desc = g_strip_context (enum_desc->value_desc,
+						                               dgettext (gimp_type_get_translation_domain (enum_type),
+						                                         enum_desc->value_desc));
+				}
+				else
+				{
+					*value_desc = NULL;
+				}
+			}
 
-            if (value_help)
-            {
-                *value_help = ((enum_desc && enum_desc->value_help) ?
-                               dgettext (gimp_type_get_translation_domain (enum_type),
-                                         enum_desc->value_help) :
-                               NULL);
-            }
-        }
+			if (value_help)
+			{
+				*value_help = ((enum_desc && enum_desc->value_help) ?
+				               dgettext (gimp_type_get_translation_domain (enum_type),
+				                         enum_desc->value_help) :
+				               NULL);
+			}
+		}
 
-        success = TRUE;
-    }
+		success = TRUE;
+	}
 
-    g_type_class_unref (enum_class);
+	g_type_class_unref (enum_class);
 
-    return success;
+	return success;
 }
 
 /**
@@ -853,28 +853,28 @@ const gchar *
 gimp_enum_value_get_desc (GEnumClass       *enum_class,
                           const GEnumValue *enum_value)
 {
-    GType               type = G_TYPE_FROM_CLASS (enum_class);
-    const GimpEnumDesc *enum_desc;
+	GType type = G_TYPE_FROM_CLASS (enum_class);
+	const GimpEnumDesc *enum_desc;
 
-    enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
+	enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
 
-    if (enum_desc && enum_desc->value_desc)
-    {
-        const gchar *context;
+	if (enum_desc && enum_desc->value_desc)
+	{
+		const gchar *context;
 
-        context = gimp_type_get_translation_context (type);
+		context = gimp_type_get_translation_context (type);
 
-        if (context)  /*  the new way, using NC_()    */
-            return g_dpgettext2 (gimp_type_get_translation_domain (type),
-                                 context,
-                                 enum_desc->value_desc);
-        else          /*  for backward compatibility  */
-            return g_strip_context (enum_desc->value_desc,
-                                    dgettext (gimp_type_get_translation_domain (type),
-                                              enum_desc->value_desc));
-    }
+		if (context) /*  the new way, using NC_()    */
+			return g_dpgettext2 (gimp_type_get_translation_domain (type),
+			                     context,
+			                     enum_desc->value_desc);
+		else  /*  for backward compatibility  */
+			return g_strip_context (enum_desc->value_desc,
+			                        dgettext (gimp_type_get_translation_domain (type),
+			                                  enum_desc->value_desc));
+	}
 
-    return enum_value->value_name;
+	return enum_value->value_name;
 }
 
 /**
@@ -892,16 +892,16 @@ const gchar *
 gimp_enum_value_get_help (GEnumClass       *enum_class,
                           const GEnumValue *enum_value)
 {
-    GType               type = G_TYPE_FROM_CLASS (enum_class);
-    const GimpEnumDesc *enum_desc;
+	GType type = G_TYPE_FROM_CLASS (enum_class);
+	const GimpEnumDesc *enum_desc;
 
-    enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
+	enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
 
-    if (enum_desc && enum_desc->value_help)
-        return dgettext (gimp_type_get_translation_domain (type),
-                         enum_desc->value_help);
+	if (enum_desc && enum_desc->value_help)
+		return dgettext (gimp_type_get_translation_domain (type),
+		                 enum_desc->value_help);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -919,21 +919,21 @@ const gchar *
 gimp_enum_value_get_abbrev (GEnumClass       *enum_class,
                             const GEnumValue *enum_value)
 {
-    GType               type = G_TYPE_FROM_CLASS (enum_class);
-    const GimpEnumDesc *enum_desc;
+	GType type = G_TYPE_FROM_CLASS (enum_class);
+	const GimpEnumDesc *enum_desc;
 
-    enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
+	enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
 
-    if (enum_desc                              &&
-            enum_desc[1].value == enum_desc->value &&
-            enum_desc[1].value_desc)
-    {
-        return g_dpgettext2 (gimp_type_get_translation_domain (type),
-                             gimp_type_get_translation_context (type),
-                             enum_desc[1].value_desc);
-    }
+	if (enum_desc                              &&
+	    enum_desc[1].value == enum_desc->value &&
+	    enum_desc[1].value_desc)
+	{
+		return g_dpgettext2 (gimp_type_get_translation_domain (type),
+		                     gimp_type_get_translation_context (type),
+		                     enum_desc[1].value_desc);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -949,27 +949,27 @@ gimp_enum_value_get_abbrev (GEnumClass       *enum_class,
  **/
 const GimpFlagsDesc *
 gimp_flags_get_first_desc (GFlagsClass *flags_class,
-                           guint        value)
+                           guint value)
 {
-    const GimpFlagsDesc *value_desc;
+	const GimpFlagsDesc *value_desc;
 
-    g_return_val_if_fail (G_IS_FLAGS_CLASS (flags_class), NULL);
+	g_return_val_if_fail (G_IS_FLAGS_CLASS (flags_class), NULL);
 
-    value_desc =
-        gimp_flags_get_value_descriptions (G_TYPE_FROM_CLASS (flags_class));
+	value_desc =
+		gimp_flags_get_value_descriptions (G_TYPE_FROM_CLASS (flags_class));
 
-    if (value_desc)
-    {
-        while (value_desc->value_desc)
-        {
-            if ((value_desc->value & value) == value_desc->value)
-                return value_desc;
+	if (value_desc)
+	{
+		while (value_desc->value_desc)
+		{
+			if ((value_desc->value & value) == value_desc->value)
+				return value_desc;
 
-            value_desc++;
-        }
-    }
+			value_desc++;
+		}
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -993,52 +993,52 @@ gimp_flags_get_first_desc (GFlagsClass *flags_class,
  * Since: 2.2
  **/
 gboolean
-gimp_flags_get_first_value (GType         flags_type,
-                            guint         value,
+gimp_flags_get_first_value (GType flags_type,
+                            guint value,
                             const gchar **value_name,
                             const gchar **value_nick,
                             const gchar **value_desc,
                             const gchar **value_help)
 {
-    GFlagsClass       *flags_class;
-    const GFlagsValue *flags_value;
+	GFlagsClass       *flags_class;
+	const GFlagsValue *flags_value;
 
-    g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), FALSE);
+	g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), FALSE);
 
-    flags_class = g_type_class_peek (flags_type);
-    flags_value = g_flags_get_first_value (flags_class, value);
+	flags_class = g_type_class_peek (flags_type);
+	flags_value = g_flags_get_first_value (flags_class, value);
 
-    if (flags_value)
-    {
-        if (value_name)
-            *value_name = flags_value->value_name;
+	if (flags_value)
+	{
+		if (value_name)
+			*value_name = flags_value->value_name;
 
-        if (value_nick)
-            *value_nick = flags_value->value_nick;
+		if (value_nick)
+			*value_nick = flags_value->value_nick;
 
-        if (value_desc || value_help)
-        {
-            const GimpFlagsDesc *flags_desc;
+		if (value_desc || value_help)
+		{
+			const GimpFlagsDesc *flags_desc;
 
-            flags_desc = gimp_flags_get_first_desc (flags_class, value);
+			flags_desc = gimp_flags_get_first_desc (flags_class, value);
 
-            if (value_desc)
-                *value_desc = ((flags_desc && flags_desc->value_desc) ?
-                               dgettext (gimp_type_get_translation_domain (flags_type),
-                                         flags_desc->value_desc) :
-                               NULL);
+			if (value_desc)
+				*value_desc = ((flags_desc && flags_desc->value_desc) ?
+				               dgettext (gimp_type_get_translation_domain (flags_type),
+				                         flags_desc->value_desc) :
+				               NULL);
 
-            if (value_help)
-                *value_help = ((flags_desc && flags_desc->value_desc) ?
-                               dgettext (gimp_type_get_translation_domain (flags_type),
-                                         flags_desc->value_help) :
-                               NULL);
-        }
+			if (value_help)
+				*value_help = ((flags_desc && flags_desc->value_desc) ?
+				               dgettext (gimp_type_get_translation_domain (flags_type),
+				                         flags_desc->value_help) :
+				               NULL);
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 /**
@@ -1056,28 +1056,28 @@ const gchar *
 gimp_flags_value_get_desc (GFlagsClass       *flags_class,
                            const GFlagsValue *flags_value)
 {
-    GType                type = G_TYPE_FROM_CLASS (flags_class);
-    const GimpFlagsDesc *flags_desc;
+	GType type = G_TYPE_FROM_CLASS (flags_class);
+	const GimpFlagsDesc *flags_desc;
 
-    flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
+	flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
 
-    if (flags_desc->value_desc)
-    {
-        const gchar *context;
+	if (flags_desc->value_desc)
+	{
+		const gchar *context;
 
-        context = gimp_type_get_translation_context (type);
+		context = gimp_type_get_translation_context (type);
 
-        if (context)  /*  the new way, using NC_()    */
-            return g_dpgettext2 (gimp_type_get_translation_domain (type),
-                                 context,
-                                 flags_desc->value_desc);
-        else          /*  for backward compatibility  */
-            return g_strip_context (flags_desc->value_desc,
-                                    dgettext (gimp_type_get_translation_domain (type),
-                                              flags_desc->value_desc));
-    }
+		if (context) /*  the new way, using NC_()    */
+			return g_dpgettext2 (gimp_type_get_translation_domain (type),
+			                     context,
+			                     flags_desc->value_desc);
+		else  /*  for backward compatibility  */
+			return g_strip_context (flags_desc->value_desc,
+			                        dgettext (gimp_type_get_translation_domain (type),
+			                                  flags_desc->value_desc));
+	}
 
-    return flags_value->value_name;
+	return flags_value->value_name;
 }
 
 /**
@@ -1095,16 +1095,16 @@ const gchar *
 gimp_flags_value_get_help (GFlagsClass       *flags_class,
                            const GFlagsValue *flags_value)
 {
-    GType                type = G_TYPE_FROM_CLASS (flags_class);
-    const GimpFlagsDesc *flags_desc;
+	GType type = G_TYPE_FROM_CLASS (flags_class);
+	const GimpFlagsDesc *flags_desc;
 
-    flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
+	flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
 
-    if (flags_desc->value_help)
-        return dgettext (gimp_type_get_translation_domain (type),
-                         flags_desc->value_help);
+	if (flags_desc->value_help)
+		return dgettext (gimp_type_get_translation_domain (type),
+		                 flags_desc->value_help);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -1122,21 +1122,21 @@ const gchar *
 gimp_flags_value_get_abbrev (GFlagsClass       *flags_class,
                              const GFlagsValue *flags_value)
 {
-    GType                type = G_TYPE_FROM_CLASS (flags_class);
-    const GimpFlagsDesc *flags_desc;
+	GType type = G_TYPE_FROM_CLASS (flags_class);
+	const GimpFlagsDesc *flags_desc;
 
-    flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
+	flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
 
-    if (flags_desc                               &&
-            flags_desc[1].value == flags_desc->value &&
-            flags_desc[1].value_desc)
-    {
-        return g_dpgettext2 (gimp_type_get_translation_domain (type),
-                             gimp_type_get_translation_context (type),
-                             flags_desc[1].value_desc);
-    }
+	if (flags_desc                               &&
+	    flags_desc[1].value == flags_desc->value &&
+	    flags_desc[1].value_desc)
+	{
+		return g_dpgettext2 (gimp_type_get_translation_domain (type),
+		                     gimp_type_get_translation_context (type),
+		                     flags_desc[1].value_desc);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -1161,37 +1161,37 @@ gboolean
 gimp_stack_trace_available (gboolean optimal)
 {
 #ifndef G_OS_WIN32
-    gchar    *lld_path = NULL;
-    gboolean  has_lldb = FALSE;
+	gchar    *lld_path = NULL;
+	gboolean has_lldb = FALSE;
 
-    /* Similarly to gdb, we could check for lldb by calling:
-     * gimp_utils_generic_available ("lldb", major, minor).
-     * We don't do so on purpose because on macOS, when lldb is absent, it
-     * triggers a popup asking to install Xcode. So instead, we just
-     * search for the executable in path.
-     * This is the reason why this function is not crash-safe, since
-     * g_find_program_in_path() allocates memory.
-     * See issue #1999.
-     */
-    lld_path = g_find_program_in_path ("lldb");
-    if (lld_path)
-    {
-        has_lldb = TRUE;
-        g_free (lld_path);
-    }
+	/* Similarly to gdb, we could check for lldb by calling:
+	 * gimp_utils_generic_available ("lldb", major, minor).
+	 * We don't do so on purpose because on macOS, when lldb is absent, it
+	 * triggers a popup asking to install Xcode. So instead, we just
+	 * search for the executable in path.
+	 * This is the reason why this function is not crash-safe, since
+	 * g_find_program_in_path() allocates memory.
+	 * See issue #1999.
+	 */
+	lld_path = g_find_program_in_path ("lldb");
+	if (lld_path)
+	{
+		has_lldb = TRUE;
+		g_free (lld_path);
+	}
 
-    if (gimp_utils_gdb_available (7, 0) || has_lldb)
-        return TRUE;
+	if (gimp_utils_gdb_available (7, 0) || has_lldb)
+		return TRUE;
 #ifdef HAVE_EXECINFO_H
-    if (! optimal)
-        return TRUE;
+	if (!optimal)
+		return TRUE;
 #endif
 #else /* G_OS_WIN32 */
 #ifdef HAVE_EXCHNDL
-    return TRUE;
+	return TRUE;
 #endif
 #endif /* G_OS_WIN32 */
-    return FALSE;
+	return FALSE;
 }
 
 /**
@@ -1225,253 +1225,251 @@ gimp_stack_trace_available (gboolean optimal)
  **/
 gboolean
 gimp_stack_trace_print (const gchar   *prog_name,
-                        gpointer      stream,
+                        gpointer stream,
                         gchar       **trace)
 {
-    gboolean stack_printed = FALSE;
+	gboolean stack_printed = FALSE;
 
-    /* This works only on UNIX systems. */
+	/* This works only on UNIX systems. */
 #ifndef G_OS_WIN32
-    GString *gtrace = NULL;
-    gchar    gimp_pid[16];
-    gchar    buffer[256];
-    ssize_t  read_n;
-    int      sync_fd[2];
-    int      out_fd[2];
-    pid_t    fork_pid;
-    pid_t    pid = getpid();
-    gint     eintr_count = 0;
+	GString *gtrace = NULL;
+	gchar gimp_pid[16];
+	gchar buffer[256];
+	ssize_t read_n;
+	int sync_fd[2];
+	int out_fd[2];
+	pid_t fork_pid;
+	pid_t pid = getpid();
+	gint eintr_count = 0;
 #if defined(G_OS_WIN32)
-    DWORD    tid = GetCurrentThreadId ();
+	DWORD tid = GetCurrentThreadId ();
 #elif defined(PLATFORM_OSX)
-    uint64   tid64;
-    long     tid;
+	uint64 tid64;
+	long tid;
 
-    pthread_threadid_np (NULL, &tid64);
-    tid = (long) tid64;
+	pthread_threadid_np (NULL, &tid64);
+	tid = (long) tid64;
 #elif defined(SYS_gettid)
-    long     tid = syscall (SYS_gettid);
+	long tid = syscall (SYS_gettid);
 #elif defined(HAVE_THR_SELF)
-    long     tid = 0;
-    thr_self (&tid);
+	long tid = 0;
+	thr_self (&tid);
 #endif
 
-    g_snprintf (gimp_pid, 16, "%u", (guint) pid);
+	g_snprintf (gimp_pid, 16, "%u", (guint) pid);
 
-    if (pipe (sync_fd) == -1)
-    {
-        return FALSE;
-    }
+	if (pipe (sync_fd) == -1)
+	{
+		return FALSE;
+	}
 
-    if (pipe (out_fd) == -1)
-    {
-        close (sync_fd[0]);
-        close (sync_fd[1]);
+	if (pipe (out_fd) == -1)
+	{
+		close (sync_fd[0]);
+		close (sync_fd[1]);
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 
-    fork_pid = fork ();
-    if (fork_pid == 0)
-    {
-        /* Child process. */
-        gchar *args[9] = { "gdb", "-batch",
-                           "-ex", "info threads",
-                           "-ex", "thread apply all backtrace full",
-                           (gchar *) prog_name, NULL, NULL
-                         };
+	fork_pid = fork ();
+	if (fork_pid == 0)
+	{
+		/* Child process. */
+		gchar *args[9] = { "gdb", "-batch",
+			           "-ex", "info threads",
+			           "-ex", "thread apply all backtrace full",
+			           (gchar *) prog_name, NULL, NULL};
 
-        if (prog_name == NULL)
-            args[6] = "-p";
+		if (prog_name == NULL)
+			args[6] = "-p";
 
-        args[7] = gimp_pid;
+		args[7] = gimp_pid;
 
-        /* Wait until the parent enabled us to ptrace it. */
-        {
-            gchar dummy;
+		/* Wait until the parent enabled us to ptrace it. */
+		{
+			gchar dummy;
 
-            close (sync_fd[1]);
-            while (read (sync_fd[0], &dummy, 1) < 0 && errno == EINTR);
-            close (sync_fd[0]);
-        }
+			close (sync_fd[1]);
+			while (read (sync_fd[0], &dummy, 1) < 0 && errno == EINTR);
+			close (sync_fd[0]);
+		}
 
-        /* Redirect the debugger output. */
-        dup2 (out_fd[1], STDOUT_FILENO);
-        close (out_fd[0]);
-        close (out_fd[1]);
+		/* Redirect the debugger output. */
+		dup2 (out_fd[1], STDOUT_FILENO);
+		close (out_fd[0]);
+		close (out_fd[1]);
 
-        /* Run GDB if version 7.0 or over. Why I do such a check is that
-         * it turns out older versions may not only fail, but also have
-         * very undesirable side effects like terminating the debugged
-         * program, at least on FreeBSD where GDB 6.1 is apparently
-         * installed by default on the stable release at day of writing.
-         * See bug 793514. */
-        if (! gimp_utils_gdb_available (7, 0) ||
-                execvp (args[0], args) == -1)
-        {
-            /* LLDB as alternative if the GDB call failed or if it was in
-             * a too-old version. */
-            gchar *args_lldb[15] = { "lldb", "--attach-pid", NULL, "--batch",
-                                     "--one-line", "thread list",
-                                     "--one-line", "thread backtrace all",
-                                     "--one-line", "bt all",
-                                     "--one-line-on-crash", "bt",
-                                     "--one-line-on-crash", "quit", NULL
-                                   };
+		/* Run GDB if version 7.0 or over. Why I do such a check is that
+		 * it turns out older versions may not only fail, but also have
+		 * very undesirable side effects like terminating the debugged
+		 * program, at least on FreeBSD where GDB 6.1 is apparently
+		 * installed by default on the stable release at day of writing.
+		 * See bug 793514. */
+		if (!gimp_utils_gdb_available (7, 0) ||
+		    execvp (args[0], args) == -1)
+		{
+			/* LLDB as alternative if the GDB call failed or if it was in
+			 * a too-old version. */
+			gchar *args_lldb[15] = { "lldb", "--attach-pid", NULL, "--batch",
+				                 "--one-line", "thread list",
+				                 "--one-line", "thread backtrace all",
+				                 "--one-line", "bt all",
+				                 "--one-line-on-crash", "bt",
+				                 "--one-line-on-crash", "quit", NULL};
 
-            args_lldb[2] = gimp_pid;
+			args_lldb[2] = gimp_pid;
 
-            execvp (args_lldb[0], args_lldb);
-        }
+			execvp (args_lldb[0], args_lldb);
+		}
 
-        _exit (0);
-    }
-    else if (fork_pid > 0)
-    {
-        /* Main process */
-        int status;
+		_exit (0);
+	}
+	else if (fork_pid > 0)
+	{
+		/* Main process */
+		int status;
 
-        /* Allow the child to ptrace us, and signal it to start. */
-        close (sync_fd[0]);
+		/* Allow the child to ptrace us, and signal it to start. */
+		close (sync_fd[0]);
 #ifdef PR_SET_PTRACER
-        prctl (PR_SET_PTRACER, fork_pid, 0, 0, 0);
+		prctl (PR_SET_PTRACER, fork_pid, 0, 0, 0);
 #endif
-        close (sync_fd[1]);
+		close (sync_fd[1]);
 
-        /* It is important to close the writing side of the pipe, otherwise
-         * the read() will wait forever without getting the information that
-         * writing is finished.
-         */
-        close (out_fd[1]);
+		/* It is important to close the writing side of the pipe, otherwise
+		 * the read() will wait forever without getting the information that
+		 * writing is finished.
+		 */
+		close (out_fd[1]);
 
-        while ((read_n = read (out_fd[0], buffer, 256)) != 0)
-        {
-            if (read_n < 0)
-            {
-                /* LLDB on macOS seems to trigger a few EINTR error (see
-                 * !13), though read() finally ends up working later. So
-                 * let's not make this error fatal, and instead try again.
-                 * Yet to avoid infinite loop (in case the error really
-                 * happens at every call), we abandon after a few
-                 * consecutive errors.
-                 */
-                if (errno == EINTR && eintr_count <= 5)
-                {
-                    eintr_count++;
-                    continue;
-                }
-                break;
-            }
-            eintr_count = 0;
-            if (! stack_printed)
-            {
+		while ((read_n = read (out_fd[0], buffer, 256)) != 0)
+		{
+			if (read_n < 0)
+			{
+				/* LLDB on macOS seems to trigger a few EINTR error (see
+				 * !13), though read() finally ends up working later. So
+				 * let's not make this error fatal, and instead try again.
+				 * Yet to avoid infinite loop (in case the error really
+				 * happens at every call), we abandon after a few
+				 * consecutive errors.
+				 */
+				if (errno == EINTR && eintr_count <= 5)
+				{
+					eintr_count++;
+					continue;
+				}
+				break;
+			}
+			eintr_count = 0;
+			if (!stack_printed)
+			{
 #if defined(PLATFORM_OSX)
-                if (stream)
-                    g_fprintf (stream,
-                               "\n# Stack traces obtained from PID %d - Thread 0x%lx #\n\n",
-                               pid, tid);
+				if (stream)
+					g_fprintf (stream,
+					           "\n# Stack traces obtained from PID %d - Thread 0x%lx #\n\n",
+					           pid, tid);
 #elif defined(G_OS_WIN32) || defined(SYS_gettid) || defined(HAVE_THR_SELF)
-                if (stream)
-                    g_fprintf (stream,
-                               "\n# Stack traces obtained from PID %d - Thread %lu #\n\n",
-                               pid, tid);
+				if (stream)
+					g_fprintf (stream,
+					           "\n# Stack traces obtained from PID %d - Thread %lu #\n\n",
+					           pid, tid);
 #endif
-                if (trace)
-                {
-                    gtrace = g_string_new (NULL);
+				if (trace)
+				{
+					gtrace = g_string_new (NULL);
 #if defined(PLATFORM_OSX)
-                    g_string_printf (gtrace,
-                                     "\n# Stack traces obtained from PID %d - Thread 0x%lx #\n\n",
-                                     pid, tid);
+					g_string_printf (gtrace,
+					                 "\n# Stack traces obtained from PID %d - Thread 0x%lx #\n\n",
+					                 pid, tid);
 #elif defined(G_OS_WIN32) || defined(SYS_gettid) || defined(HAVE_THR_SELF)
-                    g_string_printf (gtrace,
-                                     "\n# Stack traces obtained from PID %d - Thread %lu #\n\n",
-                                     pid, tid);
+					g_string_printf (gtrace,
+					                 "\n# Stack traces obtained from PID %d - Thread %lu #\n\n",
+					                 pid, tid);
 #endif
-                }
-            }
-            /* It's hard to know if the debugger was found since it
-             * happened in the child. Let's just assume that any output
-             * means it succeeded.
-             */
-            stack_printed = TRUE;
+				}
+			}
+			/* It's hard to know if the debugger was found since it
+			 * happened in the child. Let's just assume that any output
+			 * means it succeeded.
+			 */
+			stack_printed = TRUE;
 
-            buffer[read_n] = '\0';
-            if (stream)
-                g_fprintf (stream, "%s", buffer);
-            if (trace)
-                g_string_append (gtrace, (const gchar *) buffer);
-        }
-        close (out_fd[0]);
+			buffer[read_n] = '\0';
+			if (stream)
+				g_fprintf (stream, "%s", buffer);
+			if (trace)
+				g_string_append (gtrace, (const gchar *) buffer);
+		}
+		close (out_fd[0]);
 
 #ifdef PR_SET_PTRACER
-        /* Clear ptrace permission set above */
-        prctl (PR_SET_PTRACER, 0, 0, 0, 0);
+		/* Clear ptrace permission set above */
+		prctl (PR_SET_PTRACER, 0, 0, 0, 0);
 #endif
 
-        waitpid (fork_pid, &status, 0);
-    }
-    /* else if (fork_pid == (pid_t) -1)
-     * Fork failed!
-     * Just continue, maybe the backtrace() API will succeed.
-     */
+		waitpid (fork_pid, &status, 0);
+	}
+	/* else if (fork_pid == (pid_t) -1)
+	 * Fork failed!
+	 * Just continue, maybe the backtrace() API will succeed.
+	 */
 
 #ifdef HAVE_EXECINFO_H
-    if (! stack_printed)
-    {
-        /* As a last resort, try using the backtrace() Linux API. It is a bit
-         * less fancy than gdb or lldb, which is why it is not given priority.
-         */
-        void *bt_buf[100];
-        int   n_symbols;
+	if (!stack_printed)
+	{
+		/* As a last resort, try using the backtrace() Linux API. It is a bit
+		 * less fancy than gdb or lldb, which is why it is not given priority.
+		 */
+		void *bt_buf[100];
+		int n_symbols;
 
-        n_symbols = backtrace (bt_buf, 100);
-        if (trace && n_symbols)
-        {
-            char **symbols;
-            int    i;
+		n_symbols = backtrace (bt_buf, 100);
+		if (trace && n_symbols)
+		{
+			char **symbols;
+			int i;
 
-            symbols = backtrace_symbols (bt_buf, n_symbols);
-            if (symbols)
-            {
-                for (i = 0; i < n_symbols; i++)
-                {
-                    if (stream)
-                        g_fprintf (stream, "%s\n", (const gchar *) symbols[i]);
-                    if (trace)
-                    {
-                        if (! gtrace)
-                            gtrace = g_string_new (NULL);
-                        g_string_append (gtrace,
-                                         (const gchar *) symbols[i]);
-                        g_string_append_c (gtrace, '\n');
-                    }
-                }
-                free (symbols);
-            }
-        }
-        else if (n_symbols)
-        {
-            /* This allows to generate traces without memory allocation.
-             * In some cases, this is necessary, especially during
-             * segfault-type crashes.
-             */
-            backtrace_symbols_fd (bt_buf, n_symbols, fileno ((FILE *) stream));
-        }
-        stack_printed = (n_symbols > 0);
-    }
+			symbols = backtrace_symbols (bt_buf, n_symbols);
+			if (symbols)
+			{
+				for (i = 0; i < n_symbols; i++)
+				{
+					if (stream)
+						g_fprintf (stream, "%s\n", (const gchar *) symbols[i]);
+					if (trace)
+					{
+						if (!gtrace)
+							gtrace = g_string_new (NULL);
+						g_string_append (gtrace,
+						                 (const gchar *) symbols[i]);
+						g_string_append_c (gtrace, '\n');
+					}
+				}
+				free (symbols);
+			}
+		}
+		else if (n_symbols)
+		{
+			/* This allows to generate traces without memory allocation.
+			 * In some cases, this is necessary, especially during
+			 * segfault-type crashes.
+			 */
+			backtrace_symbols_fd (bt_buf, n_symbols, fileno ((FILE *) stream));
+		}
+		stack_printed = (n_symbols > 0);
+	}
 #endif /* HAVE_EXECINFO_H */
 
-    if (trace)
-    {
-        if (gtrace)
-            *trace = g_string_free (gtrace, FALSE);
-        else
-            *trace = NULL;
-    }
+	if (trace)
+	{
+		if (gtrace)
+			*trace = g_string_free (gtrace, FALSE);
+		else
+			*trace = NULL;
+	}
 #endif /* G_OS_WIN32 */
 
-    return stack_printed;
+	return stack_printed;
 }
 
 /**
@@ -1489,37 +1487,37 @@ void
 gimp_stack_trace_query (const gchar *prog_name)
 {
 #ifndef G_OS_WIN32
-    gchar buf[16];
+	gchar buf[16];
 
 retry:
 
-    g_fprintf (stdout,
-               "%s (pid:%u): %s: ",
-               prog_name,
-               (guint) getpid (),
-               "[E]xit, show [S]tack trace or [P]roceed");
-    fflush (stdout);
+	g_fprintf (stdout,
+	           "%s (pid:%u): %s: ",
+	           prog_name,
+	           (guint) getpid (),
+	           "[E]xit, show [S]tack trace or [P]roceed");
+	fflush (stdout);
 
-    if (isatty(0) && isatty(1))
-        fgets (buf, 8, stdin);
-    else
-        strcpy (buf, "E\n");
+	if (isatty(0) && isatty(1))
+		fgets (buf, 8, stdin);
+	else
+		strcpy (buf, "E\n");
 
-    if ((buf[0] == 'E' || buf[0] == 'e')
-            && buf[1] == '\n')
-        _exit (0);
-    else if ((buf[0] == 'P' || buf[0] == 'p')
-             && buf[1] == '\n')
-        return;
-    else if ((buf[0] == 'S' || buf[0] == 's')
-             && buf[1] == '\n')
-    {
-        if (! gimp_stack_trace_print (prog_name, stdout, NULL))
-            g_fprintf (stderr, "%s\n", "Stack trace not available on your system.");
-        goto retry;
-    }
-    else
-        goto retry;
+	if ((buf[0] == 'E' || buf[0] == 'e')
+	    && buf[1] == '\n')
+		_exit (0);
+	else if ((buf[0] == 'P' || buf[0] == 'p')
+	         && buf[1] == '\n')
+		return;
+	else if ((buf[0] == 'S' || buf[0] == 's')
+	         && buf[1] == '\n')
+	{
+		if (!gimp_stack_trace_print (prog_name, stdout, NULL))
+			g_fprintf (stderr, "%s\n", "Stack trace not available on your system.");
+		goto retry;
+	}
+	else
+		goto retry;
 #endif
 }
 
@@ -1547,83 +1545,83 @@ retry:
  * function.
  */
 void
-gimp_range_estimate_settings (gdouble  lower,
-                              gdouble  upper,
+gimp_range_estimate_settings (gdouble lower,
+                              gdouble upper,
                               gdouble *step,
                               gdouble *page,
                               gint    *digits)
 {
-    gdouble range;
+	gdouble range;
 
-    g_return_if_fail (upper >= lower);
-    g_return_if_fail (step || page || digits);
+	g_return_if_fail (upper >= lower);
+	g_return_if_fail (step || page || digits);
 
-    range = upper - lower;
+	range = upper - lower;
 
-    if (range > 0 && range <= 1.0)
-    {
-        gdouble places = 10.0;
+	if (range > 0 && range <= 1.0)
+	{
+		gdouble places = 10.0;
 
-        if (digits)
-            *digits = 3;
+		if (digits)
+			*digits = 3;
 
-        /* Compute some acceptable step and page increments always in the
-         * format `10**-X` where X is the rounded precision.
-         * So for instance:
-         *  0.8 will have increments 0.01 and 0.1.
-         *  0.3 will have increments 0.001 and 0.01.
-         *  0.06 will also have increments 0.001 and 0.01.
-         */
-        while (range * places < 5.0)
-        {
-            places *= 10.0;
-            if (digits)
-                (*digits)++;
-        }
+		/* Compute some acceptable step and page increments always in the
+		 * format `10**-X` where X is the rounded precision.
+		 * So for instance:
+		 *  0.8 will have increments 0.01 and 0.1.
+		 *  0.3 will have increments 0.001 and 0.01.
+		 *  0.06 will also have increments 0.001 and 0.01.
+		 */
+		while (range * places < 5.0)
+		{
+			places *= 10.0;
+			if (digits)
+				(*digits)++;
+		}
 
 
-        if (step)
-            *step = 0.1 / places;
-        if (page)
-            *page = 1.0 / places;
-    }
-    else if (range <= 2.0)
-    {
-        if (step)
-            *step = 0.01;
-        if (page)
-            *page = 0.1;
+		if (step)
+			*step = 0.1 / places;
+		if (page)
+			*page = 1.0 / places;
+	}
+	else if (range <= 2.0)
+	{
+		if (step)
+			*step = 0.01;
+		if (page)
+			*page = 0.1;
 
-        if (digits)
-            *digits = 3;
-    }
-    else if (range <= 5.0)
-    {
-        if (step)
-            *step = 0.1;
-        if (page)
-            *page = 1.0;
-        if (digits)
-            *digits = 2;
-    }
-    else if (range <= 40.0)
-    {
-        if (step)
-            *step = 1.0;
-        if (page)
-            *page = 2.0;
-        if (digits)
-            *digits = 2;
-    }
-    else
-    {
-        if (step)
-            *step = 1.0;
-        if (page)
-            *page = 10.0;
-        if (digits)
-            *digits = 1;
-    }
+		if (digits)
+			*digits = 3;
+	}
+	else if (range <= 5.0)
+	{
+		if (step)
+			*step = 0.1;
+		if (page)
+			*page = 1.0;
+		if (digits)
+			*digits = 2;
+	}
+	else if (range <= 40.0)
+	{
+		if (step)
+			*step = 1.0;
+		if (page)
+			*page = 2.0;
+		if (digits)
+			*digits = 2;
+	}
+	else
+	{
+		if (step)
+			*step = 1.0;
+		if (page)
+			*page = 10.0;
+		if (digits)
+			*digits = 1;
+	}
 }
 
 
@@ -1631,123 +1629,123 @@ gimp_range_estimate_settings (gdouble  lower,
 
 static gboolean
 gimp_utils_generic_available (const gchar *program,
-                              gint         major,
-                              gint         minor)
+                              gint major,
+                              gint minor)
 {
 #ifndef G_OS_WIN32
-    pid_t pid;
-    int   out_fd[2];
+	pid_t pid;
+	int out_fd[2];
 
-    if (pipe (out_fd) == -1)
-    {
-        return FALSE;
-    }
+	if (pipe (out_fd) == -1)
+	{
+		return FALSE;
+	}
 
-    /* XXX: I don't use g_spawn_sync() or similar glib functions because
-     * to read the contents of the stdout, these functions would allocate
-     * memory dynamically. As we know, when debugging crashes, this is a
-     * definite blocker. So instead I simply use a buffer on the stack
-     * with a lower level fork() call.
-     */
-    pid = fork ();
-    if (pid == 0)
-    {
-        /* Child process. */
-        gchar *args[3] = { (gchar *) program, "--version", NULL };
+	/* XXX: I don't use g_spawn_sync() or similar glib functions because
+	 * to read the contents of the stdout, these functions would allocate
+	 * memory dynamically. As we know, when debugging crashes, this is a
+	 * definite blocker. So instead I simply use a buffer on the stack
+	 * with a lower level fork() call.
+	 */
+	pid = fork ();
+	if (pid == 0)
+	{
+		/* Child process. */
+		gchar *args[3] = { (gchar *) program, "--version", NULL };
 
-        /* Redirect the debugger output. */
-        dup2 (out_fd[1], STDOUT_FILENO);
-        close (out_fd[0]);
-        close (out_fd[1]);
+		/* Redirect the debugger output. */
+		dup2 (out_fd[1], STDOUT_FILENO);
+		close (out_fd[0]);
+		close (out_fd[1]);
 
-        /* Run version check. */
-        execvp (args[0], args);
-        _exit (-1);
-    }
-    else if (pid > 0)
-    {
-        /* Main process */
-        gchar    buffer[256];
-        ssize_t  read_n;
-        int      status;
-        gint     installed_major = 0;
-        gint     installed_minor = 0;
-        gboolean major_reading = FALSE;
-        gboolean minor_reading = FALSE;
-        gint     i;
-        gchar    c;
+		/* Run version check. */
+		execvp (args[0], args);
+		_exit (-1);
+	}
+	else if (pid > 0)
+	{
+		/* Main process */
+		gchar buffer[256];
+		ssize_t read_n;
+		int status;
+		gint installed_major = 0;
+		gint installed_minor = 0;
+		gboolean major_reading = FALSE;
+		gboolean minor_reading = FALSE;
+		gint i;
+		gchar c;
 
-        waitpid (pid, &status, 0);
+		waitpid (pid, &status, 0);
 
-        if (! WIFEXITED (status) || WEXITSTATUS (status) != 0)
-            return FALSE;
+		if (!WIFEXITED (status) || WEXITSTATUS (status) != 0)
+			return FALSE;
 
-        /* It is important to close the writing side of the pipe, otherwise
-         * the read() will wait forever without getting the information that
-         * writing is finished.
-         */
-        close (out_fd[1]);
+		/* It is important to close the writing side of the pipe, otherwise
+		 * the read() will wait forever without getting the information that
+		 * writing is finished.
+		 */
+		close (out_fd[1]);
 
-        /* I could loop forever until EOL, but I am pretty sure the
-         * version information is stored on the first line and one call to
-         * read() with 256 characters should be more than enough.
-         */
-        read_n = read (out_fd[0], buffer, 256);
+		/* I could loop forever until EOL, but I am pretty sure the
+		 * version information is stored on the first line and one call to
+		 * read() with 256 characters should be more than enough.
+		 */
+		read_n = read (out_fd[0], buffer, 256);
 
-        /* This is quite a very stupid parser. I only look for the first
-         * numbers and consider them as version information. This works
-         * fine for both GDB and LLDB as far as I can see for the output
-         * of `${program} --version` but this should obviously not be
-         * considered as a *really* generic version test.
-         */
-        for (i = 0; i < read_n; i++)
-        {
-            c = buffer[i];
-            if (c >= '0' && c <= '9')
-            {
-                if (minor_reading)
-                {
-                    installed_minor = 10 * installed_minor + (c - '0');
-                }
-                else
-                {
-                    major_reading = TRUE;
-                    installed_major = 10 * installed_major + (c - '0');
-                }
-            }
-            else if (c == '.')
-            {
-                if (major_reading)
-                {
-                    minor_reading = TRUE;
-                    major_reading = FALSE;
-                }
-                else if (minor_reading)
-                {
-                    break;
-                }
-            }
-            else if (c == '\n')
-            {
-                /* Version information should be in the first line. */
-                break;
-            }
-        }
-        close (out_fd[0]);
+		/* This is quite a very stupid parser. I only look for the first
+		 * numbers and consider them as version information. This works
+		 * fine for both GDB and LLDB as far as I can see for the output
+		 * of `${program} --version` but this should obviously not be
+		 * considered as a *really* generic version test.
+		 */
+		for (i = 0; i < read_n; i++)
+		{
+			c = buffer[i];
+			if (c >= '0' && c <= '9')
+			{
+				if (minor_reading)
+				{
+					installed_minor = 10 * installed_minor + (c - '0');
+				}
+				else
+				{
+					major_reading = TRUE;
+					installed_major = 10 * installed_major + (c - '0');
+				}
+			}
+			else if (c == '.')
+			{
+				if (major_reading)
+				{
+					minor_reading = TRUE;
+					major_reading = FALSE;
+				}
+				else if (minor_reading)
+				{
+					break;
+				}
+			}
+			else if (c == '\n')
+			{
+				/* Version information should be in the first line. */
+				break;
+			}
+		}
+		close (out_fd[0]);
 
-        return (installed_major > 0 &&
-                (installed_major > major ||
-                 (installed_major == major && installed_minor >= minor)));
-    }
+		return (installed_major > 0 &&
+		        (installed_major > major ||
+		         (installed_major == major && installed_minor >= minor)));
+	}
 #endif
 
-    /* Fork failed, or Win32. */
-    return FALSE;
+	/* Fork failed, or Win32. */
+	return FALSE;
 }
 
 static gboolean
 gimp_utils_gdb_available (gint major,
                           gint minor)
 {
-    return gimp_utils_generic_available ("gdb", major, minor);
+	return gimp_utils_generic_available ("gdb", major, minor);
 }

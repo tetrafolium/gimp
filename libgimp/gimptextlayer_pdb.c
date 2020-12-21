@@ -59,32 +59,32 @@ GimpLayer *
 gimp_text_layer_new (GimpImage   *image,
                      const gchar *text,
                      const gchar *fontname,
-                     gdouble      size,
-                     GimpUnit     unit)
+                     gdouble size,
+                     GimpUnit unit)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_IMAGE, image,
-                                            G_TYPE_STRING, text,
-                                            G_TYPE_STRING, fontname,
-                                            G_TYPE_DOUBLE, size,
-                                            GIMP_TYPE_UNIT, unit,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_IMAGE, image,
+	                                        G_TYPE_STRING, text,
+	                                        G_TYPE_STRING, fontname,
+	                                        G_TYPE_DOUBLE, size,
+	                                        GIMP_TYPE_UNIT, unit,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-new",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-new",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -103,25 +103,25 @@ gimp_text_layer_new (GimpImage   *image,
 gchar *
 gimp_text_layer_get_text (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar *text = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar *text = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-text",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-text",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        text = GIMP_VALUES_DUP_STRING (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		text = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return text;
+	return text;
 }
 
 /**
@@ -141,25 +141,25 @@ gboolean
 gimp_text_layer_set_text (GimpLayer   *layer,
                           const gchar *text)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_STRING, text,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_STRING, text,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-text",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-text",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -183,25 +183,25 @@ gimp_text_layer_set_text (GimpLayer   *layer,
 gchar *
 gimp_text_layer_get_markup (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar *markup = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar *markup = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-markup",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-markup",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        markup = GIMP_VALUES_DUP_STRING (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		markup = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return markup;
+	return markup;
 }
 
 /**
@@ -221,25 +221,25 @@ gimp_text_layer_get_markup (GimpLayer *layer)
 gchar *
 gimp_text_layer_get_font (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar *font = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar *font = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-font",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-font",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        font = GIMP_VALUES_DUP_STRING (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		font = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return font;
+	return font;
 }
 
 /**
@@ -259,25 +259,25 @@ gboolean
 gimp_text_layer_set_font (GimpLayer   *layer,
                           const gchar *font)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_STRING, font,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_STRING, font,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-font",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-font",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -299,28 +299,28 @@ gdouble
 gimp_text_layer_get_font_size (GimpLayer *layer,
                                GimpUnit  *unit)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gdouble font_size = 0.0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gdouble font_size = 0.0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-font-size",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-font-size",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    {
-        font_size = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
-        *unit = GIMP_VALUES_GET_INT (return_vals, 2);
-    }
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+	{
+		font_size = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+		*unit = GIMP_VALUES_GET_INT (return_vals, 2);
+	}
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return font_size;
+	return font_size;
 }
 
 /**
@@ -340,29 +340,29 @@ gimp_text_layer_get_font_size (GimpLayer *layer,
  **/
 gboolean
 gimp_text_layer_set_font_size (GimpLayer *layer,
-                               gdouble    font_size,
-                               GimpUnit   unit)
+                               gdouble font_size,
+                               GimpUnit unit)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_DOUBLE, font_size,
-                                            GIMP_TYPE_UNIT, unit,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_DOUBLE, font_size,
+	                                        GIMP_TYPE_UNIT, unit,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-font-size",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-font-size",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -381,25 +381,25 @@ gimp_text_layer_set_font_size (GimpLayer *layer,
 gboolean
 gimp_text_layer_get_antialias (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean antialias = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean antialias = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-antialias",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-antialias",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        antialias = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		antialias = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return antialias;
+	return antialias;
 }
 
 /**
@@ -418,27 +418,27 @@ gimp_text_layer_get_antialias (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_antialias (GimpLayer *layer,
-                               gboolean   antialias)
+                               gboolean antialias)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, antialias,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, antialias,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-antialias",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-antialias",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -458,25 +458,25 @@ gimp_text_layer_set_antialias (GimpLayer *layer,
 GimpTextHintStyle
 gimp_text_layer_get_hint_style (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpTextHintStyle style = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpTextHintStyle style = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-hint-style",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-hint-style",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        style = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		style = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return style;
+	return style;
 }
 
 /**
@@ -496,27 +496,27 @@ gimp_text_layer_get_hint_style (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_hint_style (GimpLayer         *layer,
-                                GimpTextHintStyle  style)
+                                GimpTextHintStyle style)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_TEXT_HINT_STYLE, style,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_TEXT_HINT_STYLE, style,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-hint-style",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-hint-style",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -535,25 +535,25 @@ gimp_text_layer_set_hint_style (GimpLayer         *layer,
 gboolean
 gimp_text_layer_get_kerning (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean kerning = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean kerning = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-kerning",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-kerning",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        kerning = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		kerning = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return kerning;
+	return kerning;
 }
 
 /**
@@ -571,27 +571,27 @@ gimp_text_layer_get_kerning (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_kerning (GimpLayer *layer,
-                             gboolean   kerning)
+                             gboolean kerning)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, kerning,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, kerning,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-kerning",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-kerning",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -611,25 +611,25 @@ gimp_text_layer_set_kerning (GimpLayer *layer,
 gchar *
 gimp_text_layer_get_language (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar *language = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar *language = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-language",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-language",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        language = GIMP_VALUES_DUP_STRING (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		language = GIMP_VALUES_DUP_STRING (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return language;
+	return language;
 }
 
 /**
@@ -650,25 +650,25 @@ gboolean
 gimp_text_layer_set_language (GimpLayer   *layer,
                               const gchar *language)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_STRING, language,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_STRING, language,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-language",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-language",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -687,25 +687,25 @@ gimp_text_layer_set_language (GimpLayer   *layer,
 GimpTextDirection
 gimp_text_layer_get_base_direction (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpTextDirection direction = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpTextDirection direction = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-base-direction",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-base-direction",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        direction = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		direction = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return direction;
+	return direction;
 }
 
 /**
@@ -724,27 +724,27 @@ gimp_text_layer_get_base_direction (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_base_direction (GimpLayer         *layer,
-                                    GimpTextDirection  direction)
+                                    GimpTextDirection direction)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_TEXT_DIRECTION, direction,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_TEXT_DIRECTION, direction,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-base-direction",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-base-direction",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -763,25 +763,25 @@ gimp_text_layer_set_base_direction (GimpLayer         *layer,
 GimpTextJustification
 gimp_text_layer_get_justification (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpTextJustification justify = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpTextJustification justify = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-justification",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-justification",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        justify = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		justify = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return justify;
+	return justify;
 }
 
 /**
@@ -800,27 +800,27 @@ gimp_text_layer_get_justification (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_justification (GimpLayer             *layer,
-                                   GimpTextJustification  justify)
+                                   GimpTextJustification justify)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_TEXT_JUSTIFICATION, justify,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_TEXT_JUSTIFICATION, justify,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-justification",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-justification",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -840,27 +840,27 @@ gboolean
 gimp_text_layer_get_color (GimpLayer *layer,
                            GimpRGB   *color)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-color",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-color",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    if (success)
-        GIMP_VALUES_GET_RGB (return_vals, 1, &*color);
+	if (success)
+		GIMP_VALUES_GET_RGB (return_vals, 1, &*color);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -880,25 +880,25 @@ gboolean
 gimp_text_layer_set_color (GimpLayer     *layer,
                            const GimpRGB *color)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_RGB, color,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_RGB, color,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-color",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-color",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -917,25 +917,25 @@ gimp_text_layer_set_color (GimpLayer     *layer,
 gdouble
 gimp_text_layer_get_indent (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gdouble indent = 0.0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gdouble indent = 0.0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-indent",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-indent",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        indent = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		indent = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return indent;
+	return indent;
 }
 
 /**
@@ -954,27 +954,27 @@ gimp_text_layer_get_indent (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_indent (GimpLayer *layer,
-                            gdouble    indent)
+                            gdouble indent)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_DOUBLE, indent,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_DOUBLE, indent,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-indent",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-indent",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -993,25 +993,25 @@ gimp_text_layer_set_indent (GimpLayer *layer,
 gdouble
 gimp_text_layer_get_line_spacing (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gdouble line_spacing = 0.0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gdouble line_spacing = 0.0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-line-spacing",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-line-spacing",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        line_spacing = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		line_spacing = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return line_spacing;
+	return line_spacing;
 }
 
 /**
@@ -1030,27 +1030,27 @@ gimp_text_layer_get_line_spacing (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_line_spacing (GimpLayer *layer,
-                                  gdouble    line_spacing)
+                                  gdouble line_spacing)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_DOUBLE, line_spacing,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_DOUBLE, line_spacing,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-line-spacing",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-line-spacing",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1069,25 +1069,25 @@ gimp_text_layer_set_line_spacing (GimpLayer *layer,
 gdouble
 gimp_text_layer_get_letter_spacing (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gdouble letter_spacing = 0.0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gdouble letter_spacing = 0.0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-get-letter-spacing",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-get-letter-spacing",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        letter_spacing = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		letter_spacing = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return letter_spacing;
+	return letter_spacing;
 }
 
 /**
@@ -1106,27 +1106,27 @@ gimp_text_layer_get_letter_spacing (GimpLayer *layer)
  **/
 gboolean
 gimp_text_layer_set_letter_spacing (GimpLayer *layer,
-                                    gdouble    letter_spacing)
+                                    gdouble letter_spacing)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_DOUBLE, letter_spacing,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_DOUBLE, letter_spacing,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-set-letter-spacing",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-set-letter-spacing",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1147,27 +1147,27 @@ gimp_text_layer_set_letter_spacing (GimpLayer *layer,
  **/
 gboolean
 gimp_text_layer_resize (GimpLayer *layer,
-                        gdouble    width,
-                        gdouble    height)
+                        gdouble width,
+                        gdouble height)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_DOUBLE, width,
-                                            G_TYPE_DOUBLE, height,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_DOUBLE, width,
+	                                        G_TYPE_DOUBLE, height,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-text-layer-resize",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-text-layer-resize",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }

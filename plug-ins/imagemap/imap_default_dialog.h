@@ -25,17 +25,17 @@
 
 typedef struct
 {
-    GtkWidget    *dialog;
-    GtkWidget    *vbox;
-    GtkWidget    *ok;
-    GtkWidget    *apply;
-    GtkWidget    *cancel;
-    void         (*ok_cb)(gpointer);
-    gpointer     ok_cb_data;
-    void         (*apply_cb)(gpointer);
-    gpointer     apply_cb_data;
-    void         (*cancel_cb)(gpointer);
-    gpointer     cancel_cb_data;
+	GtkWidget    *dialog;
+	GtkWidget    *vbox;
+	GtkWidget    *ok;
+	GtkWidget    *apply;
+	GtkWidget    *cancel;
+	void (*ok_cb)(gpointer);
+	gpointer ok_cb_data;
+	void (*apply_cb)(gpointer);
+	gpointer apply_cb_data;
+	void (*cancel_cb)(gpointer);
+	gpointer cancel_cb_data;
 } DefaultDialog_t;
 
 DefaultDialog_t *make_default_dialog(const gchar *title);

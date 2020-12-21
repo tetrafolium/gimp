@@ -26,25 +26,25 @@
 
 struct _GimpHelpDomain
 {
-    gchar      *help_domain;
-    gchar      *help_uri;
-    GHashTable *help_locales;
+	gchar      *help_domain;
+	gchar      *help_uri;
+	GHashTable *help_locales;
 };
 
 
 GimpHelpDomain * gimp_help_domain_new           (const gchar       *domain_name,
-        const gchar       *domain_uri);
+                                                 const gchar       *domain_uri);
 void             gimp_help_domain_free          (GimpHelpDomain    *domain);
 
 GimpHelpLocale * gimp_help_domain_lookup_locale (GimpHelpDomain    *domain,
-        const gchar       *locale_id,
-        GimpHelpProgress  *progress);
+                                                 const gchar       *locale_id,
+                                                 GimpHelpProgress  *progress);
 gchar          * gimp_help_domain_map           (GimpHelpDomain    *domain,
-        GList             *help_locales,
-        const gchar       *help_id,
-        GimpHelpProgress  *progress,
-        GimpHelpLocale   **locale,
-        gboolean          *fatal_error);
+                                                 GList             *help_locales,
+                                                 const gchar       *help_id,
+                                                 GimpHelpProgress  *progress,
+                                                 GimpHelpLocale   **locale,
+                                                 gboolean          *fatal_error);
 void             gimp_help_domain_exit          (void);
 
 

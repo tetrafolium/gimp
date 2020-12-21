@@ -38,40 +38,40 @@ G_BEGIN_DECLS
 #define GIMP_SAVE_PROCEDURE_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SAVE_PROCEDURE_DIALOG, GimpSaveProcedureDialogClass))
 
 
-typedef struct _GimpSaveProcedureDialogClass   GimpSaveProcedureDialogClass;
+typedef struct _GimpSaveProcedureDialogClass GimpSaveProcedureDialogClass;
 typedef struct _GimpSaveProcedureDialogPrivate GimpSaveProcedureDialogPrivate;
 
 struct _GimpSaveProcedureDialog
 {
-    GimpProcedureDialog             parent_instance;
+	GimpProcedureDialog parent_instance;
 
-    GimpSaveProcedureDialogPrivate *priv;
+	GimpSaveProcedureDialogPrivate *priv;
 };
 
 struct _GimpSaveProcedureDialogClass
 {
-    GimpProcedureDialogClass  parent_class;
+	GimpProcedureDialogClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType       gimp_save_procedure_dialog_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * gimp_save_procedure_dialog_new               (GimpSaveProcedure   *procedure,
-        GimpProcedureConfig *config,
-        GimpImage           *image);
+                                                          GimpProcedureConfig *config,
+                                                          GimpImage           *image);
 
 void        gimp_save_procedure_dialog_add_metadata      (GimpSaveProcedureDialog *dialog,
-        const gchar             *property);
+                                                          const gchar             *property);
 
 
 G_END_DECLS

@@ -28,41 +28,41 @@
 
 enum
 {
-    PROP_0,
-    PROP_SUPPORTS_EXIF,
-    PROP_SUPPORTS_IPTC,
-    PROP_SUPPORTS_XMP,
-    PROP_SUPPORTS_PROFILE,
-    PROP_SUPPORTS_THUMBNAIL,
-    PROP_SUPPORTS_COMMENT,
-    N_PROPS
+	PROP_0,
+	PROP_SUPPORTS_EXIF,
+	PROP_SUPPORTS_IPTC,
+	PROP_SUPPORTS_XMP,
+	PROP_SUPPORTS_PROFILE,
+	PROP_SUPPORTS_THUMBNAIL,
+	PROP_SUPPORTS_COMMENT,
+	N_PROPS
 };
 
 struct _GimpSaveProcedurePrivate
 {
-    GimpRunSaveFunc run_func;
-    gpointer        run_data;
-    GDestroyNotify  run_data_destroy;
+	GimpRunSaveFunc run_func;
+	gpointer run_data;
+	GDestroyNotify run_data_destroy;
 
-    gboolean        supports_exif;
-    gboolean        supports_iptc;
-    gboolean        supports_xmp;
-    gboolean        supports_profile;
-    gboolean        supports_thumbnail;
-    gboolean        supports_comment;
+	gboolean supports_exif;
+	gboolean supports_iptc;
+	gboolean supports_xmp;
+	gboolean supports_profile;
+	gboolean supports_thumbnail;
+	gboolean supports_comment;
 };
 
 
 static void   gimp_save_procedure_constructed   (GObject              *object);
 static void   gimp_save_procedure_finalize      (GObject              *object);
 static void   gimp_save_procedure_set_property  (GObject              *object,
-        guint                 property_id,
-        const GValue         *value,
-        GParamSpec           *pspec);
+                                                 guint property_id,
+                                                 const GValue         *value,
+                                                 GParamSpec           *pspec);
 static void   gimp_save_procedure_get_property  (GObject              *object,
-        guint                 property_id,
-        GValue               *value,
-        GParamSpec           *pspec);
+                                                 guint property_id,
+                                                 GValue               *value,
+                                                 GParamSpec           *pspec);
 
 static void   gimp_save_procedure_install       (GimpProcedure        *procedure);
 static GimpValueArray *
@@ -71,7 +71,7 @@ gimp_save_procedure_run           (GimpProcedure        *procedure,
 static GimpProcedureConfig *
 gimp_save_procedure_create_config (GimpProcedure        *procedure,
                                    GParamSpec          **args,
-                                   gint                  n_args);
+                                   gint n_args);
 
 static void   gimp_save_procedure_add_metadata  (GimpSaveProcedure    *save_procedure);
 
@@ -86,244 +86,244 @@ static GParamSpec *props[N_PROPS] = { NULL, };
 static void
 gimp_save_procedure_class_init (GimpSaveProcedureClass *klass)
 {
-    GObjectClass       *object_class    = G_OBJECT_CLASS (klass);
-    GimpProcedureClass *procedure_class = GIMP_PROCEDURE_CLASS (klass);
+	GObjectClass       *object_class    = G_OBJECT_CLASS (klass);
+	GimpProcedureClass *procedure_class = GIMP_PROCEDURE_CLASS (klass);
 
-    object_class->constructed      = gimp_save_procedure_constructed;
-    object_class->finalize         = gimp_save_procedure_finalize;
-    object_class->get_property     = gimp_save_procedure_get_property;
-    object_class->set_property     = gimp_save_procedure_set_property;
+	object_class->constructed      = gimp_save_procedure_constructed;
+	object_class->finalize         = gimp_save_procedure_finalize;
+	object_class->get_property     = gimp_save_procedure_get_property;
+	object_class->set_property     = gimp_save_procedure_set_property;
 
-    procedure_class->install       = gimp_save_procedure_install;
-    procedure_class->run           = gimp_save_procedure_run;
-    procedure_class->create_config = gimp_save_procedure_create_config;
+	procedure_class->install       = gimp_save_procedure_install;
+	procedure_class->run           = gimp_save_procedure_run;
+	procedure_class->create_config = gimp_save_procedure_create_config;
 
-    /**
-     * GimpSaveProcedure:exif:
-     *
-     * Whether the save procedure supports EXIF.
-     *
-     * Since: 3.0.0
-     */
-    props[PROP_SUPPORTS_EXIF] = g_param_spec_boolean ("supports-exif",
-                                "Supports EXIF metadata storage",
-                                NULL,
-                                FALSE,
-                                G_PARAM_CONSTRUCT |
-                                GIMP_PARAM_READWRITE);
-    /**
-     * GimpSaveProcedure:iptc:
-     *
-     * Whether the save procedure supports IPTC.
-     *
-     * Since: 3.0.0
-     */
-    props[PROP_SUPPORTS_IPTC] = g_param_spec_boolean ("supports-iptc",
-                                "Supports IPTC metadata storage",
-                                NULL,
-                                FALSE,
-                                G_PARAM_CONSTRUCT |
-                                GIMP_PARAM_READWRITE);
-    /**
-     * GimpSaveProcedure:xmpp:
-     *
-     * Whether the save procedure supports XMP.
-     *
-     * Since: 3.0.0
-     */
-    props[PROP_SUPPORTS_XMP] = g_param_spec_boolean ("supports-xmp",
-                               "Supports XMP metadata storage",
-                               NULL,
-                               FALSE,
-                               G_PARAM_CONSTRUCT |
-                               GIMP_PARAM_READWRITE);
-    /**
-     * GimpSaveProcedure:profile:
-     *
-     * Whether the save procedure supports ICC color profiles.
-     *
-     * Since: 3.0.0
-     */
-    props[PROP_SUPPORTS_PROFILE] = g_param_spec_boolean ("supports-profile",
-                                   "Supports color profile storage",
-                                   NULL,
-                                   FALSE,
-                                   G_PARAM_CONSTRUCT |
-                                   GIMP_PARAM_READWRITE);
-    /**
-     * GimpSaveProcedure:thumbnail:
-     *
-     * Whether the save procedure supports storing a thumbnail.
-     *
-     * Since: 3.0.0
-     */
-    props[PROP_SUPPORTS_THUMBNAIL] = g_param_spec_boolean ("supports-thumbnail",
-                                     "Supports thumbnail storage",
-                                     NULL,
-                                     FALSE,
-                                     G_PARAM_CONSTRUCT |
-                                     GIMP_PARAM_READWRITE);
-    /**
-     * GimpSaveProcedure:comment:
-     *
-     * Whether the save procedure supports storing a comment.
-     *
-     * Since: 3.0.0
-     */
-    props[PROP_SUPPORTS_COMMENT] = g_param_spec_boolean ("supports-comment",
-                                   "Supports comment storage",
-                                   NULL,
-                                   FALSE,
-                                   G_PARAM_CONSTRUCT |
-                                   GIMP_PARAM_READWRITE);
+	/**
+	 * GimpSaveProcedure:exif:
+	 *
+	 * Whether the save procedure supports EXIF.
+	 *
+	 * Since: 3.0.0
+	 */
+	props[PROP_SUPPORTS_EXIF] = g_param_spec_boolean ("supports-exif",
+	                                                  "Supports EXIF metadata storage",
+	                                                  NULL,
+	                                                  FALSE,
+	                                                  G_PARAM_CONSTRUCT |
+	                                                  GIMP_PARAM_READWRITE);
+	/**
+	 * GimpSaveProcedure:iptc:
+	 *
+	 * Whether the save procedure supports IPTC.
+	 *
+	 * Since: 3.0.0
+	 */
+	props[PROP_SUPPORTS_IPTC] = g_param_spec_boolean ("supports-iptc",
+	                                                  "Supports IPTC metadata storage",
+	                                                  NULL,
+	                                                  FALSE,
+	                                                  G_PARAM_CONSTRUCT |
+	                                                  GIMP_PARAM_READWRITE);
+	/**
+	 * GimpSaveProcedure:xmpp:
+	 *
+	 * Whether the save procedure supports XMP.
+	 *
+	 * Since: 3.0.0
+	 */
+	props[PROP_SUPPORTS_XMP] = g_param_spec_boolean ("supports-xmp",
+	                                                 "Supports XMP metadata storage",
+	                                                 NULL,
+	                                                 FALSE,
+	                                                 G_PARAM_CONSTRUCT |
+	                                                 GIMP_PARAM_READWRITE);
+	/**
+	 * GimpSaveProcedure:profile:
+	 *
+	 * Whether the save procedure supports ICC color profiles.
+	 *
+	 * Since: 3.0.0
+	 */
+	props[PROP_SUPPORTS_PROFILE] = g_param_spec_boolean ("supports-profile",
+	                                                     "Supports color profile storage",
+	                                                     NULL,
+	                                                     FALSE,
+	                                                     G_PARAM_CONSTRUCT |
+	                                                     GIMP_PARAM_READWRITE);
+	/**
+	 * GimpSaveProcedure:thumbnail:
+	 *
+	 * Whether the save procedure supports storing a thumbnail.
+	 *
+	 * Since: 3.0.0
+	 */
+	props[PROP_SUPPORTS_THUMBNAIL] = g_param_spec_boolean ("supports-thumbnail",
+	                                                       "Supports thumbnail storage",
+	                                                       NULL,
+	                                                       FALSE,
+	                                                       G_PARAM_CONSTRUCT |
+	                                                       GIMP_PARAM_READWRITE);
+	/**
+	 * GimpSaveProcedure:comment:
+	 *
+	 * Whether the save procedure supports storing a comment.
+	 *
+	 * Since: 3.0.0
+	 */
+	props[PROP_SUPPORTS_COMMENT] = g_param_spec_boolean ("supports-comment",
+	                                                     "Supports comment storage",
+	                                                     NULL,
+	                                                     FALSE,
+	                                                     G_PARAM_CONSTRUCT |
+	                                                     GIMP_PARAM_READWRITE);
 
-    g_object_class_install_properties (object_class, N_PROPS, props);
+	g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void
 gimp_save_procedure_init (GimpSaveProcedure *procedure)
 {
-    procedure->priv = gimp_save_procedure_get_instance_private (procedure);
+	procedure->priv = gimp_save_procedure_get_instance_private (procedure);
 }
 
 static void
 gimp_save_procedure_constructed (GObject *object)
 {
-    GimpProcedure *procedure = GIMP_PROCEDURE (object);
+	GimpProcedure *procedure = GIMP_PROCEDURE (object);
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    GIMP_PROC_ARG_IMAGE (procedure, "image",
-                         "Image",
-                         "The image to save",
-                         FALSE,
-                         G_PARAM_READWRITE);
+	GIMP_PROC_ARG_IMAGE (procedure, "image",
+	                     "Image",
+	                     "The image to save",
+	                     FALSE,
+	                     G_PARAM_READWRITE);
 
-    GIMP_PROC_ARG_INT (procedure, "num-drawables",
-                       "Number of drawables",
-                       "Number of drawables to be saved",
-                       0, G_MAXINT, 1,
-                       G_PARAM_READWRITE);
+	GIMP_PROC_ARG_INT (procedure, "num-drawables",
+	                   "Number of drawables",
+	                   "Number of drawables to be saved",
+	                   0, G_MAXINT, 1,
+	                   G_PARAM_READWRITE);
 
-    GIMP_PROC_ARG_OBJECT_ARRAY (procedure, "drawables",
-                                "Drawables",
-                                "The drawables to save",
-                                GIMP_TYPE_DRAWABLE,
-                                G_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE);
+	GIMP_PROC_ARG_OBJECT_ARRAY (procedure, "drawables",
+	                            "Drawables",
+	                            "The drawables to save",
+	                            GIMP_TYPE_DRAWABLE,
+	                            G_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE);
 
-    GIMP_PROC_ARG_FILE (procedure, "file",
-                        "File",
-                        "The file to save to",
-                        GIMP_PARAM_READWRITE);
+	GIMP_PROC_ARG_FILE (procedure, "file",
+	                    "File",
+	                    "The file to save to",
+	                    GIMP_PARAM_READWRITE);
 }
 
 static void
 gimp_save_procedure_finalize (GObject *object)
 {
-    GimpSaveProcedure *procedure = GIMP_SAVE_PROCEDURE (object);
+	GimpSaveProcedure *procedure = GIMP_SAVE_PROCEDURE (object);
 
-    if (procedure->priv->run_data_destroy)
-        procedure->priv->run_data_destroy (procedure->priv->run_data);
+	if (procedure->priv->run_data_destroy)
+		procedure->priv->run_data_destroy (procedure->priv->run_data);
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gimp_save_procedure_set_property (GObject      *object,
-                                  guint         property_id,
+                                  guint property_id,
                                   const GValue *value,
                                   GParamSpec   *pspec)
 {
-    GimpSaveProcedure *procedure = GIMP_SAVE_PROCEDURE (object);
+	GimpSaveProcedure *procedure = GIMP_SAVE_PROCEDURE (object);
 
-    switch (property_id)
-    {
-    case PROP_SUPPORTS_EXIF:
-        procedure->priv->supports_exif = g_value_get_boolean (value);
-        break;
-    case PROP_SUPPORTS_IPTC:
-        procedure->priv->supports_iptc = g_value_get_boolean (value);
-        break;
-    case PROP_SUPPORTS_XMP:
-        procedure->priv->supports_xmp = g_value_get_boolean (value);
-        break;
-    case PROP_SUPPORTS_PROFILE:
-        procedure->priv->supports_profile = g_value_get_boolean (value);
-        break;
-    case PROP_SUPPORTS_THUMBNAIL:
-        procedure->priv->supports_thumbnail = g_value_get_boolean (value);
-        break;
-    case PROP_SUPPORTS_COMMENT:
-        procedure->priv->supports_comment = g_value_get_boolean (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_SUPPORTS_EXIF:
+		procedure->priv->supports_exif = g_value_get_boolean (value);
+		break;
+	case PROP_SUPPORTS_IPTC:
+		procedure->priv->supports_iptc = g_value_get_boolean (value);
+		break;
+	case PROP_SUPPORTS_XMP:
+		procedure->priv->supports_xmp = g_value_get_boolean (value);
+		break;
+	case PROP_SUPPORTS_PROFILE:
+		procedure->priv->supports_profile = g_value_get_boolean (value);
+		break;
+	case PROP_SUPPORTS_THUMBNAIL:
+		procedure->priv->supports_thumbnail = g_value_get_boolean (value);
+		break;
+	case PROP_SUPPORTS_COMMENT:
+		procedure->priv->supports_comment = g_value_get_boolean (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_save_procedure_get_property (GObject    *object,
-                                  guint       property_id,
+                                  guint property_id,
                                   GValue     *value,
                                   GParamSpec *pspec)
 {
-    GimpSaveProcedure *procedure = GIMP_SAVE_PROCEDURE (object);
+	GimpSaveProcedure *procedure = GIMP_SAVE_PROCEDURE (object);
 
-    switch (property_id)
-    {
-    case PROP_SUPPORTS_EXIF:
-        g_value_set_boolean (value, procedure->priv->supports_exif);
-        break;
-    case PROP_SUPPORTS_IPTC:
-        g_value_set_boolean (value, procedure->priv->supports_iptc);
-        break;
-    case PROP_SUPPORTS_XMP:
-        g_value_set_boolean (value, procedure->priv->supports_xmp);
-        break;
-    case PROP_SUPPORTS_PROFILE:
-        g_value_set_boolean (value, procedure->priv->supports_profile);
-        break;
-    case PROP_SUPPORTS_THUMBNAIL:
-        g_value_set_boolean (value, procedure->priv->supports_thumbnail);
-        break;
-    case PROP_SUPPORTS_COMMENT:
-        g_value_set_boolean (value, procedure->priv->supports_comment);
-        break;
+	switch (property_id)
+	{
+	case PROP_SUPPORTS_EXIF:
+		g_value_set_boolean (value, procedure->priv->supports_exif);
+		break;
+	case PROP_SUPPORTS_IPTC:
+		g_value_set_boolean (value, procedure->priv->supports_iptc);
+		break;
+	case PROP_SUPPORTS_XMP:
+		g_value_set_boolean (value, procedure->priv->supports_xmp);
+		break;
+	case PROP_SUPPORTS_PROFILE:
+		g_value_set_boolean (value, procedure->priv->supports_profile);
+		break;
+	case PROP_SUPPORTS_THUMBNAIL:
+		g_value_set_boolean (value, procedure->priv->supports_thumbnail);
+		break;
+	case PROP_SUPPORTS_COMMENT:
+		g_value_set_boolean (value, procedure->priv->supports_comment);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_save_procedure_install (GimpProcedure *procedure)
 {
-    GimpFileProcedure *file_proc = GIMP_FILE_PROCEDURE (procedure);
-    const gchar       *mime_types;
-    gint               priority;
+	GimpFileProcedure *file_proc = GIMP_FILE_PROCEDURE (procedure);
+	const gchar       *mime_types;
+	gint priority;
 
-    gimp_save_procedure_add_metadata (GIMP_SAVE_PROCEDURE (procedure));
-    GIMP_PROCEDURE_CLASS (parent_class)->install (procedure);
+	gimp_save_procedure_add_metadata (GIMP_SAVE_PROCEDURE (procedure));
+	GIMP_PROCEDURE_CLASS (parent_class)->install (procedure);
 
-    _gimp_pdb_set_file_proc_save_handler (gimp_procedure_get_name (procedure),
-                                          gimp_file_procedure_get_extensions (file_proc),
-                                          gimp_file_procedure_get_prefixes (file_proc));
+	_gimp_pdb_set_file_proc_save_handler (gimp_procedure_get_name (procedure),
+	                                      gimp_file_procedure_get_extensions (file_proc),
+	                                      gimp_file_procedure_get_prefixes (file_proc));
 
-    if (gimp_file_procedure_get_handles_remote (file_proc))
-        _gimp_pdb_set_file_proc_handles_remote (gimp_procedure_get_name (procedure));
+	if (gimp_file_procedure_get_handles_remote (file_proc))
+		_gimp_pdb_set_file_proc_handles_remote (gimp_procedure_get_name (procedure));
 
-    mime_types = gimp_file_procedure_get_mime_types (file_proc);
-    if (mime_types)
-        _gimp_pdb_set_file_proc_mime_types (gimp_procedure_get_name (procedure),
-                                            mime_types);
+	mime_types = gimp_file_procedure_get_mime_types (file_proc);
+	if (mime_types)
+		_gimp_pdb_set_file_proc_mime_types (gimp_procedure_get_name (procedure),
+		                                    mime_types);
 
-    priority = gimp_file_procedure_get_priority (file_proc);
-    if (priority != 0)
-        _gimp_pdb_set_file_proc_priority (gimp_procedure_get_name (procedure),
-                                          priority);
+	priority = gimp_file_procedure_get_priority (file_proc);
+	if (priority != 0)
+		_gimp_pdb_set_file_proc_priority (gimp_procedure_get_name (procedure),
+		                                  priority);
 }
 
 #define ARG_OFFSET 5
@@ -332,118 +332,118 @@ static GimpValueArray *
 gimp_save_procedure_run (GimpProcedure        *procedure,
                          const GimpValueArray *args)
 {
-    GimpSaveProcedure *save_proc = GIMP_SAVE_PROCEDURE (procedure);
-    GimpValueArray    *remaining;
-    GimpValueArray    *return_values;
-    GimpRunMode        run_mode;
-    GimpImage         *image;
-    GimpDrawable     **drawables;
-    GFile             *file;
-    gint               n_drawables;
-    gint               i;
+	GimpSaveProcedure *save_proc = GIMP_SAVE_PROCEDURE (procedure);
+	GimpValueArray    *remaining;
+	GimpValueArray    *return_values;
+	GimpRunMode run_mode;
+	GimpImage         *image;
+	GimpDrawable     **drawables;
+	GFile             *file;
+	gint n_drawables;
+	gint i;
 
-    run_mode    = GIMP_VALUES_GET_ENUM         (args, 0);
-    image       = GIMP_VALUES_GET_IMAGE        (args, 1);
-    n_drawables = GIMP_VALUES_GET_INT          (args, 2);
-    drawables   = GIMP_VALUES_GET_OBJECT_ARRAY (args, 3);
-    file        = GIMP_VALUES_GET_FILE         (args, 4);
+	run_mode    = GIMP_VALUES_GET_ENUM         (args, 0);
+	image       = GIMP_VALUES_GET_IMAGE        (args, 1);
+	n_drawables = GIMP_VALUES_GET_INT          (args, 2);
+	drawables   = GIMP_VALUES_GET_OBJECT_ARRAY (args, 3);
+	file        = GIMP_VALUES_GET_FILE         (args, 4);
 
-    remaining = gimp_value_array_new (gimp_value_array_length (args) - ARG_OFFSET);
+	remaining = gimp_value_array_new (gimp_value_array_length (args) - ARG_OFFSET);
 
-    for (i = ARG_OFFSET; i < gimp_value_array_length (args); i++)
-    {
-        GValue *value = gimp_value_array_index (args, i);
+	for (i = ARG_OFFSET; i < gimp_value_array_length (args); i++)
+	{
+		GValue *value = gimp_value_array_index (args, i);
 
-        gimp_value_array_append (remaining, value);
-    }
+		gimp_value_array_append (remaining, value);
+	}
 
-    return_values = save_proc->priv->run_func (procedure,
-                    run_mode,
-                    image,
-                    n_drawables,
-                    drawables,
-                    file,
-                    remaining,
-                    save_proc->priv->run_data);
-    gimp_value_array_unref (remaining);
+	return_values = save_proc->priv->run_func (procedure,
+	                                           run_mode,
+	                                           image,
+	                                           n_drawables,
+	                                           drawables,
+	                                           file,
+	                                           remaining,
+	                                           save_proc->priv->run_data);
+	gimp_value_array_unref (remaining);
 
-    return return_values;
+	return return_values;
 }
 
 static GimpProcedureConfig *
 gimp_save_procedure_create_config (GimpProcedure  *procedure,
                                    GParamSpec    **args,
-                                   gint            n_args)
+                                   gint n_args)
 {
-    gimp_save_procedure_add_metadata (GIMP_SAVE_PROCEDURE (procedure));
+	gimp_save_procedure_add_metadata (GIMP_SAVE_PROCEDURE (procedure));
 
-    if (n_args > ARG_OFFSET)
-    {
-        args   += ARG_OFFSET;
-        n_args -= ARG_OFFSET;
-    }
-    else
-    {
-        args   = NULL;
-        n_args = 0;
-    }
+	if (n_args > ARG_OFFSET)
+	{
+		args   += ARG_OFFSET;
+		n_args -= ARG_OFFSET;
+	}
+	else
+	{
+		args   = NULL;
+		n_args = 0;
+	}
 
-    return GIMP_PROCEDURE_CLASS (parent_class)->create_config (procedure,
-            args,
-            n_args);
+	return GIMP_PROCEDURE_CLASS (parent_class)->create_config (procedure,
+	                                                           args,
+	                                                           n_args);
 }
 
 static void
 gimp_save_procedure_add_metadata (GimpSaveProcedure *save_procedure)
 {
-    GimpProcedure *procedure = GIMP_PROCEDURE (save_procedure);
+	GimpProcedure *procedure = GIMP_PROCEDURE (save_procedure);
 
-    if (save_procedure->priv->supports_exif)
-        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-exif",
-                                   "Save _Exif",
-                                   "Save Exif (Exchangeable image file format) metadata",
-                                   gimp_export_exif (),
-                                   G_PARAM_READWRITE);
-    if (save_procedure->priv->supports_iptc)
-        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-iptc",
-                                   "Save _IPTC",
-                                   "Save IPTC (International Press Telecommunications Council) metadata",
-                                   gimp_export_iptc (),
-                                   G_PARAM_READWRITE);
-    if (save_procedure->priv->supports_xmp)
-        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-xmp",
-                                   "Save _XMP",
-                                   "Save XMP (Extensible Metadata Platform) metadata",
-                                   gimp_export_xmp (),
-                                   G_PARAM_READWRITE);
-    if (save_procedure->priv->supports_profile)
-        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-color-profile",
-                                   "Save color _profile",
-                                   "Save the ICC color profile as metadata",
-                                   gimp_export_color_profile (),
-                                   G_PARAM_READWRITE);
-    if (save_procedure->priv->supports_thumbnail)
-        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-thumbnail",
-                                   "Save _thumbnail",
-                                   "Save a smaller representation of the image as metadata",
-                                   TRUE,
-                                   G_PARAM_READWRITE);
-    if (save_procedure->priv->supports_comment)
-    {
-        GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-comment",
-                                   "Save c_omment",
-                                   "Save a comment as metadata",
-                                   gimp_export_comment (),
-                                   G_PARAM_READWRITE);
-        GIMP_PROC_AUX_ARG_STRING (procedure, "gimp-comment",
-                                  "Comment",
-                                  "Image comment",
-                                  gimp_get_default_comment (),
-                                  G_PARAM_READWRITE);
+	if (save_procedure->priv->supports_exif)
+		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-exif",
+		                           "Save _Exif",
+		                           "Save Exif (Exchangeable image file format) metadata",
+		                           gimp_export_exif (),
+		                           G_PARAM_READWRITE);
+	if (save_procedure->priv->supports_iptc)
+		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-iptc",
+		                           "Save _IPTC",
+		                           "Save IPTC (International Press Telecommunications Council) metadata",
+		                           gimp_export_iptc (),
+		                           G_PARAM_READWRITE);
+	if (save_procedure->priv->supports_xmp)
+		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-xmp",
+		                           "Save _XMP",
+		                           "Save XMP (Extensible Metadata Platform) metadata",
+		                           gimp_export_xmp (),
+		                           G_PARAM_READWRITE);
+	if (save_procedure->priv->supports_profile)
+		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-color-profile",
+		                           "Save color _profile",
+		                           "Save the ICC color profile as metadata",
+		                           gimp_export_color_profile (),
+		                           G_PARAM_READWRITE);
+	if (save_procedure->priv->supports_thumbnail)
+		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-thumbnail",
+		                           "Save _thumbnail",
+		                           "Save a smaller representation of the image as metadata",
+		                           TRUE,
+		                           G_PARAM_READWRITE);
+	if (save_procedure->priv->supports_comment)
+	{
+		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "save-comment",
+		                           "Save c_omment",
+		                           "Save a comment as metadata",
+		                           gimp_export_comment (),
+		                           G_PARAM_READWRITE);
+		GIMP_PROC_AUX_ARG_STRING (procedure, "gimp-comment",
+		                          "Comment",
+		                          "Image comment",
+		                          gimp_get_default_comment (),
+		                          G_PARAM_READWRITE);
 
-        gimp_procedure_set_argument_sync (procedure, "gimp-comment",
-                                          GIMP_ARGUMENT_SYNC_PARASITE);
-    }
+		gimp_procedure_set_argument_sync (procedure, "gimp-comment",
+		                                  GIMP_ARGUMENT_SYNC_PARASITE);
+	}
 
 }
 
@@ -486,30 +486,30 @@ gimp_save_procedure_add_metadata (GimpSaveProcedure *save_procedure)
 GimpProcedure  *
 gimp_save_procedure_new (GimpPlugIn      *plug_in,
                          const gchar     *name,
-                         GimpPDBProcType  proc_type,
-                         GimpRunSaveFunc  run_func,
-                         gpointer         run_data,
-                         GDestroyNotify   run_data_destroy)
+                         GimpPDBProcType proc_type,
+                         GimpRunSaveFunc run_func,
+                         gpointer run_data,
+                         GDestroyNotify run_data_destroy)
 {
-    GimpSaveProcedure *procedure;
+	GimpSaveProcedure *procedure;
 
-    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), NULL);
-    g_return_val_if_fail (gimp_is_canonical_identifier (name), NULL);
-    g_return_val_if_fail (proc_type != GIMP_PDB_PROC_TYPE_INTERNAL, NULL);
-    g_return_val_if_fail (proc_type != GIMP_PDB_PROC_TYPE_EXTENSION, NULL);
-    g_return_val_if_fail (run_func != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), NULL);
+	g_return_val_if_fail (gimp_is_canonical_identifier (name), NULL);
+	g_return_val_if_fail (proc_type != GIMP_PDB_PROC_TYPE_INTERNAL, NULL);
+	g_return_val_if_fail (proc_type != GIMP_PDB_PROC_TYPE_EXTENSION, NULL);
+	g_return_val_if_fail (run_func != NULL, NULL);
 
-    procedure = g_object_new (GIMP_TYPE_SAVE_PROCEDURE,
-                              "plug-in",        plug_in,
-                              "name",           name,
-                              "procedure-type", proc_type,
-                              NULL);
+	procedure = g_object_new (GIMP_TYPE_SAVE_PROCEDURE,
+	                          "plug-in",        plug_in,
+	                          "name",           name,
+	                          "procedure-type", proc_type,
+	                          NULL);
 
-    procedure->priv->run_func         = run_func;
-    procedure->priv->run_data         = run_data;
-    procedure->priv->run_data_destroy = run_data_destroy;
+	procedure->priv->run_func         = run_func;
+	procedure->priv->run_data         = run_data;
+	procedure->priv->run_data_destroy = run_data_destroy;
 
-    return GIMP_PROCEDURE (procedure);
+	return GIMP_PROCEDURE (procedure);
 }
 
 /**
@@ -539,13 +539,13 @@ gimp_save_procedure_new (GimpPlugIn      *plug_in,
  **/
 void
 gimp_save_procedure_set_support_exif (GimpSaveProcedure *procedure,
-                                      gboolean           supports)
+                                      gboolean supports)
 {
-    g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
+	g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
 
-    g_object_set (procedure,
-                  "supports-exif", supports,
-                  NULL);
+	g_object_set (procedure,
+	              "supports-exif", supports,
+	              NULL);
 }
 
 /**
@@ -575,13 +575,13 @@ gimp_save_procedure_set_support_exif (GimpSaveProcedure *procedure,
  **/
 void
 gimp_save_procedure_set_support_iptc (GimpSaveProcedure *procedure,
-                                      gboolean           supports)
+                                      gboolean supports)
 {
-    g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
+	g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
 
-    g_object_set (procedure,
-                  "supports-iptc", supports,
-                  NULL);
+	g_object_set (procedure,
+	              "supports-iptc", supports,
+	              NULL);
 }
 
 /**
@@ -611,13 +611,13 @@ gimp_save_procedure_set_support_iptc (GimpSaveProcedure *procedure,
  **/
 void
 gimp_save_procedure_set_support_xmp (GimpSaveProcedure *procedure,
-                                     gboolean           supports)
+                                     gboolean supports)
 {
-    g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
+	g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
 
-    g_object_set (procedure,
-                  "supports-xmp", supports,
-                  NULL);
+	g_object_set (procedure,
+	              "supports-xmp", supports,
+	              NULL);
 }
 
 /**
@@ -648,13 +648,13 @@ gimp_save_procedure_set_support_xmp (GimpSaveProcedure *procedure,
  **/
 void
 gimp_save_procedure_set_support_profile (GimpSaveProcedure *procedure,
-        gboolean           supports)
+                                         gboolean supports)
 {
-    g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
+	g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
 
-    g_object_set (procedure,
-                  "supports-profile", supports,
-                  NULL);
+	g_object_set (procedure,
+	              "supports-profile", supports,
+	              NULL);
 }
 
 /**
@@ -684,13 +684,13 @@ gimp_save_procedure_set_support_profile (GimpSaveProcedure *procedure,
  **/
 void
 gimp_save_procedure_set_support_thumbnail (GimpSaveProcedure *procedure,
-        gboolean           supports)
+                                           gboolean supports)
 {
-    g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
+	g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
 
-    g_object_set (procedure,
-                  "supports-thumbnail", supports,
-                  NULL);
+	g_object_set (procedure,
+	              "supports-thumbnail", supports,
+	              NULL);
 }
 
 /**
@@ -721,13 +721,13 @@ gimp_save_procedure_set_support_thumbnail (GimpSaveProcedure *procedure,
  **/
 void
 gimp_save_procedure_set_support_comment (GimpSaveProcedure *procedure,
-        gboolean           supports)
+                                         gboolean supports)
 {
-    g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
+	g_return_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure));
 
-    g_object_set (procedure,
-                  "supports-comment", supports,
-                  NULL);
+	g_object_set (procedure,
+	              "supports-comment", supports,
+	              NULL);
 }
 
 /**
@@ -741,9 +741,9 @@ gimp_save_procedure_set_support_comment (GimpSaveProcedure *procedure,
 gboolean
 gimp_save_procedure_get_support_exif (GimpSaveProcedure *procedure)
 {
-    g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
+	g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
 
-    return procedure->priv->supports_exif;
+	return procedure->priv->supports_exif;
 }
 
 /**
@@ -757,9 +757,9 @@ gimp_save_procedure_get_support_exif (GimpSaveProcedure *procedure)
 gboolean
 gimp_save_procedure_get_support_iptc (GimpSaveProcedure *procedure)
 {
-    g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
+	g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
 
-    return procedure->priv->supports_iptc;
+	return procedure->priv->supports_iptc;
 }
 
 /**
@@ -773,9 +773,9 @@ gimp_save_procedure_get_support_iptc (GimpSaveProcedure *procedure)
 gboolean
 gimp_save_procedure_get_support_xmp (GimpSaveProcedure *procedure)
 {
-    g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
+	g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
 
-    return procedure->priv->supports_xmp;
+	return procedure->priv->supports_xmp;
 }
 
 /**
@@ -789,9 +789,9 @@ gimp_save_procedure_get_support_xmp (GimpSaveProcedure *procedure)
 gboolean
 gimp_save_procedure_get_support_profile (GimpSaveProcedure *procedure)
 {
-    g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
+	g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
 
-    return procedure->priv->supports_profile;
+	return procedure->priv->supports_profile;
 }
 
 /**
@@ -805,9 +805,9 @@ gimp_save_procedure_get_support_profile (GimpSaveProcedure *procedure)
 gboolean
 gimp_save_procedure_get_support_thumbnail (GimpSaveProcedure *procedure)
 {
-    g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
+	g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
 
-    return procedure->priv->supports_thumbnail;
+	return procedure->priv->supports_thumbnail;
 }
 
 /**
@@ -821,7 +821,7 @@ gimp_save_procedure_get_support_thumbnail (GimpSaveProcedure *procedure)
 gboolean
 gimp_save_procedure_get_support_comment (GimpSaveProcedure *procedure)
 {
-    g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
+	g_return_val_if_fail (GIMP_IS_SAVE_PROCEDURE (procedure), FALSE);
 
-    return procedure->priv->supports_comment;
+	return procedure->priv->supports_comment;
 }

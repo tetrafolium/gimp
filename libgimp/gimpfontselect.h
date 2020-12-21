@@ -29,15 +29,15 @@ G_BEGIN_DECLS
 
 
 typedef void (* GimpRunFontCallback)   (const gchar *font_name,
-                                        gboolean     dialog_closing,
-                                        gpointer     user_data);
+                                        gboolean dialog_closing,
+                                        gpointer user_data);
 
 
 const gchar * gimp_font_select_new     (const gchar         *title,
                                         const gchar         *font_name,
-                                        GimpRunFontCallback  callback,
-                                        gpointer             data,
-                                        GDestroyNotify       data_destroy);
+                                        GimpRunFontCallback callback,
+                                        gpointer data,
+                                        GDestroyNotify data_destroy);
 void          gimp_font_select_destroy (const gchar         *font_callback);
 
 

@@ -25,7 +25,7 @@
 extern GimpPDBStatusType write_dds (GFile         *file,
                                     GimpImage     *image,
                                     GimpDrawable  *drawable,
-                                    gboolean       interactive,
+                                    gboolean interactive,
                                     GimpProcedure *procedure,
                                     GObject       *config);
 

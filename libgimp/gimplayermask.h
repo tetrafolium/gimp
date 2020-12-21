@@ -39,29 +39,29 @@ G_BEGIN_DECLS
 #define GIMP_LAYER_MASK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LAYER_MASK, GimpLayerMaskClass))
 
 
-typedef struct _GimpLayerMaskClass   GimpLayerMaskClass;
+typedef struct _GimpLayerMaskClass GimpLayerMaskClass;
 typedef struct _GimpLayerMaskPrivate GimpLayerMaskPrivate;
 
 struct _GimpLayerMask
 {
-    GimpChannel           parent_instance;
+	GimpChannel parent_instance;
 
-    GimpLayerMaskPrivate *priv;
+	GimpLayerMaskPrivate *priv;
 };
 
 struct _GimpLayerMaskClass
 {
-    GimpChannelClass parent_class;
+	GimpChannelClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 GType           gimp_layer_mask_get_type  (void) G_GNUC_CONST;

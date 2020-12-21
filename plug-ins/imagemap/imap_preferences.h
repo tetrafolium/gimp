@@ -26,27 +26,27 @@
 #include "imap_default_dialog.h"
 
 typedef struct {
-    GdkRGBA normal_fg;
-    GdkRGBA normal_bg;
-    GdkRGBA selected_fg;
-    GdkRGBA selected_bg;
-    GdkRGBA interactive_bg;
-    GdkRGBA interactive_fg;
+	GdkRGBA normal_fg;
+	GdkRGBA normal_bg;
+	GdkRGBA selected_fg;
+	GdkRGBA selected_bg;
+	GdkRGBA interactive_bg;
+	GdkRGBA interactive_fg;
 } ColorSelData_t;
 
 typedef struct {
-    gint                 default_map_type;
-    gboolean             prompt_for_area_info;
-    gboolean             require_default_url;
-    gboolean             show_area_handle;
-    gboolean             keep_circles_round;
-    gboolean             show_url_tip;
-    gboolean             use_doublesized;
-    gboolean             auto_convert;
-    gdouble              threshold;
-    gint                 undo_levels;
-    gint                 mru_size;
-    ColorSelData_t       colors;
+	gint default_map_type;
+	gboolean prompt_for_area_info;
+	gboolean require_default_url;
+	gboolean show_area_handle;
+	gboolean keep_circles_round;
+	gboolean show_url_tip;
+	gboolean use_doublesized;
+	gboolean auto_convert;
+	gdouble threshold;
+	gint undo_levels;
+	gint mru_size;
+	ColorSelData_t colors;
 } PreferencesData_t;
 
 void do_preferences_dialog(void);

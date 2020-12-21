@@ -33,15 +33,15 @@ G_BEGIN_DECLS
 
 
 guint    gimp_image_add_sample_point          (GimpImage *image,
-        gint       position_x,
-        gint       position_y);
+                                               gint position_x,
+                                               gint position_y);
 gboolean gimp_image_delete_sample_point       (GimpImage *image,
-        guint      sample_point);
+                                               guint sample_point);
 guint    gimp_image_find_next_sample_point    (GimpImage *image,
-        guint      sample_point);
+                                               guint sample_point);
 gint     gimp_image_get_sample_point_position (GimpImage *image,
-        guint      sample_point,
-        gint      *position_y);
+                                               guint sample_point,
+                                               gint      *position_y);
 
 
 G_END_DECLS

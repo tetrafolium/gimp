@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 GType      gimp_color_scales_get_type        (void) G_GNUC_CONST;
 
 void       gimp_color_scales_set_show_rgb_u8 (GimpColorScales *scales,
-        gboolean         show_rgb_u8);
+                                              gboolean show_rgb_u8);
 gboolean   gimp_color_scales_get_show_rgb_u8 (GimpColorScales *scales);
 
 

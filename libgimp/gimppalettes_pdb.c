@@ -47,23 +47,23 @@
 gboolean
 gimp_palettes_refresh (void)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-palettes-refresh",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-palettes-refresh",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -85,28 +85,28 @@ gchar **
 gimp_palettes_get_list (const gchar *filter,
                         gint        *num_palettes)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gchar **palette_list = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gchar **palette_list = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_STRING, filter,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_STRING, filter,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-palettes-get-list",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-palettes-get-list",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    *num_palettes = 0;
+	*num_palettes = 0;
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-    {
-        *num_palettes = GIMP_VALUES_GET_INT (return_vals, 1);
-        palette_list = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
-    }
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+	{
+		*num_palettes = GIMP_VALUES_GET_INT (return_vals, 1);
+		palette_list = GIMP_VALUES_DUP_STRING_ARRAY (return_vals, 2);
+	}
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return palette_list;
+	return palette_list;
 }

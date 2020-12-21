@@ -48,7 +48,7 @@ G_DEFINE_BOXED_TYPE (GimpCMYK, gimp_cmyk, gimp_cmyk_copy, g_free)
 static GimpCMYK *
 gimp_cmyk_copy (const GimpCMYK *cmyk)
 {
-    return g_memdup (cmyk, sizeof (GimpCMYK));
+	return g_memdup (cmyk, sizeof (GimpCMYK));
 }
 
 
@@ -67,17 +67,17 @@ gimp_cmyk_copy (const GimpCMYK *cmyk)
  **/
 void
 gimp_cmyk_set (GimpCMYK *cmyk,
-               gdouble   cyan,
-               gdouble   magenta,
-               gdouble   yellow,
-               gdouble   black)
+               gdouble cyan,
+               gdouble magenta,
+               gdouble yellow,
+               gdouble black)
 {
-    g_return_if_fail (cmyk != NULL);
+	g_return_if_fail (cmyk != NULL);
 
-    cmyk->c = cyan;
-    cmyk->m = magenta;
-    cmyk->y = yellow;
-    cmyk->k = black;
+	cmyk->c = cyan;
+	cmyk->m = magenta;
+	cmyk->y = yellow;
+	cmyk->k = black;
 }
 
 /**
@@ -93,17 +93,17 @@ gimp_cmyk_set (GimpCMYK *cmyk,
  **/
 void
 gimp_cmyk_set_uchar (GimpCMYK *cmyk,
-                     guchar    cyan,
-                     guchar    magenta,
-                     guchar    yellow,
-                     guchar    black)
+                     guchar cyan,
+                     guchar magenta,
+                     guchar yellow,
+                     guchar black)
 {
-    g_return_if_fail (cmyk != NULL);
+	g_return_if_fail (cmyk != NULL);
 
-    cmyk->c = (gdouble) cyan    / 255.0;
-    cmyk->m = (gdouble) magenta / 255.0;
-    cmyk->y = (gdouble) yellow  / 255.0;
-    cmyk->k = (gdouble) black   / 255.0;
+	cmyk->c = (gdouble) cyan    / 255.0;
+	cmyk->m = (gdouble) magenta / 255.0;
+	cmyk->y = (gdouble) yellow  / 255.0;
+	cmyk->k = (gdouble) black   / 255.0;
 }
 
 /**
@@ -124,12 +124,12 @@ gimp_cmyk_get_uchar (const GimpCMYK *cmyk,
                      guchar         *yellow,
                      guchar         *black)
 {
-    g_return_if_fail (cmyk != NULL);
+	g_return_if_fail (cmyk != NULL);
 
-    if (cyan)    *cyan    = ROUND (CLAMP (cmyk->c, 0.0, 1.0) * 255.0);
-    if (magenta) *magenta = ROUND (CLAMP (cmyk->m, 0.0, 1.0) * 255.0);
-    if (yellow)  *yellow  = ROUND (CLAMP (cmyk->y, 0.0, 1.0) * 255.0);
-    if (black)   *black   = ROUND (CLAMP (cmyk->k, 0.0, 1.0) * 255.0);
+	if (cyan) *cyan    = ROUND (CLAMP (cmyk->c, 0.0, 1.0) * 255.0);
+	if (magenta) *magenta = ROUND (CLAMP (cmyk->m, 0.0, 1.0) * 255.0);
+	if (yellow) *yellow  = ROUND (CLAMP (cmyk->y, 0.0, 1.0) * 255.0);
+	if (black) *black   = ROUND (CLAMP (cmyk->k, 0.0, 1.0) * 255.0);
 }
 
 
@@ -149,19 +149,19 @@ gimp_cmyk_get_uchar (const GimpCMYK *cmyk,
  **/
 void
 gimp_cmyka_set (GimpCMYK *cmyka,
-                gdouble   cyan,
-                gdouble   magenta,
-                gdouble   yellow,
-                gdouble   black,
-                gdouble   alpha)
+                gdouble cyan,
+                gdouble magenta,
+                gdouble yellow,
+                gdouble black,
+                gdouble alpha)
 {
-    g_return_if_fail (cmyka != NULL);
+	g_return_if_fail (cmyka != NULL);
 
-    cmyka->c = cyan;
-    cmyka->m = magenta;
-    cmyka->y = yellow;
-    cmyka->k = black;
-    cmyka->a = alpha;
+	cmyka->c = cyan;
+	cmyka->m = magenta;
+	cmyka->y = yellow;
+	cmyka->k = black;
+	cmyka->a = alpha;
 }
 
 /**
@@ -178,19 +178,19 @@ gimp_cmyka_set (GimpCMYK *cmyka,
  **/
 void
 gimp_cmyka_set_uchar (GimpCMYK *cmyka,
-                      guchar    cyan,
-                      guchar    magenta,
-                      guchar    yellow,
-                      guchar    black,
-                      guchar    alpha)
+                      guchar cyan,
+                      guchar magenta,
+                      guchar yellow,
+                      guchar black,
+                      guchar alpha)
 {
-    g_return_if_fail (cmyka != NULL);
+	g_return_if_fail (cmyka != NULL);
 
-    cmyka->c = (gdouble) cyan    / 255.0;
-    cmyka->m = (gdouble) magenta / 255.0;
-    cmyka->y = (gdouble) yellow  / 255.0;
-    cmyka->k = (gdouble) black   / 255.0;
-    cmyka->a = (gdouble) alpha   / 255.0;
+	cmyka->c = (gdouble) cyan    / 255.0;
+	cmyka->m = (gdouble) magenta / 255.0;
+	cmyka->y = (gdouble) yellow  / 255.0;
+	cmyka->k = (gdouble) black   / 255.0;
+	cmyka->a = (gdouble) alpha   / 255.0;
 }
 
 /**
@@ -213,11 +213,11 @@ gimp_cmyka_get_uchar (const GimpCMYK *cmyka,
                       guchar         *black,
                       guchar         *alpha)
 {
-    g_return_if_fail (cmyka != NULL);
+	g_return_if_fail (cmyka != NULL);
 
-    if (cyan)    *cyan    = ROUND (CLAMP (cmyka->c, 0.0, 1.0) * 255.0);
-    if (magenta) *magenta = ROUND (CLAMP (cmyka->m, 0.0, 1.0) * 255.0);
-    if (yellow)  *yellow  = ROUND (CLAMP (cmyka->y, 0.0, 1.0) * 255.0);
-    if (black)   *black   = ROUND (CLAMP (cmyka->k, 0.0, 1.0) * 255.0);
-    if (alpha)   *alpha   = ROUND (CLAMP (cmyka->a, 0.0, 1.0) * 255.0);
+	if (cyan) *cyan    = ROUND (CLAMP (cmyka->c, 0.0, 1.0) * 255.0);
+	if (magenta) *magenta = ROUND (CLAMP (cmyka->m, 0.0, 1.0) * 255.0);
+	if (yellow) *yellow  = ROUND (CLAMP (cmyka->y, 0.0, 1.0) * 255.0);
+	if (black) *black   = ROUND (CLAMP (cmyka->k, 0.0, 1.0) * 255.0);
+	if (alpha) *alpha   = ROUND (CLAMP (cmyka->a, 0.0, 1.0) * 255.0);
 }

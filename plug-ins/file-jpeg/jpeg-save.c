@@ -50,19 +50,19 @@
 
 typedef struct
 {
-    struct jpeg_compress_struct cinfo;
-    struct jpeg_error_mgr jerr;
-    gint          tile_height;
-    FILE         *outfile;
-    gboolean      has_alpha;
-    gint          rowstride;
-    guchar       *data;
-    guchar       *src;
-    GeglBuffer   *buffer;
-    const Babl   *format;
-    GFile        *file;
-    gboolean      abort_me;
-    guint         source_id;
+	struct jpeg_compress_struct cinfo;
+	struct jpeg_error_mgr jerr;
+	gint tile_height;
+	FILE         *outfile;
+	gboolean has_alpha;
+	gint rowstride;
+	guchar       *data;
+	guchar       *src;
+	GeglBuffer   *buffer;
+	const Babl   *format;
+	GFile        *file;
+	gboolean abort_me;
+	guint source_id;
 } PreviewPersistent;
 
 
@@ -88,108 +88,108 @@ static PreviewPersistent *prev_p        = NULL;
 static void
 background_error_exit (j_common_ptr cinfo)
 {
-    if (prev_p)
-        prev_p->abort_me = TRUE;
-    (*cinfo->err->output_message) (cinfo);
+	if (prev_p)
+		prev_p->abort_me = TRUE;
+	(*cinfo->err->output_message)(cinfo);
 }
 
 static gboolean
 background_jpeg_save (PreviewPersistent *pp)
 {
-    gint yend;
+	gint yend;
 
-    if (pp->abort_me || (pp->cinfo.next_scanline >= pp->cinfo.image_height))
-    {
-        /* clean up... */
-        if (pp->abort_me)
-        {
-            jpeg_abort_compress (&(pp->cinfo));
-        }
-        else
-        {
-            jpeg_finish_compress (&(pp->cinfo));
-        }
+	if (pp->abort_me || (pp->cinfo.next_scanline >= pp->cinfo.image_height))
+	{
+		/* clean up... */
+		if (pp->abort_me)
+		{
+			jpeg_abort_compress (&(pp->cinfo));
+		}
+		else
+		{
+			jpeg_finish_compress (&(pp->cinfo));
+		}
 
-        fclose (pp->outfile);
-        jpeg_destroy_compress (&(pp->cinfo));
+		fclose (pp->outfile);
+		jpeg_destroy_compress (&(pp->cinfo));
 
-        g_free (pp->data);
+		g_free (pp->data);
 
-        if (pp->buffer)
-            g_object_unref (pp->buffer);
+		if (pp->buffer)
+			g_object_unref (pp->buffer);
 
-        /* display the preview stuff */
-        if (! pp->abort_me)
-        {
-            GFileInfo *info;
-            gchar     *text;
-            GError    *error = NULL;
+		/* display the preview stuff */
+		if (!pp->abort_me)
+		{
+			GFileInfo *info;
+			gchar     *text;
+			GError    *error = NULL;
 
-            info = g_file_query_info (pp->file,
-                                      G_FILE_ATTRIBUTE_STANDARD_SIZE,
-                                      G_FILE_QUERY_INFO_NONE,
-                                      NULL, &error);
+			info = g_file_query_info (pp->file,
+			                          G_FILE_ATTRIBUTE_STANDARD_SIZE,
+			                          G_FILE_QUERY_INFO_NONE,
+			                          NULL, &error);
 
-            if (info)
-            {
-                goffset  size = g_file_info_get_size (info);
-                gchar   *size_text;
+			if (info)
+			{
+				goffset size = g_file_info_get_size (info);
+				gchar   *size_text;
 
-                size_text = g_format_size (size);
-                text = g_strdup_printf (_("File size: %s"), size_text);
-                g_free (size_text);
+				size_text = g_format_size (size);
+				text = g_strdup_printf (_("File size: %s"), size_text);
+				g_free (size_text);
 
-                g_object_unref (info);
-            }
-            else
-            {
-                text = g_strdup_printf (_("File size: %s"), error->message);
-                g_clear_error (&error);
-            }
+				g_object_unref (info);
+			}
+			else
+			{
+				text = g_strdup_printf (_("File size: %s"), error->message);
+				g_clear_error (&error);
+			}
 
-            gtk_label_set_text (GTK_LABEL (preview_size), text);
-            g_free (text);
+			gtk_label_set_text (GTK_LABEL (preview_size), text);
+			g_free (text);
 
-            /* and load the preview */
-            load_image (pp->file, GIMP_RUN_NONINTERACTIVE,
-                        TRUE, NULL, NULL);
-        }
+			/* and load the preview */
+			load_image (pp->file, GIMP_RUN_NONINTERACTIVE,
+			            TRUE, NULL, NULL);
+		}
 
-        /* we cleanup here (load_image doesn't run in the background) */
-        g_file_delete (pp->file, NULL, NULL);
-        g_object_unref (pp->file);
+		/* we cleanup here (load_image doesn't run in the background) */
+		g_file_delete (pp->file, NULL, NULL);
+		g_object_unref (pp->file);
 
-        g_free (pp);
-        prev_p = NULL;
+		g_free (pp);
+		prev_p = NULL;
 
-        gimp_displays_flush ();
-        gdk_display_flush (gdk_display_get_default ());
+		gimp_displays_flush ();
+		gdk_display_flush (gdk_display_get_default ());
 
-        return FALSE;
-    }
-    else
-    {
-        if ((pp->cinfo.next_scanline % pp->tile_height) == 0)
-        {
-            yend = pp->cinfo.next_scanline + pp->tile_height;
-            yend = MIN (yend, pp->cinfo.image_height);
-            gegl_buffer_get (pp->buffer,
-                             GEGL_RECTANGLE (0, pp->cinfo.next_scanline,
-                                             pp->cinfo.image_width,
-                                             (yend - pp->cinfo.next_scanline)),
-                             1.0,
-                             pp->format,
-                             pp->data,
-                             GEGL_AUTO_ROWSTRIDE,
-                             GEGL_ABYSS_NONE);
-            pp->src = pp->data;
-        }
+		return FALSE;
+	}
+	else
+	{
+		if ((pp->cinfo.next_scanline % pp->tile_height) == 0)
+		{
+			yend = pp->cinfo.next_scanline + pp->tile_height;
+			yend = MIN (yend, pp->cinfo.image_height);
+			gegl_buffer_get (pp->buffer,
+			                 GEGL_RECTANGLE (0, pp->cinfo.next_scanline,
+			                                 pp->cinfo.image_width,
+			                                 (yend - pp->cinfo.next_scanline)),
+			                 1.0,
+			                 pp->format,
+			                 pp->data,
+			                 GEGL_AUTO_ROWSTRIDE,
+			                 GEGL_ABYSS_NONE);
+			pp->src = pp->data;
+		}
 
-        jpeg_write_scanlines (&(pp->cinfo), (JSAMPARRAY) &(pp->src), 1);
-        pp->src += pp->rowstride;
+		jpeg_write_scanlines (&(pp->cinfo), (JSAMPARRAY) &(pp->src), 1);
+		pp->src += pp->rowstride;
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 }
 
 gboolean
@@ -198,584 +198,584 @@ save_image (GFile                *file,
             GimpImage            *image,
             GimpDrawable         *drawable,
             GimpImage            *orig_image,
-            gboolean              preview,
+            gboolean preview,
             GError              **error)
 {
-    static struct jpeg_compress_struct cinfo;
-    static struct my_error_mgr         jerr;
+	static struct jpeg_compress_struct cinfo;
+	static struct my_error_mgr jerr;
 
-    GimpImageType     drawable_type;
-    GeglBuffer       *buffer;
-    const gchar      *encoding;
-    const Babl       *format;
-    const Babl       *space;
-    JpegSubsampling   subsampling;
-    gchar            *filename;
-    FILE             * volatile outfile;
-    guchar           *data;
-    guchar           *src;
-    GimpColorProfile *profile = NULL;
+	GimpImageType drawable_type;
+	GeglBuffer       *buffer;
+	const gchar      *encoding;
+	const Babl       *format;
+	const Babl       *space;
+	JpegSubsampling subsampling;
+	gchar            *filename;
+	FILE             * volatile outfile;
+	guchar           *data;
+	guchar           *src;
+	GimpColorProfile *profile = NULL;
 
-    gboolean         has_alpha;
-    gboolean         out_linear = FALSE;
-    gint             rowstride, yend;
+	gboolean has_alpha;
+	gboolean out_linear = FALSE;
+	gint rowstride, yend;
 
-    gint             quality;
-    gdouble          dquality      = 1.0;
-    gdouble          smoothing;
-    gboolean         optimize;
-    gboolean         progressive;
-    gint             subsmp;
-    gboolean         baseline;
-    gint             restart;
-    gint             dct;
-    gboolean         save_profile          = TRUE;
-    gboolean         save_comment;
-    gboolean         use_orig_quality      = FALSE;
-    gint             orig_num_quant_tables = -1;
-    gboolean         use_arithmetic_coding = FALSE;
-    gboolean         use_restart           = FALSE;
-    gchar           *comment;
+	gint quality;
+	gdouble dquality      = 1.0;
+	gdouble smoothing;
+	gboolean optimize;
+	gboolean progressive;
+	gint subsmp;
+	gboolean baseline;
+	gint restart;
+	gint dct;
+	gboolean save_profile          = TRUE;
+	gboolean save_comment;
+	gboolean use_orig_quality      = FALSE;
+	gint orig_num_quant_tables = -1;
+	gboolean use_arithmetic_coding = FALSE;
+	gboolean use_restart           = FALSE;
+	gchar           *comment;
 
-    g_object_get (config,
-                  "quality",                   &dquality,
-                  "smoothing",                 &smoothing,
-                  "optimize",                  &optimize,
-                  "progressive",               &progressive,
-                  "sub-sampling",              &subsmp,
-                  "baseline",                  &baseline,
-                  "restart",                   &restart,
-                  "dct",                       &dct,
+	g_object_get (config,
+	              "quality",                   &dquality,
+	              "smoothing",                 &smoothing,
+	              "optimize",                  &optimize,
+	              "progressive",               &progressive,
+	              "sub-sampling",              &subsmp,
+	              "baseline",                  &baseline,
+	              "restart",                   &restart,
+	              "dct",                       &dct,
 
-                  /* Original quality settings. */
-                  "use-original-quality",      &use_orig_quality,
-                  "original-num-quant-tables", &orig_num_quant_tables,
+	              /* Original quality settings. */
+	              "use-original-quality",      &use_orig_quality,
+	              "original-num-quant-tables", &orig_num_quant_tables,
 
-                  "use-arithmetic-coding",     &use_arithmetic_coding,
-                  "use-restart",               &use_restart,
+	              "use-arithmetic-coding",     &use_arithmetic_coding,
+	              "use-restart",               &use_restart,
 
-                  "save-color-profile",        &save_profile,
-                  "save-comment",              &save_comment,
-                  "gimp-comment",              &comment,
+	              "save-color-profile",        &save_profile,
+	              "save-comment",              &save_comment,
+	              "gimp-comment",              &comment,
 
-                  NULL);
+	              NULL);
 
-    quality = (gint) (dquality * 100.0 + 0.5);
+	quality = (gint) (dquality * 100.0 + 0.5);
 
-    drawable_type = gimp_drawable_type (drawable);
-    buffer = gimp_drawable_get_buffer (drawable);
-    space = gimp_drawable_get_format (drawable);
+	drawable_type = gimp_drawable_type (drawable);
+	buffer = gimp_drawable_get_buffer (drawable);
+	space = gimp_drawable_get_format (drawable);
 
-    if (! preview)
-        gimp_progress_init_printf (_("Exporting '%s'"),
-                                   gimp_file_get_utf8_name (file));
+	if (!preview)
+		gimp_progress_init_printf (_("Exporting '%s'"),
+		                           gimp_file_get_utf8_name (file));
 
-    /* Step 1: allocate and initialize JPEG compression object */
+	/* Step 1: allocate and initialize JPEG compression object */
 
-    /* We have to set up the error handler first, in case the initialization
-     * step fails.  (Unlikely, but it could happen if you are out of memory.)
-     * This routine fills in the contents of struct jerr, and returns jerr's
-     * address which we place into the link field in cinfo.
-     */
-    cinfo.err = jpeg_std_error (&jerr.pub);
-    jerr.pub.error_exit = my_error_exit;
+	/* We have to set up the error handler first, in case the initialization
+	 * step fails.  (Unlikely, but it could happen if you are out of memory.)
+	 * This routine fills in the contents of struct jerr, and returns jerr's
+	 * address which we place into the link field in cinfo.
+	 */
+	cinfo.err = jpeg_std_error (&jerr.pub);
+	jerr.pub.error_exit = my_error_exit;
 
-    outfile = NULL;
-    /* Establish the setjmp return context for my_error_exit to use. */
-    if (setjmp (jerr.setjmp_buffer))
-    {
-        /* If we get here, the JPEG code has signaled an error.
-         * We need to clean up the JPEG object, close the input file, and return.
-         */
-        jpeg_destroy_compress (&cinfo);
-        if (outfile)
-            fclose (outfile);
-        if (buffer)
-            g_object_unref (buffer);
+	outfile = NULL;
+	/* Establish the setjmp return context for my_error_exit to use. */
+	if (setjmp (jerr.setjmp_buffer))
+	{
+		/* If we get here, the JPEG code has signaled an error.
+		 * We need to clean up the JPEG object, close the input file, and return.
+		 */
+		jpeg_destroy_compress (&cinfo);
+		if (outfile)
+			fclose (outfile);
+		if (buffer)
+			g_object_unref (buffer);
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 
-    /* Now we can initialize the JPEG compression object. */
-    jpeg_create_compress (&cinfo);
+	/* Now we can initialize the JPEG compression object. */
+	jpeg_create_compress (&cinfo);
 
-    /* Step 2: specify data destination (eg, a file) */
-    /* Note: steps 2 and 3 can be done in either order. */
+	/* Step 2: specify data destination (eg, a file) */
+	/* Note: steps 2 and 3 can be done in either order. */
 
-    /* Here we use the library-supplied code to send compressed data to a
-     * stdio stream.  You can also write your own code to do something else.
-     * VERY IMPORTANT: use "b" option to fopen() if you are on a machine that
-     * requires it in order to write binary files.
-     */
-    filename = g_file_get_path (file);
-    outfile = g_fopen (filename, "wb");
-    g_free (filename);
+	/* Here we use the library-supplied code to send compressed data to a
+	 * stdio stream.  You can also write your own code to do something else.
+	 * VERY IMPORTANT: use "b" option to fopen() if you are on a machine that
+	 * requires it in order to write binary files.
+	 */
+	filename = g_file_get_path (file);
+	outfile = g_fopen (filename, "wb");
+	g_free (filename);
 
-    if (! outfile)
-    {
-        g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-                     _("Could not open '%s' for writing: %s"),
-                     gimp_file_get_utf8_name (file), g_strerror (errno));
-        return FALSE;
-    }
+	if (!outfile)
+	{
+		g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+		             _("Could not open '%s' for writing: %s"),
+		             gimp_file_get_utf8_name (file), g_strerror (errno));
+		return FALSE;
+	}
 
-    /* When we don't save profiles, we convert data to sRGB because
-     * that's what most/all readers expect on a no-profile JPEG.
-     * If we save an assigned profile, let's just follow its TRC.
-     * If we save the default linear profile (i.e. no assigned
-     * profile), we convert it to sRGB, except when it is 8-bit linear.
-     */
-    if (save_profile)
-    {
-        profile = gimp_image_get_color_profile (orig_image);
+	/* When we don't save profiles, we convert data to sRGB because
+	 * that's what most/all readers expect on a no-profile JPEG.
+	 * If we save an assigned profile, let's just follow its TRC.
+	 * If we save the default linear profile (i.e. no assigned
+	 * profile), we convert it to sRGB, except when it is 8-bit linear.
+	 */
+	if (save_profile)
+	{
+		profile = gimp_image_get_color_profile (orig_image);
 
-        /* If a profile is explicitly set, follow its TRC, whatever the
-         * storage format.
-         */
-        if (profile && gimp_color_profile_is_linear (profile))
-            out_linear = TRUE;
+		/* If a profile is explicitly set, follow its TRC, whatever the
+		 * storage format.
+		 */
+		if (profile && gimp_color_profile_is_linear (profile))
+			out_linear = TRUE;
 
-        if (! profile)
-        {
-            /* There is always an effective profile. */
-            profile = gimp_image_get_effective_color_profile (orig_image);
+		if (!profile)
+		{
+			/* There is always an effective profile. */
+			profile = gimp_image_get_effective_color_profile (orig_image);
 
-            if (gimp_color_profile_is_linear (profile))
-            {
-                if (gimp_image_get_precision (image) != GIMP_PRECISION_U8_LINEAR)
-                {
-                    GimpColorProfile *saved_profile;
+			if (gimp_color_profile_is_linear (profile))
+			{
+				if (gimp_image_get_precision (image) != GIMP_PRECISION_U8_LINEAR)
+				{
+					GimpColorProfile *saved_profile;
 
-                    saved_profile = gimp_color_profile_new_srgb_trc_from_color_profile (profile);
-                    g_object_unref (profile);
-                    profile = saved_profile;
-                }
-                else
-                {
-                    /* Keep linear profile as-is for 8-bit linear image. */
-                    out_linear = TRUE;
-                }
-            }
-        }
-        space = gimp_color_profile_get_space (profile,
-                                              GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
-                                              error);
-        if (error && *error)
-        {
-            /* XXX: the profile space should normally be the same one as
-             * the drawable's so let's continue with it. We were mostly
-             * getting the profile space to be complete. Still let's
-             * display the error to standard error channel because if the
-             * space could not be extracted, there is a problem somewhere!
-             */
-            g_printerr ("%s: error getting the profile space: %s",
-                        G_STRFUNC, (*error)->message);
-            g_clear_error (error);
-            space = gimp_drawable_get_format (drawable);
-        }
-    }
+					saved_profile = gimp_color_profile_new_srgb_trc_from_color_profile (profile);
+					g_object_unref (profile);
+					profile = saved_profile;
+				}
+				else
+				{
+					/* Keep linear profile as-is for 8-bit linear image. */
+					out_linear = TRUE;
+				}
+			}
+		}
+		space = gimp_color_profile_get_space (profile,
+		                                      GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+		                                      error);
+		if (error && *error)
+		{
+			/* XXX: the profile space should normally be the same one as
+			 * the drawable's so let's continue with it. We were mostly
+			 * getting the profile space to be complete. Still let's
+			 * display the error to standard error channel because if the
+			 * space could not be extracted, there is a problem somewhere!
+			 */
+			g_printerr ("%s: error getting the profile space: %s",
+			            G_STRFUNC, (*error)->message);
+			g_clear_error (error);
+			space = gimp_drawable_get_format (drawable);
+		}
+	}
 
-    jpeg_stdio_dest (&cinfo, outfile);
+	jpeg_stdio_dest (&cinfo, outfile);
 
-    /* Get the input image and a pointer to its data.
-     */
-    switch (drawable_type)
-    {
-    case GIMP_RGB_IMAGE:
-        /* # of color components per pixel */
-        cinfo.input_components = 3;
-        has_alpha = FALSE;
+	/* Get the input image and a pointer to its data.
+	 */
+	switch (drawable_type)
+	{
+	case GIMP_RGB_IMAGE:
+		/* # of color components per pixel */
+		cinfo.input_components = 3;
+		has_alpha = FALSE;
 
-        if (out_linear)
-            encoding = "RGB u8";
-        else
-            encoding = "R'G'B' u8";
-        break;
+		if (out_linear)
+			encoding = "RGB u8";
+		else
+			encoding = "R'G'B' u8";
+		break;
 
-    case GIMP_GRAY_IMAGE:
-        /* # of color components per pixel */
-        cinfo.input_components = 1;
-        has_alpha = FALSE;
+	case GIMP_GRAY_IMAGE:
+		/* # of color components per pixel */
+		cinfo.input_components = 1;
+		has_alpha = FALSE;
 
-        if (out_linear)
-            encoding = "Y u8";
-        else
-            encoding = "Y' u8";
-        break;
+		if (out_linear)
+			encoding = "Y u8";
+		else
+			encoding = "Y' u8";
+		break;
 
-    case GIMP_RGBA_IMAGE:
-        /* # of color components per pixel (minus the GIMP alpha channel) */
-        cinfo.input_components = 4 - 1;
-        has_alpha = TRUE;
+	case GIMP_RGBA_IMAGE:
+		/* # of color components per pixel (minus the GIMP alpha channel) */
+		cinfo.input_components = 4 - 1;
+		has_alpha = TRUE;
 
-        if (out_linear)
-            encoding = "RGB u8";
-        else
-            encoding = "R'G'B' u8";
-        break;
+		if (out_linear)
+			encoding = "RGB u8";
+		else
+			encoding = "R'G'B' u8";
+		break;
 
-    case GIMP_GRAYA_IMAGE:
-        /* # of color components per pixel (minus the GIMP alpha channel) */
-        cinfo.input_components = 2 - 1;
-        has_alpha = TRUE;
-        if (out_linear)
-            encoding = "Y u8";
-        else
-            encoding = "Y' u8";
-        break;
+	case GIMP_GRAYA_IMAGE:
+		/* # of color components per pixel (minus the GIMP alpha channel) */
+		cinfo.input_components = 2 - 1;
+		has_alpha = TRUE;
+		if (out_linear)
+			encoding = "Y u8";
+		else
+			encoding = "Y' u8";
+		break;
 
-    case GIMP_INDEXED_IMAGE:
-    default:
-        return FALSE;
-    }
+	case GIMP_INDEXED_IMAGE:
+	default:
+		return FALSE;
+	}
 
-    format = babl_format_with_space (encoding, space);
+	format = babl_format_with_space (encoding, space);
 
-    /* Step 3: set parameters for compression */
+	/* Step 3: set parameters for compression */
 
-    /* First we supply a description of the input image.
-     * Four fields of the cinfo struct must be filled in:
-     */
-    /* image width and height, in pixels */
-    cinfo.image_width  = gegl_buffer_get_width (buffer);
-    cinfo.image_height = gegl_buffer_get_height (buffer);
-    /* colorspace of input image */
-    cinfo.in_color_space = (drawable_type == GIMP_RGB_IMAGE ||
-                            drawable_type == GIMP_RGBA_IMAGE)
-                           ? JCS_RGB : JCS_GRAYSCALE;
-    /* Now use the library's routine to set default compression parameters.
-     * (You must set at least cinfo.in_color_space before calling this,
-     * since the defaults depend on the source color space.)
-     */
-    jpeg_set_defaults (&cinfo);
+	/* First we supply a description of the input image.
+	 * Four fields of the cinfo struct must be filled in:
+	 */
+	/* image width and height, in pixels */
+	cinfo.image_width  = gegl_buffer_get_width (buffer);
+	cinfo.image_height = gegl_buffer_get_height (buffer);
+	/* colorspace of input image */
+	cinfo.in_color_space = (drawable_type == GIMP_RGB_IMAGE ||
+	                        drawable_type == GIMP_RGBA_IMAGE)
+	                   ? JCS_RGB : JCS_GRAYSCALE;
+	/* Now use the library's routine to set default compression parameters.
+	 * (You must set at least cinfo.in_color_space before calling this,
+	 * since the defaults depend on the source color space.)
+	 */
+	jpeg_set_defaults (&cinfo);
 
-    jpeg_set_quality (&cinfo, quality, baseline);
+	jpeg_set_quality (&cinfo, quality, baseline);
 
-    if (use_orig_quality && orig_num_quant_tables > 0)
-    {
-        guint **quant_tables;
-        gint    t;
+	if (use_orig_quality && orig_num_quant_tables > 0)
+	{
+		guint **quant_tables;
+		gint t;
 
-        /* override tables generated by jpeg_set_quality() with custom tables */
-        quant_tables = jpeg_restore_original_tables (image, orig_num_quant_tables);
-        if (quant_tables)
-        {
-            for (t = 0; t < orig_num_quant_tables; t++)
-            {
-                jpeg_add_quant_table (&cinfo, t, quant_tables[t],
-                                      100, baseline);
-                g_free (quant_tables[t]);
-            }
-            g_free (quant_tables);
-        }
-    }
+		/* override tables generated by jpeg_set_quality() with custom tables */
+		quant_tables = jpeg_restore_original_tables (image, orig_num_quant_tables);
+		if (quant_tables)
+		{
+			for (t = 0; t < orig_num_quant_tables; t++)
+			{
+				jpeg_add_quant_table (&cinfo, t, quant_tables[t],
+				                      100, baseline);
+				g_free (quant_tables[t]);
+			}
+			g_free (quant_tables);
+		}
+	}
 
 #ifdef C_ARITH_CODING_SUPPORTED
-    cinfo.arith_code = use_arithmetic_coding;
-    if (! use_arithmetic_coding)
-        cinfo.optimize_coding = optimize;
+	cinfo.arith_code = use_arithmetic_coding;
+	if (!use_arithmetic_coding)
+		cinfo.optimize_coding = optimize;
 #else
-    cinfo.optimize_coding = optimize;
+	cinfo.optimize_coding = optimize;
 #endif
 
-    subsampling = (gimp_drawable_is_rgb (drawable) ?
-                   subsmp : JPEG_SUBSAMPLING_1x1_1x1_1x1);
+	subsampling = (gimp_drawable_is_rgb (drawable) ?
+	               subsmp : JPEG_SUBSAMPLING_1x1_1x1_1x1);
 
-    /*  smoothing is not supported with nonstandard sampling ratios  */
-    if (subsampling != JPEG_SUBSAMPLING_2x1_1x1_1x1 &&
-            subsampling != JPEG_SUBSAMPLING_1x2_1x1_1x1)
-    {
-        cinfo.smoothing_factor = (gint) (smoothing * 100);
-    }
+	/*  smoothing is not supported with nonstandard sampling ratios  */
+	if (subsampling != JPEG_SUBSAMPLING_2x1_1x1_1x1 &&
+	    subsampling != JPEG_SUBSAMPLING_1x2_1x1_1x1)
+	{
+		cinfo.smoothing_factor = (gint) (smoothing * 100);
+	}
 
-    if (progressive)
-    {
-        jpeg_simple_progression (&cinfo);
-    }
+	if (progressive)
+	{
+		jpeg_simple_progression (&cinfo);
+	}
 
-    switch (subsampling)
-    {
-    case JPEG_SUBSAMPLING_2x2_1x1_1x1:
-    default:
-        cinfo.comp_info[0].h_samp_factor = 2;
-        cinfo.comp_info[0].v_samp_factor = 2;
-        cinfo.comp_info[1].h_samp_factor = 1;
-        cinfo.comp_info[1].v_samp_factor = 1;
-        cinfo.comp_info[2].h_samp_factor = 1;
-        cinfo.comp_info[2].v_samp_factor = 1;
-        break;
+	switch (subsampling)
+	{
+	case JPEG_SUBSAMPLING_2x2_1x1_1x1:
+	default:
+		cinfo.comp_info[0].h_samp_factor = 2;
+		cinfo.comp_info[0].v_samp_factor = 2;
+		cinfo.comp_info[1].h_samp_factor = 1;
+		cinfo.comp_info[1].v_samp_factor = 1;
+		cinfo.comp_info[2].h_samp_factor = 1;
+		cinfo.comp_info[2].v_samp_factor = 1;
+		break;
 
-    case JPEG_SUBSAMPLING_2x1_1x1_1x1:
-        cinfo.comp_info[0].h_samp_factor = 2;
-        cinfo.comp_info[0].v_samp_factor = 1;
-        cinfo.comp_info[1].h_samp_factor = 1;
-        cinfo.comp_info[1].v_samp_factor = 1;
-        cinfo.comp_info[2].h_samp_factor = 1;
-        cinfo.comp_info[2].v_samp_factor = 1;
-        break;
+	case JPEG_SUBSAMPLING_2x1_1x1_1x1:
+		cinfo.comp_info[0].h_samp_factor = 2;
+		cinfo.comp_info[0].v_samp_factor = 1;
+		cinfo.comp_info[1].h_samp_factor = 1;
+		cinfo.comp_info[1].v_samp_factor = 1;
+		cinfo.comp_info[2].h_samp_factor = 1;
+		cinfo.comp_info[2].v_samp_factor = 1;
+		break;
 
-    case JPEG_SUBSAMPLING_1x1_1x1_1x1:
-        cinfo.comp_info[0].h_samp_factor = 1;
-        cinfo.comp_info[0].v_samp_factor = 1;
-        cinfo.comp_info[1].h_samp_factor = 1;
-        cinfo.comp_info[1].v_samp_factor = 1;
-        cinfo.comp_info[2].h_samp_factor = 1;
-        cinfo.comp_info[2].v_samp_factor = 1;
-        break;
+	case JPEG_SUBSAMPLING_1x1_1x1_1x1:
+		cinfo.comp_info[0].h_samp_factor = 1;
+		cinfo.comp_info[0].v_samp_factor = 1;
+		cinfo.comp_info[1].h_samp_factor = 1;
+		cinfo.comp_info[1].v_samp_factor = 1;
+		cinfo.comp_info[2].h_samp_factor = 1;
+		cinfo.comp_info[2].v_samp_factor = 1;
+		break;
 
-    case JPEG_SUBSAMPLING_1x2_1x1_1x1:
-        cinfo.comp_info[0].h_samp_factor = 1;
-        cinfo.comp_info[0].v_samp_factor = 2;
-        cinfo.comp_info[1].h_samp_factor = 1;
-        cinfo.comp_info[1].v_samp_factor = 1;
-        cinfo.comp_info[2].h_samp_factor = 1;
-        cinfo.comp_info[2].v_samp_factor = 1;
-        break;
-    }
+	case JPEG_SUBSAMPLING_1x2_1x1_1x1:
+		cinfo.comp_info[0].h_samp_factor = 1;
+		cinfo.comp_info[0].v_samp_factor = 2;
+		cinfo.comp_info[1].h_samp_factor = 1;
+		cinfo.comp_info[1].v_samp_factor = 1;
+		cinfo.comp_info[2].h_samp_factor = 1;
+		cinfo.comp_info[2].v_samp_factor = 1;
+		break;
+	}
 
-    cinfo.restart_interval = 0;
-    cinfo.restart_in_rows = use_restart ? restart : 0;
+	cinfo.restart_interval = 0;
+	cinfo.restart_in_rows = use_restart ? restart : 0;
 
-    switch (dct)
-    {
-    case 0:
-    default:
-        cinfo.dct_method = JDCT_ISLOW;
-        break;
+	switch (dct)
+	{
+	case 0:
+	default:
+		cinfo.dct_method = JDCT_ISLOW;
+		break;
 
-    case 1:
-        cinfo.dct_method = JDCT_IFAST;
-        break;
+	case 1:
+		cinfo.dct_method = JDCT_IFAST;
+		break;
 
-    case 2:
-        cinfo.dct_method = JDCT_FLOAT;
-        break;
-    }
+	case 2:
+		cinfo.dct_method = JDCT_FLOAT;
+		break;
+	}
 
-    {
-        gdouble xresolution;
-        gdouble yresolution;
+	{
+		gdouble xresolution;
+		gdouble yresolution;
 
-        gimp_image_get_resolution (orig_image, &xresolution, &yresolution);
+		gimp_image_get_resolution (orig_image, &xresolution, &yresolution);
 
-        if (xresolution > 1e-5 && yresolution > 1e-5)
-        {
-            gdouble factor;
+		if (xresolution > 1e-5 && yresolution > 1e-5)
+		{
+			gdouble factor;
 
-            factor = gimp_unit_get_factor (gimp_image_get_unit (orig_image));
+			factor = gimp_unit_get_factor (gimp_image_get_unit (orig_image));
 
-            if (factor == 2.54 /* cm */ ||
-                    factor == 25.4 /* mm */)
-            {
-                cinfo.density_unit = 2;  /* dots per cm */
+			if (factor == 2.54 /* cm */ ||
+			    factor == 25.4 /* mm */)
+			{
+				cinfo.density_unit = 2; /* dots per cm */
 
-                xresolution /= 2.54;
-                yresolution /= 2.54;
-            }
-            else
-            {
-                cinfo.density_unit = 1;  /* dots per inch */
-            }
+				xresolution /= 2.54;
+				yresolution /= 2.54;
+			}
+			else
+			{
+				cinfo.density_unit = 1; /* dots per inch */
+			}
 
-            cinfo.X_density = xresolution;
-            cinfo.Y_density = yresolution;
-        }
-    }
+			cinfo.X_density = xresolution;
+			cinfo.Y_density = yresolution;
+		}
+	}
 
-    /* Step 4: Start compressor */
+	/* Step 4: Start compressor */
 
-    /* TRUE ensures that we will write a complete interchange-JPEG file.
-     * Pass TRUE unless you are very sure of what you're doing.
-     */
-    jpeg_start_compress (&cinfo, TRUE);
+	/* TRUE ensures that we will write a complete interchange-JPEG file.
+	 * Pass TRUE unless you are very sure of what you're doing.
+	 */
+	jpeg_start_compress (&cinfo, TRUE);
 
-    /* Step 4.1: Write the comment out - pw */
-    if (save_comment && comment && *comment)
-    {
+	/* Step 4.1: Write the comment out - pw */
+	if (save_comment && comment && *comment)
+	{
 #ifdef GIMP_UNSTABLE
-        g_print ("jpeg-save: saving image comment (%d bytes)\n",
-                 (int) strlen (comment));
+		g_print ("jpeg-save: saving image comment (%d bytes)\n",
+		         (int) strlen (comment));
 #endif
-        jpeg_write_marker (&cinfo, JPEG_COM,
-                           (guchar *) comment, strlen (comment));
-    }
+		jpeg_write_marker (&cinfo, JPEG_COM,
+		                   (guchar *) comment, strlen (comment));
+	}
 
-    /* Step 4.2: store the color profile */
-    if (save_profile)
-    {
-        const guint8 *icc_data;
-        gsize         icc_length;
+	/* Step 4.2: store the color profile */
+	if (save_profile)
+	{
+		const guint8 *icc_data;
+		gsize icc_length;
 
-        icc_data = gimp_color_profile_get_icc_profile (profile, &icc_length);
-        jpeg_icc_write_profile (&cinfo, icc_data, icc_length);
+		icc_data = gimp_color_profile_get_icc_profile (profile, &icc_length);
+		jpeg_icc_write_profile (&cinfo, icc_data, icc_length);
 
-        g_object_unref (profile);
-    }
+		g_object_unref (profile);
+	}
 
-    /* Step 5: while (scan lines remain to be written) */
-    /*           jpeg_write_scanlines(...); */
+	/* Step 5: while (scan lines remain to be written) */
+	/*           jpeg_write_scanlines(...); */
 
-    /* Here we use the library's state variable cinfo.next_scanline as the
-     * loop counter, so that we don't have to keep track ourselves.
-     * To keep things simple, we pass one scanline per call; you can pass
-     * more if you wish, though.
-     */
-    /* JSAMPLEs per row in image_buffer */
-    rowstride = cinfo.input_components * cinfo.image_width;
-    data = g_new (guchar, rowstride * gimp_tile_height ());
+	/* Here we use the library's state variable cinfo.next_scanline as the
+	 * loop counter, so that we don't have to keep track ourselves.
+	 * To keep things simple, we pass one scanline per call; you can pass
+	 * more if you wish, though.
+	 */
+	/* JSAMPLEs per row in image_buffer */
+	rowstride = cinfo.input_components * cinfo.image_width;
+	data = g_new (guchar, rowstride * gimp_tile_height ());
 
-    /* fault if cinfo.next_scanline isn't initially a multiple of
-     * gimp_tile_height */
-    src = NULL;
+	/* fault if cinfo.next_scanline isn't initially a multiple of
+	 * gimp_tile_height */
+	src = NULL;
 
-    /*
-     * sg - if we preview, we want this to happen in the background -- do
-     * not duplicate code in the future; for now, it's OK
-     */
+	/*
+	 * sg - if we preview, we want this to happen in the background -- do
+	 * not duplicate code in the future; for now, it's OK
+	 */
 
-    if (preview)
-    {
-        PreviewPersistent *pp = g_new (PreviewPersistent, 1);
+	if (preview)
+	{
+		PreviewPersistent *pp = g_new (PreviewPersistent, 1);
 
-        /* pass all the information we need */
-        pp->cinfo       = cinfo;
-        pp->tile_height = gimp_tile_height();
-        pp->data        = data;
-        pp->outfile     = outfile;
-        pp->has_alpha   = has_alpha;
-        pp->rowstride   = rowstride;
-        pp->data        = data;
-        pp->buffer      = buffer;
-        pp->format      = format;
-        pp->src         = NULL;
-        pp->file        = g_object_ref (file);
-        pp->abort_me    = FALSE;
+		/* pass all the information we need */
+		pp->cinfo       = cinfo;
+		pp->tile_height = gimp_tile_height();
+		pp->data        = data;
+		pp->outfile     = outfile;
+		pp->has_alpha   = has_alpha;
+		pp->rowstride   = rowstride;
+		pp->data        = data;
+		pp->buffer      = buffer;
+		pp->format      = format;
+		pp->src         = NULL;
+		pp->file        = g_object_ref (file);
+		pp->abort_me    = FALSE;
 
-        g_warn_if_fail (prev_p == NULL);
-        prev_p = pp;
+		g_warn_if_fail (prev_p == NULL);
+		prev_p = pp;
 
-        pp->cinfo.err = jpeg_std_error(&(pp->jerr));
-        pp->jerr.error_exit = background_error_exit;
+		pp->cinfo.err = jpeg_std_error(&(pp->jerr));
+		pp->jerr.error_exit = background_error_exit;
 
-        gtk_label_set_text (GTK_LABEL (preview_size),
-                            _("Calculating file size..."));
+		gtk_label_set_text (GTK_LABEL (preview_size),
+		                    _("Calculating file size..."));
 
-        pp->source_id = g_idle_add ((GSourceFunc) background_jpeg_save, pp);
+		pp->source_id = g_idle_add ((GSourceFunc) background_jpeg_save, pp);
 
-        /* background_jpeg_save() will cleanup as needed */
-        return TRUE;
-    }
+		/* background_jpeg_save() will cleanup as needed */
+		return TRUE;
+	}
 
-    while (cinfo.next_scanline < cinfo.image_height)
-    {
-        if ((cinfo.next_scanline % gimp_tile_height ()) == 0)
-        {
-            yend = cinfo.next_scanline + gimp_tile_height ();
-            yend = MIN (yend, cinfo.image_height);
-            gegl_buffer_get (buffer,
-                             GEGL_RECTANGLE (0, cinfo.next_scanline,
-                                             cinfo.image_width,
-                                             (yend - cinfo.next_scanline)),
-                             1.0,
-                             format,
-                             data,
-                             GEGL_AUTO_ROWSTRIDE,
-                             GEGL_ABYSS_NONE);
-            src = data;
-        }
+	while (cinfo.next_scanline < cinfo.image_height)
+	{
+		if ((cinfo.next_scanline % gimp_tile_height ()) == 0)
+		{
+			yend = cinfo.next_scanline + gimp_tile_height ();
+			yend = MIN (yend, cinfo.image_height);
+			gegl_buffer_get (buffer,
+			                 GEGL_RECTANGLE (0, cinfo.next_scanline,
+			                                 cinfo.image_width,
+			                                 (yend - cinfo.next_scanline)),
+			                 1.0,
+			                 format,
+			                 data,
+			                 GEGL_AUTO_ROWSTRIDE,
+			                 GEGL_ABYSS_NONE);
+			src = data;
+		}
 
-        jpeg_write_scanlines (&cinfo, (JSAMPARRAY) &src, 1);
-        src += rowstride;
+		jpeg_write_scanlines (&cinfo, (JSAMPARRAY) &src, 1);
+		src += rowstride;
 
-        if ((cinfo.next_scanline % 32) == 0)
-            gimp_progress_update ((gdouble) cinfo.next_scanline /
-                                  (gdouble) cinfo.image_height);
-    }
+		if ((cinfo.next_scanline % 32) == 0)
+			gimp_progress_update ((gdouble) cinfo.next_scanline /
+			                      (gdouble) cinfo.image_height);
+	}
 
-    /* Step 6: Finish compression */
-    jpeg_finish_compress (&cinfo);
-    /* After finish_compress, we can close the output file. */
-    fclose (outfile);
+	/* Step 6: Finish compression */
+	jpeg_finish_compress (&cinfo);
+	/* After finish_compress, we can close the output file. */
+	fclose (outfile);
 
-    /* Step 7: release JPEG compression object */
+	/* Step 7: release JPEG compression object */
 
-    /* This is an important step since it will release a good deal of memory. */
-    jpeg_destroy_compress (&cinfo);
+	/* This is an important step since it will release a good deal of memory. */
+	jpeg_destroy_compress (&cinfo);
 
-    /* free the temporary buffer */
-    g_free (data);
+	/* free the temporary buffer */
+	g_free (data);
 
-    /* And we're done! */
-    gimp_progress_update (1.0);
+	/* And we're done! */
+	gimp_progress_update (1.0);
 
-    g_object_unref (buffer);
+	g_object_unref (buffer);
 
-    return TRUE;
+	return TRUE;
 }
 
 static void
 make_preview (GimpProcedureConfig *config)
 {
-    gboolean show_preview;
+	gboolean show_preview;
 
-    destroy_preview ();
+	destroy_preview ();
 
-    g_object_get (config, "show-preview", &show_preview, NULL);
+	g_object_get (config, "show-preview", &show_preview, NULL);
 
-    if (show_preview)
-    {
-        GFile *file = gimp_temp_file ("jpeg");
+	if (show_preview)
+	{
+		GFile *file = gimp_temp_file ("jpeg");
 
-        if (! undo_touched)
-        {
-            /* we freeze undo saving so that we can avoid sucking up
-             * tile cache with our unneeded preview steps. */
-            gimp_image_undo_freeze (preview_image);
+		if (!undo_touched)
+		{
+			/* we freeze undo saving so that we can avoid sucking up
+			 * tile cache with our unneeded preview steps. */
+			gimp_image_undo_freeze (preview_image);
 
-            undo_touched = TRUE;
-        }
+			undo_touched = TRUE;
+		}
 
-        save_image (file, config,
-                    preview_image,
-                    drawable_global,
-                    orig_image_global,
-                    TRUE, NULL);
+		save_image (file, config,
+		            preview_image,
+		            drawable_global,
+		            orig_image_global,
+		            TRUE, NULL);
 
-        g_object_unref (file);
+		g_object_unref (file);
 
-        if (! display)
-            display = gimp_display_new (preview_image);
-    }
-    else
-    {
-        gtk_label_set_text (GTK_LABEL (preview_size), _("File size: unknown"));
+		if (!display)
+			display = gimp_display_new (preview_image);
+	}
+	else
+	{
+		gtk_label_set_text (GTK_LABEL (preview_size), _("File size: unknown"));
 
-        gimp_displays_flush ();
-    }
+		gimp_displays_flush ();
+	}
 }
 
 void
 destroy_preview (void)
 {
-    if (prev_p && !prev_p->abort_me)
-    {
-        guint id = prev_p->source_id;
-        prev_p->abort_me = TRUE;   /* signal the background save to stop */
-        background_jpeg_save (prev_p);
-        g_source_remove (id);
-    }
+	if (prev_p && !prev_p->abort_me)
+	{
+		guint id = prev_p->source_id;
+		prev_p->abort_me = TRUE; /* signal the background save to stop */
+		background_jpeg_save (prev_p);
+		g_source_remove (id);
+	}
 
-    if (gimp_image_is_valid (preview_image) &&
-            gimp_item_is_valid (GIMP_ITEM (preview_layer)))
-    {
-        /* assuming that reference counting is working correctly, we do
-         * not need to delete the layer, removing it from the image
-         * should be sufficient
-         */
-        gimp_image_remove_layer (preview_image, preview_layer);
+	if (gimp_image_is_valid (preview_image) &&
+	    gimp_item_is_valid (GIMP_ITEM (preview_layer)))
+	{
+		/* assuming that reference counting is working correctly, we do
+		 * not need to delete the layer, removing it from the image
+		 * should be sufficient
+		 */
+		gimp_image_remove_layer (preview_image, preview_layer);
 
-        preview_layer = NULL;
-    }
+		preview_layer = NULL;
+	}
 }
 
 gboolean
@@ -783,172 +783,172 @@ save_dialog (GimpProcedure       *procedure,
              GimpProcedureConfig *config,
              GimpDrawable        *drawable)
 {
-    GtkWidget    *dialog;
-    GtkWidget    *widget;
-    GtkListStore *store;
-    gint          orig_quality;
-    gint          restart;
-    gboolean      run;
+	GtkWidget    *dialog;
+	GtkWidget    *widget;
+	GtkListStore *store;
+	gint orig_quality;
+	gint restart;
+	gboolean run;
 
-    g_object_get (config,
-                  "original-quality", &orig_quality,
-                  "restart",          &restart,
-                  NULL);
+	g_object_get (config,
+	              "original-quality", &orig_quality,
+	              "restart",          &restart,
+	              NULL);
 
-    dialog = gimp_save_procedure_dialog_new (GIMP_SAVE_PROCEDURE (procedure),
-             GIMP_PROCEDURE_CONFIG (config),
-             gimp_item_get_image (GIMP_ITEM (drawable)));
+	dialog = gimp_save_procedure_dialog_new (GIMP_SAVE_PROCEDURE (procedure),
+	                                         GIMP_PROCEDURE_CONFIG (config),
+	                                         gimp_item_get_image (GIMP_ITEM (drawable)));
 
-    /* custom quantization tables - now used also for original quality */
-    widget = gimp_procedure_dialog_get_widget (GIMP_PROCEDURE_DIALOG (dialog),
-             "use-original-quality", G_TYPE_NONE);
-    gtk_widget_set_sensitive (widget, (orig_quality > 0));
+	/* custom quantization tables - now used also for original quality */
+	widget = gimp_procedure_dialog_get_widget (GIMP_PROCEDURE_DIALOG (dialog),
+	                                           "use-original-quality", G_TYPE_NONE);
+	gtk_widget_set_sensitive (widget, (orig_quality > 0));
 
-    /* Quality as a GimpScaleEntry. */
-    gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog), "quality", 100.0);
+	/* Quality as a GimpScaleEntry. */
+	gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog), "quality", 100.0);
 
-    /* changing quality disables custom quantization tables, and vice-versa */
-    g_signal_connect (config, "notify::quality",
-                      G_CALLBACK (quality_changed),
-                      NULL);
-    g_signal_connect (config, "notify::use-original-quality",
-                      G_CALLBACK (use_orig_qual_changed),
-                      NULL);
+	/* changing quality disables custom quantization tables, and vice-versa */
+	g_signal_connect (config, "notify::quality",
+	                  G_CALLBACK (quality_changed),
+	                  NULL);
+	g_signal_connect (config, "notify::use-original-quality",
+	                  G_CALLBACK (use_orig_qual_changed),
+	                  NULL);
 
-    /* File size label. */
-    preview_size = gimp_procedure_dialog_get_label (GIMP_PROCEDURE_DIALOG (dialog),
-                   "preview-size", _("File size: unknown"));
-    gtk_label_set_xalign (GTK_LABEL (preview_size), 0.0);
-    gtk_label_set_ellipsize (GTK_LABEL (preview_size), PANGO_ELLIPSIZE_END);
-    gimp_label_set_attributes (GTK_LABEL (preview_size),
-                               PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
-                               -1);
-    gimp_help_set_help_data (preview_size,
-                             _("Enable preview to obtain the file size."), NULL);
+	/* File size label. */
+	preview_size = gimp_procedure_dialog_get_label (GIMP_PROCEDURE_DIALOG (dialog),
+	                                                "preview-size", _("File size: unknown"));
+	gtk_label_set_xalign (GTK_LABEL (preview_size), 0.0);
+	gtk_label_set_ellipsize (GTK_LABEL (preview_size), PANGO_ELLIPSIZE_END);
+	gimp_label_set_attributes (GTK_LABEL (preview_size),
+	                           PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+	                           -1);
+	gimp_help_set_help_data (preview_size,
+	                         _("Enable preview to obtain the file size."), NULL);
 
 
 #ifdef C_ARITH_CODING_SUPPORTED
-    gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
-                                      "arithmetic-frame", "use-arithmetic-coding", TRUE,
-                                      "optimize");
+	gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
+	                                  "arithmetic-frame", "use-arithmetic-coding", TRUE,
+	                                  "optimize");
 #endif
 
-    /* Restart marker. */
-    /* TODO: apparently when toggle is unchecked, we want to show the
-     * scale as 0.
-     */
-    gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
-                                      "restart-frame", "use-restart", FALSE,
-                                      "restart");
-    if (restart == 0)
-        g_object_set (config,
-                      "restart",     DEFAULT_RESTART_MCU_ROWS,
-                      "use-restart", FALSE,
-                      NULL);
+	/* Restart marker. */
+	/* TODO: apparently when toggle is unchecked, we want to show the
+	 * scale as 0.
+	 */
+	gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
+	                                  "restart-frame", "use-restart", FALSE,
+	                                  "restart");
+	if (restart == 0)
+		g_object_set (config,
+		              "restart",     DEFAULT_RESTART_MCU_ROWS,
+		              "use-restart", FALSE,
+		              NULL);
 
-    /* Subsampling */
-    store = gimp_int_store_new (_("4:4:4 (best quality)"),
-                                JPEG_SUBSAMPLING_1x1_1x1_1x1,
-                                _("4:2:2 horizontal (chroma halved)"),
-                                JPEG_SUBSAMPLING_2x1_1x1_1x1,
-                                _("4:2:2 vertical (chroma halved)"),
-                                JPEG_SUBSAMPLING_1x2_1x1_1x1,
-                                _("4:2:0 (chroma quartered)"),
-                                JPEG_SUBSAMPLING_2x2_1x1_1x1,
-                                NULL);
-    widget = gimp_procedure_dialog_get_int_combo (GIMP_PROCEDURE_DIALOG (dialog),
-             "sub-sampling", GIMP_INT_STORE (store));
-    widget = gimp_label_int_widget_get_widget (GIMP_LABEL_INT_WIDGET (widget));
-    g_object_unref (store);
+	/* Subsampling */
+	store = gimp_int_store_new (_("4:4:4 (best quality)"),
+	                            JPEG_SUBSAMPLING_1x1_1x1_1x1,
+	                            _("4:2:2 horizontal (chroma halved)"),
+	                            JPEG_SUBSAMPLING_2x1_1x1_1x1,
+	                            _("4:2:2 vertical (chroma halved)"),
+	                            JPEG_SUBSAMPLING_1x2_1x1_1x1,
+	                            _("4:2:0 (chroma quartered)"),
+	                            JPEG_SUBSAMPLING_2x2_1x1_1x1,
+	                            NULL);
+	widget = gimp_procedure_dialog_get_int_combo (GIMP_PROCEDURE_DIALOG (dialog),
+	                                              "sub-sampling", GIMP_INT_STORE (store));
+	widget = gimp_label_int_widget_get_widget (GIMP_LABEL_INT_WIDGET (widget));
+	g_object_unref (store);
 
-    if (! gimp_drawable_is_rgb (drawable))
-    {
-        g_object_set (config, "sub-sampling", JPEG_SUBSAMPLING_1x1_1x1_1x1, NULL);
-        gtk_widget_set_sensitive (widget, FALSE);
-    }
+	if (!gimp_drawable_is_rgb (drawable))
+	{
+		g_object_set (config, "sub-sampling", JPEG_SUBSAMPLING_1x1_1x1_1x1, NULL);
+		gtk_widget_set_sensitive (widget, FALSE);
+	}
 
-    /* DCT method */
-    store = gimp_int_store_new (_("Fast Integer"),   1,
-                                _("Integer"),        0,
-                                _("Floating-Point"), 2,
-                                NULL);
-    gimp_procedure_dialog_get_int_combo (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "dct", GIMP_INT_STORE (store));
-    g_object_unref (store);
+	/* DCT method */
+	store = gimp_int_store_new (_("Fast Integer"),   1,
+	                            _("Integer"),        0,
+	                            _("Floating-Point"), 2,
+	                            NULL);
+	gimp_procedure_dialog_get_int_combo (GIMP_PROCEDURE_DIALOG (dialog),
+	                                     "dct", GIMP_INT_STORE (store));
+	g_object_unref (store);
 
-    gimp_procedure_dialog_get_label (GIMP_PROCEDURE_DIALOG (dialog),
-                                     "advanced-title", _("Advanced Options"));
-    widget = gimp_procedure_dialog_get_widget (GIMP_PROCEDURE_DIALOG (dialog),
-             "smoothing", GIMP_TYPE_SCALE_ENTRY);
-    gimp_help_set_help_data (widget, NULL, "file-jpeg-save-smoothing");
+	gimp_procedure_dialog_get_label (GIMP_PROCEDURE_DIALOG (dialog),
+	                                 "advanced-title", _("Advanced Options"));
+	widget = gimp_procedure_dialog_get_widget (GIMP_PROCEDURE_DIALOG (dialog),
+	                                           "smoothing", GIMP_TYPE_SCALE_ENTRY);
+	gimp_help_set_help_data (widget, NULL, "file-jpeg-save-smoothing");
 
-    /* Add some logics for "Use original quality". */
-    if (gimp_drawable_is_rgb (drawable))
-    {
-        g_signal_connect (config, "notify::sub-sampling",
-                          G_CALLBACK (subsampling_changed),
-                          widget);
-        subsampling_changed (config, NULL, widget);
-        g_signal_connect (config, "notify::use-original-quality",
-                          G_CALLBACK (use_orig_qual_changed_rgb),
-                          NULL);
-    }
+	/* Add some logics for "Use original quality". */
+	if (gimp_drawable_is_rgb (drawable))
+	{
+		g_signal_connect (config, "notify::sub-sampling",
+		                  G_CALLBACK (subsampling_changed),
+		                  widget);
+		subsampling_changed (config, NULL, widget);
+		g_signal_connect (config, "notify::use-original-quality",
+		                  G_CALLBACK (use_orig_qual_changed_rgb),
+		                  NULL);
+	}
 
-    gimp_procedure_dialog_fill_box (GIMP_PROCEDURE_DIALOG (dialog),
-                                    "advanced-options",
-                                    "smoothing",
-                                    "progressive",
+	gimp_procedure_dialog_fill_box (GIMP_PROCEDURE_DIALOG (dialog),
+	                                "advanced-options",
+	                                "smoothing",
+	                                "progressive",
 #ifdef C_ARITH_CODING_SUPPORTED
-                                    "arithmetic-frame",
+	                                "arithmetic-frame",
 #else
-                                    "optimize",
+	                                "optimize",
 #endif
-                                    "restart-frame",
-                                    "sub-sampling",
-                                    "dct",
-                                    NULL);
-    gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
-                                      "advanced-frame", "advanced-title", FALSE,
-                                      "advanced-options");
+	                                "restart-frame",
+	                                "sub-sampling",
+	                                "dct",
+	                                NULL);
+	gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
+	                                  "advanced-frame", "advanced-title", FALSE,
+	                                  "advanced-options");
 
-    gimp_procedure_dialog_fill (GIMP_PROCEDURE_DIALOG (dialog),
-                                "quality", "use-original-quality",
-                                "preview-size", "show-preview",
-                                "advanced-frame",
-                                NULL);
+	gimp_procedure_dialog_fill (GIMP_PROCEDURE_DIALOG (dialog),
+	                            "quality", "use-original-quality",
+	                            "preview-size", "show-preview",
+	                            "advanced-frame",
+	                            NULL);
 
-    gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
-    /* Run make_preview() when various config are changed. */
-    g_signal_connect (config, "notify",
-                      G_CALLBACK (make_preview),
-                      NULL);
+	/* Run make_preview() when various config are changed. */
+	g_signal_connect (config, "notify",
+	                  G_CALLBACK (make_preview),
+	                  NULL);
 
-    make_preview (config);
+	make_preview (config);
 
-    run = gimp_procedure_dialog_run (GIMP_PROCEDURE_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
+	run = gimp_procedure_dialog_run (GIMP_PROCEDURE_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
 
-    destroy_preview ();
+	destroy_preview ();
 
-    return run;
+	return run;
 }
 
 static void
 quality_changed (GimpProcedureConfig *config)
 {
-    gboolean use_orig_quality;
-    gdouble  quality;
-    gint     orig_quality;
+	gboolean use_orig_quality;
+	gdouble quality;
+	gint orig_quality;
 
-    g_object_get (config,
-                  "use-original-quality",  &use_orig_quality,
-                  "original-quality",      &orig_quality,
-                  "quality",               &quality,
-                  NULL);
+	g_object_get (config,
+	              "use-original-quality",  &use_orig_quality,
+	              "original-quality",      &orig_quality,
+	              "quality",               &quality,
+	              NULL);
 
-    if (use_orig_quality && (gint) (quality * 100.0) != orig_quality)
-        g_object_set (config, "use-original-quality", FALSE, NULL);
+	if (use_orig_quality && (gint) (quality * 100.0) != orig_quality)
+		g_object_set (config, "use-original-quality", FALSE, NULL);
 }
 
 static void
@@ -956,58 +956,58 @@ subsampling_changed (GimpProcedureConfig *config,
                      const GParamSpec    *pspec,
                      GtkWidget           *smoothing_scale)
 {
-    gboolean use_orig_quality;
-    gint     orig_subsmp;
-    gint     subsmp;
+	gboolean use_orig_quality;
+	gint orig_subsmp;
+	gint subsmp;
 
-    g_object_get (config,
-                  "use-original-quality",  &use_orig_quality,
-                  "original-sub-sampling", &orig_subsmp,
-                  "sub-sampling",          &subsmp,
-                  NULL);
+	g_object_get (config,
+	              "use-original-quality",  &use_orig_quality,
+	              "original-sub-sampling", &orig_subsmp,
+	              "sub-sampling",          &subsmp,
+	              NULL);
 
-    /*  smoothing is not supported with nonstandard sampling ratios  */
-    gtk_widget_set_sensitive (smoothing_scale,
-                              subsmp != JPEG_SUBSAMPLING_2x1_1x1_1x1 &&
-                              subsmp != JPEG_SUBSAMPLING_1x2_1x1_1x1);
+	/*  smoothing is not supported with nonstandard sampling ratios  */
+	gtk_widget_set_sensitive (smoothing_scale,
+	                          subsmp != JPEG_SUBSAMPLING_2x1_1x1_1x1 &&
+	                          subsmp != JPEG_SUBSAMPLING_1x2_1x1_1x1);
 
-    if (use_orig_quality && orig_subsmp != subsmp)
-        g_object_set (config, "use-original-quality", FALSE, NULL);
+	if (use_orig_quality && orig_subsmp != subsmp)
+		g_object_set (config, "use-original-quality", FALSE, NULL);
 }
 
 static void
 use_orig_qual_changed (GimpProcedureConfig *config)
 {
-    gboolean use_orig_quality;
-    gint     orig_quality;
+	gboolean use_orig_quality;
+	gint orig_quality;
 
-    g_object_get (config,
-                  "use-original-quality", &use_orig_quality,
-                  "original-quality",     &orig_quality,
-                  NULL);
+	g_object_get (config,
+	              "use-original-quality", &use_orig_quality,
+	              "original-quality",     &orig_quality,
+	              NULL);
 
-    if (use_orig_quality && orig_quality > 0)
-    {
-        g_signal_handlers_block_by_func (config, quality_changed, NULL);
-        g_object_set (config, "quality", orig_quality / 100.0, NULL);
-        g_signal_handlers_unblock_by_func (config, quality_changed, NULL);
-    }
+	if (use_orig_quality && orig_quality > 0)
+	{
+		g_signal_handlers_block_by_func (config, quality_changed, NULL);
+		g_object_set (config, "quality", orig_quality / 100.0, NULL);
+		g_signal_handlers_unblock_by_func (config, quality_changed, NULL);
+	}
 }
 
 static void
 use_orig_qual_changed_rgb (GimpProcedureConfig *config)
 {
-    gboolean use_orig_quality;
-    gint     orig_quality;
-    gint     orig_subsmp;
+	gboolean use_orig_quality;
+	gint orig_quality;
+	gint orig_subsmp;
 
-    g_object_get (config,
-                  "use-original-quality",  &use_orig_quality,
-                  "original-sub-sampling", &orig_subsmp,
-                  "original-quality",      &orig_quality,
-                  NULL);
+	g_object_get (config,
+	              "use-original-quality",  &use_orig_quality,
+	              "original-sub-sampling", &orig_subsmp,
+	              "original-quality",      &orig_quality,
+	              NULL);
 
-    /* the test is (orig_quality > 0), not (orig_subsmp > 0) - this is normal */
-    if (use_orig_quality && orig_quality > 0)
-        g_object_set (config, "sub-sampling", orig_subsmp, NULL);
+	/* the test is (orig_quality > 0), not (orig_subsmp > 0) - this is normal */
+	if (use_orig_quality && orig_quality > 0)
+		g_object_set (config, "sub-sampling", orig_subsmp, NULL);
 }

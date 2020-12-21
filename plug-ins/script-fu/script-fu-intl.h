@@ -32,12 +32,12 @@
 #    define bind_textdomain_codeset(Domain, Codeset) (Domain)
 #endif
 
-#define INIT_I18N()	G_STMT_START{			          \
-  bindtextdomain (GETTEXT_PACKAGE"-script-fu",                    \
-                  gimp_locale_directory ());                      \
-  bind_textdomain_codeset (GETTEXT_PACKAGE"-script-fu", "UTF-8"); \
-  textdomain (GETTEXT_PACKAGE"-script-fu");                       \
-}G_STMT_END
+#define INIT_I18N()     G_STMT_START{                             \
+		bindtextdomain (GETTEXT_PACKAGE "-script-fu",                    \
+		                gimp_locale_directory ());                      \
+		bind_textdomain_codeset (GETTEXT_PACKAGE "-script-fu", "UTF-8"); \
+		textdomain (GETTEXT_PACKAGE "-script-fu");                       \
+} G_STMT_END
 
 
 #endif /* __SCRIPT_FU_INTL_H__ */

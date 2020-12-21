@@ -57,38 +57,38 @@
  **/
 GimpLayer *
 _gimp_layer_new (GimpImage     *image,
-                 gint           width,
-                 gint           height,
-                 GimpImageType  type,
+                 gint width,
+                 gint height,
+                 GimpImageType type,
                  const gchar   *name,
-                 gdouble        opacity,
-                 GimpLayerMode  mode)
+                 gdouble opacity,
+                 GimpLayerMode mode)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_IMAGE, image,
-                                            G_TYPE_INT, width,
-                                            G_TYPE_INT, height,
-                                            GIMP_TYPE_IMAGE_TYPE, type,
-                                            G_TYPE_STRING, name,
-                                            G_TYPE_DOUBLE, opacity,
-                                            GIMP_TYPE_LAYER_MODE, mode,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_IMAGE, image,
+	                                        G_TYPE_INT, width,
+	                                        G_TYPE_INT, height,
+	                                        GIMP_TYPE_IMAGE_TYPE, type,
+	                                        G_TYPE_STRING, name,
+	                                        G_TYPE_DOUBLE, opacity,
+	                                        GIMP_TYPE_LAYER_MODE, mode,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-new",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-new",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -114,27 +114,27 @@ gimp_layer_new_from_visible (GimpImage   *image,
                              GimpImage   *dest_image,
                              const gchar *name)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_IMAGE, image,
-                                            GIMP_TYPE_IMAGE, dest_image,
-                                            G_TYPE_STRING, name,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_IMAGE, image,
+	                                        GIMP_TYPE_IMAGE, dest_image,
+	                                        G_TYPE_STRING, name,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-new-from-visible",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-new-from-visible",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -156,26 +156,26 @@ GimpLayer *
 gimp_layer_new_from_drawable (GimpDrawable *drawable,
                               GimpImage    *dest_image)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer_copy = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer_copy = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_DRAWABLE, drawable,
-                                            GIMP_TYPE_IMAGE, dest_image,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_DRAWABLE, drawable,
+	                                        GIMP_TYPE_IMAGE, dest_image,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-new-from-drawable",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-new-from-drawable",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer_copy = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer_copy = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer_copy;
+	return layer_copy;
 }
 
 /**
@@ -199,25 +199,25 @@ gimp_layer_new_from_drawable (GimpDrawable *drawable,
 GimpLayer *
 gimp_layer_group_new (GimpImage *image)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer_group = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer_group = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_IMAGE, image,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_IMAGE, image,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-group-new",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-group-new",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer_group = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer_group = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer_group;
+	return layer_group;
 }
 
 /**
@@ -238,28 +238,28 @@ gimp_layer_group_new (GimpImage *image)
  **/
 GimpLayer *
 _gimp_layer_copy (GimpLayer *layer,
-                  gboolean   add_alpha)
+                  gboolean add_alpha)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer_copy = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer_copy = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, add_alpha,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, add_alpha,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-copy",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-copy",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer_copy = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer_copy = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer_copy;
+	return layer_copy;
 }
 
 /**
@@ -279,24 +279,24 @@ _gimp_layer_copy (GimpLayer *layer,
 gboolean
 gimp_layer_add_alpha (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-add-alpha",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-add-alpha",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -317,24 +317,24 @@ gimp_layer_add_alpha (GimpLayer *layer)
 gboolean
 gimp_layer_flatten (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-flatten",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-flatten",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -357,31 +357,31 @@ gimp_layer_flatten (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_scale (GimpLayer *layer,
-                  gint       new_width,
-                  gint       new_height,
-                  gboolean   local_origin)
+                  gint new_width,
+                  gint new_height,
+                  gboolean local_origin)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_INT, new_width,
-                                            G_TYPE_INT, new_height,
-                                            G_TYPE_BOOLEAN, local_origin,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_INT, new_width,
+	                                        G_TYPE_INT, new_height,
+	                                        G_TYPE_BOOLEAN, local_origin,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-scale",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-scale",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -403,33 +403,33 @@ gimp_layer_scale (GimpLayer *layer,
  **/
 gboolean
 gimp_layer_resize (GimpLayer *layer,
-                   gint       new_width,
-                   gint       new_height,
-                   gint       offx,
-                   gint       offy)
+                   gint new_width,
+                   gint new_height,
+                   gint offx,
+                   gint offy)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_INT, new_width,
-                                            G_TYPE_INT, new_height,
-                                            G_TYPE_INT, offx,
-                                            G_TYPE_INT, offy,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_INT, new_width,
+	                                        G_TYPE_INT, new_height,
+	                                        G_TYPE_INT, offx,
+	                                        G_TYPE_INT, offy,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-resize",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-resize",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -446,24 +446,24 @@ gimp_layer_resize (GimpLayer *layer,
 gboolean
 gimp_layer_resize_to_image_size (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-resize-to-image-size",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-resize-to-image-size",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -482,29 +482,29 @@ gimp_layer_resize_to_image_size (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_offsets (GimpLayer *layer,
-                        gint       offx,
-                        gint       offy)
+                        gint offx,
+                        gint offy)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_INT, offx,
-                                            G_TYPE_INT, offy,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_INT, offx,
+	                                        G_TYPE_INT, offy,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-offsets",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-offsets",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -539,28 +539,28 @@ gimp_layer_set_offsets (GimpLayer *layer,
  **/
 GimpLayerMask *
 gimp_layer_create_mask (GimpLayer       *layer,
-                        GimpAddMaskType  mask_type)
+                        GimpAddMaskType mask_type)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayerMask *mask = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayerMask *mask = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_ADD_MASK_TYPE, mask_type,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_ADD_MASK_TYPE, mask_type,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-create-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-create-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        mask = GIMP_VALUES_GET_LAYER_MASK (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		mask = GIMP_VALUES_GET_LAYER_MASK (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return mask;
+	return mask;
 }
 
 /**
@@ -577,25 +577,25 @@ gimp_layer_create_mask (GimpLayer       *layer,
 GimpLayerMask *
 gimp_layer_get_mask (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayerMask *mask = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayerMask *mask = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        mask = GIMP_VALUES_GET_LAYER_MASK (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		mask = GIMP_VALUES_GET_LAYER_MASK (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return mask;
+	return mask;
 }
 
 /**
@@ -614,25 +614,25 @@ gimp_layer_get_mask (GimpLayer *layer)
 GimpLayer *
 gimp_layer_from_mask (GimpLayerMask *mask)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayer *layer = NULL;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayer *layer = NULL;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER_MASK, mask,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER_MASK, mask,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-from-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-from-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		layer = GIMP_VALUES_GET_LAYER (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return layer;
+	return layer;
 }
 
 /**
@@ -656,25 +656,25 @@ gboolean
 gimp_layer_add_mask (GimpLayer     *layer,
                      GimpLayerMask *mask)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_LAYER_MASK, mask,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_LAYER_MASK, mask,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-add-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-add-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -691,27 +691,27 @@ gimp_layer_add_mask (GimpLayer     *layer,
  **/
 gboolean
 gimp_layer_remove_mask (GimpLayer         *layer,
-                        GimpMaskApplyMode  mode)
+                        GimpMaskApplyMode mode)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_MASK_APPLY_MODE, mode,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_MASK_APPLY_MODE, mode,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-remove-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-remove-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -729,25 +729,25 @@ gimp_layer_remove_mask (GimpLayer         *layer,
 gboolean
 gimp_layer_is_floating_sel (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean is_floating_sel = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean is_floating_sel = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-is-floating-sel",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-is-floating-sel",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        is_floating_sel = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		is_floating_sel = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return is_floating_sel;
+	return is_floating_sel;
 }
 
 /**
@@ -764,25 +764,25 @@ gimp_layer_is_floating_sel (GimpLayer *layer)
 gboolean
 gimp_layer_get_lock_alpha (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean lock_alpha = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean lock_alpha = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-lock-alpha",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-lock-alpha",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        lock_alpha = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		lock_alpha = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return lock_alpha;
+	return lock_alpha;
 }
 
 /**
@@ -799,27 +799,27 @@ gimp_layer_get_lock_alpha (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_lock_alpha (GimpLayer *layer,
-                           gboolean   lock_alpha)
+                           gboolean lock_alpha)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, lock_alpha,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, lock_alpha,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-lock-alpha",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-lock-alpha",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -837,25 +837,25 @@ gimp_layer_set_lock_alpha (GimpLayer *layer,
 gboolean
 gimp_layer_get_apply_mask (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean apply_mask = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean apply_mask = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-apply-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-apply-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        apply_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		apply_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return apply_mask;
+	return apply_mask;
 }
 
 /**
@@ -874,27 +874,27 @@ gimp_layer_get_apply_mask (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_apply_mask (GimpLayer *layer,
-                           gboolean   apply_mask)
+                           gboolean apply_mask)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, apply_mask,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, apply_mask,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-apply-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-apply-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -913,25 +913,25 @@ gimp_layer_set_apply_mask (GimpLayer *layer,
 gboolean
 gimp_layer_get_show_mask (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean show_mask = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean show_mask = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-show-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-show-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        show_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		show_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return show_mask;
+	return show_mask;
 }
 
 /**
@@ -950,27 +950,27 @@ gimp_layer_get_show_mask (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_show_mask (GimpLayer *layer,
-                          gboolean   show_mask)
+                          gboolean show_mask)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, show_mask,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, show_mask,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-show-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-show-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -988,25 +988,25 @@ gimp_layer_set_show_mask (GimpLayer *layer,
 gboolean
 gimp_layer_get_edit_mask (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean edit_mask = FALSE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean edit_mask = FALSE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-edit-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-edit-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        edit_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		edit_mask = GIMP_VALUES_GET_BOOLEAN (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return edit_mask;
+	return edit_mask;
 }
 
 /**
@@ -1025,27 +1025,27 @@ gimp_layer_get_edit_mask (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_edit_mask (GimpLayer *layer,
-                          gboolean   edit_mask)
+                          gboolean edit_mask)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_BOOLEAN, edit_mask,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_BOOLEAN, edit_mask,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-edit-mask",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-edit-mask",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1061,25 +1061,25 @@ gimp_layer_set_edit_mask (GimpLayer *layer,
 gdouble
 gimp_layer_get_opacity (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gdouble opacity = 0.0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gdouble opacity = 0.0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-opacity",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-opacity",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        opacity = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		opacity = GIMP_VALUES_GET_DOUBLE (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return opacity;
+	return opacity;
 }
 
 /**
@@ -1095,27 +1095,27 @@ gimp_layer_get_opacity (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_opacity (GimpLayer *layer,
-                        gdouble    opacity)
+                        gdouble opacity)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_DOUBLE, opacity,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_DOUBLE, opacity,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-opacity",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-opacity",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1131,25 +1131,25 @@ gimp_layer_set_opacity (GimpLayer *layer,
 GimpLayerMode
 gimp_layer_get_mode (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayerMode mode = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayerMode mode = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-mode",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-mode",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        mode = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		mode = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return mode;
+	return mode;
 }
 
 /**
@@ -1165,27 +1165,27 @@ gimp_layer_get_mode (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_mode (GimpLayer     *layer,
-                     GimpLayerMode  mode)
+                     GimpLayerMode mode)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_LAYER_MODE, mode,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_LAYER_MODE, mode,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-mode",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-mode",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1203,25 +1203,25 @@ gimp_layer_set_mode (GimpLayer     *layer,
 GimpLayerColorSpace
 gimp_layer_get_blend_space (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayerColorSpace blend_space = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayerColorSpace blend_space = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-blend-space",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-blend-space",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        blend_space = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		blend_space = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return blend_space;
+	return blend_space;
 }
 
 /**
@@ -1239,27 +1239,27 @@ gimp_layer_get_blend_space (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_blend_space (GimpLayer           *layer,
-                            GimpLayerColorSpace  blend_space)
+                            GimpLayerColorSpace blend_space)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_LAYER_COLOR_SPACE, blend_space,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_LAYER_COLOR_SPACE, blend_space,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-blend-space",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-blend-space",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1277,25 +1277,25 @@ gimp_layer_set_blend_space (GimpLayer           *layer,
 GimpLayerColorSpace
 gimp_layer_get_composite_space (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayerColorSpace composite_space = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayerColorSpace composite_space = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-composite-space",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-composite-space",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        composite_space = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		composite_space = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return composite_space;
+	return composite_space;
 }
 
 /**
@@ -1313,27 +1313,27 @@ gimp_layer_get_composite_space (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_composite_space (GimpLayer           *layer,
-                                GimpLayerColorSpace  composite_space)
+                                GimpLayerColorSpace composite_space)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_LAYER_COLOR_SPACE, composite_space,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_LAYER_COLOR_SPACE, composite_space,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-composite-space",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-composite-space",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -1351,25 +1351,25 @@ gimp_layer_set_composite_space (GimpLayer           *layer,
 GimpLayerCompositeMode
 gimp_layer_get_composite_mode (GimpLayer *layer)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    GimpLayerCompositeMode composite_mode = 0;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	GimpLayerCompositeMode composite_mode = 0;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-get-composite-mode",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-get-composite-mode",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
-        composite_mode = GIMP_VALUES_GET_ENUM (return_vals, 1);
+	if (GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS)
+		composite_mode = GIMP_VALUES_GET_ENUM (return_vals, 1);
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return composite_mode;
+	return composite_mode;
 }
 
 /**
@@ -1387,25 +1387,25 @@ gimp_layer_get_composite_mode (GimpLayer *layer)
  **/
 gboolean
 gimp_layer_set_composite_mode (GimpLayer              *layer,
-                               GimpLayerCompositeMode  composite_mode)
+                               GimpLayerCompositeMode composite_mode)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            GIMP_TYPE_LAYER, layer,
-                                            GIMP_TYPE_LAYER_COMPOSITE_MODE, composite_mode,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        GIMP_TYPE_LAYER, layer,
+	                                        GIMP_TYPE_LAYER_COMPOSITE_MODE, composite_mode,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-layer-set-composite-mode",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-layer-set-composite-mode",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }

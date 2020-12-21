@@ -1,7 +1,7 @@
 /* {{NO_DEPENDENCIES}}
- Microsoft Developer Studio generated include file.
- Used by snappy.rc
-*/
+   Microsoft Developer Studio generated include file.
+   Used by snappy.rc
+ */
 #define IDM_CAPTURE        100
 #define IDM_EXIT           101
 

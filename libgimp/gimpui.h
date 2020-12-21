@@ -62,7 +62,7 @@ void        gimp_window_set_transient             (GtkWindow   *window);
 
 GdkWindow * gimp_ui_get_display_window            (GimpDisplay *display);
 void        gimp_window_set_transient_for_display (GtkWindow   *window,
-        GimpDisplay *display);
+                                                   GimpDisplay *display);
 
 
 G_END_DECLS

@@ -28,8 +28,8 @@
 void d_ellipse_object_class_init (void);
 
 void d_ellipse_start             (GdkPoint *pnt,
-                                  gboolean  shift_down);
+                                  gboolean shift_down);
 void d_ellipse_end               (GdkPoint *pnt,
-                                  gboolean  shift_down);
+                                  gboolean shift_down);
 
 #endif /* __GFIG_ELLIPSE_H__ */

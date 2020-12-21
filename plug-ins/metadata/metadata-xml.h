@@ -24,75 +24,75 @@
 
 struct _GimpXmlParser
 {
-    GMarkupParseContext *context;
+	GMarkupParseContext *context;
 };
 
 typedef struct _GimpXmlParser GimpXmlParser;
 
 void
 xml_parser_start_element                     (GMarkupParseContext   *context,
-        const gchar           *element_name,
-        const gchar          **attribute_names,
-        const gchar          **attribute_values,
-        gpointer               user_data,
-        GError               **error);
+                                              const gchar           *element_name,
+                                              const gchar          **attribute_names,
+                                              const gchar          **attribute_values,
+                                              gpointer user_data,
+                                              GError               **error);
 
 void
 xml_parser_data                              (GMarkupParseContext  *context,
-        const gchar          *text,
-        gsize                 text_len,
-        gpointer              user_data,
-        GError              **error);
+                                              const gchar          *text,
+                                              gsize text_len,
+                                              gpointer user_data,
+                                              GError              **error);
 
 void
 set_tag_ui                                   (metadata_editor      *args,
-        int                   index,
-        gchar                *name,
-        gchar                *value,
-        gchar                *mode);
+                                              int index,
+                                              gchar                *name,
+                                              gchar                *value,
+                                              gchar                *mode);
 
 const gchar *
 get_tag_ui_text                              (metadata_editor      *args,
-        gchar                *name,
-        gchar                *mode);
+                                              gchar                *name,
+                                              gchar                *mode);
 
 gchar *
 get_tag_ui_list                              (metadata_editor      *args,
-        gchar                *name,
-        gchar                *mode);
+                                              gchar                *name,
+                                              gchar                *mode);
 
 gint
 get_tag_ui_combo                             (metadata_editor      *args,
-        gchar                *name,
-        gchar                *mode);
+                                              gchar                *name,
+                                              gchar                *mode);
 
 void
 xml_parser_end_element                       (GMarkupParseContext  *context,
-        const gchar          *element_name,
-        gpointer              user_data,
-        GError              **error);
+                                              const gchar          *element_name,
+                                              gpointer user_data,
+                                              GError              **error);
 
 gboolean
 xml_parser_parse_file                        (GimpXmlParser        *parser,
-        const gchar          *filename,
-        GError              **error);
+                                              const gchar          *filename,
+                                              GError              **error);
 
 void
 xml_parser_free                              (GimpXmlParser        *parser);
 
 gboolean
 parse_encoding                               (const gchar          *text,
-        gint                  text_len,
-        gchar               **encoding);
+                                              gint text_len,
+                                              gchar               **encoding);
 
 gboolean
 xml_parser_parse_io_channel                  (GimpXmlParser        *parser,
-        GIOChannel           *io,
-        GError              **error);
+                                              GIOChannel           *io,
+                                              GError              **error);
 
 GimpXmlParser *
 xml_parser_new                               (const GMarkupParser  *markup_parser,
-        gpointer              user_data);
+                                              gpointer user_data);
 
 #endif /* __METADATA_XML_H__ */
 

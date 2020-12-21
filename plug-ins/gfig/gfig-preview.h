@@ -30,6 +30,6 @@
 GtkWidget *make_preview            (void);
 
 void       gfig_pos_enable         (GtkWidget    *widget,
-                                    gpointer      data);
+                                    gpointer data);
 
 #endif /* __GFIG_PREVIEW_H__ */

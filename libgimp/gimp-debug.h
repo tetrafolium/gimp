@@ -26,13 +26,13 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-    GIMP_DEBUG_PID            = 1 << 0,
-    GIMP_DEBUG_FATAL_WARNINGS = 1 << 1,
-    GIMP_DEBUG_QUERY          = 1 << 2,
-    GIMP_DEBUG_INIT           = 1 << 3,
-    GIMP_DEBUG_RUN            = 1 << 4,
-    GIMP_DEBUG_QUIT           = 1 << 5,
-    GIMP_DEBUG_FATAL_CRITICALS = 1 << 6,
+	GIMP_DEBUG_PID            = 1 << 0,
+	GIMP_DEBUG_FATAL_WARNINGS = 1 << 1,
+	GIMP_DEBUG_QUERY          = 1 << 2,
+	GIMP_DEBUG_INIT           = 1 << 3,
+	GIMP_DEBUG_RUN            = 1 << 4,
+	GIMP_DEBUG_QUIT           = 1 << 5,
+	GIMP_DEBUG_FATAL_CRITICALS = 1 << 6,
 
 } GimpDebugFlag;
 

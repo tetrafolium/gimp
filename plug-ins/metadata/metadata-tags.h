@@ -28,135 +28,135 @@
 
 enum
 {
-    GIMP_XMP_NONE = 0,
-    GIMP_XMP_TEXT,
-    GIMP_XMP_BAG,
-    GIMP_XMP_SEQ,
-    GIMP_XMP_LANG,
-    GIMP_XMP_ALT
+	GIMP_XMP_NONE = 0,
+	GIMP_XMP_TEXT,
+	GIMP_XMP_BAG,
+	GIMP_XMP_SEQ,
+	GIMP_XMP_LANG,
+	GIMP_XMP_ALT
 };
 
 enum
 {
-    COL_LICENSOR_NAME = 0,
-    COL_LICENSOR_ID,
-    COL_LICENSOR_PHONE1,
-    COL_LICENSOR_PHONE_TYPE1,
-    COL_LICENSOR_PHONE2,
-    COL_LICENSOR_PHONE_TYPE2,
-    COL_LICENSOR_EMAIL,
-    COL_LICENSOR_WEB,
-    COL_LICENSOR_NUM_COLS
+	COL_LICENSOR_NAME = 0,
+	COL_LICENSOR_ID,
+	COL_LICENSOR_PHONE1,
+	COL_LICENSOR_PHONE_TYPE1,
+	COL_LICENSOR_PHONE2,
+	COL_LICENSOR_PHONE_TYPE2,
+	COL_LICENSOR_EMAIL,
+	COL_LICENSOR_WEB,
+	COL_LICENSOR_NUM_COLS
 };
 
 enum
 {
-    COL_CR_OWNER_NAME = 0,
-    COL_CR_OWNER_ID,
-    COL_CR_OWNER_NUM_COLS
+	COL_CR_OWNER_NAME = 0,
+	COL_CR_OWNER_ID,
+	COL_CR_OWNER_NUM_COLS
 };
 
 enum
 {
-    COL_IMG_CR8_NAME = 0,
-    COL_IMG_CR8_ID,
-    COL_IMG_CR8_NUM_COLS
+	COL_IMG_CR8_NAME = 0,
+	COL_IMG_CR8_ID,
+	COL_IMG_CR8_NUM_COLS
 };
 
 enum
 {
-    COL_AOO_TITLE = 0,
-    COL_AOO_DATE_CREAT,
-    COL_AOO_CREATOR,
-    COL_AOO_SOURCE,
-    COL_AOO_SRC_INV_ID,
-    COL_AOO_CR_NOT,
-    COL_AOO_NUM_COLS
+	COL_AOO_TITLE = 0,
+	COL_AOO_DATE_CREAT,
+	COL_AOO_CREATOR,
+	COL_AOO_SOURCE,
+	COL_AOO_SRC_INV_ID,
+	COL_AOO_CR_NOT,
+	COL_AOO_NUM_COLS
 };
 
 enum
 {
-    COL_REGSITRY_ORG_ID = 0,
-    COL_REGSITRY_ITEM_ID,
-    COL_REGSITRY_NUM_COLS
+	COL_REGSITRY_ORG_ID = 0,
+	COL_REGSITRY_ITEM_ID,
+	COL_REGSITRY_NUM_COLS
 };
 
 enum
 {
-    COL_LOC_SHO_SUB_LOC = 0,
-    COL_LOC_SHO_CITY,
-    COL_LOC_SHO_STATE_PROV,
-    COL_LOC_SHO_CNTRY,
-    COL_LOC_SHO_CNTRY_ISO,
-    COL_LOC_SHO_CNTRY_WRLD_REG,
-    COL_LOC_SHO_NUM_COLS
+	COL_LOC_SHO_SUB_LOC = 0,
+	COL_LOC_SHO_CITY,
+	COL_LOC_SHO_STATE_PROV,
+	COL_LOC_SHO_CNTRY,
+	COL_LOC_SHO_CNTRY_ISO,
+	COL_LOC_SHO_CNTRY_WRLD_REG,
+	COL_LOC_SHO_NUM_COLS
 };
 
 enum
 {
-    COL_ORG_IMG_CODE = 0,
-    ORG_IMG_CODE_REL_NUM_COLS
+	COL_ORG_IMG_CODE = 0,
+	ORG_IMG_CODE_REL_NUM_COLS
 };
 
 enum
 {
-    COL_ORG_IMG_NAME = 0,
-    ORG_IMG_NAME_REL_NUM_COLS
+	COL_ORG_IMG_NAME = 0,
+	ORG_IMG_NAME_REL_NUM_COLS
 };
 
 enum
 {
-    COL_MOD_REL_ID = 0,
-    MOD_REL_NUM_COLS
+	COL_MOD_REL_ID = 0,
+	MOD_REL_NUM_COLS
 };
 
 enum
 {
-    COL_PROP_REL_ID = 0,
-    PROP_REL_NUM_COLS
+	COL_PROP_REL_ID = 0,
+	PROP_REL_NUM_COLS
 };
 
 extern const metadata_tag default_metadata_tags[];
-extern const gint         n_default_metadata_tags;
+extern const gint n_default_metadata_tags;
 
 extern const metadata_tag equivalent_metadata_tags[];
-extern const gint         n_equivalent_metadata_tags;
+extern const gint n_equivalent_metadata_tags;
 
 /* Digital Source Type Combobox Items
  * http://cv.iptc.org/newscodes/digitalsourcetype/
  */
 extern const combobox_str_tag digitalsourcetype[];
-extern const gint             n_digitalsourcetype;
+extern const gint n_digitalsourcetype;
 
 /* Model Release Status Combobox Items
  * http://ns.useplus.org/LDF/ldf-XMPSpecification#ModelReleaseStatus
  */
 extern const combobox_str_tag modelreleasestatus[];
-extern const gint             n_modelreleasestatus;
+extern const gint n_modelreleasestatus;
 
 /* Property Release Status Combobox Items
  * http://ns.useplus.org/LDF/ldf-XMPSpecification#PropertyReleaseStatus
  */
 extern const combobox_str_tag propertyreleasestatus[];
-extern const gint             n_propertyreleasestatus;
+extern const gint n_propertyreleasestatus;
 
 /* Minor Model Age Disclosure Combobox Items
  * http://ns.useplus.org/LDF/ldf-XMPSpecification#MinorModelAgeDisclosure
  */
 extern const combobox_str_tag minormodelagedisclosure[];
-extern const gint             n_minormodelagedisclosure;
+extern const gint n_minormodelagedisclosure;
 
 /* Urgency */
 extern const gchar *urgency[];
-extern const gint   n_urgency;
+extern const gint n_urgency;
 
 /* Marked */
 extern const combobox_int_tag marked[];
-extern const gint             n_marked;
+extern const gint n_marked;
 
 /* Phone Types */
 extern const combobox_str_tag phone_types[];
-extern const gint             n_phone_types;
+extern const gint n_phone_types;
 
 /* DICOM Patient Sex
  * http://dicomlookup.com/lookup.asp?sw=Ttable&q=C.7-1
@@ -165,23 +165,23 @@ extern const gint             n_phone_types;
  * http://dicom.nema.org/standard.html
  */
 extern const combobox_str_tag dicom[];
-extern const gint             n_dicom;
+extern const gint n_dicom;
 
 /* GPS Altitude Ref */
 extern const gchar *gpsaltref[];
-extern const gint   n_gpsaltref;
+extern const gint n_gpsaltref;
 
 /* GPS Latitude Ref */
 extern const gchar *gpslatref[];
-extern const gint   n_gpslatref;
+extern const gint n_gpslatref;
 
 /* GPS Longitude Ref */
 extern const gchar *gpslngref[];
-extern const gint   n_gpslngref;
+extern const gint n_gpslngref;
 
 /* GPS Measurement System */
 extern const gchar *gpsaltsys[];
-extern const gint   n_gpsaltsys;
+extern const gint n_gpsaltsys;
 
 extern const TranslateHeaderTag creatorContactInfoHeader;
 
@@ -199,44 +199,44 @@ extern const TranslateTag imageSupplierInfoTags[];
 
 #define LICENSOR_HEADER "Xmp.plus.Licensor"
 extern const gchar *licensor[];
-extern const gint   n_licensor;
+extern const gint n_licensor;
 
 #ifdef USE_TAGS
 #define IMAGESUPPLIER_HEADER "Xmp.plus.ImageSupplier"
 extern const gchar *imagesupplier[];
-extern const gint   n_imagesupplier;
+extern const gint n_imagesupplier;
 #endif
 
 #define IMAGECREATOR_HEADER "Xmp.plus.ImageCreator"
 extern const gchar *imagecreator[];
-extern const gint   n_imagecreator;
+extern const gint n_imagecreator;
 
 #define COPYRIGHTOWNER_HEADER "Xmp.plus.CopyrightOwner"
 extern const gchar *copyrightowner[];
-extern const gint   n_copyrightowner;
+extern const gint n_copyrightowner;
 
 #define REGISTRYID_HEADER "Xmp.iptcExt.RegistryId"
 extern const gchar *registryid[];
-extern const gint   n_registryid;
+extern const gint n_registryid;
 
 #define ARTWORKOROBJECT_HEADER "Xmp.iptcExt.ArtworkOrObject"
 extern const gchar *artworkorobject[];
-extern const gint   n_artworkorobject;
+extern const gint n_artworkorobject;
 
 #define LOCATIONSHOWN_HEADER "Xmp.iptcExt.LocationShown"
 extern const gchar *locationshown[];
-extern const gint   n_locationshown;
+extern const gint n_locationshown;
 
 #ifdef USE_TAGS
 #define LOCATIONCREATED_HEADER "Xmp.iptcExt.LocationCreated"
 extern const gchar *locationcreated[];
-extern const gint   n_locationcreated;
+extern const gint n_locationcreated;
 #endif
 
 
-gchar * metadata_format_gps_longitude_latitude (const gdouble  value);
-gchar * metadata_format_gps_altitude           (const gdouble  value,
-        gboolean       use_meter,
-        gchar         *measurement_symbol);
+gchar * metadata_format_gps_longitude_latitude (const gdouble value);
+gchar * metadata_format_gps_altitude           (const gdouble value,
+                                                gboolean use_meter,
+                                                gchar         *measurement_symbol);
 
 #endif /* __METADATA_TAGS_H__ */

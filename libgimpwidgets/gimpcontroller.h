@@ -40,15 +40,15 @@ G_BEGIN_DECLS
  **/
 typedef enum
 {
-    GIMP_CONTROLLER_EVENT_TRIGGER,
-    GIMP_CONTROLLER_EVENT_VALUE
+	GIMP_CONTROLLER_EVENT_TRIGGER,
+	GIMP_CONTROLLER_EVENT_VALUE
 } GimpControllerEventType;
 
 
-typedef struct _GimpControllerEventAny     GimpControllerEventAny;
+typedef struct _GimpControllerEventAny GimpControllerEventAny;
 typedef struct _GimpControllerEventTrigger GimpControllerEventTrigger;
-typedef struct _GimpControllerEventValue   GimpControllerEventValue;
-typedef union  _GimpControllerEvent        GimpControllerEvent;
+typedef struct _GimpControllerEventValue GimpControllerEventValue;
+typedef union  _GimpControllerEvent GimpControllerEvent;
 
 /**
  * GimpControllerEventAny:
@@ -61,9 +61,9 @@ typedef union  _GimpControllerEvent        GimpControllerEvent;
  **/
 struct _GimpControllerEventAny
 {
-    GimpControllerEventType  type;
-    GimpController          *source;
-    gint                     event_id;
+	GimpControllerEventType type;
+	GimpController          *source;
+	gint event_id;
 };
 
 /**
@@ -76,9 +76,9 @@ struct _GimpControllerEventAny
  **/
 struct _GimpControllerEventTrigger
 {
-    GimpControllerEventType  type;
-    GimpController          *source;
-    gint                     event_id;
+	GimpControllerEventType type;
+	GimpController          *source;
+	gint event_id;
 };
 
 /**
@@ -92,10 +92,10 @@ struct _GimpControllerEventTrigger
  **/
 struct _GimpControllerEventValue
 {
-    GimpControllerEventType  type;
-    GimpController          *source;
-    gint                     event_id;
-    GValue                   value;
+	GimpControllerEventType type;
+	GimpController          *source;
+	gint event_id;
+	GValue value;
 };
 
 /**
@@ -109,10 +109,10 @@ struct _GimpControllerEventValue
  **/
 union _GimpControllerEvent
 {
-    GimpControllerEventType    type;
-    GimpControllerEventAny     any;
-    GimpControllerEventTrigger trigger;
-    GimpControllerEventValue   value;
+	GimpControllerEventType type;
+	GimpControllerEventAny any;
+	GimpControllerEventTrigger trigger;
+	GimpControllerEventValue value;
 };
 
 
@@ -125,59 +125,59 @@ union _GimpControllerEvent
 
 
 typedef struct _GimpControllerPrivate GimpControllerPrivate;
-typedef struct _GimpControllerClass   GimpControllerClass;
+typedef struct _GimpControllerClass GimpControllerClass;
 
 struct _GimpController
 {
-    GObject                parent_instance;
+	GObject parent_instance;
 
-    GimpControllerPrivate *priv;
+	GimpControllerPrivate *priv;
 
-    /* FIXME MOVE TO PRIVATE */
-    gchar    *name;
-    gchar    *state;
+	/* FIXME MOVE TO PRIVATE */
+	gchar    *name;
+	gchar    *state;
 };
 
 struct _GimpControllerClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    const gchar  *name;
-    const gchar  *help_domain;
-    const gchar  *help_id;
-    const gchar  *icon_name;
+	const gchar  *name;
+	const gchar  *help_domain;
+	const gchar  *help_id;
+	const gchar  *icon_name;
 
-    /*  virtual functions  */
-    gint          (* get_n_events)    (GimpController            *controller);
-    const gchar * (* get_event_name)  (GimpController            *controller,
-                                       gint                       event_id);
-    const gchar * (* get_event_blurb) (GimpController            *controller,
-                                       gint                       event_id);
+	/*  virtual functions  */
+	gint (* get_n_events)    (GimpController            *controller);
+	const gchar * (* get_event_name)  (GimpController            *controller,
+	                                   gint event_id);
+	const gchar * (* get_event_blurb) (GimpController            *controller,
+	                                   gint event_id);
 
-    /*  signals  */
-    gboolean      (* event)           (GimpController            *controller,
-                                       const GimpControllerEvent *event);
+	/*  signals  */
+	gboolean (* event)           (GimpController            *controller,
+	                              const GimpControllerEvent *event);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType            gimp_controller_get_type        (void) G_GNUC_CONST;
-GimpController * gimp_controller_new             (GType           controller_type);
+GimpController * gimp_controller_new             (GType controller_type);
 
 gint             gimp_controller_get_n_events    (GimpController *controller);
 const gchar    * gimp_controller_get_event_name  (GimpController *controller,
-        gint            event_id);
+                                                  gint event_id);
 const gchar    * gimp_controller_get_event_blurb (GimpController *controller,
-        gint            event_id);
+                                                  gint event_id);
 
 
 /*  protected  */

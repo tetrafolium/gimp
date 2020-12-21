@@ -38,19 +38,19 @@ G_BEGIN_DECLS
  * @user_data: (closure): user data
  */
 typedef void (* GimpRunPatternCallback)   (const gchar  *pattern_name,
-        gint          width,
-        gint          height,
-        gint          bpp,
-        const guchar *mask_data,
-        gboolean      dialog_closing,
-        gpointer      user_data);
+                                           gint width,
+                                           gint height,
+                                           gint bpp,
+                                           const guchar *mask_data,
+                                           gboolean dialog_closing,
+                                           gpointer user_data);
 
 
 const gchar * gimp_pattern_select_new     (const gchar            *title,
-        const gchar            *pattern_name,
-        GimpRunPatternCallback  callback,
-        gpointer                data,
-        GDestroyNotify          data_destroy);
+                                           const gchar            *pattern_name,
+                                           GimpRunPatternCallback callback,
+                                           gpointer data,
+                                           GDestroyNotify data_destroy);
 void          gimp_pattern_select_destroy (const gchar            *pattern_callback);
 
 

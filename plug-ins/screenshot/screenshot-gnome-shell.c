@@ -38,41 +38,41 @@ static GDBusProxy *proxy = NULL;
 gboolean
 screenshot_gnome_shell_available (void)
 {
-    proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                           G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-                                           NULL,
-                                           "org.gnome.Shell.Screenshot",
-                                           "/org/gnome/Shell/Screenshot",
-                                           "org.gnome.Shell.Screenshot",
-                                           NULL, NULL);
+	proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+	                                       G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+	                                       NULL,
+	                                       "org.gnome.Shell.Screenshot",
+	                                       "/org/gnome/Shell/Screenshot",
+	                                       "org.gnome.Shell.Screenshot",
+	                                       NULL, NULL);
 
-    if (proxy)
-    {
-        GError *error = NULL;
+	if (proxy)
+	{
+		GError *error = NULL;
 
-        g_dbus_proxy_call_sync (proxy, "org.freedesktop.DBus.Peer.Ping",
-                                NULL,
-                                G_DBUS_CALL_FLAGS_NONE,
-                                -1, NULL, &error);
-        if (! error)
-            return TRUE;
+		g_dbus_proxy_call_sync (proxy, "org.freedesktop.DBus.Peer.Ping",
+		                        NULL,
+		                        G_DBUS_CALL_FLAGS_NONE,
+		                        -1, NULL, &error);
+		if (!error)
+			return TRUE;
 
-        g_clear_error (&error);
+		g_clear_error (&error);
 
-        g_object_unref (proxy);
-        proxy = NULL;
-    }
+		g_object_unref (proxy);
+		proxy = NULL;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 ScreenshotCapabilities
 screenshot_gnome_shell_get_capabilities (void)
 {
-    return (SCREENSHOT_CAN_SHOOT_DECORATIONS |
-            SCREENSHOT_CAN_SHOOT_POINTER     |
-            SCREENSHOT_CAN_SHOOT_REGION      |
-            SCREENSHOT_CAN_SHOOT_WINDOW);
+	return (SCREENSHOT_CAN_SHOOT_DECORATIONS |
+	        SCREENSHOT_CAN_SHOOT_POINTER     |
+	        SCREENSHOT_CAN_SHOOT_REGION      |
+	        SCREENSHOT_CAN_SHOOT_WINDOW);
 }
 
 GimpPDBStatusType
@@ -81,131 +81,131 @@ screenshot_gnome_shell_shoot (ScreenshotValues  *shootvals,
                               GimpImage        **image,
                               GError           **error)
 {
-    GFile       *file;
-    gchar       *filename;
-    const gchar *method = NULL;
-    GVariant    *args   = NULL;
-    GVariant    *retval;
-    gboolean     success;
+	GFile       *file;
+	gchar       *filename;
+	const gchar *method = NULL;
+	GVariant    *args   = NULL;
+	GVariant    *retval;
+	gboolean success;
 
-    file = gimp_temp_file ("png");
+	file = gimp_temp_file ("png");
 
-    filename = g_file_get_path (file);
+	filename = g_file_get_path (file);
 
-    switch (shootvals->shoot_type)
-    {
-    case SHOOT_ROOT:
-        if (shootvals->screenshot_delay > 0)
-            screenshot_delay (shootvals->screenshot_delay);
+	switch (shootvals->shoot_type)
+	{
+	case SHOOT_ROOT:
+		if (shootvals->screenshot_delay > 0)
+			screenshot_delay (shootvals->screenshot_delay);
 
-        method = "Screenshot";
-        args   = g_variant_new ("(bbs)",
-                                shootvals->show_cursor,
-                                TRUE, /* flash */
-                                filename);
+		method = "Screenshot";
+		args   = g_variant_new ("(bbs)",
+		                        shootvals->show_cursor,
+		                        TRUE, /* flash */
+		                        filename);
 
-        /* FIXME: figure profile */
-        break;
+		/* FIXME: figure profile */
+		break;
 
-    case SHOOT_REGION:
-        if (shootvals->select_delay > 0)
-            screenshot_delay (shootvals->select_delay);
+	case SHOOT_REGION:
+		if (shootvals->select_delay > 0)
+			screenshot_delay (shootvals->select_delay);
 
-        retval = g_dbus_proxy_call_sync (proxy, "SelectArea", NULL,
-                                         G_DBUS_CALL_FLAGS_NONE,
-                                         -1, NULL, error);
-        if (! retval)
-            goto failure;
+		retval = g_dbus_proxy_call_sync (proxy, "SelectArea", NULL,
+		                                 G_DBUS_CALL_FLAGS_NONE,
+		                                 -1, NULL, error);
+		if (!retval)
+			goto failure;
 
-        g_variant_get (retval, "(iiii)",
-                       &shootvals->x1,
-                       &shootvals->y1,
-                       &shootvals->x2,
-                       &shootvals->y2);
-        g_variant_unref (retval);
+		g_variant_get (retval, "(iiii)",
+		               &shootvals->x1,
+		               &shootvals->y1,
+		               &shootvals->x2,
+		               &shootvals->y2);
+		g_variant_unref (retval);
 
-        shootvals->x2 += shootvals->x1;
-        shootvals->y2 += shootvals->y1;
+		shootvals->x2 += shootvals->x1;
+		shootvals->y2 += shootvals->y1;
 
-        method = "ScreenshotArea";
-        args   = g_variant_new ("(iiiibs)",
-                                shootvals->x1,
-                                shootvals->y1,
-                                shootvals->x2 - shootvals->x1,
-                                shootvals->y2 - shootvals->y1,
-                                TRUE, /* flash */
-                                filename);
+		method = "ScreenshotArea";
+		args   = g_variant_new ("(iiiibs)",
+		                        shootvals->x1,
+		                        shootvals->y1,
+		                        shootvals->x2 - shootvals->x1,
+		                        shootvals->y2 - shootvals->y1,
+		                        TRUE, /* flash */
+		                        filename);
 
-        monitor =
-            gdk_display_get_monitor_at_point (gdk_monitor_get_display (monitor),
-                                              (shootvals->x1 + shootvals->x2) / 2,
-                                              (shootvals->y1 + shootvals->y2) / 2);
+		monitor =
+			gdk_display_get_monitor_at_point (gdk_monitor_get_display (monitor),
+			                                  (shootvals->x1 + shootvals->x2) / 2,
+			                                  (shootvals->y1 + shootvals->y2) / 2);
 
-        if (shootvals->screenshot_delay > 0)
-            screenshot_delay (shootvals->screenshot_delay);
-        break;
+		if (shootvals->screenshot_delay > 0)
+			screenshot_delay (shootvals->screenshot_delay);
+		break;
 
-    case SHOOT_WINDOW:
-        if (shootvals->screenshot_delay > 0)
-            screenshot_delay (shootvals->screenshot_delay);
+	case SHOOT_WINDOW:
+		if (shootvals->screenshot_delay > 0)
+			screenshot_delay (shootvals->screenshot_delay);
 
-        method = "ScreenshotWindow";
-        args   = g_variant_new ("(bbbs)",
-                                shootvals->decorate,
-                                shootvals->show_cursor,
-                                TRUE, /* flash */
-                                filename);
+		method = "ScreenshotWindow";
+		args   = g_variant_new ("(bbbs)",
+		                        shootvals->decorate,
+		                        shootvals->show_cursor,
+		                        TRUE, /* flash */
+		                        filename);
 
-        /* FIXME: figure monitor */
-        break;
-    }
+		/* FIXME: figure monitor */
+		break;
+	}
 
-    g_clear_pointer (&filename, g_free);
-    g_clear_object (&file);
+	g_clear_pointer (&filename, g_free);
+	g_clear_object (&file);
 
-    retval = g_dbus_proxy_call_sync (proxy, method, args,
-                                     G_DBUS_CALL_FLAGS_NONE,
-                                     -1, NULL, error);
-    if (! retval)
-        goto failure;
+	retval = g_dbus_proxy_call_sync (proxy, method, args,
+	                                 G_DBUS_CALL_FLAGS_NONE,
+	                                 -1, NULL, error);
+	if (!retval)
+		goto failure;
 
-    g_variant_get (retval, "(bs)",
-                   &success,
-                   &filename);
+	g_variant_get (retval, "(bs)",
+	               &success,
+	               &filename);
 
-    g_variant_unref (retval);
+	g_variant_unref (retval);
 
-    if (success && filename)
-    {
-        GimpColorProfile *profile;
+	if (success && filename)
+	{
+		GimpColorProfile *profile;
 
-        *image = gimp_file_load (GIMP_RUN_NONINTERACTIVE,
-                                 g_file_new_for_path (filename));
-        gimp_image_set_file (*image, g_file_new_for_path ("screenshot.png"));
+		*image = gimp_file_load (GIMP_RUN_NONINTERACTIVE,
+		                         g_file_new_for_path (filename));
+		gimp_image_set_file (*image, g_file_new_for_path ("screenshot.png"));
 
-        profile = gimp_monitor_get_color_profile (monitor);
+		profile = gimp_monitor_get_color_profile (monitor);
 
-        if (profile)
-        {
-            gimp_image_set_color_profile (*image, profile);
-            g_object_unref (profile);
-        }
+		if (profile)
+		{
+			gimp_image_set_color_profile (*image, profile);
+			g_object_unref (profile);
+		}
 
-        g_unlink (filename);
-        g_free (filename);
+		g_unlink (filename);
+		g_free (filename);
 
-        g_object_unref (proxy);
-        proxy = NULL;
+		g_object_unref (proxy);
+		proxy = NULL;
 
-        return GIMP_PDB_SUCCESS;
-    }
+		return GIMP_PDB_SUCCESS;
+	}
 
 failure:
 
-    g_free (filename);
+	g_free (filename);
 
-    g_object_unref (proxy);
-    proxy = NULL;
+	g_object_unref (proxy);
+	proxy = NULL;
 
-    return GIMP_PDB_EXECUTION_ERROR;
+	return GIMP_PDB_EXECUTION_ERROR;
 }

@@ -47,9 +47,9 @@ static inline int
 mul8bit (int a,
          int b)
 {
-    int t = a * b + 128;
+	int t = a * b + 128;
 
-    return (t + (t >> 8)) >> 8;
+	return (t + (t >> 8)) >> 8;
 }
 
 static inline int
@@ -57,7 +57,7 @@ blerp (int a,
        int b,
        int x)
 {
-    return a + mul8bit(b - a, x);
+	return a + mul8bit(b - a, x);
 }
 
 static inline int
@@ -67,11 +67,11 @@ icerp (int a,
        int d,
        int x)
 {
-    int p = (d - c) - (a - b);
-    int q = (a - b) - p;
-    int r = c - a;
+	int p = (d - c) - (a - b);
+	int q = (a - b) - p;
+	int r = c - a;
 
-    return (x * (x * (x * p + (q << 7)) + (r << 14)) + (b << 21)) >> 21;
+	return (x * (x * (x * p + (q << 7)) + (r << 14)) + (b << 21)) >> 21;
 }
 
 #endif /* __IMATH_H__ */

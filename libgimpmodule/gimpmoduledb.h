@@ -35,55 +35,55 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpModuleDBPrivate GimpModuleDBPrivate;
-typedef struct _GimpModuleDBClass   GimpModuleDBClass;
+typedef struct _GimpModuleDBClass GimpModuleDBClass;
 
 struct _GimpModuleDB
 {
-    GObject              parent_instance;
+	GObject parent_instance;
 
-    GimpModuleDBPrivate *priv;
+	GimpModuleDBPrivate *priv;
 };
 
 struct _GimpModuleDBClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    void (* add)             (GimpModuleDB *db,
-                              GimpModule   *module);
-    void (* remove)          (GimpModuleDB *db,
-                              GimpModule   *module);
-    void (* module_modified) (GimpModuleDB *db,
-                              GimpModule   *module);
+	void (* add)             (GimpModuleDB *db,
+	                          GimpModule   *module);
+	void (* remove)          (GimpModuleDB *db,
+	                          GimpModule   *module);
+	void (* module_modified) (GimpModuleDB *db,
+	                          GimpModule   *module);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType          gimp_module_db_get_type         (void) G_GNUC_CONST;
-GimpModuleDB * gimp_module_db_new              (gboolean      verbose);
+GimpModuleDB * gimp_module_db_new              (gboolean verbose);
 
 GList        * gimp_module_db_get_modules      (GimpModuleDB *db);
 
 void           gimp_module_db_set_verbose      (GimpModuleDB *db,
-        gboolean      verbose);
+                                                gboolean verbose);
 gboolean       gimp_module_db_get_verbose      (GimpModuleDB *db);
 
 void           gimp_module_db_set_load_inhibit (GimpModuleDB *db,
-        const gchar  *load_inhibit);
+                                                const gchar  *load_inhibit);
 const gchar  * gimp_module_db_get_load_inhibit (GimpModuleDB *db);
 
 void           gimp_module_db_load             (GimpModuleDB *db,
-        const gchar  *module_path);
+                                                const gchar  *module_path);
 void           gimp_module_db_refresh          (GimpModuleDB *db,
-        const gchar  *module_path);
+                                                const gchar  *module_path);
 
 
 G_END_DECLS

@@ -33,23 +33,23 @@ G_BEGIN_DECLS
 
 
 GimpLayer* gimp_text_fontname             (GimpImage    *image,
-        GimpDrawable *drawable,
-        gdouble       x,
-        gdouble       y,
-        const gchar  *text,
-        gint          border,
-        gboolean      antialias,
-        gdouble       size,
-        GimpSizeType  size_type,
-        const gchar  *fontname);
+                                           GimpDrawable *drawable,
+                                           gdouble x,
+                                           gdouble y,
+                                           const gchar  *text,
+                                           gint border,
+                                           gboolean antialias,
+                                           gdouble size,
+                                           GimpSizeType size_type,
+                                           const gchar  *fontname);
 gboolean   gimp_text_get_extents_fontname (const gchar  *text,
-        gdouble       size,
-        GimpSizeType  size_type,
-        const gchar  *fontname,
-        gint         *width,
-        gint         *height,
-        gint         *ascent,
-        gint         *descent);
+                                           gdouble size,
+                                           GimpSizeType size_type,
+                                           const gchar  *fontname,
+                                           gint         *width,
+                                           gint         *height,
+                                           gint         *ascent,
+                                           gint         *descent);
 
 
 G_END_DECLS

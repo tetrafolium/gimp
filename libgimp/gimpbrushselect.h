@@ -40,24 +40,24 @@ G_BEGIN_DECLS
  * @user_data: (closure): user data
  */
 typedef void (* GimpRunBrushCallback)   (const gchar          *brush_name,
-        gdouble               opacity,
-        gint                  spacing,
-        GimpLayerMode         paint_mode,
-        gint                  width,
-        gint                  height,
-        const guchar         *mask_data,
-        gboolean              dialog_closing,
-        gpointer              user_data);
+                                         gdouble opacity,
+                                         gint spacing,
+                                         GimpLayerMode paint_mode,
+                                         gint width,
+                                         gint height,
+                                         const guchar         *mask_data,
+                                         gboolean dialog_closing,
+                                         gpointer user_data);
 
 
 const gchar * gimp_brush_select_new     (const gchar          *title,
-        const gchar          *brush_name,
-        gdouble               opacity,
-        gint                  spacing,
-        GimpLayerMode         paint_mode,
-        GimpRunBrushCallback  callback,
-        gpointer              data,
-        GDestroyNotify        data_destroy);
+                                         const gchar          *brush_name,
+                                         gdouble opacity,
+                                         gint spacing,
+                                         GimpLayerMode paint_mode,
+                                         GimpRunBrushCallback callback,
+                                         gpointer data,
+                                         GDestroyNotify data_destroy);
 void          gimp_brush_select_destroy (const gchar          *brush_callback);
 
 

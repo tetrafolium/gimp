@@ -19,8 +19,8 @@
 
 struct _GimpPickButtonPrivate
 {
-    GdkCursor *cursor;
-    GtkWidget *grab_widget;
+	GdkCursor *cursor;
+	GtkWidget *grab_widget;
 };
 
 

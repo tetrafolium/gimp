@@ -38,85 +38,85 @@
 
 typedef struct vector
 {
-    double x, y;
-    double dir;
-    double dx, dy;
-    double str;
-    int    type;
+	double x, y;
+	double dir;
+	double dx, dy;
+	double str;
+	int type;
 } vector_t;
 
 typedef struct smvector
 {
-    double x, y;
-    double siz;
-    double str;
+	double x, y;
+	double siz;
+	double str;
 } smvector_t;
 
 typedef struct
 {
-    int        orient_num;
-    double     orient_first;
-    double     orient_last;
-    int        orient_type;
-    double     brush_relief;
-    double     brush_scale;
-    double     brush_density;
-    double     brushgamma;
-    int        general_background_type;
-    double     general_dark_edge;
-    double     paper_relief;
-    double     paper_scale;
-    int        paper_invert;
-    int        run;
-    char       selected_brush[200];
-    char       selected_paper[200];
-    GimpRGB    color;
-    int        general_paint_edges;
-    int        place_type;
-    vector_t   orient_vectors[MAXORIENTVECT];
-    int        num_orient_vectors;
-    int        placement_center;
-    double     brush_aspect;
-    double     orient_angle_offset;
-    double     orient_strength_exponent;
-    int        general_tileable;
-    int        paper_overlay;
-    int        orient_voronoi;
-    int        color_brushes;
-    int        general_drop_shadow;
-    double     general_shadow_darkness;
-    int        size_num;
-    double     size_first;
-    double     size_last;
-    int        size_type;
-    double     devthresh;
+	int orient_num;
+	double orient_first;
+	double orient_last;
+	int orient_type;
+	double brush_relief;
+	double brush_scale;
+	double brush_density;
+	double brushgamma;
+	int general_background_type;
+	double general_dark_edge;
+	double paper_relief;
+	double paper_scale;
+	int paper_invert;
+	int run;
+	char selected_brush[200];
+	char selected_paper[200];
+	GimpRGB color;
+	int general_paint_edges;
+	int place_type;
+	vector_t orient_vectors[MAXORIENTVECT];
+	int num_orient_vectors;
+	int placement_center;
+	double brush_aspect;
+	double orient_angle_offset;
+	double orient_strength_exponent;
+	int general_tileable;
+	int paper_overlay;
+	int orient_voronoi;
+	int color_brushes;
+	int general_drop_shadow;
+	double general_shadow_darkness;
+	int size_num;
+	double size_first;
+	double size_last;
+	int size_type;
+	double devthresh;
 
-    smvector_t size_vectors[MAXSIZEVECT];
-    int        num_size_vectors;
-    double     size_strength_exponent;
-    int        size_voronoi;
+	smvector_t size_vectors[MAXSIZEVECT];
+	int num_size_vectors;
+	double size_strength_exponent;
+	int size_voronoi;
 
-    int        general_shadow_depth;
-    int        general_shadow_blur;
+	int general_shadow_depth;
+	int general_shadow_blur;
 
-    int        color_type;
-    double     color_noise;
+	int color_type;
+	double color_noise;
 } gimpressionist_vals_t;
 
 /* Enumerations */
 
 enum GENERAL_BG_TYPE_ENUM
 {
-    BG_TYPE_SOLID = 0,
-    BG_TYPE_KEEP_ORIGINAL = 1,
-    BG_TYPE_FROM_PAPER = 2,
-    BG_TYPE_TRANSPARENT = 3,
+	BG_TYPE_SOLID = 0,
+	BG_TYPE_KEEP_ORIGINAL = 1,
+	BG_TYPE_FROM_PAPER = 2,
+	BG_TYPE_TRANSPARENT = 3,
 };
 
 enum PRESETS_LIST_COLUMN_ENUM
 {
-    PRESETS_LIST_COLUMN_FILENAME = 0,
-    PRESETS_LIST_COLUMN_OBJECT_NAME = 1,
+	PRESETS_LIST_COLUMN_FILENAME = 0,
+	PRESETS_LIST_COLUMN_OBJECT_NAME = 1,
 };
 
 /* Globals */
@@ -140,9 +140,9 @@ void readdirintolist (const char *subdir, GtkWidget *view, char *selected);
 void readdirintolist_extended (const char *subdir,
                                GtkWidget *view, char *selected,
                                gboolean with_filename_column,
-                               gchar *(*get_object_name_cb) (const gchar *dir,
-                                       gchar *filename,
-                                       void *context),
+                               gchar *(*get_object_name_cb)(const gchar *dir,
+                                                            gchar *filename,
+                                                            void *context),
                                void * context);
 
 GtkWidget *create_one_column_list (GtkWidget *parent,
@@ -172,12 +172,12 @@ GtkWidget *create_radio_button (GtkWidget *box, int orient_type,
                                 const gchar *help_string,
                                 GSList **radio_group,
                                 GtkWidget **buttons_array
-                               );
+                                );
 
 void gimpressionist_scale_entry_update_double (GimpLabelSpin *entry,
-        gdouble       *value);
+                                               gdouble       *value);
 void gimpressionist_scale_entry_update_int    (GimpLabelSpin *entry,
-        gint          *value);
+                                               gint          *value);
 
 #define CLAMP_UP_TO(x, max) (CLAMP((x),(0),(max-1)))
 

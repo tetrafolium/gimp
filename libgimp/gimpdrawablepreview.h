@@ -40,28 +40,28 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpDrawablePreviewPrivate GimpDrawablePreviewPrivate;
-typedef struct _GimpDrawablePreviewClass   GimpDrawablePreviewClass;
+typedef struct _GimpDrawablePreviewClass GimpDrawablePreviewClass;
 
 struct _GimpDrawablePreview
 {
-    GimpScrolledPreview         parent_instance;
+	GimpScrolledPreview parent_instance;
 
-    GimpDrawablePreviewPrivate *priv;
+	GimpDrawablePreviewPrivate *priv;
 };
 
 struct _GimpDrawablePreviewClass
 {
-    GimpScrolledPreviewClass parent_class;
+	GimpScrolledPreviewClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -72,14 +72,14 @@ GimpDrawable * gimp_drawable_preview_get_drawable      (GimpDrawablePreview *pre
 
 /*  for internal use only  */
 G_GNUC_INTERNAL void      _gimp_drawable_preview_area_draw_thumb (GimpPreviewArea *area,
-        GimpDrawable    *drawable,
-        gint             width,
-        gint             height);
+                                                                  GimpDrawable    *drawable,
+                                                                  gint width,
+                                                                  gint height);
 G_GNUC_INTERNAL gboolean  _gimp_drawable_preview_get_bounds      (GimpDrawable    *drawable,
-        gint            *xmin,
-        gint            *ymin,
-        gint            *xmax,
-        gint            *ymax);
+                                                                  gint            *xmin,
+                                                                  gint            *ymin,
+                                                                  gint            *xmax,
+                                                                  gint            *ymax);
 
 
 G_END_DECLS

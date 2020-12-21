@@ -53,33 +53,33 @@ gboolean
 gimp_brushes_popup (const gchar   *brush_callback,
                     const gchar   *popup_title,
                     const gchar   *initial_brush,
-                    gdouble        opacity,
-                    gint           spacing,
-                    GimpLayerMode  paint_mode)
+                    gdouble opacity,
+                    gint spacing,
+                    GimpLayerMode paint_mode)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_STRING, brush_callback,
-                                            G_TYPE_STRING, popup_title,
-                                            G_TYPE_STRING, initial_brush,
-                                            G_TYPE_DOUBLE, opacity,
-                                            G_TYPE_INT, spacing,
-                                            GIMP_TYPE_LAYER_MODE, paint_mode,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_STRING, brush_callback,
+	                                        G_TYPE_STRING, popup_title,
+	                                        G_TYPE_STRING, initial_brush,
+	                                        G_TYPE_DOUBLE, opacity,
+	                                        G_TYPE_INT, spacing,
+	                                        GIMP_TYPE_LAYER_MODE, paint_mode,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-brushes-popup",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-brushes-popup",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -95,24 +95,24 @@ gimp_brushes_popup (const gchar   *brush_callback,
 gboolean
 gimp_brushes_close_popup (const gchar *brush_callback)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_STRING, brush_callback,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_STRING, brush_callback,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-brushes-close-popup",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-brushes-close-popup",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }
 
 /**
@@ -132,30 +132,30 @@ gimp_brushes_close_popup (const gchar *brush_callback)
 gboolean
 gimp_brushes_set_popup (const gchar   *brush_callback,
                         const gchar   *brush_name,
-                        gdouble        opacity,
-                        gint           spacing,
-                        GimpLayerMode  paint_mode)
+                        gdouble opacity,
+                        gint spacing,
+                        GimpLayerMode paint_mode)
 {
-    GimpValueArray *args;
-    GimpValueArray *return_vals;
-    gboolean success = TRUE;
+	GimpValueArray *args;
+	GimpValueArray *return_vals;
+	gboolean success = TRUE;
 
-    args = gimp_value_array_new_from_types (NULL,
-                                            G_TYPE_STRING, brush_callback,
-                                            G_TYPE_STRING, brush_name,
-                                            G_TYPE_DOUBLE, opacity,
-                                            G_TYPE_INT, spacing,
-                                            GIMP_TYPE_LAYER_MODE, paint_mode,
-                                            G_TYPE_NONE);
+	args = gimp_value_array_new_from_types (NULL,
+	                                        G_TYPE_STRING, brush_callback,
+	                                        G_TYPE_STRING, brush_name,
+	                                        G_TYPE_DOUBLE, opacity,
+	                                        G_TYPE_INT, spacing,
+	                                        GIMP_TYPE_LAYER_MODE, paint_mode,
+	                                        G_TYPE_NONE);
 
-    return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
-                  "gimp-brushes-set-popup",
-                  args);
-    gimp_value_array_unref (args);
+	return_vals = gimp_pdb_run_procedure_array (gimp_get_pdb (),
+	                                            "gimp-brushes-set-popup",
+	                                            args);
+	gimp_value_array_unref (args);
 
-    success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
+	success = GIMP_VALUES_GET_ENUM (return_vals, 0) == GIMP_PDB_SUCCESS;
 
-    gimp_value_array_unref (return_vals);
+	gimp_value_array_unref (return_vals);
 
-    return success;
+	return success;
 }

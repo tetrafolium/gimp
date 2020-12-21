@@ -39,29 +39,29 @@ G_BEGIN_DECLS
 #define GIMP_VECTORS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VECTORS, GimpVectorsClass))
 
 
-typedef struct _GimpVectorsClass   GimpVectorsClass;
+typedef struct _GimpVectorsClass GimpVectorsClass;
 typedef struct _GimpVectorsPrivate GimpVectorsPrivate;
 
 struct _GimpVectors
 {
-    GimpItem            parent_instance;
+	GimpItem parent_instance;
 
-    GimpVectorsPrivate *priv;
+	GimpVectorsPrivate *priv;
 };
 
 struct _GimpVectorsClass
 {
-    GimpItemClass parent_class;
+	GimpItemClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 

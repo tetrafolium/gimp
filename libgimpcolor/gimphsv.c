@@ -46,7 +46,7 @@ G_DEFINE_BOXED_TYPE (GimpHSV, gimp_hsv, gimp_hsv_copy, g_free)
 static GimpHSV *
 gimp_hsv_copy (const GimpHSV *hsv)
 {
-    return g_memdup (hsv, sizeof (GimpHSV));
+	return g_memdup (hsv, sizeof (GimpHSV));
 }
 
 
@@ -54,43 +54,43 @@ gimp_hsv_copy (const GimpHSV *hsv)
 
 void
 gimp_hsv_set (GimpHSV *hsv,
-              gdouble  h,
-              gdouble  s,
-              gdouble  v)
+              gdouble h,
+              gdouble s,
+              gdouble v)
 {
-    g_return_if_fail (hsv != NULL);
+	g_return_if_fail (hsv != NULL);
 
-    hsv->h = h;
-    hsv->s = s;
-    hsv->v = v;
+	hsv->h = h;
+	hsv->s = s;
+	hsv->v = v;
 }
 
 void
 gimp_hsv_clamp (GimpHSV *hsv)
 {
-    g_return_if_fail (hsv != NULL);
+	g_return_if_fail (hsv != NULL);
 
-    hsv->h -= (gint) hsv->h;
+	hsv->h -= (gint) hsv->h;
 
-    if (hsv->h < 0)
-        hsv->h += 1.0;
+	if (hsv->h < 0)
+		hsv->h += 1.0;
 
-    hsv->s = CLAMP (hsv->s, 0.0, 1.0);
-    hsv->v = CLAMP (hsv->v, 0.0, 1.0);
-    hsv->a = CLAMP (hsv->a, 0.0, 1.0);
+	hsv->s = CLAMP (hsv->s, 0.0, 1.0);
+	hsv->v = CLAMP (hsv->v, 0.0, 1.0);
+	hsv->a = CLAMP (hsv->a, 0.0, 1.0);
 }
 
 void
 gimp_hsva_set (GimpHSV *hsva,
-               gdouble  h,
-               gdouble  s,
-               gdouble  v,
-               gdouble  a)
+               gdouble h,
+               gdouble s,
+               gdouble v,
+               gdouble a)
 {
-    g_return_if_fail (hsva != NULL);
+	g_return_if_fail (hsva != NULL);
 
-    hsva->h = h;
-    hsva->s = s;
-    hsva->v = v;
-    hsva->a = a;
+	hsva->h = h;
+	hsva->s = s;
+	hsva->v = v;
+	hsva->a = a;
 }

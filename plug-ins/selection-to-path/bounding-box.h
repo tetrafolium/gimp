@@ -26,14 +26,14 @@
    coordinates: (0,0) is towards the lower left.  */
 typedef struct
 {
-    signed_4_bytes min_row, max_row;
-    signed_4_bytes min_col, max_col;
+	signed_4_bytes min_row, max_row;
+	signed_4_bytes min_col, max_col;
 } bounding_box_type;
 
 typedef struct
 {
-    real min_row, max_row;
-    real min_col, max_col;
+	real min_row, max_row;
+	real min_col, max_col;
 } real_bounding_box_type;
 
 /* These accessing macros work for both types of bounding boxes, since

@@ -38,15 +38,15 @@ G_BEGIN_DECLS
 GType   gimp_cmyk_get_type   (void) G_GNUC_CONST;
 
 void    gimp_cmyk_set        (GimpCMYK       *cmyk,
-                              gdouble         cyan,
-                              gdouble         magenta,
-                              gdouble         yellow,
-                              gdouble         black);
+                              gdouble cyan,
+                              gdouble magenta,
+                              gdouble yellow,
+                              gdouble black);
 void    gimp_cmyk_set_uchar  (GimpCMYK       *cmyk,
-                              guchar          cyan,
-                              guchar          magenta,
-                              guchar          yellow,
-                              guchar          black);
+                              guchar cyan,
+                              guchar magenta,
+                              guchar yellow,
+                              guchar black);
 void    gimp_cmyk_get_uchar  (const GimpCMYK *cmyk,
                               guchar         *cyan,
                               guchar         *magenta,
@@ -54,17 +54,17 @@ void    gimp_cmyk_get_uchar  (const GimpCMYK *cmyk,
                               guchar         *black);
 
 void    gimp_cmyka_set       (GimpCMYK       *cmyka,
-                              gdouble         cyan,
-                              gdouble         magenta,
-                              gdouble         yellow,
-                              gdouble         black,
-                              gdouble         alpha);
+                              gdouble cyan,
+                              gdouble magenta,
+                              gdouble yellow,
+                              gdouble black,
+                              gdouble alpha);
 void    gimp_cmyka_set_uchar (GimpCMYK       *cmyka,
-                              guchar          cyan,
-                              guchar          magenta,
-                              guchar          yellow,
-                              guchar          black,
-                              guchar          alpha);
+                              guchar cyan,
+                              guchar magenta,
+                              guchar yellow,
+                              guchar black,
+                              guchar alpha);
 void    gimp_cmyka_get_uchar (const GimpCMYK *cmyka,
                               guchar         *cyan,
                               guchar         *magenta,

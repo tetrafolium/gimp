@@ -41,44 +41,44 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpFontSelectButtonPrivate GimpFontSelectButtonPrivate;
-typedef struct _GimpFontSelectButtonClass   GimpFontSelectButtonClass;
+typedef struct _GimpFontSelectButtonClass GimpFontSelectButtonClass;
 
 struct _GimpFontSelectButton
 {
-    GimpSelectButton             parent_instance;
+	GimpSelectButton parent_instance;
 
-    GimpFontSelectButtonPrivate *priv;
+	GimpFontSelectButtonPrivate *priv;
 };
 
 struct _GimpFontSelectButtonClass
 {
-    GimpSelectButtonClass  parent_class;
+	GimpSelectButtonClass parent_class;
 
-    /* font_set signal is emitted when font is chosen */
-    void (* font_set) (GimpFontSelectButton *button,
-                       const gchar          *font_name,
-                       gboolean              dialog_closing);
+	/* font_set signal is emitted when font is chosen */
+	void (* font_set) (GimpFontSelectButton *button,
+	                   const gchar          *font_name,
+	                   gboolean dialog_closing);
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType         gimp_font_select_button_get_type (void) G_GNUC_CONST;
 
 GtkWidget   * gimp_font_select_button_new      (const gchar          *title,
-        const gchar          *font_name);
+                                                const gchar          *font_name);
 
 const gchar * gimp_font_select_button_get_font (GimpFontSelectButton *button);
 void          gimp_font_select_button_set_font (GimpFontSelectButton *button,
-        const gchar          *font_name);
+                                                const gchar          *font_name);
 
 
 G_END_DECLS

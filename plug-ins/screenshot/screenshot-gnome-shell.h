@@ -24,9 +24,9 @@ gboolean               screenshot_gnome_shell_available        (void);
 ScreenshotCapabilities screenshot_gnome_shell_get_capabilities (void);
 
 GimpPDBStatusType      screenshot_gnome_shell_shoot            (ScreenshotValues  *shootvals,
-        GdkMonitor        *monitor,
-        GimpImage        **image,
-        GError           **error);
+                                                                GdkMonitor        *monitor,
+                                                                GimpImage        **image,
+                                                                GError           **error);
 
 
 #endif /* __SCREENSHOT_GNOME_SHELL_H__ */

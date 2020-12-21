@@ -33,8 +33,8 @@ G_BEGIN_DECLS
 
 
 G_GNUC_INTERNAL gboolean _gimp_progress_init             (const gchar *message,
-        GimpDisplay *gdisplay);
-G_GNUC_INTERNAL gboolean _gimp_progress_update           (gdouble      percentage);
+                                                          GimpDisplay *gdisplay);
+G_GNUC_INTERNAL gboolean _gimp_progress_update           (gdouble percentage);
 gboolean                 gimp_progress_pulse             (void);
 gboolean                 gimp_progress_set_text          (const gchar *message);
 gboolean                 gimp_progress_end               (void);

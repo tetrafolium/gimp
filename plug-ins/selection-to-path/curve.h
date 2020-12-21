@@ -31,8 +31,8 @@
 
 typedef struct
 {
-    real_coordinate_type coord;
-    real t;
+	real_coordinate_type coord;
+	real t;
 } point_type;
 
 
@@ -42,13 +42,13 @@ typedef struct
 
 struct curve
 {
-    point_type *point_list;
-    int length;
-    boolean cyclic;
-    vector_type *start_tangent;
-    vector_type *end_tangent;
-    struct curve *previous;
-    struct curve *next;
+	point_type *point_list;
+	int length;
+	boolean cyclic;
+	vector_type *start_tangent;
+	vector_type *end_tangent;
+	struct curve *previous;
+	struct curve *next;
 };
 
 typedef struct curve *curve_type;
@@ -69,13 +69,13 @@ typedef struct curve *curve_type;
 /* If the curve is cyclic, the next and previous points should wrap
    around; otherwise, if we get to the end, we return CURVE_LENGTH and
    -1, respectively.  */
-#define CURVE_NEXT(c, n)						\
-  ((n) + 1 >= CURVE_LENGTH (c)						\
-  ? CURVE_CYCLIC (c) ? ((n) + 1) % CURVE_LENGTH (c) : CURVE_LENGTH (c)	\
+#define CURVE_NEXT(c, n)                                                \
+	((n) + 1 >= CURVE_LENGTH (c)                                          \
+  ? CURVE_CYCLIC (c) ? ((n) + 1) % CURVE_LENGTH (c) : CURVE_LENGTH (c)  \
   : (n) + 1)
-#define CURVE_PREV(c, n)						\
-  ((int) (n) - 1 < 0							\
-  ? CURVE_CYCLIC (c) ? CURVE_LENGTH (c) + (int) (n) - 1 : -1		\
+#define CURVE_PREV(c, n)                                                \
+	((int) (n) - 1 < 0                                                    \
+  ? CURVE_CYCLIC (c) ? CURVE_LENGTH (c) + (int) (n) - 1 : -1            \
   : (int) (n) - 1)
 
 /* The tangents at the endpoints are computed using the neighboring curves.  */
@@ -110,13 +110,13 @@ extern void log_entire_curve (curve_type c);
 
 /* Display the curve C online, if displaying is enabled.  */
 extern void display_curve (curve_type);
-
+
 /* So, an outline is a list of curves.  */
 typedef struct
 {
-    curve_type *data;
-    unsigned length;
-    boolean clockwise;
+	curve_type *data;
+	unsigned length;
+	boolean clockwise;
 } curve_list_type;
 
 /* Number of curves in the list.  */
@@ -134,14 +134,14 @@ typedef struct
 extern curve_list_type new_curve_list (void);
 extern void free_curve_list (curve_list_type *);
 extern void append_curve (curve_list_type *, curve_type);
-
+
 /* And a character is a list of outlines.  I named this
    `curve_list_array_type' because `curve_list_list_type' seemed pretty
    monstrous.  */
 typedef struct
 {
-    curve_list_type *data;
-    unsigned length;
+	curve_list_type *data;
+	unsigned length;
 } curve_list_array_type;
 
 /* Turns out we can use the same definitions for lists of lists as for

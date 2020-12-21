@@ -45,10 +45,10 @@ G_BEGIN_DECLS
  * Since: 3.0
  **/
 typedef GimpValueArray * (* GimpRunThumbnailFunc) (GimpProcedure        *procedure,
-        GFile                *file,
-        gint                  size,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                                   GFile                *file,
+                                                   gint size,
+                                                   const GimpValueArray *args,
+                                                   gpointer run_data);
 
 
 #define GIMP_TYPE_THUMBNAIL_PROCEDURE            (gimp_thumbnail_procedure_get_type ())
@@ -59,31 +59,31 @@ typedef GimpValueArray * (* GimpRunThumbnailFunc) (GimpProcedure        *procedu
 #define GIMP_THUMBNAIL_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_THUMBNAIL_PROCEDURE, GimpThumbnailProcedureClass))
 
 
-typedef struct _GimpThumbnailProcedure        GimpThumbnailProcedure;
-typedef struct _GimpThumbnailProcedureClass   GimpThumbnailProcedureClass;
+typedef struct _GimpThumbnailProcedure GimpThumbnailProcedure;
+typedef struct _GimpThumbnailProcedureClass GimpThumbnailProcedureClass;
 typedef struct _GimpThumbnailProcedurePrivate GimpThumbnailProcedurePrivate;
 
 struct _GimpThumbnailProcedure
 {
-    GimpProcedure                  parent_instance;
+	GimpProcedure parent_instance;
 
-    GimpThumbnailProcedurePrivate *priv;
+	GimpThumbnailProcedurePrivate *priv;
 };
 
 struct _GimpThumbnailProcedureClass
 {
-    GimpProcedureClass parent_class;
+	GimpProcedureClass parent_class;
 };
 
 
 GType           gimp_thumbnail_procedure_get_type (void) G_GNUC_CONST;
 
 GimpProcedure * gimp_thumbnail_procedure_new      (GimpPlugIn           *plug_in,
-        const gchar          *name,
-        GimpPDBProcType       proc_type,
-        GimpRunThumbnailFunc  run_func,
-        gpointer              run_data,
-        GDestroyNotify        run_data_destroy);
+                                                   const gchar          *name,
+                                                   GimpPDBProcType proc_type,
+                                                   GimpRunThumbnailFunc run_func,
+                                                   gpointer run_data,
+                                                   GDestroyNotify run_data_destroy);
 
 
 G_END_DECLS

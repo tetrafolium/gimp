@@ -39,29 +39,29 @@ G_BEGIN_DECLS
 #define GIMP_PROCEDURE_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PROCEDURE_CONFIG, GimpProcedureConfigClass))
 
 
-typedef struct _GimpProcedureConfigClass   GimpProcedureConfigClass;
+typedef struct _GimpProcedureConfigClass GimpProcedureConfigClass;
 typedef struct _GimpProcedureConfigPrivate GimpProcedureConfigPrivate;
 
 struct _GimpProcedureConfig
 {
-    GObject                     parent_instance;
+	GObject parent_instance;
 
-    GimpProcedureConfigPrivate *priv;
+	GimpProcedureConfigPrivate *priv;
 };
 
 struct _GimpProcedureConfigClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -71,31 +71,31 @@ GimpProcedure *
 gimp_procedure_config_get_procedure (GimpProcedureConfig *config);
 
 void    gimp_procedure_config_set_values    (GimpProcedureConfig  *config,
-        const GimpValueArray *values);
+                                             const GimpValueArray *values);
 void    gimp_procedure_config_get_values    (GimpProcedureConfig  *config,
-        GimpValueArray       *values);
+                                             GimpValueArray       *values);
 
 void    gimp_procedure_config_begin_run     (GimpProcedureConfig  *config,
-        GimpImage            *image,
-        GimpRunMode           run_mode,
-        const GimpValueArray *args);
+                                             GimpImage            *image,
+                                             GimpRunMode run_mode,
+                                             const GimpValueArray *args);
 void    gimp_procedure_config_end_run       (GimpProcedureConfig  *config,
-        GimpPDBStatusType     status);
+                                             GimpPDBStatusType status);
 
 GimpMetadata *
 gimp_procedure_config_begin_export  (GimpProcedureConfig  *config,
                                      GimpImage            *original_image,
-                                     GimpRunMode           run_mode,
+                                     GimpRunMode run_mode,
                                      const GimpValueArray *args,
                                      const gchar          *mime_type);
 void    gimp_procedure_config_end_export    (GimpProcedureConfig  *config,
-        GimpImage            *exported_image,
-        GFile                *file,
-        GimpPDBStatusType     status);
+                                             GimpImage            *exported_image,
+                                             GFile                *file,
+                                             GimpPDBStatusType status);
 
 void    gimp_procedure_config_save_metadata (GimpProcedureConfig  *config,
-        GimpImage            *exported_image,
-        GFile                *file);
+                                             GimpImage            *exported_image,
+                                             GFile                *file);
 
 
 G_END_DECLS

@@ -46,64 +46,64 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpColorButtonPrivate GimpColorButtonPrivate;
-typedef struct _GimpColorButtonClass   GimpColorButtonClass;
+typedef struct _GimpColorButtonClass GimpColorButtonClass;
 
 struct _GimpColorButton
 {
-    GimpButton              parent_instance;
+	GimpButton parent_instance;
 
-    GimpColorButtonPrivate *priv;
+	GimpColorButtonPrivate *priv;
 };
 
 struct _GimpColorButtonClass
 {
-    GimpButtonClass  parent_class;
+	GimpButtonClass parent_class;
 
-    /*  signals  */
-    void  (* color_changed)   (GimpColorButton *button);
+	/*  signals  */
+	void (* color_changed)   (GimpColorButton *button);
 
-    /*  virtual functions  */
-    GType (* get_action_type) (GimpColorButton *button);
+	/*  virtual functions  */
+	GType (* get_action_type) (GimpColorButton *button);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType          gimp_color_button_get_type         (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_color_button_new              (const gchar       *title,
-        gint               width,
-        gint               height,
-        const GimpRGB     *color,
-        GimpColorAreaType  type);
+                                                   gint width,
+                                                   gint height,
+                                                   const GimpRGB     *color,
+                                                   GimpColorAreaType type);
 
 void           gimp_color_button_set_title        (GimpColorButton   *button,
-        const gchar       *title);
+                                                   const gchar       *title);
 const gchar  * gimp_color_button_get_title        (GimpColorButton   *button);
 
 void           gimp_color_button_set_color        (GimpColorButton   *button,
-        const GimpRGB     *color);
+                                                   const GimpRGB     *color);
 void           gimp_color_button_get_color        (GimpColorButton   *button,
-        GimpRGB           *color);
+                                                   GimpRGB           *color);
 
 gboolean       gimp_color_button_has_alpha        (GimpColorButton   *button);
 void           gimp_color_button_set_type         (GimpColorButton   *button,
-        GimpColorAreaType  type);
+                                                   GimpColorAreaType type);
 
 gboolean       gimp_color_button_get_update       (GimpColorButton   *button);
 void           gimp_color_button_set_update       (GimpColorButton   *button,
-        gboolean           continuous);
+                                                   gboolean continuous);
 
 void           gimp_color_button_set_color_config (GimpColorButton   *button,
-        GimpColorConfig   *config);
+                                                   GimpColorConfig   *config);
 
 GtkUIManager * gimp_color_button_get_ui_manager   (GimpColorButton   *button);
 

@@ -40,45 +40,45 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpEnumStorePrivate GimpEnumStorePrivate;
-typedef struct _GimpEnumStoreClass   GimpEnumStoreClass;
+typedef struct _GimpEnumStoreClass GimpEnumStoreClass;
 
 struct _GimpEnumStore
 {
-    GimpIntStore          parent_instance;
+	GimpIntStore parent_instance;
 
-    GimpEnumStorePrivate *priv;
+	GimpEnumStorePrivate *priv;
 };
 
 struct _GimpEnumStoreClass
 {
-    GimpIntStoreClass  parent_class;
+	GimpIntStoreClass parent_class;
 
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType          gimp_enum_store_get_type               (void) G_GNUC_CONST;
 
-GtkListStore * gimp_enum_store_new                    (GType    enum_type);
-GtkListStore * gimp_enum_store_new_with_range         (GType    enum_type,
-        gint     minimum,
-        gint     maximum);
-GtkListStore * gimp_enum_store_new_with_values        (GType    enum_type,
-        gint     n_values,
-        ...);
-GtkListStore * gimp_enum_store_new_with_values_valist (GType    enum_type,
-        gint     n_values,
-        va_list  args);
+GtkListStore * gimp_enum_store_new                    (GType enum_type);
+GtkListStore * gimp_enum_store_new_with_range         (GType enum_type,
+                                                       gint minimum,
+                                                       gint maximum);
+GtkListStore * gimp_enum_store_new_with_values        (GType enum_type,
+                                                       gint n_values,
+                                                       ...);
+GtkListStore * gimp_enum_store_new_with_values_valist (GType enum_type,
+                                                       gint n_values,
+                                                       va_list args);
 
 void           gimp_enum_store_set_icon_prefix  (GimpEnumStore *store,
-        const gchar   *icon_prefix);
+                                                 const gchar   *icon_prefix);
 
 
 G_END_DECLS

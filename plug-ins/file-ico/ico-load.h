@@ -30,14 +30,14 @@ GimpImage * ico_load_thumbnail_image (GFile         *file,
                                       GError       **error);
 
 gint        ico_get_bit_from_data    (const guint8  *data,
-                                      gint           line_width,
-                                      gint           bit);
+                                      gint line_width,
+                                      gint bit);
 gint        ico_get_nibble_from_data (const guint8  *data,
-                                      gint           line_width,
-                                      gint           nibble);
+                                      gint line_width,
+                                      gint nibble);
 gint        ico_get_byte_from_data   (const guint8  *data,
-                                      gint           line_width,
-                                      gint           byte);
+                                      gint line_width,
+                                      gint byte);
 
 
 #endif /* __ICO_LOAD_H__ */

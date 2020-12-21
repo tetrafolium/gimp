@@ -24,21 +24,21 @@
 
 
 typedef gboolean (* GimpGetColorFunc)      (GimpRGB *color);
-typedef void     (* GimpEnsureModulesFunc) (void);
+typedef void (* GimpEnsureModulesFunc) (void);
 
 
-extern GimpHelpFunc          _gimp_standard_help_func;
-extern GimpGetColorFunc      _gimp_get_foreground_func;
-extern GimpGetColorFunc      _gimp_get_background_func;
+extern GimpHelpFunc _gimp_standard_help_func;
+extern GimpGetColorFunc _gimp_get_foreground_func;
+extern GimpGetColorFunc _gimp_get_background_func;
 extern GimpEnsureModulesFunc _gimp_ensure_modules_func;
 
 
 G_BEGIN_DECLS
 
 
-void  gimp_widgets_init (GimpHelpFunc          standard_help_func,
-                         GimpGetColorFunc      get_foreground_func,
-                         GimpGetColorFunc      get_background_func,
+void  gimp_widgets_init (GimpHelpFunc standard_help_func,
+                         GimpGetColorFunc get_foreground_func,
+                         GimpGetColorFunc get_background_func,
                          GimpEnsureModulesFunc ensure_modules_func);
 
 

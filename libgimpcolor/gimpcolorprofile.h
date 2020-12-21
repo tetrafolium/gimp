@@ -41,28 +41,28 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpColorProfilePrivate GimpColorProfilePrivate;
-typedef struct _GimpColorProfileClass   GimpColorProfileClass;
+typedef struct _GimpColorProfileClass GimpColorProfileClass;
 
 struct _GimpColorProfile
 {
-    GObject                  parent_instance;
+	GObject parent_instance;
 
-    GimpColorProfilePrivate *priv;
+	GimpColorProfilePrivate *priv;
 };
 
 struct _GimpColorProfileClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -82,20 +82,20 @@ GimpColorProfile *
 gimp_color_profile_new_linear_from_color_profile     (GimpColorProfile  *profile);
 
 GimpColorProfile * gimp_color_profile_new_from_file         (GFile             *file,
-        GError           **error);
+                                                             GError           **error);
 
 GimpColorProfile * gimp_color_profile_new_from_icc_profile  (const guint8      *data,
-        gsize              length,
-        GError           **error);
-GimpColorProfile * gimp_color_profile_new_from_lcms_profile (gpointer           lcms_profile,
-        GError           **error);
+                                                             gsize length,
+                                                             GError           **error);
+GimpColorProfile * gimp_color_profile_new_from_lcms_profile (gpointer lcms_profile,
+                                                             GError           **error);
 
 gboolean           gimp_color_profile_save_to_file          (GimpColorProfile  *profile,
-        GFile             *file,
-        GError           **error);
+                                                             GFile             *file,
+                                                             GError           **error);
 
 const guint8     * gimp_color_profile_get_icc_profile       (GimpColorProfile  *profile,
-        gsize             *length);
+                                                             gsize             *length);
 gpointer           gimp_color_profile_get_lcms_profile      (GimpColorProfile  *profile);
 
 const gchar      * gimp_color_profile_get_description       (GimpColorProfile  *profile);
@@ -107,7 +107,7 @@ const gchar      * gimp_color_profile_get_label             (GimpColorProfile  *
 const gchar      * gimp_color_profile_get_summary           (GimpColorProfile  *profile);
 
 gboolean           gimp_color_profile_is_equal              (GimpColorProfile  *profile1,
-        GimpColorProfile  *profile2);
+                                                             GimpColorProfile  *profile2);
 
 gboolean           gimp_color_profile_is_rgb                (GimpColorProfile  *profile);
 gboolean           gimp_color_profile_is_gray               (GimpColorProfile  *profile);
@@ -116,15 +116,15 @@ gboolean           gimp_color_profile_is_cmyk               (GimpColorProfile  *
 gboolean           gimp_color_profile_is_linear             (GimpColorProfile  *profile);
 
 const Babl       * gimp_color_profile_get_space             (GimpColorProfile  *profile,
-        GimpColorRenderingIntent intent,
-        GError           **error);
+                                                             GimpColorRenderingIntent intent,
+                                                             GError           **error);
 const Babl       * gimp_color_profile_get_format            (GimpColorProfile  *profile,
-        const Babl        *format,
-        GimpColorRenderingIntent intent,
-        GError           **error);
+                                                             const Babl        *format,
+                                                             GimpColorRenderingIntent intent,
+                                                             GError           **error);
 
 const Babl       * gimp_color_profile_get_lcms_format       (const Babl        *format,
-        guint32           *lcms_format);
+                                                             guint32           *lcms_format);
 
 
 G_END_DECLS

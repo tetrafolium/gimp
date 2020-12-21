@@ -38,30 +38,30 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpColorHexEntryPrivate GimpColorHexEntryPrivate;
-typedef struct _GimpColorHexEntryClass   GimpColorHexEntryClass;
+typedef struct _GimpColorHexEntryClass GimpColorHexEntryClass;
 
 struct _GimpColorHexEntry
 {
-    GtkEntry                  parent_instance;
+	GtkEntry parent_instance;
 
-    GimpColorHexEntryPrivate *priv;
+	GimpColorHexEntryPrivate *priv;
 };
 
 struct _GimpColorHexEntryClass
 {
-    GtkEntryClass   parent_class;
+	GtkEntryClass parent_class;
 
-    void (* color_changed) (GimpColorHexEntry *entry);
+	void (* color_changed) (GimpColorHexEntry *entry);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -70,9 +70,9 @@ GType       gimp_color_hex_entry_get_type  (void) G_GNUC_CONST;
 GtkWidget * gimp_color_hex_entry_new       (void);
 
 void        gimp_color_hex_entry_set_color (GimpColorHexEntry *entry,
-        const GimpRGB     *color);
+                                            const GimpRGB     *color);
 void        gimp_color_hex_entry_get_color (GimpColorHexEntry *entry,
-        GimpRGB           *color);
+                                            GimpRGB           *color);
 
 
 G_END_DECLS

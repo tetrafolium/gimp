@@ -20,8 +20,8 @@
 
 enum COLOR_TYPE_ENUM
 {
-    COLOR_TYPE_AVERAGE = 0,
-    COLOR_TYPE_CENTER = 1,
+	COLOR_TYPE_AVERAGE = 0,
+	COLOR_TYPE_CENTER = 1,
 };
 
 void create_colorpage (GtkNotebook *);

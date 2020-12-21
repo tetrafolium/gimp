@@ -39,70 +39,70 @@ G_BEGIN_DECLS
 #define GIMP_PDB_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PDB, GimpPDBClass))
 
 
-typedef struct _GimpPDBClass   GimpPDBClass;
+typedef struct _GimpPDBClass GimpPDBClass;
 typedef struct _GimpPDBPrivate GimpPDBPrivate;
 
 struct _GimpPDB
 {
-    GObject         parent_instance;
+	GObject parent_instance;
 
-    GimpPDBPrivate *priv;
+	GimpPDBPrivate *priv;
 };
 
 struct _GimpPDBClass
 {
-    GObjectClass parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType            gimp_pdb_get_type             (void) G_GNUC_CONST;
 
 gboolean         gimp_pdb_procedure_exists     (GimpPDB              *pdb,
-        const gchar          *procedure_name);
+                                                const gchar          *procedure_name);
 
 GimpProcedure  * gimp_pdb_lookup_procedure     (GimpPDB              *pdb,
-        const gchar          *procedure_name);
+                                                const gchar          *procedure_name);
 
 GimpValueArray * gimp_pdb_run_procedure        (GimpPDB              *pdb,
-        const gchar          *procedure_name,
-        GType                 first_type,
-        ...);
+                                                const gchar          *procedure_name,
+                                                GType first_type,
+                                                ...);
 GimpValueArray * gimp_pdb_run_procedure_valist (GimpPDB              *pdb,
-        const gchar          *procedure_name,
-        GType                 first_type,
-        va_list               args);
+                                                const gchar          *procedure_name,
+                                                GType first_type,
+                                                va_list args);
 GimpValueArray * gimp_pdb_run_procedure_argv   (GimpPDB              *pdb,
-        const gchar          *procedure_name,
-        const GValue         *arguments,
-        gint                  n_arguments);
+                                                const gchar          *procedure_name,
+                                                const GValue         *arguments,
+                                                gint n_arguments);
 GimpValueArray * gimp_pdb_run_procedure_array  (GimpPDB              *pdb,
-        const gchar          *procedure_name,
-        const GimpValueArray *arguments);
+                                                const gchar          *procedure_name,
+                                                const GimpValueArray *arguments);
 
 gchar          * gimp_pdb_temp_procedure_name  (GimpPDB              *pdb);
 
 gboolean         gimp_pdb_dump_to_file         (GimpPDB              *pdb,
-        GFile                *file);
+                                                GFile                *file);
 gchar         ** gimp_pdb_query_procedures     (GimpPDB              *pdb,
-        const gchar          *name,
-        const gchar          *blurb,
-        const gchar          *help,
-        const gchar          *help_id,
-        const gchar          *authors,
-        const gchar          *copyright,
-        const gchar          *date,
-        const gchar          *proc_type,
-        gint                 *num_matches);
+                                                const gchar          *name,
+                                                const gchar          *blurb,
+                                                const gchar          *help,
+                                                const gchar          *help_id,
+                                                const gchar          *authors,
+                                                const gchar          *copyright,
+                                                const gchar          *date,
+                                                const gchar          *proc_type,
+                                                gint                 *num_matches);
 
 const gchar       * gimp_pdb_get_last_error    (GimpPDB              *pdb);
 GimpPDBStatusType   gimp_pdb_get_last_status   (GimpPDB              *pdb);
@@ -111,11 +111,11 @@ GimpPDBStatusType   gimp_pdb_get_last_status   (GimpPDB              *pdb);
 /*  Cruft API  */
 
 gboolean   gimp_pdb_get_data      (const gchar      *identifier,
-                                   gpointer          data);
+                                   gpointer data);
 gint       gimp_pdb_get_data_size (const gchar      *identifier);
 gboolean   gimp_pdb_set_data      (const gchar      *identifier,
-                                   gconstpointer     data,
-                                   guint32           bytes);
+                                   gconstpointer data,
+                                   guint32 bytes);
 
 
 G_END_DECLS

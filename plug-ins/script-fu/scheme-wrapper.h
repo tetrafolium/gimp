@@ -21,11 +21,11 @@
 #include "tinyscheme/scheme.h"
 
 void          tinyscheme_init         (GList        *path,
-                                       gboolean      register_scripts);
+                                       gboolean register_scripts);
 
-void          ts_set_run_mode         (GimpRunMode   run_mode);
+void          ts_set_run_mode         (GimpRunMode run_mode);
 
-void          ts_set_print_flag       (gint          print_flag);
+void          ts_set_print_flag       (gint print_flag);
 void          ts_print_welcome        (void);
 
 const gchar * ts_get_success_msg      (void);
@@ -35,13 +35,13 @@ void          ts_interpret_stdin      (void);
 /* if the return value is 0, success. error otherwise. */
 gint          ts_interpret_string     (const gchar  *expr);
 
-void          ts_stdout_output_func   (TsOutputType  type,
+void          ts_stdout_output_func   (TsOutputType type,
                                        const char   *string,
-                                       int           len,
-                                       gpointer      user_data);
-void          ts_gstring_output_func  (TsOutputType  type,
+                                       int len,
+                                       gpointer user_data);
+void          ts_gstring_output_func  (TsOutputType type,
                                        const char   *string,
-                                       int           len,
-                                       gpointer      user_data);
+                                       int len,
+                                       gpointer user_data);
 
 #endif /* __SCHEME_WRAPPER_H__ */

@@ -40,31 +40,31 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpButtonPrivate GimpButtonPrivate;
-typedef struct _GimpButtonClass   GimpButtonClass;
+typedef struct _GimpButtonClass GimpButtonClass;
 
 struct _GimpButton
 {
-    GtkButton         parent_instance;
+	GtkButton parent_instance;
 
-    GimpButtonPrivate *priv;
+	GimpButtonPrivate *priv;
 };
 
 struct _GimpButtonClass
 {
-    GtkButtonClass  parent_class;
+	GtkButtonClass parent_class;
 
-    void (* extended_clicked) (GimpButton      *button,
-                               GdkModifierType  modifier_state);
+	void (* extended_clicked) (GimpButton      *button,
+	                           GdkModifierType modifier_state);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -73,7 +73,7 @@ GType       gimp_button_get_type         (void) G_GNUC_CONST;
 GtkWidget * gimp_button_new              (void);
 
 void        gimp_button_extended_clicked (GimpButton      *button,
-        GdkModifierType  modifier_state);
+                                          GdkModifierType modifier_state);
 
 
 G_END_DECLS

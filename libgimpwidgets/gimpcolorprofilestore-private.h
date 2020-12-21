@@ -25,28 +25,28 @@
 
 typedef enum
 {
-    GIMP_COLOR_PROFILE_STORE_ITEM_FILE,
-    GIMP_COLOR_PROFILE_STORE_ITEM_SEPARATOR_TOP,
-    GIMP_COLOR_PROFILE_STORE_ITEM_SEPARATOR_BOTTOM,
-    GIMP_COLOR_PROFILE_STORE_ITEM_DIALOG
+	GIMP_COLOR_PROFILE_STORE_ITEM_FILE,
+	GIMP_COLOR_PROFILE_STORE_ITEM_SEPARATOR_TOP,
+	GIMP_COLOR_PROFILE_STORE_ITEM_SEPARATOR_BOTTOM,
+	GIMP_COLOR_PROFILE_STORE_ITEM_DIALOG
 } GimpColorProfileStoreItemType;
 
 typedef enum
 {
-    GIMP_COLOR_PROFILE_STORE_ITEM_TYPE,
-    GIMP_COLOR_PROFILE_STORE_LABEL,
-    GIMP_COLOR_PROFILE_STORE_FILE,
-    GIMP_COLOR_PROFILE_STORE_INDEX
+	GIMP_COLOR_PROFILE_STORE_ITEM_TYPE,
+	GIMP_COLOR_PROFILE_STORE_LABEL,
+	GIMP_COLOR_PROFILE_STORE_FILE,
+	GIMP_COLOR_PROFILE_STORE_INDEX
 } GimpColorProfileStoreColumns;
 
 
 G_GNUC_INTERNAL gboolean  _gimp_color_profile_store_history_add     (GimpColorProfileStore *store,
-        GFile                 *file,
-        const gchar           *label,
-        GtkTreeIter           *iter);
+                                                                     GFile                 *file,
+                                                                     const gchar           *label,
+                                                                     GtkTreeIter           *iter);
 
 G_GNUC_INTERNAL void      _gimp_color_profile_store_history_reorder (GimpColorProfileStore *store,
-        GtkTreeIter           *iter);
+                                                                     GtkTreeIter           *iter);
 
 
 #endif  /* __GIMP_COLOR_PROFILE_STORE_PRIVATE_H__ */

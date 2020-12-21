@@ -25,22 +25,22 @@ typedef HRESULT (WINAPI* DWMGETWINDOWATTRIBUTE)(HWND, DWORD, _Out_ PVOID, DWORD)
 DWMGETWINDOWATTRIBUTE DwmGetWindowAttribute;
 
 typedef enum _DWMWINDOWATTRIBUTE {
-    DWMWA_NCRENDERING_ENABLED = 1,
-    DWMWA_NCRENDERING_POLICY,
-    DWMWA_TRANSITIONS_FORCEDISABLED,
-    DWMWA_ALLOW_NCPAINT,
-    DWMWA_CAPTION_BUTTON_BOUNDS,
-    DWMWA_NONCLIENT_RTL_LAYOUT,
-    DWMWA_FORCE_ICONIC_REPRESENTATION,
-    DWMWA_FLIP3D_POLICY,
-    DWMWA_EXTENDED_FRAME_BOUNDS,
-    DWMWA_HAS_ICONIC_BITMAP,
-    DWMWA_DISALLOW_PEEK,
-    DWMWA_EXCLUDED_FROM_PEEK,
-    DWMWA_CLOAK,
-    DWMWA_CLOAKED,
-    DWMWA_FREEZE_REPRESENTATION,
-    DWMWA_LAST
+	DWMWA_NCRENDERING_ENABLED = 1,
+	DWMWA_NCRENDERING_POLICY,
+	DWMWA_TRANSITIONS_FORCEDISABLED,
+	DWMWA_ALLOW_NCPAINT,
+	DWMWA_CAPTION_BUTTON_BOUNDS,
+	DWMWA_NONCLIENT_RTL_LAYOUT,
+	DWMWA_FORCE_ICONIC_REPRESENTATION,
+	DWMWA_FLIP3D_POLICY,
+	DWMWA_EXTENDED_FRAME_BOUNDS,
+	DWMWA_HAS_ICONIC_BITMAP,
+	DWMWA_DISALLOW_PEEK,
+	DWMWA_EXCLUDED_FROM_PEEK,
+	DWMWA_CLOAK,
+	DWMWA_CLOAKED,
+	DWMWA_FREEZE_REPRESENTATION,
+	DWMWA_LAST
 } DWMWINDOWATTRIBUTE;
 
 static HMODULE dwmApi = NULL;
@@ -48,25 +48,25 @@ static HMODULE dwmApi = NULL;
 void
 UnloadRequiredDwmFunctions (void)
 {
-    if (! dwmApi) return;
-    FreeLibrary(dwmApi);
-    dwmApi = NULL;
+	if (!dwmApi) return;
+	FreeLibrary(dwmApi);
+	dwmApi = NULL;
 }
 
 BOOL
 LoadRequiredDwmFunctions (void)
 {
-    if (dwmApi) return TRUE;
+	if (dwmApi) return TRUE;
 
-    dwmApi = LoadLibrary ("dwmapi");
-    if (! dwmApi) return FALSE;
+	dwmApi = LoadLibrary ("dwmapi");
+	if (!dwmApi) return FALSE;
 
-    DwmGetWindowAttribute = (DWMGETWINDOWATTRIBUTE) GetProcAddress (dwmApi, "DwmGetWindowAttribute");
-    if (! DwmGetWindowAttribute)
-    {
-        UnloadRequiredDwmFunctions ();
-        return FALSE;
-    }
+	DwmGetWindowAttribute = (DWMGETWINDOWATTRIBUTE) GetProcAddress (dwmApi, "DwmGetWindowAttribute");
+	if (!DwmGetWindowAttribute)
+	{
+		UnloadRequiredDwmFunctions ();
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }

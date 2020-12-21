@@ -24,10 +24,10 @@
 #define __GIMP_HELP_TYPES_H__
 
 
-typedef struct _GimpHelpDomain    GimpHelpDomain;
-typedef struct _GimpHelpItem      GimpHelpItem;
-typedef struct _GimpHelpLocale    GimpHelpLocale;
-typedef struct _GimpHelpProgress  GimpHelpProgress;
+typedef struct _GimpHelpDomain GimpHelpDomain;
+typedef struct _GimpHelpItem GimpHelpItem;
+typedef struct _GimpHelpLocale GimpHelpLocale;
+typedef struct _GimpHelpProgress GimpHelpProgress;
 
 
 #endif /* ! __GIMP_HELP_TYPES_H__ */

@@ -23,7 +23,7 @@
 
 
 GimpImage * load_image (GFile        *file,
-                        gboolean      merged_image_only,
+                        gboolean merged_image_only,
                         gboolean     *resolution_loaded,
                         gboolean     *profile_loaded,
                         GError      **error);

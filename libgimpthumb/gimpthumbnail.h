@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpThumbnailPrivate GimpThumbnailPrivate;
-typedef struct _GimpThumbnailClass   GimpThumbnailClass;
+typedef struct _GimpThumbnailClass GimpThumbnailClass;
 
 /**
  * GimpThumbnail:
@@ -51,45 +51,45 @@ typedef struct _GimpThumbnailClass   GimpThumbnailClass;
  **/
 struct _GimpThumbnail
 {
-    GObject               parent_instance;
+	GObject parent_instance;
 
-    GimpThumbnailPrivate *priv;
+	GimpThumbnailPrivate *priv;
 
-    /* FIXME MOVE TO PRIVATE */
-    /*< private >*/
-    GimpThumbState  image_state;
-    gchar          *image_uri;
-    gchar          *image_filename;
-    gint64          image_filesize;
-    gint64          image_mtime;
-    gint            image_not_found_errno;
-    gint            image_width;
-    gint            image_height;
-    gchar          *image_type;
-    gint            image_num_layers;
+	/* FIXME MOVE TO PRIVATE */
+	/*< private >*/
+	GimpThumbState image_state;
+	gchar          *image_uri;
+	gchar          *image_filename;
+	gint64 image_filesize;
+	gint64 image_mtime;
+	gint image_not_found_errno;
+	gint image_width;
+	gint image_height;
+	gchar          *image_type;
+	gint image_num_layers;
 
-    GimpThumbState  thumb_state;
-    GimpThumbSize   thumb_size;
-    gchar          *thumb_filename;
-    gint64          thumb_filesize;
-    gint64          thumb_mtime;
+	GimpThumbState thumb_state;
+	GimpThumbSize thumb_size;
+	gchar          *thumb_filename;
+	gint64 thumb_filesize;
+	gint64 thumb_mtime;
 
-    gchar          *image_mimetype;
+	gchar          *image_mimetype;
 };
 
 struct _GimpThumbnailClass
 {
-    GObjectClass    parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -98,40 +98,40 @@ GType            gimp_thumbnail_get_type         (void) G_GNUC_CONST;
 GimpThumbnail  * gimp_thumbnail_new              (void);
 
 void             gimp_thumbnail_set_uri          (GimpThumbnail  *thumbnail,
-        const gchar    *uri);
+                                                  const gchar    *uri);
 gboolean         gimp_thumbnail_set_filename     (GimpThumbnail  *thumbnail,
-        const gchar    *filename,
-        GError        **error);
+                                                  const gchar    *filename,
+                                                  GError        **error);
 gboolean         gimp_thumbnail_set_from_thumb   (GimpThumbnail  *thumbnail,
-        const gchar    *filename,
-        GError        **error);
+                                                  const gchar    *filename,
+                                                  GError        **error);
 
 GimpThumbState   gimp_thumbnail_peek_image       (GimpThumbnail  *thumbnail);
 GimpThumbState   gimp_thumbnail_peek_thumb       (GimpThumbnail  *thumbnail,
-        GimpThumbSize   size);
+                                                  GimpThumbSize size);
 
 GimpThumbState   gimp_thumbnail_check_thumb      (GimpThumbnail  *thumbnail,
-        GimpThumbSize   size);
+                                                  GimpThumbSize size);
 
 GdkPixbuf      * gimp_thumbnail_load_thumb       (GimpThumbnail  *thumbnail,
-        GimpThumbSize   size,
-        GError        **error);
+                                                  GimpThumbSize size,
+                                                  GError        **error);
 
 gboolean         gimp_thumbnail_save_thumb       (GimpThumbnail  *thumbnail,
-        GdkPixbuf      *pixbuf,
-        const gchar    *software,
-        GError        **error);
+                                                  GdkPixbuf      *pixbuf,
+                                                  const gchar    *software,
+                                                  GError        **error);
 gboolean         gimp_thumbnail_save_thumb_local (GimpThumbnail  *thumbnail,
-        GdkPixbuf      *pixbuf,
-        const gchar    *software,
-        GError        **error);
+                                                  GdkPixbuf      *pixbuf,
+                                                  const gchar    *software,
+                                                  GError        **error);
 
 gboolean         gimp_thumbnail_save_failure     (GimpThumbnail  *thumbnail,
-        const gchar    *software,
-        GError        **error);
+                                                  const gchar    *software,
+                                                  GError        **error);
 void             gimp_thumbnail_delete_failure   (GimpThumbnail  *thumbnail);
 void             gimp_thumbnail_delete_others    (GimpThumbnail  *thumbnail,
-        GimpThumbSize   size);
+                                                  GimpThumbSize size);
 
 gboolean         gimp_thumbnail_has_failed       (GimpThumbnail  *thumbnail);
 

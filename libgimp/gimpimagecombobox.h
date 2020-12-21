@@ -36,7 +36,7 @@ G_BEGIN_DECLS
  * @data: (closure):
  */
 typedef gboolean (* GimpImageConstraintFunc) (GimpImage *image,
-        gpointer   data);
+                                              gpointer data);
 
 
 #define GIMP_TYPE_IMAGE_COMBO_BOX       (gimp_image_combo_box_get_type ())
@@ -46,9 +46,9 @@ typedef gboolean (* GimpImageConstraintFunc) (GimpImage *image,
 
 GType       gimp_image_combo_box_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gimp_image_combo_box_new      (GimpImageConstraintFunc  constraint,
-        gpointer                 data,
-        GDestroyNotify           data_destroy);
+GtkWidget * gimp_image_combo_box_new      (GimpImageConstraintFunc constraint,
+                                           gpointer data,
+                                           GDestroyNotify data_destroy);
 
 
 G_END_DECLS

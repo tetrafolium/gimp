@@ -47,360 +47,360 @@ static void        d_update_star (GdkPoint   *pnt);
 void
 tool_options_star (GtkWidget *notebook)
 {
-    GtkWidget *sides;
+	GtkWidget *sides;
 
-    sides = num_sides_widget (_("Star Number of Points"),
-                              &star_num_sides, NULL, 3, 200);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), sides, NULL);
+	sides = num_sides_widget (_("Star Number of Points"),
+	                          &star_num_sides, NULL, 3, 200);
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), sides, NULL);
 }
 
 static void
 d_draw_star (GfigObject *obj,
              cairo_t    *cr)
 {
-    DobjPoints *center_pnt;
-    DobjPoints *outer_radius_pnt;
-    DobjPoints *inner_radius_pnt;
-    gint16      shift_x;
-    gint16      shift_y;
-    gdouble     ang_grid;
-    gdouble     ang_loop;
-    gdouble     outer_radius;
-    gdouble     inner_radius;
-    gdouble     offset_angle;
-    gint        loop;
-    GdkPoint    start_pnt = { 0, 0 };
-    GdkPoint    first_pnt = { 0, 0 };
-    gboolean    do_line = FALSE;
+	DobjPoints *center_pnt;
+	DobjPoints *outer_radius_pnt;
+	DobjPoints *inner_radius_pnt;
+	gint16 shift_x;
+	gint16 shift_y;
+	gdouble ang_grid;
+	gdouble ang_loop;
+	gdouble outer_radius;
+	gdouble inner_radius;
+	gdouble offset_angle;
+	gint loop;
+	GdkPoint start_pnt = { 0, 0 };
+	GdkPoint first_pnt = { 0, 0 };
+	gboolean do_line = FALSE;
 
-    center_pnt = obj->points;
+	center_pnt = obj->points;
 
-    if (!center_pnt)
-        return; /* End-of-line */
+	if (!center_pnt)
+		return; /* End-of-line */
 
-    /* First point is the center */
-    /* Just draw a control point around it */
+	/* First point is the center */
+	/* Just draw a control point around it */
 
-    draw_sqr (&center_pnt->pnt, obj == gfig_context->selected_obj, cr);
+	draw_sqr (&center_pnt->pnt, obj == gfig_context->selected_obj, cr);
 
-    /* Next point defines the radius */
-    outer_radius_pnt = center_pnt->next; /* this defines the vertices */
+	/* Next point defines the radius */
+	outer_radius_pnt = center_pnt->next; /* this defines the vertices */
 
-    if (!outer_radius_pnt)
-    {
-        return;
-    }
+	if (!outer_radius_pnt)
+	{
+		return;
+	}
 
-    inner_radius_pnt = outer_radius_pnt->next; /* this defines the vertices */
+	inner_radius_pnt = outer_radius_pnt->next; /* this defines the vertices */
 
-    if (!inner_radius_pnt)
-    {
-        return;
-    }
+	if (!inner_radius_pnt)
+	{
+		return;
+	}
 
-    /* Other control points */
-    if (obj == obj_creating)
-    {
-        draw_circle (&outer_radius_pnt->pnt, TRUE, cr);
-        draw_circle (&inner_radius_pnt->pnt, TRUE, cr);
-    }
-    else
-    {
-        draw_sqr (&outer_radius_pnt->pnt, obj == gfig_context->selected_obj, cr);
-        draw_sqr (&inner_radius_pnt->pnt, obj == gfig_context->selected_obj, cr);
-    }
+	/* Other control points */
+	if (obj == obj_creating)
+	{
+		draw_circle (&outer_radius_pnt->pnt, TRUE, cr);
+		draw_circle (&inner_radius_pnt->pnt, TRUE, cr);
+	}
+	else
+	{
+		draw_sqr (&outer_radius_pnt->pnt, obj == gfig_context->selected_obj, cr);
+		draw_sqr (&inner_radius_pnt->pnt, obj == gfig_context->selected_obj, cr);
+	}
 
-    /* Have center and radius - draw star */
+	/* Have center and radius - draw star */
 
-    shift_x = outer_radius_pnt->pnt.x - center_pnt->pnt.x;
-    shift_y = outer_radius_pnt->pnt.y - center_pnt->pnt.y;
+	shift_x = outer_radius_pnt->pnt.x - center_pnt->pnt.x;
+	shift_y = outer_radius_pnt->pnt.y - center_pnt->pnt.y;
 
-    outer_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
+	outer_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
 
-    /* Lines */
-    ang_grid = 2.0 * G_PI / (2.0 * (gdouble) obj->type_data);
-    offset_angle = atan2 (shift_y, shift_x);
+	/* Lines */
+	ang_grid = 2.0 * G_PI / (2.0 * (gdouble) obj->type_data);
+	offset_angle = atan2 (shift_y, shift_x);
 
-    shift_x = inner_radius_pnt->pnt.x - center_pnt->pnt.x;
-    shift_y = inner_radius_pnt->pnt.y - center_pnt->pnt.y;
+	shift_x = inner_radius_pnt->pnt.x - center_pnt->pnt.x;
+	shift_y = inner_radius_pnt->pnt.y - center_pnt->pnt.y;
 
-    inner_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
+	inner_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
 
-    for (loop = 0 ; loop < 2 * obj->type_data ; loop++)
-    {
-        gdouble lx, ly;
-        GdkPoint calc_pnt;
+	for (loop = 0; loop < 2 * obj->type_data; loop++)
+	{
+		gdouble lx, ly;
+		GdkPoint calc_pnt;
 
-        ang_loop = (gdouble)loop * ang_grid + offset_angle;
+		ang_loop = (gdouble)loop * ang_grid + offset_angle;
 
-        if (loop % 2)
-        {
-            lx = inner_radius * cos (ang_loop);
-            ly = inner_radius * sin (ang_loop);
-        }
-        else
-        {
-            lx = outer_radius * cos (ang_loop);
-            ly = outer_radius * sin (ang_loop);
-        }
+		if (loop % 2)
+		{
+			lx = inner_radius * cos (ang_loop);
+			ly = inner_radius * sin (ang_loop);
+		}
+		else
+		{
+			lx = outer_radius * cos (ang_loop);
+			ly = outer_radius * sin (ang_loop);
+		}
 
-        calc_pnt.x = RINT (lx + center_pnt->pnt.x);
-        calc_pnt.y = RINT (ly + center_pnt->pnt.y);
+		calc_pnt.x = RINT (lx + center_pnt->pnt.x);
+		calc_pnt.y = RINT (ly + center_pnt->pnt.y);
 
-        if (do_line)
-        {
+		if (do_line)
+		{
 
-            /* Miss out points that come to the same location */
-            if (calc_pnt.x == start_pnt.x && calc_pnt.y == start_pnt.y)
-                continue;
+			/* Miss out points that come to the same location */
+			if (calc_pnt.x == start_pnt.x && calc_pnt.y == start_pnt.y)
+				continue;
 
-            gfig_draw_line (calc_pnt.x, calc_pnt.y, start_pnt.x, start_pnt.y, cr);
-        }
-        else
-        {
-            do_line = TRUE;
-            first_pnt = calc_pnt;
-        }
-        start_pnt = calc_pnt;
-    }
+			gfig_draw_line (calc_pnt.x, calc_pnt.y, start_pnt.x, start_pnt.y, cr);
+		}
+		else
+		{
+			do_line = TRUE;
+			first_pnt = calc_pnt;
+		}
+		start_pnt = calc_pnt;
+	}
 
-    gfig_draw_line (first_pnt.x, first_pnt.y, start_pnt.x, start_pnt.y, cr);
+	gfig_draw_line (first_pnt.x, first_pnt.y, start_pnt.x, start_pnt.y, cr);
 }
 
 static void
 d_paint_star (GfigObject *obj)
 {
-    /* first point center */
-    /* Next point is radius */
-    gdouble    *line_pnts;
-    gint        seg_count = 0;
-    gint        i = 0;
-    DobjPoints *center_pnt;
-    DobjPoints *outer_radius_pnt;
-    DobjPoints *inner_radius_pnt;
-    gint16      shift_x;
-    gint16      shift_y;
-    gdouble     ang_grid;
-    gdouble     ang_loop;
-    gdouble     outer_radius;
-    gdouble     inner_radius;
-    gdouble     offset_angle;
-    gint        loop;
-    GdkPoint    first_pnt = { 0, 0 };
-    GdkPoint    last_pnt  = { 0, 0 };
-    gboolean    first = TRUE;
-    gdouble    *min_max;
+	/* first point center */
+	/* Next point is radius */
+	gdouble    *line_pnts;
+	gint seg_count = 0;
+	gint i = 0;
+	DobjPoints *center_pnt;
+	DobjPoints *outer_radius_pnt;
+	DobjPoints *inner_radius_pnt;
+	gint16 shift_x;
+	gint16 shift_y;
+	gdouble ang_grid;
+	gdouble ang_loop;
+	gdouble outer_radius;
+	gdouble inner_radius;
+	gdouble offset_angle;
+	gint loop;
+	GdkPoint first_pnt = { 0, 0 };
+	GdkPoint last_pnt  = { 0, 0 };
+	gboolean first = TRUE;
+	gdouble    *min_max;
 
-    g_assert (obj != NULL);
+	g_assert (obj != NULL);
 
-    /* count - add one to close polygon */
-    seg_count = 2 * obj->type_data + 1;
+	/* count - add one to close polygon */
+	seg_count = 2 * obj->type_data + 1;
 
-    center_pnt = obj->points;
+	center_pnt = obj->points;
 
-    if (!center_pnt || !seg_count)
-        return; /* no-line */
+	if (!center_pnt || !seg_count)
+		return; /* no-line */
 
-    line_pnts = g_new0 (gdouble, 2 * seg_count + 1);
-    min_max = g_new (gdouble, 4);
+	line_pnts = g_new0 (gdouble, 2 * seg_count + 1);
+	min_max = g_new (gdouble, 4);
 
-    /* Go around all the points drawing a line from one to the next */
-    /* Next point defines the radius */
-    outer_radius_pnt = center_pnt->next; /* this defines the vetices */
+	/* Go around all the points drawing a line from one to the next */
+	/* Next point defines the radius */
+	outer_radius_pnt = center_pnt->next; /* this defines the vetices */
 
-    if (!outer_radius_pnt)
-    {
+	if (!outer_radius_pnt)
+	{
 #ifdef DEBUG
-        g_warning ("Internal error in star - no outer vertice point \n");
+		g_warning ("Internal error in star - no outer vertice point \n");
 #endif /* DEBUG */
-        g_free (line_pnts);
-        g_free (min_max);
-        return;
-    }
+		g_free (line_pnts);
+		g_free (min_max);
+		return;
+	}
 
-    inner_radius_pnt = outer_radius_pnt->next; /* this defines the vetices */
+	inner_radius_pnt = outer_radius_pnt->next; /* this defines the vetices */
 
-    if (!inner_radius_pnt)
-    {
+	if (!inner_radius_pnt)
+	{
 #ifdef DEBUG
-        g_warning ("Internal error in star - no inner vertice point \n");
+		g_warning ("Internal error in star - no inner vertice point \n");
 #endif /* DEBUG */
-        g_free (line_pnts);
-        g_free (min_max);
-        return;
-    }
+		g_free (line_pnts);
+		g_free (min_max);
+		return;
+	}
 
-    shift_x = outer_radius_pnt->pnt.x - center_pnt->pnt.x;
-    shift_y = outer_radius_pnt->pnt.y - center_pnt->pnt.y;
+	shift_x = outer_radius_pnt->pnt.x - center_pnt->pnt.x;
+	shift_y = outer_radius_pnt->pnt.y - center_pnt->pnt.y;
 
-    outer_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
+	outer_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
 
-    /* Lines */
-    ang_grid = 2.0 * G_PI / (2.0 * (gdouble) obj->type_data);
-    offset_angle = atan2 (shift_y, shift_x);
+	/* Lines */
+	ang_grid = 2.0 * G_PI / (2.0 * (gdouble) obj->type_data);
+	offset_angle = atan2 (shift_y, shift_x);
 
-    shift_x = inner_radius_pnt->pnt.x - center_pnt->pnt.x;
-    shift_y = inner_radius_pnt->pnt.y - center_pnt->pnt.y;
+	shift_x = inner_radius_pnt->pnt.x - center_pnt->pnt.x;
+	shift_y = inner_radius_pnt->pnt.y - center_pnt->pnt.y;
 
-    inner_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
+	inner_radius = sqrt ((shift_x*shift_x) + (shift_y*shift_y));
 
-    for (loop = 0 ; loop < 2 * obj->type_data ; loop++)
-    {
-        gdouble  lx, ly;
-        GdkPoint calc_pnt;
+	for (loop = 0; loop < 2 * obj->type_data; loop++)
+	{
+		gdouble lx, ly;
+		GdkPoint calc_pnt;
 
-        ang_loop = (gdouble)loop * ang_grid + offset_angle;
+		ang_loop = (gdouble)loop * ang_grid + offset_angle;
 
-        if (loop % 2)
-        {
-            lx = inner_radius * cos (ang_loop);
-            ly = inner_radius * sin (ang_loop);
-        }
-        else
-        {
-            lx = outer_radius * cos (ang_loop);
-            ly = outer_radius * sin (ang_loop);
-        }
+		if (loop % 2)
+		{
+			lx = inner_radius * cos (ang_loop);
+			ly = inner_radius * sin (ang_loop);
+		}
+		else
+		{
+			lx = outer_radius * cos (ang_loop);
+			ly = outer_radius * sin (ang_loop);
+		}
 
-        calc_pnt.x = RINT (lx + center_pnt->pnt.x);
-        calc_pnt.y = RINT (ly + center_pnt->pnt.y);
+		calc_pnt.x = RINT (lx + center_pnt->pnt.x);
+		calc_pnt.y = RINT (ly + center_pnt->pnt.y);
 
-        /* Miss out duped pnts */
-        if (!first)
-        {
-            if (calc_pnt.x == last_pnt.x && calc_pnt.y == last_pnt.y)
-            {
-                continue;
-            }
-        }
+		/* Miss out duped pnts */
+		if (!first)
+		{
+			if (calc_pnt.x == last_pnt.x && calc_pnt.y == last_pnt.y)
+			{
+				continue;
+			}
+		}
 
-        line_pnts[i++] = calc_pnt.x;
-        line_pnts[i++] = calc_pnt.y;
-        last_pnt = calc_pnt;
+		line_pnts[i++] = calc_pnt.x;
+		line_pnts[i++] = calc_pnt.y;
+		last_pnt = calc_pnt;
 
-        if (first)
-        {
-            first_pnt = calc_pnt;
-            first = FALSE;
-            min_max[0] = min_max[2] = calc_pnt.x;
-            min_max[1] = min_max[3] = calc_pnt.y;
-        }
-        else
-        {
-            min_max[0] = MIN (min_max[0], calc_pnt.x);
-            min_max[1] = MIN (min_max[1], calc_pnt.y);
-            min_max[2] = MAX (min_max[2], calc_pnt.x);
-            min_max[3] = MAX (min_max[3], calc_pnt.y);
-        }
-    }
+		if (first)
+		{
+			first_pnt = calc_pnt;
+			first = FALSE;
+			min_max[0] = min_max[2] = calc_pnt.x;
+			min_max[1] = min_max[3] = calc_pnt.y;
+		}
+		else
+		{
+			min_max[0] = MIN (min_max[0], calc_pnt.x);
+			min_max[1] = MIN (min_max[1], calc_pnt.y);
+			min_max[2] = MAX (min_max[2], calc_pnt.x);
+			min_max[3] = MAX (min_max[3], calc_pnt.y);
+		}
+	}
 
-    line_pnts[i++] = first_pnt.x;
-    line_pnts[i++] = first_pnt.y;
+	line_pnts[i++] = first_pnt.x;
+	line_pnts[i++] = first_pnt.y;
 
-    /* Scale before drawing */
-    if (selvals.scaletoimage)
-    {
-        scale_to_original_xy (&line_pnts[0], i / 2);
-        scale_to_original_xy (min_max, 2);
-    }
-    else
-    {
-        scale_to_xy (&line_pnts[0], i / 2);
-        scale_to_xy (min_max, 2);
-    }
+	/* Scale before drawing */
+	if (selvals.scaletoimage)
+	{
+		scale_to_original_xy (&line_pnts[0], i / 2);
+		scale_to_original_xy (min_max, 2);
+	}
+	else
+	{
+		scale_to_xy (&line_pnts[0], i / 2);
+		scale_to_xy (min_max, 2);
+	}
 
-    if (gfig_context_get_current_style ()->fill_type != FILL_NONE)
-    {
-        gimp_context_push ();
-        gimp_context_set_antialias (selopt.antia);
-        gimp_context_set_feather (selopt.feather);
-        gimp_context_set_feather_radius (selopt.feather_radius, selopt.feather_radius);
-        gimp_image_select_polygon (gfig_context->image,
-                                   selopt.type,
-                                   i, line_pnts);
-        gimp_context_pop ();
+	if (gfig_context_get_current_style ()->fill_type != FILL_NONE)
+	{
+		gimp_context_push ();
+		gimp_context_set_antialias (selopt.antia);
+		gimp_context_set_feather (selopt.feather);
+		gimp_context_set_feather_radius (selopt.feather_radius, selopt.feather_radius);
+		gimp_image_select_polygon (gfig_context->image,
+		                           selopt.type,
+		                           i, line_pnts);
+		gimp_context_pop ();
 
-        paint_layer_fill (min_max[0], min_max[1], min_max[2], min_max[3]);
-        gimp_selection_none (gfig_context->image);
-    }
+		paint_layer_fill (min_max[0], min_max[1], min_max[2], min_max[3]);
+		gimp_selection_none (gfig_context->image);
+	}
 
-    if (obj->style.paint_type == PAINT_BRUSH_TYPE)
-        gfig_paint (selvals.brshtype, gfig_context->drawable, i, line_pnts);
+	if (obj->style.paint_type == PAINT_BRUSH_TYPE)
+		gfig_paint (selvals.brshtype, gfig_context->drawable, i, line_pnts);
 
-    g_free (line_pnts);
-    g_free (min_max);
+	g_free (line_pnts);
+	g_free (min_max);
 }
 
 static GfigObject *
 d_copy_star (GfigObject *obj)
 {
-    GfigObject *np;
+	GfigObject *np;
 
-    g_assert (obj->type == STAR);
+	g_assert (obj->type == STAR);
 
-    np = d_new_object (STAR, obj->points->pnt.x, obj->points->pnt.y);
-    np->points->next = d_copy_dobjpoints (obj->points->next);
-    np->type_data = obj->type_data;
+	np = d_new_object (STAR, obj->points->pnt.x, obj->points->pnt.y);
+	np->points->next = d_copy_dobjpoints (obj->points->next);
+	np->type_data = obj->type_data;
 
-    return np;
+	return np;
 }
 
 void
 d_star_object_class_init (void)
 {
-    GfigObjectClass *class = &dobj_class[STAR];
+	GfigObjectClass *class = &dobj_class[STAR];
 
-    class->type      = STAR;
-    class->name      = "STAR";
-    class->drawfunc  = d_draw_star;
-    class->paintfunc = d_paint_star;
-    class->copyfunc  = d_copy_star;
-    class->update    = d_update_star;
+	class->type      = STAR;
+	class->name      = "STAR";
+	class->drawfunc  = d_draw_star;
+	class->paintfunc = d_paint_star;
+	class->copyfunc  = d_copy_star;
+	class->update    = d_update_star;
 }
 
 static void
 d_update_star (GdkPoint *pnt)
 {
-    DobjPoints *center_pnt, *inner_pnt, *outer_pnt;
+	DobjPoints *center_pnt, *inner_pnt, *outer_pnt;
 
-    center_pnt = obj_creating->points;
+	center_pnt = obj_creating->points;
 
-    if (!center_pnt)
-        return; /* No points */
+	if (!center_pnt)
+		return; /* No points */
 
-    if ((outer_pnt = center_pnt->next))
-    {
-        inner_pnt = outer_pnt->next;
-        outer_pnt->pnt = *pnt;
-        inner_pnt->pnt.x = pnt->x + (2 * (center_pnt->pnt.x - pnt->x)) / 3;
-        inner_pnt->pnt.y = pnt->y + (2 * (center_pnt->pnt.y - pnt->y)) / 3;
-    }
-    else
-    {
-        /* Radius is a few pixels away */
-        /* First edge point */
-        d_pnt_add_line (obj_creating, pnt->x, pnt->y,-1);
-        /* Inner radius */
-        d_pnt_add_line (obj_creating,
-                        pnt->x + (2 * (center_pnt->pnt.x - pnt->x)) / 3,
-                        pnt->y + (2 * (center_pnt->pnt.y - pnt->y)) / 3,
-                        -1);
-    }
+	if ((outer_pnt = center_pnt->next))
+	{
+		inner_pnt = outer_pnt->next;
+		outer_pnt->pnt = *pnt;
+		inner_pnt->pnt.x = pnt->x + (2 * (center_pnt->pnt.x - pnt->x)) / 3;
+		inner_pnt->pnt.y = pnt->y + (2 * (center_pnt->pnt.y - pnt->y)) / 3;
+	}
+	else
+	{
+		/* Radius is a few pixels away */
+		/* First edge point */
+		d_pnt_add_line (obj_creating, pnt->x, pnt->y,-1);
+		/* Inner radius */
+		d_pnt_add_line (obj_creating,
+		                pnt->x + (2 * (center_pnt->pnt.x - pnt->x)) / 3,
+		                pnt->y + (2 * (center_pnt->pnt.y - pnt->y)) / 3,
+		                -1);
+	}
 }
 
 void
 d_star_start (GdkPoint *pnt,
-              gboolean  shift_down)
+              gboolean shift_down)
 {
-    obj_creating = d_new_object (STAR, pnt->x, pnt->y);
-    obj_creating->type_data = star_num_sides;
+	obj_creating = d_new_object (STAR, pnt->x, pnt->y);
+	obj_creating->type_data = star_num_sides;
 }
 
 void
 d_star_end (GdkPoint *pnt,
-            gboolean  shift_down)
+            gboolean shift_down)
 {
-    add_to_all_obj (gfig_context->current_obj, obj_creating);
-    obj_creating = NULL;
+	add_to_all_obj (gfig_context->current_obj, obj_creating);
+	obj_creating = NULL;
 }
 

@@ -41,46 +41,46 @@
 GType              gimp_config_writer_get_type     (void) G_GNUC_CONST;
 
 GimpConfigWriter * gimp_config_writer_new_from_file     (GFile             *file,
-        gboolean           atomic,
-        const gchar       *header,
-        GError           **error);
+                                                         gboolean atomic,
+                                                         const gchar       *header,
+                                                         GError           **error);
 GimpConfigWriter * gimp_config_writer_new_from_stream   (GOutputStream     *output,
-        const gchar       *header,
-        GError           **error);
-GimpConfigWriter * gimp_config_writer_new_from_fd       (gint               fd);
+                                                         const gchar       *header,
+                                                         GError           **error);
+GimpConfigWriter * gimp_config_writer_new_from_fd       (gint fd);
 GimpConfigWriter * gimp_config_writer_new_from_string   (GString           *string);
 
 GimpConfigWriter * gimp_config_writer_ref          (GimpConfigWriter  *writer);
 void               gimp_config_writer_unref        (GimpConfigWriter  *writer);
 
 void               gimp_config_writer_open         (GimpConfigWriter  *writer,
-        const gchar       *name);
+                                                    const gchar       *name);
 void               gimp_config_writer_comment_mode (GimpConfigWriter  *writer,
-        gboolean           enable);
+                                                    gboolean enable);
 
 void               gimp_config_writer_print        (GimpConfigWriter  *writer,
-        const gchar       *string,
-        gint               len);
+                                                    const gchar       *string,
+                                                    gint len);
 void               gimp_config_writer_printf       (GimpConfigWriter  *writer,
-        const gchar       *format,
-        ...) G_GNUC_PRINTF (2, 3);
+                                                    const gchar       *format,
+                                                    ...) G_GNUC_PRINTF (2, 3);
 void               gimp_config_writer_identifier   (GimpConfigWriter  *writer,
-        const gchar       *identifier);
+                                                    const gchar       *identifier);
 void               gimp_config_writer_string       (GimpConfigWriter  *writer,
-        const gchar       *string);
+                                                    const gchar       *string);
 void               gimp_config_writer_data         (GimpConfigWriter  *writer,
-        gint               length,
-        const guint8      *data);
+                                                    gint length,
+                                                    const guint8      *data);
 void               gimp_config_writer_comment      (GimpConfigWriter  *writer,
-        const gchar       *comment);
+                                                    const gchar       *comment);
 void               gimp_config_writer_linefeed     (GimpConfigWriter  *writer);
 
 
 void               gimp_config_writer_revert       (GimpConfigWriter  *writer);
 void               gimp_config_writer_close        (GimpConfigWriter  *writer);
 gboolean           gimp_config_writer_finish       (GimpConfigWriter  *writer,
-        const gchar       *footer,
-        GError           **error);
+                                                    const gchar       *footer,
+                                                    GError           **error);
 
 
 #endif /* __GIMP_CONFIG_WRITER_H__ */

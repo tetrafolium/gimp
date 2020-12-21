@@ -27,15 +27,15 @@ typedef struct _EXRLoader EXRLoader;
 
 typedef enum
 {
-    PREC_UINT,
-    PREC_HALF,
-    PREC_FLOAT
+	PREC_UINT,
+	PREC_HALF,
+	PREC_FLOAT
 } EXRPrecision;
 
 typedef enum
 {
-    IMAGE_TYPE_RGB,
-    IMAGE_TYPE_GRAY
+	IMAGE_TYPE_RGB,
+	IMAGE_TYPE_GRAY
 } EXRImageType;
 
 
@@ -54,14 +54,14 @@ int                exr_loader_has_alpha      (EXRLoader  *loader);
 GimpColorProfile * exr_loader_get_profile    (EXRLoader  *loader);
 gchar            * exr_loader_get_comment    (EXRLoader  *loader);
 guchar           * exr_loader_get_exif       (EXRLoader  *loader,
-        guint      *size);
+                                              guint      *size);
 guchar           * exr_loader_get_xmp        (EXRLoader  *loader,
-        guint      *size);
+                                              guint      *size);
 
 int                exr_loader_read_pixel_row (EXRLoader *loader,
-        char      *pixels,
-        int        bpp,
-        int        row);
+                                              char      *pixels,
+                                              int bpp,
+                                              int row);
 
 G_END_DECLS
 

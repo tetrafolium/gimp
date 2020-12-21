@@ -32,19 +32,19 @@ G_BEGIN_DECLS
 
 
 GList    * gimp_config_diff                  (GObject      *a,
-        GObject      *b,
-        GParamFlags   flags);
+                                              GObject      *b,
+                                              GParamFlags flags);
 
 gboolean   gimp_config_sync                  (GObject      *src,
-        GObject      *dest,
-        GParamFlags   flags);
+                                              GObject      *dest,
+                                              GParamFlags flags);
 
 void       gimp_config_reset_properties      (GObject      *object);
 void       gimp_config_reset_property        (GObject      *object,
-        const gchar  *property_name);
+                                              const gchar  *property_name);
 
 void       gimp_config_string_append_escaped (GString      *string,
-        const gchar  *val);
+                                              const gchar  *val);
 
 
 G_END_DECLS

@@ -37,31 +37,31 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpPageSelectorPrivate GimpPageSelectorPrivate;
-typedef struct _GimpPageSelectorClass   GimpPageSelectorClass;
+typedef struct _GimpPageSelectorClass GimpPageSelectorClass;
 
 struct _GimpPageSelector
 {
-    GtkBox                   parent_instance;
+	GtkBox parent_instance;
 
-    GimpPageSelectorPrivate *priv;
+	GimpPageSelectorPrivate *priv;
 };
 
 struct _GimpPageSelectorClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 
-    void (* selection_changed) (GimpPageSelector *selector);
-    void (* activate)          (GimpPageSelector *selector);
+	void (* selection_changed) (GimpPageSelector *selector);
+	void (* activate)          (GimpPageSelector *selector);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -70,39 +70,39 @@ GType       gimp_page_selector_get_type           (void) G_GNUC_CONST;
 GtkWidget * gimp_page_selector_new                (void);
 
 void        gimp_page_selector_set_n_pages        (GimpPageSelector *selector,
-        gint              n_pages);
+                                                   gint n_pages);
 gint        gimp_page_selector_get_n_pages        (GimpPageSelector *selector);
 
 void        gimp_page_selector_set_target   (GimpPageSelector       *selector,
-        GimpPageSelectorTarget  target);
+                                             GimpPageSelectorTarget target);
 GimpPageSelectorTarget
 gimp_page_selector_get_target   (GimpPageSelector       *selector);
 
 void        gimp_page_selector_set_page_thumbnail (GimpPageSelector *selector,
-        gint              page_no,
-        GdkPixbuf        *thumbnail);
+                                                   gint page_no,
+                                                   GdkPixbuf        *thumbnail);
 GdkPixbuf * gimp_page_selector_get_page_thumbnail (GimpPageSelector *selector,
-        gint              page_no);
+                                                   gint page_no);
 
 void        gimp_page_selector_set_page_label     (GimpPageSelector *selector,
-        gint              page_no,
-        const gchar      *label);
+                                                   gint page_no,
+                                                   const gchar      *label);
 gchar     * gimp_page_selector_get_page_label     (GimpPageSelector *selector,
-        gint              page_no);
+                                                   gint page_no);
 
 void        gimp_page_selector_select_all         (GimpPageSelector *selector);
 void        gimp_page_selector_unselect_all       (GimpPageSelector *selector);
 void        gimp_page_selector_select_page        (GimpPageSelector *selector,
-        gint              page_no);
+                                                   gint page_no);
 void        gimp_page_selector_unselect_page      (GimpPageSelector *selector,
-        gint              page_no);
+                                                   gint page_no);
 gboolean    gimp_page_selector_page_is_selected   (GimpPageSelector *selector,
-        gint              page_no);
+                                                   gint page_no);
 gint      * gimp_page_selector_get_selected_pages (GimpPageSelector *selector,
-        gint             *n_selected_pages);
+                                                   gint             *n_selected_pages);
 
 void        gimp_page_selector_select_range       (GimpPageSelector *selector,
-        const gchar      *range);
+                                                   const gchar      *range);
 gchar     * gimp_page_selector_get_selected_range (GimpPageSelector *selector);
 
 G_END_DECLS

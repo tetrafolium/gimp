@@ -24,7 +24,7 @@
 
 
 GimpImage * load_image (GFile       *file,
-                        gboolean     interactive,
+                        gboolean interactive,
                         GError     **error);
 
 

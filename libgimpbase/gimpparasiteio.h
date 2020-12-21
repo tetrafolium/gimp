@@ -57,16 +57,16 @@ typedef struct _GimpPixPipeParams GimpPixPipeParams;
  **/
 struct _GimpPixPipeParams
 {
-    gint   step;
-    gint   ncells;
-    gint   dim;
-    gint   cols;
-    gint   rows;
-    gint   cellwidth;
-    gint   cellheight;
-    gchar *placement;
-    gint   rank[GIMP_PIXPIPE_MAXDIM];
-    gchar *selection[GIMP_PIXPIPE_MAXDIM];
+	gint step;
+	gint ncells;
+	gint dim;
+	gint cols;
+	gint rows;
+	gint cellwidth;
+	gint cellheight;
+	gchar *placement;
+	gint rank[GIMP_PIXPIPE_MAXDIM];
+	gchar *selection[GIMP_PIXPIPE_MAXDIM];
 };
 
 /* Initialize with dummy values */

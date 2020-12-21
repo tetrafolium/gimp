@@ -41,44 +41,44 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpPaletteSelectButtonPrivate GimpPaletteSelectButtonPrivate;
-typedef struct _GimpPaletteSelectButtonClass   GimpPaletteSelectButtonClass;
+typedef struct _GimpPaletteSelectButtonClass GimpPaletteSelectButtonClass;
 
 struct _GimpPaletteSelectButton
 {
-    GimpSelectButton                parent_instance;
+	GimpSelectButton parent_instance;
 
-    GimpPaletteSelectButtonPrivate *priv;
+	GimpPaletteSelectButtonPrivate *priv;
 };
 
 struct _GimpPaletteSelectButtonClass
 {
-    GimpSelectButtonClass  parent_class;
+	GimpSelectButtonClass parent_class;
 
-    /* palette_set signal is emitted when palette is chosen */
-    void (* palette_set) (GimpPaletteSelectButton *button,
-                          const gchar             *palette_name,
-                          gboolean                 dialog_closing);
+	/* palette_set signal is emitted when palette is chosen */
+	void (* palette_set) (GimpPaletteSelectButton *button,
+	                      const gchar             *palette_name,
+	                      gboolean dialog_closing);
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType         gimp_palette_select_button_get_type    (void) G_GNUC_CONST;
 
 GtkWidget   * gimp_palette_select_button_new         (const gchar *title,
-        const gchar *palette_name);
+                                                      const gchar *palette_name);
 
 const gchar * gimp_palette_select_button_get_palette (GimpPaletteSelectButton *button);
 void          gimp_palette_select_button_set_palette (GimpPaletteSelectButton *button,
-        const gchar             *palette_name);
+                                                      const gchar             *palette_name);
 
 
 G_END_DECLS

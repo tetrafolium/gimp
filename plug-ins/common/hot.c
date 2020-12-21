@@ -79,22 +79,22 @@
 
 typedef enum
 {
-    ACT_LREDUX,
-    ACT_SREDUX,
-    ACT_FLAG
+	ACT_LREDUX,
+	ACT_SREDUX,
+	ACT_FLAG
 } hotAction;
 
 typedef enum
 {
-    MODE_NTSC,
-    MODE_PAL
+	MODE_NTSC,
+	MODE_PAL
 } hotModes;
 
 typedef struct
 {
-    hotModes   mode;
-    hotAction action;
-    gboolean  new_layerp;
+	hotModes mode;
+	hotAction action;
+	gboolean new_layerp;
 } piArgs;
 
 #define CHROMA_LIM      50.0            /* chroma amplitude limit */
@@ -106,30 +106,30 @@ typedef struct
 
 struct
 {
-    gdouble pedestal;
-    gdouble gamma;
-    gdouble code[3][3];
+	gdouble pedestal;
+	gdouble gamma;
+	gdouble code[3][3];
 }
 static mode[2] =
 {
-    {
-        7.5,
-        2.2,
-        {
-            { 0.2989,  0.5866,  0.1144 },
-            { 0.5959, -0.2741, -0.3218 },
-            { 0.2113, -0.5227,  0.3113 }
-        }
-    },
-    {
-        0.0,
-        2.8,
-        {
-            { 0.2989,  0.5866,  0.1144 },
-            { -0.1473, -0.2891,  0.4364 },
-            { 0.6149, -0.5145, -0.1004 }
-        }
-    }
+	{
+		7.5,
+		2.2,
+		{
+			{ 0.2989,  0.5866,  0.1144 },
+			{ 0.5959, -0.2741, -0.3218 },
+			{ 0.2113, -0.5227,  0.3113 }
+		}
+	},
+	{
+		0.0,
+		2.8,
+		{
+			{ 0.2989,  0.5866,  0.1144 },
+			{ -0.1473, -0.2891,  0.4364 },
+			{ 0.6149, -0.5145, -0.1004 }
+		}
+	}
 };
 
 
@@ -137,17 +137,17 @@ static mode[2] =
 #define MAXPIX   255            /* white value */
 
 
-typedef struct _Hot      Hot;
+typedef struct _Hot Hot;
 typedef struct _HotClass HotClass;
 
 struct _Hot
 {
-    GimpPlugIn parent_instance;
+	GimpPlugIn parent_instance;
 };
 
 struct _HotClass
 {
-    GimpPlugInClass parent_class;
+	GimpPlugInClass parent_class;
 };
 
 
@@ -158,23 +158,23 @@ GType                   hot_get_type         (void) G_GNUC_CONST;
 
 static GList          * hot_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * hot_create_procedure (GimpPlugIn           *plug_in,
-        const gchar          *name);
+                                              const gchar          *name);
 
 static GimpValueArray * hot_run              (GimpProcedure        *procedure,
-        GimpRunMode           run_mode,
-        GimpImage            *image,
-        GimpDrawable         *drawable,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                              GimpRunMode run_mode,
+                                              GimpImage            *image,
+                                              GimpDrawable         *drawable,
+                                              const GimpValueArray *args,
+                                              gpointer run_data);
 
 static gboolean         pluginCore           (GimpImage            *image,
-        GimpDrawable         *drawable,
-        piArgs               *argp);
+                                              GimpDrawable         *drawable,
+                                              piArgs               *argp);
 static gboolean         plugin_dialog        (piArgs               *argp);
-static gboolean         hotp                 (guint8                r,
-        guint8                g,
-        guint8                b);
-static void             build_tab            (gint                  m);
+static gboolean         hotp                 (guint8 r,
+                                              guint8 g,
+                                              guint8 b);
+static void             build_tab            (gint m);
 
 /*
  * gc: apply the gamma correction specified for this video standard.
@@ -206,20 +206,20 @@ G_DEFINE_TYPE (Hot, hot, GIMP_TYPE_PLUG_IN)
 GIMP_MAIN (HOT_TYPE)
 
 
-static gint     tab[3][3][MAXPIX+1]; /* multiply lookup table */
-static gdouble  chroma_lim;          /* chroma limit */
-static gdouble  compos_lim;          /* composite amplitude limit */
-static glong    ichroma_lim2;        /* chroma limit squared (scaled integer) */
-static gint     icompos_lim;         /* composite amplitude limit (scaled integer) */
+static gint tab[3][3][MAXPIX+1];     /* multiply lookup table */
+static gdouble chroma_lim;           /* chroma limit */
+static gdouble compos_lim;           /* composite amplitude limit */
+static glong ichroma_lim2;           /* chroma limit squared (scaled integer) */
+static gint icompos_lim;             /* composite amplitude limit (scaled integer) */
 
 
 static void
 hot_class_init (HotClass *klass)
 {
-    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+	GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-    plug_in_class->query_procedures = hot_query_procedures;
-    plug_in_class->create_procedure = hot_create_procedure;
+	plug_in_class->query_procedures = hot_query_procedures;
+	plug_in_class->create_procedure = hot_create_procedure;
 }
 
 static void
@@ -230,118 +230,118 @@ hot_init (Hot *hot)
 static GList *
 hot_query_procedures (GimpPlugIn *plug_in)
 {
-    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+	return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 hot_create_procedure (GimpPlugIn  *plug_in,
                       const gchar *name)
 {
-    GimpProcedure *procedure = NULL;
+	GimpProcedure *procedure = NULL;
 
-    if (! strcmp (name, PLUG_IN_PROC))
-    {
-        procedure = gimp_image_procedure_new (plug_in, name,
-                                              GIMP_PDB_PROC_TYPE_PLUGIN,
-                                              hot_run, NULL, NULL);
+	if (!strcmp (name, PLUG_IN_PROC))
+	{
+		procedure = gimp_image_procedure_new (plug_in, name,
+		                                      GIMP_PDB_PROC_TYPE_PLUGIN,
+		                                      hot_run, NULL, NULL);
 
-        gimp_procedure_set_image_types (procedure, "RGB");
+		gimp_procedure_set_image_types (procedure, "RGB");
 
-        gimp_procedure_set_menu_label (procedure, N_("_Hot..."));
-        gimp_procedure_add_menu_path (procedure, "<Image>/Colors/Modify");
+		gimp_procedure_set_menu_label (procedure, N_("_Hot..."));
+		gimp_procedure_add_menu_path (procedure, "<Image>/Colors/Modify");
 
-        gimp_procedure_set_documentation (procedure,
-                                          N_("Find and fix pixels that may "
-                                             "be unsafely bright"),
-                                          "hot scans an image for pixels that "
-                                          "will give unsave values of "
-                                          "chrominance or composite signale "
-                                          "amplitude when encoded into an NTSC "
-                                          "or PAL signal. Three actions can be "
-                                          "performed on these 'hot' pixels. "
-                                          "(0) reduce luminance, "
-                                          "(1) reduce saturation, or (2) Blacken.",
-                                          name);
-        gimp_procedure_set_attribution (procedure,
-                                        "Eric L. Hernes, Alan Wm Paeth",
-                                        "Eric L. Hernes",
-                                        "1997");
+		gimp_procedure_set_documentation (procedure,
+		                                  N_("Find and fix pixels that may "
+		                                     "be unsafely bright"),
+		                                  "hot scans an image for pixels that "
+		                                  "will give unsave values of "
+		                                  "chrominance or composite signale "
+		                                  "amplitude when encoded into an NTSC "
+		                                  "or PAL signal. Three actions can be "
+		                                  "performed on these 'hot' pixels. "
+		                                  "(0) reduce luminance, "
+		                                  "(1) reduce saturation, or (2) Blacken.",
+		                                  name);
+		gimp_procedure_set_attribution (procedure,
+		                                "Eric L. Hernes, Alan Wm Paeth",
+		                                "Eric L. Hernes",
+		                                "1997");
 
-        GIMP_PROC_ARG_INT (procedure, "mode",
-                           "Mode",
-                           "Mode { NTSC (0), PAL (1) }",
-                           0, 1, MODE_NTSC,
-                           G_PARAM_READWRITE);
+		GIMP_PROC_ARG_INT (procedure, "mode",
+		                   "Mode",
+		                   "Mode { NTSC (0), PAL (1) }",
+		                   0, 1, MODE_NTSC,
+		                   G_PARAM_READWRITE);
 
-        GIMP_PROC_ARG_INT (procedure, "action",
-                           "Action",
-                           "Action { (0) reduce luminance, "
-                           "(1) reduce saturation, or (2) Blacken }",
-                           0, 2, ACT_LREDUX,
-                           G_PARAM_READWRITE);
+		GIMP_PROC_ARG_INT (procedure, "action",
+		                   "Action",
+		                   "Action { (0) reduce luminance, "
+		                   "(1) reduce saturation, or (2) Blacken }",
+		                   0, 2, ACT_LREDUX,
+		                   G_PARAM_READWRITE);
 
-        GIMP_PROC_ARG_BOOLEAN (procedure, "new-layer",
-                               "New layer",
-                               "Create a new layer",
-                               TRUE,
-                               G_PARAM_READWRITE);
-    }
+		GIMP_PROC_ARG_BOOLEAN (procedure, "new-layer",
+		                       "New layer",
+		                       "Create a new layer",
+		                       TRUE,
+		                       G_PARAM_READWRITE);
+	}
 
-    return procedure;
+	return procedure;
 }
 
 static GimpValueArray *
 hot_run (GimpProcedure        *procedure,
-         GimpRunMode           run_mode,
+         GimpRunMode run_mode,
          GimpImage            *image,
          GimpDrawable         *drawable,
          const GimpValueArray *args,
-         gpointer              run_data)
+         gpointer run_data)
 {
-    piArgs pi_args;
+	piArgs pi_args;
 
-    INIT_I18N ();
-    gegl_init (NULL, NULL);
+	INIT_I18N ();
+	gegl_init (NULL, NULL);
 
-    pi_args.mode       = GIMP_VALUES_GET_INT     (args, 0);
-    pi_args.action     = GIMP_VALUES_GET_INT     (args, 1);
-    pi_args.new_layerp = GIMP_VALUES_GET_BOOLEAN (args, 2);
+	pi_args.mode       = GIMP_VALUES_GET_INT     (args, 0);
+	pi_args.action     = GIMP_VALUES_GET_INT     (args, 1);
+	pi_args.new_layerp = GIMP_VALUES_GET_BOOLEAN (args, 2);
 
-    switch (run_mode)
-    {
-    case GIMP_RUN_INTERACTIVE:
-        gimp_get_data (PLUG_IN_PROC, &pi_args);
+	switch (run_mode)
+	{
+	case GIMP_RUN_INTERACTIVE:
+		gimp_get_data (PLUG_IN_PROC, &pi_args);
 
-        if (! plugin_dialog (&pi_args))
-        {
-            return gimp_procedure_new_return_values (procedure,
-                    GIMP_PDB_CANCEL,
-                    NULL);
-        }
-        break;
+		if (!plugin_dialog (&pi_args))
+		{
+			return gimp_procedure_new_return_values (procedure,
+			                                         GIMP_PDB_CANCEL,
+			                                         NULL);
+		}
+		break;
 
-    case GIMP_RUN_NONINTERACTIVE:
-        break;
+	case GIMP_RUN_NONINTERACTIVE:
+		break;
 
-    case GIMP_RUN_WITH_LAST_VALS:
-        gimp_get_data (PLUG_IN_PROC, &pi_args);
-        break;
-    }
+	case GIMP_RUN_WITH_LAST_VALS:
+		gimp_get_data (PLUG_IN_PROC, &pi_args);
+		break;
+	}
 
-    if (! pluginCore (image, drawable, &pi_args))
-    {
-        return gimp_procedure_new_return_values (procedure,
-                GIMP_PDB_EXECUTION_ERROR,
-                NULL);
-    }
+	if (!pluginCore (image, drawable, &pi_args))
+	{
+		return gimp_procedure_new_return_values (procedure,
+		                                         GIMP_PDB_EXECUTION_ERROR,
+		                                         NULL);
+	}
 
-    if (run_mode != GIMP_RUN_NONINTERACTIVE)
-        gimp_displays_flush ();
+	if (run_mode != GIMP_RUN_NONINTERACTIVE)
+		gimp_displays_flush ();
 
-    if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data (PLUG_IN_PROC, &pi_args, sizeof (pi_args));
+	if (run_mode == GIMP_RUN_INTERACTIVE)
+		gimp_set_data (PLUG_IN_PROC, &pi_args, sizeof (pi_args));
 
-    return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
+	return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
 }
 
 static gboolean
@@ -349,373 +349,373 @@ pluginCore (GimpImage    *image,
             GimpDrawable *drawable,
             piArgs       *argp)
 {
-    GeglBuffer *src_buffer;
-    GeglBuffer *dest_buffer;
-    const Babl *src_format;
-    const Babl *dest_format;
-    gint        src_bpp;
-    gint        dest_bpp;
-    gboolean    success = TRUE;
-    GimpLayer  *nl      = NULL;
-    gint        y, i;
-    gint        Y, I, Q;
-    gint        width, height;
-    gint        sel_x1, sel_x2, sel_y1, sel_y2;
-    gint        prog_interval;
-    guchar     *src, *s, *dst, *d;
-    guchar      r, prev_r=0, new_r=0;
-    guchar      g, prev_g=0, new_g=0;
-    guchar      b, prev_b=0, new_b=0;
-    gdouble     fy, fc, t, scale;
-    gdouble     pr, pg, pb;
-    gdouble     py;
+	GeglBuffer *src_buffer;
+	GeglBuffer *dest_buffer;
+	const Babl *src_format;
+	const Babl *dest_format;
+	gint src_bpp;
+	gint dest_bpp;
+	gboolean success = TRUE;
+	GimpLayer  *nl      = NULL;
+	gint y, i;
+	gint Y, I, Q;
+	gint width, height;
+	gint sel_x1, sel_x2, sel_y1, sel_y2;
+	gint prog_interval;
+	guchar     *src, *s, *dst, *d;
+	guchar r, prev_r=0, new_r=0;
+	guchar g, prev_g=0, new_g=0;
+	guchar b, prev_b=0, new_b=0;
+	gdouble fy, fc, t, scale;
+	gdouble pr, pg, pb;
+	gdouble py;
 
-    width  = gimp_drawable_width  (drawable);
-    height = gimp_drawable_height (drawable);
+	width  = gimp_drawable_width  (drawable);
+	height = gimp_drawable_height (drawable);
 
-    if (gimp_drawable_has_alpha (drawable))
-        src_format = babl_format ("R'G'B'A u8");
-    else
-        src_format = babl_format ("R'G'B' u8");
+	if (gimp_drawable_has_alpha (drawable))
+		src_format = babl_format ("R'G'B'A u8");
+	else
+		src_format = babl_format ("R'G'B' u8");
 
-    dest_format = src_format;
+	dest_format = src_format;
 
-    if (argp->new_layerp)
-    {
-        gchar        name[40];
-        const gchar *mode_names[] =
-        {
-            "ntsc",
-            "pal",
-        };
-        const gchar *action_names[] =
-        {
-            "lum redux",
-            "sat redux",
-            "flag",
-        };
+	if (argp->new_layerp)
+	{
+		gchar name[40];
+		const gchar *mode_names[] =
+		{
+			"ntsc",
+			"pal",
+		};
+		const gchar *action_names[] =
+		{
+			"lum redux",
+			"sat redux",
+			"flag",
+		};
 
-        g_snprintf (name, sizeof (name), "hot mask (%s, %s)",
-                    mode_names[argp->mode],
-                    action_names[argp->action]);
+		g_snprintf (name, sizeof (name), "hot mask (%s, %s)",
+		            mode_names[argp->mode],
+		            action_names[argp->action]);
 
-        nl = gimp_layer_new (image, name, width, height,
-                             GIMP_RGBA_IMAGE,
-                             100,
-                             gimp_image_get_default_new_layer_mode (image));
+		nl = gimp_layer_new (image, name, width, height,
+		                     GIMP_RGBA_IMAGE,
+		                     100,
+		                     gimp_image_get_default_new_layer_mode (image));
 
-        gimp_drawable_fill (GIMP_DRAWABLE (nl), GIMP_FILL_TRANSPARENT);
-        gimp_image_insert_layer (image, nl, NULL, 0);
+		gimp_drawable_fill (GIMP_DRAWABLE (nl), GIMP_FILL_TRANSPARENT);
+		gimp_image_insert_layer (image, nl, NULL, 0);
 
-        dest_format = babl_format ("R'G'B'A u8");
-    }
+		dest_format = babl_format ("R'G'B'A u8");
+	}
 
-    if (! gimp_drawable_mask_intersect (drawable,
-                                        &sel_x1, &sel_y1, &width, &height))
-        return success;
+	if (!gimp_drawable_mask_intersect (drawable,
+	                                   &sel_x1, &sel_y1, &width, &height))
+		return success;
 
-    src_bpp  = babl_format_get_bytes_per_pixel (src_format);
-    dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
+	src_bpp  = babl_format_get_bytes_per_pixel (src_format);
+	dest_bpp = babl_format_get_bytes_per_pixel (dest_format);
 
-    sel_x2 = sel_x1 + width;
-    sel_y2 = sel_y1 + height;
+	sel_x2 = sel_x1 + width;
+	sel_y2 = sel_y1 + height;
 
-    src = g_new (guchar, width * height * src_bpp);
-    dst = g_new (guchar, width * height * dest_bpp);
+	src = g_new (guchar, width * height * src_bpp);
+	dst = g_new (guchar, width * height * dest_bpp);
 
-    src_buffer = gimp_drawable_get_buffer (drawable);
+	src_buffer = gimp_drawable_get_buffer (drawable);
 
-    if (argp->new_layerp)
-    {
-        dest_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (nl));
-    }
-    else
-    {
-        dest_buffer = gimp_drawable_get_shadow_buffer (drawable);
-    }
+	if (argp->new_layerp)
+	{
+		dest_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (nl));
+	}
+	else
+	{
+		dest_buffer = gimp_drawable_get_shadow_buffer (drawable);
+	}
 
-    gegl_buffer_get (src_buffer,
-                     GEGL_RECTANGLE (sel_x1, sel_y1, width, height), 1.0,
-                     src_format, src,
-                     GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+	gegl_buffer_get (src_buffer,
+	                 GEGL_RECTANGLE (sel_x1, sel_y1, width, height), 1.0,
+	                 src_format, src,
+	                 GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-    s = src;
-    d = dst;
+	s = src;
+	d = dst;
 
-    build_tab (argp->mode);
+	build_tab (argp->mode);
 
-    gimp_progress_init (_("Hot"));
-    prog_interval = height / 10;
+	gimp_progress_init (_("Hot"));
+	prog_interval = height / 10;
 
-    for (y = sel_y1; y < sel_y2; y++)
-    {
-        gint x;
+	for (y = sel_y1; y < sel_y2; y++)
+	{
+		gint x;
 
-        if (y % prog_interval == 0)
-            gimp_progress_update ((double) y / (double) (sel_y2 - sel_y1));
+		if (y % prog_interval == 0)
+			gimp_progress_update ((double) y / (double) (sel_y2 - sel_y1));
 
-        for (x = sel_x1; x < sel_x2; x++)
-        {
-            if (hotp (r = *(s + 0), g = *(s + 1), b = *(s + 2)))
-            {
-                if (argp->action == ACT_FLAG)
-                {
-                    for (i = 0; i < 3; i++)
-                        *d++ = 0;
-                    s += 3;
-                    if (src_bpp == 4)
-                        *d++ = *s++;
-                    else if (argp->new_layerp)
-                        *d++ = 255;
-                }
-                else
-                {
-                    /*
-                     * Optimization: cache the last-computed hot pixel.
-                     */
-                    if (r == prev_r && g == prev_g && b == prev_b)
-                    {
-                        *d++ = new_r;
-                        *d++ = new_g;
-                        *d++ = new_b;
-                        s += 3;
-                        if (src_bpp == 4)
-                            *d++ = *s++;
-                        else if (argp->new_layerp)
-                            *d++ = 255;
-                    }
-                    else
-                    {
-                        Y = tab[0][0][r] + tab[0][1][g] + tab[0][2][b];
-                        I = tab[1][0][r] + tab[1][1][g] + tab[1][2][b];
-                        Q = tab[2][0][r] + tab[2][1][g] + tab[2][2][b];
+		for (x = sel_x1; x < sel_x2; x++)
+		{
+			if (hotp (r = *(s + 0), g = *(s + 1), b = *(s + 2)))
+			{
+				if (argp->action == ACT_FLAG)
+				{
+					for (i = 0; i < 3; i++)
+						*d++ = 0;
+					s += 3;
+					if (src_bpp == 4)
+						*d++ = *s++;
+					else if (argp->new_layerp)
+						*d++ = 255;
+				}
+				else
+				{
+					/*
+					 * Optimization: cache the last-computed hot pixel.
+					 */
+					if (r == prev_r && g == prev_g && b == prev_b)
+					{
+						*d++ = new_r;
+						*d++ = new_g;
+						*d++ = new_b;
+						s += 3;
+						if (src_bpp == 4)
+							*d++ = *s++;
+						else if (argp->new_layerp)
+							*d++ = 255;
+					}
+					else
+					{
+						Y = tab[0][0][r] + tab[0][1][g] + tab[0][2][b];
+						I = tab[1][0][r] + tab[1][1][g] + tab[1][2][b];
+						Q = tab[2][0][r] + tab[2][1][g] + tab[2][2][b];
 
-                        prev_r = r;
-                        prev_g = g;
-                        prev_b = b;
-                        /*
-                         * Get Y and chroma amplitudes in floating point.
-                         *
-                         * If your C library doesn't have hypot(), just use
-                         * hypot(a,b) = sqrt(a*a, b*b);
-                         *
-                         * Then extract linear (un-gamma-corrected)
-                         * floating-point pixel RGB values.
-                         */
-                        fy = (double)Y / (double)SCALE;
-                        fc = hypot ((double) I / (double) SCALE,
-                                    (double) Q / (double) SCALE);
+						prev_r = r;
+						prev_g = g;
+						prev_b = b;
+						/*
+						 * Get Y and chroma amplitudes in floating point.
+						 *
+						 * If your C library doesn't have hypot(), just use
+						 * hypot(a,b) = sqrt(a*a, b*b);
+						 *
+						 * Then extract linear (un-gamma-corrected)
+						 * floating-point pixel RGB values.
+						 */
+						fy = (double)Y / (double)SCALE;
+						fc = hypot ((double) I / (double) SCALE,
+						            (double) Q / (double) SCALE);
 
-                        pr = (double) pix_decode (r);
-                        pg = (double) pix_decode (g);
-                        pb = (double) pix_decode (b);
+						pr = (double) pix_decode (r);
+						pg = (double) pix_decode (g);
+						pb = (double) pix_decode (b);
 
-                        /*
-                         * Reducing overall pixel intensity by scaling R,
-                         * G, and B reduces Y, I, and Q by the same factor.
-                         * This changes luminance but not saturation, since
-                         * saturation is determined by the chroma/luminance
-                         * ratio.
-                         *
-                         * On the other hand, by linearly interpolating
-                         * between the original pixel value and a grey
-                         * pixel with the same luminance (R=G=B=Y), we
-                         * change saturation without affecting luminance.
-                         */
-                        if (argp->action == ACT_LREDUX)
-                        {
-                            /*
-                             * Calculate a scale factor that will bring the pixel
-                             * within both chroma and composite limits, if we scale
-                             * luminance and chroma simultaneously.
-                             *
-                             * The calculated chrominance reduction applies
-                             * to the gamma-corrected RGB values that are
-                             * the input to the RGB-to-YIQ operation.
-                             * Multiplying the original un-gamma-corrected
-                             * pixel values by the scaling factor raised to
-                             * the "gamma" power is equivalent, and avoids
-                             * calling gc() and inv_gc() three times each.  */
-                            scale = chroma_lim / fc;
-                            t = compos_lim / (fy + fc);
-                            if (t < scale)
-                                scale = t;
-                            scale = pow (scale, mode[argp->mode].gamma);
+						/*
+						 * Reducing overall pixel intensity by scaling R,
+						 * G, and B reduces Y, I, and Q by the same factor.
+						 * This changes luminance but not saturation, since
+						 * saturation is determined by the chroma/luminance
+						 * ratio.
+						 *
+						 * On the other hand, by linearly interpolating
+						 * between the original pixel value and a grey
+						 * pixel with the same luminance (R=G=B=Y), we
+						 * change saturation without affecting luminance.
+						 */
+						if (argp->action == ACT_LREDUX)
+						{
+							/*
+							 * Calculate a scale factor that will bring the pixel
+							 * within both chroma and composite limits, if we scale
+							 * luminance and chroma simultaneously.
+							 *
+							 * The calculated chrominance reduction applies
+							 * to the gamma-corrected RGB values that are
+							 * the input to the RGB-to-YIQ operation.
+							 * Multiplying the original un-gamma-corrected
+							 * pixel values by the scaling factor raised to
+							 * the "gamma" power is equivalent, and avoids
+							 * calling gc() and inv_gc() three times each.  */
+							scale = chroma_lim / fc;
+							t = compos_lim / (fy + fc);
+							if (t < scale)
+								scale = t;
+							scale = pow (scale, mode[argp->mode].gamma);
 
-                            r = (guint8) pix_encode (scale * pr);
-                            g = (guint8) pix_encode (scale * pg);
-                            b = (guint8) pix_encode (scale * pb);
-                        }
-                        else
-                        {   /* ACT_SREDUX hopefully */
-                            /*
-                             * Calculate a scale factor that will bring the
-                             * pixel within both chroma and composite
-                             * limits, if we scale chroma while leaving
-                             * luminance unchanged.
-                             *
-                             * We have to interpolate gamma-corrected RGB
-                             * values, so we must convert from linear to
-                             * gamma-corrected before interpolation and then
-                             * back to linear afterwards.
-                             */
-                            scale = chroma_lim / fc;
-                            t = (compos_lim - fy) / fc;
-                            if (t < scale)
-                                scale = t;
+							r = (guint8) pix_encode (scale * pr);
+							g = (guint8) pix_encode (scale * pg);
+							b = (guint8) pix_encode (scale * pb);
+						}
+						else
+						{ /* ACT_SREDUX hopefully */
+							/*
+							 * Calculate a scale factor that will bring the
+							 * pixel within both chroma and composite
+							 * limits, if we scale chroma while leaving
+							 * luminance unchanged.
+							 *
+							 * We have to interpolate gamma-corrected RGB
+							 * values, so we must convert from linear to
+							 * gamma-corrected before interpolation and then
+							 * back to linear afterwards.
+							 */
+							scale = chroma_lim / fc;
+							t = (compos_lim - fy) / fc;
+							if (t < scale)
+								scale = t;
 
-                            pr = gc (pr, argp->mode);
-                            pg = gc (pg, argp->mode);
-                            pb = gc (pb, argp->mode);
+							pr = gc (pr, argp->mode);
+							pg = gc (pg, argp->mode);
+							pb = gc (pb, argp->mode);
 
-                            py = pr * mode[argp->mode].code[0][0] +
-                                 pg * mode[argp->mode].code[0][1] +
-                                 pb * mode[argp->mode].code[0][2];
+							py = pr * mode[argp->mode].code[0][0] +
+							     pg * mode[argp->mode].code[0][1] +
+							     pb * mode[argp->mode].code[0][2];
 
-                            r = pix_encode (inv_gc (py + scale * (pr - py),
-                                                    argp->mode));
-                            g = pix_encode (inv_gc (py + scale * (pg - py),
-                                                    argp->mode));
-                            b = pix_encode (inv_gc (py + scale * (pb - py),
-                                                    argp->mode));
-                        }
+							r = pix_encode (inv_gc (py + scale * (pr - py),
+							                        argp->mode));
+							g = pix_encode (inv_gc (py + scale * (pg - py),
+							                        argp->mode));
+							b = pix_encode (inv_gc (py + scale * (pb - py),
+							                        argp->mode));
+						}
 
-                        *d++ = new_r = r;
-                        *d++ = new_g = g;
-                        *d++ = new_b = b;
+						*d++ = new_r = r;
+						*d++ = new_g = g;
+						*d++ = new_b = b;
 
-                        s += 3;
+						s += 3;
 
-                        if (src_bpp == 4)
-                            *d++ = *s++;
-                        else if (argp->new_layerp)
-                            *d++ = 255;
-                    }
-                }
-            }
-            else
-            {
-                if (! argp->new_layerp)
-                {
-                    for (i = 0; i < src_bpp; i++)
-                        *d++ = *s++;
-                }
-                else
-                {
-                    s += src_bpp;
-                    d += dest_bpp;
-                }
-            }
-        }
-    }
+						if (src_bpp == 4)
+							*d++ = *s++;
+						else if (argp->new_layerp)
+							*d++ = 255;
+					}
+				}
+			}
+			else
+			{
+				if (!argp->new_layerp)
+				{
+					for (i = 0; i < src_bpp; i++)
+						*d++ = *s++;
+				}
+				else
+				{
+					s += src_bpp;
+					d += dest_bpp;
+				}
+			}
+		}
+	}
 
-    gegl_buffer_set (dest_buffer,
-                     GEGL_RECTANGLE (sel_x1, sel_y1, width, height), 0,
-                     dest_format, dst,
-                     GEGL_AUTO_ROWSTRIDE);
+	gegl_buffer_set (dest_buffer,
+	                 GEGL_RECTANGLE (sel_x1, sel_y1, width, height), 0,
+	                 dest_format, dst,
+	                 GEGL_AUTO_ROWSTRIDE);
 
-    gimp_progress_update (1.0);
+	gimp_progress_update (1.0);
 
-    g_free (src);
-    g_free (dst);
+	g_free (src);
+	g_free (dst);
 
-    g_object_unref (src_buffer);
-    g_object_unref (dest_buffer);
+	g_object_unref (src_buffer);
+	g_object_unref (dest_buffer);
 
-    if (argp->new_layerp)
-    {
-        gimp_drawable_update (GIMP_DRAWABLE (nl), sel_x1, sel_y1, width, height);
-    }
-    else
-    {
-        gimp_drawable_merge_shadow (drawable, TRUE);
-        gimp_drawable_update (drawable, sel_x1, sel_y1, width, height);
-    }
+	if (argp->new_layerp)
+	{
+		gimp_drawable_update (GIMP_DRAWABLE (nl), sel_x1, sel_y1, width, height);
+	}
+	else
+	{
+		gimp_drawable_merge_shadow (drawable, TRUE);
+		gimp_drawable_update (drawable, sel_x1, sel_y1, width, height);
+	}
 
-    gimp_displays_flush ();
+	gimp_displays_flush ();
 
-    return success;
+	return success;
 }
 
 static gboolean
 plugin_dialog (piArgs *argp)
 {
-    GtkWidget *dlg;
-    GtkWidget *hbox;
-    GtkWidget *vbox;
-    GtkWidget *toggle;
-    GtkWidget *frame;
-    gboolean   run;
+	GtkWidget *dlg;
+	GtkWidget *hbox;
+	GtkWidget *vbox;
+	GtkWidget *toggle;
+	GtkWidget *frame;
+	gboolean run;
 
-    gimp_ui_init (PLUG_IN_BINARY);
+	gimp_ui_init (PLUG_IN_BINARY);
 
-    dlg = gimp_dialog_new (_("Hot"), PLUG_IN_ROLE,
-                           NULL, 0,
-                           gimp_standard_help_func, PLUG_IN_PROC,
+	dlg = gimp_dialog_new (_("Hot"), PLUG_IN_ROLE,
+	                       NULL, 0,
+	                       gimp_standard_help_func, PLUG_IN_PROC,
 
-                           _("_Cancel"), GTK_RESPONSE_CANCEL,
-                           _("_OK"),     GTK_RESPONSE_OK,
+	                       _("_Cancel"), GTK_RESPONSE_CANCEL,
+	                       _("_OK"),     GTK_RESPONSE_OK,
 
-                           NULL);
+	                       NULL);
 
-    gimp_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
-            GTK_RESPONSE_OK,
-            GTK_RESPONSE_CANCEL,
-            -1);
+	gimp_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+	                                          GTK_RESPONSE_OK,
+	                                          GTK_RESPONSE_CANCEL,
+	                                          -1);
 
-    gimp_window_set_transient (GTK_WINDOW (dlg));
+	gimp_window_set_transient (GTK_WINDOW (dlg));
 
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
-                        hbox, TRUE, TRUE, 0);
-    gtk_widget_show (hbox);
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+	                    hbox, TRUE, TRUE, 0);
+	gtk_widget_show (hbox);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-    gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
-    gtk_widget_show (vbox);
+	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+	gtk_widget_show (vbox);
 
-    frame = gimp_int_radio_group_new (TRUE, _("Mode"),
-                                      G_CALLBACK (gimp_radio_button_update),
-                                      &argp->mode, NULL, argp->mode,
+	frame = gimp_int_radio_group_new (TRUE, _("Mode"),
+	                                  G_CALLBACK (gimp_radio_button_update),
+	                                  &argp->mode, NULL, argp->mode,
 
-                                      "N_TSC", MODE_NTSC, NULL,
-                                      "_PAL",  MODE_PAL,  NULL,
+	                                  "N_TSC", MODE_NTSC, NULL,
+	                                  "_PAL",  MODE_PAL,  NULL,
 
-                                      NULL);
+	                                  NULL);
 
-    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-    gtk_widget_show (frame);
+	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
 
-    toggle = gtk_check_button_new_with_mnemonic (_("Create _new layer"));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), argp->new_layerp);
-    gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
-    gtk_widget_show (toggle);
+	toggle = gtk_check_button_new_with_mnemonic (_("Create _new layer"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), argp->new_layerp);
+	gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+	gtk_widget_show (toggle);
 
-    g_signal_connect (toggle, "toggled",
-                      G_CALLBACK (gimp_toggle_button_update),
-                      &argp->new_layerp);
+	g_signal_connect (toggle, "toggled",
+	                  G_CALLBACK (gimp_toggle_button_update),
+	                  &argp->new_layerp);
 
-    frame = gimp_int_radio_group_new (TRUE, _("Action"),
-                                      G_CALLBACK (gimp_radio_button_update),
-                                      &argp->action, NULL, argp->action,
+	frame = gimp_int_radio_group_new (TRUE, _("Action"),
+	                                  G_CALLBACK (gimp_radio_button_update),
+	                                  &argp->action, NULL, argp->action,
 
-                                      _("Reduce _Luminance"),  ACT_LREDUX, NULL,
-                                      _("Reduce _Saturation"), ACT_SREDUX, NULL,
-                                      _("_Blacken"),           ACT_FLAG,   NULL,
+	                                  _("Reduce _Luminance"),  ACT_LREDUX, NULL,
+	                                  _("Reduce _Saturation"), ACT_SREDUX, NULL,
+	                                  _("_Blacken"),           ACT_FLAG,   NULL,
 
-                                      NULL);
+	                                  NULL);
 
-    gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-    gtk_widget_show (frame);
+	gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
 
-    gtk_widget_show (dlg);
+	gtk_widget_show (dlg);
 
-    run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+	run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
 
-    gtk_widget_destroy (dlg);
+	gtk_widget_destroy (dlg);
 
-    return run;
+	return run;
 }
 
 /*
@@ -741,30 +741,30 @@ plugin_dialog (piArgs *argp)
 static void
 build_tab (int m)
 {
-    double f;
-    int pv;
+	double f;
+	int pv;
 
-    for (pv = 0; pv <= MAXPIX; pv++)
-    {
-        f = (double)SCALE * (double)gc((double)pix_decode(pv),m);
-        tab[0][0][pv] = (int)(f * mode[m].code[0][0] + 0.5);
-        tab[0][1][pv] = (int)(f * mode[m].code[0][1] + 0.5);
-        tab[0][2][pv] = (int)(f * mode[m].code[0][2] + 0.5);
-        tab[1][0][pv] = (int)(f * mode[m].code[1][0] + 0.5);
-        tab[1][1][pv] = (int)(f * mode[m].code[1][1] + 0.5);
-        tab[1][2][pv] = (int)(f * mode[m].code[1][2] + 0.5);
-        tab[2][0][pv] = (int)(f * mode[m].code[2][0] + 0.5);
-        tab[2][1][pv] = (int)(f * mode[m].code[2][1] + 0.5);
-        tab[2][2][pv] = (int)(f * mode[m].code[2][2] + 0.5);
-    }
+	for (pv = 0; pv <= MAXPIX; pv++)
+	{
+		f = (double)SCALE * (double)gc((double)pix_decode(pv),m);
+		tab[0][0][pv] = (int)(f * mode[m].code[0][0] + 0.5);
+		tab[0][1][pv] = (int)(f * mode[m].code[0][1] + 0.5);
+		tab[0][2][pv] = (int)(f * mode[m].code[0][2] + 0.5);
+		tab[1][0][pv] = (int)(f * mode[m].code[1][0] + 0.5);
+		tab[1][1][pv] = (int)(f * mode[m].code[1][1] + 0.5);
+		tab[1][2][pv] = (int)(f * mode[m].code[1][2] + 0.5);
+		tab[2][0][pv] = (int)(f * mode[m].code[2][0] + 0.5);
+		tab[2][1][pv] = (int)(f * mode[m].code[2][1] + 0.5);
+		tab[2][2][pv] = (int)(f * mode[m].code[2][2] + 0.5);
+	}
 
-    chroma_lim = (double)CHROMA_LIM / (100.0 - mode[m].pedestal);
-    compos_lim = ((double)COMPOS_LIM - mode[m].pedestal) /
-                 (100.0 - mode[m].pedestal);
+	chroma_lim = (double)CHROMA_LIM / (100.0 - mode[m].pedestal);
+	compos_lim = ((double)COMPOS_LIM - mode[m].pedestal) /
+	             (100.0 - mode[m].pedestal);
 
-    ichroma_lim2 = (int)(chroma_lim * SCALE + 0.5);
-    ichroma_lim2 *= ichroma_lim2;
-    icompos_lim = (int)(compos_lim * SCALE + 0.5);
+	ichroma_lim2 = (int)(chroma_lim * SCALE + 0.5);
+	ichroma_lim2 *= ichroma_lim2;
+	icompos_lim = (int)(compos_lim * SCALE + 0.5);
 }
 
 static gboolean
@@ -772,53 +772,53 @@ hotp (guint8 r,
       guint8 g,
       guint8 b)
 {
-    int   y, i, q;
-    long  y2, c2;
+	int y, i, q;
+	long y2, c2;
 
-    /*
-     * Pixel decoding, gamma correction, and matrix multiplication
-     * all done by lookup table.
-     *
-     * "i" and "q" are the two chrominance components;
-     * they are I and Q for NTSC.
-     * For PAL, "i" is U (scaled B-Y) and "q" is V (scaled R-Y).
-     * Since we only care about the length of the chroma vector,
-     * not its angle, we don't care which is which.
-     */
-    y = tab[0][0][r] + tab[0][1][g] + tab[0][2][b];
-    i = tab[1][0][r] + tab[1][1][g] + tab[1][2][b];
-    q = tab[2][0][r] + tab[2][1][g] + tab[2][2][b];
+	/*
+	 * Pixel decoding, gamma correction, and matrix multiplication
+	 * all done by lookup table.
+	 *
+	 * "i" and "q" are the two chrominance components;
+	 * they are I and Q for NTSC.
+	 * For PAL, "i" is U (scaled B-Y) and "q" is V (scaled R-Y).
+	 * Since we only care about the length of the chroma vector,
+	 * not its angle, we don't care which is which.
+	 */
+	y = tab[0][0][r] + tab[0][1][g] + tab[0][2][b];
+	i = tab[1][0][r] + tab[1][1][g] + tab[1][2][b];
+	q = tab[2][0][r] + tab[2][1][g] + tab[2][2][b];
 
-    /*
-     * Check to see if the chrominance vector is too long or the
-     * composite waveform amplitude is too large.
-     *
-     * Chrominance is too large if
-     *
-     *    sqrt(i^2, q^2)  >  chroma_lim.
-     *
-     * The composite signal amplitude is too large if
-     *
-     *    y + sqrt(i^2, q^2)  >  compos_lim.
-     *
-     * We avoid doing the sqrt by checking
-     *
-     *    i^2 + q^2  >  chroma_lim^2
-     * and
-     *    y + sqrt(i^2 + q^2)  >  compos_lim
-     *    sqrt(i^2 + q^2)  >  compos_lim - y
-     *    i^2 + q^2  >  (compos_lim - y)^2
-     *
-     */
+	/*
+	 * Check to see if the chrominance vector is too long or the
+	 * composite waveform amplitude is too large.
+	 *
+	 * Chrominance is too large if
+	 *
+	 *    sqrt(i^2, q^2)  >  chroma_lim.
+	 *
+	 * The composite signal amplitude is too large if
+	 *
+	 *    y + sqrt(i^2, q^2)  >  compos_lim.
+	 *
+	 * We avoid doing the sqrt by checking
+	 *
+	 *    i^2 + q^2  >  chroma_lim^2
+	 * and
+	 *    y + sqrt(i^2 + q^2)  >  compos_lim
+	 *    sqrt(i^2 + q^2)  >  compos_lim - y
+	 *    i^2 + q^2  >  (compos_lim - y)^2
+	 *
+	 */
 
-    c2 = (long)i * i + (long)q * q;
-    y2 = (long)icompos_lim - y;
-    y2 *= y2;
+	c2 = (long)i * i + (long)q * q;
+	y2 = (long)icompos_lim - y;
+	y2 *= y2;
 
-    if (c2 <= ichroma_lim2 && c2 <= y2)
-    {   /* no problems */
-        return FALSE;
-    }
+	if (c2 <= ichroma_lim2 && c2 <= y2)
+	{ /* no problems */
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }

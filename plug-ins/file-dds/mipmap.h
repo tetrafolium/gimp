@@ -21,55 +21,55 @@
 #ifndef __MIPMAP_H__
 #define __MIPMAP_H__
 
-int          get_num_mipmaps            (int            width,
-        int            height);
-unsigned int get_mipmapped_size         (int            width,
-        int            height,
-        int            bpp,
-        int            level,
-        int            num,
-        int            format);
-unsigned int get_volume_mipmapped_size  (int            width,
-        int            height,
-        int            depth,
-        int            bpp,
-        int            level,
-        int            num,
-        int            format);
+int          get_num_mipmaps            (int width,
+                                         int height);
+unsigned int get_mipmapped_size         (int width,
+                                         int height,
+                                         int bpp,
+                                         int level,
+                                         int num,
+                                         int format);
+unsigned int get_volume_mipmapped_size  (int width,
+                                         int height,
+                                         int depth,
+                                         int bpp,
+                                         int level,
+                                         int num,
+                                         int format);
 int          get_next_mipmap_dimensions (int           *next_w,
-        int           *next_h,
-        int            curr_w,
-        int            curr_h);
+                                         int           *next_h,
+                                         int curr_w,
+                                         int curr_h);
 
-float        cubic_interpolate          (float          a,
-        float          b,
-        float          c,
-        float          d,
-        float          x);
+float        cubic_interpolate          (float a,
+                                         float b,
+                                         float c,
+                                         float d,
+                                         float x);
 int          generate_mipmaps           (unsigned char *dst,
-        unsigned char *src,
-        unsigned int   width,
-        unsigned int   height,
-        int            bpp,
-        int            indexed,
-        int            mipmaps,
-        int            filter,
-        int            wrap,
-        int            gamma_correct,
-        float          gamma,
-        int            preserve_alpha_test_coverage,
-        float          alpha_test_threshold);
+                                         unsigned char *src,
+                                         unsigned int width,
+                                         unsigned int height,
+                                         int bpp,
+                                         int indexed,
+                                         int mipmaps,
+                                         int filter,
+                                         int wrap,
+                                         int gamma_correct,
+                                         float gamma,
+                                         int preserve_alpha_test_coverage,
+                                         float alpha_test_threshold);
 int          generate_volume_mipmaps    (unsigned char *dst,
-        unsigned char *src,
-        unsigned int   width,
-        unsigned int   height,
-        unsigned int   depth,
-        int            bpp,
-        int            indexed,
-        int            mipmaps,
-        int            filter,
-        int            wrap,
-        int            gamma_correct,
-        float          gamma);
+                                         unsigned char *src,
+                                         unsigned int width,
+                                         unsigned int height,
+                                         unsigned int depth,
+                                         int bpp,
+                                         int indexed,
+                                         int mipmaps,
+                                         int filter,
+                                         int wrap,
+                                         int gamma_correct,
+                                         float gamma);
 
 #endif /* __MIPMAP_H__ */

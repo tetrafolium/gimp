@@ -10,7 +10,7 @@
  */
 
 struct g3code {
-    int nr_bits, nr_pels, bit_code, bit_length;
+	int nr_bits, nr_pels, bit_code, bit_length;
 };
 
 /* tables for makeup / terminal codes white / black, extended m_codes */
@@ -24,23 +24,23 @@ extern struct g3code t_white[], m_white[], t_black[], m_black[], m_ext[];
  */
 
 /*
-#define FBITS 5
-#define BITM 0x1f
-*/
+ #define FBITS 5
+ #define BITM 0x1f
+ */
 
 #define FBITS 8
 #define BITM 0xff
 
 /*
-#define FBITS 12
-#define BITM 0xfff
-*/
+ #define FBITS 12
+ #define BITM 0xfff
+ */
 
 #define BITN 1<<FBITS
 
 struct g3_tree {
-    int nr_bits;
-    struct g3_tree *	nextb[ BITN ];
+	int nr_bits;
+	struct g3_tree *    nextb[ BITN ];
 };
 
 #define g3_leaf g3code

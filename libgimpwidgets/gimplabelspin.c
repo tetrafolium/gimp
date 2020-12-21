@@ -41,49 +41,49 @@
 
 enum
 {
-    VALUE_CHANGED,
-    LAST_SIGNAL
+	VALUE_CHANGED,
+	LAST_SIGNAL
 };
 
 enum
 {
-    PROP_0,
-    PROP_VALUE,
-    PROP_LOWER,
-    PROP_UPPER,
-    PROP_DIGITS,
+	PROP_0,
+	PROP_VALUE,
+	PROP_LOWER,
+	PROP_UPPER,
+	PROP_DIGITS,
 };
 
 typedef struct _GimpLabelSpinPrivate
 {
-    GimpLabeled    parent_instance;
+	GimpLabeled parent_instance;
 
-    GtkWidget     *spinbutton;
-    GtkAdjustment *spin_adjustment;
+	GtkWidget     *spinbutton;
+	GtkAdjustment *spin_adjustment;
 
-    gint           digits;
+	gint digits;
 } GimpLabelSpinPrivate;
 
 static void        gimp_label_spin_constructed       (GObject       *object);
 static void        gimp_label_spin_set_property      (GObject       *object,
-        guint          property_id,
-        const GValue  *value,
-        GParamSpec    *pspec);
+                                                      guint property_id,
+                                                      const GValue  *value,
+                                                      GParamSpec    *pspec);
 static void        gimp_label_spin_get_property      (GObject       *object,
-        guint          property_id,
-        GValue        *value,
-        GParamSpec    *pspec);
+                                                      guint property_id,
+                                                      GValue        *value,
+                                                      GParamSpec    *pspec);
 
 static GtkWidget * gimp_label_spin_populate          (GimpLabeled   *spin,
-        gint          *x,
-        gint          *y,
-        gint          *width,
-        gint          *height);
+                                                      gint          *x,
+                                                      gint          *y,
+                                                      gint          *width,
+                                                      gint          *height);
 
 static void        gimp_label_spin_update_spin_width (GimpLabelSpin *spin,
-        gdouble        lower,
-        gdouble        upper,
-        guint          digits);
+                                                      gdouble lower,
+                                                      gdouble upper,
+                                                      guint digits);
 static void        gimp_label_spin_update_settings   (GimpLabelSpin *spin);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpLabelSpin, gimp_label_spin, GIMP_TYPE_LABELED)
@@ -95,194 +95,194 @@ static guint gimp_label_spin_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_label_spin_class_init (GimpLabelSpinClass *klass)
 {
-    GObjectClass     *object_class  = G_OBJECT_CLASS (klass);
-    GimpLabeledClass *labeled_class = GIMP_LABELED_CLASS (klass);
+	GObjectClass     *object_class  = G_OBJECT_CLASS (klass);
+	GimpLabeledClass *labeled_class = GIMP_LABELED_CLASS (klass);
 
-    gimp_label_spin_signals[VALUE_CHANGED] =
-        g_signal_new ("value-changed",
-                      G_TYPE_FROM_CLASS (klass),
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (GimpLabelSpinClass, value_changed),
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 0);
+	gimp_label_spin_signals[VALUE_CHANGED] =
+		g_signal_new ("value-changed",
+		              G_TYPE_FROM_CLASS (klass),
+		              G_SIGNAL_RUN_FIRST,
+		              G_STRUCT_OFFSET (GimpLabelSpinClass, value_changed),
+		              NULL, NULL, NULL,
+		              G_TYPE_NONE, 0);
 
-    object_class->constructed  = gimp_label_spin_constructed;
-    object_class->set_property = gimp_label_spin_set_property;
-    object_class->get_property = gimp_label_spin_get_property;
+	object_class->constructed  = gimp_label_spin_constructed;
+	object_class->set_property = gimp_label_spin_set_property;
+	object_class->get_property = gimp_label_spin_get_property;
 
-    labeled_class->populate    = gimp_label_spin_populate;
+	labeled_class->populate    = gimp_label_spin_populate;
 
-    /**
-     * GimpLabelSpin:value:
-     *
-     * The currently set value.
-     *
-     * Since: 3.0
-     **/
-    g_object_class_install_property (object_class, PROP_VALUE,
-                                     g_param_spec_double ("value", NULL,
-                                             "Current value",
-                                             -G_MAXDOUBLE, G_MAXDOUBLE, 1.0,
-                                             GIMP_PARAM_READWRITE));
+	/**
+	 * GimpLabelSpin:value:
+	 *
+	 * The currently set value.
+	 *
+	 * Since: 3.0
+	 **/
+	g_object_class_install_property (object_class, PROP_VALUE,
+	                                 g_param_spec_double ("value", NULL,
+	                                                      "Current value",
+	                                                      -G_MAXDOUBLE, G_MAXDOUBLE, 1.0,
+	                                                      GIMP_PARAM_READWRITE));
 
-    /**
-     * GimpLabelSpin:lower:
-     *
-     * The lower bound of the spin button.
-     *
-     * Since: 3.0
-     **/
-    g_object_class_install_property (object_class, PROP_LOWER,
-                                     g_param_spec_double ("lower", NULL,
-                                             "Minimum value",
-                                             -G_MAXDOUBLE, G_MAXDOUBLE, 1.0,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	/**
+	 * GimpLabelSpin:lower:
+	 *
+	 * The lower bound of the spin button.
+	 *
+	 * Since: 3.0
+	 **/
+	g_object_class_install_property (object_class, PROP_LOWER,
+	                                 g_param_spec_double ("lower", NULL,
+	                                                      "Minimum value",
+	                                                      -G_MAXDOUBLE, G_MAXDOUBLE, 1.0,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT));
 
-    /**
-     * GimpLabelSpin:upper:
-     *
-     * The upper bound of the spin button.
-     *
-     * Since: 3.0
-     **/
-    g_object_class_install_property (object_class, PROP_UPPER,
-                                     g_param_spec_double ("upper", NULL,
-                                             "Max value",
-                                             -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	/**
+	 * GimpLabelSpin:upper:
+	 *
+	 * The upper bound of the spin button.
+	 *
+	 * Since: 3.0
+	 **/
+	g_object_class_install_property (object_class, PROP_UPPER,
+	                                 g_param_spec_double ("upper", NULL,
+	                                                      "Max value",
+	                                                      -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
+	                                                      GIMP_PARAM_READWRITE |
+	                                                      G_PARAM_CONSTRUCT));
 
-    /**
-     * GimpLabelSpin:digits:
-     *
-     * The number of decimal places to display. If -1, then the number is
-     * estimated.
-     *
-     * Since: 3.0
-     **/
-    g_object_class_install_property (object_class, PROP_DIGITS,
-                                     g_param_spec_int ("digits", NULL,
-                                             "The number of decimal places to display",
-                                             -1, G_MAXINT, -1,
-                                             GIMP_PARAM_READWRITE));
+	/**
+	 * GimpLabelSpin:digits:
+	 *
+	 * The number of decimal places to display. If -1, then the number is
+	 * estimated.
+	 *
+	 * Since: 3.0
+	 **/
+	g_object_class_install_property (object_class, PROP_DIGITS,
+	                                 g_param_spec_int ("digits", NULL,
+	                                                   "The number of decimal places to display",
+	                                                   -1, G_MAXINT, -1,
+	                                                   GIMP_PARAM_READWRITE));
 }
 
 static void
 gimp_label_spin_init (GimpLabelSpin *spin)
 {
-    GimpLabelSpinPrivate *priv  = gimp_label_spin_get_instance_private (spin);
+	GimpLabelSpinPrivate *priv  = gimp_label_spin_get_instance_private (spin);
 
-    /* We want the adjustment to exist at init so that construction
-     * properties can apply (default values are bogus but should be
-     * properly overrided with expected values if the object was created
-     * with gimp_label_spin_new().
-     */
-    priv->spin_adjustment = gtk_adjustment_new (0.0, 0.0, 100.0, 1.0, 10.0, 0.0);
+	/* We want the adjustment to exist at init so that construction
+	 * properties can apply (default values are bogus but should be
+	 * properly overrided with expected values if the object was created
+	 * with gimp_label_spin_new().
+	 */
+	priv->spin_adjustment = gtk_adjustment_new (0.0, 0.0, 100.0, 1.0, 10.0, 0.0);
 
-    gtk_grid_set_row_spacing (GTK_GRID (spin), 6);
-    gtk_grid_set_column_spacing (GTK_GRID (spin), 6);
+	gtk_grid_set_row_spacing (GTK_GRID (spin), 6);
+	gtk_grid_set_column_spacing (GTK_GRID (spin), 6);
 }
 
 static void
 gimp_label_spin_constructed (GObject *object)
 {
-    GimpLabelSpin        *spin = GIMP_LABEL_SPIN (object);
-    GimpLabelSpinPrivate *priv  = gimp_label_spin_get_instance_private (spin);
+	GimpLabelSpin        *spin = GIMP_LABEL_SPIN (object);
+	GimpLabelSpinPrivate *priv  = gimp_label_spin_get_instance_private (spin);
 
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+	G_OBJECT_CLASS (parent_class)->constructed (object);
 
-    /* This is important to make this object into a property widget. It
-     * will allow config object to bind the "value" property of this
-     * widget, and therefore be updated automatically.
-     */
-    g_object_bind_property (G_OBJECT (priv->spin_adjustment), "value",
-                            G_OBJECT (spin),                  "value",
-                            G_BINDING_BIDIRECTIONAL |
-                            G_BINDING_SYNC_CREATE);
+	/* This is important to make this object into a property widget. It
+	 * will allow config object to bind the "value" property of this
+	 * widget, and therefore be updated automatically.
+	 */
+	g_object_bind_property (G_OBJECT (priv->spin_adjustment), "value",
+	                        G_OBJECT (spin),                  "value",
+	                        G_BINDING_BIDIRECTIONAL |
+	                        G_BINDING_SYNC_CREATE);
 
-    gimp_label_spin_update_settings (spin);
+	gimp_label_spin_update_settings (spin);
 }
 
 static void
 gimp_label_spin_set_property (GObject      *object,
-                              guint         property_id,
+                              guint property_id,
                               const GValue *value,
                               GParamSpec   *pspec)
 {
-    GimpLabelSpin        *spin = GIMP_LABEL_SPIN (object);
-    GimpLabelSpinPrivate *priv  = gimp_label_spin_get_instance_private (spin);
+	GimpLabelSpin        *spin = GIMP_LABEL_SPIN (object);
+	GimpLabelSpinPrivate *priv  = gimp_label_spin_get_instance_private (spin);
 
-    switch (property_id)
-    {
-    case PROP_VALUE:
-        /* Avoid looping forever since we have bound this widget's
-         * "value" property with the spin button "value" property.
-         */
-        if (gtk_adjustment_get_value (priv->spin_adjustment) != g_value_get_double (value))
-            gtk_adjustment_set_value (priv->spin_adjustment, g_value_get_double (value));
+	switch (property_id)
+	{
+	case PROP_VALUE:
+		/* Avoid looping forever since we have bound this widget's
+		 * "value" property with the spin button "value" property.
+		 */
+		if (gtk_adjustment_get_value (priv->spin_adjustment) != g_value_get_double (value))
+			gtk_adjustment_set_value (priv->spin_adjustment, g_value_get_double (value));
 
-        g_signal_emit (object, gimp_label_spin_signals[VALUE_CHANGED], 0);
-        break;
-    case PROP_LOWER:
-        gtk_adjustment_set_lower (priv->spin_adjustment,
-                                  g_value_get_double (value));
-        if (priv->spinbutton)
-        {
-            gimp_label_spin_update_settings (spin);
-        }
-        break;
-    case PROP_UPPER:
-        gtk_adjustment_set_upper (priv->spin_adjustment,
-                                  g_value_get_double (value));
-        if (priv->spinbutton)
-        {
-            gimp_label_spin_update_settings (spin);
-        }
-        break;
-    case PROP_DIGITS:
-        if (priv->spinbutton)
-        {
-            priv->digits = g_value_get_int (value);
-            gimp_label_spin_update_settings (spin);
-        }
-        break;
+		g_signal_emit (object, gimp_label_spin_signals[VALUE_CHANGED], 0);
+		break;
+	case PROP_LOWER:
+		gtk_adjustment_set_lower (priv->spin_adjustment,
+		                          g_value_get_double (value));
+		if (priv->spinbutton)
+		{
+			gimp_label_spin_update_settings (spin);
+		}
+		break;
+	case PROP_UPPER:
+		gtk_adjustment_set_upper (priv->spin_adjustment,
+		                          g_value_get_double (value));
+		if (priv->spinbutton)
+		{
+			gimp_label_spin_update_settings (spin);
+		}
+		break;
+	case PROP_DIGITS:
+		if (priv->spinbutton)
+		{
+			priv->digits = g_value_get_int (value);
+			gimp_label_spin_update_settings (spin);
+		}
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_label_spin_get_property (GObject    *object,
-                              guint       property_id,
+                              guint property_id,
                               GValue     *value,
                               GParamSpec *pspec)
 {
-    GimpLabelSpin        *spin       = GIMP_LABEL_SPIN (object);
-    GimpLabelSpinPrivate *priv       = gimp_label_spin_get_instance_private (spin);
-    GtkSpinButton        *spinbutton = GTK_SPIN_BUTTON (priv->spinbutton);
+	GimpLabelSpin        *spin       = GIMP_LABEL_SPIN (object);
+	GimpLabelSpinPrivate *priv       = gimp_label_spin_get_instance_private (spin);
+	GtkSpinButton        *spinbutton = GTK_SPIN_BUTTON (priv->spinbutton);
 
-    switch (property_id)
-    {
-    case PROP_VALUE:
-        g_value_set_double (value, gtk_adjustment_get_value (priv->spin_adjustment));
-        break;
-    case PROP_LOWER:
-        g_value_set_double (value, gtk_adjustment_get_lower (priv->spin_adjustment));
-        break;
-    case PROP_UPPER:
-        g_value_set_double (value, gtk_adjustment_get_upper (priv->spin_adjustment));
-        break;
-    case PROP_DIGITS:
-        g_value_set_uint (value, gtk_spin_button_get_digits (spinbutton));
-        break;
+	switch (property_id)
+	{
+	case PROP_VALUE:
+		g_value_set_double (value, gtk_adjustment_get_value (priv->spin_adjustment));
+		break;
+	case PROP_LOWER:
+		g_value_set_double (value, gtk_adjustment_get_lower (priv->spin_adjustment));
+		break;
+	case PROP_UPPER:
+		g_value_set_double (value, gtk_adjustment_get_upper (priv->spin_adjustment));
+		break;
+	case PROP_DIGITS:
+		g_value_set_uint (value, gtk_spin_button_get_digits (spinbutton));
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static GtkWidget *
@@ -292,68 +292,68 @@ gimp_label_spin_populate (GimpLabeled *labeled,
                           gint        *width,
                           gint        *height)
 {
-    GimpLabelSpin        *spin = GIMP_LABEL_SPIN (labeled);
-    GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
+	GimpLabelSpin        *spin = GIMP_LABEL_SPIN (labeled);
+	GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
 
-    priv->spinbutton = gimp_spin_button_new (priv->spin_adjustment, 2.0, 2.0);
-    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (priv->spinbutton), TRUE);
+	priv->spinbutton = gimp_spin_button_new (priv->spin_adjustment, 2.0, 2.0);
+	gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (priv->spinbutton), TRUE);
 
-    gtk_grid_attach (GTK_GRID (spin), priv->spinbutton, 1, 0, 1, 1);
-    gtk_widget_show (priv->spinbutton);
+	gtk_grid_attach (GTK_GRID (spin), priv->spinbutton, 1, 0, 1, 1);
+	gtk_widget_show (priv->spinbutton);
 
-    return priv->spinbutton;
+	return priv->spinbutton;
 }
 
 static void
 gimp_label_spin_update_spin_width (GimpLabelSpin *spin,
-                                   gdouble        lower,
-                                   gdouble        upper,
-                                   guint          digits)
+                                   gdouble lower,
+                                   gdouble upper,
+                                   guint digits)
 {
-    GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
-    gint                  width = 0;
+	GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
+	gint width = 0;
 
-    g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
+	g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
 
-    /* Necessary size to display the max/min integer values, with optional
-     * negative sign.
-     */
-    width = (gint) floor (log10 (upper) + 1) + (upper < 0.0 ? 1 : 0);
-    width = MAX (width, (gint) floor (log10 (lower) + 1) + (lower < 0.0 ? 1 : 0));
+	/* Necessary size to display the max/min integer values, with optional
+	 * negative sign.
+	 */
+	width = (gint) floor (log10 (upper) + 1) + (upper < 0.0 ? 1 : 0);
+	width = MAX (width, (gint) floor (log10 (lower) + 1) + (lower < 0.0 ? 1 : 0));
 
-    /* Adding decimal digits and separator. */
-    width += (digits > 0 ? 1 + digits : 0);
+	/* Adding decimal digits and separator. */
+	width += (digits > 0 ? 1 + digits : 0);
 
-    /* Overlong spin button are useless. */
-    width = MIN (10, width);
+	/* Overlong spin button are useless. */
+	width = MIN (10, width);
 
-    gtk_entry_set_width_chars (GTK_ENTRY (priv->spinbutton), width);
+	gtk_entry_set_width_chars (GTK_ENTRY (priv->spinbutton), width);
 }
 
 static void
 gimp_label_spin_update_settings (GimpLabelSpin *spin)
 {
-    GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
-    gdouble               lower;
-    gdouble               upper;
-    gdouble               step;
-    gdouble               page;
-    gint                  digits = priv->digits;
+	GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
+	gdouble lower;
+	gdouble upper;
+	gdouble step;
+	gdouble page;
+	gint digits = priv->digits;
 
-    g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
+	g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
 
-    g_object_get (spin,
-                  "lower",  &lower,
-                  "upper",  &upper,
-                  NULL);
+	g_object_get (spin,
+	              "lower",  &lower,
+	              "upper",  &upper,
+	              NULL);
 
-    g_return_if_fail (upper >= lower);
+	g_return_if_fail (upper >= lower);
 
-    gimp_range_estimate_settings (lower, upper, &step, &page,
-                                  digits < 0 ? &digits: NULL);
-    gimp_label_spin_set_increments (spin, step, page);
-    gtk_spin_button_set_digits (GTK_SPIN_BUTTON (priv->spinbutton), (guint) digits);
-    gimp_label_spin_update_spin_width (spin, lower, upper, (guint) digits);
+	gimp_range_estimate_settings (lower, upper, &step, &page,
+	                              digits < 0 ? &digits : NULL);
+	gimp_label_spin_set_increments (spin, step, page);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (priv->spinbutton), (guint) digits);
+	gimp_label_spin_update_spin_width (spin, lower, upper, (guint) digits);
 }
 
 
@@ -378,25 +378,25 @@ gimp_label_spin_update_settings (GimpLabelSpin *spin)
  **/
 GtkWidget *
 gimp_label_spin_new (const gchar *text,
-                     gdouble      value,
-                     gdouble      lower,
-                     gdouble      upper,
-                     gint         digits)
+                     gdouble value,
+                     gdouble lower,
+                     gdouble upper,
+                     gint digits)
 {
-    GtkWidget *labeled;
+	GtkWidget *labeled;
 
-    g_return_val_if_fail (upper >= lower, NULL);
-    g_return_val_if_fail (digits >= -1, NULL);
+	g_return_val_if_fail (upper >= lower, NULL);
+	g_return_val_if_fail (digits >= -1, NULL);
 
-    labeled = g_object_new (GIMP_TYPE_LABEL_SPIN,
-                            "label",  text,
-                            "value",  value,
-                            "lower",  lower,
-                            "upper",  upper,
-                            "digits", digits,
-                            NULL);
+	labeled = g_object_new (GIMP_TYPE_LABEL_SPIN,
+	                        "label",  text,
+	                        "value",  value,
+	                        "lower",  lower,
+	                        "upper",  upper,
+	                        "digits", digits,
+	                        NULL);
 
-    return labeled;
+	return labeled;
 }
 
 /**
@@ -408,13 +408,13 @@ gimp_label_spin_new (const gchar *text,
  **/
 void
 gimp_label_spin_set_value (GimpLabelSpin *spin,
-                           gdouble         value)
+                           gdouble value)
 {
-    g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
+	g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
 
-    g_object_set (spin,
-                  "value", value,
-                  NULL);
+	g_object_set (spin,
+	              "value", value,
+	              NULL);
 }
 
 /**
@@ -428,14 +428,14 @@ gimp_label_spin_set_value (GimpLabelSpin *spin,
 gdouble
 gimp_label_spin_get_value (GimpLabelSpin *spin)
 {
-    gdouble value;
+	gdouble value;
 
-    g_return_val_if_fail (GIMP_IS_LABEL_SPIN (spin), 0.0);
+	g_return_val_if_fail (GIMP_IS_LABEL_SPIN (spin), 0.0);
 
-    g_object_get (spin,
-                  "value", &value,
-                  NULL);
-    return value;
+	g_object_get (spin,
+	              "value", &value,
+	              NULL);
+	return value;
 }
 
 /**
@@ -452,31 +452,31 @@ gimp_label_spin_get_value (GimpLabelSpin *spin)
  */
 void
 gimp_label_spin_set_increments (GimpLabelSpin *spin,
-                                gdouble        step,
-                                gdouble        page)
+                                gdouble step,
+                                gdouble page)
 {
-    GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
-    GtkSpinButton        *spinbutton;
-    gdouble               lower;
-    gdouble               upper;
+	GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
+	GtkSpinButton        *spinbutton;
+	gdouble lower;
+	gdouble upper;
 
-    g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
-    g_return_if_fail (step < page);
+	g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
+	g_return_if_fail (step < page);
 
-    spinbutton = GTK_SPIN_BUTTON (priv->spinbutton);
+	spinbutton = GTK_SPIN_BUTTON (priv->spinbutton);
 
-    gtk_spin_button_get_range (spinbutton, &lower, &upper);
-    g_return_if_fail (upper >= lower);
-    g_return_if_fail (step < upper - lower && page < upper - lower);
+	gtk_spin_button_get_range (spinbutton, &lower, &upper);
+	g_return_if_fail (upper >= lower);
+	g_return_if_fail (step < upper - lower && page < upper - lower);
 
-    g_object_freeze_notify (G_OBJECT (spinbutton));
-    gtk_adjustment_set_step_increment (gtk_spin_button_get_adjustment (spinbutton), step);
-    gtk_adjustment_set_page_increment (gtk_spin_button_get_adjustment (spinbutton), page);
-    g_object_thaw_notify (G_OBJECT (spinbutton));
+	g_object_freeze_notify (G_OBJECT (spinbutton));
+	gtk_adjustment_set_step_increment (gtk_spin_button_get_adjustment (spinbutton), step);
+	gtk_adjustment_set_page_increment (gtk_spin_button_get_adjustment (spinbutton), page);
+	g_object_thaw_notify (G_OBJECT (spinbutton));
 
-    g_object_set (priv->spinbutton,
-                  "climb-rate", step,
-                  NULL);
+	g_object_set (priv->spinbutton,
+	              "climb-rate", step,
+	              NULL);
 }
 
 /**
@@ -491,13 +491,13 @@ gimp_label_spin_set_increments (GimpLabelSpin *spin,
  */
 void
 gimp_label_spin_set_digits (GimpLabelSpin *spin,
-                            gint           digits)
+                            gint digits)
 {
-    g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
+	g_return_if_fail (GIMP_IS_LABEL_SPIN (spin));
 
-    g_object_set (spin,
-                  "digits", digits,
-                  NULL);
+	g_object_set (spin,
+	              "digits", digits,
+	              NULL);
 }
 
 /**
@@ -511,9 +511,9 @@ gimp_label_spin_set_digits (GimpLabelSpin *spin,
 GtkWidget *
 gimp_label_spin_get_spin_button (GimpLabelSpin *spin)
 {
-    GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
+	GimpLabelSpinPrivate *priv = gimp_label_spin_get_instance_private (spin);
 
-    g_return_val_if_fail (GIMP_IS_LABEL_SPIN (spin), NULL);
+	g_return_val_if_fail (GIMP_IS_LABEL_SPIN (spin), NULL);
 
-    return priv->spinbutton;
+	return priv->spinbutton;
 }

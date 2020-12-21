@@ -43,26 +43,26 @@
  * @values: (array fixed-size=4):
  */
 gdouble
-gimp_bilinear (gdouble  x,
-               gdouble  y,
+gimp_bilinear (gdouble x,
+               gdouble y,
                gdouble *values)
 {
-    gdouble m0, m1;
+	gdouble m0, m1;
 
-    g_return_val_if_fail (values != NULL, 0.0);
+	g_return_val_if_fail (values != NULL, 0.0);
 
-    x = fmod (x, 1.0);
-    y = fmod (y, 1.0);
+	x = fmod (x, 1.0);
+	y = fmod (y, 1.0);
 
-    if (x < 0.0)
-        x += 1.0;
-    if (y < 0.0)
-        y += 1.0;
+	if (x < 0.0)
+		x += 1.0;
+	if (y < 0.0)
+		y += 1.0;
 
-    m0 = (1.0 - x) * values[0] + x * values[1];
-    m1 = (1.0 - x) * values[2] + x * values[3];
+	m0 = (1.0 - x) * values[0] + x * values[1];
+	m1 = (1.0 - x) * values[2] + x * values[3];
 
-    return (1.0 - y) * m0 + y * m1;
+	return (1.0 - y) * m0 + y * m1;
 }
 
 /**
@@ -76,22 +76,22 @@ gimp_bilinear_8 (gdouble x,
                  gdouble y,
                  guchar *values)
 {
-    gdouble m0, m1;
+	gdouble m0, m1;
 
-    g_return_val_if_fail (values != NULL, 0);
+	g_return_val_if_fail (values != NULL, 0);
 
-    x = fmod (x, 1.0);
-    y = fmod (y, 1.0);
+	x = fmod (x, 1.0);
+	y = fmod (y, 1.0);
 
-    if (x < 0.0)
-        x += 1.0;
-    if (y < 0.0)
-        y += 1.0;
+	if (x < 0.0)
+		x += 1.0;
+	if (y < 0.0)
+		y += 1.0;
 
-    m0 = (1.0 - x) * values[0] + x * values[1];
-    m1 = (1.0 - x) * values[2] + x * values[3];
+	m0 = (1.0 - x) * values[0] + x * values[1];
+	m1 = (1.0 - x) * values[2] + x * values[3];
 
-    return (guchar) ((1.0 - y) * m0 + y * m1);
+	return (guchar) ((1.0 - y) * m0 + y * m1);
 }
 
 /**
@@ -101,26 +101,26 @@ gimp_bilinear_8 (gdouble x,
  * @values: (array fixed-size=4):
  */
 guint16
-gimp_bilinear_16 (gdouble  x,
-                  gdouble  y,
+gimp_bilinear_16 (gdouble x,
+                  gdouble y,
                   guint16 *values)
 {
-    gdouble m0, m1;
+	gdouble m0, m1;
 
-    g_return_val_if_fail (values != NULL, 0);
+	g_return_val_if_fail (values != NULL, 0);
 
-    x = fmod (x, 1.0);
-    y = fmod (y, 1.0);
+	x = fmod (x, 1.0);
+	y = fmod (y, 1.0);
 
-    if (x < 0.0)
-        x += 1.0;
-    if (y < 0.0)
-        y += 1.0;
+	if (x < 0.0)
+		x += 1.0;
+	if (y < 0.0)
+		y += 1.0;
 
-    m0 = (1.0 - x) * values[0] + x * values[1];
-    m1 = (1.0 - x) * values[2] + x * values[3];
+	m0 = (1.0 - x) * values[0] + x * values[1];
+	m1 = (1.0 - x) * values[2] + x * values[3];
 
-    return (guint16) ((1.0 - y) * m0 + y * m1);
+	return (guint16) ((1.0 - y) * m0 + y * m1);
 }
 
 /**
@@ -130,26 +130,26 @@ gimp_bilinear_16 (gdouble  x,
  * @values: (array fixed-size=4):
  */
 guint32
-gimp_bilinear_32 (gdouble  x,
-                  gdouble  y,
+gimp_bilinear_32 (gdouble x,
+                  gdouble y,
                   guint32 *values)
 {
-    gdouble m0, m1;
+	gdouble m0, m1;
 
-    g_return_val_if_fail (values != NULL, 0);
+	g_return_val_if_fail (values != NULL, 0);
 
-    x = fmod (x, 1.0);
-    y = fmod (y, 1.0);
+	x = fmod (x, 1.0);
+	y = fmod (y, 1.0);
 
-    if (x < 0.0)
-        x += 1.0;
-    if (y < 0.0)
-        y += 1.0;
+	if (x < 0.0)
+		x += 1.0;
+	if (y < 0.0)
+		y += 1.0;
 
-    m0 = (1.0 - x) * values[0] + x * values[1];
-    m1 = (1.0 - x) * values[2] + x * values[3];
+	m0 = (1.0 - x) * values[0] + x * values[1];
+	m1 = (1.0 - x) * values[2] + x * values[3];
 
-    return (guint32) ((1.0 - y) * m0 + y * m1);
+	return (guint32) ((1.0 - y) * m0 + y * m1);
 }
 
 /**
@@ -159,49 +159,49 @@ gimp_bilinear_32 (gdouble  x,
  * @values: (array fixed-size=4):
  */
 GimpRGB
-gimp_bilinear_rgb (gdouble  x,
-                   gdouble  y,
+gimp_bilinear_rgb (gdouble x,
+                   gdouble y,
                    GimpRGB *values)
 {
-    gdouble m0, m1;
-    gdouble ix, iy;
-    GimpRGB v = { 0, };
+	gdouble m0, m1;
+	gdouble ix, iy;
+	GimpRGB v = { 0, };
 
-    g_return_val_if_fail (values != NULL, v);
+	g_return_val_if_fail (values != NULL, v);
 
-    x = fmod(x, 1.0);
-    y = fmod(y, 1.0);
+	x = fmod(x, 1.0);
+	y = fmod(y, 1.0);
 
-    if (x < 0)
-        x += 1.0;
-    if (y < 0)
-        y += 1.0;
+	if (x < 0)
+		x += 1.0;
+	if (y < 0)
+		y += 1.0;
 
-    ix = 1.0 - x;
-    iy = 1.0 - y;
+	ix = 1.0 - x;
+	iy = 1.0 - y;
 
-    /* Red */
+	/* Red */
 
-    m0 = ix * values[0].r + x * values[1].r;
-    m1 = ix * values[2].r + x * values[3].r;
+	m0 = ix * values[0].r + x * values[1].r;
+	m1 = ix * values[2].r + x * values[3].r;
 
-    v.r = iy * m0 + y * m1;
+	v.r = iy * m0 + y * m1;
 
-    /* Green */
+	/* Green */
 
-    m0 = ix * values[0].g + x * values[1].g;
-    m1 = ix * values[2].g + x * values[3].g;
+	m0 = ix * values[0].g + x * values[1].g;
+	m1 = ix * values[2].g + x * values[3].g;
 
-    v.g = iy * m0 + y * m1;
+	v.g = iy * m0 + y * m1;
 
-    /* Blue */
+	/* Blue */
 
-    m0 = ix * values[0].b + x * values[1].b;
-    m1 = ix * values[2].b + x * values[3].b;
+	m0 = ix * values[0].b + x * values[1].b;
+	m1 = ix * values[2].b + x * values[3].b;
 
-    v.b = iy * m0 + y * m1;
+	v.b = iy * m0 + y * m1;
 
-    return v;
+	return v;
 }
 
 /**
@@ -211,63 +211,63 @@ gimp_bilinear_rgb (gdouble  x,
  * @values: (array fixed-size=4):
  */
 GimpRGB
-gimp_bilinear_rgba (gdouble  x,
-                    gdouble  y,
+gimp_bilinear_rgba (gdouble x,
+                    gdouble y,
                     GimpRGB *values)
 {
-    gdouble m0, m1;
-    gdouble ix, iy;
-    gdouble a0, a1, a2, a3, alpha;
-    GimpRGB v = { 0, };
+	gdouble m0, m1;
+	gdouble ix, iy;
+	gdouble a0, a1, a2, a3, alpha;
+	GimpRGB v = { 0, };
 
-    g_return_val_if_fail (values != NULL, v);
+	g_return_val_if_fail (values != NULL, v);
 
-    x = fmod (x, 1.0);
-    y = fmod (y, 1.0);
+	x = fmod (x, 1.0);
+	y = fmod (y, 1.0);
 
-    if (x < 0)
-        x += 1.0;
-    if (y < 0)
-        y += 1.0;
+	if (x < 0)
+		x += 1.0;
+	if (y < 0)
+		y += 1.0;
 
-    ix = 1.0 - x;
-    iy = 1.0 - y;
+	ix = 1.0 - x;
+	iy = 1.0 - y;
 
-    a0 = values[0].a;
-    a1 = values[1].a;
-    a2 = values[2].a;
-    a3 = values[3].a;
+	a0 = values[0].a;
+	a1 = values[1].a;
+	a2 = values[2].a;
+	a3 = values[3].a;
 
-    /* Alpha */
+	/* Alpha */
 
-    m0 = ix * a0 + x * a1;
-    m1 = ix * a2 + x * a3;
+	m0 = ix * a0 + x * a1;
+	m1 = ix * a2 + x * a3;
 
-    alpha = v.a = iy * m0 + y * m1;
+	alpha = v.a = iy * m0 + y * m1;
 
-    if (alpha > 0)
-    {
-        /* Red */
+	if (alpha > 0)
+	{
+		/* Red */
 
-        m0 = ix * a0 * values[0].r + x * a1 * values[1].r;
-        m1 = ix * a2 * values[2].r + x * a3 * values[3].r;
+		m0 = ix * a0 * values[0].r + x * a1 * values[1].r;
+		m1 = ix * a2 * values[2].r + x * a3 * values[3].r;
 
-        v.r = (iy * m0 + y * m1)/alpha;
+		v.r = (iy * m0 + y * m1)/alpha;
 
-        /* Green */
+		/* Green */
 
-        m0 = ix * a0 * values[0].g + x * a1 * values[1].g;
-        m1 = ix * a2 * values[2].g + x * a3 * values[3].g;
+		m0 = ix * a0 * values[0].g + x * a1 * values[1].g;
+		m1 = ix * a2 * values[2].g + x * a3 * values[3].g;
 
-        v.g = (iy * m0 + y * m1)/alpha;
+		v.g = (iy * m0 + y * m1)/alpha;
 
-        /* Blue */
+		/* Blue */
 
-        m0 = ix * a0 * values[0].b + x * a1 * values[1].b;
-        m1 = ix * a2 * values[2].b + x * a3 * values[3].b;
+		m0 = ix * a0 * values[0].b + x * a1 * values[1].b;
+		m1 = ix * a2 * values[2].b + x * a3 * values[3].b;
 
-        v.b = (iy * m0 + y * m1)/alpha;
-    }
+		v.b = (iy * m0 + y * m1)/alpha;
+	}
 
-    return v;
+	return v;
 }

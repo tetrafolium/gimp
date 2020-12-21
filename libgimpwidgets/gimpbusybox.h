@@ -36,29 +36,29 @@ G_BEGIN_DECLS
 #define GIMP_BUSY_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BUSY_BOX, GimpBusyBoxClass))
 
 
-typedef struct _GimpBusyBoxPrivate  GimpBusyBoxPrivate;
-typedef struct _GimpBusyBoxClass    GimpBusyBoxClass;
+typedef struct _GimpBusyBoxPrivate GimpBusyBoxPrivate;
+typedef struct _GimpBusyBoxClass GimpBusyBoxClass;
 
 struct _GimpBusyBox
 {
-    GtkBox              parent_instance;
+	GtkBox parent_instance;
 
-    GimpBusyBoxPrivate *priv;
+	GimpBusyBoxPrivate *priv;
 };
 
 struct _GimpBusyBoxClass
 {
-    GtkBoxClass  parent_class;
+	GtkBoxClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -67,7 +67,7 @@ GType         gimp_busy_box_get_type    (void) G_GNUC_CONST;
 GtkWidget   * gimp_busy_box_new         (const gchar *message);
 
 void          gimp_busy_box_set_message (GimpBusyBox *box,
-        const gchar *message);
+                                         const gchar *message);
 const gchar * gimp_busy_box_get_message (GimpBusyBox *box);
 
 

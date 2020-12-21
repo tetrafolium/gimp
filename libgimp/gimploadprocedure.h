@@ -45,10 +45,10 @@ G_BEGIN_DECLS
  * Since: 3.0
  **/
 typedef GimpValueArray * (* GimpRunLoadFunc) (GimpProcedure        *procedure,
-        GimpRunMode           run_mode,
-        GFile                *file,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                              GimpRunMode run_mode,
+                                              GFile                *file,
+                                              const GimpValueArray *args,
+                                              gpointer run_data);
 
 
 #define GIMP_TYPE_LOAD_PROCEDURE            (gimp_load_procedure_get_type ())
@@ -59,38 +59,38 @@ typedef GimpValueArray * (* GimpRunLoadFunc) (GimpProcedure        *procedure,
 #define GIMP_LOAD_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LOAD_PROCEDURE, GimpLoadProcedureClass))
 
 
-typedef struct _GimpLoadProcedure        GimpLoadProcedure;
-typedef struct _GimpLoadProcedureClass   GimpLoadProcedureClass;
+typedef struct _GimpLoadProcedure GimpLoadProcedure;
+typedef struct _GimpLoadProcedureClass GimpLoadProcedureClass;
 typedef struct _GimpLoadProcedurePrivate GimpLoadProcedurePrivate;
 
 struct _GimpLoadProcedure
 {
-    GimpFileProcedure         parent_instance;
+	GimpFileProcedure parent_instance;
 
-    GimpLoadProcedurePrivate *priv;
+	GimpLoadProcedurePrivate *priv;
 };
 
 struct _GimpLoadProcedureClass
 {
-    GimpFileProcedureClass parent_class;
+	GimpFileProcedureClass parent_class;
 };
 
 
 GType           gimp_load_procedure_get_type             (void) G_GNUC_CONST;
 
 GimpProcedure * gimp_load_procedure_new                  (GimpPlugIn        *plug_in,
-        const gchar       *name,
-        GimpPDBProcType    proc_type,
-        GimpRunLoadFunc    run_func,
-        gpointer           run_data,
-        GDestroyNotify     run_data_destroy);
+                                                          const gchar       *name,
+                                                          GimpPDBProcType proc_type,
+                                                          GimpRunLoadFunc run_func,
+                                                          gpointer run_data,
+                                                          GDestroyNotify run_data_destroy);
 
 void            gimp_load_procedure_set_handles_raw      (GimpLoadProcedure *procedure,
-        gboolean           handles_raw);
+                                                          gboolean handles_raw);
 gboolean        gimp_load_procedure_get_handles_raw      (GimpLoadProcedure *procedure);
 
 void            gimp_load_procedure_set_thumbnail_loader (GimpLoadProcedure *procedure,
-        const gchar       *thumbnail_proc);
+                                                          const gchar       *thumbnail_proc);
 const gchar   * gimp_load_procedure_get_thumbnail_loader (GimpLoadProcedure *procedure);
 
 

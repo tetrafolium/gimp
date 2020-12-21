@@ -26,10 +26,10 @@
 #include "imap_object.h"
 
 typedef struct {
-    GtkWidget *menu;
-    GtkWidget *up;
-    GtkWidget *down;
-    Object_t  *obj;
+	GtkWidget *menu;
+	GtkWidget *up;
+	GtkWidget *down;
+	Object_t  *obj;
 } ObjectPopup_t;
 
 void object_handle_popup(ObjectPopup_t *popup, Object_t *obj,

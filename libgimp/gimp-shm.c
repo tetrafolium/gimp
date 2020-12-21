@@ -71,107 +71,107 @@
 
 
 #ifdef USE_WIN32_SHM
-static HANDLE  _shm_handle;
+static HANDLE _shm_handle;
 #endif
 
-static gint    _shm_ID   = -1;
+static gint _shm_ID   = -1;
 static guchar *_shm_addr = NULL;
 
 
 guchar *
 _gimp_shm_addr (void)
 {
-    return _shm_addr;
+	return _shm_addr;
 }
 
 void
 _gimp_shm_open (gint shm_ID)
 {
-    _shm_ID = shm_ID;
+	_shm_ID = shm_ID;
 
-    if (_shm_ID != -1)
-    {
+	if (_shm_ID != -1)
+	{
 #if defined(USE_SYSV_SHM)
 
-        /* Use SysV shared memory mechanisms for transferring tile data. */
+		/* Use SysV shared memory mechanisms for transferring tile data. */
 
-        _shm_addr = (guchar *) shmat (_shm_ID, NULL, 0);
+		_shm_addr = (guchar *) shmat (_shm_ID, NULL, 0);
 
-        if (_shm_addr == (guchar *) -1)
-        {
-            g_error ("shmat() failed: %s\n" ERRMSG_SHM_FAILED,
-                     g_strerror (errno));
-        }
+		if (_shm_addr == (guchar *) -1)
+		{
+			g_error ("shmat() failed: %s\n" ERRMSG_SHM_FAILED,
+			         g_strerror (errno));
+		}
 
 #elif defined(USE_WIN32_SHM)
 
-        /* Use Win32 shared memory mechanisms for transferring tile data. */
+		/* Use Win32 shared memory mechanisms for transferring tile data. */
 
-        gchar fileMapName[128];
+		gchar fileMapName[128];
 
-        /* From the id, derive the file map name */
-        g_snprintf (fileMapName, sizeof (fileMapName), "GIMP%d.SHM", _shm_ID);
+		/* From the id, derive the file map name */
+		g_snprintf (fileMapName, sizeof (fileMapName), "GIMP%d.SHM", _shm_ID);
 
-        /* Open the file mapping */
-        _shm_handle = OpenFileMapping (FILE_MAP_ALL_ACCESS,
-                                       0, fileMapName);
-        if (_shm_handle)
-        {
-            /* Map the shared memory into our address space for use */
-            _shm_addr = (guchar *) MapViewOfFile (_shm_handle,
-                                                  FILE_MAP_ALL_ACCESS,
-                                                  0, 0, TILE_MAP_SIZE);
+		/* Open the file mapping */
+		_shm_handle = OpenFileMapping (FILE_MAP_ALL_ACCESS,
+		                               0, fileMapName);
+		if (_shm_handle)
+		{
+			/* Map the shared memory into our address space for use */
+			_shm_addr = (guchar *) MapViewOfFile (_shm_handle,
+			                                      FILE_MAP_ALL_ACCESS,
+			                                      0, 0, TILE_MAP_SIZE);
 
-            /* Verify that we mapped our view */
-            if (!_shm_addr)
-            {
-                g_error ("MapViewOfFile error: %lu... " ERRMSG_SHM_FAILED,
-                         GetLastError ());
-            }
-        }
-        else
-        {
-            g_error ("OpenFileMapping error: %lu... " ERRMSG_SHM_FAILED,
-                     GetLastError ());
-        }
+			/* Verify that we mapped our view */
+			if (!_shm_addr)
+			{
+				g_error ("MapViewOfFile error: %lu... " ERRMSG_SHM_FAILED,
+				         GetLastError ());
+			}
+		}
+		else
+		{
+			g_error ("OpenFileMapping error: %lu... " ERRMSG_SHM_FAILED,
+			         GetLastError ());
+		}
 
 #elif defined(USE_POSIX_SHM)
 
-        /* Use POSIX shared memory mechanisms for transferring tile data. */
+		/* Use POSIX shared memory mechanisms for transferring tile data. */
 
-        gchar map_file[32];
-        gint  shm_fd;
+		gchar map_file[32];
+		gint shm_fd;
 
-        /* From the id, derive the file map name */
-        g_snprintf (map_file, sizeof (map_file), "/gimp-shm-%d", _shm_ID);
+		/* From the id, derive the file map name */
+		g_snprintf (map_file, sizeof (map_file), "/gimp-shm-%d", _shm_ID);
 
-        /* Open the file mapping */
-        shm_fd = shm_open (map_file, O_RDWR, 0600);
+		/* Open the file mapping */
+		shm_fd = shm_open (map_file, O_RDWR, 0600);
 
-        if (shm_fd != -1)
-        {
-            /* Map the shared memory into our address space for use */
-            _shm_addr = (guchar *) mmap (NULL, TILE_MAP_SIZE,
-                                         PROT_READ | PROT_WRITE, MAP_SHARED,
-                                         shm_fd, 0);
+		if (shm_fd != -1)
+		{
+			/* Map the shared memory into our address space for use */
+			_shm_addr = (guchar *) mmap (NULL, TILE_MAP_SIZE,
+			                             PROT_READ | PROT_WRITE, MAP_SHARED,
+			                             shm_fd, 0);
 
-            /* Verify that we mapped our view */
-            if (_shm_addr == MAP_FAILED)
-            {
-                g_error ("mmap() failed: %s\n" ERRMSG_SHM_FAILED,
-                         g_strerror (errno));
-            }
+			/* Verify that we mapped our view */
+			if (_shm_addr == MAP_FAILED)
+			{
+				g_error ("mmap() failed: %s\n" ERRMSG_SHM_FAILED,
+				         g_strerror (errno));
+			}
 
-            close (shm_fd);
-        }
-        else
-        {
-            g_error ("shm_open() failed: %s\n" ERRMSG_SHM_FAILED,
-                     g_strerror (errno));
-        }
+			close (shm_fd);
+		}
+		else
+		{
+			g_error ("shm_open() failed: %s\n" ERRMSG_SHM_FAILED,
+			         g_strerror (errno));
+		}
 
 #endif
-    }
+	}
 }
 
 void
@@ -179,18 +179,18 @@ _gimp_shm_close (void)
 {
 #if defined(USE_SYSV_SHM)
 
-    if ((_shm_ID != -1) && _shm_addr)
-        shmdt ((char *) _shm_addr);
+	if ((_shm_ID != -1) && _shm_addr)
+		shmdt ((char *) _shm_addr);
 
 #elif defined(USE_WIN32_SHM)
 
-    if (_shm_handle)
-        CloseHandle (_shm_handle);
+	if (_shm_handle)
+		CloseHandle (_shm_handle);
 
 #elif defined(USE_POSIX_SHM)
 
-    if ((_shm_ID != -1) && (_shm_addr != MAP_FAILED))
-        munmap (_shm_addr, TILE_MAP_SIZE);
+	if ((_shm_ID != -1) && (_shm_addr != MAP_FAILED))
+		munmap (_shm_addr, TILE_MAP_SIZE);
 
 #endif
 }

@@ -48,16 +48,16 @@ G_BEGIN_DECLS
  **/
 typedef enum
 {
-    GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 << 0,
-    GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 << 1,
-    GIMP_EXPORT_CAN_HANDLE_INDEXED             = 1 << 2,
-    GIMP_EXPORT_CAN_HANDLE_BITMAP              = 1 << 3,
-    GIMP_EXPORT_CAN_HANDLE_ALPHA               = 1 << 4,
-    GIMP_EXPORT_CAN_HANDLE_LAYERS              = 1 << 5,
-    GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION = 1 << 6,
-    GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS         = 1 << 7,
-    GIMP_EXPORT_NEEDS_ALPHA                    = 1 << 8,
-    GIMP_EXPORT_NEEDS_CROP                     = 1 << 9
+	GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 << 0,
+	GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 << 1,
+	GIMP_EXPORT_CAN_HANDLE_INDEXED             = 1 << 2,
+	GIMP_EXPORT_CAN_HANDLE_BITMAP              = 1 << 3,
+	GIMP_EXPORT_CAN_HANDLE_ALPHA               = 1 << 4,
+	GIMP_EXPORT_CAN_HANDLE_LAYERS              = 1 << 5,
+	GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION = 1 << 6,
+	GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS         = 1 << 7,
+	GIMP_EXPORT_NEEDS_ALPHA                    = 1 << 8,
+	GIMP_EXPORT_NEEDS_CROP                     = 1 << 9
 } GimpExportCapabilities;
 
 
@@ -71,22 +71,22 @@ typedef enum
  **/
 typedef enum
 {
-    GIMP_EXPORT_CANCEL,
-    GIMP_EXPORT_IGNORE,
-    GIMP_EXPORT_EXPORT
+	GIMP_EXPORT_CANCEL,
+	GIMP_EXPORT_IGNORE,
+	GIMP_EXPORT_EXPORT
 } GimpExportReturn;
 
 
 GtkWidget        * gimp_export_dialog_new              (const gchar            *format_name,
-        const gchar            *role,
-        const gchar            *help_id);
+                                                        const gchar            *role,
+                                                        const gchar            *help_id);
 GtkWidget        * gimp_export_dialog_get_content_area (GtkWidget              *dialog);
 
 GimpExportReturn   gimp_export_image                   (GimpImage             **image,
-        gint                   *n_drawables,
-        GimpDrawable         ***drawables,
-        const gchar            *format_name,
-        GimpExportCapabilities  capabilities);
+                                                        gint                   *n_drawables,
+                                                        GimpDrawable         ***drawables,
+                                                        const gchar            *format_name,
+                                                        GimpExportCapabilities capabilities);
 
 
 G_END_DECLS

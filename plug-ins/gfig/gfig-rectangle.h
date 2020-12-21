@@ -28,8 +28,8 @@
 void    d_rectangle_object_class_init (void);
 
 void    d_rectangle_start             (GdkPoint *pnt,
-                                       gboolean  shift_down);
+                                       gboolean shift_down);
 void    d_rectangle_end               (GdkPoint *pnt,
-                                       gboolean  shift_down);
+                                       gboolean shift_down);
 
 #endif /* __GFIG_RECTANGLE_H__ */

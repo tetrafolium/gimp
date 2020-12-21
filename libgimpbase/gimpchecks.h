@@ -58,7 +58,7 @@ G_BEGIN_DECLS
 #define GIMP_CHECK_LIGHT  0.6
 
 
-void  gimp_checks_get_shades (GimpCheckType  type,
+void  gimp_checks_get_shades (GimpCheckType type,
                               guchar        *light,
                               guchar        *dark);
 

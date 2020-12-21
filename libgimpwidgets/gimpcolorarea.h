@@ -43,54 +43,54 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpColorAreaPrivate GimpColorAreaPrivate;
-typedef struct _GimpColorAreaClass   GimpColorAreaClass;
+typedef struct _GimpColorAreaClass GimpColorAreaClass;
 
 struct _GimpColorArea
 {
-    GtkDrawingArea        parent_instance;
+	GtkDrawingArea parent_instance;
 
-    GimpColorAreaPrivate *priv;
+	GimpColorAreaPrivate *priv;
 };
 
 struct _GimpColorAreaClass
 {
-    GtkDrawingAreaClass  parent_class;
+	GtkDrawingAreaClass parent_class;
 
-    void (* color_changed) (GimpColorArea *area);
+	void (* color_changed) (GimpColorArea *area);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_color_area_get_type         (void) G_GNUC_CONST;
 
 GtkWidget * gimp_color_area_new              (const GimpRGB     *color,
-        GimpColorAreaType  type,
-        GdkModifierType    drag_mask);
+                                              GimpColorAreaType type,
+                                              GdkModifierType drag_mask);
 
 void        gimp_color_area_set_color        (GimpColorArea     *area,
-        const GimpRGB     *color);
+                                              const GimpRGB     *color);
 void        gimp_color_area_get_color        (GimpColorArea     *area,
-        GimpRGB           *color);
+                                              GimpRGB           *color);
 
 gboolean    gimp_color_area_has_alpha        (GimpColorArea     *area);
 void        gimp_color_area_set_type         (GimpColorArea     *area,
-        GimpColorAreaType  type);
+                                              GimpColorAreaType type);
 void        gimp_color_area_set_draw_border  (GimpColorArea     *area,
-        gboolean           draw_border);
+                                              gboolean draw_border);
 void        gimp_color_area_set_out_of_gamut (GimpColorArea     *area,
-        gboolean           out_of_gamut);
+                                              gboolean out_of_gamut);
 
 void        gimp_color_area_set_color_config (GimpColorArea     *area,
-        GimpColorConfig   *config);
+                                              GimpColorConfig   *config);
 
 
 G_END_DECLS

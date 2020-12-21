@@ -35,31 +35,31 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpPickButtonPrivate GimpPickButtonPrivate;
-typedef struct _GimpPickButtonClass   GimpPickButtonClass;
+typedef struct _GimpPickButtonClass GimpPickButtonClass;
 
 struct _GimpPickButton
 {
-    GtkButton              parent_instance;
+	GtkButton parent_instance;
 
-    GimpPickButtonPrivate *priv;
+	GimpPickButtonPrivate *priv;
 };
 
 struct _GimpPickButtonClass
 {
-    GtkButtonClass  parent_class;
+	GtkButtonClass parent_class;
 
-    void (* color_picked) (GimpPickButton *button,
-                           const GimpRGB  *color);
+	void (* color_picked) (GimpPickButton *button,
+	                       const GimpRGB  *color);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 

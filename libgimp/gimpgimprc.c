@@ -36,25 +36,25 @@
 GimpColorConfig *
 gimp_get_color_configuration (void)
 {
-    GimpColorConfig *config;
-    gchar           *text;
-    GError          *error = NULL;
+	GimpColorConfig *config;
+	gchar           *text;
+	GError          *error = NULL;
 
-    text = _gimp_get_color_configuration ();
+	text = _gimp_get_color_configuration ();
 
-    g_return_val_if_fail (text != NULL, NULL);
+	g_return_val_if_fail (text != NULL, NULL);
 
-    config = g_object_new (GIMP_TYPE_COLOR_CONFIG, NULL);
+	config = g_object_new (GIMP_TYPE_COLOR_CONFIG, NULL);
 
-    if (! gimp_config_deserialize_string (GIMP_CONFIG (config), text, -1, NULL,
-                                          &error))
-    {
-        g_warning ("failed to deserialize color configuration: %s",
-                   error->message);
-        g_error_free (error);
-    }
+	if (!gimp_config_deserialize_string (GIMP_CONFIG (config), text, -1, NULL,
+	                                     &error))
+	{
+		g_warning ("failed to deserialize color configuration: %s",
+		           error->message);
+		g_error_free (error);
+	}
 
-    g_free (text);
+	g_free (text);
 
-    return config;
+	return config;
 }

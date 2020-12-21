@@ -109,41 +109,41 @@ G_BEGIN_DECLS
 #  endif
 
 #  define GIMP_MAIN(plug_in_type)                       \
-   struct HINSTANCE__;                                  \
+	struct HINSTANCE__;                                  \
                                                         \
-   int _stdcall                                         \
-   WinMain (struct HINSTANCE__ *hInstance,              \
-            struct HINSTANCE__ *hPrevInstance,          \
-            char *lpszCmdLine,                          \
-            int   nCmdShow);                            \
+	int _stdcall                                         \
+	WinMain (struct HINSTANCE__ *hInstance,              \
+	         struct HINSTANCE__ *hPrevInstance,          \
+	         char *lpszCmdLine,                          \
+	         int nCmdShow);                            \
                                                         \
-   int _stdcall                                         \
-   WinMain (struct HINSTANCE__ *hInstance,              \
-            struct HINSTANCE__ *hPrevInstance,          \
-            char *lpszCmdLine,                          \
-            int   nCmdShow)                             \
-   {                                                    \
-     return gimp_main (plug_in_type,                    \
-                       __argc, __argv);                 \
-   }                                                    \
+	int _stdcall                                         \
+	WinMain (struct HINSTANCE__ *hInstance,              \
+	         struct HINSTANCE__ *hPrevInstance,          \
+	         char *lpszCmdLine,                          \
+	         int nCmdShow)                             \
+	{                                                    \
+		return gimp_main (plug_in_type,                    \
+		                  __argc, __argv);                 \
+	}                                                    \
                                                         \
-   int                                                  \
-   main (int argc, char *argv[])                        \
-   {                                                    \
-     /* Use __argc and __argv here, too, as they work   \
-      * better with mingw-w64.                          \
-      */                                                \
-     return gimp_main (plug_in_type,                    \
-                       __argc, __argv);                 \
-   }
+	int                                                  \
+	main (int argc, char *argv[])                        \
+	{                                                    \
+		/* Use __argc and __argv here, too, as they work \
+		 * better with mingw-w64. \
+		 */                                     \
+		return gimp_main (plug_in_type,                    \
+		                  __argc, __argv);                 \
+	}
 #else
 #  define GIMP_MAIN(plug_in_type)                       \
-   int                                                  \
-   main (int argc, char *argv[])                        \
-   {                                                    \
-     return gimp_main (plug_in_type,                    \
-                       argc, argv);                     \
-   }
+	int                                                  \
+	main (int argc, char *argv[])                        \
+	{                                                    \
+		return gimp_main (plug_in_type,                    \
+		                  argc, argv);                     \
+	}
 #endif
 
 
@@ -151,9 +151,9 @@ G_BEGIN_DECLS
  * GimpPlugIn subclass type and the 'argc' and 'argv' that are passed
  * to "main".
  */
-gint                gimp_main                 (GType  plug_in_type,
-        gint   argc,
-        gchar *argv[]);
+gint                gimp_main                 (GType plug_in_type,
+                                               gint argc,
+                                               gchar *argv[]);
 
 /* Return the GimpPlugIn singleton of this plug-in process
  */

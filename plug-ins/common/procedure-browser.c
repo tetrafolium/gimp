@@ -53,17 +53,17 @@
 #define PLUG_IN_ROLE   "gimp-procedure-browser"
 
 
-typedef struct _Browser      Browser;
+typedef struct _Browser Browser;
 typedef struct _BrowserClass BrowserClass;
 
 struct _Browser
 {
-    GimpPlugIn parent_instance;
+	GimpPlugIn parent_instance;
 };
 
 struct _BrowserClass
 {
-    GimpPlugInClass parent_class;
+	GimpPlugInClass parent_class;
 };
 
 
@@ -77,11 +77,11 @@ GType                   browser_get_type         (void) G_GNUC_CONST;
 
 static GList          * browser_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * browser_create_procedure (GimpPlugIn           *plug_in,
-        const gchar          *name);
+                                                  const gchar          *name);
 
 static GimpValueArray * browser_run              (GimpProcedure        *procedure,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                                  const GimpValueArray *args,
+                                                  gpointer run_data);
 
 
 G_DEFINE_TYPE (Browser, browser, GIMP_TYPE_PLUG_IN)
@@ -92,10 +92,10 @@ GIMP_MAIN (BROWSER_TYPE)
 static void
 browser_class_init (BrowserClass *klass)
 {
-    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+	GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-    plug_in_class->query_procedures = browser_query_procedures;
-    plug_in_class->create_procedure = browser_create_procedure;
+	plug_in_class->query_procedures = browser_query_procedures;
+	plug_in_class->create_procedure = browser_create_procedure;
 }
 
 static void
@@ -106,86 +106,86 @@ browser_init (Browser *browser)
 static GList *
 browser_query_procedures (GimpPlugIn *plug_in)
 {
-    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+	return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 browser_create_procedure (GimpPlugIn  *plug_in,
                           const gchar *name)
 {
-    GimpProcedure *procedure = NULL;
+	GimpProcedure *procedure = NULL;
 
-    if (! strcmp (name, PLUG_IN_PROC))
-    {
-        procedure = gimp_procedure_new (plug_in, name,
-                                        GIMP_PDB_PROC_TYPE_PLUGIN,
-                                        browser_run, NULL, NULL);
+	if (!strcmp (name, PLUG_IN_PROC))
+	{
+		procedure = gimp_procedure_new (plug_in, name,
+		                                GIMP_PDB_PROC_TYPE_PLUGIN,
+		                                browser_run, NULL, NULL);
 
-        gimp_procedure_set_menu_label (procedure, N_("Procedure _Browser"));
-        gimp_procedure_add_menu_path (procedure, "<Image>/Help/Programming");
+		gimp_procedure_set_menu_label (procedure, N_("Procedure _Browser"));
+		gimp_procedure_add_menu_path (procedure, "<Image>/Help/Programming");
 
-        gimp_procedure_set_documentation (procedure,
-                                          N_("List available procedures in the PDB"),
-                                          NULL,
-                                          PLUG_IN_PROC);
-        gimp_procedure_set_attribution (procedure,
-                                        "Thomas Noel",
-                                        "Thomas Noel",
-                                        "23th june 1997");
+		gimp_procedure_set_documentation (procedure,
+		                                  N_("List available procedures in the PDB"),
+		                                  NULL,
+		                                  PLUG_IN_PROC);
+		gimp_procedure_set_attribution (procedure,
+		                                "Thomas Noel",
+		                                "Thomas Noel",
+		                                "23th june 1997");
 
-        GIMP_PROC_ARG_ENUM (procedure, "run-mode",
-                            "Run mode",
-                            "The run mode",
-                            GIMP_TYPE_RUN_MODE,
-                            GIMP_RUN_INTERACTIVE,
-                            G_PARAM_READWRITE);
-    }
+		GIMP_PROC_ARG_ENUM (procedure, "run-mode",
+		                    "Run mode",
+		                    "The run mode",
+		                    GIMP_TYPE_RUN_MODE,
+		                    GIMP_RUN_INTERACTIVE,
+		                    G_PARAM_READWRITE);
+	}
 
-    return procedure;
+	return procedure;
 }
 
 static GimpValueArray *
 browser_run (GimpProcedure        *procedure,
              const GimpValueArray *args,
-             gpointer              run_data)
+             gpointer run_data)
 {
-    GimpRunMode run_mode = GIMP_VALUES_GET_ENUM (args, 0);
+	GimpRunMode run_mode = GIMP_VALUES_GET_ENUM (args, 0);
 
-    INIT_I18N ();
+	INIT_I18N ();
 
-    switch (run_mode)
-    {
-    case GIMP_RUN_INTERACTIVE:
-    {
-        GtkWidget *dialog;
+	switch (run_mode)
+	{
+	case GIMP_RUN_INTERACTIVE:
+	{
+		GtkWidget *dialog;
 
-        gimp_ui_init (PLUG_IN_BINARY);
+		gimp_ui_init (PLUG_IN_BINARY);
 
-        dialog =
-            gimp_proc_browser_dialog_new (_("Procedure Browser"), PLUG_IN_BINARY,
-                                          gimp_standard_help_func, PLUG_IN_PROC,
+		dialog =
+			gimp_proc_browser_dialog_new (_("Procedure Browser"), PLUG_IN_BINARY,
+			                              gimp_standard_help_func, PLUG_IN_PROC,
 
-                                          _("_Close"), GTK_RESPONSE_CLOSE,
+			                              _("_Close"), GTK_RESPONSE_CLOSE,
 
-                                          NULL);
+			                              NULL);
 
-        gtk_dialog_run (GTK_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
-    }
-    break;
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+	}
+	break;
 
-    case GIMP_RUN_WITH_LAST_VALS:
-    case GIMP_RUN_NONINTERACTIVE:
-        g_printerr (PLUG_IN_PROC " allows only interactive invocation");
+	case GIMP_RUN_WITH_LAST_VALS:
+	case GIMP_RUN_NONINTERACTIVE:
+		g_printerr (PLUG_IN_PROC " allows only interactive invocation");
 
-        return gimp_procedure_new_return_values (procedure,
-                GIMP_PDB_CALLING_ERROR,
-                NULL);
-        break;
+		return gimp_procedure_new_return_values (procedure,
+		                                         GIMP_PDB_CALLING_ERROR,
+		                                         NULL);
+		break;
 
-    default:
-        break;
-    }
+	default:
+		break;
+	}
 
-    return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
+	return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
 }

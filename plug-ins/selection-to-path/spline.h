@@ -27,7 +27,7 @@
 /* Third degree is the highest we deal with.  */
 typedef enum
 {
-    LINEAR = 1, QUADRATIC = 2, CUBIC = 3
+	LINEAR = 1, QUADRATIC = 2, CUBIC = 3
 } polynomial_degree;
 
 
@@ -38,17 +38,17 @@ typedef enum
    straight line defined by the endpoints.  */
 typedef struct
 {
-    real_coordinate_type v[4];	/* The control points.  */
-    polynomial_degree degree;
-    real linearity;
+	real_coordinate_type v[4]; /* The control points.  */
+	polynomial_degree degree;
+	real linearity;
 } spline_type;
 
-#define START_POINT(spl)	((spl).v[0])
-#define CONTROL1(spl)		((spl).v[1])
-#define CONTROL2(spl)		((spl).v[2])
-#define END_POINT(spl)		((spl).v[3])
-#define SPLINE_DEGREE(spl)	((spl).degree)
-#define SPLINE_LINEARITY(spl)	((spl).linearity)
+#define START_POINT(spl)        ((spl).v[0])
+#define CONTROL1(spl)           ((spl).v[1])
+#define CONTROL2(spl)           ((spl).v[2])
+#define END_POINT(spl)          ((spl).v[3])
+#define SPLINE_DEGREE(spl)      ((spl).degree)
+#define SPLINE_LINEARITY(spl)   ((spl).linearity)
 
 
 /* Return a spline structure.  */
@@ -64,8 +64,8 @@ extern real_coordinate_type evaluate_spline (spline_type spline, real t);
    splines.  So, here is a list structure for that:  */
 typedef struct
 {
-    spline_type *data;
-    unsigned length;
+	spline_type *data;
+	unsigned length;
 } spline_list_type;
 
 /* An empty list will have length zero (and null data).  */
@@ -79,15 +79,15 @@ typedef struct
 
 /* The last element in S_L.  */
 #define LAST_SPLINE_LIST_ELT(s_l) \
-  (SPLINE_LIST_DATA (s_l)[SPLINE_LIST_LENGTH (s_l) - 1])
+	(SPLINE_LIST_DATA (s_l)[SPLINE_LIST_LENGTH (s_l) - 1])
 
 /* The previous and next elements to INDEX in S_L.  */
-#define NEXT_SPLINE_LIST_ELT(s_l, index)				\
-  SPLINE_LIST_ELT (s_l, ((index) + 1) % SPLINE_LIST_LENGTH (s_l))
-#define PREV_SPLINE_LIST_ELT(s_l, index)				\
-  SPLINE_LIST_ELT (s_l, index == 0					\
-                        ? SPLINE_LIST_LENGTH (s_l) - 1			\
-                        : index - 1)
+#define NEXT_SPLINE_LIST_ELT(s_l, index)                                \
+	SPLINE_LIST_ELT (s_l, ((index) + 1) % SPLINE_LIST_LENGTH (s_l))
+#define PREV_SPLINE_LIST_ELT(s_l, index)                                \
+	SPLINE_LIST_ELT (s_l, index == 0                                      \
+	                ? SPLINE_LIST_LENGTH (s_l) - 1                  \
+	                : index - 1)
 
 /* Construct and destroy new `spline_list_type' objects.  */
 extern spline_list_type *new_spline_list (void);
@@ -105,8 +105,8 @@ extern void concat_spline_lists (spline_list_type *s1, spline_list_type s2);
    more list structure.  */
 typedef struct
 {
-    spline_list_type *data;
-    unsigned length;
+	spline_list_type *data;
+	unsigned length;
 } spline_list_array_type;
 
 /* Turns out we can use the same definitions for lists of lists as for

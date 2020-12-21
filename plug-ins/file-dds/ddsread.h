@@ -24,7 +24,7 @@
 
 extern GimpPDBStatusType read_dds (GFile          *file,
                                    GimpImage     **image,
-                                   gboolean        interactive,
+                                   gboolean interactive,
                                    GimpProcedure  *procedure,
                                    GObject        *config,
                                    GError        **error);

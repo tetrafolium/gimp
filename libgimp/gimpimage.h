@@ -38,36 +38,36 @@ G_BEGIN_DECLS
 #define GIMP_IMAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE, GimpImageClass))
 
 
-typedef struct _GimpImageClass   GimpImageClass;
+typedef struct _GimpImageClass GimpImageClass;
 typedef struct _GimpImagePrivate GimpImagePrivate;
 
 struct _GimpImage
 {
-    GObject           parent_instance;
+	GObject parent_instance;
 
-    GimpImagePrivate *priv;
+	GimpImagePrivate *priv;
 };
 
 struct _GimpImageClass
 {
-    GObjectClass parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType          gimp_image_get_type           (void) G_GNUC_CONST;
 
 gint32         gimp_image_get_id             (GimpImage    *image);
-GimpImage    * gimp_image_get_by_id          (gint32        image_id);
+GimpImage    * gimp_image_get_by_id          (gint32 image_id);
 
 gboolean       gimp_image_is_valid           (GimpImage    *image);
 
@@ -80,23 +80,23 @@ GList        * gimp_image_list_vectors       (GimpImage    *image);
 GList      * gimp_image_list_selected_layers (GimpImage    *image);
 
 guchar       * gimp_image_get_colormap       (GimpImage    *image,
-        gint         *num_colors);
+                                              gint         *num_colors);
 gboolean       gimp_image_set_colormap       (GimpImage    *image,
-        const guchar *colormap,
-        gint          num_colors);
+                                              const guchar *colormap,
+                                              gint num_colors);
 
 guchar       * gimp_image_get_thumbnail_data (GimpImage    *image,
-        gint         *width,
-        gint         *height,
-        gint         *bpp);
+                                              gint         *width,
+                                              gint         *height,
+                                              gint         *bpp);
 GdkPixbuf    * gimp_image_get_thumbnail      (GimpImage    *image,
-        gint          width,
-        gint          height,
-        GimpPixbufTransparency  alpha);
+                                              gint width,
+                                              gint height,
+                                              GimpPixbufTransparency alpha);
 
 GimpMetadata * gimp_image_get_metadata       (GimpImage    *image);
 gboolean       gimp_image_set_metadata       (GimpImage    *image,
-        GimpMetadata *metadata);
+                                              GimpMetadata *metadata);
 
 
 G_END_DECLS

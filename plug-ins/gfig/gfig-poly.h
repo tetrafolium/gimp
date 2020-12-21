@@ -35,8 +35,8 @@ void d_star2lines             (GfigObject *obj);
 void d_poly_object_class_init (void);
 
 void d_poly_start             (GdkPoint   *pnt,
-                               gboolean    shift_down);
+                               gboolean shift_down);
 void d_poly_end               (GdkPoint   *pnt,
-                               gboolean    shift_down);
+                               gboolean shift_down);
 
 #endif /* __GFIG_POLY_H__ */

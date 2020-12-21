@@ -34,8 +34,8 @@ G_BEGIN_DECLS
  * GIMP_TYPE_PARAM_IMAGE
  */
 
-#define GIMP_VALUE_HOLDS_IMAGE(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                         GIMP_TYPE_IMAGE))
+#define GIMP_VALUE_HOLDS_IMAGE(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                          GIMP_TYPE_IMAGE))
 
 #define GIMP_TYPE_PARAM_IMAGE           (gimp_param_image_get_type ())
 #define GIMP_PARAM_SPEC_IMAGE(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_IMAGE, GimpParamSpecImage))
@@ -45,9 +45,9 @@ typedef struct _GimpParamSpecImage GimpParamSpecImage;
 
 struct _GimpParamSpecImage
 {
-    GParamSpecObject  parent_instance;
+	GParamSpecObject parent_instance;
 
-    gboolean          none_ok;
+	gboolean none_ok;
 };
 
 GType        gimp_param_image_get_type (void) G_GNUC_CONST;
@@ -55,16 +55,16 @@ GType        gimp_param_image_get_type (void) G_GNUC_CONST;
 GParamSpec * gimp_param_spec_image     (const gchar  *name,
                                         const gchar  *nick,
                                         const gchar  *blurb,
-                                        gboolean      none_ok,
-                                        GParamFlags   flags);
+                                        gboolean none_ok,
+                                        GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_ITEM
  */
 
-#define GIMP_VALUE_HOLDS_ITEM(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                        GIMP_TYPE_ITEM))
+#define GIMP_VALUE_HOLDS_ITEM(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                         GIMP_TYPE_ITEM))
 
 #define GIMP_TYPE_PARAM_ITEM           (gimp_param_item_get_type ())
 #define GIMP_PARAM_SPEC_ITEM(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_ITEM, GimpParamSpecItem))
@@ -74,9 +74,9 @@ typedef struct _GimpParamSpecItem GimpParamSpecItem;
 
 struct _GimpParamSpecItem
 {
-    GParamSpecObject  parent_instance;
+	GParamSpecObject parent_instance;
 
-    gboolean          none_ok;
+	gboolean none_ok;
 };
 
 GType        gimp_param_item_get_type (void) G_GNUC_CONST;
@@ -84,16 +84,16 @@ GType        gimp_param_item_get_type (void) G_GNUC_CONST;
 GParamSpec * gimp_param_spec_item     (const gchar  *name,
                                        const gchar  *nick,
                                        const gchar  *blurb,
-                                       gboolean      none_ok,
-                                       GParamFlags   flags);
+                                       gboolean none_ok,
+                                       GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_DRAWABLE
  */
 
-#define GIMP_VALUE_HOLDS_DRAWABLE(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                            GIMP_TYPE_DRAWABLE))
+#define GIMP_VALUE_HOLDS_DRAWABLE(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                             GIMP_TYPE_DRAWABLE))
 
 #define GIMP_TYPE_PARAM_DRAWABLE           (gimp_param_drawable_get_type ())
 #define GIMP_PARAM_SPEC_DRAWABLE(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_DRAWABLE, GimpParamSpecDrawable))
@@ -103,24 +103,24 @@ typedef struct _GimpParamSpecDrawable GimpParamSpecDrawable;
 
 struct _GimpParamSpecDrawable
 {
-    GimpParamSpecItem parent_instance;
+	GimpParamSpecItem parent_instance;
 };
 
 GType        gimp_param_drawable_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_drawable     (const gchar  *name,
-        const gchar  *nick,
-        const gchar  *blurb,
-        gboolean      none_ok,
-        GParamFlags   flags);
+                                           const gchar  *nick,
+                                           const gchar  *blurb,
+                                           gboolean none_ok,
+                                           GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_LAYER
  */
 
-#define GIMP_VALUE_HOLDS_LAYER(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                         GIMP_TYPE_LAYER))
+#define GIMP_VALUE_HOLDS_LAYER(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                          GIMP_TYPE_LAYER))
 
 #define GIMP_TYPE_PARAM_LAYER           (gimp_param_layer_get_type ())
 #define GIMP_PARAM_SPEC_LAYER(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_LAYER, GimpParamSpecLayer))
@@ -130,7 +130,7 @@ typedef struct _GimpParamSpecLayer GimpParamSpecLayer;
 
 struct _GimpParamSpecLayer
 {
-    GimpParamSpecDrawable parent_instance;
+	GimpParamSpecDrawable parent_instance;
 };
 
 GType        gimp_param_layer_get_type (void) G_GNUC_CONST;
@@ -138,16 +138,16 @@ GType        gimp_param_layer_get_type (void) G_GNUC_CONST;
 GParamSpec * gimp_param_spec_layer     (const gchar  *name,
                                         const gchar  *nick,
                                         const gchar  *blurb,
-                                        gboolean      none_ok,
-                                        GParamFlags   flags);
+                                        gboolean none_ok,
+                                        GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_CHANNEL
  */
 
-#define GIMP_VALUE_HOLDS_CHANNEL(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                           GIMP_TYPE_CHANNEL))
+#define GIMP_VALUE_HOLDS_CHANNEL(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                            GIMP_TYPE_CHANNEL))
 
 #define GIMP_TYPE_PARAM_CHANNEL           (gimp_param_channel_get_type ())
 #define GIMP_PARAM_SPEC_CHANNEL(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_CHANNEL, GimpParamSpecChannel))
@@ -157,24 +157,24 @@ typedef struct _GimpParamSpecChannel GimpParamSpecChannel;
 
 struct _GimpParamSpecChannel
 {
-    GimpParamSpecDrawable parent_instance;
+	GimpParamSpecDrawable parent_instance;
 };
 
 GType        gimp_param_channel_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_channel     (const gchar  *name,
-        const gchar  *nick,
-        const gchar  *blurb,
-        gboolean      none_ok,
-        GParamFlags   flags);
+                                          const gchar  *nick,
+                                          const gchar  *blurb,
+                                          gboolean none_ok,
+                                          GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_LAYER_MASK
  */
 
-#define GIMP_VALUE_HOLDS_LAYER_MASK(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                              GIMP_TYPE_LAYER_MASK))
+#define GIMP_VALUE_HOLDS_LAYER_MASK(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                               GIMP_TYPE_LAYER_MASK))
 
 #define GIMP_TYPE_PARAM_LAYER_MASK           (gimp_param_layer_mask_get_type ())
 #define GIMP_PARAM_SPEC_LAYER_MASK(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_LAYER_MASK, GimpParamSpecLayerMask))
@@ -184,24 +184,24 @@ typedef struct _GimpParamSpecLayerMask GimpParamSpecLayerMask;
 
 struct _GimpParamSpecLayerMask
 {
-    GimpParamSpecChannel parent_instance;
+	GimpParamSpecChannel parent_instance;
 };
 
 GType        gimp_param_layer_mask_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_layer_mask     (const gchar   *name,
-        const gchar   *nick,
-        const gchar   *blurb,
-        gboolean       none_ok,
-        GParamFlags    flags);
+                                             const gchar   *nick,
+                                             const gchar   *blurb,
+                                             gboolean none_ok,
+                                             GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_SELECTION
  */
 
-#define GIMP_VALUE_HOLDS_SELECTION(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                             GIMP_TYPE_SELECTION))
+#define GIMP_VALUE_HOLDS_SELECTION(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                              GIMP_TYPE_SELECTION))
 
 #define GIMP_TYPE_PARAM_SELECTION           (gimp_param_selection_get_type ())
 #define GIMP_PARAM_SPEC_SELECTION(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_SELECTION, GimpParamSpecSelection))
@@ -211,24 +211,24 @@ typedef struct _GimpParamSpecSelection GimpParamSpecSelection;
 
 struct _GimpParamSpecSelection
 {
-    GimpParamSpecChannel parent_instance;
+	GimpParamSpecChannel parent_instance;
 };
 
 GType        gimp_param_selection_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_selection     (const gchar   *name,
-        const gchar   *nick,
-        const gchar   *blurb,
-        gboolean       none_ok,
-        GParamFlags    flags);
+                                            const gchar   *nick,
+                                            const gchar   *blurb,
+                                            gboolean none_ok,
+                                            GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_VECTORS
  */
 
-#define GIMP_VALUE_HOLDS_VECTORS(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                           GIMP_TYPE_VECTORS))
+#define GIMP_VALUE_HOLDS_VECTORS(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                            GIMP_TYPE_VECTORS))
 
 #define GIMP_TYPE_PARAM_VECTORS           (gimp_param_vectors_get_type ())
 #define GIMP_PARAM_SPEC_VECTORS(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_VECTORS, GimpParamSpecVectors))
@@ -238,24 +238,24 @@ typedef struct _GimpParamSpecVectors GimpParamSpecVectors;
 
 struct _GimpParamSpecVectors
 {
-    GimpParamSpecItem parent_instance;
+	GimpParamSpecItem parent_instance;
 };
 
 GType        gimp_param_vectors_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_vectors     (const gchar  *name,
-        const gchar  *nick,
-        const gchar  *blurb,
-        gboolean      none_ok,
-        GParamFlags   flags);
+                                          const gchar  *nick,
+                                          const gchar  *blurb,
+                                          gboolean none_ok,
+                                          GParamFlags flags);
 
 
 /*
  * GIMP_TYPE_PARAM_DISPLAY
  */
 
-#define GIMP_VALUE_HOLDS_DISPLAY(value)   (G_TYPE_CHECK_VALUE_TYPE ((value),\
-                                           GIMP_TYPE_DISPLAY))
+#define GIMP_VALUE_HOLDS_DISPLAY(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), \
+	                                                            GIMP_TYPE_DISPLAY))
 
 #define GIMP_TYPE_PARAM_DISPLAY           (gimp_param_display_get_type ())
 #define GIMP_PARAM_SPEC_DISPLAY(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_DISPLAY, GimpParamSpecDisplay))
@@ -265,18 +265,18 @@ typedef struct _GimpParamSpecDisplay GimpParamSpecDisplay;
 
 struct _GimpParamSpecDisplay
 {
-    GParamSpecObject  parent_instance;
+	GParamSpecObject parent_instance;
 
-    gboolean          none_ok;
+	gboolean none_ok;
 };
 
 GType        gimp_param_display_get_type (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_display     (const gchar  *name,
-        const gchar  *nick,
-        const gchar  *blurb,
-        gboolean      none_ok,
-        GParamFlags   flags);
+                                          const gchar  *nick,
+                                          const gchar  *blurb,
+                                          gboolean none_ok,
+                                          GParamFlags flags);
 
 
 G_END_DECLS

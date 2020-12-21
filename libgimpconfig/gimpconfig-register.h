@@ -31,10 +31,10 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
-GType   gimp_config_type_register (GType         parent_type,
+GType   gimp_config_type_register (GType parent_type,
                                    const gchar  *type_name,
                                    GParamSpec  **pspecs,
-                                   gint          n_pspecs);
+                                   gint n_pspecs);
 
 
 G_END_DECLS

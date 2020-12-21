@@ -26,33 +26,33 @@
 int
 linear_to_sRGB(int c)
 {
-    float v = (float)c / 255.0f;
+	float v = (float)c / 255.0f;
 
-    if(v < 0)
-        v = 0;
-    else if(v > 1)
-        v = 1;
-    else if(v <= 0.0031308f)
-        v = 12.92f * v;
-    else
-        v = 1.055f * powf(v, 0.41666f) - 0.055f;
+	if(v < 0)
+		v = 0;
+	else if(v > 1)
+		v = 1;
+	else if(v <= 0.0031308f)
+		v = 12.92f * v;
+	else
+		v = 1.055f * powf(v, 0.41666f) - 0.055f;
 
-    return (int)floorf(255.0f * v + 0.5f);
+	return (int)floorf(255.0f * v + 0.5f);
 }
 
 int
 sRGB_to_linear(int c)
 {
-    float v = (float)c / 255.0f;
+	float v = (float)c / 255.0f;
 
-    if(v < 0)
-        v = 0;
-    else if(v > 1)
-        v = 1;
-    else if(v <= 0.04045f)
-        v /= 12.92f;
-    else
-        v = powf((v + 0.055f) / 1.055f, 2.4f);
+	if(v < 0)
+		v = 0;
+	else if(v > 1)
+		v = 1;
+	else if(v <= 0.04045f)
+		v /= 12.92f;
+	else
+		v = powf((v + 0.055f) / 1.055f, 2.4f);
 
-    return (int)floorf(255.0f * v + 0.5f);
+	return (int)floorf(255.0f * v + 0.5f);
 }

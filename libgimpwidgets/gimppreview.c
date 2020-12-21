@@ -50,33 +50,33 @@
 
 enum
 {
-    INVALIDATED,
-    LAST_SIGNAL
+	INVALIDATED,
+	LAST_SIGNAL
 };
 
 enum
 {
-    PROP_0,
-    PROP_UPDATE
+	PROP_0,
+	PROP_UPDATE
 };
 
 
 struct _GimpPreviewPrivate
 {
-    GtkWidget *area;
-    GtkWidget *grid;
-    GtkWidget *frame;
-    GtkWidget *toggle;
-    GtkWidget *controls;
-    GdkCursor *cursor_busy;
-    GdkCursor *default_cursor;
+	GtkWidget *area;
+	GtkWidget *grid;
+	GtkWidget *frame;
+	GtkWidget *toggle;
+	GtkWidget *controls;
+	GdkCursor *cursor_busy;
+	GdkCursor *default_cursor;
 
-    gint       xoff, yoff;
-    gint       xmin, xmax, ymin, ymax;
-    gint       width, height;
+	gint xoff, yoff;
+	gint xmin, xmax, ymin, ymax;
+	gint width, height;
 
-    gboolean   update_preview;
-    guint      timeout_id;
+	gboolean update_preview;
+	guint timeout_id;
 };
 
 #define GET_PRIVATE(obj) (((GimpPreview *) (obj))->priv)
@@ -84,47 +84,47 @@ struct _GimpPreviewPrivate
 
 static void      gimp_preview_dispose             (GObject          *object);
 static void      gimp_preview_get_property        (GObject          *object,
-        guint             property_id,
-        GValue           *value,
-        GParamSpec       *pspec);
+                                                   guint property_id,
+                                                   GValue           *value,
+                                                   GParamSpec       *pspec);
 static void      gimp_preview_set_property        (GObject          *object,
-        guint             property_id,
-        const GValue     *value,
-        GParamSpec       *pspec);
+                                                   guint property_id,
+                                                   const GValue     *value,
+                                                   GParamSpec       *pspec);
 
 static void      gimp_preview_direction_changed   (GtkWidget        *widget,
-        GtkTextDirection  prev_dir);
+                                                   GtkTextDirection prev_dir);
 static gboolean  gimp_preview_popup_menu          (GtkWidget        *widget);
 
 static void      gimp_preview_area_realize        (GtkWidget        *widget,
-        GimpPreview      *preview);
+                                                   GimpPreview      *preview);
 static void      gimp_preview_area_unrealize      (GtkWidget        *widget,
-        GimpPreview      *preview);
+                                                   GimpPreview      *preview);
 static void      gimp_preview_area_size_allocate  (GtkWidget        *widget,
-        GtkAllocation    *allocation,
-        GimpPreview      *preview);
+                                                   GtkAllocation    *allocation,
+                                                   GimpPreview      *preview);
 static void      gimp_preview_area_set_cursor     (GimpPreview      *preview);
 static gboolean  gimp_preview_area_event          (GtkWidget        *area,
-        GdkEvent         *event,
-        GimpPreview      *preview);
+                                                   GdkEvent         *event,
+                                                   GimpPreview      *preview);
 
 static void      gimp_preview_toggle_callback     (GtkWidget        *toggle,
-        GimpPreview      *preview);
+                                                   GimpPreview      *preview);
 
 static void      gimp_preview_notify_checks       (GimpPreview      *preview);
 
 static gboolean  gimp_preview_invalidate_now      (GimpPreview      *preview);
 static void      gimp_preview_real_set_cursor     (GimpPreview      *preview);
 static void      gimp_preview_real_transform      (GimpPreview      *preview,
-        gint              src_x,
-        gint              src_y,
-        gint             *dest_x,
-        gint             *dest_y);
+                                                   gint src_x,
+                                                   gint src_y,
+                                                   gint             *dest_x,
+                                                   gint             *dest_y);
 static void      gimp_preview_real_untransform    (GimpPreview      *preview,
-        gint              src_x,
-        gint              src_y,
-        gint             *dest_x,
-        gint             *dest_y);
+                                                   gint src_x,
+                                                   gint src_y,
+                                                   gint             *dest_x,
+                                                   gint             *dest_y);
 
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GimpPreview, gimp_preview, GTK_TYPE_BOX)
@@ -137,248 +137,248 @@ static guint preview_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_preview_class_init (GimpPreviewClass *klass)
 {
-    GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+	GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-    parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (klass);
 
-    preview_signals[INVALIDATED] =
-        g_signal_new ("invalidated",
-                      G_TYPE_FROM_CLASS (klass),
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (GimpPreviewClass, invalidated),
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 0);
+	preview_signals[INVALIDATED] =
+		g_signal_new ("invalidated",
+		              G_TYPE_FROM_CLASS (klass),
+		              G_SIGNAL_RUN_FIRST,
+		              G_STRUCT_OFFSET (GimpPreviewClass, invalidated),
+		              NULL, NULL, NULL,
+		              G_TYPE_NONE, 0);
 
-    object_class->dispose           = gimp_preview_dispose;
-    object_class->get_property      = gimp_preview_get_property;
-    object_class->set_property      = gimp_preview_set_property;
+	object_class->dispose           = gimp_preview_dispose;
+	object_class->get_property      = gimp_preview_get_property;
+	object_class->set_property      = gimp_preview_set_property;
 
-    widget_class->direction_changed = gimp_preview_direction_changed;
-    widget_class->popup_menu        = gimp_preview_popup_menu;
+	widget_class->direction_changed = gimp_preview_direction_changed;
+	widget_class->popup_menu        = gimp_preview_popup_menu;
 
-    klass->draw                     = NULL;
-    klass->draw_thumb               = NULL;
-    klass->draw_buffer              = NULL;
-    klass->set_cursor               = gimp_preview_real_set_cursor;
-    klass->transform                = gimp_preview_real_transform;
-    klass->untransform              = gimp_preview_real_untransform;
+	klass->draw                     = NULL;
+	klass->draw_thumb               = NULL;
+	klass->draw_buffer              = NULL;
+	klass->set_cursor               = gimp_preview_real_set_cursor;
+	klass->transform                = gimp_preview_real_transform;
+	klass->untransform              = gimp_preview_real_untransform;
 
-    g_object_class_install_property (object_class,
-                                     PROP_UPDATE,
-                                     g_param_spec_boolean ("update",
-                                             "Update",
-                                             "Whether the preview should update automatically",
-                                             TRUE,
-                                             GIMP_PARAM_READWRITE |
-                                             G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+	                                 PROP_UPDATE,
+	                                 g_param_spec_boolean ("update",
+	                                                       "Update",
+	                                                       "Whether the preview should update automatically",
+	                                                       TRUE,
+	                                                       GIMP_PARAM_READWRITE |
+	                                                       G_PARAM_CONSTRUCT));
 
-    gtk_widget_class_install_style_property (widget_class,
-            g_param_spec_int ("size",
-                              "Size",
-                              "The preview's size",
-                              1, 1024,
-                              DEFAULT_SIZE,
-                              GIMP_PARAM_READABLE));
+	gtk_widget_class_install_style_property (widget_class,
+	                                         g_param_spec_int ("size",
+	                                                           "Size",
+	                                                           "The preview's size",
+	                                                           1, 1024,
+	                                                           DEFAULT_SIZE,
+	                                                           GIMP_PARAM_READABLE));
 }
 
 static void
 gimp_preview_init (GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv;
-    GtkWidget          *frame;
-    gdouble             xalign = 0.0;
+	GimpPreviewPrivate *priv;
+	GtkWidget          *frame;
+	gdouble xalign = 0.0;
 
-    preview->priv = gimp_preview_get_instance_private (preview);
+	preview->priv = gimp_preview_get_instance_private (preview);
 
-    priv = preview->priv;
+	priv = preview->priv;
 
-    gtk_orientable_set_orientation (GTK_ORIENTABLE (preview),
-                                    GTK_ORIENTATION_VERTICAL);
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (preview),
+	                                GTK_ORIENTATION_VERTICAL);
 
-    gtk_box_set_homogeneous (GTK_BOX (preview), FALSE);
-    gtk_box_set_spacing (GTK_BOX (preview), 6);
+	gtk_box_set_homogeneous (GTK_BOX (preview), FALSE);
+	gtk_box_set_spacing (GTK_BOX (preview), 6);
 
-    if (gtk_widget_get_direction (GTK_WIDGET (preview)) == GTK_TEXT_DIR_RTL)
-        xalign = 1.0;
+	if (gtk_widget_get_direction (GTK_WIDGET (preview)) == GTK_TEXT_DIR_RTL)
+		xalign = 1.0;
 
-    priv->frame = gtk_aspect_frame_new (NULL, xalign, 0.0, 1.0, TRUE);
-    gtk_frame_set_shadow_type (GTK_FRAME (priv->frame), GTK_SHADOW_NONE);
-    gtk_box_pack_start (GTK_BOX (preview), priv->frame, TRUE, TRUE, 0);
-    gtk_widget_show (priv->frame);
+	priv->frame = gtk_aspect_frame_new (NULL, xalign, 0.0, 1.0, TRUE);
+	gtk_frame_set_shadow_type (GTK_FRAME (priv->frame), GTK_SHADOW_NONE);
+	gtk_box_pack_start (GTK_BOX (preview), priv->frame, TRUE, TRUE, 0);
+	gtk_widget_show (priv->frame);
 
-    priv->grid = gtk_grid_new ();
-    gtk_container_add (GTK_CONTAINER (priv->frame), priv->grid);
-    gtk_widget_show (priv->grid);
+	priv->grid = gtk_grid_new ();
+	gtk_container_add (GTK_CONTAINER (priv->frame), priv->grid);
+	gtk_widget_show (priv->grid);
 
-    priv->timeout_id = 0;
+	priv->timeout_id = 0;
 
-    priv->xmin   = priv->ymin = 0;
-    priv->xmax   = priv->ymax = 1;
-    priv->width  = priv->xmax - priv->xmin;
-    priv->height = priv->ymax - priv->ymin;
+	priv->xmin   = priv->ymin = 0;
+	priv->xmax   = priv->ymax = 1;
+	priv->width  = priv->xmax - priv->xmin;
+	priv->height = priv->ymax - priv->ymin;
 
-    priv->xoff   = 0;
-    priv->yoff   = 0;
+	priv->xoff   = 0;
+	priv->yoff   = 0;
 
-    priv->default_cursor = NULL;
+	priv->default_cursor = NULL;
 
-    /*  preview area  */
-    frame = gtk_frame_new (NULL);
-    gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-    gtk_widget_set_hexpand (frame, TRUE);
-    gtk_widget_set_vexpand (frame, TRUE);
-    gtk_grid_attach (GTK_GRID (priv->grid), frame, 0, 0, 1, 1);
-    gtk_widget_show (frame);
+	/*  preview area  */
+	frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+	gtk_widget_set_hexpand (frame, TRUE);
+	gtk_widget_set_vexpand (frame, TRUE);
+	gtk_grid_attach (GTK_GRID (priv->grid), frame, 0, 0, 1, 1);
+	gtk_widget_show (frame);
 
-    priv->area = gimp_preview_area_new ();
-    gtk_container_add (GTK_CONTAINER (frame), priv->area);
-    gtk_widget_show (priv->area);
+	priv->area = gimp_preview_area_new ();
+	gtk_container_add (GTK_CONTAINER (frame), priv->area);
+	gtk_widget_show (priv->area);
 
-    g_signal_connect_swapped (priv->area, "notify::check-size",
-                              G_CALLBACK (gimp_preview_notify_checks),
-                              preview);
-    g_signal_connect_swapped (priv->area, "notify::check-type",
-                              G_CALLBACK (gimp_preview_notify_checks),
-                              preview);
+	g_signal_connect_swapped (priv->area, "notify::check-size",
+	                          G_CALLBACK (gimp_preview_notify_checks),
+	                          preview);
+	g_signal_connect_swapped (priv->area, "notify::check-type",
+	                          G_CALLBACK (gimp_preview_notify_checks),
+	                          preview);
 
-    gtk_widget_add_events (priv->area,
-                           GDK_BUTTON_PRESS_MASK        |
-                           GDK_BUTTON_RELEASE_MASK      |
-                           GDK_SCROLL_MASK              |
-                           GDK_SMOOTH_SCROLL_MASK       |
-                           GDK_POINTER_MOTION_HINT_MASK |
-                           GDK_BUTTON_MOTION_MASK);
+	gtk_widget_add_events (priv->area,
+	                       GDK_BUTTON_PRESS_MASK        |
+	                       GDK_BUTTON_RELEASE_MASK      |
+	                       GDK_SCROLL_MASK              |
+	                       GDK_SMOOTH_SCROLL_MASK       |
+	                       GDK_POINTER_MOTION_HINT_MASK |
+	                       GDK_BUTTON_MOTION_MASK);
 
-    g_signal_connect (priv->area, "event",
-                      G_CALLBACK (gimp_preview_area_event),
-                      preview);
+	g_signal_connect (priv->area, "event",
+	                  G_CALLBACK (gimp_preview_area_event),
+	                  preview);
 
-    g_signal_connect (priv->area, "realize",
-                      G_CALLBACK (gimp_preview_area_realize),
-                      preview);
-    g_signal_connect (priv->area, "unrealize",
-                      G_CALLBACK (gimp_preview_area_unrealize),
-                      preview);
+	g_signal_connect (priv->area, "realize",
+	                  G_CALLBACK (gimp_preview_area_realize),
+	                  preview);
+	g_signal_connect (priv->area, "unrealize",
+	                  G_CALLBACK (gimp_preview_area_unrealize),
+	                  preview);
 
-    g_signal_connect_data (priv->area, "realize",
-                           G_CALLBACK (gimp_preview_area_set_cursor),
-                           preview, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+	g_signal_connect_data (priv->area, "realize",
+	                       G_CALLBACK (gimp_preview_area_set_cursor),
+	                       preview, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
-    g_signal_connect (priv->area, "size-allocate",
-                      G_CALLBACK (gimp_preview_area_size_allocate),
-                      preview);
+	g_signal_connect (priv->area, "size-allocate",
+	                  G_CALLBACK (gimp_preview_area_size_allocate),
+	                  preview);
 
-    g_signal_connect_data (priv->area, "size-allocate",
-                           G_CALLBACK (gimp_preview_area_set_cursor),
-                           preview, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+	g_signal_connect_data (priv->area, "size-allocate",
+	                       G_CALLBACK (gimp_preview_area_set_cursor),
+	                       preview, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
-    priv->controls = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_widget_set_margin_top (priv->controls, 3);
-    gtk_grid_attach (GTK_GRID (priv->grid), priv->controls, 0, 2, 2, 1);
-    gtk_widget_show (priv->controls);
+	priv->controls = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+	gtk_widget_set_margin_top (priv->controls, 3);
+	gtk_grid_attach (GTK_GRID (priv->grid), priv->controls, 0, 2, 2, 1);
+	gtk_widget_show (priv->controls);
 
-    /*  toggle button to (de)activate the instant preview  */
-    priv->toggle = gtk_check_button_new_with_mnemonic (_("_Preview"));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->toggle),
-                                  priv->update_preview);
-    gtk_box_pack_start (GTK_BOX (priv->controls), priv->toggle, TRUE, TRUE, 0);
-    gtk_widget_show (priv->toggle);
+	/*  toggle button to (de)activate the instant preview  */
+	priv->toggle = gtk_check_button_new_with_mnemonic (_("_Preview"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->toggle),
+	                              priv->update_preview);
+	gtk_box_pack_start (GTK_BOX (priv->controls), priv->toggle, TRUE, TRUE, 0);
+	gtk_widget_show (priv->toggle);
 
-    g_signal_connect (priv->toggle, "toggled",
-                      G_CALLBACK (gimp_preview_toggle_callback),
-                      preview);
+	g_signal_connect (priv->toggle, "toggled",
+	                  G_CALLBACK (gimp_preview_toggle_callback),
+	                  preview);
 }
 
 static void
 gimp_preview_dispose (GObject *object)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (object);
+	GimpPreviewPrivate *priv = GET_PRIVATE (object);
 
-    if (priv->timeout_id)
-    {
-        g_source_remove (priv->timeout_id);
-        priv->timeout_id = 0;
-    }
+	if (priv->timeout_id)
+	{
+		g_source_remove (priv->timeout_id);
+		priv->timeout_id = 0;
+	}
 
-    G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
 gimp_preview_get_property (GObject    *object,
-                           guint       property_id,
+                           guint property_id,
                            GValue     *value,
                            GParamSpec *pspec)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (object);
+	GimpPreviewPrivate *priv = GET_PRIVATE (object);
 
-    switch (property_id)
-    {
-    case PROP_UPDATE:
-        g_value_set_boolean (value, priv->update_preview);
-        break;
+	switch (property_id)
+	{
+	case PROP_UPDATE:
+		g_value_set_boolean (value, priv->update_preview);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_preview_set_property (GObject      *object,
-                           guint         property_id,
+                           guint property_id,
                            const GValue *value,
                            GParamSpec   *pspec)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (object);
+	GimpPreviewPrivate *priv = GET_PRIVATE (object);
 
-    switch (property_id)
-    {
-    case PROP_UPDATE:
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->toggle),
-                                      g_value_get_boolean (value));
-        break;
+	switch (property_id)
+	{
+	case PROP_UPDATE:
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->toggle),
+		                              g_value_get_boolean (value));
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_preview_direction_changed (GtkWidget        *widget,
-                                GtkTextDirection  prev_dir)
+                                GtkTextDirection prev_dir)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (widget);
-    gdouble             xalign  = 0.0;
+	GimpPreviewPrivate *priv = GET_PRIVATE (widget);
+	gdouble xalign  = 0.0;
 
-    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
-        xalign = 1.0;
+	if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+		xalign = 1.0;
 
-    gtk_aspect_frame_set (GTK_ASPECT_FRAME (priv->frame),
-                          xalign, 0.0, 1.0, TRUE);
+	gtk_aspect_frame_set (GTK_ASPECT_FRAME (priv->frame),
+	                      xalign, 0.0, 1.0, TRUE);
 }
 
 static gboolean
 gimp_preview_popup_menu (GtkWidget *widget)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (widget);
+	GimpPreviewPrivate *priv = GET_PRIVATE (widget);
 
-    gimp_preview_area_menu_popup (GIMP_PREVIEW_AREA (priv->area), NULL);
+	gimp_preview_area_menu_popup (GIMP_PREVIEW_AREA (priv->area), NULL);
 
-    return TRUE;
+	return TRUE;
 }
 
 static void
 gimp_preview_area_realize (GtkWidget   *widget,
                            GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv    = GET_PRIVATE (preview);
-    GdkDisplay         *display = gtk_widget_get_display (widget);
+	GimpPreviewPrivate *priv    = GET_PRIVATE (preview);
+	GdkDisplay         *display = gtk_widget_get_display (widget);
 
-    g_return_if_fail (priv->cursor_busy == NULL);
+	g_return_if_fail (priv->cursor_busy == NULL);
 
-    priv->cursor_busy = gdk_cursor_new_for_display (display, GDK_WATCH);
+	priv->cursor_busy = gdk_cursor_new_for_display (display, GDK_WATCH);
 
 }
 
@@ -386,9 +386,9 @@ static void
 gimp_preview_area_unrealize (GtkWidget   *widget,
                              GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (preview);
+	GimpPreviewPrivate *priv = GET_PRIVATE (preview);
 
-    g_clear_object (&priv->cursor_busy);
+	g_clear_object (&priv->cursor_busy);
 }
 
 static void
@@ -396,21 +396,21 @@ gimp_preview_area_size_allocate (GtkWidget     *widget,
                                  GtkAllocation *allocation,
                                  GimpPreview   *preview)
 {
-    GimpPreviewPrivate *priv   = GET_PRIVATE (preview);
-    gint                width  = priv->xmax - priv->xmin;
-    gint                height = priv->ymax - priv->ymin;
+	GimpPreviewPrivate *priv   = GET_PRIVATE (preview);
+	gint width  = priv->xmax - priv->xmin;
+	gint height = priv->ymax - priv->ymin;
 
-    priv->width  = MIN (width,  allocation->width);
-    priv->height = MIN (height, allocation->height);
+	priv->width  = MIN (width,  allocation->width);
+	priv->height = MIN (height, allocation->height);
 
-    gimp_preview_draw (preview);
-    gimp_preview_invalidate (preview);
+	gimp_preview_draw (preview);
+	gimp_preview_invalidate (preview);
 }
 
 static void
 gimp_preview_area_set_cursor (GimpPreview *preview)
 {
-    GIMP_PREVIEW_GET_CLASS (preview)->set_cursor (preview);
+	GIMP_PREVIEW_GET_CLASS (preview)->set_cursor (preview);
 }
 
 static gboolean
@@ -418,127 +418,127 @@ gimp_preview_area_event (GtkWidget   *area,
                          GdkEvent    *event,
                          GimpPreview *preview)
 {
-    GdkEventButton *button_event = (GdkEventButton *) event;
+	GdkEventButton *button_event = (GdkEventButton *) event;
 
-    switch (event->type)
-    {
-    case GDK_BUTTON_PRESS:
-        switch (button_event->button)
-        {
-        case 3:
-            gimp_preview_area_menu_popup (GIMP_PREVIEW_AREA (area), button_event);
-            return TRUE;
-        }
-        break;
+	switch (event->type)
+	{
+	case GDK_BUTTON_PRESS:
+		switch (button_event->button)
+		{
+		case 3:
+			gimp_preview_area_menu_popup (GIMP_PREVIEW_AREA (area), button_event);
+			return TRUE;
+		}
+		break;
 
-    default:
-        break;
-    }
+	default:
+		break;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 static void
 gimp_preview_toggle_callback (GtkWidget   *toggle,
                               GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (preview);
+	GimpPreviewPrivate *priv = GET_PRIVATE (preview);
 
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle)))
-    {
-        priv->update_preview = TRUE;
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle)))
+	{
+		priv->update_preview = TRUE;
 
-        g_object_notify (G_OBJECT (preview), "update");
+		g_object_notify (G_OBJECT (preview), "update");
 
-        if (priv->timeout_id)
-            g_source_remove (priv->timeout_id);
+		if (priv->timeout_id)
+			g_source_remove (priv->timeout_id);
 
-        gimp_preview_invalidate_now (preview);
-    }
-    else
-    {
-        priv->update_preview = FALSE;
+		gimp_preview_invalidate_now (preview);
+	}
+	else
+	{
+		priv->update_preview = FALSE;
 
-        g_object_notify (G_OBJECT (preview), "update");
+		g_object_notify (G_OBJECT (preview), "update");
 
-        gimp_preview_draw (preview);
-    }
+		gimp_preview_draw (preview);
+	}
 }
 
 static void
 gimp_preview_notify_checks (GimpPreview *preview)
 {
-    gimp_preview_draw (preview);
-    gimp_preview_invalidate (preview);
+	gimp_preview_draw (preview);
+	gimp_preview_invalidate (preview);
 }
 
 static gboolean
 gimp_preview_invalidate_now (GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv     = GET_PRIVATE (preview);
-    GtkWidget          *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (preview));
-    GimpPreviewClass   *class    = GIMP_PREVIEW_GET_CLASS (preview);
+	GimpPreviewPrivate *priv     = GET_PRIVATE (preview);
+	GtkWidget          *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (preview));
+	GimpPreviewClass   *class    = GIMP_PREVIEW_GET_CLASS (preview);
 
-    gimp_preview_draw (preview);
+	gimp_preview_draw (preview);
 
-    priv->timeout_id = 0;
+	priv->timeout_id = 0;
 
-    if (toplevel && gtk_widget_get_realized (toplevel))
-    {
-        gdk_window_set_cursor (gtk_widget_get_window (toplevel),
-                               priv->cursor_busy);
-        gdk_window_set_cursor (gtk_widget_get_window (priv->area),
-                               priv->cursor_busy);
+	if (toplevel && gtk_widget_get_realized (toplevel))
+	{
+		gdk_window_set_cursor (gtk_widget_get_window (toplevel),
+		                       priv->cursor_busy);
+		gdk_window_set_cursor (gtk_widget_get_window (priv->area),
+		                       priv->cursor_busy);
 
-        gdk_display_flush (gtk_widget_get_display (toplevel));
+		gdk_display_flush (gtk_widget_get_display (toplevel));
 
-        g_signal_emit (preview, preview_signals[INVALIDATED], 0);
+		g_signal_emit (preview, preview_signals[INVALIDATED], 0);
 
-        class->set_cursor (preview);
-        gdk_window_set_cursor (gtk_widget_get_window (toplevel), NULL);
-    }
-    else
-    {
-        g_signal_emit (preview, preview_signals[INVALIDATED], 0);
-    }
+		class->set_cursor (preview);
+		gdk_window_set_cursor (gtk_widget_get_window (toplevel), NULL);
+	}
+	else
+	{
+		g_signal_emit (preview, preview_signals[INVALIDATED], 0);
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 static void
 gimp_preview_real_set_cursor (GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (preview);
+	GimpPreviewPrivate *priv = GET_PRIVATE (preview);
 
-    if (gtk_widget_get_realized (priv->area))
-        gdk_window_set_cursor (gtk_widget_get_window (priv->area),
-                               priv->default_cursor);
+	if (gtk_widget_get_realized (priv->area))
+		gdk_window_set_cursor (gtk_widget_get_window (priv->area),
+		                       priv->default_cursor);
 }
 
 static void
 gimp_preview_real_transform (GimpPreview *preview,
-                             gint         src_x,
-                             gint         src_y,
+                             gint src_x,
+                             gint src_y,
                              gint        *dest_x,
                              gint        *dest_y)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (preview);
+	GimpPreviewPrivate *priv = GET_PRIVATE (preview);
 
-    *dest_x = src_x - priv->xoff - priv->xmin;
-    *dest_y = src_y - priv->yoff - priv->ymin;
+	*dest_x = src_x - priv->xoff - priv->xmin;
+	*dest_y = src_y - priv->yoff - priv->ymin;
 }
 
 static void
 gimp_preview_real_untransform (GimpPreview *preview,
-                               gint         src_x,
-                               gint         src_y,
+                               gint src_x,
+                               gint src_y,
                                gint        *dest_x,
                                gint        *dest_y)
 {
-    GimpPreviewPrivate *priv = GET_PRIVATE (preview);
+	GimpPreviewPrivate *priv = GET_PRIVATE (preview);
 
-    *dest_x = src_x + priv->xoff + priv->xmin;
-    *dest_y = src_y + priv->yoff + priv->ymin;
+	*dest_x = src_x + priv->xoff + priv->xmin;
+	*dest_y = src_y + priv->yoff + priv->ymin;
 }
 
 /**
@@ -553,13 +553,13 @@ gimp_preview_real_untransform (GimpPreview *preview,
  **/
 void
 gimp_preview_set_update (GimpPreview *preview,
-                         gboolean     update)
+                         gboolean update)
 {
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    g_object_set (preview,
-                  "update", update,
-                  NULL);
+	g_object_set (preview,
+	              "update", update,
+	              NULL);
 }
 
 /**
@@ -573,9 +573,9 @@ gimp_preview_set_update (GimpPreview *preview,
 gboolean
 gimp_preview_get_update (GimpPreview *preview)
 {
-    g_return_val_if_fail (GIMP_IS_PREVIEW (preview), FALSE);
+	g_return_val_if_fail (GIMP_IS_PREVIEW (preview), FALSE);
 
-    return GET_PRIVATE (preview)->update_preview;
+	return GET_PRIVATE (preview)->update_preview;
 }
 
 /**
@@ -594,27 +594,27 @@ gimp_preview_get_update (GimpPreview *preview)
  **/
 void
 gimp_preview_set_bounds (GimpPreview *preview,
-                         gint         xmin,
-                         gint         ymin,
-                         gint         xmax,
-                         gint         ymax)
+                         gint xmin,
+                         gint ymin,
+                         gint xmax,
+                         gint ymax)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
-    g_return_if_fail (xmax > xmin);
-    g_return_if_fail (ymax > ymin);
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (xmax > xmin);
+	g_return_if_fail (ymax > ymin);
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    priv->xmin = xmin;
-    priv->ymin = ymin;
-    priv->xmax = xmax;
-    priv->ymax = ymax;
+	priv->xmin = xmin;
+	priv->ymin = ymin;
+	priv->xmax = xmax;
+	priv->ymax = ymax;
 
-    gimp_preview_area_set_max_size (GIMP_PREVIEW_AREA (priv->area),
-                                    xmax - xmin,
-                                    ymax - ymin);
+	gimp_preview_area_set_max_size (GIMP_PREVIEW_AREA (priv->area),
+	                                xmax - xmin,
+	                                ymax - ymin);
 }
 
 /**
@@ -632,33 +632,33 @@ gimp_preview_get_bounds (GimpPreview *preview,
                          gint        *xmax,
                          gint        *ymax)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    if (xmin) *xmin = priv->xmin;
-    if (ymin) *ymin = priv->ymin;
-    if (xmax) *xmax = priv->xmax;
-    if (ymax) *ymax = priv->ymax;
+	if (xmin) *xmin = priv->xmin;
+	if (ymin) *ymin = priv->ymin;
+	if (xmax) *xmax = priv->xmax;
+	if (ymax) *ymax = priv->ymax;
 }
 
 void
 gimp_preview_set_size (GimpPreview *preview,
-                       gint         width,
-                       gint         height)
+                       gint width,
+                       gint height)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    priv->width  = width;
-    priv->height = height;
+	priv->width  = width;
+	priv->height = height;
 
-    gtk_widget_set_size_request (priv->area, width, height);
+	gtk_widget_set_size_request (priv->area, width, height);
 }
 
 /**
@@ -674,29 +674,29 @@ gimp_preview_get_size (GimpPreview *preview,
                        gint        *width,
                        gint        *height)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    if (width)  *width  = priv->width;
-    if (height) *height = priv->height;
+	if (width) *width  = priv->width;
+	if (height) *height = priv->height;
 }
 
 void
 gimp_preview_set_offsets (GimpPreview *preview,
-                          gint         xoff,
-                          gint         yoff)
+                          gint xoff,
+                          gint yoff)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    priv->xoff = xoff;
-    priv->yoff = yoff;
+	priv->xoff = xoff;
+	priv->yoff = yoff;
 }
 
 /**
@@ -710,14 +710,14 @@ gimp_preview_get_offsets (GimpPreview *preview,
                           gint        *xoff,
                           gint        *yoff)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    if (xoff) *xoff = priv->xoff;
-    if (yoff) *yoff = priv->yoff;
+	if (xoff) *xoff = priv->xoff;
+	if (yoff) *yoff = priv->yoff;
 }
 
 /**
@@ -733,14 +733,14 @@ gimp_preview_get_position (GimpPreview *preview,
                            gint        *x,
                            gint        *y)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    if (x) *x = priv->xoff + priv->xmin;
-    if (y) *y = priv->yoff + priv->ymin;
+	if (x) *x = priv->xoff + priv->xmin;
+	if (y) *y = priv->yoff + priv->ymin;
 }
 
 /**
@@ -757,16 +757,16 @@ gimp_preview_get_position (GimpPreview *preview,
  **/
 void
 gimp_preview_transform (GimpPreview *preview,
-                        gint         src_x,
-                        gint         src_y,
+                        gint src_x,
+                        gint src_y,
                         gint        *dest_x,
                         gint        *dest_y)
 {
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
-    g_return_if_fail (dest_x != NULL && dest_y != NULL);
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (dest_x != NULL && dest_y != NULL);
 
-    GIMP_PREVIEW_GET_CLASS (preview)->transform (preview,
-            src_x, src_y, dest_x, dest_y);
+	GIMP_PREVIEW_GET_CLASS (preview)->transform (preview,
+	                                             src_x, src_y, dest_x, dest_y);
 }
 
 /**
@@ -783,16 +783,16 @@ gimp_preview_transform (GimpPreview *preview,
  **/
 void
 gimp_preview_untransform (GimpPreview *preview,
-                          gint         src_x,
-                          gint         src_y,
+                          gint src_x,
+                          gint src_y,
                           gint        *dest_x,
                           gint        *dest_y)
 {
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
-    g_return_if_fail (dest_x != NULL && dest_y != NULL);
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (dest_x != NULL && dest_y != NULL);
 
-    GIMP_PREVIEW_GET_CLASS (preview)->untransform (preview,
-            src_x, src_y, dest_x, dest_y);
+	GIMP_PREVIEW_GET_CLASS (preview)->untransform (preview,
+	                                               src_x, src_y, dest_x, dest_y);
 }
 
 /**
@@ -806,9 +806,9 @@ gimp_preview_untransform (GimpPreview *preview,
 GtkWidget *
 gimp_preview_get_frame (GimpPreview  *preview)
 {
-    g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+	g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
 
-    return GET_PRIVATE (preview)->frame;
+	return GET_PRIVATE (preview)->frame;
 }
 
 /**
@@ -822,9 +822,9 @@ gimp_preview_get_frame (GimpPreview  *preview)
 GtkWidget *
 gimp_preview_get_grid (GimpPreview  *preview)
 {
-    g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+	g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
 
-    return GET_PRIVATE (preview)->grid;
+	return GET_PRIVATE (preview)->grid;
 }
 
 /**
@@ -843,9 +843,9 @@ gimp_preview_get_grid (GimpPreview  *preview)
 GtkWidget *
 gimp_preview_get_area (GimpPreview  *preview)
 {
-    g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+	g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
 
-    return GET_PRIVATE (preview)->area;
+	return GET_PRIVATE (preview)->area;
 }
 
 /**
@@ -864,10 +864,10 @@ gimp_preview_get_area (GimpPreview  *preview)
 void
 gimp_preview_draw (GimpPreview *preview)
 {
-    GimpPreviewClass *class = GIMP_PREVIEW_GET_CLASS (preview);
+	GimpPreviewClass *class = GIMP_PREVIEW_GET_CLASS (preview);
 
-    if (class->draw)
-        class->draw (preview);
+	if (class->draw)
+		class->draw (preview);
 }
 
 /**
@@ -885,12 +885,12 @@ gimp_preview_draw (GimpPreview *preview)
 void
 gimp_preview_draw_buffer (GimpPreview  *preview,
                           const guchar *buffer,
-                          gint          rowstride)
+                          gint rowstride)
 {
-    GimpPreviewClass *class = GIMP_PREVIEW_GET_CLASS (preview);
+	GimpPreviewClass *class = GIMP_PREVIEW_GET_CLASS (preview);
 
-    if (class->draw_buffer)
-        class->draw_buffer (preview, buffer, rowstride);
+	if (class->draw_buffer)
+		class->draw_buffer (preview, buffer, rowstride);
 }
 
 /**
@@ -912,22 +912,22 @@ gimp_preview_draw_buffer (GimpPreview  *preview,
 void
 gimp_preview_invalidate (GimpPreview *preview)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    if (priv->update_preview)
-    {
-        if (priv->timeout_id)
-            g_source_remove (priv->timeout_id);
+	if (priv->update_preview)
+	{
+		if (priv->timeout_id)
+			g_source_remove (priv->timeout_id);
 
-        priv->timeout_id =
-            g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, PREVIEW_TIMEOUT,
-                                (GSourceFunc) gimp_preview_invalidate_now,
-                                preview, NULL);
-    }
+		priv->timeout_id =
+			g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, PREVIEW_TIMEOUT,
+			                    (GSourceFunc) gimp_preview_invalidate_now,
+			                    preview, NULL);
+	}
 }
 
 /**
@@ -945,13 +945,13 @@ void
 gimp_preview_set_default_cursor (GimpPreview *preview,
                                  GdkCursor   *cursor)
 {
-    GimpPreviewPrivate *priv;
+	GimpPreviewPrivate *priv;
 
-    g_return_if_fail (GIMP_IS_PREVIEW (preview));
+	g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-    priv = GET_PRIVATE (preview);
+	priv = GET_PRIVATE (preview);
 
-    g_set_object (&priv->default_cursor, cursor);
+	g_set_object (&priv->default_cursor, cursor);
 }
 
 /**
@@ -967,9 +967,9 @@ gimp_preview_set_default_cursor (GimpPreview *preview,
 GdkCursor *
 gimp_preview_get_default_cursor (GimpPreview *preview)
 {
-    g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+	g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
 
-    return GET_PRIVATE (preview)->default_cursor;
+	return GET_PRIVATE (preview)->default_cursor;
 }
 
 /**
@@ -987,7 +987,7 @@ gimp_preview_get_default_cursor (GimpPreview *preview)
 GtkWidget *
 gimp_preview_get_controls (GimpPreview *preview)
 {
-    g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
+	g_return_val_if_fail (GIMP_IS_PREVIEW (preview), NULL);
 
-    return GET_PRIVATE (preview)->controls;
+	return GET_PRIVATE (preview)->controls;
 }

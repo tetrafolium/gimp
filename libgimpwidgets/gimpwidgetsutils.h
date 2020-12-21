@@ -31,33 +31,33 @@ G_BEGIN_DECLS
 
 
 GtkWidget          * gimp_grid_attach_aligned        (GtkGrid           *grid,
-        gint               left,
-        gint               top,
-        const gchar       *label_text,
-        gfloat             xalign,
-        gfloat             yalign,
-        GtkWidget         *widget,
-        gint               columns);
+                                                      gint left,
+                                                      gint top,
+                                                      const gchar       *label_text,
+                                                      gfloat xalign,
+                                                      gfloat yalign,
+                                                      GtkWidget         *widget,
+                                                      gint columns);
 
 void                 gimp_label_set_attributes       (GtkLabel          *label,
-        ...);
+                                                      ...);
 
 GdkMonitor         * gimp_widget_get_monitor         (GtkWidget         *widget);
 GdkMonitor         * gimp_get_monitor_at_pointer     (void);
 
 void                 gimp_widget_track_monitor       (GtkWidget         *widget,
-        GCallback          monitor_changed_callback,
-        gpointer           user_data,
-        GDestroyNotify     user_data_destroy);
+                                                      GCallback monitor_changed_callback,
+                                                      gpointer user_data,
+                                                      GDestroyNotify user_data_destroy);
 
 GimpColorProfile   * gimp_monitor_get_color_profile  (GdkMonitor        *monitor);
 GimpColorProfile   * gimp_widget_get_color_profile   (GtkWidget         *widget);
 
 GimpColorTransform * gimp_widget_get_color_transform (GtkWidget         *widget,
-        GimpColorConfig   *config,
-        GimpColorProfile  *src_profile,
-        const Babl        *src_format,
-        const Babl        *dest_format);
+                                                      GimpColorConfig   *config,
+                                                      GimpColorProfile  *src_profile,
+                                                      const Babl        *src_format,
+                                                      const Babl        *dest_format);
 
 
 G_END_DECLS

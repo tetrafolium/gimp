@@ -35,7 +35,7 @@ GType                  gimp_input_device_store_get_type        (void);
 
 GimpInputDeviceStore * gimp_input_device_store_new             (void);
 gchar                * gimp_input_device_store_get_device_file (GimpInputDeviceStore  *store,
-        const gchar           *udi);
+                                                                const gchar           *udi);
 GError               * gimp_input_device_store_get_error       (GimpInputDeviceStore  *store);
 
 

@@ -32,10 +32,10 @@ G_BEGIN_DECLS
 
 
 GdkPixbuf * _gimp_pixbuf_from_data (guchar                 *data,
-                                    gint                    width,
-                                    gint                    height,
-                                    gint                    bpp,
-                                    GimpPixbufTransparency  alpha);
+                                    gint width,
+                                    gint height,
+                                    gint bpp,
+                                    GimpPixbufTransparency alpha);
 
 
 G_END_DECLS

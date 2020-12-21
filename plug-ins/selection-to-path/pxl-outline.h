@@ -25,9 +25,9 @@
 /* This is a list of contiguous points on the bitmap.  */
 typedef struct
 {
-    coordinate_type *data;
-    unsigned length;
-    boolean clockwise;
+	coordinate_type *data;
+	unsigned length;
+	boolean clockwise;
 } pixel_outline_type;
 
 /* The Nth coordinate in the list.  */
@@ -48,8 +48,8 @@ typedef struct
 /* And the character turns into a list of such lists.  */
 typedef struct
 {
-    pixel_outline_type *data;
-    unsigned length;
+	pixel_outline_type *data;
+	unsigned length;
 } pixel_outline_list_type;
 
 /* The Nth list in the list of lists.  */

@@ -38,37 +38,37 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpEnumLabelPrivate GimpEnumLabelPrivate;
-typedef struct _GimpEnumLabelClass   GimpEnumLabelClass;
+typedef struct _GimpEnumLabelClass GimpEnumLabelClass;
 
 struct _GimpEnumLabel
 {
-    GtkLabel              parent_instance;
+	GtkLabel parent_instance;
 
-    GimpEnumLabelPrivate *priv;
+	GimpEnumLabelPrivate *priv;
 };
 
 struct _GimpEnumLabelClass
 {
-    GtkLabelClass  parent_class;
+	GtkLabelClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_enum_label_get_type         (void) G_GNUC_CONST;
 
-GtkWidget * gimp_enum_label_new              (GType          enum_type,
-        gint           value);
+GtkWidget * gimp_enum_label_new              (GType enum_type,
+                                              gint value);
 void        gimp_enum_label_set_value        (GimpEnumLabel *label,
-        gint           value);
+                                              gint value);
 
 
 G_END_DECLS

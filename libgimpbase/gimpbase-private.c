@@ -35,39 +35,39 @@ GimpUnitVtable _gimp_unit_vtable = { NULL, };
 void
 gimp_base_init (GimpUnitVtable *vtable)
 {
-    static gboolean gimp_base_initialized = FALSE;
+	static gboolean gimp_base_initialized = FALSE;
 
-    g_return_if_fail (vtable != NULL);
+	g_return_if_fail (vtable != NULL);
 
-    if (gimp_base_initialized)
-        g_error ("gimp_base_init() must only be called once!");
+	if (gimp_base_initialized)
+		g_error ("gimp_base_init() must only be called once!");
 
-    _gimp_unit_vtable = *vtable;
+	_gimp_unit_vtable = *vtable;
 
-    gimp_base_compat_enums_init ();
+	gimp_base_compat_enums_init ();
 
-    gimp_base_initialized = TRUE;
+	gimp_base_initialized = TRUE;
 }
 
 void
 gimp_base_compat_enums_init (void)
 {
 #if 0
-    static gboolean gimp_base_compat_initialized = FALSE;
-    GQuark          quark;
+	static gboolean gimp_base_compat_initialized = FALSE;
+	GQuark quark;
 
-    if (gimp_base_compat_initialized)
-        return;
+	if (gimp_base_compat_initialized)
+		return;
 
-    quark = g_quark_from_static_string ("gimp-compat-enum");
+	quark = g_quark_from_static_string ("gimp-compat-enum");
 
-    /*  This is how a compat enum is registered, leave one here for
-     *  documentation purposes, remove it as soon as we get a real
-     *  compat enum again
-     */
-    g_type_set_qdata (GIMP_TYPE_ADD_MASK_TYPE, quark,
-                      (gpointer) GIMP_TYPE_ADD_MASK_TYPE_COMPAT);
+	/*  This is how a compat enum is registered, leave one here for
+	 *  documentation purposes, remove it as soon as we get a real
+	 *  compat enum again
+	 */
+	g_type_set_qdata (GIMP_TYPE_ADD_MASK_TYPE, quark,
+	                  (gpointer) GIMP_TYPE_ADD_MASK_TYPE_COMPAT);
 
-    gimp_base_compat_initialized = TRUE;
+	gimp_base_compat_initialized = TRUE;
 #endif
 }

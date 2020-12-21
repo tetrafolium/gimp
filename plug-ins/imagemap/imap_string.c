@@ -29,9 +29,9 @@
 gchar*
 g_strreplace(gchar **old_str, const gchar *new_str)
 {
-    if (*old_str != new_str) {
-        g_free(*old_str);
-        *old_str = g_strdup(new_str);
-    }
-    return *old_str;
+	if (*old_str != new_str) {
+		g_free(*old_str);
+		*old_str = g_strdup(new_str);
+	}
+	return *old_str;
 }

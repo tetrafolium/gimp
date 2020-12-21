@@ -35,10 +35,10 @@ G_BEGIN_DECLS
  * @color:
  * @data: (closure):
  */
-typedef void (* GimpRenderFunc)   (gdouble   x,
-                                   gdouble   y,
+typedef void (* GimpRenderFunc)   (gdouble x,
+                                   gdouble y,
                                    GimpRGB  *color,
-                                   gpointer  data);
+                                   gpointer data);
 /**
  * GimpPutPixelFunc:
  * @x:
@@ -46,10 +46,10 @@ typedef void (* GimpRenderFunc)   (gdouble   x,
  * @color:
  * @data: (closure):
  */
-typedef void (* GimpPutPixelFunc) (gint      x,
-                                   gint      y,
+typedef void (* GimpPutPixelFunc) (gint x,
+                                   gint y,
                                    GimpRGB  *color,
-                                   gpointer  data);
+                                   gpointer data);
 /**
  * GimpProgressFunc:
  * @min:
@@ -57,24 +57,24 @@ typedef void (* GimpPutPixelFunc) (gint      x,
  * @current:
  * @data: (closure):
  */
-typedef void (* GimpProgressFunc) (gint      min,
-                                   gint      max,
-                                   gint      current,
-                                   gpointer  data);
+typedef void (* GimpProgressFunc) (gint min,
+                                   gint max,
+                                   gint current,
+                                   gpointer data);
 
 
-gulong   gimp_adaptive_supersample_area (gint              x1,
-        gint              y1,
-        gint              x2,
-        gint              y2,
-        gint              max_depth,
-        gdouble           threshold,
-        GimpRenderFunc    render_func,
-        gpointer          render_data,
-        GimpPutPixelFunc  put_pixel_func,
-        gpointer          put_pixel_data,
-        GimpProgressFunc  progress_func,
-        gpointer          progress_data);
+gulong   gimp_adaptive_supersample_area (gint x1,
+                                         gint y1,
+                                         gint x2,
+                                         gint y2,
+                                         gint max_depth,
+                                         gdouble threshold,
+                                         GimpRenderFunc render_func,
+                                         gpointer render_data,
+                                         GimpPutPixelFunc put_pixel_func,
+                                         gpointer put_pixel_data,
+                                         GimpProgressFunc progress_func,
+                                         gpointer progress_data);
 
 
 G_END_DECLS

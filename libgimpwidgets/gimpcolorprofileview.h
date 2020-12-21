@@ -32,29 +32,29 @@ G_BEGIN_DECLS
 #define GIMP_COLOR_PROFILE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_PROFILE_VIEW, GimpColorProfileViewClass))
 
 
-typedef struct _GimpColorProfileViewClass   GimpColorProfileViewClass;
+typedef struct _GimpColorProfileViewClass GimpColorProfileViewClass;
 typedef struct _GimpColorProfileViewPrivate GimpColorProfileViewPrivate;
 
 struct _GimpColorProfileView
 {
-    GtkTextView                  parent_instance;
+	GtkTextView parent_instance;
 
-    GimpColorProfileViewPrivate *priv;
+	GimpColorProfileViewPrivate *priv;
 };
 
 struct _GimpColorProfileViewClass
 {
-    GtkTextViewClass  parent_class;
+	GtkTextViewClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -63,9 +63,9 @@ GType       gimp_color_profile_view_get_type    (void) G_GNUC_CONST;
 GtkWidget * gimp_color_profile_view_new         (void);
 
 void        gimp_color_profile_view_set_profile (GimpColorProfileView *view,
-        GimpColorProfile     *profile);
+                                                 GimpColorProfile     *profile);
 void        gimp_color_profile_view_set_error   (GimpColorProfileView *view,
-        const gchar          *message);
+                                                 const gchar          *message);
 
 G_END_DECLS
 

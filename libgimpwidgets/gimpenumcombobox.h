@@ -39,38 +39,38 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpEnumComboBoxPrivate GimpEnumComboBoxPrivate;
-typedef struct _GimpEnumComboBoxClass   GimpEnumComboBoxClass;
+typedef struct _GimpEnumComboBoxClass GimpEnumComboBoxClass;
 
 struct _GimpEnumComboBox
 {
-    GimpIntComboBox          parent_instance;
+	GimpIntComboBox parent_instance;
 
-    GimpEnumComboBoxPrivate *priv;
+	GimpEnumComboBoxPrivate *priv;
 };
 
 struct _GimpEnumComboBoxClass
 {
-    GimpIntComboBoxClass  parent_class;
+	GimpIntComboBoxClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_enum_combo_box_get_type         (void) G_GNUC_CONST;
 
-GtkWidget * gimp_enum_combo_box_new              (GType             enum_type);
+GtkWidget * gimp_enum_combo_box_new              (GType enum_type);
 GtkWidget * gimp_enum_combo_box_new_with_model   (GimpEnumStore    *enum_store);
 
 void        gimp_enum_combo_box_set_icon_prefix  (GimpEnumComboBox *combo_box,
-        const gchar      *icon_prefix);
+                                                  const gchar      *icon_prefix);
 
 G_END_DECLS
 

@@ -33,9 +33,9 @@ void d_draw_bezier              (GfigObject *obj,
 void d_bezier_object_class_init (void);
 
 void d_bezier_start             (GdkPoint   *pnt,
-                                 gboolean    shift_down);
+                                 gboolean shift_down);
 void d_bezier_end               (GdkPoint   *pnt,
-                                 gboolean    shift_down);
+                                 gboolean shift_down);
 
 void tool_options_bezier        (GtkWidget  *notebook);
 

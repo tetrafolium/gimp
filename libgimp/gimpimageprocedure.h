@@ -46,11 +46,11 @@ G_BEGIN_DECLS
  * Since: 3.0
  **/
 typedef GimpValueArray * (* GimpRunImageFunc) (GimpProcedure        *procedure,
-        GimpRunMode           run_mode,
-        GimpImage            *image,
-        GimpDrawable         *drawable,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                               GimpRunMode run_mode,
+                                               GimpImage            *image,
+                                               GimpDrawable         *drawable,
+                                               const GimpValueArray *args,
+                                               gpointer run_data);
 
 
 #define GIMP_TYPE_IMAGE_PROCEDURE            (gimp_image_procedure_get_type ())
@@ -61,31 +61,31 @@ typedef GimpValueArray * (* GimpRunImageFunc) (GimpProcedure        *procedure,
 #define GIMP_IMAGE_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE_PROCEDURE, GimpImageProcedureClass))
 
 
-typedef struct _GimpImageProcedure        GimpImageProcedure;
-typedef struct _GimpImageProcedureClass   GimpImageProcedureClass;
+typedef struct _GimpImageProcedure GimpImageProcedure;
+typedef struct _GimpImageProcedureClass GimpImageProcedureClass;
 typedef struct _GimpImageProcedurePrivate GimpImageProcedurePrivate;
 
 struct _GimpImageProcedure
 {
-    GimpProcedure              parent_instance;
+	GimpProcedure parent_instance;
 
-    GimpImageProcedurePrivate *priv;
+	GimpImageProcedurePrivate *priv;
 };
 
 struct _GimpImageProcedureClass
 {
-    GimpProcedureClass parent_class;
+	GimpProcedureClass parent_class;
 };
 
 
 GType           gimp_image_procedure_get_type (void) G_GNUC_CONST;
 
 GimpProcedure * gimp_image_procedure_new      (GimpPlugIn       *plug_in,
-        const gchar      *name,
-        GimpPDBProcType   proc_type,
-        GimpRunImageFunc  run_func,
-        gpointer          run_data,
-        GDestroyNotify    run_data_destroy);
+                                               const gchar      *name,
+                                               GimpPDBProcType proc_type,
+                                               GimpRunImageFunc run_func,
+                                               gpointer run_data,
+                                               GDestroyNotify run_data_destroy);
 
 
 G_END_DECLS

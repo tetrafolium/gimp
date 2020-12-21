@@ -36,8 +36,8 @@
 /* The basic structure and macros to access it.  */
 typedef struct
 {
-    dimensions_type dimensions;
-    one_byte *bitmap;
+	dimensions_type dimensions;
+	one_byte *bitmap;
 } bitmap_type;
 
 /* The dimensions of the bitmap, in pixels.  */
@@ -55,27 +55,27 @@ typedef struct
 #define BITMAP_ROW(b, row)  (BITMAP_BITS (b) + (row) * BITMAP_WIDTH (b))
 
 /* This is the pixel at [ROW,COL].  */
-#define BITMAP_PIXEL(b, row, col)					\
-  (*(BITMAP_BITS (b) + (row) * BITMAP_WIDTH (b) + (col)))
+#define BITMAP_PIXEL(b, row, col)                                       \
+	(*(BITMAP_BITS (b) + (row) * BITMAP_WIDTH (b) + (col)))
 
-#define BITMAP_VALID_PIXEL(b, row, col)					\
-   	(0 <= (row) && (row) < BITMAP_HEIGHT (b) 			\
-         && 0 <= (col) && (col) < BITMAP_WIDTH (b))
+#define BITMAP_VALID_PIXEL(b, row, col)                                 \
+	(0 <= (row) && (row) < BITMAP_HEIGHT (b)                        \
+	 && 0 <= (col) && (col) < BITMAP_WIDTH (b))
 
 /* Assume that the pixel at [ROW,COL] itself is black.  */
 
-#define BITMAP_INTERIOR_PIXEL(b, row, col)				\
-   	(0 != (row) && (row) != BITMAP_HEIGHT (b) - 1 			\
-         && 0 != (col) && (col) != BITMAP_WIDTH (b) - 1			\
-         && BITMAP_PIXEL (b, row - 1, col - 1) == BLACK			\
-         && BITMAP_PIXEL (b, row - 1, col) == BLACK			\
-         && BITMAP_PIXEL (b, row - 1, col + 1) == BLACK			\
-         && BITMAP_PIXEL (b, row, col - 1) == BLACK			\
-         && BITMAP_PIXEL (b, row, col + 1) == BLACK			\
-         && BITMAP_PIXEL (b, row + 1, col - 1) == BLACK			\
-         && BITMAP_PIXEL (b, row + 1, col) == BLACK			\
-         && BITMAP_PIXEL (b, row + 1, col + 1) == BLACK)
-
+#define BITMAP_INTERIOR_PIXEL(b, row, col)                              \
+	(0 != (row) && (row) != BITMAP_HEIGHT (b) - 1                   \
+	 && 0 != (col) && (col) != BITMAP_WIDTH (b) - 1                 \
+	 && BITMAP_PIXEL (b, row - 1, col - 1) == BLACK                 \
+	 && BITMAP_PIXEL (b, row - 1, col) == BLACK                     \
+	 && BITMAP_PIXEL (b, row - 1, col + 1) == BLACK                 \
+	 && BITMAP_PIXEL (b, row, col - 1) == BLACK                     \
+	 && BITMAP_PIXEL (b, row, col + 1) == BLACK                     \
+	 && BITMAP_PIXEL (b, row + 1, col - 1) == BLACK                 \
+	 && BITMAP_PIXEL (b, row + 1, col) == BLACK                     \
+	 && BITMAP_PIXEL (b, row + 1, col + 1) == BLACK)
+
 /* Allocate storage for the bits, set them all to white, and return an
    initialized structure.  */
 extern bitmap_type new_bitmap (dimensions_type);

@@ -54,41 +54,41 @@
 /* Structures */
 typedef struct tagMAGTRANSFORM
 {
-    float v[3][3];
+	float v[3][3];
 } MAGTRANSFORM, *PMAGTRANSFORM;
 
 typedef struct tagMAGIMAGEHEADER
 {
-    UINT width;
-    UINT height;
-    WICPixelFormatGUID format;
-    UINT stride;
-    UINT offset;
-    SIZE_T cbSize;
+	UINT width;
+	UINT height;
+	WICPixelFormatGUID format;
+	UINT stride;
+	UINT offset;
+	SIZE_T cbSize;
 } MAGIMAGEHEADER, *PMAGIMAGEHEADER;
 
 typedef struct tagMAGCOLOREFFECT
 {
-    float transform[5][5];
+	float transform[5][5];
 } MAGCOLOREFFECT, *PMAGCOLOREFFECT;
 
 
 /* Proptypes for the public functions */
-typedef BOOL(WINAPI* MAGINITIALIZE)();
+typedef BOOL (WINAPI* MAGINITIALIZE)();
 MAGINITIALIZE MagInitialize;
 
-typedef BOOL(WINAPI* MAGUNINITIALIZE)();
+typedef BOOL (WINAPI* MAGUNINITIALIZE)();
 MAGUNINITIALIZE MagUninitialize;
 
-typedef BOOL(WINAPI* MAGSETWINDOWSOURCE)(HWND, RECT);
+typedef BOOL (WINAPI* MAGSETWINDOWSOURCE)(HWND, RECT);
 MAGSETWINDOWSOURCE MagSetWindowSource;
 
-typedef BOOL(WINAPI* MAGSETWINDOWFILTERLIST)(HWND, DWORD, int, HWND*);
+typedef BOOL (WINAPI* MAGSETWINDOWFILTERLIST)(HWND, DWORD, int, HWND*);
 MAGSETWINDOWFILTERLIST MagSetWindowFilterList;
 
-typedef BOOL(CALLBACK* MagImageScalingCallback)(HWND hwnd, void * srcdata, MAGIMAGEHEADER srcheader, void * destdata, MAGIMAGEHEADER destheader, RECT unclipped, RECT clipped, HRGN dirty);
+typedef BOOL (CALLBACK* MagImageScalingCallback)(HWND hwnd, void * srcdata, MAGIMAGEHEADER srcheader, void * destdata, MAGIMAGEHEADER destheader, RECT unclipped, RECT clipped, HRGN dirty);
 
-typedef BOOL(WINAPI* MAGSETIMAGESCALINGCALLBACK)(HWND, MagImageScalingCallback);
+typedef BOOL (WINAPI* MAGSETIMAGESCALINGCALLBACK)(HWND, MagImageScalingCallback);
 MAGSETIMAGESCALINGCALLBACK MagSetImageScalingCallback;
 
 
@@ -102,53 +102,53 @@ BOOL LoadMagnificationLibrary(void);
 
 void UnLoadMagnificationLibrary(void)
 {
-    if (!magnificationLibrary) return;
-    FreeLibrary(magnificationLibrary);
+	if (!magnificationLibrary) return;
+	FreeLibrary(magnificationLibrary);
 }
 
 
 
 BOOL LoadMagnificationLibrary(void)
 {
-    if (magnificationLibrary) return TRUE;
+	if (magnificationLibrary) return TRUE;
 
-    magnificationLibrary = LoadLibrary("Magnification");
-    if (!magnificationLibrary) return FALSE;
+	magnificationLibrary = LoadLibrary("Magnification");
+	if (!magnificationLibrary) return FALSE;
 
-    MagInitialize = (MAGINITIALIZE)GetProcAddress(magnificationLibrary,"MagInitialize");
-    if (!MagInitialize)
-    {
-        UnLoadMagnificationLibrary();
-        return FALSE;
-    }
+	MagInitialize = (MAGINITIALIZE)GetProcAddress(magnificationLibrary,"MagInitialize");
+	if (!MagInitialize)
+	{
+		UnLoadMagnificationLibrary();
+		return FALSE;
+	}
 
-    MagUninitialize = (MAGUNINITIALIZE)GetProcAddress(magnificationLibrary, "MagUninitialize");
-    if (!MagUninitialize)
-    {
-        UnLoadMagnificationLibrary();
-        return FALSE;
-    }
+	MagUninitialize = (MAGUNINITIALIZE)GetProcAddress(magnificationLibrary, "MagUninitialize");
+	if (!MagUninitialize)
+	{
+		UnLoadMagnificationLibrary();
+		return FALSE;
+	}
 
-    MagSetWindowSource = (MAGSETWINDOWSOURCE)GetProcAddress(magnificationLibrary, "MagSetWindowSource");
-    if (!MagSetWindowSource)
-    {
-        UnLoadMagnificationLibrary();
-        return FALSE;
-    }
+	MagSetWindowSource = (MAGSETWINDOWSOURCE)GetProcAddress(magnificationLibrary, "MagSetWindowSource");
+	if (!MagSetWindowSource)
+	{
+		UnLoadMagnificationLibrary();
+		return FALSE;
+	}
 
-    MagSetWindowFilterList = (MAGSETWINDOWFILTERLIST)GetProcAddress(magnificationLibrary, "MagSetWindowFilterList");
-    if (!MagSetWindowFilterList)
-    {
-        UnLoadMagnificationLibrary();
-        return FALSE;
-    }
+	MagSetWindowFilterList = (MAGSETWINDOWFILTERLIST)GetProcAddress(magnificationLibrary, "MagSetWindowFilterList");
+	if (!MagSetWindowFilterList)
+	{
+		UnLoadMagnificationLibrary();
+		return FALSE;
+	}
 
-    MagSetImageScalingCallback = (MAGSETIMAGESCALINGCALLBACK)GetProcAddress(magnificationLibrary, "MagSetImageScalingCallback");
-    if (!MagSetImageScalingCallback)
-    {
-        UnLoadMagnificationLibrary();
-        return FALSE;
-    }
+	MagSetImageScalingCallback = (MAGSETIMAGESCALINGCALLBACK)GetProcAddress(magnificationLibrary, "MagSetImageScalingCallback");
+	if (!MagSetImageScalingCallback)
+	{
+		UnLoadMagnificationLibrary();
+		return FALSE;
+	}
 
-    return TRUE;
+	return TRUE;
 }

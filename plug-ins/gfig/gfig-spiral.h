@@ -30,8 +30,8 @@ void tool_options_spiral        (GtkWidget *notebook);
 void d_spiral_object_class_init (void);
 
 void d_spiral_start             (GdkPoint  *pnt,
-                                 gboolean   shift_down);
+                                 gboolean shift_down);
 void d_spiral_end               (GdkPoint  *pnt,
-                                 gboolean   shift_down);
+                                 gboolean shift_down);
 
 #endif /* __GFIG_SPIRAL_H__ */

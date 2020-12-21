@@ -26,10 +26,10 @@
 #include "imap_object.h"
 
 typedef struct {
-    Object_t obj;
-    gint x;
-    gint y;
-    gint r;
+	Object_t obj;
+	gint x;
+	gint y;
+	gint r;
 } Circle_t;
 
 #define ObjectToCircle(obj) ((Circle_t*) (obj))

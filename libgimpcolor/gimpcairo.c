@@ -59,7 +59,7 @@ void
 gimp_cairo_set_source_rgb (cairo_t       *cr,
                            const GimpRGB *color)
 {
-    cairo_set_source_rgb (cr, color->r, color->g, color->b);
+	cairo_set_source_rgb (cr, color->r, color->g, color->b);
 }
 
 /**
@@ -78,7 +78,7 @@ void
 gimp_cairo_set_source_rgba (cairo_t       *cr,
                             const GimpRGB *color)
 {
-    cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);
+	cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);
 }
 
 /**
@@ -96,50 +96,50 @@ gimp_cairo_set_source_rgba (cairo_t       *cr,
  **/
 cairo_pattern_t *
 gimp_cairo_checkerboard_create (cairo_t       *cr,
-                                gint           size,
+                                gint size,
                                 const GimpRGB *light,
                                 const GimpRGB *dark)
 {
-    cairo_t         *context;
-    cairo_surface_t *surface;
-    cairo_pattern_t *pattern;
+	cairo_t         *context;
+	cairo_surface_t *surface;
+	cairo_pattern_t *pattern;
 
-    g_return_val_if_fail (cr != NULL, NULL);
-    g_return_val_if_fail (size > 0, NULL);
+	g_return_val_if_fail (cr != NULL, NULL);
+	g_return_val_if_fail (size > 0, NULL);
 
-    surface = cairo_surface_create_similar (cairo_get_target (cr),
-                                            CAIRO_CONTENT_COLOR,
-                                            2 * size, 2 * size);
-    context = cairo_create (surface);
+	surface = cairo_surface_create_similar (cairo_get_target (cr),
+	                                        CAIRO_CONTENT_COLOR,
+	                                        2 * size, 2 * size);
+	context = cairo_create (surface);
 
-    if (light)
-        gimp_cairo_set_source_rgb (context, light);
-    else
-        cairo_set_source_rgb (context,
-                              GIMP_CHECK_LIGHT, GIMP_CHECK_LIGHT, GIMP_CHECK_LIGHT);
+	if (light)
+		gimp_cairo_set_source_rgb (context, light);
+	else
+		cairo_set_source_rgb (context,
+		                      GIMP_CHECK_LIGHT, GIMP_CHECK_LIGHT, GIMP_CHECK_LIGHT);
 
-    cairo_rectangle (context, 0,    0,    size, size);
-    cairo_rectangle (context, size, size, size, size);
-    cairo_fill (context);
+	cairo_rectangle (context, 0,    0,    size, size);
+	cairo_rectangle (context, size, size, size, size);
+	cairo_fill (context);
 
-    if (dark)
-        gimp_cairo_set_source_rgb (context, dark);
-    else
-        cairo_set_source_rgb (context,
-                              GIMP_CHECK_DARK, GIMP_CHECK_DARK, GIMP_CHECK_DARK);
+	if (dark)
+		gimp_cairo_set_source_rgb (context, dark);
+	else
+		cairo_set_source_rgb (context,
+		                      GIMP_CHECK_DARK, GIMP_CHECK_DARK, GIMP_CHECK_DARK);
 
-    cairo_rectangle (context, 0,    size, size, size);
-    cairo_rectangle (context, size, 0,    size, size);
-    cairo_fill (context);
+	cairo_rectangle (context, 0,    size, size, size);
+	cairo_rectangle (context, size, 0,    size, size);
+	cairo_fill (context);
 
-    cairo_destroy (context);
+	cairo_destroy (context);
 
-    pattern = cairo_pattern_create_for_surface (surface);
-    cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
+	pattern = cairo_pattern_create_for_surface (surface);
+	cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
 
-    cairo_surface_destroy (surface);
+	cairo_surface_destroy (surface);
 
-    return pattern;
+	return pattern;
 }
 
 /**
@@ -156,24 +156,24 @@ gimp_cairo_checkerboard_create (cairo_t       *cr,
 const Babl *
 gimp_cairo_surface_get_format (cairo_surface_t *surface)
 {
-    g_return_val_if_fail (surface != NULL, NULL);
-    g_return_val_if_fail (cairo_surface_get_type (surface) ==
-                          CAIRO_SURFACE_TYPE_IMAGE, NULL);
+	g_return_val_if_fail (surface != NULL, NULL);
+	g_return_val_if_fail (cairo_surface_get_type (surface) ==
+	                      CAIRO_SURFACE_TYPE_IMAGE, NULL);
 
-    switch (cairo_image_surface_get_format (surface))
-    {
-    case CAIRO_FORMAT_RGB24:
-        return babl_format ("cairo-RGB24");
-    case CAIRO_FORMAT_ARGB32:
-        return babl_format ("cairo-ARGB32");
-    case CAIRO_FORMAT_A8:
-        return babl_format ("cairo-A8");
+	switch (cairo_image_surface_get_format (surface))
+	{
+	case CAIRO_FORMAT_RGB24:
+		return babl_format ("cairo-RGB24");
+	case CAIRO_FORMAT_ARGB32:
+		return babl_format ("cairo-ARGB32");
+	case CAIRO_FORMAT_A8:
+		return babl_format ("cairo-A8");
 
-    default:
-        break;
-    }
+	default:
+		break;
+	}
 
-    g_return_val_if_reached (NULL);
+	g_return_val_if_reached (NULL);
 }
 
 /**
@@ -191,23 +191,23 @@ gimp_cairo_surface_get_format (cairo_surface_t *surface)
 GeglBuffer *
 gimp_cairo_surface_create_buffer (cairo_surface_t *surface)
 {
-    const Babl *format;
-    gint        width;
-    gint        height;
+	const Babl *format;
+	gint width;
+	gint height;
 
-    g_return_val_if_fail (surface != NULL, NULL);
-    g_return_val_if_fail (cairo_surface_get_type (surface) ==
-                          CAIRO_SURFACE_TYPE_IMAGE, NULL);
+	g_return_val_if_fail (surface != NULL, NULL);
+	g_return_val_if_fail (cairo_surface_get_type (surface) ==
+	                      CAIRO_SURFACE_TYPE_IMAGE, NULL);
 
-    format = gimp_cairo_surface_get_format  (surface);
-    width  = cairo_image_surface_get_width  (surface);
-    height = cairo_image_surface_get_height (surface);
+	format = gimp_cairo_surface_get_format  (surface);
+	width  = cairo_image_surface_get_width  (surface);
+	height = cairo_image_surface_get_height (surface);
 
-    return
-        gegl_buffer_linear_new_from_data (cairo_image_surface_get_data (surface),
-                                          format,
-                                          GEGL_RECTANGLE (0, 0, width, height),
-                                          cairo_image_surface_get_stride (surface),
-                                          (GDestroyNotify) cairo_surface_destroy,
-                                          cairo_surface_reference (surface));
+	return
+	        gegl_buffer_linear_new_from_data (cairo_image_surface_get_data (surface),
+	                                          format,
+	                                          GEGL_RECTANGLE (0, 0, width, height),
+	                                          cairo_image_surface_get_stride (surface),
+	                                          (GDestroyNotify) cairo_surface_destroy,
+	                                          cairo_surface_reference (surface));
 }

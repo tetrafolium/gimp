@@ -41,8 +41,8 @@
 
 enum
 {
-    PROFILE_CHANGED,
-    LAST_SIGNAL
+	PROFILE_CHANGED,
+	LAST_SIGNAL
 };
 
 
@@ -58,14 +58,14 @@ static guint gimp_color_managed_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_color_managed_default_init (GimpColorManagedInterface *iface)
 {
-    gimp_color_managed_signals[PROFILE_CHANGED] =
-        g_signal_new ("profile-changed",
-                      G_TYPE_FROM_INTERFACE (iface),
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (GimpColorManagedInterface,
-                                       profile_changed),
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 0);
+	gimp_color_managed_signals[PROFILE_CHANGED] =
+		g_signal_new ("profile-changed",
+		              G_TYPE_FROM_INTERFACE (iface),
+		              G_SIGNAL_RUN_FIRST,
+		              G_STRUCT_OFFSET (GimpColorManagedInterface,
+		                               profile_changed),
+		              NULL, NULL, NULL,
+		              G_TYPE_NONE, 0);
 }
 
 
@@ -86,19 +86,19 @@ const guint8 *
 gimp_color_managed_get_icc_profile (GimpColorManaged *managed,
                                     gsize            *len)
 {
-    GimpColorManagedInterface *iface;
+	GimpColorManagedInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
-    g_return_val_if_fail (len != NULL, NULL);
+	g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
+	g_return_val_if_fail (len != NULL, NULL);
 
-    *len = 0;
+	*len = 0;
 
-    iface = GIMP_COLOR_MANAGED_GET_IFACE (managed);
+	iface = GIMP_COLOR_MANAGED_GET_IFACE (managed);
 
-    if (iface->get_icc_profile)
-        return iface->get_icc_profile (managed, len);
+	if (iface->get_icc_profile)
+		return iface->get_icc_profile (managed, len);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -115,16 +115,16 @@ gimp_color_managed_get_icc_profile (GimpColorManaged *managed,
 GimpColorProfile *
 gimp_color_managed_get_color_profile (GimpColorManaged *managed)
 {
-    GimpColorManagedInterface *iface;
+	GimpColorManagedInterface *iface;
 
-    g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
+	g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
 
-    iface = GIMP_COLOR_MANAGED_GET_IFACE (managed);
+	iface = GIMP_COLOR_MANAGED_GET_IFACE (managed);
 
-    if (iface->get_color_profile)
-        return iface->get_color_profile (managed);
+	if (iface->get_color_profile)
+		return iface->get_color_profile (managed);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -138,7 +138,7 @@ gimp_color_managed_get_color_profile (GimpColorManaged *managed)
 void
 gimp_color_managed_profile_changed (GimpColorManaged *managed)
 {
-    g_return_if_fail (GIMP_IS_COLOR_MANAGED (managed));
+	g_return_if_fail (GIMP_IS_COLOR_MANAGED (managed));
 
-    g_signal_emit (managed, gimp_color_managed_signals[PROFILE_CHANGED], 0);
+	g_signal_emit (managed, gimp_color_managed_signals[PROFILE_CHANGED], 0);
 }

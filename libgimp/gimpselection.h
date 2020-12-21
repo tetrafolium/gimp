@@ -38,41 +38,41 @@ G_BEGIN_DECLS
 #define GIMP_SELECTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SELECTION, GimpSelectionClass))
 
 
-typedef struct _GimpSelectionClass   GimpSelectionClass;
+typedef struct _GimpSelectionClass GimpSelectionClass;
 typedef struct _GimpSelectionPrivate GimpSelectionPrivate;
 
 struct _GimpSelection
 {
-    GimpChannel           parent_instance;
+	GimpChannel parent_instance;
 
-    GimpSelectionPrivate *priv;
+	GimpSelectionPrivate *priv;
 };
 
 struct _GimpSelectionClass
 {
-    GimpChannelClass parent_class;
+	GimpChannelClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType           gimp_selection_get_type (void) G_GNUC_CONST;
 
-GimpSelection * gimp_selection_get_by_id (gint32        selection_id);
+GimpSelection * gimp_selection_get_by_id (gint32 selection_id);
 
 GimpLayer     * gimp_selection_float     (GimpImage    *image,
-        gint           n_drawables,
-        GimpDrawable **drawables,
-        gint          offx,
-        gint          offy);
+                                          gint n_drawables,
+                                          GimpDrawable **drawables,
+                                          gint offx,
+                                          gint offy);
 
 
 G_END_DECLS

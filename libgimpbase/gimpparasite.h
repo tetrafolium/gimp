@@ -53,9 +53,9 @@ typedef struct _GimpParamSpecParasite GimpParamSpecParasite;
 GType        gimp_param_parasite_get_type  (void) G_GNUC_CONST;
 
 GParamSpec * gimp_param_spec_parasite      (const gchar  *name,
-        const gchar  *nick,
-        const gchar  *blurb,
-        GParamFlags   flags);
+                                            const gchar  *nick,
+                                            const gchar  *blurb,
+                                            GParamFlags flags);
 
 
 #define GIMP_PARASITE_PERSISTENT 1
@@ -80,30 +80,30 @@ GParamSpec * gimp_param_spec_parasite      (const gchar  *name,
  **/
 struct _GimpParasite
 {
-    gchar    *name;
-    guint32   flags;
-    guint32   size;
-    gpointer  data;
+	gchar    *name;
+	guint32 flags;
+	guint32 size;
+	gpointer data;
 };
 
 
 GimpParasite * gimp_parasite_new           (const gchar        *name,
-        guint32             flags,
-        guint32             size,
-        gconstpointer       data);
+                                            guint32 flags,
+                                            guint32 size,
+                                            gconstpointer data);
 void           gimp_parasite_free          (GimpParasite       *parasite);
 
 GimpParasite * gimp_parasite_copy          (const GimpParasite *parasite);
 
 gboolean       gimp_parasite_compare       (const GimpParasite *a,
-        const GimpParasite *b);
+                                            const GimpParasite *b);
 
 gboolean       gimp_parasite_is_type       (const GimpParasite *parasite,
-        const gchar        *name);
+                                            const gchar        *name);
 gboolean       gimp_parasite_is_persistent (const GimpParasite *parasite);
 gboolean       gimp_parasite_is_undoable   (const GimpParasite *parasite);
 gboolean       gimp_parasite_has_flag      (const GimpParasite *parasite,
-        gulong              flag);
+                                            gulong flag);
 gulong         gimp_parasite_flags         (const GimpParasite *parasite);
 const gchar  * gimp_parasite_name          (const GimpParasite *parasite);
 gconstpointer  gimp_parasite_data          (const GimpParasite *parasite);

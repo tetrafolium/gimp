@@ -115,7 +115,7 @@ static void   gimp_close        (void);
 #ifdef HAVE_EXCHNDL
 static LONG WINAPI gimp_plugin_sigfatal_handler (PEXCEPTION_POINTERS pExceptionInfo);
 
-static LPTOP_LEVEL_EXCEPTION_FILTER  _prevExceptionFilter    = NULL;
+static LPTOP_LEVEL_EXCEPTION_FILTER _prevExceptionFilter    = NULL;
 static gchar                         *plug_in_backtrace_path = NULL;
 #endif
 
@@ -129,26 +129,26 @@ static void        gimp_plugin_sigfatal_handler (gint sig_num);
 static GimpPlugIn         *PLUG_IN               = NULL;
 static GimpPDB            *PDB                   = NULL;
 
-static gint                _tile_width           = -1;
-static gint                _tile_height          = -1;
-static gboolean            _show_help_button     = TRUE;
-static gboolean            _export_color_profile = FALSE;
-static gboolean            _export_comment       = FALSE;
-static gboolean            _export_exif          = FALSE;
-static gboolean            _export_xmp           = FALSE;
-static gboolean            _export_iptc          = FALSE;
-static gint32              _num_processors       = 1;
-static GimpCheckSize       _check_size           = GIMP_CHECK_SIZE_MEDIUM_CHECKS;
-static GimpCheckType       _check_type           = GIMP_CHECK_TYPE_GRAY_CHECKS;
-static gint                _default_display_id   = -1;
+static gint _tile_width           = -1;
+static gint _tile_height          = -1;
+static gboolean _show_help_button     = TRUE;
+static gboolean _export_color_profile = FALSE;
+static gboolean _export_comment       = FALSE;
+static gboolean _export_exif          = FALSE;
+static gboolean _export_xmp           = FALSE;
+static gboolean _export_iptc          = FALSE;
+static gint32 _num_processors       = 1;
+static GimpCheckSize _check_size           = GIMP_CHECK_SIZE_MEDIUM_CHECKS;
+static GimpCheckType _check_type           = GIMP_CHECK_TYPE_GRAY_CHECKS;
+static gint _default_display_id   = -1;
 static gchar              *_wm_class             = NULL;
 static gchar              *_display_name         = NULL;
-static gint                _monitor_number       = 0;
-static guint32             _timestamp            = 0;
+static gint _monitor_number       = 0;
+static guint32 _timestamp            = 0;
 static gchar              *_icon_theme_dir       = NULL;
 static const gchar        *progname              = NULL;
 
-static GimpStackTraceMode  stack_trace_mode      = GIMP_STACK_TRACE_NEVER;
+static GimpStackTraceMode stack_trace_mode      = GIMP_STACK_TRACE_NEVER;
 
 
 /**
@@ -169,378 +169,378 @@ static GimpStackTraceMode  stack_trace_mode      = GIMP_STACK_TRACE_NEVER;
  * Since: 3.0
  **/
 gint
-gimp_main (GType  plug_in_type,
-           gint   argc,
+gimp_main (GType plug_in_type,
+           gint argc,
            gchar *argv[])
 {
-    enum
-    {
-        ARG_PROGNAME,
-        ARG_GIMP,
-        ARG_PROTOCOL_VERSION,
-        ARG_READ_FD,
-        ARG_WRITE_FD,
-        ARG_MODE,
-        ARG_STACK_TRACE_MODE,
+	enum
+	{
+		ARG_PROGNAME,
+		ARG_GIMP,
+		ARG_PROTOCOL_VERSION,
+		ARG_READ_FD,
+		ARG_WRITE_FD,
+		ARG_MODE,
+		ARG_STACK_TRACE_MODE,
 
-        N_ARGS
-    };
+		N_ARGS
+	};
 
-    GIOChannel *read_channel;
-    GIOChannel *write_channel;
-    gchar      *basename;
-    gint        protocol_version;
+	GIOChannel *read_channel;
+	GIOChannel *write_channel;
+	gchar      *basename;
+	gint protocol_version;
 
 #ifdef G_OS_WIN32
 
-    gint i, j, k;
+	gint i, j, k;
 
-    /* Reduce risks */
-    {
-        typedef BOOL (WINAPI *t_SetDllDirectoryA) (LPCSTR lpPathName);
-        t_SetDllDirectoryA p_SetDllDirectoryA;
+	/* Reduce risks */
+	{
+		typedef BOOL (WINAPI *t_SetDllDirectoryA)(LPCSTR lpPathName);
+		t_SetDllDirectoryA p_SetDllDirectoryA;
 
-        p_SetDllDirectoryA = (t_SetDllDirectoryA) GetProcAddress (GetModuleHandle ("kernel32.dll"),
-                             "SetDllDirectoryA");
-        if (p_SetDllDirectoryA)
-            (*p_SetDllDirectoryA) ("");
-    }
+		p_SetDllDirectoryA = (t_SetDllDirectoryA) GetProcAddress (GetModuleHandle ("kernel32.dll"),
+		                                                          "SetDllDirectoryA");
+		if (p_SetDllDirectoryA)
+			(*p_SetDllDirectoryA)("");
+	}
 
-    /* On Windows, set DLL search path to $INSTALLDIR/bin so that GEGL
-     * file operations can find their respective file library DLLs (such
-     * as jasper, etc.) without needing to set external PATH.
-     */
-    {
-        const gchar *install_dir;
-        gchar       *bin_dir;
-        LPWSTR       w_bin_dir;
-        int          n;
+	/* On Windows, set DLL search path to $INSTALLDIR/bin so that GEGL
+	 * file operations can find their respective file library DLLs (such
+	 * as jasper, etc.) without needing to set external PATH.
+	 */
+	{
+		const gchar *install_dir;
+		gchar       *bin_dir;
+		LPWSTR w_bin_dir;
+		int n;
 
-        w_bin_dir = NULL;
-        install_dir = gimp_installation_directory ();
-        bin_dir = g_build_filename (install_dir, "bin", NULL);
+		w_bin_dir = NULL;
+		install_dir = gimp_installation_directory ();
+		bin_dir = g_build_filename (install_dir, "bin", NULL);
 
-        n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
-                                 bin_dir, -1, NULL, 0);
-        if (n == 0)
-            goto out;
+		n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
+		                         bin_dir, -1, NULL, 0);
+		if (n == 0)
+			goto out;
 
-        w_bin_dir = g_malloc_n (n + 1, sizeof (wchar_t));
-        n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
-                                 bin_dir, -1,
-                                 w_bin_dir, (n + 1) * sizeof (wchar_t));
-        if (n == 0)
-            goto out;
+		w_bin_dir = g_malloc_n (n + 1, sizeof (wchar_t));
+		n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
+		                         bin_dir, -1,
+		                         w_bin_dir, (n + 1) * sizeof (wchar_t));
+		if (n == 0)
+			goto out;
 
-        SetDllDirectoryW (w_bin_dir);
+		SetDllDirectoryW (w_bin_dir);
 
 out:
-        if (w_bin_dir)
-            g_free (w_bin_dir);
-        g_free (bin_dir);
-    }
+		if (w_bin_dir)
+			g_free (w_bin_dir);
+		g_free (bin_dir);
+	}
 
 #ifdef HAVE_EXCHNDL
-    /* Use Dr. Mingw (dumps backtrace on crash) if it is available. */
-    {
-        time_t  t;
-        gchar  *filename;
-        gchar  *dir;
+	/* Use Dr. Mingw (dumps backtrace on crash) if it is available. */
+	{
+		time_t t;
+		gchar  *filename;
+		gchar  *dir;
 
-        /* This has to be the non-roaming directory (i.e., the local
-         * directory) as backtraces correspond to the binaries on this
-         * system.
-         */
-        dir = g_build_filename (g_get_user_data_dir (),
-                                GIMPDIR, GIMP_USER_VERSION, "CrashLog",
-                                NULL);
-        /* Ensure the path exists. */
-        g_mkdir_with_parents (dir, 0700);
+		/* This has to be the non-roaming directory (i.e., the local
+		 * directory) as backtraces correspond to the binaries on this
+		 * system.
+		 */
+		dir = g_build_filename (g_get_user_data_dir (),
+		                        GIMPDIR, GIMP_USER_VERSION, "CrashLog",
+		                        NULL);
+		/* Ensure the path exists. */
+		g_mkdir_with_parents (dir, 0700);
 
-        time (&t);
-        filename = g_strdup_printf ("%s-crash-%" G_GUINT64_FORMAT ".txt",
-                                    g_get_prgname(), t);
-        plug_in_backtrace_path = g_build_filename (dir, filename, NULL);
-        g_free (filename);
-        g_free (dir);
+		time (&t);
+		filename = g_strdup_printf ("%s-crash-%" G_GUINT64_FORMAT ".txt",
+		                            g_get_prgname(), t);
+		plug_in_backtrace_path = g_build_filename (dir, filename, NULL);
+		g_free (filename);
+		g_free (dir);
 
-        /* Similar to core crash handling in app/signals.c, the order here
-         * is very important!
-         */
-        if (! _prevExceptionFilter)
-            _prevExceptionFilter = SetUnhandledExceptionFilter (gimp_plugin_sigfatal_handler);
+		/* Similar to core crash handling in app/signals.c, the order here
+		 * is very important!
+		 */
+		if (!_prevExceptionFilter)
+			_prevExceptionFilter = SetUnhandledExceptionFilter (gimp_plugin_sigfatal_handler);
 
-        ExcHndlInit ();
-        ExcHndlSetLogFileNameA (plug_in_backtrace_path);
-    }
+		ExcHndlInit ();
+		ExcHndlSetLogFileNameA (plug_in_backtrace_path);
+	}
 #endif /* HAVE_EXCHNDL */
 
 #ifndef _WIN64
-    {
-        typedef BOOL (WINAPI *t_SetProcessDEPPolicy) (DWORD dwFlags);
-        t_SetProcessDEPPolicy p_SetProcessDEPPolicy;
+	{
+		typedef BOOL (WINAPI *t_SetProcessDEPPolicy)(DWORD dwFlags);
+		t_SetProcessDEPPolicy p_SetProcessDEPPolicy;
 
-        p_SetProcessDEPPolicy = GetProcAddress (GetModuleHandle ("kernel32.dll"),
-                                                "SetProcessDEPPolicy");
-        if (p_SetProcessDEPPolicy)
-            (*p_SetProcessDEPPolicy) (PROCESS_DEP_ENABLE|PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION);
-    }
+		p_SetProcessDEPPolicy = GetProcAddress (GetModuleHandle ("kernel32.dll"),
+		                                        "SetProcessDEPPolicy");
+		if (p_SetProcessDEPPolicy)
+			(*p_SetProcessDEPPolicy)(PROCESS_DEP_ENABLE|PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION);
+	}
 #endif /* _WIN64 */
 
-    /* Group all our windows together on the taskbar */
-    {
-        typedef HRESULT (WINAPI *t_SetCurrentProcessExplicitAppUserModelID) (PCWSTR lpPathName);
-        t_SetCurrentProcessExplicitAppUserModelID p_SetCurrentProcessExplicitAppUserModelID;
+	/* Group all our windows together on the taskbar */
+	{
+		typedef HRESULT (WINAPI *t_SetCurrentProcessExplicitAppUserModelID)(PCWSTR lpPathName);
+		t_SetCurrentProcessExplicitAppUserModelID p_SetCurrentProcessExplicitAppUserModelID;
 
-        p_SetCurrentProcessExplicitAppUserModelID = (t_SetCurrentProcessExplicitAppUserModelID) GetProcAddress (GetModuleHandle ("shell32.dll"),
-                "SetCurrentProcessExplicitAppUserModelID");
-        if (p_SetCurrentProcessExplicitAppUserModelID)
-            (*p_SetCurrentProcessExplicitAppUserModelID) (L"gimp.GimpApplication");
-    }
+		p_SetCurrentProcessExplicitAppUserModelID = (t_SetCurrentProcessExplicitAppUserModelID) GetProcAddress (GetModuleHandle ("shell32.dll"),
+		                                                                                                        "SetCurrentProcessExplicitAppUserModelID");
+		if (p_SetCurrentProcessExplicitAppUserModelID)
+			(*p_SetCurrentProcessExplicitAppUserModelID)(L"gimp.GimpApplication");
+	}
 
-    /* Check for exe file name with spaces in the path having been split up
-     * by buggy NT C runtime, or something. I don't know why this happens
-     * on NT (including w2k), but not on w95/98.
-     */
-    for (i = 1; i < argc; i++)
-    {
-        k = strlen (argv[i]);
+	/* Check for exe file name with spaces in the path having been split up
+	 * by buggy NT C runtime, or something. I don't know why this happens
+	 * on NT (including w2k), but not on w95/98.
+	 */
+	for (i = 1; i < argc; i++)
+	{
+		k = strlen (argv[i]);
 
-        if (k > 10)
-        {
-            if (g_ascii_strcasecmp (argv[i] + k - 4, ".exe") == 0)
-            {
-                /* Found the end of the executable name, most probably.
-                 * Splice the parts of the name back together.
-                 */
-                GString *s;
+		if (k > 10)
+		{
+			if (g_ascii_strcasecmp (argv[i] + k - 4, ".exe") == 0)
+			{
+				/* Found the end of the executable name, most probably.
+				 * Splice the parts of the name back together.
+				 */
+				GString *s;
 
-                s = g_string_new (argv[ARG_PROGNAME]);
+				s = g_string_new (argv[ARG_PROGNAME]);
 
-                for (j = 1; j <= i; j++)
-                {
-                    s = g_string_append_c (s, ' ');
-                    s = g_string_append (s, argv[j]);
-                }
+				for (j = 1; j <= i; j++)
+				{
+					s = g_string_append_c (s, ' ');
+					s = g_string_append (s, argv[j]);
+				}
 
-                argv[ARG_PROGNAME] = s->str;
+				argv[ARG_PROGNAME] = s->str;
 
-                /* Move rest of argv down */
-                for (j = 1; j < argc - i; j++)
-                    argv[j] = argv[j + i];
+				/* Move rest of argv down */
+				for (j = 1; j < argc - i; j++)
+					argv[j] = argv[j + i];
 
-                argv[argc - i] = NULL;
-                argc -= i;
+				argv[argc - i] = NULL;
+				argc -= i;
 
-                break;
-            }
-        }
-    }
+				break;
+			}
+		}
+	}
 
 #endif /* G_OS_WIN32 */
 
-    g_assert (plug_in_type != G_TYPE_NONE);
+	g_assert (plug_in_type != G_TYPE_NONE);
 
-    if ((argc != N_ARGS) || (strcmp (argv[ARG_GIMP], "-gimp") != 0))
-    {
-        g_printerr ("%s is a GIMP plug-in and must be run by GIMP to be used\n",
-                    argv[ARG_PROGNAME]);
-        return EXIT_FAILURE;
-    }
+	if ((argc != N_ARGS) || (strcmp (argv[ARG_GIMP], "-gimp") != 0))
+	{
+		g_printerr ("%s is a GIMP plug-in and must be run by GIMP to be used\n",
+		            argv[ARG_PROGNAME]);
+		return EXIT_FAILURE;
+	}
 
-    gimp_env_init (TRUE);
+	gimp_env_init (TRUE);
 
-    progname = argv[ARG_PROGNAME];
+	progname = argv[ARG_PROGNAME];
 
-    basename = g_path_get_basename (progname);
+	basename = g_path_get_basename (progname);
 
-    g_set_prgname (basename);
+	g_set_prgname (basename);
 
-    protocol_version = atoi (argv[ARG_PROTOCOL_VERSION]);
+	protocol_version = atoi (argv[ARG_PROTOCOL_VERSION]);
 
-    if (protocol_version < GIMP_PROTOCOL_VERSION)
-    {
-        g_printerr ("Could not execute plug-in \"%s\"\n(%s)\n"
-                    "because GIMP is using an older version of the "
-                    "plug-in protocol.\n",
-                    gimp_filename_to_utf8 (g_get_prgname ()),
-                    gimp_filename_to_utf8 (progname));
-        return EXIT_FAILURE;
-    }
-    else if (protocol_version > GIMP_PROTOCOL_VERSION)
-    {
-        g_printerr ("Could not execute plug-in \"%s\"\n(%s)\n"
-                    "because it uses an obsolete version of the "
-                    "plug-in protocol.\n",
-                    gimp_filename_to_utf8 (g_get_prgname ()),
-                    gimp_filename_to_utf8 (progname));
-        return EXIT_FAILURE;
-    }
+	if (protocol_version < GIMP_PROTOCOL_VERSION)
+	{
+		g_printerr ("Could not execute plug-in \"%s\"\n(%s)\n"
+		            "because GIMP is using an older version of the "
+		            "plug-in protocol.\n",
+		            gimp_filename_to_utf8 (g_get_prgname ()),
+		            gimp_filename_to_utf8 (progname));
+		return EXIT_FAILURE;
+	}
+	else if (protocol_version > GIMP_PROTOCOL_VERSION)
+	{
+		g_printerr ("Could not execute plug-in \"%s\"\n(%s)\n"
+		            "because it uses an obsolete version of the "
+		            "plug-in protocol.\n",
+		            gimp_filename_to_utf8 (g_get_prgname ()),
+		            gimp_filename_to_utf8 (progname));
+		return EXIT_FAILURE;
+	}
 
-    _gimp_debug_init (basename);
+	_gimp_debug_init (basename);
 
-    g_free (basename);
+	g_free (basename);
 
-    stack_trace_mode = (GimpStackTraceMode) CLAMP (atoi (argv[ARG_STACK_TRACE_MODE]),
-                       GIMP_STACK_TRACE_NEVER,
-                       GIMP_STACK_TRACE_ALWAYS);
+	stack_trace_mode = (GimpStackTraceMode) CLAMP (atoi (argv[ARG_STACK_TRACE_MODE]),
+	                                               GIMP_STACK_TRACE_NEVER,
+	                                               GIMP_STACK_TRACE_ALWAYS);
 
 #ifndef G_OS_WIN32
 
-    /* No use catching these on Win32, the user won't get any meaningful
-     * stack trace from glib anyhow. It's better to let Windows inform
-     * about the program error, and offer debugging if the plug-in
-     * has been built with MSVC, and the user has MSVC installed.
-     */
-    gimp_signal_private (SIGHUP,  gimp_plugin_sigfatal_handler, 0);
-    gimp_signal_private (SIGINT,  gimp_plugin_sigfatal_handler, 0);
-    gimp_signal_private (SIGQUIT, gimp_plugin_sigfatal_handler, 0);
-    gimp_signal_private (SIGTERM, gimp_plugin_sigfatal_handler, 0);
+	/* No use catching these on Win32, the user won't get any meaningful
+	 * stack trace from glib anyhow. It's better to let Windows inform
+	 * about the program error, and offer debugging if the plug-in
+	 * has been built with MSVC, and the user has MSVC installed.
+	 */
+	gimp_signal_private (SIGHUP,  gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGINT,  gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGQUIT, gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGTERM, gimp_plugin_sigfatal_handler, 0);
 
-    gimp_signal_private (SIGABRT, gimp_plugin_sigfatal_handler, 0);
-    gimp_signal_private (SIGBUS,  gimp_plugin_sigfatal_handler, 0);
-    gimp_signal_private (SIGSEGV, gimp_plugin_sigfatal_handler, 0);
-    gimp_signal_private (SIGFPE,  gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGABRT, gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGBUS,  gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGSEGV, gimp_plugin_sigfatal_handler, 0);
+	gimp_signal_private (SIGFPE,  gimp_plugin_sigfatal_handler, 0);
 
-    /* Ignore SIGPIPE from crashing Gimp */
-    gimp_signal_private (SIGPIPE, SIG_IGN, 0);
+	/* Ignore SIGPIPE from crashing Gimp */
+	gimp_signal_private (SIGPIPE, SIG_IGN, 0);
 
-    /* Restart syscalls interrupted by SIGCHLD */
-    gimp_signal_private (SIGCHLD, SIG_DFL, SA_RESTART);
+	/* Restart syscalls interrupted by SIGCHLD */
+	gimp_signal_private (SIGCHLD, SIG_DFL, SA_RESTART);
 
 #endif /* ! G_OS_WIN32 */
 
 #ifdef G_OS_WIN32
-    read_channel  = g_io_channel_win32_new_fd (atoi (argv[ARG_READ_FD]));
-    write_channel = g_io_channel_win32_new_fd (atoi (argv[ARG_WRITE_FD]));
+	read_channel  = g_io_channel_win32_new_fd (atoi (argv[ARG_READ_FD]));
+	write_channel = g_io_channel_win32_new_fd (atoi (argv[ARG_WRITE_FD]));
 #else
-    read_channel  = g_io_channel_unix_new (atoi (argv[ARG_READ_FD]));
-    write_channel = g_io_channel_unix_new (atoi (argv[ARG_WRITE_FD]));
+	read_channel  = g_io_channel_unix_new (atoi (argv[ARG_READ_FD]));
+	write_channel = g_io_channel_unix_new (atoi (argv[ARG_WRITE_FD]));
 #endif
 
-    g_io_channel_set_encoding (read_channel, NULL, NULL);
-    g_io_channel_set_encoding (write_channel, NULL, NULL);
+	g_io_channel_set_encoding (read_channel, NULL, NULL);
+	g_io_channel_set_encoding (write_channel, NULL, NULL);
 
-    g_io_channel_set_buffered (read_channel, FALSE);
-    g_io_channel_set_buffered (write_channel, FALSE);
+	g_io_channel_set_buffered (read_channel, FALSE);
+	g_io_channel_set_buffered (write_channel, FALSE);
 
-    g_io_channel_set_close_on_unref (read_channel, TRUE);
-    g_io_channel_set_close_on_unref (write_channel, TRUE);
+	g_io_channel_set_close_on_unref (read_channel, TRUE);
+	g_io_channel_set_close_on_unref (write_channel, TRUE);
 
-    /*  initialize GTypes, they need to be known to g_type_from_name()  */
-    {
-        GType init_types[] =
-        {
-            G_TYPE_INT,              G_TYPE_PARAM_INT,
-            G_TYPE_UCHAR,            G_TYPE_PARAM_UCHAR,
+	/*  initialize GTypes, they need to be known to g_type_from_name()  */
+	{
+		GType init_types[] =
+		{
+			G_TYPE_INT,              G_TYPE_PARAM_INT,
+			G_TYPE_UCHAR,            G_TYPE_PARAM_UCHAR,
 
-            G_TYPE_STRING,           G_TYPE_PARAM_STRING,
+			G_TYPE_STRING,           G_TYPE_PARAM_STRING,
 
-            GIMP_TYPE_ARRAY,         GIMP_TYPE_PARAM_ARRAY,
-            GIMP_TYPE_UINT8_ARRAY,   GIMP_TYPE_PARAM_UINT8_ARRAY,
-            GIMP_TYPE_INT16_ARRAY,   GIMP_TYPE_PARAM_INT16_ARRAY,
-            GIMP_TYPE_INT32_ARRAY,   GIMP_TYPE_PARAM_INT32_ARRAY,
-            GIMP_TYPE_FLOAT_ARRAY,   GIMP_TYPE_PARAM_FLOAT_ARRAY,
-            GIMP_TYPE_STRING_ARRAY,  GIMP_TYPE_PARAM_STRING_ARRAY,
-            GIMP_TYPE_RGB_ARRAY,     GIMP_TYPE_PARAM_RGB_ARRAY,
-            GIMP_TYPE_OBJECT_ARRAY,  GIMP_TYPE_PARAM_OBJECT_ARRAY,
+			GIMP_TYPE_ARRAY,         GIMP_TYPE_PARAM_ARRAY,
+			GIMP_TYPE_UINT8_ARRAY,   GIMP_TYPE_PARAM_UINT8_ARRAY,
+			GIMP_TYPE_INT16_ARRAY,   GIMP_TYPE_PARAM_INT16_ARRAY,
+			GIMP_TYPE_INT32_ARRAY,   GIMP_TYPE_PARAM_INT32_ARRAY,
+			GIMP_TYPE_FLOAT_ARRAY,   GIMP_TYPE_PARAM_FLOAT_ARRAY,
+			GIMP_TYPE_STRING_ARRAY,  GIMP_TYPE_PARAM_STRING_ARRAY,
+			GIMP_TYPE_RGB_ARRAY,     GIMP_TYPE_PARAM_RGB_ARRAY,
+			GIMP_TYPE_OBJECT_ARRAY,  GIMP_TYPE_PARAM_OBJECT_ARRAY,
 
-            GIMP_TYPE_DISPLAY,       GIMP_TYPE_PARAM_DISPLAY,
-            GIMP_TYPE_IMAGE,         GIMP_TYPE_PARAM_IMAGE,
-            GIMP_TYPE_ITEM,          GIMP_TYPE_PARAM_ITEM,
-            GIMP_TYPE_DRAWABLE,      GIMP_TYPE_PARAM_DRAWABLE,
-            GIMP_TYPE_LAYER,         GIMP_TYPE_PARAM_LAYER,
-            GIMP_TYPE_CHANNEL,       GIMP_TYPE_PARAM_CHANNEL,
-            GIMP_TYPE_LAYER_MASK,    GIMP_TYPE_PARAM_LAYER_MASK,
-            GIMP_TYPE_SELECTION,     GIMP_TYPE_PARAM_SELECTION,
-            GIMP_TYPE_VECTORS,       GIMP_TYPE_PARAM_VECTORS
-        };
+			GIMP_TYPE_DISPLAY,       GIMP_TYPE_PARAM_DISPLAY,
+			GIMP_TYPE_IMAGE,         GIMP_TYPE_PARAM_IMAGE,
+			GIMP_TYPE_ITEM,          GIMP_TYPE_PARAM_ITEM,
+			GIMP_TYPE_DRAWABLE,      GIMP_TYPE_PARAM_DRAWABLE,
+			GIMP_TYPE_LAYER,         GIMP_TYPE_PARAM_LAYER,
+			GIMP_TYPE_CHANNEL,       GIMP_TYPE_PARAM_CHANNEL,
+			GIMP_TYPE_LAYER_MASK,    GIMP_TYPE_PARAM_LAYER_MASK,
+			GIMP_TYPE_SELECTION,     GIMP_TYPE_PARAM_SELECTION,
+			GIMP_TYPE_VECTORS,       GIMP_TYPE_PARAM_VECTORS
+		};
 
-        gint i;
+		gint i;
 
-        for (i = 0; i < G_N_ELEMENTS (init_types); i++, i++)
-        {
-            GType type = init_types[i];
+		for (i = 0; i < G_N_ELEMENTS (init_types); i++, i++)
+		{
+			GType type = init_types[i];
 
-            if (G_TYPE_IS_CLASSED (type))
-                g_type_class_ref (type);
-        }
+			if (G_TYPE_IS_CLASSED (type))
+				g_type_class_ref (type);
+		}
 
-        gimp_enums_init ();
-    }
+		gimp_enums_init ();
+	}
 
-    /*  initialize units  */
-    {
-        GimpUnitVtable vtable;
+	/*  initialize units  */
+	{
+		GimpUnitVtable vtable;
 
-        vtable.unit_get_number_of_units = _gimp_unit_cache_get_number_of_units;
-        vtable.unit_get_number_of_built_in_units =
-            _gimp_unit_cache_get_number_of_built_in_units;
-        vtable.unit_new                 = _gimp_unit_cache_new;
-        vtable.unit_get_deletion_flag   = _gimp_unit_cache_get_deletion_flag;
-        vtable.unit_set_deletion_flag   = _gimp_unit_cache_set_deletion_flag;
-        vtable.unit_get_factor          = _gimp_unit_cache_get_factor;
-        vtable.unit_get_digits          = _gimp_unit_cache_get_digits;
-        vtable.unit_get_identifier      = _gimp_unit_cache_get_identifier;
-        vtable.unit_get_symbol          = _gimp_unit_cache_get_symbol;
-        vtable.unit_get_abbreviation    = _gimp_unit_cache_get_abbreviation;
-        vtable.unit_get_singular        = _gimp_unit_cache_get_singular;
-        vtable.unit_get_plural          = _gimp_unit_cache_get_plural;
+		vtable.unit_get_number_of_units = _gimp_unit_cache_get_number_of_units;
+		vtable.unit_get_number_of_built_in_units =
+			_gimp_unit_cache_get_number_of_built_in_units;
+		vtable.unit_new                 = _gimp_unit_cache_new;
+		vtable.unit_get_deletion_flag   = _gimp_unit_cache_get_deletion_flag;
+		vtable.unit_set_deletion_flag   = _gimp_unit_cache_set_deletion_flag;
+		vtable.unit_get_factor          = _gimp_unit_cache_get_factor;
+		vtable.unit_get_digits          = _gimp_unit_cache_get_digits;
+		vtable.unit_get_identifier      = _gimp_unit_cache_get_identifier;
+		vtable.unit_get_symbol          = _gimp_unit_cache_get_symbol;
+		vtable.unit_get_abbreviation    = _gimp_unit_cache_get_abbreviation;
+		vtable.unit_get_singular        = _gimp_unit_cache_get_singular;
+		vtable.unit_get_plural          = _gimp_unit_cache_get_plural;
 
-        gimp_base_init (&vtable);
-    }
+		gimp_base_init (&vtable);
+	}
 
-    /*  initialize i18n support  */
-    setlocale (LC_ALL, "");
+	/*  initialize i18n support  */
+	setlocale (LC_ALL, "");
 
-    bindtextdomain (GETTEXT_PACKAGE"-libgimp", gimp_locale_directory ());
+	bindtextdomain (GETTEXT_PACKAGE "-libgimp", gimp_locale_directory ());
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
-    bind_textdomain_codeset (GETTEXT_PACKAGE"-libgimp", "UTF-8");
+	bind_textdomain_codeset (GETTEXT_PACKAGE "-libgimp", "UTF-8");
 #endif
 
-    _gimp_debug_configure (stack_trace_mode);
+	_gimp_debug_configure (stack_trace_mode);
 
-    PLUG_IN = g_object_new (plug_in_type,
-                            "read-channel",  read_channel,
-                            "write-channel", write_channel,
-                            NULL);
+	PLUG_IN = g_object_new (plug_in_type,
+	                        "read-channel",  read_channel,
+	                        "write-channel", write_channel,
+	                        NULL);
 
-    g_assert (GIMP_IS_PLUG_IN (PLUG_IN));
+	g_assert (GIMP_IS_PLUG_IN (PLUG_IN));
 
-    if (strcmp (argv[ARG_MODE], "-query") == 0)
-    {
-        if (_gimp_get_debug_flags () & GIMP_DEBUG_QUERY)
-            _gimp_debug_stop ();
+	if (strcmp (argv[ARG_MODE], "-query") == 0)
+	{
+		if (_gimp_get_debug_flags () & GIMP_DEBUG_QUERY)
+			_gimp_debug_stop ();
 
-        _gimp_plug_in_query (PLUG_IN);
+		_gimp_plug_in_query (PLUG_IN);
 
-        gimp_close ();
+		gimp_close ();
 
-        return EXIT_SUCCESS;
-    }
+		return EXIT_SUCCESS;
+	}
 
-    if (strcmp (argv[ARG_MODE], "-init") == 0)
-    {
-        if (_gimp_get_debug_flags () & GIMP_DEBUG_INIT)
-            _gimp_debug_stop ();
+	if (strcmp (argv[ARG_MODE], "-init") == 0)
+	{
+		if (_gimp_get_debug_flags () & GIMP_DEBUG_INIT)
+			_gimp_debug_stop ();
 
-        _gimp_plug_in_init (PLUG_IN);
+		_gimp_plug_in_init (PLUG_IN);
 
-        gimp_close ();
+		gimp_close ();
 
-        return EXIT_SUCCESS;
-    }
+		return EXIT_SUCCESS;
+	}
 
-    if (_gimp_get_debug_flags () & GIMP_DEBUG_RUN)
-        _gimp_debug_stop ();
-    else if (_gimp_get_debug_flags () & GIMP_DEBUG_PID)
-        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Here I am!");
+	if (_gimp_get_debug_flags () & GIMP_DEBUG_RUN)
+		_gimp_debug_stop ();
+	else if (_gimp_get_debug_flags () & GIMP_DEBUG_PID)
+		g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Here I am!");
 
-    _gimp_plug_in_run (PLUG_IN);
+	_gimp_plug_in_run (PLUG_IN);
 
-    gimp_close ();
+	gimp_close ();
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 /**
@@ -556,7 +556,7 @@ out:
 GimpPlugIn *
 gimp_get_plug_in (void)
 {
-    return PLUG_IN;
+	return PLUG_IN;
 }
 
 /**
@@ -572,10 +572,10 @@ gimp_get_plug_in (void)
 GimpPDB *
 gimp_get_pdb (void)
 {
-    if (! PDB)
-        PDB = _gimp_pdb_new (PLUG_IN);
+	if (!PDB)
+		PDB = _gimp_pdb_new (PLUG_IN);
 
-    return PDB;
+	return PDB;
 }
 
 /**
@@ -587,14 +587,14 @@ gimp_get_pdb (void)
 void
 gimp_quit (void)
 {
-    gimp_close ();
+	gimp_close ();
 
 #if defined G_OS_WIN32 && defined HAVE_EXCHNDL
-    if (plug_in_backtrace_path)
-        g_free (plug_in_backtrace_path);
+	if (plug_in_backtrace_path)
+		g_free (plug_in_backtrace_path);
 #endif
 
-    exit (EXIT_SUCCESS);
+	exit (EXIT_SUCCESS);
 }
 
 /**
@@ -609,7 +609,7 @@ gimp_quit (void)
 guint
 gimp_tile_width (void)
 {
-    return _tile_width;
+	return _tile_width;
 }
 
 /**
@@ -624,7 +624,7 @@ gimp_tile_width (void)
 guint
 gimp_tile_height (void)
 {
-    return _tile_height;
+	return _tile_height;
 }
 
 /**
@@ -642,7 +642,7 @@ gimp_tile_height (void)
 gboolean
 gimp_show_help_button (void)
 {
-    return _show_help_button;
+	return _show_help_button;
 }
 
 /**
@@ -658,7 +658,7 @@ gimp_show_help_button (void)
 gboolean
 gimp_export_color_profile (void)
 {
-    return _export_color_profile;
+	return _export_color_profile;
 }
 
 /**
@@ -674,7 +674,7 @@ gimp_export_color_profile (void)
 gboolean
 gimp_export_comment (void)
 {
-    return _export_comment;
+	return _export_comment;
 }
 
 /**
@@ -691,7 +691,7 @@ gimp_export_comment (void)
 gboolean
 gimp_export_exif (void)
 {
-    return _export_exif;
+	return _export_exif;
 }
 
 /**
@@ -708,7 +708,7 @@ gimp_export_exif (void)
 gboolean
 gimp_export_xmp (void)
 {
-    return _export_xmp;
+	return _export_xmp;
 }
 
 /**
@@ -725,7 +725,7 @@ gimp_export_xmp (void)
 gboolean
 gimp_export_iptc (void)
 {
-    return _export_iptc;
+	return _export_iptc;
 }
 
 /**
@@ -742,7 +742,7 @@ gimp_export_iptc (void)
 gint32
 gimp_get_num_processors (void)
 {
-    return _num_processors;
+	return _num_processors;
 }
 
 /**
@@ -759,7 +759,7 @@ gimp_get_num_processors (void)
 GimpCheckSize
 gimp_check_size (void)
 {
-    return _check_size;
+	return _check_size;
 }
 
 /**
@@ -776,7 +776,7 @@ gimp_check_size (void)
 GimpCheckType
 gimp_check_type (void)
 {
-    return _check_type;
+	return _check_type;
 }
 
 /**
@@ -793,7 +793,7 @@ gimp_check_type (void)
 GimpDisplay *
 gimp_default_display (void)
 {
-    return gimp_display_get_by_id (_default_display_id);
+	return gimp_display_get_by_id (_default_display_id);
 }
 
 /**
@@ -808,7 +808,7 @@ gimp_default_display (void)
 const gchar *
 gimp_wm_class (void)
 {
-    return _wm_class;
+	return _wm_class;
 }
 
 /**
@@ -825,7 +825,7 @@ gimp_wm_class (void)
 const gchar *
 gimp_display_name (void)
 {
-    return _display_name;
+	return _display_name;
 }
 
 /**
@@ -840,7 +840,7 @@ gimp_display_name (void)
 gint
 gimp_monitor_number (void)
 {
-    return _monitor_number;
+	return _monitor_number;
 }
 
 /**
@@ -859,7 +859,7 @@ gimp_monitor_number (void)
 guint32
 gimp_user_time (void)
 {
-    return _timestamp;
+	return _timestamp;
 }
 
 /**
@@ -876,7 +876,7 @@ gimp_user_time (void)
 const gchar *
 gimp_icon_theme_dir (void)
 {
-    return _icon_theme_dir;
+	return _icon_theme_dir;
 }
 
 /**
@@ -889,7 +889,7 @@ gimp_icon_theme_dir (void)
 const gchar *
 gimp_get_progname (void)
 {
-    return progname;
+	return progname;
 }
 
 
@@ -898,17 +898,17 @@ gimp_get_progname (void)
 static void
 gimp_close (void)
 {
-    if (_gimp_get_debug_flags () & GIMP_DEBUG_QUIT)
-        _gimp_debug_stop ();
+	if (_gimp_get_debug_flags () & GIMP_DEBUG_QUIT)
+		_gimp_debug_stop ();
 
-    _gimp_plug_in_quit (PLUG_IN);
+	_gimp_plug_in_quit (PLUG_IN);
 
-    if (PDB)
-        g_object_run_dispose (G_OBJECT (PDB));
-    g_clear_object (&PDB);
+	if (PDB)
+		g_object_run_dispose (G_OBJECT (PDB));
+	g_clear_object (&PDB);
 
-    g_object_run_dispose (G_OBJECT (PLUG_IN));
-    g_clear_object (&PLUG_IN);
+	g_object_run_dispose (G_OBJECT (PLUG_IN));
+	g_clear_object (&PLUG_IN);
 }
 
 
@@ -920,36 +920,36 @@ gimp_close (void)
 static LONG WINAPI
 gimp_plugin_sigfatal_handler (PEXCEPTION_POINTERS pExceptionInfo)
 {
-    g_printerr ("Plugin signal handler: %s: fatal error\n", progname);
+	g_printerr ("Plugin signal handler: %s: fatal error\n", progname);
 
-    SetUnhandledExceptionFilter (_prevExceptionFilter);
+	SetUnhandledExceptionFilter (_prevExceptionFilter);
 
-    /* For simplicity, do not make a difference between QUERY and ALWAYS
-     * on Windows (at least not for now).
-     */
-    if (stack_trace_mode != GIMP_STACK_TRACE_NEVER &&
-            g_file_test (plug_in_backtrace_path, G_FILE_TEST_IS_REGULAR))
-    {
-        FILE   *stream;
-        guchar  buffer[256];
-        size_t  read_len;
+	/* For simplicity, do not make a difference between QUERY and ALWAYS
+	 * on Windows (at least not for now).
+	 */
+	if (stack_trace_mode != GIMP_STACK_TRACE_NEVER &&
+	    g_file_test (plug_in_backtrace_path, G_FILE_TEST_IS_REGULAR))
+	{
+		FILE   *stream;
+		guchar buffer[256];
+		size_t read_len;
 
-        stream = fopen (plug_in_backtrace_path, "r");
-        do
-        {
-            /* Just read and output directly the file content. */
-            read_len = fread (buffer, 1, sizeof (buffer) - 1, stream);
-            buffer[read_len] = '\0';
-            g_printerr ("%s", buffer);
-        }
-        while (read_len);
-        fclose (stream);
-    }
+		stream = fopen (plug_in_backtrace_path, "r");
+		do
+		{
+			/* Just read and output directly the file content. */
+			read_len = fread (buffer, 1, sizeof (buffer) - 1, stream);
+			buffer[read_len] = '\0';
+			g_printerr ("%s", buffer);
+		}
+		while (read_len);
+		fclose (stream);
+	}
 
-    if (_prevExceptionFilter && _prevExceptionFilter != gimp_plugin_sigfatal_handler)
-        return _prevExceptionFilter (pExceptionInfo);
-    else
-        return EXCEPTION_CONTINUE_SEARCH;
+	if (_prevExceptionFilter && _prevExceptionFilter != gimp_plugin_sigfatal_handler)
+		return _prevExceptionFilter (pExceptionInfo);
+	else
+		return EXCEPTION_CONTINUE_SEARCH;
 }
 #endif /* HAVE_EXCHNDL */
 
@@ -958,55 +958,55 @@ gimp_plugin_sigfatal_handler (PEXCEPTION_POINTERS pExceptionInfo)
 static void
 gimp_plugin_sigfatal_handler (gint sig_num)
 {
-    switch (sig_num)
-    {
-    case SIGHUP:
-    case SIGINT:
-    case SIGQUIT:
-    case SIGTERM:
-        g_printerr ("%s terminated: %s\n", progname, g_strsignal (sig_num));
-        break;
+	switch (sig_num)
+	{
+	case SIGHUP:
+	case SIGINT:
+	case SIGQUIT:
+	case SIGTERM:
+		g_printerr ("%s terminated: %s\n", progname, g_strsignal (sig_num));
+		break;
 
-    case SIGABRT:
-    case SIGBUS:
-    case SIGSEGV:
-    case SIGFPE:
-    case SIGPIPE:
-    default:
-        g_printerr ("%s: fatal error: %s\n", progname, g_strsignal (sig_num));
-        switch (stack_trace_mode)
-        {
-        case GIMP_STACK_TRACE_NEVER:
-            break;
+	case SIGABRT:
+	case SIGBUS:
+	case SIGSEGV:
+	case SIGFPE:
+	case SIGPIPE:
+	default:
+		g_printerr ("%s: fatal error: %s\n", progname, g_strsignal (sig_num));
+		switch (stack_trace_mode)
+		{
+		case GIMP_STACK_TRACE_NEVER:
+			break;
 
-        case GIMP_STACK_TRACE_QUERY:
-        {
-            sigset_t sigset;
+		case GIMP_STACK_TRACE_QUERY:
+		{
+			sigset_t sigset;
 
-            sigemptyset (&sigset);
-            sigprocmask (SIG_SETMASK, &sigset, NULL);
-            gimp_stack_trace_query (progname);
-        }
-        break;
+			sigemptyset (&sigset);
+			sigprocmask (SIG_SETMASK, &sigset, NULL);
+			gimp_stack_trace_query (progname);
+		}
+		break;
 
-        case GIMP_STACK_TRACE_ALWAYS:
-        {
-            sigset_t sigset;
+		case GIMP_STACK_TRACE_ALWAYS:
+		{
+			sigset_t sigset;
 
-            sigemptyset (&sigset);
-            sigprocmask (SIG_SETMASK, &sigset, NULL);
-            gimp_stack_trace_print (progname, stdout, NULL);
-        }
-        break;
-        }
-        break;
-    }
+			sigemptyset (&sigset);
+			sigprocmask (SIG_SETMASK, &sigset, NULL);
+			gimp_stack_trace_print (progname, stdout, NULL);
+		}
+		break;
+		}
+		break;
+	}
 
-    /* Do not end with gimp_quit().
-     * We want the plug-in to continue its normal crash course, otherwise
-     * we won't get the "Plug-in crashed" error in GIMP.
-     */
-    exit (EXIT_FAILURE);
+	/* Do not end with gimp_quit().
+	 * We want the plug-in to continue its normal crash course, otherwise
+	 * we won't get the "Plug-in crashed" error in GIMP.
+	 */
+	exit (EXIT_FAILURE);
 }
 
 #endif /* G_OS_WIN32 */
@@ -1014,46 +1014,46 @@ gimp_plugin_sigfatal_handler (gint sig_num)
 void
 _gimp_config (GPConfig *config)
 {
-    GFile *file;
-    gchar *path;
+	GFile *file;
+	gchar *path;
 
-    _tile_width           = config->tile_width;
-    _tile_height          = config->tile_height;
-    _check_size           = config->check_size;
-    _check_type           = config->check_type;
-    _show_help_button     = config->show_help_button ? TRUE : FALSE;
-    _export_color_profile = config->export_color_profile   ? TRUE : FALSE;
-    _export_exif          = config->export_exif      ? TRUE : FALSE;
-    _export_xmp           = config->export_xmp       ? TRUE : FALSE;
-    _export_iptc          = config->export_iptc      ? TRUE : FALSE;
-    _export_comment       = config->export_comment;
-    _num_processors       = config->num_processors;
-    _default_display_id   = config->default_display_id;
-    _wm_class             = g_strdup (config->wm_class);
-    _display_name         = g_strdup (config->display_name);
-    _monitor_number       = config->monitor_number;
-    _timestamp            = config->timestamp;
-    _icon_theme_dir       = g_strdup (config->icon_theme_dir);
+	_tile_width           = config->tile_width;
+	_tile_height          = config->tile_height;
+	_check_size           = config->check_size;
+	_check_type           = config->check_type;
+	_show_help_button     = config->show_help_button ? TRUE : FALSE;
+	_export_color_profile = config->export_color_profile   ? TRUE : FALSE;
+	_export_exif          = config->export_exif      ? TRUE : FALSE;
+	_export_xmp           = config->export_xmp       ? TRUE : FALSE;
+	_export_iptc          = config->export_iptc      ? TRUE : FALSE;
+	_export_comment       = config->export_comment;
+	_num_processors       = config->num_processors;
+	_default_display_id   = config->default_display_id;
+	_wm_class             = g_strdup (config->wm_class);
+	_display_name         = g_strdup (config->display_name);
+	_monitor_number       = config->monitor_number;
+	_timestamp            = config->timestamp;
+	_icon_theme_dir       = g_strdup (config->icon_theme_dir);
 
-    if (config->app_name)
-        g_set_application_name (config->app_name);
+	if (config->app_name)
+		g_set_application_name (config->app_name);
 
-    gimp_cpu_accel_set_use (config->use_cpu_accel);
+	gimp_cpu_accel_set_use (config->use_cpu_accel);
 
-    file = gimp_file_new_for_config_path (config->swap_path, NULL);
-    path = g_file_get_path (file);
+	file = gimp_file_new_for_config_path (config->swap_path, NULL);
+	path = g_file_get_path (file);
 
-    g_object_set (gegl_config (),
-                  "tile-cache-size",     config->tile_cache_size,
-                  "swap",                path,
-                  "swap-compression",    config->swap_compression,
-                  "threads",             (gint) config->num_processors,
-                  "use-opencl",          config->use_opencl,
-                  "application-license", "GPL3",
-                  NULL);
+	g_object_set (gegl_config (),
+	              "tile-cache-size",     config->tile_cache_size,
+	              "swap",                path,
+	              "swap-compression",    config->swap_compression,
+	              "threads",             (gint) config->num_processors,
+	              "use-opencl",          config->use_opencl,
+	              "application-license", "GPL3",
+	              NULL);
 
-    g_free (path);
-    g_object_unref (file);
+	g_free (path);
+	g_object_unref (file);
 
-    _gimp_shm_open (config->shm_id);
+	_gimp_shm_open (config->shm_id);
 }

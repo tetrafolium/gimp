@@ -32,7 +32,7 @@ gboolean preview_events               (GtkWidget *area,
                                        GdkEvent  *event);
 gboolean preview_draw                 (GtkWidget *area,
                                        cairo_t   *cr);
-void     update_light                 (gint       xpos,
-                                       gint       ypos);
+void     update_light                 (gint xpos,
+                                       gint ypos);
 
 #endif  /* __LIGHTING_PREVIEW_H__ */

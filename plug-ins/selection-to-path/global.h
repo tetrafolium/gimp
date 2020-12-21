@@ -33,32 +33,32 @@
 #define START_FATAL() do { fputs ("fatal: ", stderr)
 #define END_FATAL() fputs (".\n", stderr); exit (1); } while (0)
 
-#define FATAL(x)							\
-  START_FATAL (); fprintf (stderr, "%s", x); END_FATAL ()
-#define FATAL1(s, e1)							\
-  START_FATAL (); fprintf (stderr, s, e1); END_FATAL ()
-#define FATAL2(s, e1, e2)						\
-  START_FATAL (); fprintf (stderr, s, e1, e2); END_FATAL ()
-#define FATAL3(s, e1, e2, e3)						\
-  START_FATAL (); fprintf (stderr, s, e1, e2, e3); END_FATAL ()
-#define FATAL4(s, e1, e2, e3, e4)					\
-  START_FATAL (); fprintf (stderr, s, e1, e2, e3, e4); END_FATAL ()
+#define FATAL(x)                                                        \
+	START_FATAL (); fprintf (stderr, "%s", x); END_FATAL ()
+#define FATAL1(s, e1)                                                   \
+	START_FATAL (); fprintf (stderr, s, e1); END_FATAL ()
+#define FATAL2(s, e1, e2)                                               \
+	START_FATAL (); fprintf (stderr, s, e1, e2); END_FATAL ()
+#define FATAL3(s, e1, e2, e3)                                           \
+	START_FATAL (); fprintf (stderr, s, e1, e2, e3); END_FATAL ()
+#define FATAL4(s, e1, e2, e3, e4)                                       \
+	START_FATAL (); fprintf (stderr, s, e1, e2, e3, e4); END_FATAL ()
 
 
 #define START_WARNING() do { fputs ("warning: ", stderr)
 #define END_WARNING() fputs (".\n", stderr); fflush (stderr); } while (0)
 
-#define WARNING(x)							\
-  START_WARNING (); fprintf (stderr, "%s", x); END_WARNING ()
-#define WARNING1(s, e1)							\
-  START_WARNING (); fprintf (stderr, s, e1); END_WARNING ()
-#define WARNING2(s, e1, e2)						\
-  START_WARNING (); fprintf (stderr, s, e1, e2); END_WARNING ()
-#define WARNING3(s, e1, e2, e3)						\
-  START_WARNING (); fprintf (stderr, s, e1, e2, e3); END_WARNING ()
-#define WARNING4(s, e1, e2, e3, e4)					\
-  START_WARNING (); fprintf (stderr, s, e1, e2, e3, e4); END_WARNING ()
-
+#define WARNING(x)                                                      \
+	START_WARNING (); fprintf (stderr, "%s", x); END_WARNING ()
+#define WARNING1(s, e1)                                                 \
+	START_WARNING (); fprintf (stderr, s, e1); END_WARNING ()
+#define WARNING2(s, e1, e2)                                             \
+	START_WARNING (); fprintf (stderr, s, e1, e2); END_WARNING ()
+#define WARNING3(s, e1, e2, e3)                                         \
+	START_WARNING (); fprintf (stderr, s, e1, e2, e3); END_WARNING ()
+#define WARNING4(s, e1, e2, e3, e4)                                     \
+	START_WARNING (); fprintf (stderr, s, e1, e2, e3, e4); END_WARNING ()
+
 /* Define useful abbreviations.  */
 
 /* This is the maximum number of numerals that result when a 64-bit
@@ -79,7 +79,7 @@
    more cleanly in GNU C, but we haven't done that (yet).  */
 #define SQUARE(x) ((x) * (x))
 #define CUBE(x) ((x) * (x) * (x))
-#define	SAME_SIGN(u,v) ((u) >= 0 && (v) >= 0 || (u) < 0 && (v) < 0)
+#define SAME_SIGN(u,v) ((u) >= 0 && (v) >= 0 || (u) < 0 && (v) < 0)
 #define SIGN(x) ((x) > 0 ? 1 : (x) < 0 ? -1 : 0)
 #define SROUND(x) ((int) ((int) (x) + .5 * SIGN (x)))
 
@@ -95,12 +95,12 @@
 #define MIN_EQUALS(var, expr) if ((expr) < (var)) (var) = (expr)
 
 #define STREQ(s1, s2) (strcmp (s1, s2) == 0)
-
+
 /* Declarations for commonly-used routines we provide ourselves.  The
    ones here are only needed by us, so we do not provide them in
    unprototyped form.  Others are declared both ways in lib.h.  */
 
-#if 0				/* These aren't actually defined anywhere */
+#if 0                           /* These aren't actually defined anywhere */
 /* Return the current date and time a la date(1).  */
 extern string now (void);
 
@@ -204,7 +204,7 @@ extern charcode_type parse_charcode (string s, boolean *valid);
 /* Like `parse_charcode', but gives a fatal error if the string isn't a
    valid character code.  */
 extern charcode_type xparse_charcode (string s);
-
+
 /* The environment variable name with which to look up auxiliary files.  */
 #ifndef LIB_ENVVAR
 #define LIB_ENVVAR "FONTUTIL_LIB"

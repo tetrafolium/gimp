@@ -44,12 +44,12 @@ G_BEGIN_DECLS
 #endif
 
 
-typedef struct _GimpParasite     GimpParasite;
-typedef struct _GimpEnumDesc     GimpEnumDesc;
-typedef struct _GimpFlagsDesc    GimpFlagsDesc;
-typedef struct _GimpValueArray   GimpValueArray;
+typedef struct _GimpParasite GimpParasite;
+typedef struct _GimpEnumDesc GimpEnumDesc;
+typedef struct _GimpFlagsDesc GimpFlagsDesc;
+typedef struct _GimpValueArray GimpValueArray;
 
-typedef struct _GimpMetadata     GimpMetadata;
+typedef struct _GimpMetadata GimpMetadata;
 
 
 /**
@@ -63,9 +63,9 @@ typedef struct _GimpMetadata     GimpMetadata;
  **/
 struct _GimpEnumDesc
 {
-    gint         value;
-    const gchar *value_desc;
-    const gchar *value_help;
+	gint value;
+	const gchar *value_desc;
+	const gchar *value_help;
 };
 
 /**
@@ -79,27 +79,27 @@ struct _GimpEnumDesc
  **/
 struct _GimpFlagsDesc
 {
-    guint        value;
-    const gchar *value_desc;
-    const gchar *value_help;
+	guint value;
+	const gchar *value_desc;
+	const gchar *value_help;
 };
 
 
-void                  gimp_type_set_translation_domain  (GType                type,
-        const gchar         *domain);
-const gchar         * gimp_type_get_translation_domain  (GType                type);
+void                  gimp_type_set_translation_domain  (GType type,
+                                                         const gchar         *domain);
+const gchar         * gimp_type_get_translation_domain  (GType type);
 
-void                  gimp_type_set_translation_context (GType                type,
-        const gchar         *context);
-const gchar         * gimp_type_get_translation_context (GType                type);
+void                  gimp_type_set_translation_context (GType type,
+                                                         const gchar         *context);
+const gchar         * gimp_type_get_translation_context (GType type);
 
-void                  gimp_enum_set_value_descriptions  (GType                enum_type,
-        const GimpEnumDesc  *descriptions);
-const GimpEnumDesc  * gimp_enum_get_value_descriptions  (GType                enum_type);
+void                  gimp_enum_set_value_descriptions  (GType enum_type,
+                                                         const GimpEnumDesc  *descriptions);
+const GimpEnumDesc  * gimp_enum_get_value_descriptions  (GType enum_type);
 
-void                  gimp_flags_set_value_descriptions (GType                flags_type,
-        const GimpFlagsDesc *descriptions);
-const GimpFlagsDesc * gimp_flags_get_value_descriptions (GType                flags_type);
+void                  gimp_flags_set_value_descriptions (GType flags_type,
+                                                         const GimpFlagsDesc *descriptions);
+const GimpFlagsDesc * gimp_flags_get_value_descriptions (GType flags_type);
 
 
 G_END_DECLS

@@ -32,11 +32,11 @@ G_BEGIN_DECLS
 
 
 gboolean    gimp_config_deserialize_properties (GimpConfig *config,
-        GScanner   *scanner,
-        gint        nest_level);
+                                                GScanner   *scanner,
+                                                gint nest_level);
 GTokenType  gimp_config_deserialize_property   (GimpConfig *config,
-        GScanner   *scanner,
-        gint        nest_level);
+                                                GScanner   *scanner,
+                                                gint nest_level);
 
 
 G_END_DECLS

@@ -27,27 +27,27 @@
 #include "gfig-types.h"
 #include "gfig-style.h"
 
-typedef void        (*DobjDrawFunc)   (GfigObject *, cairo_t *);
-typedef void        (*DobjFunc)       (GfigObject *);
+typedef void (*DobjDrawFunc)   (GfigObject *, cairo_t *);
+typedef void (*DobjFunc)       (GfigObject *);
 typedef GfigObject *(*DobjGenFunc)    (GfigObject *);
 
 typedef struct DobjPoints
 {
-    struct DobjPoints *next;
-    GdkPoint           pnt;
-    gboolean           found_me;
+	struct DobjPoints *next;
+	GdkPoint pnt;
+	gboolean found_me;
 } DobjPoints;
 
 typedef struct
 {
-    DobjType      type;       /* the object type for this class */
-    const gchar  *name;
+	DobjType type;        /* the object type for this class */
+	const gchar  *name;
 
-    /* virtuals */
-    DobjDrawFunc  drawfunc;   /* How do I draw myself */
-    DobjFunc      paintfunc;  /* Draw me on canvas */
-    DobjGenFunc   copyfunc;   /* copy */
-    void         (*update) (GdkPoint   *pnt);
+	/* virtuals */
+	DobjDrawFunc drawfunc; /* How do I draw myself */
+	DobjFunc paintfunc;   /* Draw me on canvas */
+	DobjGenFunc copyfunc; /* copy */
+	void (*update)(GdkPoint   *pnt);
 } GfigObjectClass;
 
 extern GfigObjectClass dobj_class[10];
@@ -55,12 +55,12 @@ extern GfigObjectClass dobj_class[10];
 /* The object itself */
 struct _GfigObject
 {
-    DobjType         type;       /* What is the type? */
-    GfigObjectClass *class;      /* What class does it belong to? */
-    gint             type_data;  /* Extra data needed by the object */
-    DobjPoints      *points;     /* List of points */
-    Style            style;      /* this object's individual style settings */
-    gint             style_no;   /* style index of this specific object */
+	DobjType type;           /* What is the type? */
+	GfigObjectClass *class;  /* What class does it belong to? */
+	gint type_data;          /* Extra data needed by the object */
+	DobjPoints      *points; /* List of points */
+	Style style;             /* this object's individual style settings */
+	gint style_no;           /* style index of this specific object */
 };
 
 /* States of the object */
@@ -72,8 +72,8 @@ extern GfigObject *obj_creating;
 extern GfigObject *tmp_line;
 
 
-DobjPoints *new_dobjpoint            (gint        x,
-                                      gint        y);
+DobjPoints *new_dobjpoint            (gint x,
+                                      gint y);
 void        do_save_obj              (GfigObject *obj,
                                       GString    *to);
 
@@ -83,15 +83,15 @@ void        d_delete_dobjpoints      (DobjPoints *pnts);
 void        object_update            (GdkPoint   *pnt);
 GList      *copy_all_objs            (GList      *objs);
 void        draw_objects             (GList      *objs,
-                                      gboolean    show_single,
+                                      gboolean show_single,
                                       cairo_t    *cr);
 
 GfigObject *d_load_object            (gchar      *desc,
                                       FILE       *fp);
 
-GfigObject *d_new_object             (DobjType    type,
-                                      gint        x,
-                                      gint        y);
+GfigObject *d_new_object             (DobjType type,
+                                      gint x,
+                                      gint y);
 
 void        d_save_object            (GfigObject *obj,
                                       GString    *string);
@@ -105,9 +105,9 @@ void        new_obj_2edit            (GFigObj    *obj);
 void        gfig_init_object_classes (void);
 
 void        d_pnt_add_line           (GfigObject *obj,
-                                      gint        x,
-                                      gint        y,
-                                      gint        pos);
+                                      gint x,
+                                      gint y,
+                                      gint pos);
 
 #endif /* __GFIG_DOBJECT_H__ */
 

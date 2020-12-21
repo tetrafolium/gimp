@@ -58,49 +58,49 @@
 
 static GtkWidget *
 find_mnemonic_widget (GtkWidget *widget,
-                      gint       level)
+                      gint level)
 {
-    gboolean can_focus;
+	gboolean can_focus;
 
-    g_object_get (widget, "can-focus", &can_focus, NULL);
+	g_object_get (widget, "can-focus", &can_focus, NULL);
 
-    if (GTK_WIDGET_GET_CLASS (widget)->activate_signal ||
-            can_focus                                      ||
-            GTK_WIDGET_GET_CLASS (widget)->mnemonic_activate !=
-            GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_WIDGET))->mnemonic_activate)
-    {
-        return widget;
-    }
+	if (GTK_WIDGET_GET_CLASS (widget)->activate_signal ||
+	    can_focus                                      ||
+	    GTK_WIDGET_GET_CLASS (widget)->mnemonic_activate !=
+	    GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_WIDGET))->mnemonic_activate)
+	{
+		return widget;
+	}
 
-    if (GIMP_IS_SIZE_ENTRY (widget))
-    {
-        GimpSizeEntry *entry    = GIMP_SIZE_ENTRY (widget);
-        gint           n_fields = gimp_size_entry_get_n_fields (entry);
+	if (GIMP_IS_SIZE_ENTRY (widget))
+	{
+		GimpSizeEntry *entry    = GIMP_SIZE_ENTRY (widget);
+		gint n_fields = gimp_size_entry_get_n_fields (entry);
 
-        return gimp_size_entry_get_help_widget (entry, n_fields - 1);
-    }
-    else if (GTK_IS_CONTAINER (widget))
-    {
-        GtkWidget *mnemonic_widget = NULL;
-        GList     *children;
-        GList     *list;
+		return gimp_size_entry_get_help_widget (entry, n_fields - 1);
+	}
+	else if (GTK_IS_CONTAINER (widget))
+	{
+		GtkWidget *mnemonic_widget = NULL;
+		GList     *children;
+		GList     *list;
 
-        children = gtk_container_get_children (GTK_CONTAINER (widget));
+		children = gtk_container_get_children (GTK_CONTAINER (widget));
 
-        for (list = children; list; list = g_list_next (list))
-        {
-            mnemonic_widget = find_mnemonic_widget (list->data, level + 1);
+		for (list = children; list; list = g_list_next (list))
+		{
+			mnemonic_widget = find_mnemonic_widget (list->data, level + 1);
 
-            if (mnemonic_widget)
-                break;
-        }
+			if (mnemonic_widget)
+				break;
+		}
 
-        g_list_free (children);
+		g_list_free (children);
 
-        return mnemonic_widget;
-    }
+		return mnemonic_widget;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -122,38 +122,38 @@ find_mnemonic_widget (GtkWidget *widget,
  **/
 GtkWidget *
 gimp_grid_attach_aligned (GtkGrid     *grid,
-                          gint         left,
-                          gint         top,
+                          gint left,
+                          gint top,
                           const gchar *label_text,
-                          gfloat       xalign,
-                          gfloat       yalign,
+                          gfloat xalign,
+                          gfloat yalign,
                           GtkWidget   *widget,
-                          gint         columns)
+                          gint columns)
 {
-    GtkWidget *label = NULL;
+	GtkWidget *label = NULL;
 
-    if (label_text)
-    {
-        GtkWidget *mnemonic_widget;
+	if (label_text)
+	{
+		GtkWidget *mnemonic_widget;
 
-        label = gtk_label_new_with_mnemonic (label_text);
-        gtk_label_set_xalign (GTK_LABEL (label), xalign);
-        gtk_label_set_yalign (GTK_LABEL (label), yalign);
-        gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-        gtk_grid_attach (grid, label, left, top, 1, 1);
-        gtk_widget_show (label);
+		label = gtk_label_new_with_mnemonic (label_text);
+		gtk_label_set_xalign (GTK_LABEL (label), xalign);
+		gtk_label_set_yalign (GTK_LABEL (label), yalign);
+		gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+		gtk_grid_attach (grid, label, left, top, 1, 1);
+		gtk_widget_show (label);
 
-        mnemonic_widget = find_mnemonic_widget (widget, 0);
+		mnemonic_widget = find_mnemonic_widget (widget, 0);
 
-        if (mnemonic_widget)
-            gtk_label_set_mnemonic_widget (GTK_LABEL (label), mnemonic_widget);
-    }
+		if (mnemonic_widget)
+			gtk_label_set_mnemonic_widget (GTK_LABEL (label), mnemonic_widget);
+	}
 
-    gtk_widget_set_hexpand (widget, TRUE);
-    gtk_grid_attach (grid, widget, left + 1, top, columns, 1);
-    gtk_widget_show (widget);
+	gtk_widget_set_hexpand (widget, TRUE);
+	gtk_grid_attach (grid, widget, left + 1, top, columns, 1);
+	gtk_widget_show (widget);
 
-    return label;
+	return label;
 }
 
 /**
@@ -178,115 +178,115 @@ void
 gimp_label_set_attributes (GtkLabel *label,
                            ...)
 {
-    PangoAttribute *attr  = NULL;
-    PangoAttrList  *attrs;
-    va_list         args;
+	PangoAttribute *attr  = NULL;
+	PangoAttrList  *attrs;
+	va_list args;
 
-    g_return_if_fail (GTK_IS_LABEL (label));
+	g_return_if_fail (GTK_IS_LABEL (label));
 
-    attrs = pango_attr_list_new ();
+	attrs = pango_attr_list_new ();
 
-    va_start (args, label);
+	va_start (args, label);
 
-    do
-    {
-        PangoAttrType attr_type = va_arg (args, PangoAttrType);
+	do
+	{
+		PangoAttrType attr_type = va_arg (args, PangoAttrType);
 
-        if (attr_type == -1)
-            attr_type = PANGO_ATTR_INVALID;
+		if (attr_type == -1)
+			attr_type = PANGO_ATTR_INVALID;
 
-        switch (attr_type)
-        {
-        case PANGO_ATTR_LANGUAGE:
-            attr = pango_attr_language_new (va_arg (args, PangoLanguage *));
-            break;
+		switch (attr_type)
+		{
+		case PANGO_ATTR_LANGUAGE:
+			attr = pango_attr_language_new (va_arg (args, PangoLanguage *));
+			break;
 
-        case PANGO_ATTR_FAMILY:
-            attr = pango_attr_family_new (va_arg (args, const gchar *));
-            break;
+		case PANGO_ATTR_FAMILY:
+			attr = pango_attr_family_new (va_arg (args, const gchar *));
+			break;
 
-        case PANGO_ATTR_STYLE:
-            attr = pango_attr_style_new (va_arg (args, PangoStyle));
-            break;
+		case PANGO_ATTR_STYLE:
+			attr = pango_attr_style_new (va_arg (args, PangoStyle));
+			break;
 
-        case PANGO_ATTR_WEIGHT:
-            attr = pango_attr_weight_new (va_arg (args, PangoWeight));
-            break;
+		case PANGO_ATTR_WEIGHT:
+			attr = pango_attr_weight_new (va_arg (args, PangoWeight));
+			break;
 
-        case PANGO_ATTR_VARIANT:
-            attr = pango_attr_variant_new (va_arg (args, PangoVariant));
-            break;
+		case PANGO_ATTR_VARIANT:
+			attr = pango_attr_variant_new (va_arg (args, PangoVariant));
+			break;
 
-        case PANGO_ATTR_STRETCH:
-            attr = pango_attr_stretch_new (va_arg (args, PangoStretch));
-            break;
+		case PANGO_ATTR_STRETCH:
+			attr = pango_attr_stretch_new (va_arg (args, PangoStretch));
+			break;
 
-        case PANGO_ATTR_SIZE:
-            attr = pango_attr_size_new (va_arg (args, gint));
-            break;
+		case PANGO_ATTR_SIZE:
+			attr = pango_attr_size_new (va_arg (args, gint));
+			break;
 
-        case PANGO_ATTR_FONT_DESC:
-            attr = pango_attr_font_desc_new (va_arg (args,
-                                             const PangoFontDescription *));
-            break;
+		case PANGO_ATTR_FONT_DESC:
+			attr = pango_attr_font_desc_new (va_arg (args,
+			                                         const PangoFontDescription *));
+			break;
 
-        case PANGO_ATTR_FOREGROUND:
-        {
-            const PangoColor *color = va_arg (args, const PangoColor *);
+		case PANGO_ATTR_FOREGROUND:
+		{
+			const PangoColor *color = va_arg (args, const PangoColor *);
 
-            attr = pango_attr_foreground_new (color->red,
-                                              color->green,
-                                              color->blue);
-        }
-        break;
+			attr = pango_attr_foreground_new (color->red,
+			                                  color->green,
+			                                  color->blue);
+		}
+		break;
 
-        case PANGO_ATTR_BACKGROUND:
-        {
-            const PangoColor *color = va_arg (args, const PangoColor *);
+		case PANGO_ATTR_BACKGROUND:
+		{
+			const PangoColor *color = va_arg (args, const PangoColor *);
 
-            attr = pango_attr_background_new (color->red,
-                                              color->green,
-                                              color->blue);
-        }
-        break;
+			attr = pango_attr_background_new (color->red,
+			                                  color->green,
+			                                  color->blue);
+		}
+		break;
 
-        case PANGO_ATTR_UNDERLINE:
-            attr = pango_attr_underline_new (va_arg (args, PangoUnderline));
-            break;
+		case PANGO_ATTR_UNDERLINE:
+			attr = pango_attr_underline_new (va_arg (args, PangoUnderline));
+			break;
 
-        case PANGO_ATTR_STRIKETHROUGH:
-            attr = pango_attr_strikethrough_new (va_arg (args, gboolean));
-            break;
+		case PANGO_ATTR_STRIKETHROUGH:
+			attr = pango_attr_strikethrough_new (va_arg (args, gboolean));
+			break;
 
-        case PANGO_ATTR_RISE:
-            attr = pango_attr_rise_new (va_arg (args, gint));
-            break;
+		case PANGO_ATTR_RISE:
+			attr = pango_attr_rise_new (va_arg (args, gint));
+			break;
 
-        case PANGO_ATTR_SCALE:
-            attr = pango_attr_scale_new (va_arg (args, gdouble));
-            break;
+		case PANGO_ATTR_SCALE:
+			attr = pango_attr_scale_new (va_arg (args, gdouble));
+			break;
 
-        default:
-            g_warning ("%s: invalid PangoAttribute type %d",
-                       G_STRFUNC, attr_type);
-        case PANGO_ATTR_INVALID:
-            attr = NULL;
-            break;
-        }
+		default:
+			g_warning ("%s: invalid PangoAttribute type %d",
+			           G_STRFUNC, attr_type);
+		case PANGO_ATTR_INVALID:
+			attr = NULL;
+			break;
+		}
 
-        if (attr)
-        {
-            attr->start_index = 0;
-            attr->end_index   = -1;
-            pango_attr_list_insert (attrs, attr);
-        }
-    }
-    while (attr);
+		if (attr)
+		{
+			attr->start_index = 0;
+			attr->end_index   = -1;
+			pango_attr_list_insert (attrs, attr);
+		}
+	}
+	while (attr);
 
-    va_end (args);
+	va_end (args);
 
-    gtk_label_set_attributes (label, attrs);
-    pango_attr_list_unref (attrs);
+	gtk_label_set_attributes (label, attrs);
+	pango_attr_list_unref (attrs);
 }
 
 /**
@@ -298,30 +298,30 @@ gimp_label_set_attributes (GtkLabel *label,
 GdkMonitor *
 gimp_widget_get_monitor (GtkWidget *widget)
 {
-    GdkWindow     *window;
-    GtkAllocation  allocation;
-    gint           x, y;
+	GdkWindow     *window;
+	GtkAllocation allocation;
+	gint x, y;
 
-    g_return_val_if_fail (GTK_IS_WIDGET (widget), 0);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), 0);
 
-    window = gtk_widget_get_window (widget);
+	window = gtk_widget_get_window (widget);
 
-    if (! window)
-        return gimp_get_monitor_at_pointer ();
+	if (!window)
+		return gimp_get_monitor_at_pointer ();
 
-    gdk_window_get_origin (window, &x, &y);
-    gtk_widget_get_allocation (widget, &allocation);
+	gdk_window_get_origin (window, &x, &y);
+	gtk_widget_get_allocation (widget, &allocation);
 
-    if (! gtk_widget_get_has_window (widget))
-    {
-        x += allocation.x;
-        y += allocation.y;
-    }
+	if (!gtk_widget_get_has_window (widget))
+	{
+		x += allocation.x;
+		y += allocation.y;
+	}
 
-    x += allocation.width  / 2;
-    y += allocation.height / 2;
+	x += allocation.width  / 2;
+	y += allocation.height / 2;
 
-    return gdk_display_get_monitor_at_point (gdk_display_get_default (), x, y);
+	return gdk_display_get_monitor_at_point (gdk_display_get_default (), x, y);
 }
 
 /**
@@ -332,28 +332,28 @@ gimp_widget_get_monitor (GtkWidget *widget)
 GdkMonitor *
 gimp_get_monitor_at_pointer (void)
 {
-    GdkDisplay *display;
-    GdkSeat    *seat;
-    gint        x, y;
+	GdkDisplay *display;
+	GdkSeat    *seat;
+	gint x, y;
 
-    display = gdk_display_get_default ();
-    seat = gdk_display_get_default_seat (display);
+	display = gdk_display_get_default ();
+	seat = gdk_display_get_default_seat (display);
 
-    gdk_device_get_position (gdk_seat_get_pointer (seat),
-                             NULL, &x, &y);
+	gdk_device_get_position (gdk_seat_get_pointer (seat),
+	                         NULL, &x, &y);
 
-    return gdk_display_get_monitor_at_point (display, x, y);
+	return gdk_display_get_monitor_at_point (display, x, y);
 }
 
 typedef void (* MonitorChangedCallback) (GtkWidget *, gpointer);
 
 typedef struct
 {
-    GtkWidget  *widget;
-    GdkMonitor *monitor;
+	GtkWidget  *widget;
+	GdkMonitor *monitor;
 
-    MonitorChangedCallback callback;
-    gpointer               user_data;
+	MonitorChangedCallback callback;
+	gpointer user_data;
 } TrackMonitorData;
 
 static gboolean
@@ -361,16 +361,16 @@ track_monitor_configure_event (GtkWidget        *toplevel,
                                GdkEvent         *event,
                                TrackMonitorData *track_data)
 {
-    GdkMonitor *monitor = gimp_widget_get_monitor (toplevel);
+	GdkMonitor *monitor = gimp_widget_get_monitor (toplevel);
 
-    if (monitor != track_data->monitor)
-    {
-        track_data->monitor = monitor;
+	if (monitor != track_data->monitor)
+	{
+		track_data->monitor = monitor;
 
-        track_data->callback (track_data->widget, track_data->user_data);
-    }
+		track_data->callback (track_data->widget, track_data->user_data);
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 static void
@@ -378,36 +378,36 @@ track_monitor_hierarchy_changed (GtkWidget        *widget,
                                  GtkWidget        *previous_toplevel,
                                  TrackMonitorData *track_data)
 {
-    GtkWidget *toplevel;
+	GtkWidget *toplevel;
 
-    if (previous_toplevel)
-    {
-        g_signal_handlers_disconnect_by_func (previous_toplevel,
-                                              track_monitor_configure_event,
-                                              track_data);
-    }
+	if (previous_toplevel)
+	{
+		g_signal_handlers_disconnect_by_func (previous_toplevel,
+		                                      track_monitor_configure_event,
+		                                      track_data);
+	}
 
-    toplevel = gtk_widget_get_toplevel (widget);
+	toplevel = gtk_widget_get_toplevel (widget);
 
-    if (GTK_IS_WINDOW (toplevel))
-    {
-        GClosure   *closure;
-        GdkMonitor *monitor;
+	if (GTK_IS_WINDOW (toplevel))
+	{
+		GClosure   *closure;
+		GdkMonitor *monitor;
 
-        closure = g_cclosure_new (G_CALLBACK (track_monitor_configure_event),
-                                  track_data, NULL);
-        g_object_watch_closure (G_OBJECT (widget), closure);
-        g_signal_connect_closure (toplevel, "configure-event", closure, FALSE);
+		closure = g_cclosure_new (G_CALLBACK (track_monitor_configure_event),
+		                          track_data, NULL);
+		g_object_watch_closure (G_OBJECT (widget), closure);
+		g_signal_connect_closure (toplevel, "configure-event", closure, FALSE);
 
-        monitor = gimp_widget_get_monitor (toplevel);
+		monitor = gimp_widget_get_monitor (toplevel);
 
-        if (monitor != track_data->monitor)
-        {
-            track_data->monitor = monitor;
+		if (monitor != track_data->monitor)
+		{
+			track_data->monitor = monitor;
 
-            track_data->callback (track_data->widget, track_data->user_data);
-        }
-    }
+			track_data->callback (track_data->widget, track_data->user_data);
+		}
+	}
 }
 
 /**
@@ -436,51 +436,51 @@ track_monitor_hierarchy_changed (GtkWidget        *widget,
  **/
 void
 gimp_widget_track_monitor (GtkWidget      *widget,
-                           GCallback       monitor_changed_callback,
-                           gpointer        user_data,
-                           GDestroyNotify  user_data_destroy)
+                           GCallback monitor_changed_callback,
+                           gpointer user_data,
+                           GDestroyNotify user_data_destroy)
 {
-    TrackMonitorData *track_data;
-    GtkWidget        *toplevel;
+	TrackMonitorData *track_data;
+	GtkWidget        *toplevel;
 
-    g_return_if_fail (GTK_IS_WIDGET (widget));
-    g_return_if_fail (monitor_changed_callback != NULL);
+	g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (monitor_changed_callback != NULL);
 
-    track_data = g_new0 (TrackMonitorData, 1);
+	track_data = g_new0 (TrackMonitorData, 1);
 
-    track_data->widget    = widget;
-    track_data->callback  = (MonitorChangedCallback) monitor_changed_callback;
-    track_data->user_data = user_data;
+	track_data->widget    = widget;
+	track_data->callback  = (MonitorChangedCallback) monitor_changed_callback;
+	track_data->user_data = user_data;
 
-    g_object_weak_ref (G_OBJECT (widget), (GWeakNotify) g_free,
-                       track_data);
+	g_object_weak_ref (G_OBJECT (widget), (GWeakNotify) g_free,
+	                   track_data);
 
-    if (user_data_destroy)
-        g_object_weak_ref (G_OBJECT (widget), (GWeakNotify) user_data_destroy,
-                           user_data);
+	if (user_data_destroy)
+		g_object_weak_ref (G_OBJECT (widget), (GWeakNotify) user_data_destroy,
+		                   user_data);
 
-    g_signal_connect (widget, "hierarchy-changed",
-                      G_CALLBACK (track_monitor_hierarchy_changed),
-                      track_data);
+	g_signal_connect (widget, "hierarchy-changed",
+	                  G_CALLBACK (track_monitor_hierarchy_changed),
+	                  track_data);
 
-    toplevel = gtk_widget_get_toplevel (widget);
+	toplevel = gtk_widget_get_toplevel (widget);
 
-    if (GTK_IS_WINDOW (toplevel))
-        track_monitor_hierarchy_changed (widget, NULL, track_data);
+	if (GTK_IS_WINDOW (toplevel))
+		track_monitor_hierarchy_changed (widget, NULL, track_data);
 }
 
 static gint
 monitor_number (GdkMonitor *monitor)
 {
-    GdkDisplay *display    = gdk_monitor_get_display (monitor);
-    gint        n_monitors = gdk_display_get_n_monitors (display);
-    gint        i;
+	GdkDisplay *display    = gdk_monitor_get_display (monitor);
+	gint n_monitors = gdk_display_get_n_monitors (display);
+	gint i;
 
-    for (i = 0; i < n_monitors; i++)
-        if (gdk_display_get_monitor (display, i) == monitor)
-            return i;
+	for (i = 0; i < n_monitors; i++)
+		if (gdk_display_get_monitor (display, i) == monitor)
+			return i;
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -498,106 +498,106 @@ monitor_number (GdkMonitor *monitor)
 GimpColorProfile *
 gimp_monitor_get_color_profile (GdkMonitor *monitor)
 {
-    GdkDisplay       *display;
-    GdkScreen        *screen;
-    GimpColorProfile *profile = NULL;
+	GdkDisplay       *display;
+	GdkScreen        *screen;
+	GimpColorProfile *profile = NULL;
 
-    g_return_val_if_fail (GDK_IS_MONITOR (monitor), NULL);
+	g_return_val_if_fail (GDK_IS_MONITOR (monitor), NULL);
 
-    display = gdk_monitor_get_display (monitor);
+	display = gdk_monitor_get_display (monitor);
 
 #if defined GDK_WINDOWING_X11
-    {
-        GdkAtom  type    = GDK_NONE;
-        gint     format  = 0;
-        gint     nitems  = 0;
-        gint     number;
-        gchar   *atom_name;
-        guchar  *data    = NULL;
+	{
+		GdkAtom type    = GDK_NONE;
+		gint format  = 0;
+		gint nitems  = 0;
+		gint number;
+		gchar   *atom_name;
+		guchar  *data    = NULL;
 
-        number = monitor_number (monitor);
+		number = monitor_number (monitor);
 
-        if (number > 0)
-            atom_name = g_strdup_printf ("_ICC_PROFILE_%d", number);
-        else
-            atom_name = g_strdup ("_ICC_PROFILE");
+		if (number > 0)
+			atom_name = g_strdup_printf ("_ICC_PROFILE_%d", number);
+		else
+			atom_name = g_strdup ("_ICC_PROFILE");
 
-        screen = gdk_display_get_default_screen (display);
+		screen = gdk_display_get_default_screen (display);
 
-        if (gdk_property_get (gdk_screen_get_root_window (screen),
-                              gdk_atom_intern (atom_name, FALSE),
-                              GDK_NONE,
-                              0, 64 * 1024 * 1024, FALSE,
-                              &type, &format, &nitems, &data) && nitems > 0)
-        {
-            profile = gimp_color_profile_new_from_icc_profile (data, nitems,
-                      NULL);
-            g_free (data);
-        }
+		if (gdk_property_get (gdk_screen_get_root_window (screen),
+		                      gdk_atom_intern (atom_name, FALSE),
+		                      GDK_NONE,
+		                      0, 64 * 1024 * 1024, FALSE,
+		                      &type, &format, &nitems, &data) && nitems > 0)
+		{
+			profile = gimp_color_profile_new_from_icc_profile (data, nitems,
+			                                                   NULL);
+			g_free (data);
+		}
 
-        g_free (atom_name);
-    }
+		g_free (atom_name);
+	}
 #elif defined GDK_WINDOWING_QUARTZ
-    {
-        CGColorSpaceRef space = NULL;
+	{
+		CGColorSpaceRef space = NULL;
 
-        space = CGDisplayCopyColorSpace (monitor_number (monitor));
+		space = CGDisplayCopyColorSpace (monitor_number (monitor));
 
-        if (space)
-        {
-            CFDataRef data;
+		if (space)
+		{
+			CFDataRef data;
 
-            data = CGColorSpaceCopyICCData (space);
+			data = CGColorSpaceCopyICCData (space);
 
-            if (data)
-            {
-                UInt8 *buffer = g_malloc (CFDataGetLength (data));
+			if (data)
+			{
+				UInt8 *buffer = g_malloc (CFDataGetLength (data));
 
-                /* We cannot use CFDataGetBytesPtr(), because that returns
-                 * a const pointer where cmsOpenProfileFromMem wants a
-                 * non-const pointer.
-                 */
-                CFDataGetBytes (data, CFRangeMake (0, CFDataGetLength (data)),
-                                buffer);
+				/* We cannot use CFDataGetBytesPtr(), because that returns
+				 * a const pointer where cmsOpenProfileFromMem wants a
+				 * non-const pointer.
+				 */
+				CFDataGetBytes (data, CFRangeMake (0, CFDataGetLength (data)),
+				                buffer);
 
-                profile = gimp_color_profile_new_from_icc_profile (buffer,
-                          CFDataGetLength (data),
-                          NULL);
+				profile = gimp_color_profile_new_from_icc_profile (buffer,
+				                                                   CFDataGetLength (data),
+				                                                   NULL);
 
-                g_free (buffer);
-                CFRelease (data);
-            }
+				g_free (buffer);
+				CFRelease (data);
+			}
 
-            CFRelease (space);
-        }
-    }
+			CFRelease (space);
+		}
+	}
 #elif defined G_OS_WIN32
-    {
-        HDC hdc = GetDC (NULL);
+	{
+		HDC hdc = GetDC (NULL);
 
-        if (hdc)
-        {
-            gchar  *path;
-            gint32  len = 0;
+		if (hdc)
+		{
+			gchar  *path;
+			gint32 len = 0;
 
-            GetICMProfile (hdc, (LPDWORD) &len, NULL);
-            path = g_new (gchar, len);
+			GetICMProfile (hdc, (LPDWORD) &len, NULL);
+			path = g_new (gchar, len);
 
-            if (GetICMProfile (hdc, (LPDWORD) &len, path))
-            {
-                GFile *file = g_file_new_for_path (path);
+			if (GetICMProfile (hdc, (LPDWORD) &len, path))
+			{
+				GFile *file = g_file_new_for_path (path);
 
-                profile = gimp_color_profile_new_from_file (file, NULL);
-                g_object_unref (file);
-            }
+				profile = gimp_color_profile_new_from_file (file, NULL);
+				g_object_unref (file);
+			}
 
-            g_free (path);
-            ReleaseDC (NULL, hdc);
-        }
-    }
+			g_free (path);
+			ReleaseDC (NULL, hdc);
+		}
+	}
 #endif
 
-    return profile;
+	return profile;
 }
 
 /**
@@ -615,67 +615,67 @@ gimp_monitor_get_color_profile (GdkMonitor *monitor)
 GimpColorProfile *
 gimp_widget_get_color_profile (GtkWidget *widget)
 {
-    GdkMonitor *monitor;
+	GdkMonitor *monitor;
 
-    g_return_val_if_fail (widget == NULL || GTK_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (widget == NULL || GTK_IS_WIDGET (widget), NULL);
 
-    if (widget)
-    {
-        monitor = gimp_widget_get_monitor (widget);
-    }
-    else
-    {
-        monitor = gdk_display_get_monitor (gdk_display_get_default (), 0);
-    }
+	if (widget)
+	{
+		monitor = gimp_widget_get_monitor (widget);
+	}
+	else
+	{
+		monitor = gdk_display_get_monitor (gdk_display_get_default (), 0);
+	}
 
-    return gimp_monitor_get_color_profile (monitor);
+	return gimp_monitor_get_color_profile (monitor);
 }
 
 static GimpColorProfile *
 get_display_profile (GtkWidget       *widget,
                      GimpColorConfig *config)
 {
-    GimpColorProfile *profile = NULL;
+	GimpColorProfile *profile = NULL;
 
-    if (gimp_color_config_get_display_profile_from_gdk (config))
-        /* get the toplevel's profile so all a window's colors look the same */
-        profile = gimp_widget_get_color_profile (gtk_widget_get_toplevel (widget));
+	if (gimp_color_config_get_display_profile_from_gdk (config))
+		/* get the toplevel's profile so all a window's colors look the same */
+		profile = gimp_widget_get_color_profile (gtk_widget_get_toplevel (widget));
 
-    if (! profile)
-        profile = gimp_color_config_get_display_color_profile (config, NULL);
+	if (!profile)
+		profile = gimp_color_config_get_display_color_profile (config, NULL);
 
-    if (! profile)
-        profile = gimp_color_profile_new_rgb_srgb ();
+	if (!profile)
+		profile = gimp_color_profile_new_rgb_srgb ();
 
-    return profile;
+	return profile;
 }
 
 typedef struct _TransformCache TransformCache;
 
 struct _TransformCache
 {
-    GimpColorTransform *transform;
+	GimpColorTransform *transform;
 
-    GimpColorConfig    *config;
-    GimpColorProfile   *src_profile;
-    const Babl         *src_format;
-    GimpColorProfile   *dest_profile;
-    const Babl         *dest_format;
-    GimpColorProfile   *proof_profile;
+	GimpColorConfig    *config;
+	GimpColorProfile   *src_profile;
+	const Babl         *src_format;
+	GimpColorProfile   *dest_profile;
+	const Babl         *dest_format;
+	GimpColorProfile   *proof_profile;
 
-    gulong              notify_id;
+	gulong notify_id;
 };
 
 static GList    *transform_caches = NULL;
-static gboolean  debug_cache      = FALSE;
+static gboolean debug_cache      = FALSE;
 
 static gboolean
 profiles_equal (GimpColorProfile *profile1,
                 GimpColorProfile *profile2)
 {
-    return ((profile1 == NULL && profile2 == NULL) ||
-            (profile1 != NULL && profile2 != NULL &&
-             gimp_color_profile_is_equal (profile1, profile2)));
+	return ((profile1 == NULL && profile2 == NULL) ||
+	        (profile1 != NULL && profile2 != NULL &&
+	         gimp_color_profile_is_equal (profile1, profile2)));
 }
 
 static TransformCache *
@@ -686,27 +686,27 @@ transform_cache_get (GimpColorConfig  *config,
                      const Babl       *dest_format,
                      GimpColorProfile *proof_profile)
 {
-    GList *list;
+	GList *list;
 
-    for (list = transform_caches; list; list = g_list_next (list))
-    {
-        TransformCache *cache = list->data;
+	for (list = transform_caches; list; list = g_list_next (list))
+	{
+		TransformCache *cache = list->data;
 
-        if (config      == cache->config                        &&
-                src_format  == cache->src_format                    &&
-                dest_format == cache->dest_format                   &&
-                profiles_equal (src_profile,   cache->src_profile)  &&
-                profiles_equal (dest_profile,  cache->dest_profile) &&
-                profiles_equal (proof_profile, cache->proof_profile))
-        {
-            if (debug_cache)
-                g_printerr ("found cache %p\n", cache);
+		if (config      == cache->config                        &&
+		    src_format  == cache->src_format                    &&
+		    dest_format == cache->dest_format                   &&
+		    profiles_equal (src_profile,   cache->src_profile)  &&
+		    profiles_equal (dest_profile,  cache->dest_profile) &&
+		    profiles_equal (proof_profile, cache->proof_profile))
+		{
+			if (debug_cache)
+				g_printerr ("found cache %p\n", cache);
 
-            return cache;
-        }
-    }
+			return cache;
+		}
+	}
 
-    return NULL;
+	return NULL;
 }
 
 static void
@@ -714,23 +714,23 @@ transform_cache_config_notify (GObject          *config,
                                const GParamSpec *pspec,
                                TransformCache   *cache)
 {
-    transform_caches = g_list_remove (transform_caches, cache);
+	transform_caches = g_list_remove (transform_caches, cache);
 
-    g_signal_handler_disconnect (config, cache->notify_id);
+	g_signal_handler_disconnect (config, cache->notify_id);
 
-    if (cache->transform)
-        g_object_unref (cache->transform);
+	if (cache->transform)
+		g_object_unref (cache->transform);
 
-    g_object_unref (cache->src_profile);
-    g_object_unref (cache->dest_profile);
+	g_object_unref (cache->src_profile);
+	g_object_unref (cache->dest_profile);
 
-    if (cache->proof_profile)
-        g_object_unref (cache->proof_profile);
+	if (cache->proof_profile)
+		g_object_unref (cache->proof_profile);
 
-    g_free (cache);
+	g_free (cache);
 
-    if (debug_cache)
-        g_printerr ("deleted cache %p\n", cache);
+	if (debug_cache)
+		g_printerr ("deleted cache %p\n", cache);
 }
 
 /**
@@ -756,145 +756,145 @@ gimp_widget_get_color_transform (GtkWidget        *widget,
                                  const Babl       *src_format,
                                  const Babl       *dest_format)
 {
-    static gboolean     initialized   = FALSE;
-    GimpColorProfile   *dest_profile  = NULL;
-    GimpColorProfile   *proof_profile = NULL;
-    TransformCache     *cache;
+	static gboolean initialized   = FALSE;
+	GimpColorProfile   *dest_profile  = NULL;
+	GimpColorProfile   *proof_profile = NULL;
+	TransformCache     *cache;
 
-    g_return_val_if_fail (widget == NULL || GTK_IS_WIDGET (widget), NULL);
-    g_return_val_if_fail (GIMP_IS_COLOR_CONFIG (config), NULL);
-    g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), NULL);
-    g_return_val_if_fail (src_format != NULL, NULL);
-    g_return_val_if_fail (dest_format != NULL, NULL);
+	g_return_val_if_fail (widget == NULL || GTK_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (GIMP_IS_COLOR_CONFIG (config), NULL);
+	g_return_val_if_fail (GIMP_IS_COLOR_PROFILE (src_profile), NULL);
+	g_return_val_if_fail (src_format != NULL, NULL);
+	g_return_val_if_fail (dest_format != NULL, NULL);
 
-    if (G_UNLIKELY (! initialized))
-    {
-        initialized = TRUE;
+	if (G_UNLIKELY (!initialized))
+	{
+		initialized = TRUE;
 
-        debug_cache = g_getenv ("GIMP_DEBUG_TRANSFORM_CACHE") != NULL;
-    }
+		debug_cache = g_getenv ("GIMP_DEBUG_TRANSFORM_CACHE") != NULL;
+	}
 
-    switch (gimp_color_config_get_mode (config))
-    {
-    case GIMP_COLOR_MANAGEMENT_OFF:
-        return NULL;
+	switch (gimp_color_config_get_mode (config))
+	{
+	case GIMP_COLOR_MANAGEMENT_OFF:
+		return NULL;
 
-    case GIMP_COLOR_MANAGEMENT_SOFTPROOF:
-        proof_profile = gimp_color_config_get_simulation_color_profile (config,
-                        NULL);
-    /*  fallthru  */
+	case GIMP_COLOR_MANAGEMENT_SOFTPROOF:
+		proof_profile = gimp_color_config_get_simulation_color_profile (config,
+		                                                                NULL);
+	/*  fallthru  */
 
-    case GIMP_COLOR_MANAGEMENT_DISPLAY:
-        dest_profile = get_display_profile (widget, config);
-        break;
-    }
+	case GIMP_COLOR_MANAGEMENT_DISPLAY:
+		dest_profile = get_display_profile (widget, config);
+		break;
+	}
 
-    cache = transform_cache_get (config,
-                                 src_profile,
-                                 src_format,
-                                 dest_profile,
-                                 dest_format,
-                                 proof_profile);
+	cache = transform_cache_get (config,
+	                             src_profile,
+	                             src_format,
+	                             dest_profile,
+	                             dest_format,
+	                             proof_profile);
 
-    if (cache)
-    {
-        g_object_unref (dest_profile);
+	if (cache)
+	{
+		g_object_unref (dest_profile);
 
-        if (proof_profile)
-            g_object_unref (proof_profile);
+		if (proof_profile)
+			g_object_unref (proof_profile);
 
-        if (cache->transform)
-            return g_object_ref (cache->transform);
+		if (cache->transform)
+			return g_object_ref (cache->transform);
 
-        return NULL;
-    }
+		return NULL;
+	}
 
-    if (! proof_profile &&
-            gimp_color_profile_is_equal (src_profile, dest_profile))
-    {
-        g_object_unref (dest_profile);
+	if (!proof_profile &&
+	    gimp_color_profile_is_equal (src_profile, dest_profile))
+	{
+		g_object_unref (dest_profile);
 
-        return NULL;
-    }
+		return NULL;
+	}
 
-    cache = g_new0 (TransformCache, 1);
+	cache = g_new0 (TransformCache, 1);
 
-    if (debug_cache)
-        g_printerr ("creating cache %p\n", cache);
+	if (debug_cache)
+		g_printerr ("creating cache %p\n", cache);
 
-    cache->config        = g_object_ref (config);
-    cache->src_profile   = g_object_ref (src_profile);
-    cache->src_format    = src_format;
-    cache->dest_profile  = dest_profile;
-    cache->dest_format   = dest_format;
-    cache->proof_profile = proof_profile;
+	cache->config        = g_object_ref (config);
+	cache->src_profile   = g_object_ref (src_profile);
+	cache->src_format    = src_format;
+	cache->dest_profile  = dest_profile;
+	cache->dest_format   = dest_format;
+	cache->proof_profile = proof_profile;
 
-    cache->notify_id =
-        g_signal_connect (cache->config, "notify",
-                          G_CALLBACK (transform_cache_config_notify),
-                          cache);
+	cache->notify_id =
+		g_signal_connect (cache->config, "notify",
+		                  G_CALLBACK (transform_cache_config_notify),
+		                  cache);
 
-    transform_caches = g_list_prepend (transform_caches, cache);
+	transform_caches = g_list_prepend (transform_caches, cache);
 
-    if (cache->proof_profile)
-    {
-        GimpColorTransformFlags flags = 0;
+	if (cache->proof_profile)
+	{
+		GimpColorTransformFlags flags = 0;
 
-        if (gimp_color_config_get_simulation_bpc (config))
-            flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
+		if (gimp_color_config_get_simulation_bpc (config))
+			flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
 
-        if (! gimp_color_config_get_simulation_optimize (config))
-            flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
+		if (!gimp_color_config_get_simulation_optimize (config))
+			flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
 
-        if (gimp_color_config_get_simulation_gamut_check (config))
-        {
-            GimpRGB         color;
-            cmsUInt16Number alarmCodes[cmsMAXCHANNELS] = { 0, };
-            guchar          r, g, b;
+		if (gimp_color_config_get_simulation_gamut_check (config))
+		{
+			GimpRGB color;
+			cmsUInt16Number alarmCodes[cmsMAXCHANNELS] = { 0, };
+			guchar r, g, b;
 
-            flags |= GIMP_COLOR_TRANSFORM_FLAGS_GAMUT_CHECK;
+			flags |= GIMP_COLOR_TRANSFORM_FLAGS_GAMUT_CHECK;
 
-            gimp_color_config_get_out_of_gamut_color (config, &color);
-            gimp_rgb_get_uchar (&color, &r, &g, &b);
+			gimp_color_config_get_out_of_gamut_color (config, &color);
+			gimp_rgb_get_uchar (&color, &r, &g, &b);
 
-            alarmCodes[0] = (cmsUInt16Number) r * 256;
-            alarmCodes[1] = (cmsUInt16Number) g * 256;
-            alarmCodes[2] = (cmsUInt16Number) b * 256;
+			alarmCodes[0] = (cmsUInt16Number) r * 256;
+			alarmCodes[1] = (cmsUInt16Number) g * 256;
+			alarmCodes[2] = (cmsUInt16Number) b * 256;
 
-            cmsSetAlarmCodes (alarmCodes);
-        }
+			cmsSetAlarmCodes (alarmCodes);
+		}
 
-        cache->transform =
-            gimp_color_transform_new_proofing (cache->src_profile,
-                                               cache->src_format,
-                                               cache->dest_profile,
-                                               cache->dest_format,
-                                               cache->proof_profile,
-                                               gimp_color_config_get_simulation_intent (config),
-                                               gimp_color_config_get_display_intent (config),
-                                               flags);
-    }
-    else
-    {
-        GimpColorTransformFlags flags = 0;
+		cache->transform =
+			gimp_color_transform_new_proofing (cache->src_profile,
+			                                   cache->src_format,
+			                                   cache->dest_profile,
+			                                   cache->dest_format,
+			                                   cache->proof_profile,
+			                                   gimp_color_config_get_simulation_intent (config),
+			                                   gimp_color_config_get_display_intent (config),
+			                                   flags);
+	}
+	else
+	{
+		GimpColorTransformFlags flags = 0;
 
-        if (gimp_color_config_get_display_bpc (config))
-            flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
+		if (gimp_color_config_get_display_bpc (config))
+			flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
 
-        if (! gimp_color_config_get_display_optimize (config))
-            flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
+		if (!gimp_color_config_get_display_optimize (config))
+			flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
 
-        cache->transform =
-            gimp_color_transform_new (cache->src_profile,
-                                      cache->src_format,
-                                      cache->dest_profile,
-                                      cache->dest_format,
-                                      gimp_color_config_get_display_intent (config),
-                                      flags);
-    }
+		cache->transform =
+			gimp_color_transform_new (cache->src_profile,
+			                          cache->src_format,
+			                          cache->dest_profile,
+			                          cache->dest_format,
+			                          gimp_color_config_get_display_intent (config),
+			                          flags);
+	}
 
-    if (cache->transform)
-        return g_object_ref (cache->transform);
+	if (cache->transform)
+		return g_object_ref (cache->transform);
 
-    return NULL;
+	return NULL;
 }

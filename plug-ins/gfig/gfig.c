@@ -57,17 +57,17 @@
 
 #define GFIG_HEADER      "GFIG Version 0.2\n"
 
-typedef struct _Gfig      Gfig;
+typedef struct _Gfig Gfig;
 typedef struct _GfigClass GfigClass;
 
 struct _Gfig
 {
-    GimpPlugIn parent_instance;
+	GimpPlugIn parent_instance;
 };
 
 struct _GfigClass
 {
-    GimpPlugInClass parent_class;
+	GimpPlugInClass parent_class;
 };
 
 
@@ -78,17 +78,17 @@ GType                   gfig_get_type         (void) G_GNUC_CONST;
 
 static GList          * gfig_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * gfig_create_procedure (GimpPlugIn           *plug_in,
-        const gchar          *name);
+                                               const gchar          *name);
 
 static GimpValueArray * gfig_run              (GimpProcedure        *procedure,
-        GimpRunMode           run_mode,
-        GimpImage            *image,
-        GimpDrawable         *drawable,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                               GimpRunMode run_mode,
+                                               GimpImage            *image,
+                                               GimpDrawable         *drawable,
+                                               const GimpValueArray *args,
+                                               gpointer run_data);
 
 static gint             load_options          (GFigObj              *gfig,
-        FILE                 *fp);
+                                               FILE                 *fp);
 
 
 
@@ -115,24 +115,24 @@ GfigObjectClass dobj_class[10];
 GFigContext  *gfig_context;
 GtkWidget    *top_level_dlg;
 GList        *gfig_list;
-gdouble       org_scale_x_factor, org_scale_y_factor;
+gdouble org_scale_x_factor, org_scale_y_factor;
 
 
 /* Stuff for the preview bit */
-static gint  sel_x, sel_y;
-static gint  sel_width, sel_height;
-gint         preview_width, preview_height;
-gdouble      scale_x_factor, scale_y_factor;
+static gint sel_x, sel_y;
+static gint sel_width, sel_height;
+gint preview_width, preview_height;
+gdouble scale_x_factor, scale_y_factor;
 GdkPixbuf   *back_pixbuf = NULL;
 
 
 static void
 gfig_class_init (GfigClass *klass)
 {
-    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+	GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-    plug_in_class->query_procedures = gfig_query_procedures;
-    plug_in_class->create_procedure = gfig_create_procedure;
+	plug_in_class->query_procedures = gfig_query_procedures;
+	plug_in_class->create_procedure = gfig_create_procedure;
 }
 
 static void
@@ -143,188 +143,188 @@ gfig_init (Gfig *gfig)
 static GList *
 gfig_query_procedures (GimpPlugIn *plug_in)
 {
-    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+	return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 gfig_create_procedure (GimpPlugIn  *plug_in,
                        const gchar *name)
 {
-    GimpProcedure *procedure = NULL;
+	GimpProcedure *procedure = NULL;
 
-    if (! strcmp (name, PLUG_IN_PROC))
-    {
-        procedure = gimp_image_procedure_new (plug_in, name,
-                                              GIMP_PDB_PROC_TYPE_PLUGIN,
-                                              gfig_run, NULL, NULL);
+	if (!strcmp (name, PLUG_IN_PROC))
+	{
+		procedure = gimp_image_procedure_new (plug_in, name,
+		                                      GIMP_PDB_PROC_TYPE_PLUGIN,
+		                                      gfig_run, NULL, NULL);
 
-        gimp_procedure_set_image_types (procedure, "RGB*, GRAY*");
+		gimp_procedure_set_image_types (procedure, "RGB*, GRAY*");
 
-        gimp_procedure_set_menu_label (procedure, N_("_Gfig..."));
-        gimp_procedure_add_menu_path (procedure, "<Image>/Filters/Render");
+		gimp_procedure_set_menu_label (procedure, N_("_Gfig..."));
+		gimp_procedure_add_menu_path (procedure, "<Image>/Filters/Render");
 
-        gimp_procedure_set_documentation (procedure,
-                                          N_("Create geometric shapes"),
-                                          "Draw Vector Graphics and paint them "
-                                          "onto your images. Gfig allows you "
-                                          "to draw many types of objects "
-                                          "including Lines, Circles, Ellipses, "
-                                          "Curves, Polygons, pointed stars, "
-                                          "Bezier curves, and Spirals. "
-                                          "Objects can be painted using "
-                                          "Brushes or other tools or filled "
-                                          "using colors or patterns. "
-                                          "Gfig objects can also be used to "
-                                          "create selections.",
-                                          name);
-        gimp_procedure_set_attribution (procedure,
-                                        "Andy Thomas",
-                                        "Andy Thomas",
-                                        "1997");
-    }
+		gimp_procedure_set_documentation (procedure,
+		                                  N_("Create geometric shapes"),
+		                                  "Draw Vector Graphics and paint them "
+		                                  "onto your images. Gfig allows you "
+		                                  "to draw many types of objects "
+		                                  "including Lines, Circles, Ellipses, "
+		                                  "Curves, Polygons, pointed stars, "
+		                                  "Bezier curves, and Spirals. "
+		                                  "Objects can be painted using "
+		                                  "Brushes or other tools or filled "
+		                                  "using colors or patterns. "
+		                                  "Gfig objects can also be used to "
+		                                  "create selections.",
+		                                  name);
+		gimp_procedure_set_attribution (procedure,
+		                                "Andy Thomas",
+		                                "Andy Thomas",
+		                                "1997");
+	}
 
-    return procedure;
+	return procedure;
 }
 
 static GimpValueArray *
 gfig_run (GimpProcedure        *procedure,
-          GimpRunMode           run_mode,
+          GimpRunMode run_mode,
           GimpImage            *image,
           GimpDrawable         *drawable,
           const GimpValueArray *args,
-          gpointer              run_data)
+          gpointer run_data)
 {
-    GimpPDBStatusType status = GIMP_PDB_SUCCESS;
-    gint              pwidth, pheight;
+	GimpPDBStatusType status = GIMP_PDB_SUCCESS;
+	gint pwidth, pheight;
 
-    INIT_I18N ();
+	INIT_I18N ();
 
-    gfig_context = g_new0 (GFigContext, 1);
+	gfig_context = g_new0 (GFigContext, 1);
 
-    gfig_context->show_background = TRUE;
-    gfig_context->selected_obj    = NULL;
+	gfig_context->show_background = TRUE;
+	gfig_context->selected_obj    = NULL;
 
-    gfig_context->image    = image;
-    gfig_context->drawable = drawable;
+	gfig_context->image    = image;
+	gfig_context->drawable = drawable;
 
-    gimp_image_undo_group_start (gfig_context->image);
+	gimp_image_undo_group_start (gfig_context->image);
 
-    gimp_context_push ();
+	gimp_context_push ();
 
-    /* TMP Hack - clear any selections */
-    if (! gimp_selection_is_empty (gfig_context->image))
-        gimp_selection_none (gfig_context->image);
+	/* TMP Hack - clear any selections */
+	if (!gimp_selection_is_empty (gfig_context->image))
+		gimp_selection_none (gfig_context->image);
 
-    if (! gimp_drawable_mask_intersect (drawable, &sel_x, &sel_y,
-                                        &sel_width, &sel_height))
-    {
-        gimp_context_pop ();
+	if (!gimp_drawable_mask_intersect (drawable, &sel_x, &sel_y,
+	                                   &sel_width, &sel_height))
+	{
+		gimp_context_pop ();
 
-        gimp_image_undo_group_end (gfig_context->image);
+		gimp_image_undo_group_end (gfig_context->image);
 
-        return gimp_procedure_new_return_values (procedure, status, NULL);
-    }
+		return gimp_procedure_new_return_values (procedure, status, NULL);
+	}
 
-    /* Calculate preview size */
+	/* Calculate preview size */
 
-    if (sel_width > sel_height)
-    {
-        pwidth  = MIN (sel_width, PREVIEW_SIZE);
-        pheight = sel_height * pwidth / sel_width;
-    }
-    else
-    {
-        pheight = MIN (sel_height, PREVIEW_SIZE);
-        pwidth  = sel_width * pheight / sel_height;
-    }
+	if (sel_width > sel_height)
+	{
+		pwidth  = MIN (sel_width, PREVIEW_SIZE);
+		pheight = sel_height * pwidth / sel_width;
+	}
+	else
+	{
+		pheight = MIN (sel_height, PREVIEW_SIZE);
+		pwidth  = sel_width * pheight / sel_height;
+	}
 
-    preview_width  = MAX (pwidth, 2);  /* Min size is 2 */
-    preview_height = MAX (pheight, 2);
+	preview_width  = MAX (pwidth, 2);/* Min size is 2 */
+	preview_height = MAX (pheight, 2);
 
-    org_scale_x_factor = scale_x_factor =
-                             (gdouble) sel_width / (gdouble) preview_width;
-    org_scale_y_factor = scale_y_factor =
-                             (gdouble) sel_height / (gdouble) preview_height;
+	org_scale_x_factor = scale_x_factor =
+		(gdouble) sel_width / (gdouble) preview_width;
+	org_scale_y_factor = scale_y_factor =
+		(gdouble) sel_height / (gdouble) preview_height;
 
-    /* initialize */
-    gfig_init_object_classes ();
+	/* initialize */
+	gfig_init_object_classes ();
 
-    switch (run_mode)
-    {
-    case GIMP_RUN_INTERACTIVE:
-    case GIMP_RUN_WITH_LAST_VALS:
-        if (! gfig_dialog ())
-        {
-            gimp_image_undo_group_end (gfig_context->image);
+	switch (run_mode)
+	{
+	case GIMP_RUN_INTERACTIVE:
+	case GIMP_RUN_WITH_LAST_VALS:
+		if (!gfig_dialog ())
+		{
+			gimp_image_undo_group_end (gfig_context->image);
 
-            return gimp_procedure_new_return_values (procedure, GIMP_PDB_CANCEL,
-                    NULL);
-        }
-        break;
+			return gimp_procedure_new_return_values (procedure, GIMP_PDB_CANCEL,
+			                                         NULL);
+		}
+		break;
 
-    case GIMP_RUN_NONINTERACTIVE:
-        status = GIMP_PDB_CALLING_ERROR;
-        break;
+	case GIMP_RUN_NONINTERACTIVE:
+		status = GIMP_PDB_CALLING_ERROR;
+		break;
 
-    default:
-        break;
-    }
+	default:
+		break;
+	}
 
-    gimp_context_pop ();
+	gimp_context_pop ();
 
-    gimp_image_undo_group_end (gfig_context->image);
+	gimp_image_undo_group_end (gfig_context->image);
 
-    if (run_mode != GIMP_RUN_NONINTERACTIVE)
-        gimp_displays_flush ();
+	if (run_mode != GIMP_RUN_NONINTERACTIVE)
+		gimp_displays_flush ();
 
-    return gimp_procedure_new_return_values (procedure, status, NULL);
+	return gimp_procedure_new_return_values (procedure, status, NULL);
 }
 
 /*
-  Translate SPACE to "\\040", etc.
-  Taken from gflare plugin
+   Translate SPACE to "\\040", etc.
+   Taken from gflare plugin
  */
 void
 gfig_name_encode (gchar *dest,
                   gchar *src)
 {
-    gint cnt = MAX_LOAD_LINE - 1;
+	gint cnt = MAX_LOAD_LINE - 1;
 
-    while (*src && cnt--)
-    {
-        if (g_ascii_iscntrl (*src) || g_ascii_isspace (*src) || *src == '\\')
-        {
-            sprintf (dest, "\\%03o", *src++);
-            dest += 4;
-        }
-        else
-            *dest++ = *src++;
-    }
-    *dest = '\0';
+	while (*src && cnt--)
+	{
+		if (g_ascii_iscntrl (*src) || g_ascii_isspace (*src) || *src == '\\')
+		{
+			sprintf (dest, "\\%03o", *src++);
+			dest += 4;
+		}
+		else
+			*dest++ = *src++;
+	}
+	*dest = '\0';
 }
 
 /*
-  Translate "\\040" to SPACE, etc.
+   Translate "\\040" to SPACE, etc.
  */
 void
 gfig_name_decode (gchar       *dest,
                   const gchar *src)
 {
-    gint  cnt = MAX_LOAD_LINE - 1;
-    guint tmp;
+	gint cnt = MAX_LOAD_LINE - 1;
+	guint tmp;
 
-    while (*src && cnt--)
-    {
-        if (*src == '\\' && *(src+1) && *(src+2) && *(src+3))
-        {
-            sscanf (src+1, "%3o", &tmp);
-            *dest++ = tmp;
-            src += 4;
-        }
-        else
-            *dest++ = *src++;
-    }
-    *dest = '\0';
+	while (*src && cnt--)
+	{
+		if (*src == '\\' && *(src+1) && *(src+2) && *(src+3))
+		{
+			sscanf (src+1, "%3o", &tmp);
+			*dest++ = tmp;
+			src += 4;
+		}
+		else
+			*dest++ = *src++;
+	}
+	*dest = '\0';
 }
 
 
@@ -337,22 +337,22 @@ gfig_name_decode (gchar       *dest,
 gint
 gfig_list_pos (GFigObj *gfig)
 {
-    GFigObj *g;
-    gint     n;
-    GList   *tmp;
+	GFigObj *g;
+	gint n;
+	GList   *tmp;
 
-    n = 0;
+	n = 0;
 
-    for (tmp = gfig_list; tmp; tmp = g_list_next (tmp))
-    {
-        g = tmp->data;
+	for (tmp = gfig_list; tmp; tmp = g_list_next (tmp))
+	{
+		g = tmp->data;
 
-        if (strcmp (gfig->draw_name, g->draw_name) <= 0)
-            break;
+		if (strcmp (gfig->draw_name, g->draw_name) <= 0)
+			break;
 
-        n++;
-    }
-    return n;
+		n++;
+	}
+	return n;
 }
 
 /*
@@ -362,481 +362,481 @@ gfig_list_pos (GFigObj *gfig)
 gint
 gfig_list_insert (GFigObj *gfig)
 {
-    gint n;
+	gint n;
 
-    n = gfig_list_pos (gfig);
+	n = gfig_list_pos (gfig);
 
-    gfig_list = g_list_insert (gfig_list, gfig, n);
+	gfig_list = g_list_insert (gfig_list, gfig, n);
 
-    return n;
+	return n;
 }
 
 void
 gfig_free (GFigObj *gfig)
 {
-    g_assert (gfig != NULL);
+	g_assert (gfig != NULL);
 
-    free_all_objs (gfig->obj_list);
+	free_all_objs (gfig->obj_list);
 
-    g_free (gfig->name);
-    g_free (gfig->filename);
-    g_free (gfig->draw_name);
+	g_free (gfig->name);
+	g_free (gfig->filename);
+	g_free (gfig->draw_name);
 
-    g_free (gfig);
+	g_free (gfig);
 }
 
 GFigObj *
 gfig_new (void)
 {
-    return g_new0 (GFigObj, 1);
+	return g_new0 (GFigObj, 1);
 }
 
 static void
 gfig_load_objs (GFigObj *gfig,
-                gint     load_count,
+                gint load_count,
                 FILE    *fp)
 {
-    GfigObject *obj;
-    gchar       load_buf[MAX_LOAD_LINE];
-    glong       offset;
-    glong       offset2;
-    Style       style;
+	GfigObject *obj;
+	gchar load_buf[MAX_LOAD_LINE];
+	glong offset;
+	glong offset2;
+	Style style;
 
-    while (load_count-- > 0)
-    {
-        obj = NULL;
-        get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+	while (load_count-- > 0)
+	{
+		obj = NULL;
+		get_line (load_buf, MAX_LOAD_LINE, fp, 0);
 
-        /* kludge */
-        offset = ftell (fp);
-        gfig_skip_style (&style, fp);
+		/* kludge */
+		offset = ftell (fp);
+		gfig_skip_style (&style, fp);
 
-        obj = d_load_object (load_buf, fp);
+		obj = d_load_object (load_buf, fp);
 
-        if (obj)
-        {
-            add_to_all_obj (gfig, obj);
-            offset2 = ftell (fp);
-            fseek (fp, offset, SEEK_SET);
-            gfig_load_style (&obj->style, fp);
-            fseek (fp, offset2, SEEK_SET);
-        }
-        else
-        {
-            g_message ("Failed to load object, load count = %d", load_count);
-        }
-    }
+		if (obj)
+		{
+			add_to_all_obj (gfig, obj);
+			offset2 = ftell (fp);
+			fseek (fp, offset, SEEK_SET);
+			gfig_load_style (&obj->style, fp);
+			fseek (fp, offset2, SEEK_SET);
+		}
+		else
+		{
+			g_message ("Failed to load object, load count = %d", load_count);
+		}
+	}
 }
 
 GFigObj *
 gfig_load (const gchar *filename,
            const gchar *name)
 {
-    GFigObj *gfig;
-    FILE    *fp;
-    gchar    load_buf[MAX_LOAD_LINE];
-    gchar    str_buf[MAX_LOAD_LINE];
-    gint     chk_count;
-    gint     load_count = 0;
-    gdouble  version;
-    gchar    magic1[20];
-    gchar    magic2[20];
+	GFigObj *gfig;
+	FILE    *fp;
+	gchar load_buf[MAX_LOAD_LINE];
+	gchar str_buf[MAX_LOAD_LINE];
+	gint chk_count;
+	gint load_count = 0;
+	gdouble version;
+	gchar magic1[20];
+	gchar magic2[20];
 
-    g_assert (filename != NULL);
+	g_assert (filename != NULL);
 
 #ifdef DEBUG
-    printf ("Loading %s (%s)\n", filename, name);
+	printf ("Loading %s (%s)\n", filename, name);
 #endif /* DEBUG */
 
-    fp = g_fopen (filename, "rb");
-    if (!fp)
-    {
-        g_message (_("Could not open '%s' for reading: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
-        return NULL;
-    }
+	fp = g_fopen (filename, "rb");
+	if (!fp)
+	{
+		g_message (_("Could not open '%s' for reading: %s"),
+		           gimp_filename_to_utf8 (filename), g_strerror (errno));
+		return NULL;
+	}
 
-    gfig = gfig_new ();
+	gfig = gfig_new ();
 
-    gfig->name = g_strdup (name);
-    gfig->filename = g_strdup (filename);
-
-
-    /* HEADER
-     * draw_name
-     * version
-     * obj_list
-     */
-
-    get_line (load_buf, MAX_LOAD_LINE, fp, 1);
-
-    sscanf (load_buf, "%10s %10s %lf", magic1, magic2, &version);
-
-    if (strcmp (magic1, "GFIG") || strcmp (magic2, "Version"))
-    {
-        g_message ("File '%s' is not a gfig file",
-                   gimp_filename_to_utf8 (gfig->filename));
-        gfig_free (gfig);
-        fclose (fp);
-        return NULL;
-    }
-
-    get_line (load_buf, MAX_LOAD_LINE, fp, 0);
-    sscanf (load_buf, "Name: %100s", str_buf);
-    gfig_name_decode (load_buf, str_buf);
-    gfig->draw_name = g_strdup (load_buf);
-
-    get_line (load_buf, MAX_LOAD_LINE, fp, 0);
-    if (strncmp (load_buf, "Version: ", 9) == 0)
-        gfig->version = g_ascii_strtod (load_buf + 9, NULL);
-
-    get_line (load_buf, MAX_LOAD_LINE, fp, 0);
-    sscanf (load_buf, "ObjCount: %d", &load_count);
-
-    if (load_options (gfig, fp))
-    {
-        g_message ("File '%s' corrupt file - Line %d Option section incorrect",
-                   gimp_filename_to_utf8 (filename), line_no);
-        gfig_free (gfig);
-        fclose (fp);
-        return NULL;
-    }
-
-    if (gfig_load_styles (gfig, fp))
-    {
-        g_message ("File '%s' corrupt file - Line %d Option section incorrect",
-                   gimp_filename_to_utf8 (filename), line_no);
-        gfig_free (gfig);
-        fclose (fp);
-        return NULL;
-    }
+	gfig->name = g_strdup (name);
+	gfig->filename = g_strdup (filename);
 
 
+	/* HEADER
+	 * draw_name
+	 * version
+	 * obj_list
+	 */
 
-    gfig_load_objs (gfig, load_count, fp);
+	get_line (load_buf, MAX_LOAD_LINE, fp, 1);
 
-    /* Check count ? */
+	sscanf (load_buf, "%10s %10s %lf", magic1, magic2, &version);
 
-    chk_count = g_list_length (gfig->obj_list);
+	if (strcmp (magic1, "GFIG") || strcmp (magic2, "Version"))
+	{
+		g_message ("File '%s' is not a gfig file",
+		           gimp_filename_to_utf8 (gfig->filename));
+		gfig_free (gfig);
+		fclose (fp);
+		return NULL;
+	}
 
-    if (chk_count != load_count)
-    {
-        g_message ("File '%s' corrupt file - Line %d Object count to small",
-                   gimp_filename_to_utf8 (filename), line_no);
-        gfig_free (gfig);
-        fclose (fp);
-        return NULL;
-    }
+	get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+	sscanf (load_buf, "Name: %100s", str_buf);
+	gfig_name_decode (load_buf, str_buf);
+	gfig->draw_name = g_strdup (load_buf);
 
-    fclose (fp);
+	get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+	if (strncmp (load_buf, "Version: ", 9) == 0)
+		gfig->version = g_ascii_strtod (load_buf + 9, NULL);
 
-    if (!gfig_context->current_obj)
-        gfig_context->current_obj = gfig;
+	get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+	sscanf (load_buf, "ObjCount: %d", &load_count);
 
-    gfig->obj_status = GFIG_OK;
+	if (load_options (gfig, fp))
+	{
+		g_message ("File '%s' corrupt file - Line %d Option section incorrect",
+		           gimp_filename_to_utf8 (filename), line_no);
+		gfig_free (gfig);
+		fclose (fp);
+		return NULL;
+	}
 
-    return gfig;
+	if (gfig_load_styles (gfig, fp))
+	{
+		g_message ("File '%s' corrupt file - Line %d Option section incorrect",
+		           gimp_filename_to_utf8 (filename), line_no);
+		gfig_free (gfig);
+		fclose (fp);
+		return NULL;
+	}
+
+
+
+	gfig_load_objs (gfig, load_count, fp);
+
+	/* Check count ? */
+
+	chk_count = g_list_length (gfig->obj_list);
+
+	if (chk_count != load_count)
+	{
+		g_message ("File '%s' corrupt file - Line %d Object count to small",
+		           gimp_filename_to_utf8 (filename), line_no);
+		gfig_free (gfig);
+		fclose (fp);
+		return NULL;
+	}
+
+	fclose (fp);
+
+	if (!gfig_context->current_obj)
+		gfig_context->current_obj = gfig;
+
+	gfig->obj_status = GFIG_OK;
+
+	return gfig;
 }
 
 void
 save_options (GString *string)
 {
-    /* Save options */
-    g_string_append_printf (string, "<OPTIONS>\n");
-    g_string_append_printf (string, "GridSpacing: %d\n",
-                            selvals.opts.gridspacing);
-    if (selvals.opts.gridtype == RECT_GRID)
-    {
-        g_string_append_printf (string, "GridType: RECT_GRID\n");
-    }
-    else if (selvals.opts.gridtype == POLAR_GRID)
-    {
-        g_string_append_printf (string, "GridType: POLAR_GRID\n");
-    }
-    else if (selvals.opts.gridtype == ISO_GRID)
-    {
-        g_string_append_printf (string, "GridType: ISO_GRID\n");
-    }
-    else
-    {
-        /* default to RECT_GRID */
-        g_string_append_printf (string, "GridType: RECT_GRID\n");
-    }
+	/* Save options */
+	g_string_append_printf (string, "<OPTIONS>\n");
+	g_string_append_printf (string, "GridSpacing: %d\n",
+	                        selvals.opts.gridspacing);
+	if (selvals.opts.gridtype == RECT_GRID)
+	{
+		g_string_append_printf (string, "GridType: RECT_GRID\n");
+	}
+	else if (selvals.opts.gridtype == POLAR_GRID)
+	{
+		g_string_append_printf (string, "GridType: POLAR_GRID\n");
+	}
+	else if (selvals.opts.gridtype == ISO_GRID)
+	{
+		g_string_append_printf (string, "GridType: ISO_GRID\n");
+	}
+	else
+	{
+		/* default to RECT_GRID */
+		g_string_append_printf (string, "GridType: RECT_GRID\n");
+	}
 
-    g_string_append_printf (string, "DrawGrid: %s\n",
-                            (selvals.opts.drawgrid) ? "TRUE" : "FALSE");
-    g_string_append_printf (string, "Snap2Grid: %s\n",
-                            (selvals.opts.snap2grid) ? "TRUE" : "FALSE");
-    g_string_append_printf (string, "LockOnGrid: %s\n",
-                            (selvals.opts.lockongrid) ? "TRUE" : "FALSE");
-    g_string_append_printf (string, "ShowControl: %s\n",
-                            (selvals.opts.showcontrol) ? "TRUE" : "FALSE");
-    g_string_append_printf (string, "</OPTIONS>\n");
+	g_string_append_printf (string, "DrawGrid: %s\n",
+	                        (selvals.opts.drawgrid) ? "TRUE" : "FALSE");
+	g_string_append_printf (string, "Snap2Grid: %s\n",
+	                        (selvals.opts.snap2grid) ? "TRUE" : "FALSE");
+	g_string_append_printf (string, "LockOnGrid: %s\n",
+	                        (selvals.opts.lockongrid) ? "TRUE" : "FALSE");
+	g_string_append_printf (string, "ShowControl: %s\n",
+	                        (selvals.opts.showcontrol) ? "TRUE" : "FALSE");
+	g_string_append_printf (string, "</OPTIONS>\n");
 }
 
 static void
 gfig_save_obj_start (GfigObject *obj,
                      GString    *string)
 {
-    g_string_append_printf (string, "<%s ", obj->class->name);
-    gfig_style_save_as_attributes (&obj->style, string);
-    g_string_append_printf (string, ">\n");
+	g_string_append_printf (string, "<%s ", obj->class->name);
+	gfig_style_save_as_attributes (&obj->style, string);
+	g_string_append_printf (string, ">\n");
 }
 
 static void
 gfig_save_obj_end (GfigObject *obj,
                    GString    *string)
 {
-    g_string_append_printf (string, "</%s>\n",obj->class->name);
+	g_string_append_printf (string, "</%s>\n",obj->class->name);
 }
 
 static gboolean
 load_bool (gchar *opt_buf,
            gint  *toset)
 {
-    if (!strcmp (opt_buf, "TRUE"))
-        *toset = 1;
-    else if (!strcmp (opt_buf, "FALSE"))
-        *toset = 0;
-    else
-        return TRUE;
+	if (!strcmp (opt_buf, "TRUE"))
+		*toset = 1;
+	else if (!strcmp (opt_buf, "FALSE"))
+		*toset = 0;
+	else
+		return TRUE;
 
-    return FALSE;
+	return FALSE;
 }
 
 static gint
 load_options (GFigObj *gfig,
               FILE    *fp)
 {
-    gchar load_buf[MAX_LOAD_LINE];
-    gchar str_buf[MAX_LOAD_LINE];
-    gchar opt_buf[MAX_LOAD_LINE];
+	gchar load_buf[MAX_LOAD_LINE];
+	gchar str_buf[MAX_LOAD_LINE];
+	gchar opt_buf[MAX_LOAD_LINE];
 
-    get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+	get_line (load_buf, MAX_LOAD_LINE, fp, 0);
 
 #ifdef DEBUG
-    printf ("load '%s'\n", load_buf);
+	printf ("load '%s'\n", load_buf);
 #endif /* DEBUG */
 
-    if (strcmp (load_buf, "<OPTIONS>"))
-        return (-1);
+	if (strcmp (load_buf, "<OPTIONS>"))
+		return (-1);
 
-    get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+	get_line (load_buf, MAX_LOAD_LINE, fp, 0);
 
 #ifdef DEBUG
-    printf ("opt line '%s'\n", load_buf);
+	printf ("opt line '%s'\n", load_buf);
 #endif /* DEBUG */
 
-    while (strcmp (load_buf, "</OPTIONS>"))
-    {
-        /* Get option name */
+	while (strcmp (load_buf, "</OPTIONS>"))
+	{
+		/* Get option name */
 #ifdef DEBUG
-        printf ("num = %d\n", sscanf (load_buf, "%255s %255s", str_buf, opt_buf));
+		printf ("num = %d\n", sscanf (load_buf, "%255s %255s", str_buf, opt_buf));
 
-        printf ("option %s val %s\n", str_buf, opt_buf);
+		printf ("option %s val %s\n", str_buf, opt_buf);
 #else
-        sscanf (load_buf, "%255s %255s", str_buf, opt_buf);
+		sscanf (load_buf, "%255s %255s", str_buf, opt_buf);
 #endif /* DEBUG */
 
-        if (!strcmp (str_buf, "GridSpacing:"))
-        {
-            /* Value is decimal */
-            int sp = 0;
-            sp = atoi (opt_buf);
-            if (sp <= 0)
-                return (-1);
-            gfig->opts.gridspacing = sp;
-        }
-        else if (!strcmp (str_buf, "DrawGrid:"))
-        {
-            /* Value is bool */
-            if (load_bool (opt_buf, &gfig->opts.drawgrid))
-                return (-1);
-        }
-        else if (!strcmp (str_buf, "Snap2Grid:"))
-        {
-            /* Value is bool */
-            if (load_bool (opt_buf, &gfig->opts.snap2grid))
-                return (-1);
-        }
-        else if (!strcmp (str_buf, "LockOnGrid:"))
-        {
-            /* Value is bool */
-            if (load_bool (opt_buf, &gfig->opts.lockongrid))
-                return (-1);
-        }
-        else if (!strcmp (str_buf, "ShowControl:"))
-        {
-            /* Value is bool */
-            if (load_bool (opt_buf, &gfig->opts.showcontrol))
-                return (-1);
-        }
-        else if (!strcmp (str_buf, "GridType:"))
-        {
-            /* Value is string */
-            if (!strcmp (opt_buf, "RECT_GRID"))
-                gfig->opts.gridtype = RECT_GRID;
-            else if (!strcmp (opt_buf, "POLAR_GRID"))
-                gfig->opts.gridtype = POLAR_GRID;
-            else if (!strcmp (opt_buf, "ISO_GRID"))
-                gfig->opts.gridtype = ISO_GRID;
-            else
-                return (-1);
-        }
+		if (!strcmp (str_buf, "GridSpacing:"))
+		{
+			/* Value is decimal */
+			int sp = 0;
+			sp = atoi (opt_buf);
+			if (sp <= 0)
+				return (-1);
+			gfig->opts.gridspacing = sp;
+		}
+		else if (!strcmp (str_buf, "DrawGrid:"))
+		{
+			/* Value is bool */
+			if (load_bool (opt_buf, &gfig->opts.drawgrid))
+				return (-1);
+		}
+		else if (!strcmp (str_buf, "Snap2Grid:"))
+		{
+			/* Value is bool */
+			if (load_bool (opt_buf, &gfig->opts.snap2grid))
+				return (-1);
+		}
+		else if (!strcmp (str_buf, "LockOnGrid:"))
+		{
+			/* Value is bool */
+			if (load_bool (opt_buf, &gfig->opts.lockongrid))
+				return (-1);
+		}
+		else if (!strcmp (str_buf, "ShowControl:"))
+		{
+			/* Value is bool */
+			if (load_bool (opt_buf, &gfig->opts.showcontrol))
+				return (-1);
+		}
+		else if (!strcmp (str_buf, "GridType:"))
+		{
+			/* Value is string */
+			if (!strcmp (opt_buf, "RECT_GRID"))
+				gfig->opts.gridtype = RECT_GRID;
+			else if (!strcmp (opt_buf, "POLAR_GRID"))
+				gfig->opts.gridtype = POLAR_GRID;
+			else if (!strcmp (opt_buf, "ISO_GRID"))
+				gfig->opts.gridtype = ISO_GRID;
+			else
+				return (-1);
+		}
 
-        get_line (load_buf, MAX_LOAD_LINE, fp, 0);
+		get_line (load_buf, MAX_LOAD_LINE, fp, 0);
 
 #ifdef DEBUG
-        printf ("opt line '%s'\n", load_buf);
+		printf ("opt line '%s'\n", load_buf);
 #endif /* DEBUG */
-    }
-    return (0);
+	}
+	return (0);
 }
 
 GString *
 gfig_save_as_string (void)
 {
-    GList    *objs;
-    gint      count;
-    gchar     buf[G_ASCII_DTOSTR_BUF_SIZE];
-    gchar     conv_buf[MAX_LOAD_LINE * 3 + 1];
-    GString  *string;
+	GList    *objs;
+	gint count;
+	gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
+	gchar conv_buf[MAX_LOAD_LINE * 3 + 1];
+	GString  *string;
 
-    string = g_string_new (GFIG_HEADER);
+	string = g_string_new (GFIG_HEADER);
 
-    gfig_name_encode (conv_buf, gfig_context->current_obj->draw_name);
-    g_string_append_printf (string, "Name: %s\n", conv_buf);
-    g_string_append_printf (string, "Version: %s\n",
-                            g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE, "%f",
-                                    gfig_context->current_obj->version));
-    objs = gfig_context->current_obj->obj_list;
+	gfig_name_encode (conv_buf, gfig_context->current_obj->draw_name);
+	g_string_append_printf (string, "Name: %s\n", conv_buf);
+	g_string_append_printf (string, "Version: %s\n",
+	                        g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE, "%f",
+	                                         gfig_context->current_obj->version));
+	objs = gfig_context->current_obj->obj_list;
 
-    count = g_list_length (objs);
+	count = g_list_length (objs);
 
-    g_string_append_printf (string, "ObjCount: %d\n", count);
+	g_string_append_printf (string, "ObjCount: %d\n", count);
 
-    save_options (string);
+	save_options (string);
 
-    gfig_save_styles (string);
+	gfig_save_styles (string);
 
-    for (objs = gfig_context->current_obj->obj_list;
-            objs;
-            objs = g_list_next (objs))
-    {
-        GfigObject *object = objs->data;
+	for (objs = gfig_context->current_obj->obj_list;
+	     objs;
+	     objs = g_list_next (objs))
+	{
+		GfigObject *object = objs->data;
 
-        gfig_save_obj_start (object, string);
+		gfig_save_obj_start (object, string);
 
-        gfig_save_style (&object->style, string);
+		gfig_save_style (&object->style, string);
 
-        if (object->points)
-            d_save_object (object, string);
+		if (object->points)
+			d_save_object (object, string);
 
-        gfig_save_obj_end (object, string);
-    }
+		gfig_save_obj_end (object, string);
+	}
 
-    return string;
+	return string;
 }
 
 
 gboolean
 gfig_save_as_parasite (void)
 {
-    GimpParasite *parasite;
-    GString       *string;
+	GimpParasite *parasite;
+	GString       *string;
 
-    string = gfig_save_as_string ();
+	string = gfig_save_as_string ();
 
-    parasite = gimp_parasite_new ("gfig",
-                                  GIMP_PARASITE_PERSISTENT |
-                                  GIMP_PARASITE_UNDOABLE,
-                                  string->len, string->str);
+	parasite = gimp_parasite_new ("gfig",
+	                              GIMP_PARASITE_PERSISTENT |
+	                              GIMP_PARASITE_UNDOABLE,
+	                              string->len, string->str);
 
-    g_string_free (string, TRUE);
+	g_string_free (string, TRUE);
 
-    if (!gimp_item_attach_parasite (GIMP_ITEM (gfig_context->drawable),
-                                    parasite))
-    {
-        g_message (_("Error trying to save figure as a parasite: "
-                     "can't attach parasite to drawable."));
-        gimp_parasite_free (parasite);
-        return FALSE;
-    }
+	if (!gimp_item_attach_parasite (GIMP_ITEM (gfig_context->drawable),
+	                                parasite))
+	{
+		g_message (_("Error trying to save figure as a parasite: "
+		             "can't attach parasite to drawable."));
+		gimp_parasite_free (parasite);
+		return FALSE;
+	}
 
-    gimp_parasite_free (parasite);
-    return TRUE;
+	gimp_parasite_free (parasite);
+	return TRUE;
 }
 
 GFigObj *
 gfig_load_from_parasite (void)
 {
-    GFile        *file;
-    gchar        *fname;
-    FILE         *fp;
-    GimpParasite *parasite;
-    GFigObj      *gfig;
+	GFile        *file;
+	gchar        *fname;
+	FILE         *fp;
+	GimpParasite *parasite;
+	GFigObj      *gfig;
 
-    parasite = gimp_item_get_parasite (GIMP_ITEM (gfig_context->drawable),
-                                       "gfig");
-    if (! parasite)
-        return NULL;
+	parasite = gimp_item_get_parasite (GIMP_ITEM (gfig_context->drawable),
+	                                   "gfig");
+	if (!parasite)
+		return NULL;
 
-    file  = gimp_temp_file ("gfigtmp");
-    fname = g_file_get_path (file);
+	file  = gimp_temp_file ("gfigtmp");
+	fname = g_file_get_path (file);
 
-    fp = g_fopen (fname, "wb");
-    if (! fp)
-    {
-        g_message (_("Error trying to open temporary file '%s' "
-                     "for parasite loading: %s"),
-                   gimp_file_get_utf8_name (file), g_strerror (errno));
-        return NULL;
-    }
+	fp = g_fopen (fname, "wb");
+	if (!fp)
+	{
+		g_message (_("Error trying to open temporary file '%s' "
+		             "for parasite loading: %s"),
+		           gimp_file_get_utf8_name (file), g_strerror (errno));
+		return NULL;
+	}
 
-    fwrite (gimp_parasite_data (parasite),
-            sizeof (guchar),
-            gimp_parasite_data_size (parasite),
-            fp);
-    fclose (fp);
+	fwrite (gimp_parasite_data (parasite),
+	        sizeof (guchar),
+	        gimp_parasite_data_size (parasite),
+	        fp);
+	fclose (fp);
 
-    gimp_parasite_free (parasite);
+	gimp_parasite_free (parasite);
 
-    gfig = gfig_load (fname, "(none)");
+	gfig = gfig_load (fname, "(none)");
 
-    g_unlink (fname);
+	g_unlink (fname);
 
-    g_free (fname);
-    g_object_unref (file);
+	g_free (fname);
+	g_object_unref (file);
 
-    return gfig;
+	return gfig;
 }
 
 void
 gfig_save_callbk (void)
 {
-    FILE     *fp;
-    gchar    *savename;
-    GString  *string;
+	FILE     *fp;
+	gchar    *savename;
+	GString  *string;
 
-    savename = gfig_context->current_obj->filename;
+	savename = gfig_context->current_obj->filename;
 
-    fp = g_fopen (savename, "w+b");
+	fp = g_fopen (savename, "w+b");
 
-    if (!fp)
-    {
-        g_message (_("Could not open '%s' for writing: %s"),
-                   gimp_filename_to_utf8 (savename), g_strerror (errno));
-        return;
-    }
+	if (!fp)
+	{
+		g_message (_("Could not open '%s' for writing: %s"),
+		           gimp_filename_to_utf8 (savename), g_strerror (errno));
+		return;
+	}
 
-    string = gfig_save_as_string ();
+	string = gfig_save_as_string ();
 
-    fwrite (string->str, string->len, 1, fp);
+	fwrite (string->str, string->len, 1, fp);
 
-    if (ferror (fp))
-        g_message ("Failed to write file.");
-    else
-        gfig_context->current_obj->obj_status &= ~(GFIG_MODIFIED | GFIG_READONLY);
+	if (ferror (fp))
+		g_message ("Failed to write file.");
+	else
+		gfig_context->current_obj->obj_status &= ~(GFIG_MODIFIED | GFIG_READONLY);
 
-    fclose (fp);
+	fclose (fp);
 }

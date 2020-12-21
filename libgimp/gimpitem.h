@@ -39,36 +39,36 @@ G_BEGIN_DECLS
 #define GIMP_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ITEM, GimpItemClass))
 
 
-typedef struct _GimpItemClass   GimpItemClass;
+typedef struct _GimpItemClass GimpItemClass;
 typedef struct _GimpItemPrivate GimpItemPrivate;
 
 struct _GimpItem
 {
-    GObject           parent_instance;
+	GObject parent_instance;
 
-    GimpItemPrivate *priv;
+	GimpItemPrivate *priv;
 };
 
 struct _GimpItemClass
 {
-    GObjectClass parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType       gimp_item_get_type      (void) G_GNUC_CONST;
 
 gint32      gimp_item_get_id        (GimpItem *item);
-GimpItem  * gimp_item_get_by_id     (gint32    item_id);
+GimpItem  * gimp_item_get_by_id     (gint32 item_id);
 
 gboolean    gimp_item_is_valid      (GimpItem *item);
 gboolean    gimp_item_is_drawable   (GimpItem *item);

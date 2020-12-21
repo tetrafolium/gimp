@@ -32,31 +32,31 @@
 void
 do_about_dialog(void)
 {
-    static GtkWidget *dialog;
-    if (!dialog)
-    {
-        const gchar* authors[] = {"Maurits Rijk (m.rijk@chello.nl)", NULL};
+	static GtkWidget *dialog;
+	if (!dialog)
+	{
+		const gchar* authors[] = {"Maurits Rijk (m.rijk@chello.nl)", NULL};
 
-        dialog = g_object_new (GTK_TYPE_ABOUT_DIALOG,
-                               "transient-for", get_dialog(),
-                               "program-name",  _("Image Map Plug-in"),
-                               "version", "2.3",
-                               "authors", authors,
-                               "copyright",
-                               _("Copyright © 1999-2005 by Maurits Rijk"),
-                               "license",
-                               _("Released under the GNU General Public License"),
-                               NULL);
+		dialog = g_object_new (GTK_TYPE_ABOUT_DIALOG,
+		                       "transient-for", get_dialog(),
+		                       "program-name",  _("Image Map Plug-in"),
+		                       "version", "2.3",
+		                       "authors", authors,
+		                       "copyright",
+		                       _("Copyright © 1999-2005 by Maurits Rijk"),
+		                       "license",
+		                       _("Released under the GNU General Public License"),
+		                       NULL);
 
-        g_signal_connect (dialog, "response",
-                          G_CALLBACK (gtk_widget_destroy),
-                          dialog);
+		g_signal_connect (dialog, "response",
+		                  G_CALLBACK (gtk_widget_destroy),
+		                  dialog);
 
-        g_signal_connect (dialog, "destroy",
-                          G_CALLBACK (gtk_widget_destroyed),
-                          &dialog);
+		g_signal_connect (dialog, "destroy",
+		                  G_CALLBACK (gtk_widget_destroyed),
+		                  &dialog);
 
-    }
+	}
 
-    gtk_window_present (GTK_WINDOW (dialog));
+	gtk_window_present (GTK_WINDOW (dialog));
 }

@@ -37,9 +37,9 @@ GType gimp_color_management_mode_get_type (void) G_GNUC_CONST;
  **/
 typedef enum
 {
-    GIMP_COLOR_MANAGEMENT_OFF,       /*< desc="No color management"   >*/
-    GIMP_COLOR_MANAGEMENT_DISPLAY,   /*< desc="Color-managed display" >*/
-    GIMP_COLOR_MANAGEMENT_SOFTPROOF  /*< desc="Soft-proofing"      >*/
+	GIMP_COLOR_MANAGEMENT_OFF,   /*< desc="No color management"   >*/
+	GIMP_COLOR_MANAGEMENT_DISPLAY, /*< desc="Color-managed display" >*/
+	GIMP_COLOR_MANAGEMENT_SOFTPROOF /*< desc="Soft-proofing"      >*/
 } GimpColorManagementMode;
 
 
@@ -58,10 +58,10 @@ GType gimp_color_rendering_intent_get_type (void) G_GNUC_CONST;
  **/
 typedef enum
 {
-    GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*< desc="Perceptual"            >*/
-    GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*< desc="Relative colorimetric" >*/
-    GIMP_COLOR_RENDERING_INTENT_SATURATION,            /*< desc="Saturation"            >*/
-    GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC  /*< desc="Absolute colorimetric" >*/
+	GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,        /*< desc="Perceptual"            >*/
+	GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*< desc="Relative colorimetric" >*/
+	GIMP_COLOR_RENDERING_INTENT_SATURATION,        /*< desc="Saturation"            >*/
+	GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC /*< desc="Absolute colorimetric" >*/
 } GimpColorRenderingIntent;
 
 

@@ -30,8 +30,8 @@
 
 typedef enum
 {
-    north = 0, northwest = 1, west = 2, southwest = 3, south = 4,
-    southeast = 5, east = 6, northeast = 7
+	north = 0, northwest = 1, west = 2, southwest = 3, south = 4,
+	southeast = 5, east = 6, northeast = 7
 } direction_type;
 
 
@@ -50,35 +50,35 @@ static edge_type next_edge (edge_type);
 
 
 /* Find how to move in direction DIR on the axis AXIS (either `ROW' or
-  `COL').   We are in the ``display'' coordinate system, with y
-  increasing downward and x increasing to the right.  Therefore, we are
-  implementing the following table:
+   `COL').   We are in the ``display'' coordinate system, with y
+   increasing downward and x increasing to the right.  Therefore, we are
+   implementing the following table:
 
-  direction  row delta  col delta
+   direction  row delta  col delta
     north       -1          0
     south	+1	    0
     east	 0	   +1
     west	 0	   +1
 
-  with the other four directions (e.g., northwest) being the sum of
-  their components (e.g., north + west).
+   with the other four directions (e.g., northwest) being the sum of
+   their components (e.g., north + west).
 
-  The first macro, `COMPUTE_DELTA', handles splitting up the latter
-  cases, all of which have been assigned odd numbers.  */
+   The first macro, `COMPUTE_DELTA', handles splitting up the latter
+   cases, all of which have been assigned odd numbers.  */
 
-#define COMPUTE_DELTA(axis, dir)					\
-  ((dir) % 2 != 0							\
-    ? COMPUTE_##axis##_DELTA ((dir) - 1)				\
-      + COMPUTE_##axis##_DELTA (((dir) + 1) % 8)			\
-    : COMPUTE_##axis##_DELTA (dir)					\
-  )
+#define COMPUTE_DELTA(axis, dir)                                        \
+	((dir) % 2 != 0                                                       \
+    ? COMPUTE_ ## axis ## _DELTA ((dir) - 1)                                \
+	 + COMPUTE_ ## axis ## _DELTA (((dir) + 1) % 8)                        \
+    : COMPUTE_ ## axis ## _DELTA (dir)                                      \
+	)
 
 /* Now it is trivial to implement the four cardinal directions.  */
-#define COMPUTE_ROW_DELTA(dir)						\
-  ((dir) == north ? -1 : (dir) == south ? +1 : 0)
+#define COMPUTE_ROW_DELTA(dir)                                          \
+	((dir) == north ? -1 : (dir) == south ? +1 : 0)
 
-#define COMPUTE_COL_DELTA(dir)						\
-  ((dir) == west ? -1 : (dir) == east ? +1 : 0)
+#define COMPUTE_COL_DELTA(dir)                                          \
+	((dir) == west ? -1 : (dir) == east ? +1 : 0)
 
 
 /* See if the appropriate edge on the pixel from (row,col) in direction
@@ -86,23 +86,23 @@ static edge_type next_edge (edge_type);
    break.  We also use the variable `character' as the bitmap in which
    to look.  */
 
-#define TRY_PIXEL(dir)							\
-  {									\
-    int delta_r = COMPUTE_DELTA (ROW, dir);				\
-    int delta_c = COMPUTE_DELTA (COL, dir);				\
-    int test_row = *row + delta_r;					\
-    int test_col = *col + delta_c;					\
-    edge_type test_edge = FIND_TEST_EDGE (dir);				\
-									\
-    if (sel_valid_pixel(test_row, test_col)               		\
-        && is_outline_edge (test_edge, test_row, test_col))     	\
-      {									\
-        *row = test_row;						\
-        *col = test_col;						\
-        *edge = test_edge;						\
-        break;								\
-      }									\
-  }
+#define TRY_PIXEL(dir)                                                  \
+	{                                                                     \
+		int delta_r = COMPUTE_DELTA (ROW, dir);                             \
+		int delta_c = COMPUTE_DELTA (COL, dir);                             \
+		int test_row = *row + delta_r;                                      \
+		int test_col = *col + delta_c;                                      \
+		edge_type test_edge = FIND_TEST_EDGE (dir);                         \
+                                                                        \
+		if (sel_valid_pixel(test_row, test_col)                             \
+		    && is_outline_edge (test_edge, test_row, test_col))             \
+		{                                                                 \
+			*row = test_row;                                                \
+			*col = test_col;                                                \
+			*edge = test_edge;                                              \
+			break;                                                          \
+		}                                                                 \
+	}
 
 /* Finally, we are ready to implement the routine that finds the next
    edge on the outline.  We look first for an adjacent edge that is not
@@ -131,40 +131,40 @@ void
 next_outline_edge (edge_type *edge,
                    unsigned *row, unsigned *col)
 {
-    unsigned original_row = *row;
-    unsigned original_col = *col;
+	unsigned original_row = *row;
+	unsigned original_col = *col;
 
-    switch (*edge)
-    {
-    case right:
-        TRY_PIXEL (north);
-        TRY_PIXEL (northeast);
-        break;
+	switch (*edge)
+	{
+	case right:
+		TRY_PIXEL (north);
+		TRY_PIXEL (northeast);
+		break;
 
-    case top:
-        TRY_PIXEL (west);
-        TRY_PIXEL (northwest);
-        break;
+	case top:
+		TRY_PIXEL (west);
+		TRY_PIXEL (northwest);
+		break;
 
-    case left:
-        TRY_PIXEL (south);
-        TRY_PIXEL (southwest);
-        break;
+	case left:
+		TRY_PIXEL (south);
+		TRY_PIXEL (southwest);
+		break;
 
-    case bottom:
-        TRY_PIXEL (east);
-        TRY_PIXEL (southeast);
-        break;
+	case bottom:
+		TRY_PIXEL (east);
+		TRY_PIXEL (southeast);
+		break;
 
-    default:
-        printf ("next_outline_edge: Bad edge value (%d)", *edge);
+	default:
+		printf ("next_outline_edge: Bad edge value (%d)", *edge);
 
-    }
+	}
 
-    /* If we didn't find an adjacent edge on another pixel, return the
-       next edge on the current pixel.  */
-    if (*row == original_row && *col == original_col)
-        *edge = next_edge (*edge);
+	/* If we didn't find an adjacent edge on another pixel, return the
+	   next edge on the current pixel.  */
+	if (*row == original_row && *col == original_col)
+		*edge = next_edge (*edge);
 }
 
 /* We return the next edge on the pixel at position ROW and COL which is
@@ -177,19 +177,19 @@ next_unmarked_outline_edge (unsigned row, unsigned col,
                             edge_type starting_edge,
                             bitmap_type marked)
 {
-    edge_type edge = starting_edge;
+	edge_type edge = starting_edge;
 
-    assert (edge != no_edge);
+	assert (edge != no_edge);
 
-    while (is_marked_edge (edge, row, col, marked)
-            || !is_outline_edge (edge, row, col))
-    {
-        edge = next_edge (edge);
-        if (edge == starting_edge)
-            return no_edge;
-    }
+	while (is_marked_edge (edge, row, col, marked)
+	       || !is_outline_edge (edge, row, col))
+	{
+		edge = next_edge (edge);
+		if (edge == starting_edge)
+			return no_edge;
+	}
 
-    return edge;
+	return edge;
 }
 
 
@@ -202,32 +202,32 @@ static boolean
 is_outline_edge (edge_type edge,
                  unsigned row, unsigned col)
 {
-    /* If this pixel isn't black, it's not part of the outline.  */
-    if (sel_pixel_is_white(row, col))
-        return false;
+	/* If this pixel isn't black, it's not part of the outline.  */
+	if (sel_pixel_is_white(row, col))
+		return false;
 
-    switch (edge)
-    {
-    case left:
-        return col == 0 || sel_pixel_is_white(row, col - 1);
+	switch (edge)
+	{
+	case left:
+		return col == 0 || sel_pixel_is_white(row, col - 1);
 
-    case top:
-        return row == 0 || sel_pixel_is_white(row - 1, col);
+	case top:
+		return row == 0 || sel_pixel_is_white(row - 1, col);
 
-    case right:
-        return (col ==  sel_get_width() - 1)
-               || sel_pixel_is_white(row, col + 1);
+	case right:
+		return (col ==  sel_get_width() - 1)
+		       || sel_pixel_is_white(row, col + 1);
 
-    case bottom:
-        return (row ==  sel_get_height() - 1)
-               || sel_pixel_is_white(row + 1, col);
+	case bottom:
+		return (row ==  sel_get_height() - 1)
+		       || sel_pixel_is_white(row + 1, col);
 
-    case no_edge:
-    default:
-        printf ("is_outline_edge: Bad edge value(%d)", edge);
-    }
+	case no_edge:
+	default:
+		printf ("is_outline_edge: Bad edge value(%d)", edge);
+	}
 
-    return 0; /* NOTREACHED */
+	return 0; /* NOTREACHED */
 }
 
 /* If EDGE is not already marked, we mark it; otherwise, it's a fatal error.
@@ -237,11 +237,11 @@ is_outline_edge (edge_type edge,
 void
 mark_edge (edge_type edge, unsigned row, unsigned col, bitmap_type *marked)
 {
-    /* printf("row = %d, col = %d \n",row,col); */
-    assert (!is_marked_edge (edge, row, col, *marked));
+	/* printf("row = %d, col = %d \n",row,col); */
+	assert (!is_marked_edge (edge, row, col, *marked));
 
-    if (edge != no_edge)
-        BITMAP_PIXEL (*marked, row, col) |= 1 << edge;
+	if (edge != no_edge)
+		BITMAP_PIXEL (*marked, row, col) |= 1 << edge;
 }
 
 
@@ -250,8 +250,8 @@ mark_edge (edge_type edge, unsigned row, unsigned col, bitmap_type *marked)
 static boolean
 is_marked_edge (edge_type edge, unsigned row, unsigned col, bitmap_type marked)
 {
-    return
-        edge == no_edge ? false : BITMAP_PIXEL (marked, row, col) & (1 << edge);
+	return
+	        edge == no_edge ? false : BITMAP_PIXEL (marked, row, col) & (1 << edge);
 }
 
 
@@ -264,5 +264,5 @@ is_marked_edge (edge_type edge, unsigned row, unsigned col, bitmap_type marked)
 static edge_type
 next_edge (edge_type edge)
 {
-    return edge == no_edge ? edge : (edge + 1) % NUM_EDGES;
+	return edge == no_edge ? edge : (edge + 1) % NUM_EDGES;
 }

@@ -87,9 +87,9 @@ G_BEGIN_DECLS
  * values.
  **/
 #define GIMP_MAX_MEMSIZE     ((guint64) 1 << 42) /*  4 terabyte;
-                                                  *  needs a 64bit variable
-                                                  *  and must be < G_MAXDOUBLE
-                                                  */
+	                                          *  needs a 64bit variable
+	                                          *  and must be < G_MAXDOUBLE
+	                                          */
 
 
 G_END_DECLS

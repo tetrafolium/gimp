@@ -28,9 +28,9 @@
 void     d_arc_object_class_init (void);
 
 void     d_arc_start  (GdkPoint *pnt,
-                       gboolean  shift_down);
+                       gboolean shift_down);
 void     d_arc_end    (GdkPoint *pnt,
-                       gboolean  shift_down);
+                       gboolean shift_down);
 
 
 #endif /* __GFIG_ARC_H__ */

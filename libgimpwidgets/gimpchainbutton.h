@@ -46,43 +46,43 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpChainButtonPrivate GimpChainButtonPrivate;
-typedef struct _GimpChainButtonClass   GimpChainButtonClass;
+typedef struct _GimpChainButtonClass GimpChainButtonClass;
 
 struct _GimpChainButton
 {
-    GtkGrid                 parent_instance;
+	GtkGrid parent_instance;
 
-    GimpChainButtonPrivate *priv;
+	GimpChainButtonPrivate *priv;
 };
 
 struct _GimpChainButtonClass
 {
-    GtkGridClass  parent_class;
+	GtkGridClass parent_class;
 
-    void (* toggled)  (GimpChainButton *button);
+	void (* toggled)  (GimpChainButton *button);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType         gimp_chain_button_get_type      (void) G_GNUC_CONST;
 
-GtkWidget   * gimp_chain_button_new           (GimpChainPosition  position);
+GtkWidget   * gimp_chain_button_new           (GimpChainPosition position);
 
 void          gimp_chain_button_set_icon_size (GimpChainButton   *button,
-        GtkIconSize        size);
+                                               GtkIconSize size);
 GtkIconSize   gimp_chain_button_get_icon_size (GimpChainButton   *button);
 
 void          gimp_chain_button_set_active    (GimpChainButton   *button,
-        gboolean           active);
+                                               gboolean active);
 gboolean      gimp_chain_button_get_active    (GimpChainButton   *button);
 
 GtkWidget   * gimp_chain_button_get_button    (GimpChainButton   *button);

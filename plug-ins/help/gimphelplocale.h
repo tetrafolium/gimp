@@ -26,12 +26,12 @@
 
 struct _GimpHelpLocale
 {
-    gchar      *locale_id;
-    GHashTable *help_id_mapping;
-    gchar      *help_missing;
+	gchar      *locale_id;
+	GHashTable *help_id_mapping;
+	gchar      *help_missing;
 
-    /* eek */
-    GList      *toplevel_items;
+	/* eek */
+	GList      *toplevel_items;
 };
 
 
@@ -39,13 +39,13 @@ GimpHelpLocale * gimp_help_locale_new   (const gchar       *locale_id);
 void             gimp_help_locale_free  (GimpHelpLocale    *locale);
 
 const gchar    * gimp_help_locale_map   (GimpHelpLocale    *locale,
-        const gchar       *help_id);
+                                         const gchar       *help_id);
 
 gboolean         gimp_help_locale_parse (GimpHelpLocale    *locale,
-        const gchar       *uri,
-        const gchar       *help_domain,
-        GimpHelpProgress  *progress,
-        GError           **error);
+                                         const gchar       *uri,
+                                         const gchar       *help_domain,
+                                         GimpHelpProgress  *progress,
+                                         GError           **error);
 
 
 #endif /* __GIMP_HELP_LOCALE_H__ */

@@ -52,65 +52,65 @@ static void   string_to_unit (const GValue *src_value,
 GType
 gimp_unit_get_type (void)
 {
-    static GType unit_type = 0;
+	static GType unit_type = 0;
 
-    if (! unit_type)
-    {
-        const GTypeInfo type_info = { 0, };
+	if (!unit_type)
+	{
+		const GTypeInfo type_info = { 0, };
 
-        unit_type = g_type_register_static (G_TYPE_INT, "GimpUnit",
-                                            &type_info, 0);
+		unit_type = g_type_register_static (G_TYPE_INT, "GimpUnit",
+		                                    &type_info, 0);
 
-        g_value_register_transform_func (unit_type, G_TYPE_STRING,
-                                         unit_to_string);
-        g_value_register_transform_func (G_TYPE_STRING, unit_type,
-                                         string_to_unit);
-    }
+		g_value_register_transform_func (unit_type, G_TYPE_STRING,
+		                                 unit_to_string);
+		g_value_register_transform_func (G_TYPE_STRING, unit_type,
+		                                 string_to_unit);
+	}
 
-    return unit_type;
+	return unit_type;
 }
 
 static void
 unit_to_string (const GValue *src_value,
                 GValue       *dest_value)
 {
-    GimpUnit unit = (GimpUnit) g_value_get_int (src_value);
+	GimpUnit unit = (GimpUnit) g_value_get_int (src_value);
 
-    g_value_set_string (dest_value, gimp_unit_get_identifier (unit));
+	g_value_set_string (dest_value, gimp_unit_get_identifier (unit));
 }
 
 static void
 string_to_unit (const GValue *src_value,
                 GValue       *dest_value)
 {
-    const gchar *str;
-    gint         num_units;
-    gint         i;
+	const gchar *str;
+	gint num_units;
+	gint i;
 
-    str = g_value_get_string (src_value);
+	str = g_value_get_string (src_value);
 
-    if (!str || !*str)
-        goto error;
+	if (!str || !*str)
+		goto error;
 
-    num_units = gimp_unit_get_number_of_units ();
+	num_units = gimp_unit_get_number_of_units ();
 
-    for (i = GIMP_UNIT_PIXEL; i < num_units; i++)
-        if (strcmp (str, gimp_unit_get_identifier (i)) == 0)
-            break;
+	for (i = GIMP_UNIT_PIXEL; i < num_units; i++)
+		if (strcmp (str, gimp_unit_get_identifier (i)) == 0)
+			break;
 
-    if (i == num_units)
-    {
-        if (strcmp (str, gimp_unit_get_identifier (GIMP_UNIT_PERCENT)) == 0)
-            i = GIMP_UNIT_PERCENT;
-        else
-            goto error;
-    }
+	if (i == num_units)
+	{
+		if (strcmp (str, gimp_unit_get_identifier (GIMP_UNIT_PERCENT)) == 0)
+			i = GIMP_UNIT_PERCENT;
+		else
+			goto error;
+	}
 
-    g_value_set_int (dest_value, i);
-    return;
+	g_value_set_int (dest_value, i);
+	return;
 
 error:
-    g_warning ("Can't convert string '%s' to GimpUnit.", str);
+	g_warning ("Can't convert string '%s' to GimpUnit.", str);
 }
 
 
@@ -124,10 +124,10 @@ error:
 gint
 gimp_unit_get_number_of_units (void)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_number_of_units != NULL,
-                          GIMP_UNIT_END);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_number_of_units != NULL,
+	                      GIMP_UNIT_END);
 
-    return _gimp_unit_vtable.unit_get_number_of_units ();
+	return _gimp_unit_vtable.unit_get_number_of_units ();
 }
 
 /**
@@ -142,10 +142,10 @@ gimp_unit_get_number_of_units (void)
 gint
 gimp_unit_get_number_of_built_in_units (void)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_number_of_built_in_units
-                          != NULL, GIMP_UNIT_END);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_number_of_built_in_units
+	                      != NULL, GIMP_UNIT_END);
 
-    return _gimp_unit_vtable.unit_get_number_of_built_in_units ();
+	return _gimp_unit_vtable.unit_get_number_of_built_in_units ();
 }
 
 /**
@@ -168,17 +168,17 @@ gimp_unit_get_number_of_built_in_units (void)
  **/
 GimpUnit
 gimp_unit_new (gchar   *identifier,
-               gdouble  factor,
-               gint     digits,
+               gdouble factor,
+               gint digits,
                gchar   *symbol,
                gchar   *abbreviation,
                gchar   *singular,
                gchar   *plural)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_new != NULL, GIMP_UNIT_INCH);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_new != NULL, GIMP_UNIT_INCH);
 
-    return _gimp_unit_vtable.unit_new (identifier, factor, digits,
-                                       symbol, abbreviation, singular, plural);
+	return _gimp_unit_vtable.unit_new (identifier, factor, digits,
+	                                   symbol, abbreviation, singular, plural);
 }
 
 /**
@@ -190,9 +190,9 @@ gimp_unit_new (gchar   *identifier,
 gboolean
 gimp_unit_get_deletion_flag (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_deletion_flag != NULL, FALSE);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_deletion_flag != NULL, FALSE);
 
-    return _gimp_unit_vtable.unit_get_deletion_flag (unit);
+	return _gimp_unit_vtable.unit_get_deletion_flag (unit);
 }
 
 /**
@@ -211,9 +211,9 @@ void
 gimp_unit_set_deletion_flag (GimpUnit unit,
                              gboolean deletion_flag)
 {
-    g_return_if_fail (_gimp_unit_vtable.unit_set_deletion_flag != NULL);
+	g_return_if_fail (_gimp_unit_vtable.unit_set_deletion_flag != NULL);
 
-    _gimp_unit_vtable.unit_set_deletion_flag (unit, deletion_flag);
+	_gimp_unit_vtable.unit_set_deletion_flag (unit, deletion_flag);
 }
 
 /**
@@ -231,12 +231,12 @@ gimp_unit_set_deletion_flag (GimpUnit unit,
 gdouble
 gimp_unit_get_factor (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_factor != NULL, 1.0);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_factor != NULL, 1.0);
 
-    if (unit == GIMP_UNIT_PIXEL)
-        return 0.0;
+	if (unit == GIMP_UNIT_PIXEL)
+		return 0.0;
 
-    return _gimp_unit_vtable.unit_get_factor (unit);
+	return _gimp_unit_vtable.unit_get_factor (unit);
 }
 
 /**
@@ -259,9 +259,9 @@ gimp_unit_get_factor (GimpUnit unit)
 gint
 gimp_unit_get_digits (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_digits != NULL, 2);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_digits != NULL, 2);
 
-    return _gimp_unit_vtable.unit_get_digits (unit);
+	return _gimp_unit_vtable.unit_get_digits (unit);
 }
 
 /**
@@ -282,16 +282,16 @@ gimp_unit_get_digits (GimpUnit unit)
  **/
 gint
 gimp_unit_get_scaled_digits (GimpUnit unit,
-                             gdouble  resolution)
+                             gdouble resolution)
 {
-    gint digits;
+	gint digits;
 
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_digits != NULL, 2);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_digits != NULL, 2);
 
-    digits = ceil (log10 (1.0 /
-                          gimp_pixels_to_units (1.0, unit, resolution)));
+	digits = ceil (log10 (1.0 /
+	                      gimp_pixels_to_units (1.0, unit, resolution)));
 
-    return MAX (digits, gimp_unit_get_digits (unit));
+	return MAX (digits, gimp_unit_get_digits (unit));
 }
 
 /**
@@ -305,9 +305,9 @@ gimp_unit_get_scaled_digits (GimpUnit unit,
 const gchar *
 gimp_unit_get_identifier (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_identifier != NULL, NULL);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_identifier != NULL, NULL);
 
-    return _gimp_unit_vtable.unit_get_identifier (unit);
+	return _gimp_unit_vtable.unit_get_identifier (unit);
 }
 
 /**
@@ -323,9 +323,9 @@ gimp_unit_get_identifier (GimpUnit unit)
 const gchar *
 gimp_unit_get_symbol (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_symbol != NULL, NULL);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_symbol != NULL, NULL);
 
-    return _gimp_unit_vtable.unit_get_symbol (unit);
+	return _gimp_unit_vtable.unit_get_symbol (unit);
 }
 
 /**
@@ -342,9 +342,9 @@ gimp_unit_get_symbol (GimpUnit unit)
 const gchar *
 gimp_unit_get_abbreviation (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_abbreviation != NULL, NULL);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_abbreviation != NULL, NULL);
 
-    return _gimp_unit_vtable.unit_get_abbreviation (unit);
+	return _gimp_unit_vtable.unit_get_abbreviation (unit);
 }
 
 /**
@@ -361,9 +361,9 @@ gimp_unit_get_abbreviation (GimpUnit unit)
 const gchar *
 gimp_unit_get_singular (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_singular != NULL, NULL);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_singular != NULL, NULL);
 
-    return _gimp_unit_vtable.unit_get_singular (unit);
+	return _gimp_unit_vtable.unit_get_singular (unit);
 }
 
 /**
@@ -380,36 +380,36 @@ gimp_unit_get_singular (GimpUnit unit)
 const gchar *
 gimp_unit_get_plural (GimpUnit unit)
 {
-    g_return_val_if_fail (_gimp_unit_vtable.unit_get_plural != NULL, NULL);
+	g_return_val_if_fail (_gimp_unit_vtable.unit_get_plural != NULL, NULL);
 
-    return _gimp_unit_vtable.unit_get_plural (unit);
+	return _gimp_unit_vtable.unit_get_plural (unit);
 }
 
 static gint print (gchar       *buf,
-                   gint         len,
-                   gint         start,
+                   gint len,
+                   gint start,
                    const gchar *fmt,
                    ...) G_GNUC_PRINTF (4, 5);
 
 static gint
 print (gchar       *buf,
-       gint         len,
-       gint         start,
+       gint len,
+       gint start,
        const gchar *fmt,
        ...)
 {
-    va_list args;
-    gint printed;
+	va_list args;
+	gint printed;
 
-    va_start (args, fmt);
+	va_start (args, fmt);
 
-    printed = g_vsnprintf (buf + start, len - start, fmt, args);
-    if (printed < 0)
-        printed = len - start;
+	printed = g_vsnprintf (buf + start, len - start, fmt, args);
+	if (printed < 0)
+		printed = len - start;
 
-    va_end (args);
+	va_end (args);
 
-    return printed;
+	return printed;
 }
 
 /**
@@ -458,76 +458,76 @@ print (gchar       *buf,
  **/
 gchar *
 gimp_unit_format_string (const gchar *format,
-                         GimpUnit     unit)
+                         GimpUnit unit)
 {
-    gchar buffer[1024];
-    gint  i = 0;
+	gchar buffer[1024];
+	gint i = 0;
 
-    g_return_val_if_fail (format != NULL, NULL);
-    g_return_val_if_fail (unit == GIMP_UNIT_PERCENT ||
-                          (unit >= GIMP_UNIT_PIXEL &&
-                           unit < gimp_unit_get_number_of_units ()), NULL);
+	g_return_val_if_fail (format != NULL, NULL);
+	g_return_val_if_fail (unit == GIMP_UNIT_PERCENT ||
+	                      (unit >= GIMP_UNIT_PIXEL &&
+	                       unit < gimp_unit_get_number_of_units ()), NULL);
 
-    while (i < (sizeof (buffer) - 1) && *format)
-    {
-        switch (*format)
-        {
-        case '%':
-            format++;
-            switch (*format)
-            {
-            case 0:
-                g_warning ("%s: unit-menu-format string ended within %%-sequence",
-                           G_STRFUNC);
-                break;
+	while (i < (sizeof (buffer) - 1) && *format)
+	{
+		switch (*format)
+		{
+		case '%':
+			format++;
+			switch (*format)
+			{
+			case 0:
+				g_warning ("%s: unit-menu-format string ended within %%-sequence",
+				           G_STRFUNC);
+				break;
 
-            case '%':
-                buffer[i++] = '%';
-                break;
+			case '%':
+				buffer[i++] = '%';
+				break;
 
-            case 'f': /* factor (how many units make up an inch) */
-                i += print (buffer, sizeof (buffer), i, "%f",
-                            gimp_unit_get_factor (unit));
-                break;
+			case 'f': /* factor (how many units make up an inch) */
+				i += print (buffer, sizeof (buffer), i, "%f",
+				            gimp_unit_get_factor (unit));
+				break;
 
-            case 'y': /* symbol ("''" for inch) */
-                i += print (buffer, sizeof (buffer), i, "%s",
-                            gimp_unit_get_symbol (unit));
-                break;
+			case 'y': /* symbol ("''" for inch) */
+				i += print (buffer, sizeof (buffer), i, "%s",
+				            gimp_unit_get_symbol (unit));
+				break;
 
-            case 'a': /* abbreviation */
-                i += print (buffer, sizeof (buffer), i, "%s",
-                            gimp_unit_get_abbreviation (unit));
-                break;
+			case 'a': /* abbreviation */
+				i += print (buffer, sizeof (buffer), i, "%s",
+				            gimp_unit_get_abbreviation (unit));
+				break;
 
-            case 's': /* singular */
-                i += print (buffer, sizeof (buffer), i, "%s",
-                            gimp_unit_get_singular (unit));
-                break;
+			case 's': /* singular */
+				i += print (buffer, sizeof (buffer), i, "%s",
+				            gimp_unit_get_singular (unit));
+				break;
 
-            case 'p': /* plural */
-                i += print (buffer, sizeof (buffer), i, "%s",
-                            gimp_unit_get_plural (unit));
-                break;
+			case 'p': /* plural */
+				i += print (buffer, sizeof (buffer), i, "%s",
+				            gimp_unit_get_plural (unit));
+				break;
 
-            default:
-                g_warning ("%s: unit-menu-format contains unknown format "
-                           "sequence '%%%c'", G_STRFUNC, *format);
-                break;
-            }
-            break;
+			default:
+				g_warning ("%s: unit-menu-format contains unknown format "
+				           "sequence '%%%c'", G_STRFUNC, *format);
+				break;
+			}
+			break;
 
-        default:
-            buffer[i++] = *format;
-            break;
-        }
+		default:
+			buffer[i++] = *format;
+			break;
+		}
 
-        format++;
-    }
+		format++;
+	}
 
-    buffer[MIN (i, sizeof (buffer) - 1)] = 0;
+	buffer[MIN (i, sizeof (buffer) - 1)] = 0;
 
-    return g_strdup (buffer);
+	return g_strdup (buffer);
 }
 
 /*
@@ -536,7 +536,7 @@ gimp_unit_format_string (const gchar *format,
 
 static void      gimp_param_unit_class_init     (GParamSpecClass *class);
 static gboolean  gimp_param_unit_value_validate (GParamSpec      *pspec,
-        GValue          *value);
+                                                 GValue          *value);
 
 /**
  * gimp_param_unit_get_type:
@@ -550,51 +550,51 @@ static gboolean  gimp_param_unit_value_validate (GParamSpec      *pspec,
 GType
 gimp_param_unit_get_type (void)
 {
-    static GType spec_type = 0;
+	static GType spec_type = 0;
 
-    if (! spec_type)
-    {
-        const GTypeInfo type_info =
-        {
-            sizeof (GParamSpecClass),
-            NULL, NULL,
-            (GClassInitFunc) gimp_param_unit_class_init,
-            NULL, NULL,
-            sizeof (GimpParamSpecUnit),
-            0, NULL, NULL
-        };
+	if (!spec_type)
+	{
+		const GTypeInfo type_info =
+		{
+			sizeof (GParamSpecClass),
+			NULL, NULL,
+			(GClassInitFunc) gimp_param_unit_class_init,
+			NULL, NULL,
+			sizeof (GimpParamSpecUnit),
+			0, NULL, NULL
+		};
 
-        spec_type = g_type_register_static (G_TYPE_PARAM_INT,
-                                            "GimpParamUnit",
-                                            &type_info, 0);
-    }
+		spec_type = g_type_register_static (G_TYPE_PARAM_INT,
+		                                    "GimpParamUnit",
+		                                    &type_info, 0);
+	}
 
-    return spec_type;
+	return spec_type;
 }
 
 static void
 gimp_param_unit_class_init (GParamSpecClass *class)
 {
-    class->value_type     = GIMP_TYPE_UNIT;
-    class->value_validate = gimp_param_unit_value_validate;
+	class->value_type     = GIMP_TYPE_UNIT;
+	class->value_validate = gimp_param_unit_value_validate;
 }
 
 static gboolean
 gimp_param_unit_value_validate (GParamSpec *pspec,
                                 GValue     *value)
 {
-    GParamSpecInt     *ispec = G_PARAM_SPEC_INT (pspec);
-    GimpParamSpecUnit *uspec = GIMP_PARAM_SPEC_UNIT (pspec);
-    gint               oval  = value->data[0].v_int;
+	GParamSpecInt     *ispec = G_PARAM_SPEC_INT (pspec);
+	GimpParamSpecUnit *uspec = GIMP_PARAM_SPEC_UNIT (pspec);
+	gint oval  = value->data[0].v_int;
 
-    if (!(uspec->allow_percent && value->data[0].v_int == GIMP_UNIT_PERCENT))
-    {
-        value->data[0].v_int = CLAMP (value->data[0].v_int,
-                                      ispec->minimum,
-                                      gimp_unit_get_number_of_units () - 1);
-    }
+	if (!(uspec->allow_percent && value->data[0].v_int == GIMP_UNIT_PERCENT))
+	{
+		value->data[0].v_int = CLAMP (value->data[0].v_int,
+		                              ispec->minimum,
+		                              gimp_unit_get_number_of_units () - 1);
+	}
 
-    return value->data[0].v_int != oval;
+	return value->data[0].v_int != oval;
 }
 
 /**
@@ -618,26 +618,26 @@ GParamSpec *
 gimp_param_spec_unit (const gchar *name,
                       const gchar *nick,
                       const gchar *blurb,
-                      gboolean     allow_pixels,
-                      gboolean     allow_percent,
-                      GimpUnit     default_value,
-                      GParamFlags  flags)
+                      gboolean allow_pixels,
+                      gboolean allow_percent,
+                      GimpUnit default_value,
+                      GParamFlags flags)
 {
-    GimpParamSpecUnit *pspec;
-    GParamSpecInt     *ispec;
+	GimpParamSpecUnit *pspec;
+	GParamSpecInt     *ispec;
 
-    pspec = g_param_spec_internal (GIMP_TYPE_PARAM_UNIT,
-                                   name, nick, blurb, flags);
+	pspec = g_param_spec_internal (GIMP_TYPE_PARAM_UNIT,
+	                               name, nick, blurb, flags);
 
-    ispec = G_PARAM_SPEC_INT (pspec);
+	ispec = G_PARAM_SPEC_INT (pspec);
 
-    ispec->default_value = default_value;
-    ispec->minimum       = allow_pixels ? GIMP_UNIT_PIXEL : GIMP_UNIT_INCH;
-    ispec->maximum       = GIMP_UNIT_PERCENT - 1;
+	ispec->default_value = default_value;
+	ispec->minimum       = allow_pixels ? GIMP_UNIT_PIXEL : GIMP_UNIT_INCH;
+	ispec->maximum       = GIMP_UNIT_PERCENT - 1;
 
-    pspec->allow_percent = allow_percent;
+	pspec->allow_percent = allow_percent;
 
-    return G_PARAM_SPEC (pspec);
+	return G_PARAM_SPEC (pspec);
 }
 
 /**
@@ -653,14 +653,14 @@ gimp_param_spec_unit (const gchar *name,
  * Since: 2.8
  **/
 gdouble
-gimp_pixels_to_units (gdouble  pixels,
+gimp_pixels_to_units (gdouble pixels,
                       GimpUnit unit,
-                      gdouble  resolution)
+                      gdouble resolution)
 {
-    if (unit == GIMP_UNIT_PIXEL)
-        return pixels;
+	if (unit == GIMP_UNIT_PIXEL)
+		return pixels;
 
-    return pixels * gimp_unit_get_factor (unit) / resolution;
+	return pixels * gimp_unit_get_factor (unit) / resolution;
 }
 
 /**
@@ -676,14 +676,14 @@ gimp_pixels_to_units (gdouble  pixels,
  * Since: 2.8
  **/
 gdouble
-gimp_units_to_pixels (gdouble  value,
+gimp_units_to_pixels (gdouble value,
                       GimpUnit unit,
-                      gdouble  resolution)
+                      gdouble resolution)
 {
-    if (unit == GIMP_UNIT_PIXEL)
-        return value;
+	if (unit == GIMP_UNIT_PIXEL)
+		return value;
 
-    return value * resolution / gimp_unit_get_factor (unit);
+	return value * resolution / gimp_unit_get_factor (unit);
 }
 
 /**
@@ -699,18 +699,18 @@ gimp_units_to_pixels (gdouble  value,
  * Since: 2.8
  **/
 gdouble
-gimp_units_to_points (gdouble  value,
+gimp_units_to_points (gdouble value,
                       GimpUnit unit,
-                      gdouble  resolution)
+                      gdouble resolution)
 {
-    if (unit == GIMP_UNIT_POINT)
-        return value;
+	if (unit == GIMP_UNIT_POINT)
+		return value;
 
-    if (unit == GIMP_UNIT_PIXEL)
-        return (value * gimp_unit_get_factor (GIMP_UNIT_POINT) / resolution);
+	if (unit == GIMP_UNIT_PIXEL)
+		return (value * gimp_unit_get_factor (GIMP_UNIT_POINT) / resolution);
 
-    return (value *
-            gimp_unit_get_factor (GIMP_UNIT_POINT) / gimp_unit_get_factor (unit));
+	return (value *
+	        gimp_unit_get_factor (GIMP_UNIT_POINT) / gimp_unit_get_factor (unit));
 }
 
 /**
@@ -730,18 +730,18 @@ gimp_units_to_points (gdouble  value,
 gboolean
 gimp_unit_is_metric (GimpUnit unit)
 {
-    gdouble factor;
+	gdouble factor;
 
-    if (unit == GIMP_UNIT_MM)
-        return TRUE;
+	if (unit == GIMP_UNIT_MM)
+		return TRUE;
 
-    factor = gimp_unit_get_factor (unit);
+	factor = gimp_unit_get_factor (unit);
 
-    if (factor == 0.0)
-        return FALSE;
+	if (factor == 0.0)
+		return FALSE;
 
-    return ((ABS (factor -  0.0254) < 1e-7) || /* m  */
-            (ABS (factor -  0.254)  < 1e-6) || /* dm */
-            (ABS (factor -  2.54)   < 1e-5) || /* cm */
-            (ABS (factor - 25.4)    < 1e-4));  /* mm */
+	return ((ABS (factor -  0.0254) < 1e-7) ||/* m  */
+	        (ABS (factor -  0.254)  < 1e-6) ||/* dm */
+	        (ABS (factor -  2.54)   < 1e-5) ||/* cm */
+	        (ABS (factor - 25.4)    < 1e-4));/* mm */
 }

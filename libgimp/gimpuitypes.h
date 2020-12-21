@@ -28,27 +28,27 @@ G_BEGIN_DECLS
 /* For information look into the html documentation */
 
 
-typedef struct _GimpProcedureDialog      GimpProcedureDialog;
-typedef struct _GimpSaveProcedureDialog  GimpSaveProcedureDialog;
+typedef struct _GimpProcedureDialog GimpProcedureDialog;
+typedef struct _GimpSaveProcedureDialog GimpSaveProcedureDialog;
 
-typedef struct _GimpAspectPreview        GimpAspectPreview;
-typedef struct _GimpDrawablePreview      GimpDrawablePreview;
-typedef struct _GimpProcBrowserDialog    GimpProcBrowserDialog;
-typedef struct _GimpProgressBar          GimpProgressBar;
-typedef struct _GimpZoomPreview          GimpZoomPreview;
+typedef struct _GimpAspectPreview GimpAspectPreview;
+typedef struct _GimpDrawablePreview GimpDrawablePreview;
+typedef struct _GimpProcBrowserDialog GimpProcBrowserDialog;
+typedef struct _GimpProgressBar GimpProgressBar;
+typedef struct _GimpZoomPreview GimpZoomPreview;
 
-typedef struct _GimpDrawableComboBox     GimpDrawableComboBox;
-typedef struct _GimpChannelComboBox      GimpChannelComboBox;
-typedef struct _GimpLayerComboBox        GimpLayerComboBox;
-typedef struct _GimpVectorsComboBox      GimpVectorsComboBox;
-typedef struct _GimpImageComboBox        GimpImageComboBox;
+typedef struct _GimpDrawableComboBox GimpDrawableComboBox;
+typedef struct _GimpChannelComboBox GimpChannelComboBox;
+typedef struct _GimpLayerComboBox GimpLayerComboBox;
+typedef struct _GimpVectorsComboBox GimpVectorsComboBox;
+typedef struct _GimpImageComboBox GimpImageComboBox;
 
-typedef struct _GimpSelectButton         GimpSelectButton;
-typedef struct _GimpBrushSelectButton    GimpBrushSelectButton;
-typedef struct _GimpFontSelectButton     GimpFontSelectButton;
+typedef struct _GimpSelectButton GimpSelectButton;
+typedef struct _GimpBrushSelectButton GimpBrushSelectButton;
+typedef struct _GimpFontSelectButton GimpFontSelectButton;
 typedef struct _GimpGradientSelectButton GimpGradientSelectButton;
-typedef struct _GimpPaletteSelectButton  GimpPaletteSelectButton;
-typedef struct _GimpPatternSelectButton  GimpPatternSelectButton;
+typedef struct _GimpPaletteSelectButton GimpPaletteSelectButton;
+typedef struct _GimpPatternSelectButton GimpPatternSelectButton;
 
 
 G_END_DECLS

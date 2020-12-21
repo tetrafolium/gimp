@@ -25,15 +25,15 @@
 #ifndef __GFIG_DIALOG_H__
 #define __GFIG_DIALOG_H__
 
-extern gint   undo_level;  /* Last slot filled in -1 = no undo */
+extern gint undo_level;    /* Last slot filled in -1 = no undo */
 extern GList *undo_table[MAX_UNDO];
 
 gboolean  gfig_dialog                      (void);
 void      gfig_dialog_action_set_sensitive (const gchar *name,
-        gboolean     sensitive);
+                                            gboolean sensitive);
 
 void      options_update                   (GFigObj     *old_obj);
 void      tool_option_page_update          (GtkWidget   *button,
-        GtkWidget   *notebook);
+                                            GtkWidget   *notebook);
 
 #endif /* __GFIG_DIALOG_H__ */

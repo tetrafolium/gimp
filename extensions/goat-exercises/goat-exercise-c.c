@@ -35,17 +35,17 @@
 #define GOAT_URI       "https://gitlab.gnome.org/GNOME/gimp/blob/master/extensions/goat-exercises/goat-exercise-c.c"
 
 
-typedef struct _Goat      Goat;
+typedef struct _Goat Goat;
 typedef struct _GoatClass GoatClass;
 
 struct _Goat
 {
-    GimpPlugIn      parent_instance;
+	GimpPlugIn parent_instance;
 };
 
 struct _GoatClass
 {
-    GimpPlugInClass parent_class;
+	GimpPlugInClass parent_class;
 };
 
 
@@ -59,14 +59,14 @@ GType                   goat_get_type         (void) G_GNUC_CONST;
 
 static GList          * goat_query_procedures (GimpPlugIn           *plug_in);
 static GimpProcedure  * goat_create_procedure (GimpPlugIn           *plug_in,
-        const gchar          *name);
+                                               const gchar          *name);
 
 static GimpValueArray * goat_run              (GimpProcedure        *procedure,
-        GimpRunMode           run_mode,
-        GimpImage            *image,
-        GimpDrawable         *drawable,
-        const GimpValueArray *args,
-        gpointer              run_data);
+                                               GimpRunMode run_mode,
+                                               GimpImage            *image,
+                                               GimpDrawable         *drawable,
+                                               const GimpValueArray *args,
+                                               gpointer run_data);
 
 
 G_DEFINE_TYPE (Goat, goat, GIMP_TYPE_PLUG_IN)
@@ -77,10 +77,10 @@ GIMP_MAIN (GOAT_TYPE)
 static void
 goat_class_init (GoatClass *klass)
 {
-    GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
+	GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
 
-    plug_in_class->query_procedures = goat_query_procedures;
-    plug_in_class->create_procedure = goat_create_procedure;
+	plug_in_class->query_procedures = goat_query_procedures;
+	plug_in_class->create_procedure = goat_create_procedure;
 }
 
 static void
@@ -91,177 +91,177 @@ goat_init (Goat *goat)
 static GList *
 goat_query_procedures (GimpPlugIn *plug_in)
 {
-    return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+	return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
 static GimpProcedure *
 goat_create_procedure (GimpPlugIn  *plug_in,
                        const gchar *name)
 {
-    GimpProcedure *procedure = NULL;
+	GimpProcedure *procedure = NULL;
 
-    if (! strcmp (name, PLUG_IN_PROC))
-    {
-        procedure = gimp_image_procedure_new (plug_in, name,
-                                              GIMP_PDB_PROC_TYPE_PLUGIN,
-                                              goat_run, NULL, NULL);
+	if (!strcmp (name, PLUG_IN_PROC))
+	{
+		procedure = gimp_image_procedure_new (plug_in, name,
+		                                      GIMP_PDB_PROC_TYPE_PLUGIN,
+		                                      goat_run, NULL, NULL);
 
-        gimp_procedure_set_image_types (procedure, "*");
+		gimp_procedure_set_image_types (procedure, "*");
 
-        gimp_procedure_set_menu_label (procedure, N_("Exercise in _C minor"));
-        gimp_procedure_set_icon_name (procedure, GIMP_ICON_GEGL);
-        gimp_procedure_add_menu_path (procedure,
-                                      "<Image>/Filters/Development/Goat exercises/");
+		gimp_procedure_set_menu_label (procedure, N_("Exercise in _C minor"));
+		gimp_procedure_set_icon_name (procedure, GIMP_ICON_GEGL);
+		gimp_procedure_add_menu_path (procedure,
+		                              "<Image>/Filters/Development/Goat exercises/");
 
-        gimp_procedure_set_documentation (procedure,
-                                          N_("Exercise a goat in the C language"),
-                                          "Takes a goat for a walk",
-                                          PLUG_IN_PROC);
-        gimp_procedure_set_attribution (procedure,
-                                        "Øyvind Kolås <pippin@gimp.org>",
-                                        "Øyvind Kolås <pippin@gimp.org>",
-                                        "21 march 2012");
-    }
+		gimp_procedure_set_documentation (procedure,
+		                                  N_("Exercise a goat in the C language"),
+		                                  "Takes a goat for a walk",
+		                                  PLUG_IN_PROC);
+		gimp_procedure_set_attribution (procedure,
+		                                "Øyvind Kolås <pippin@gimp.org>",
+		                                "Øyvind Kolås <pippin@gimp.org>",
+		                                "21 march 2012");
+	}
 
-    return procedure;
+	return procedure;
 }
 
 static GimpValueArray *
 goat_run (GimpProcedure        *procedure,
-          GimpRunMode           run_mode,
+          GimpRunMode run_mode,
           GimpImage            *image,
           GimpDrawable         *drawable,
           const GimpValueArray *args,
-          gpointer              run_data)
+          gpointer run_data)
 {
-    GimpPDBStatusType status = GIMP_PDB_SUCCESS;
-    gint              x, y, width, height;
+	GimpPDBStatusType status = GIMP_PDB_SUCCESS;
+	gint x, y, width, height;
 
-    INIT_I18N();
+	INIT_I18N();
 
-    /* In interactive mode, display a dialog to advertise the exercise. */
-    if (run_mode == GIMP_RUN_INTERACTIVE)
-    {
-        GtkTextBuffer    *buffer;
-        GtkWidget        *dialog;
-        GtkWidget        *box;
-        GtkWidget        *widget;
-        GtkWidget        *scrolled;
-        GFile            *file;
-        GFileInputStream *input;
-        gchar            *head_text;
-        gchar            *path;
-        GdkGeometry       geometry;
-        gchar             source_text[4096];
-        gssize            read;
-        gint              response;
+	/* In interactive mode, display a dialog to advertise the exercise. */
+	if (run_mode == GIMP_RUN_INTERACTIVE)
+	{
+		GtkTextBuffer    *buffer;
+		GtkWidget        *dialog;
+		GtkWidget        *box;
+		GtkWidget        *widget;
+		GtkWidget        *scrolled;
+		GFile            *file;
+		GFileInputStream *input;
+		gchar            *head_text;
+		gchar            *path;
+		GdkGeometry geometry;
+		gchar source_text[4096];
+		gssize read;
+		gint response;
 
-        gimp_ui_init (PLUG_IN_BINARY);
-        dialog = gimp_dialog_new (_("Exercise a goat (C)"), PLUG_IN_ROLE,
-                                  NULL, GTK_DIALOG_USE_HEADER_BAR,
-                                  gimp_standard_help_func, PLUG_IN_PROC,
+		gimp_ui_init (PLUG_IN_BINARY);
+		dialog = gimp_dialog_new (_("Exercise a goat (C)"), PLUG_IN_ROLE,
+		                          NULL, GTK_DIALOG_USE_HEADER_BAR,
+		                          gimp_standard_help_func, PLUG_IN_PROC,
 
-                                  _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                  _("_Source"), GTK_RESPONSE_APPLY,
-                                  _("_Run"),    GTK_RESPONSE_OK,
+		                          _("_Cancel"), GTK_RESPONSE_CANCEL,
+		                          _("_Source"), GTK_RESPONSE_APPLY,
+		                          _("_Run"),    GTK_RESPONSE_OK,
 
-                                  NULL);
-        geometry.min_aspect = 0.5;
-        geometry.max_aspect = 1.0;
-        gtk_window_set_geometry_hints (GTK_WINDOW (dialog), NULL,
-                                       &geometry, GDK_HINT_ASPECT);
+		                          NULL);
+		geometry.min_aspect = 0.5;
+		geometry.max_aspect = 1.0;
+		gtk_window_set_geometry_hints (GTK_WINDOW (dialog), NULL,
+		                               &geometry, GDK_HINT_ASPECT);
 
-        box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-        gtk_container_set_border_width (GTK_CONTAINER (box), 12);
-        gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                           box);
-        gtk_widget_show (box);
+		box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+		gtk_container_set_border_width (GTK_CONTAINER (box), 12);
+		gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+		                   box);
+		gtk_widget_show (box);
 
-        head_text = g_strdup_printf (_("This plug-in is an exercise in '%s' "
-                                       "to demo plug-in creation.\n"
-                                       "Check out the last version "
-                                       "of the source code online by "
-                                       "clicking the \"Source\" button."),
-                                     "C");
-        widget = gtk_label_new (head_text);
-        g_free (head_text);
-        gtk_box_pack_start (GTK_BOX (box), widget, FALSE, FALSE, 1);
-        gtk_widget_show (widget);
+		head_text = g_strdup_printf (_("This plug-in is an exercise in '%s' "
+		                               "to demo plug-in creation.\n"
+		                               "Check out the last version "
+		                               "of the source code online by "
+		                               "clicking the \"Source\" button."),
+		                             "C");
+		widget = gtk_label_new (head_text);
+		g_free (head_text);
+		gtk_box_pack_start (GTK_BOX (box), widget, FALSE, FALSE, 1);
+		gtk_widget_show (widget);
 
-        scrolled = gtk_scrolled_window_new (NULL, NULL);
-        gtk_box_pack_start (GTK_BOX (box), scrolled, TRUE, TRUE, 1);
-        gtk_widget_set_vexpand (GTK_WIDGET (scrolled), TRUE);
-        gtk_widget_show (scrolled);
+		scrolled = gtk_scrolled_window_new (NULL, NULL);
+		gtk_box_pack_start (GTK_BOX (box), scrolled, TRUE, TRUE, 1);
+		gtk_widget_set_vexpand (GTK_WIDGET (scrolled), TRUE);
+		gtk_widget_show (scrolled);
 
-        path = g_build_filename (gimp_plug_in_directory (), "extensions",
-                                 "org.gimp.extension.goat-exercises", PLUG_IN_SOURCE,
-                                 NULL);
-        file = g_file_new_for_path (path);
-        g_free (path);
+		path = g_build_filename (gimp_plug_in_directory (), "extensions",
+		                         "org.gimp.extension.goat-exercises", PLUG_IN_SOURCE,
+		                         NULL);
+		file = g_file_new_for_path (path);
+		g_free (path);
 
-        widget = gtk_text_view_new ();
-        gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (widget), GTK_WRAP_WORD);
-        gtk_text_view_set_editable (GTK_TEXT_VIEW (widget), FALSE);
-        buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
+		widget = gtk_text_view_new ();
+		gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (widget), GTK_WRAP_WORD);
+		gtk_text_view_set_editable (GTK_TEXT_VIEW (widget), FALSE);
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
 
-        input = g_file_read (file, NULL, NULL);
+		input = g_file_read (file, NULL, NULL);
 
-        while ((read = g_input_stream_read (G_INPUT_STREAM (input),
-                                            source_text, 4096, NULL, NULL)) &&
-                read != -1)
-        {
-            gtk_text_buffer_insert_at_cursor (buffer, source_text, read);
-        }
+		while ((read = g_input_stream_read (G_INPUT_STREAM (input),
+		                                    source_text, 4096, NULL, NULL)) &&
+		       read != -1)
+		{
+			gtk_text_buffer_insert_at_cursor (buffer, source_text, read);
+		}
 
-        g_object_unref (file);
+		g_object_unref (file);
 
-        gtk_container_add (GTK_CONTAINER (scrolled), widget);
-        gtk_widget_show (widget);
+		gtk_container_add (GTK_CONTAINER (scrolled), widget);
+		gtk_widget_show (widget);
 
-        while ((response = gimp_dialog_run (GIMP_DIALOG (dialog))))
-        {
-            if (response == GTK_RESPONSE_OK)
-            {
-                gtk_widget_destroy (dialog);
-                break;
-            }
-            else if (response == GTK_RESPONSE_APPLY)
-            {
-                /* Show the code. */
-                g_app_info_launch_default_for_uri (GOAT_URI, NULL, NULL);
-                continue;
-            }
-            else /* CANCEL, CLOSE, DELETE_EVENT */
-            {
-                gtk_widget_destroy (dialog);
-                return gimp_procedure_new_return_values (procedure,
-                        GIMP_PDB_CANCEL,
-                        NULL);
-            }
-        }
-    }
+		while ((response = gimp_dialog_run (GIMP_DIALOG (dialog))))
+		{
+			if (response == GTK_RESPONSE_OK)
+			{
+				gtk_widget_destroy (dialog);
+				break;
+			}
+			else if (response == GTK_RESPONSE_APPLY)
+			{
+				/* Show the code. */
+				g_app_info_launch_default_for_uri (GOAT_URI, NULL, NULL);
+				continue;
+			}
+			else /* CANCEL, CLOSE, DELETE_EVENT */
+			{
+				gtk_widget_destroy (dialog);
+				return gimp_procedure_new_return_values (procedure,
+				                                         GIMP_PDB_CANCEL,
+				                                         NULL);
+			}
+		}
+	}
 
-    if (gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
-    {
-        GeglBuffer *buffer;
-        GeglBuffer *shadow_buffer;
+	if (gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
+	{
+		GeglBuffer *buffer;
+		GeglBuffer *shadow_buffer;
 
-        gegl_init (NULL, NULL);
+		gegl_init (NULL, NULL);
 
-        buffer        = gimp_drawable_get_buffer (drawable);
-        shadow_buffer = gimp_drawable_get_shadow_buffer (drawable);
+		buffer        = gimp_drawable_get_buffer (drawable);
+		shadow_buffer = gimp_drawable_get_shadow_buffer (drawable);
 
-        gegl_render_op (buffer, shadow_buffer, "gegl:invert", NULL);
+		gegl_render_op (buffer, shadow_buffer, "gegl:invert", NULL);
 
-        g_object_unref (shadow_buffer); /* flushes the shadow tiles */
-        g_object_unref (buffer);
+		g_object_unref (shadow_buffer); /* flushes the shadow tiles */
+		g_object_unref (buffer);
 
-        gimp_drawable_merge_shadow (drawable, TRUE);
-        gimp_drawable_update (drawable, x, y, width, height);
-        gimp_displays_flush ();
+		gimp_drawable_merge_shadow (drawable, TRUE);
+		gimp_drawable_update (drawable, x, y, width, height);
+		gimp_displays_flush ();
 
-        gegl_exit ();
-    }
+		gegl_exit ();
+	}
 
-    return gimp_procedure_new_return_values (procedure, status, NULL);
+	return gimp_procedure_new_return_values (procedure, status, NULL);
 }

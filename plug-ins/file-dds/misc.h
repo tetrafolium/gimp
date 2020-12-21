@@ -22,10 +22,10 @@
 #define __MISC_H__
 
 void decode_ycocg_image        (GimpDrawable *drawable,
-                                gboolean      shadow);
+                                gboolean shadow);
 void decode_ycocg_scaled_image (GimpDrawable *drawable,
-                                gboolean      shadow);
+                                gboolean shadow);
 void decode_alpha_exp_image    (GimpDrawable *drawable,
-                                gboolean      shadow);
+                                gboolean shadow);
 
 #endif /* __MISC_H__ */

@@ -49,25 +49,25 @@ gimp_help_item_new (const gchar *ref,
                     const gchar *sort,
                     const gchar *parent)
 {
-    GimpHelpItem *item = g_slice_new0 (GimpHelpItem);
+	GimpHelpItem *item = g_slice_new0 (GimpHelpItem);
 
-    item->ref    = g_strdup (ref);
-    item->title  = g_strdup (title);
-    item->sort   = g_strdup (sort);
-    item->parent = g_strdup (parent);
+	item->ref    = g_strdup (ref);
+	item->title  = g_strdup (title);
+	item->sort   = g_strdup (sort);
+	item->parent = g_strdup (parent);
 
-    return item;
+	return item;
 }
 
 void
 gimp_help_item_free (GimpHelpItem *item)
 {
-    g_free (item->ref);
-    g_free (item->title);
-    g_free (item->sort);
-    g_free (item->parent);
+	g_free (item->ref);
+	g_free (item->title);
+	g_free (item->sort);
+	g_free (item->parent);
 
-    g_list_free (item->children);
+	g_list_free (item->children);
 
-    g_slice_free (GimpHelpItem, item);
+	g_slice_free (GimpHelpItem, item);
 }

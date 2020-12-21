@@ -28,9 +28,9 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
-typedef struct _GimpModule     GimpModule;
+typedef struct _GimpModule GimpModule;
 typedef struct _GimpModuleInfo GimpModuleInfo;
-typedef struct _GimpModuleDB   GimpModuleDB;
+typedef struct _GimpModuleDB GimpModuleDB;
 
 
 G_END_DECLS

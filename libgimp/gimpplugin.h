@@ -39,14 +39,14 @@ G_BEGIN_DECLS
 #define GIMP_PLUG_IN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PLUG_IN, GimpPlugInClass))
 
 
-typedef struct _GimpPlugInClass   GimpPlugInClass;
+typedef struct _GimpPlugInClass GimpPlugInClass;
 typedef struct _GimpPlugInPrivate GimpPlugInPrivate;
 
 struct _GimpPlugIn
 {
-    GObject            parent_instance;
+	GObject parent_instance;
 
-    GimpPlugInPrivate *priv;
+	GimpPlugInPrivate *priv;
 };
 
 /**
@@ -91,84 +91,84 @@ struct _GimpPlugIn
  **/
 struct _GimpPlugInClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    /**
-     * GimpPlugInClass::query_procedures:
-     * @plug_in: a #GimpPlugIn.
-     *
-     * Returns: (element-type gchar*) (transfer full):
-     *          the names of the procedures registered by @plug_in.
-     **/
-    GList          * (* query_procedures) (GimpPlugIn  *plug_in);
+	/**
+	 * GimpPlugInClass::query_procedures:
+	 * @plug_in: a #GimpPlugIn.
+	 *
+	 * Returns: (element-type gchar*) (transfer full):
+	 *          the names of the procedures registered by @plug_in.
+	 **/
+	GList          * (* query_procedures) (GimpPlugIn  *plug_in);
 
-    /**
-     * GimpPlugInClass::init_procedures:
-     * @plug_in: a #GimpPlugIn.
-     *
-     * Returns: (element-type gchar*) (transfer full):
-     *          the names of the procedures registered by @plug_in.
-     **/
-    GList          * (* init_procedures)  (GimpPlugIn  *plug_in);
+	/**
+	 * GimpPlugInClass::init_procedures:
+	 * @plug_in: a #GimpPlugIn.
+	 *
+	 * Returns: (element-type gchar*) (transfer full):
+	 *          the names of the procedures registered by @plug_in.
+	 **/
+	GList          * (* init_procedures)  (GimpPlugIn  *plug_in);
 
-    /**
-     * GimpPlugInClass::create_procedure:
-     * @plug_in:        a #GimpPlugIn.
-     * @procedure_name: procedure name.
-     *
-     * Returns: (transfer full):
-     *          the procedure to be registered or executed by @plug_in.
-     **/
-    GimpProcedure  * (* create_procedure) (GimpPlugIn  *plug_in,
-                                           const gchar *procedure_name);
+	/**
+	 * GimpPlugInClass::create_procedure:
+	 * @plug_in:        a #GimpPlugIn.
+	 * @procedure_name: procedure name.
+	 *
+	 * Returns: (transfer full):
+	 *          the procedure to be registered or executed by @plug_in.
+	 **/
+	GimpProcedure  * (* create_procedure) (GimpPlugIn  *plug_in,
+	                                       const gchar *procedure_name);
 
-    /**
-     * GimpPlugInClass::quit:
-     * @plug_in: a #GimpPlugIn.
-     **/
-    void             (* quit)             (GimpPlugIn  *plug_in);
+	/**
+	 * GimpPlugInClass::quit:
+	 * @plug_in: a #GimpPlugIn.
+	 **/
+	void (* quit)             (GimpPlugIn  *plug_in);
 
-    /* Padding for future expansion */
-    /*< private >*/
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	/*< private >*/
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType           gimp_plug_in_get_type               (void) G_GNUC_CONST;
 
 void            gimp_plug_in_set_translation_domain (GimpPlugIn    *plug_in,
-        const gchar   *domain_name,
-        GFile         *domain_path);
+                                                     const gchar   *domain_name,
+                                                     GFile         *domain_path);
 void            gimp_plug_in_set_help_domain        (GimpPlugIn    *plug_in,
-        const gchar   *domain_name,
-        GFile         *domain_uri);
+                                                     const gchar   *domain_name,
+                                                     GFile         *domain_uri);
 
 void            gimp_plug_in_add_menu_branch        (GimpPlugIn    *plug_in,
-        const gchar   *menu_path,
-        const gchar   *menu_label);
+                                                     const gchar   *menu_path,
+                                                     const gchar   *menu_label);
 
 void            gimp_plug_in_add_temp_procedure     (GimpPlugIn    *plug_in,
-        GimpProcedure *procedure);
+                                                     GimpProcedure *procedure);
 void            gimp_plug_in_remove_temp_procedure  (GimpPlugIn    *plug_in,
-        const gchar   *procedure_name);
+                                                     const gchar   *procedure_name);
 
 GList         * gimp_plug_in_get_temp_procedures    (GimpPlugIn    *plug_in);
 GimpProcedure * gimp_plug_in_get_temp_procedure     (GimpPlugIn    *plug_in,
-        const gchar   *procedure_name);
+                                                     const gchar   *procedure_name);
 
 void            gimp_plug_in_extension_enable       (GimpPlugIn    *plug_in);
 void            gimp_plug_in_extension_process      (GimpPlugIn    *plug_in,
-        guint          timeout);
+                                                     guint timeout);
 
 void            gimp_plug_in_set_pdb_error_handler  (GimpPlugIn    *plug_in,
-        GimpPDBErrorHandler  handler);
+                                                     GimpPDBErrorHandler handler);
 GimpPDBErrorHandler
 gimp_plug_in_get_pdb_error_handler  (GimpPlugIn    *plug_in);
 

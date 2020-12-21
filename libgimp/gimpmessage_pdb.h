@@ -34,7 +34,7 @@ G_BEGIN_DECLS
 
 gboolean               gimp_message             (const gchar            *message);
 GimpMessageHandlerType gimp_message_get_handler (void);
-gboolean               gimp_message_set_handler (GimpMessageHandlerType  handler);
+gboolean               gimp_message_set_handler (GimpMessageHandlerType handler);
 
 
 G_END_DECLS

@@ -42,43 +42,43 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpScrolledPreviewPrivate GimpScrolledPreviewPrivate;
-typedef struct _GimpScrolledPreviewClass   GimpScrolledPreviewClass;
+typedef struct _GimpScrolledPreviewClass GimpScrolledPreviewClass;
 
 struct _GimpScrolledPreview
 {
-    GimpPreview                 parent_instance;
+	GimpPreview parent_instance;
 
-    GimpScrolledPreviewPrivate *priv;
+	GimpScrolledPreviewPrivate *priv;
 };
 
 struct _GimpScrolledPreviewClass
 {
-    GimpPreviewClass  parent_class;
+	GimpPreviewClass parent_class;
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType  gimp_scrolled_preview_get_type        (void) G_GNUC_CONST;
 
 void   gimp_scrolled_preview_set_position    (GimpScrolledPreview  *preview,
-        gint                  x,
-        gint                  y);
+                                              gint x,
+                                              gint y);
 void   gimp_scrolled_preview_set_policy      (GimpScrolledPreview  *preview,
-        GtkPolicyType         hscrollbar_policy,
-        GtkPolicyType         vscrollbar_policy);
+                                              GtkPolicyType hscrollbar_policy,
+                                              GtkPolicyType vscrollbar_policy);
 
 void   gimp_scrolled_preview_get_adjustments (GimpScrolledPreview  *preview,
-        GtkAdjustment       **hadj,
-        GtkAdjustment       **vadj);
+                                              GtkAdjustment       **hadj,
+                                              GtkAdjustment       **vadj);
 
 /*  only for use from derived widgets  */
 void   gimp_scrolled_preview_freeze          (GimpScrolledPreview  *preview);
@@ -86,10 +86,10 @@ void   gimp_scrolled_preview_thaw            (GimpScrolledPreview  *preview);
 
 /*  utility function for scrolled-window like gimp widgets like the canvas  */
 void   gimp_scroll_adjustment_values         (GdkEventScroll       *sevent,
-        GtkAdjustment        *hadj,
-        GtkAdjustment        *vadj,
-        gdouble              *hvalue,
-        gdouble              *vvalue);
+                                              GtkAdjustment        *hadj,
+                                              GtkAdjustment        *vadj,
+                                              gdouble              *hvalue,
+                                              gdouble              *vvalue);
 
 
 G_END_DECLS

@@ -39,9 +39,9 @@ GType gimp_aspect_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_ASPECT_SQUARE,    /*< desc="Square"    >*/
-    GIMP_ASPECT_PORTRAIT,  /*< desc="Portrait"  >*/
-    GIMP_ASPECT_LANDSCAPE  /*< desc="Landscape" >*/
+	GIMP_ASPECT_SQUARE, /*< desc="Square"    >*/
+	GIMP_ASPECT_PORTRAIT, /*< desc="Portrait"  >*/
+	GIMP_ASPECT_LANDSCAPE /*< desc="Landscape" >*/
 } GimpAspectType;
 
 
@@ -60,10 +60,10 @@ GType gimp_chain_position_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_CHAIN_TOP,
-    GIMP_CHAIN_LEFT,
-    GIMP_CHAIN_BOTTOM,
-    GIMP_CHAIN_RIGHT
+	GIMP_CHAIN_TOP,
+	GIMP_CHAIN_LEFT,
+	GIMP_CHAIN_BOTTOM,
+	GIMP_CHAIN_RIGHT
 } GimpChainPosition;
 
 
@@ -81,9 +81,9 @@ GType gimp_color_area_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_COLOR_AREA_FLAT = 0,
-    GIMP_COLOR_AREA_SMALL_CHECKS,
-    GIMP_COLOR_AREA_LARGE_CHECKS
+	GIMP_COLOR_AREA_FLAT = 0,
+	GIMP_COLOR_AREA_SMALL_CHECKS,
+	GIMP_COLOR_AREA_LARGE_CHECKS
 } GimpColorAreaType;
 
 
@@ -109,16 +109,16 @@ GType gimp_color_selector_channel_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_COLOR_SELECTOR_HUE,           /*< desc="_H", help="HSV Hue"        >*/
-    GIMP_COLOR_SELECTOR_SATURATION,    /*< desc="_S", help="HSV Saturation" >*/
-    GIMP_COLOR_SELECTOR_VALUE,         /*< desc="_V", help="HSV Value"      >*/
-    GIMP_COLOR_SELECTOR_RED,           /*< desc="_R", help="Red"            >*/
-    GIMP_COLOR_SELECTOR_GREEN,         /*< desc="_G", help="Green"          >*/
-    GIMP_COLOR_SELECTOR_BLUE,          /*< desc="_B", help="Blue"           >*/
-    GIMP_COLOR_SELECTOR_ALPHA,         /*< desc="_A", help="Alpha"          >*/
-    GIMP_COLOR_SELECTOR_LCH_LIGHTNESS, /*< desc="_L", help="LCh Lightness"  >*/
-    GIMP_COLOR_SELECTOR_LCH_CHROMA,    /*< desc="_C", help="LCh Chroma"     >*/
-    GIMP_COLOR_SELECTOR_LCH_HUE        /*< desc="_h", help="LCh Hue"        >*/
+	GIMP_COLOR_SELECTOR_HUE,       /*< desc="_H", help="HSV Hue"        >*/
+	GIMP_COLOR_SELECTOR_SATURATION, /*< desc="_S", help="HSV Saturation" >*/
+	GIMP_COLOR_SELECTOR_VALUE,     /*< desc="_V", help="HSV Value"      >*/
+	GIMP_COLOR_SELECTOR_RED,       /*< desc="_R", help="Red"            >*/
+	GIMP_COLOR_SELECTOR_GREEN,     /*< desc="_G", help="Green"          >*/
+	GIMP_COLOR_SELECTOR_BLUE,      /*< desc="_B", help="Blue"           >*/
+	GIMP_COLOR_SELECTOR_ALPHA,     /*< desc="_A", help="Alpha"          >*/
+	GIMP_COLOR_SELECTOR_LCH_LIGHTNESS, /*< desc="_L", help="LCh Lightness"  >*/
+	GIMP_COLOR_SELECTOR_LCH_CHROMA, /*< desc="_C", help="LCh Chroma"     >*/
+	GIMP_COLOR_SELECTOR_LCH_HUE    /*< desc="_h", help="LCh Hue"        >*/
 } GimpColorSelectorChannel;
 
 
@@ -139,9 +139,9 @@ GType gimp_color_selector_model_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_COLOR_SELECTOR_MODEL_RGB, /*< desc="RGB", help="RGB color model"     >*/
-    GIMP_COLOR_SELECTOR_MODEL_LCH, /*< desc="LCH", help="CIE LCh color model" >*/
-    GIMP_COLOR_SELECTOR_MODEL_HSV  /*< desc="HSV", help="HSV color model"     >*/
+	GIMP_COLOR_SELECTOR_MODEL_RGB, /*< desc="RGB", help="RGB color model"     >*/
+	GIMP_COLOR_SELECTOR_MODEL_LCH, /*< desc="LCH", help="CIE LCh color model" >*/
+	GIMP_COLOR_SELECTOR_MODEL_HSV /*< desc="HSV", help="HSV color model"     >*/
 } GimpColorSelectorModel;
 
 
@@ -162,9 +162,9 @@ GType gimp_int_combo_box_layout_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY,
-    GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED,
-    GIMP_INT_COMBO_BOX_LAYOUT_FULL
+	GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY,
+	GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED,
+	GIMP_INT_COMBO_BOX_LAYOUT_FULL
 } GimpIntComboBoxLayout;
 
 
@@ -181,8 +181,8 @@ GType gimp_page_selector_target_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_PAGE_SELECTOR_TARGET_LAYERS, /*< desc="Layers" >*/
-    GIMP_PAGE_SELECTOR_TARGET_IMAGES  /*< desc="Images" >*/
+	GIMP_PAGE_SELECTOR_TARGET_LAYERS, /*< desc="Layers" >*/
+	GIMP_PAGE_SELECTOR_TARGET_IMAGES /*< desc="Images" >*/
 } GimpPageSelectorTarget;
 
 
@@ -200,9 +200,9 @@ GType gimp_size_entry_update_policy_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_SIZE_ENTRY_UPDATE_NONE       = 0,
-    GIMP_SIZE_ENTRY_UPDATE_SIZE       = 1,
-    GIMP_SIZE_ENTRY_UPDATE_RESOLUTION = 2
+	GIMP_SIZE_ENTRY_UPDATE_NONE       = 0,
+	GIMP_SIZE_ENTRY_UPDATE_SIZE       = 1,
+	GIMP_SIZE_ENTRY_UPDATE_RESOLUTION = 2
 } GimpSizeEntryUpdatePolicy;
 
 
@@ -225,14 +225,14 @@ GType gimp_zoom_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-    GIMP_ZOOM_IN,        /*< desc="Zoom in"  >*/
-    GIMP_ZOOM_OUT,       /*< desc="Zoom out" >*/
-    GIMP_ZOOM_IN_MORE,   /*< skip >*/
-    GIMP_ZOOM_OUT_MORE,  /*< skip >*/
-    GIMP_ZOOM_IN_MAX,    /*< skip >*/
-    GIMP_ZOOM_OUT_MAX,   /*< skip >*/
-    GIMP_ZOOM_TO,        /*< skip >*/
-    GIMP_ZOOM_SMOOTH     /*< skip >*/
+	GIMP_ZOOM_IN,    /*< desc="Zoom in"  >*/
+	GIMP_ZOOM_OUT,   /*< desc="Zoom out" >*/
+	GIMP_ZOOM_IN_MORE, /*< skip >*/
+	GIMP_ZOOM_OUT_MORE, /*< skip >*/
+	GIMP_ZOOM_IN_MAX, /*< skip >*/
+	GIMP_ZOOM_OUT_MAX, /*< skip >*/
+	GIMP_ZOOM_TO,    /*< skip >*/
+	GIMP_ZOOM_SMOOTH /*< skip >*/
 } GimpZoomType;
 
 

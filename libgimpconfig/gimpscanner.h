@@ -42,39 +42,39 @@
 GType         gimp_scanner_get_type                 (void) G_GNUC_CONST;
 
 GimpScanner * gimp_scanner_new_file                 (GFile         *file,
-        GError       **error);
+                                                     GError       **error);
 GimpScanner * gimp_scanner_new_stream               (GInputStream  *input,
-        GError       **error);
+                                                     GError       **error);
 GimpScanner * gimp_scanner_new_string               (const gchar   *text,
-        gint           text_len,
-        GError       **error);
+                                                     gint text_len,
+                                                     GError       **error);
 
 GimpScanner * gimp_scanner_ref                      (GimpScanner   *scanner);
 void          gimp_scanner_unref                    (GimpScanner   *scanner);
 
 gboolean      gimp_scanner_parse_token              (GimpScanner   *scanner,
-        GTokenType     token);
+                                                     GTokenType token);
 gboolean      gimp_scanner_parse_identifier         (GimpScanner   *scanner,
-        const gchar   *identifier);
+                                                     const gchar   *identifier);
 gboolean      gimp_scanner_parse_string             (GimpScanner   *scanner,
-        gchar        **dest);
+                                                     gchar        **dest);
 gboolean      gimp_scanner_parse_string_no_validate (GimpScanner   *scanner,
-        gchar        **dest);
+                                                     gchar        **dest);
 gboolean      gimp_scanner_parse_data               (GimpScanner   *scanner,
-        gint           length,
-        guint8       **dest);
+                                                     gint length,
+                                                     guint8       **dest);
 gboolean      gimp_scanner_parse_int                (GimpScanner   *scanner,
-        gint          *dest);
+                                                     gint          *dest);
 gboolean      gimp_scanner_parse_int64              (GimpScanner   *scanner,
-        gint64        *dest);
+                                                     gint64        *dest);
 gboolean      gimp_scanner_parse_float              (GimpScanner   *scanner,
-        gdouble       *dest);
+                                                     gdouble       *dest);
 gboolean      gimp_scanner_parse_boolean            (GimpScanner   *scanner,
-        gboolean      *dest);
+                                                     gboolean      *dest);
 gboolean      gimp_scanner_parse_color              (GimpScanner   *scanner,
-        GimpRGB       *dest);
+                                                     GimpRGB       *dest);
 gboolean      gimp_scanner_parse_matrix2            (GimpScanner   *scanner,
-        GimpMatrix2   *dest);
+                                                     GimpMatrix2   *dest);
 
 
 #endif /* __GIMP_SCANNER_H__ */

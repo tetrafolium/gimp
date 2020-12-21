@@ -46,16 +46,16 @@ extern int cern_debug;
 /* Put the tokens into the symbol table, so that GDB and other debuggers
    know about them.  */
 enum yytokentype {
-    RECTANGLE = 258,
-    POLYGON = 259,
-    CIRCLE = 260,
-    DEFAULT = 261,
-    AUTHOR = 262,
-    DESCRIPTION = 263,
-    BEGIN_COMMENT = 264,
-    FLOAT = 265,
-    COMMENT = 266,
-    LINK = 267
+	RECTANGLE = 258,
+	POLYGON = 259,
+	CIRCLE = 260,
+	DEFAULT = 261,
+	AUTHOR = 262,
+	DESCRIPTION = 263,
+	BEGIN_COMMENT = 264,
+	FLOAT = 265,
+	COMMENT = 266,
+	LINK = 267
 };
 #endif
 /* Tokens.  */
@@ -72,18 +72,18 @@ enum yytokentype {
 
 
 
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+#if !defined YYSTYPE && !defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 {
-    /* Line 2049 of yacc.c  */
+	/* Line 2049 of yacc.c  */
 #line 46 "imap_cern.y"
 
-    int val;
-    double value;
-    char *id;
+	int val;
+	double value;
+	char *id;
 
 
-    /* Line 2049 of yacc.c  */
+	/* Line 2049 of yacc.c  */
 #line 88 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1

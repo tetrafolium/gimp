@@ -13,9 +13,9 @@
 #ifndef __JPEG_ICC_H__
 #define __JPEG_ICC_H__
 
-void jpeg_icc_write_profile (j_compress_ptr  cinfo,
+void jpeg_icc_write_profile (j_compress_ptr cinfo,
                              const guchar   *icc_data_ptr,
-                             guint           icc_data_len);
+                             guint icc_data_len);
 
 
 /*
@@ -43,7 +43,7 @@ void jpeg_icc_write_profile (j_compress_ptr  cinfo,
  * will prefer to have the data stick around after decompression finishes.)
  */
 
-gboolean jpeg_icc_read_profile (j_decompress_ptr   cinfo,
+gboolean jpeg_icc_read_profile (j_decompress_ptr cinfo,
                                 guchar           **icc_data_ptr,
                                 guint             *icc_data_len);
 

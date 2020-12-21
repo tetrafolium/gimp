@@ -35,27 +35,27 @@
 
 
 typedef struct _GimpColorConfigPrivate GimpColorConfigPrivate;
-typedef struct _GimpColorConfigClass   GimpColorConfigClass;
+typedef struct _GimpColorConfigClass GimpColorConfigClass;
 
 struct _GimpColorConfig
 {
-    GObject                 parent_instance;
+	GObject parent_instance;
 
-    GimpColorConfigPrivate *priv;
+	GimpColorConfigPrivate *priv;
 };
 
 struct _GimpColorConfigClass
 {
-    GObjectClass  parent_class;
+	GObjectClass parent_class;
 
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -76,18 +76,18 @@ gboolean           gimp_color_config_get_simulation_bpc           (GimpColorConf
 gboolean           gimp_color_config_get_simulation_optimize      (GimpColorConfig  *config);
 gboolean           gimp_color_config_get_simulation_gamut_check   (GimpColorConfig  *config);
 void               gimp_color_config_get_out_of_gamut_color       (GimpColorConfig  *config,
-        GimpRGB          *color);
+                                                                   GimpRGB          *color);
 
 GimpColorProfile * gimp_color_config_get_rgb_color_profile        (GimpColorConfig  *config,
-        GError          **error);
+                                                                   GError          **error);
 GimpColorProfile * gimp_color_config_get_gray_color_profile       (GimpColorConfig  *config,
-        GError          **error);
+                                                                   GError          **error);
 GimpColorProfile * gimp_color_config_get_cmyk_color_profile       (GimpColorConfig  *config,
-        GError          **error);
+                                                                   GError          **error);
 GimpColorProfile * gimp_color_config_get_display_color_profile    (GimpColorConfig  *config,
-        GError          **error);
+                                                                   GError          **error);
 GimpColorProfile * gimp_color_config_get_simulation_color_profile (GimpColorConfig  *config,
-        GError          **error);
+                                                                   GError          **error);
 
 
 #endif /* GIMP_COLOR_CONFIG_H__ */

@@ -40,41 +40,41 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpProcBrowserDialogPrivate GimpProcBrowserDialogPrivate;
-typedef struct _GimpProcBrowserDialogClass   GimpProcBrowserDialogClass;
+typedef struct _GimpProcBrowserDialogClass GimpProcBrowserDialogClass;
 
 struct _GimpProcBrowserDialog
 {
-    GimpDialog                    parent_instance;
+	GimpDialog parent_instance;
 
-    GimpProcBrowserDialogPrivate *priv;
+	GimpProcBrowserDialogPrivate *priv;
 };
 
 struct _GimpProcBrowserDialogClass
 {
-    GimpDialogClass  parent_class;
+	GimpDialogClass parent_class;
 
-    void (* selection_changed) (GimpProcBrowserDialog *dialog);
-    void (* row_activated)     (GimpProcBrowserDialog *dialog);
+	void (* selection_changed) (GimpProcBrowserDialog *dialog);
+	void (* row_activated)     (GimpProcBrowserDialog *dialog);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
 GType       gimp_proc_browser_dialog_get_type     (void) G_GNUC_CONST;
 
 GtkWidget * gimp_proc_browser_dialog_new          (const gchar  *title,
-        const gchar  *role,
-        GimpHelpFunc  help_func,
-        const gchar  *help_id,
-        ...) G_GNUC_NULL_TERMINATED;
+                                                   const gchar  *role,
+                                                   GimpHelpFunc help_func,
+                                                   const gchar  *help_id,
+                                                   ...) G_GNUC_NULL_TERMINATED;
 
 gchar     * gimp_proc_browser_dialog_get_selected (GimpProcBrowserDialog *dialog);
 

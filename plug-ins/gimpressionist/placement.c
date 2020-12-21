@@ -37,88 +37,88 @@ static GtkWidget *brush_density_adjust = NULL;
 void
 place_restore (void)
 {
-    gtk_toggle_button_set_active
-    (GTK_TOGGLE_BUTTON (placement_radio[pcvals.place_type]), TRUE);
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (placement_center),
-                                  pcvals.placement_center);
-    gimp_label_spin_set_value (GIMP_LABEL_SPIN (brush_density_adjust),
-                               pcvals.brush_density);
+	gtk_toggle_button_set_active
+	        (GTK_TOGGLE_BUTTON (placement_radio[pcvals.place_type]), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (placement_center),
+	                              pcvals.placement_center);
+	gimp_label_spin_set_value (GIMP_LABEL_SPIN (brush_density_adjust),
+	                           pcvals.brush_density);
 }
 
 int
 place_type_input (int in)
 {
-    return CLAMP_UP_TO (in, NUM_PLACE_RADIO);
+	return CLAMP_UP_TO (in, NUM_PLACE_RADIO);
 }
 
 void
 place_store (void)
 {
-    pcvals.placement_center = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (placement_center));
+	pcvals.placement_center = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (placement_center));
 }
 
 void
 create_placementpage (GtkNotebook *notebook)
 {
-    GtkWidget *vbox;
-    GtkWidget *label, *tmpw, *frame;
+	GtkWidget *vbox;
+	GtkWidget *label, *tmpw, *frame;
 
-    label = gtk_label_new_with_mnemonic (_("Pl_acement"));
+	label = gtk_label_new_with_mnemonic (_("Pl_acement"));
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-    gtk_widget_show (vbox);
+	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
+	gtk_widget_show (vbox);
 
-    frame = gimp_int_radio_group_new (TRUE, _("Placement"),
-                                      G_CALLBACK (gimp_radio_button_update),
-                                      &pcvals.place_type, NULL, 0,
+	frame = gimp_int_radio_group_new (TRUE, _("Placement"),
+	                                  G_CALLBACK (gimp_radio_button_update),
+	                                  &pcvals.place_type, NULL, 0,
 
-                                      _("Randomly"),
-                                      PLACEMENT_TYPE_RANDOM,
-                                      &placement_radio[PLACEMENT_TYPE_RANDOM],
+	                                  _("Randomly"),
+	                                  PLACEMENT_TYPE_RANDOM,
+	                                  &placement_radio[PLACEMENT_TYPE_RANDOM],
 
-                                      _("Evenly distributed"),
-                                      PLACEMENT_TYPE_EVEN_DIST,
-                                      &placement_radio[PLACEMENT_TYPE_EVEN_DIST],
+	                                  _("Evenly distributed"),
+	                                  PLACEMENT_TYPE_EVEN_DIST,
+	                                  &placement_radio[PLACEMENT_TYPE_EVEN_DIST],
 
-                                      NULL);
+	                                  NULL);
 
-    gimp_help_set_help_data
-    (placement_radio[PLACEMENT_TYPE_RANDOM],
-     _("Place strokes randomly around the image"),
-     NULL);
-    gimp_help_set_help_data
-    (placement_radio[PLACEMENT_TYPE_EVEN_DIST],
-     _("The strokes are evenly distributed across the image"),
-     NULL);
+	gimp_help_set_help_data
+	        (placement_radio[PLACEMENT_TYPE_RANDOM],
+	        _("Place strokes randomly around the image"),
+	        NULL);
+	gimp_help_set_help_data
+	        (placement_radio[PLACEMENT_TYPE_EVEN_DIST],
+	        _("The strokes are evenly distributed across the image"),
+	        NULL);
 
-    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-    gtk_widget_show (frame);
+	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
 
-    gtk_toggle_button_set_active
-    (GTK_TOGGLE_BUTTON (placement_radio[pcvals.place_type]), TRUE);
+	gtk_toggle_button_set_active
+	        (GTK_TOGGLE_BUTTON (placement_radio[pcvals.place_type]), TRUE);
 
-    placement_center = gtk_check_button_new_with_mnemonic ( _("Centered"));
-    tmpw = placement_center;
+	placement_center = gtk_check_button_new_with_mnemonic ( _("Centered"));
+	tmpw = placement_center;
 
-    gtk_box_pack_start (GTK_BOX (vbox), tmpw, FALSE, FALSE, 0);
-    gtk_widget_show (tmpw);
-    gimp_help_set_help_data
-    (tmpw, _("Focus the brush strokes around the center of the image"), NULL);
+	gtk_box_pack_start (GTK_BOX (vbox), tmpw, FALSE, FALSE, 0);
+	gtk_widget_show (tmpw);
+	gimp_help_set_help_data
+	        (tmpw, _("Focus the brush strokes around the center of the image"), NULL);
 
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tmpw),
-                                  pcvals.placement_center);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tmpw),
+	                              pcvals.placement_center);
 
-    brush_density_adjust =
-        gimp_scale_entry_new (_("Stroke _density:"), pcvals.brush_density, 1.0, 50.0, 0);
-    gimp_help_set_help_data (brush_density_adjust,
-                             _("The relative density of the brush strokes"),
-                             NULL);
-    g_signal_connect (brush_density_adjust, "value-changed",
-                      G_CALLBACK (gimpressionist_scale_entry_update_double),
-                      &pcvals.brush_density);
-    gtk_box_pack_start (GTK_BOX (vbox), brush_density_adjust, FALSE, FALSE, 6);
-    gtk_widget_show (brush_density_adjust);
+	brush_density_adjust =
+		gimp_scale_entry_new (_("Stroke _density:"), pcvals.brush_density, 1.0, 50.0, 0);
+	gimp_help_set_help_data (brush_density_adjust,
+	                         _("The relative density of the brush strokes"),
+	                         NULL);
+	g_signal_connect (brush_density_adjust, "value-changed",
+	                  G_CALLBACK (gimpressionist_scale_entry_update_double),
+	                  &pcvals.brush_density);
+	gtk_box_pack_start (GTK_BOX (vbox), brush_density_adjust, FALSE, FALSE, 6);
+	gtk_widget_show (brush_density_adjust);
 
-    gtk_notebook_append_page_menu (notebook, vbox, label, NULL);
+	gtk_notebook_append_page_menu (notebook, vbox, label, NULL);
 }

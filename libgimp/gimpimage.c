@@ -31,24 +31,24 @@
 
 enum
 {
-    PROP_0,
-    PROP_ID,
-    N_PROPS
+	PROP_0,
+	PROP_ID,
+	N_PROPS
 };
 
 
 struct _GimpImagePrivate
 {
-    gint id;
+	gint id;
 };
 
 
 static void   gimp_image_set_property  (GObject      *object,
-                                        guint         property_id,
+                                        guint property_id,
                                         const GValue *value,
                                         GParamSpec   *pspec);
 static void   gimp_image_get_property  (GObject      *object,
-                                        guint         property_id,
+                                        guint property_id,
                                         GValue       *value,
                                         GParamSpec   *pspec);
 
@@ -63,66 +63,66 @@ static GParamSpec *props[N_PROPS] = { NULL, };
 static void
 gimp_image_class_init (GimpImageClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    object_class->set_property = gimp_image_set_property;
-    object_class->get_property = gimp_image_get_property;
+	object_class->set_property = gimp_image_set_property;
+	object_class->get_property = gimp_image_get_property;
 
-    props[PROP_ID] =
-        g_param_spec_int ("id",
-                          "The image id",
-                          "The image id for internal use",
-                          0, G_MAXINT32, 0,
-                          GIMP_PARAM_READWRITE |
-                          G_PARAM_CONSTRUCT_ONLY);
+	props[PROP_ID] =
+		g_param_spec_int ("id",
+		                  "The image id",
+		                  "The image id for internal use",
+		                  0, G_MAXINT32, 0,
+		                  GIMP_PARAM_READWRITE |
+		                  G_PARAM_CONSTRUCT_ONLY);
 
-    g_object_class_install_properties (object_class, N_PROPS, props);
+	g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void
 gimp_image_init (GimpImage *image)
 {
-    image->priv = gimp_image_get_instance_private (image);
+	image->priv = gimp_image_get_instance_private (image);
 }
 
 static void
 gimp_image_set_property (GObject      *object,
-                         guint         property_id,
+                         guint property_id,
                          const GValue *value,
                          GParamSpec   *pspec)
 {
-    GimpImage *image = GIMP_IMAGE (object);
+	GimpImage *image = GIMP_IMAGE (object);
 
-    switch (property_id)
-    {
-    case PROP_ID:
-        image->priv->id = g_value_get_int (value);
-        break;
+	switch (property_id)
+	{
+	case PROP_ID:
+		image->priv->id = g_value_get_int (value);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 static void
 gimp_image_get_property (GObject    *object,
-                         guint       property_id,
+                         guint property_id,
                          GValue     *value,
                          GParamSpec *pspec)
 {
-    GimpImage *image = GIMP_IMAGE (object);
+	GimpImage *image = GIMP_IMAGE (object);
 
-    switch (property_id)
-    {
-    case PROP_ID:
-        g_value_set_int (value, image->priv->id);
-        break;
+	switch (property_id)
+	{
+	case PROP_ID:
+		g_value_set_int (value, image->priv->id);
+		break;
 
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }
 
 
@@ -139,7 +139,7 @@ gimp_image_get_property (GObject    *object,
 gint32
 gimp_image_get_id (GimpImage *image)
 {
-    return image ? image->priv->id : -1;
+	return image ? image->priv->id : -1;
 }
 
 /**
@@ -156,15 +156,15 @@ gimp_image_get_id (GimpImage *image)
 GimpImage *
 gimp_image_get_by_id (gint32 image_id)
 {
-    if (image_id > 0)
-    {
-        GimpPlugIn    *plug_in   = gimp_get_plug_in ();
-        GimpProcedure *procedure = _gimp_plug_in_get_procedure (plug_in);
+	if (image_id > 0)
+	{
+		GimpPlugIn    *plug_in   = gimp_get_plug_in ();
+		GimpProcedure *procedure = _gimp_plug_in_get_procedure (plug_in);
 
-        return _gimp_procedure_get_image (procedure, image_id);
-    }
+		return _gimp_procedure_get_image (procedure, image_id);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -183,7 +183,7 @@ gimp_image_get_by_id (gint32 image_id)
 gboolean
 gimp_image_is_valid (GimpImage *image)
 {
-    return gimp_image_id_is_valid (gimp_image_get_id (image));
+	return gimp_image_id_is_valid (gimp_image_get_id (image));
 }
 
 /**
@@ -203,19 +203,19 @@ gimp_image_is_valid (GimpImage *image)
 GList *
 gimp_list_images (void)
 {
-    GimpImage **images;
-    gint        num_images;
-    GList      *list = NULL;
-    gint        i;
+	GimpImage **images;
+	gint num_images;
+	GList      *list = NULL;
+	gint i;
 
-    images = gimp_get_images (&num_images);
+	images = gimp_get_images (&num_images);
 
-    for (i = 0; i < num_images; i++)
-        list = g_list_prepend (list, images[i]);
+	for (i = 0; i < num_images; i++)
+		list = g_list_prepend (list, images[i]);
 
-    g_free (images);
+	g_free (images);
 
-    return g_list_reverse (list);
+	return g_list_reverse (list);
 }
 
 /**
@@ -237,19 +237,19 @@ gimp_list_images (void)
 GList *
 gimp_image_list_layers (GimpImage *image)
 {
-    GimpLayer **layers;
-    gint        num_layers;
-    GList      *list = NULL;
-    gint        i;
+	GimpLayer **layers;
+	gint num_layers;
+	GList      *list = NULL;
+	gint i;
 
-    layers = gimp_image_get_layers (image, &num_layers);
+	layers = gimp_image_get_layers (image, &num_layers);
 
-    for (i = 0; i < num_layers; i++)
-        list = g_list_prepend (list, layers[i]);
+	for (i = 0; i < num_layers; i++)
+		list = g_list_prepend (list, layers[i]);
 
-    g_free (layers);
+	g_free (layers);
 
-    return g_list_reverse (list);
+	return g_list_reverse (list);
 }
 
 /**
@@ -271,19 +271,19 @@ gimp_image_list_layers (GimpImage *image)
 GList *
 gimp_image_list_selected_layers (GimpImage *image)
 {
-    GimpLayer **layers;
-    gint        num_layers;
-    GList      *list = NULL;
-    gint        i;
+	GimpLayer **layers;
+	gint num_layers;
+	GList      *list = NULL;
+	gint i;
 
-    layers = gimp_image_get_selected_layers (image, &num_layers);
+	layers = gimp_image_get_selected_layers (image, &num_layers);
 
-    for (i = 0; i < num_layers; i++)
-        list = g_list_prepend (list, layers[i]);
+	for (i = 0; i < num_layers; i++)
+		list = g_list_prepend (list, layers[i]);
 
-    g_free (layers);
+	g_free (layers);
 
-    return g_list_reverse (list);
+	return g_list_reverse (list);
 }
 
 /**
@@ -308,19 +308,19 @@ gimp_image_list_selected_layers (GimpImage *image)
 GList *
 gimp_image_list_channels (GimpImage *image)
 {
-    GimpChannel **channels;
-    gint          num_channels;
-    GList        *list = NULL;
-    gint          i;
+	GimpChannel **channels;
+	gint num_channels;
+	GList        *list = NULL;
+	gint i;
 
-    channels = gimp_image_get_channels (image, &num_channels);
+	channels = gimp_image_get_channels (image, &num_channels);
 
-    for (i = 0; i < num_channels; i++)
-        list = g_list_prepend (list, channels[i]);
+	for (i = 0; i < num_channels; i++)
+		list = g_list_prepend (list, channels[i]);
 
-    g_free (channels);
+	g_free (channels);
 
-    return g_list_reverse (list);
+	return g_list_reverse (list);
 }
 
 /**
@@ -342,19 +342,19 @@ gimp_image_list_channels (GimpImage *image)
 GList *
 gimp_image_list_vectors (GimpImage *image)
 {
-    GimpVectors **vectors;
-    gint          num_vectors;
-    GList        *list = NULL;
-    gint          i;
+	GimpVectors **vectors;
+	gint num_vectors;
+	GList        *list = NULL;
+	gint i;
 
-    vectors = gimp_image_get_vectors (image, &num_vectors);
+	vectors = gimp_image_get_vectors (image, &num_vectors);
 
-    for (i = 0; i < num_vectors; i++)
-        list = g_list_prepend (list, vectors[i]);
+	for (i = 0; i < num_vectors; i++)
+		list = g_list_prepend (list, vectors[i]);
 
-    g_free (vectors);
+	g_free (vectors);
 
-    return g_list_reverse (list);
+	return g_list_reverse (list);
 }
 
 /**
@@ -374,15 +374,15 @@ guchar *
 gimp_image_get_colormap (GimpImage *image,
                          gint      *num_colors)
 {
-    gint    num_bytes;
-    guchar *cmap;
+	gint num_bytes;
+	guchar *cmap;
 
-    cmap = _gimp_image_get_colormap (image, &num_bytes);
+	cmap = _gimp_image_get_colormap (image, &num_bytes);
 
-    if (num_colors)
-        *num_colors = num_bytes / 3;
+	if (num_colors)
+		*num_colors = num_bytes / 3;
 
-    return cmap;
+	return cmap;
 }
 
 /**
@@ -403,9 +403,9 @@ gimp_image_get_colormap (GimpImage *image,
 gboolean
 gimp_image_set_colormap (GimpImage    *image,
                          const guchar *colormap,
-                         gint          num_colors)
+                         gint num_colors)
 {
-    return _gimp_image_set_colormap (image, num_colors * 3, colormap);
+	return _gimp_image_set_colormap (image, num_colors * 3, colormap);
 }
 
 /**
@@ -430,24 +430,24 @@ gimp_image_get_thumbnail_data (GimpImage *image,
                                gint      *height,
                                gint      *bpp)
 {
-    gint    ret_width;
-    gint    ret_height;
-    guchar *image_data;
-    gint    data_size;
+	gint ret_width;
+	gint ret_height;
+	guchar *image_data;
+	gint data_size;
 
-    _gimp_image_thumbnail (image,
-                           *width,
-                           *height,
-                           &ret_width,
-                           &ret_height,
-                           bpp,
-                           &data_size,
-                           &image_data);
+	_gimp_image_thumbnail (image,
+	                       *width,
+	                       *height,
+	                       &ret_width,
+	                       &ret_height,
+	                       bpp,
+	                       &data_size,
+	                       &image_data);
 
-    *width  = ret_width;
-    *height = ret_height;
+	*width  = ret_width;
+	*height = ret_height;
 
-    return image_data;
+	return image_data;
 }
 
 /**
@@ -466,28 +466,28 @@ gimp_image_get_thumbnail_data (GimpImage *image,
  **/
 GdkPixbuf *
 gimp_image_get_thumbnail (GimpImage              *image,
-                          gint                    width,
-                          gint                    height,
-                          GimpPixbufTransparency  alpha)
+                          gint width,
+                          gint height,
+                          GimpPixbufTransparency alpha)
 {
-    gint    thumb_width  = width;
-    gint    thumb_height = height;
-    gint    thumb_bpp;
-    guchar *data;
+	gint thumb_width  = width;
+	gint thumb_height = height;
+	gint thumb_bpp;
+	guchar *data;
 
-    g_return_val_if_fail (width  > 0 && width  <= 1024, NULL);
-    g_return_val_if_fail (height > 0 && height <= 1024, NULL);
+	g_return_val_if_fail (width  > 0 && width  <= 1024, NULL);
+	g_return_val_if_fail (height > 0 && height <= 1024, NULL);
 
-    data = gimp_image_get_thumbnail_data (image,
-                                          &thumb_width,
-                                          &thumb_height,
-                                          &thumb_bpp);
-    if (data)
-        return _gimp_pixbuf_from_data (data,
-                                       thumb_width, thumb_height, thumb_bpp,
-                                       alpha);
-    else
-        return NULL;
+	data = gimp_image_get_thumbnail_data (image,
+	                                      &thumb_width,
+	                                      &thumb_height,
+	                                      &thumb_bpp);
+	if (data)
+		return _gimp_pixbuf_from_data (data,
+		                               thumb_width, thumb_height, thumb_bpp,
+		                               alpha);
+	else
+		return NULL;
 }
 
 /**
@@ -506,17 +506,17 @@ gimp_image_get_thumbnail (GimpImage              *image,
 GimpMetadata *
 gimp_image_get_metadata (GimpImage *image)
 {
-    GimpMetadata *metadata = NULL;
-    gchar        *metadata_string;
+	GimpMetadata *metadata = NULL;
+	gchar        *metadata_string;
 
-    metadata_string = _gimp_image_get_metadata (image);
-    if (metadata_string)
-    {
-        metadata = gimp_metadata_deserialize (metadata_string);
-        g_free (metadata_string);
-    }
+	metadata_string = _gimp_image_get_metadata (image);
+	if (metadata_string)
+	{
+		metadata = gimp_metadata_deserialize (metadata_string);
+		g_free (metadata_string);
+	}
 
-    return metadata;
+	return metadata;
 }
 
 /**
@@ -537,16 +537,16 @@ gboolean
 gimp_image_set_metadata (GimpImage    *image,
                          GimpMetadata *metadata)
 {
-    gchar    *metadata_string = NULL;
-    gboolean  success;
+	gchar    *metadata_string = NULL;
+	gboolean success;
 
-    if (metadata)
-        metadata_string = gimp_metadata_serialize (metadata);
+	if (metadata)
+		metadata_string = gimp_metadata_serialize (metadata);
 
-    success = _gimp_image_set_metadata (image, metadata_string);
+	success = _gimp_image_set_metadata (image, metadata_string);
 
-    if (metadata_string)
-        g_free (metadata_string);
+	if (metadata_string)
+		g_free (metadata_string);
 
-    return success;
+	return success;
 }

@@ -33,10 +33,10 @@ gboolean  save_image  (GFile         *file,
 gboolean  save_dialog (GimpImage     *image,
                        GimpProcedure *procedure,
                        GObject       *config,
-                       gboolean       has_alpha,
-                       gboolean       is_monochrome,
-                       gboolean       is_indexed,
-                       gboolean       is_multi_layer);
+                       gboolean has_alpha,
+                       gboolean is_monochrome,
+                       gboolean is_indexed,
+                       gboolean is_multi_layer);
 
 
 #endif /* __FILE_TIFF_SAVE_H__ */

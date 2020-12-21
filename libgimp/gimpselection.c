@@ -25,7 +25,7 @@
 
 struct _GimpSelectionPrivate
 {
-    gpointer unused;
+	gpointer unused;
 };
 
 
@@ -42,7 +42,7 @@ gimp_selection_class_init (GimpSelectionClass *klass)
 static void
 gimp_selection_init (GimpSelection *selection)
 {
-    selection->priv = gimp_selection_get_instance_private (selection);
+	selection->priv = gimp_selection_get_instance_private (selection);
 }
 
 /**
@@ -63,12 +63,12 @@ gimp_selection_init (GimpSelection *selection)
 GimpSelection *
 gimp_selection_get_by_id (gint32 selection_id)
 {
-    GimpItem *item = gimp_item_get_by_id (selection_id);
+	GimpItem *item = gimp_item_get_by_id (selection_id);
 
-    if (GIMP_IS_SELECTION (item))
-        return (GimpSelection *) item;
+	if (GIMP_IS_SELECTION (item))
+		return (GimpSelection *) item;
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -93,13 +93,13 @@ gimp_selection_get_by_id (gint32 selection_id)
  */
 GimpLayer *
 gimp_selection_float (GimpImage     *image,
-                      gint           n_drawables,
+                      gint n_drawables,
                       GimpDrawable **drawables,
-                      gint           offx,
-                      gint           offy)
+                      gint offx,
+                      gint offy)
 {
-    return _gimp_selection_float (n_drawables,
-                                  (const GimpItem **) drawables,
-                                  offx,
-                                  offy);
+	return _gimp_selection_float (n_drawables,
+	                              (const GimpItem **) drawables,
+	                              offx,
+	                              offy);
 }

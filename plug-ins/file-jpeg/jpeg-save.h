@@ -28,7 +28,7 @@ gboolean    save_image         (GFile                *file,
                                 GimpImage            *image,
                                 GimpDrawable         *drawable,
                                 GimpImage            *orig_image,
-                                gboolean              preview,
+                                gboolean preview,
                                 GError              **error);
 gboolean    save_dialog        (GimpProcedure        *procedure,
                                 GimpProcedureConfig  *config,

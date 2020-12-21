@@ -34,10 +34,10 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GimpColorScaleEntry, gimp_color_scale_entry, GIMP, COLOR_SCALE_ENTRY, GimpScaleEntry)
 
 GtkWidget     * gimp_color_scale_entry_new        (const gchar *text,
-        gdouble      value,
-        gdouble      lower,
-        gdouble      upper,
-        guint        digits);
+                                                   gdouble value,
+                                                   gdouble lower,
+                                                   gdouble upper,
+                                                   guint digits);
 
 
 G_END_DECLS

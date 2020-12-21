@@ -56,19 +56,19 @@
 /*  local function prototypes  */
 
 static void      gimp_ui_help_func              (const gchar       *help_id,
-        gpointer           help_data);
+                                                 gpointer help_data);
 static void      gimp_ui_theme_changed          (GFileMonitor      *monitor,
-        GFile             *file,
-        GFile             *other_file,
-        GFileMonitorEvent  event_type,
-        GtkCssProvider    *css_provider);
+                                                 GFile             *file,
+                                                 GFile             *other_file,
+                                                 GFileMonitorEvent event_type,
+                                                 GtkCssProvider    *css_provider);
 static void      gimp_ensure_modules            (void);
 #ifndef GDK_WINDOWING_WIN32
 static void      gimp_window_transient_realized (GtkWidget         *window,
-        GdkWindow         *parent);
+                                                 GdkWindow         *parent);
 #endif
 static gboolean  gimp_window_set_transient_for  (GtkWindow         *window,
-        GdkWindow         *parent);
+                                                 GdkWindow         *parent);
 
 #ifdef GDK_WINDOWING_QUARTZ
 static gboolean  gimp_osx_focus_window          (gpointer);
@@ -97,98 +97,98 @@ static gboolean gimp_ui_initialized = FALSE;
 void
 gimp_ui_init (const gchar *prog_name)
 {
-    const gchar    *display_name;
-    GtkCssProvider *css_provider;
-    GFileMonitor   *css_monitor;
-    GFile          *file;
+	const gchar    *display_name;
+	GtkCssProvider *css_provider;
+	GFileMonitor   *css_monitor;
+	GFile          *file;
 
-    g_return_if_fail (prog_name != NULL);
+	g_return_if_fail (prog_name != NULL);
 
-    if (gimp_ui_initialized)
-        return;
+	if (gimp_ui_initialized)
+		return;
 
-    g_set_prgname (prog_name);
+	g_set_prgname (prog_name);
 
-    display_name = gimp_display_name ();
+	display_name = gimp_display_name ();
 
-    if (display_name)
-    {
+	if (display_name)
+	{
 #if defined (GDK_WINDOWING_X11)
-        g_setenv ("DISPLAY", display_name, TRUE);
+		g_setenv ("DISPLAY", display_name, TRUE);
 #else
-        g_setenv ("GDK_DISPLAY", display_name, TRUE);
+		g_setenv ("GDK_DISPLAY", display_name, TRUE);
 #endif
-    }
+	}
 
-    if (gimp_user_time ())
-    {
-        /* Construct a fake startup ID as we only want to pass the
-         * interaction timestamp, see _gdk_windowing_set_default_display().
-         */
-        gchar *startup_id = g_strdup_printf ("_TIME%u", gimp_user_time ());
+	if (gimp_user_time ())
+	{
+		/* Construct a fake startup ID as we only want to pass the
+		 * interaction timestamp, see _gdk_windowing_set_default_display().
+		 */
+		gchar *startup_id = g_strdup_printf ("_TIME%u", gimp_user_time ());
 
-        g_setenv ("DESKTOP_STARTUP_ID", startup_id, TRUE);
-        g_free (startup_id);
-    }
+		g_setenv ("DESKTOP_STARTUP_ID", startup_id, TRUE);
+		g_free (startup_id);
+	}
 
-    gtk_init (NULL, NULL);
+	gtk_init (NULL, NULL);
 
-    css_provider = gtk_css_provider_new ();
-    gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
-            GTK_STYLE_PROVIDER (css_provider),
-            GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	css_provider = gtk_css_provider_new ();
+	gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
+	                                           GTK_STYLE_PROVIDER (css_provider),
+	                                           GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-    file = gimp_directory_file ("theme.css", NULL);
-    css_monitor = g_file_monitor (file, G_FILE_MONITOR_NONE, NULL, NULL);
-    g_object_unref (file);
+	file = gimp_directory_file ("theme.css", NULL);
+	css_monitor = g_file_monitor (file, G_FILE_MONITOR_NONE, NULL, NULL);
+	g_object_unref (file);
 
-    gimp_ui_theme_changed (css_monitor, NULL, NULL, G_FILE_MONITOR_NONE,
-                           css_provider);
+	gimp_ui_theme_changed (css_monitor, NULL, NULL, G_FILE_MONITOR_NONE,
+	                       css_provider);
 
-    g_signal_connect (css_monitor, "changed",
-                      G_CALLBACK (gimp_ui_theme_changed),
-                      css_provider);
+	g_signal_connect (css_monitor, "changed",
+	                  G_CALLBACK (gimp_ui_theme_changed),
+	                  css_provider);
 
-    g_object_unref (css_provider);
+	g_object_unref (css_provider);
 
-    gdk_set_program_class (gimp_wm_class ());
+	gdk_set_program_class (gimp_wm_class ());
 
-    if (gimp_icon_theme_dir ())
-    {
-        file = g_file_new_for_path (gimp_icon_theme_dir ());
-        gimp_icons_set_icon_theme (file);
-        g_object_unref (file);
-    }
+	if (gimp_icon_theme_dir ())
+	{
+		file = g_file_new_for_path (gimp_icon_theme_dir ());
+		gimp_icons_set_icon_theme (file);
+		g_object_unref (file);
+	}
 
-    gimp_widgets_init (gimp_ui_help_func,
-                       gimp_context_get_foreground,
-                       gimp_context_get_background,
-                       gimp_ensure_modules);
+	gimp_widgets_init (gimp_ui_help_func,
+	                   gimp_context_get_foreground,
+	                   gimp_context_get_background,
+	                   gimp_ensure_modules);
 
-    gimp_dialogs_show_help_button (gimp_show_help_button ());
+	gimp_dialogs_show_help_button (gimp_show_help_button ());
 
 #ifdef GDK_WINDOWING_QUARTZ
-    g_idle_add (gimp_osx_focus_window, NULL);
+	g_idle_add (gimp_osx_focus_window, NULL);
 #endif
 
-    gimp_ui_initialized = TRUE;
+	gimp_ui_initialized = TRUE;
 }
 
 static GdkWindow *
 gimp_ui_get_foreign_window (guint32 window)
 {
 #ifdef GDK_WINDOWING_X11
-    if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
-        return gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
-                window);
+	if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
+		return gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
+		                                               window);
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
-    return gdk_win32_window_foreign_new_for_display (gdk_display_get_default (),
-            (HWND) (uintptr_t) window);
+	return gdk_win32_window_foreign_new_for_display (gdk_display_get_default (),
+	                                                 (HWND) (uintptr_t) window);
 #endif
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -211,15 +211,15 @@ gimp_ui_get_foreign_window (guint32 window)
 GdkWindow *
 gimp_ui_get_display_window (GimpDisplay *display)
 {
-    guint32 window;
+	guint32 window;
 
-    g_return_val_if_fail (gimp_ui_initialized, NULL);
+	g_return_val_if_fail (gimp_ui_initialized, NULL);
 
-    window = gimp_display_get_window_handle (display);
-    if (window)
-        return gimp_ui_get_foreign_window (window);
+	window = gimp_display_get_window_handle (display);
+	if (window)
+		return gimp_ui_get_foreign_window (window);
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -241,25 +241,25 @@ gimp_ui_get_display_window (GimpDisplay *display)
 GdkWindow *
 gimp_ui_get_progress_window (void)
 {
-    guint32  window;
+	guint32 window;
 
-    g_return_val_if_fail (gimp_ui_initialized, NULL);
+	g_return_val_if_fail (gimp_ui_initialized, NULL);
 
-    window = gimp_progress_get_window_handle ();
-    if (window)
-        return gimp_ui_get_foreign_window (window);
+	window = gimp_progress_get_window_handle ();
+	if (window)
+		return gimp_ui_get_foreign_window (window);
 
-    return NULL;
+	return NULL;
 }
 
 #ifdef GDK_WINDOWING_QUARTZ
 static void
 gimp_window_transient_show (GtkWidget *window)
 {
-    g_signal_handlers_disconnect_by_func (window,
-                                          gimp_window_transient_show,
-                                          NULL);
-    [NSApp arrangeInFront: nil];
+	g_signal_handlers_disconnect_by_func (window,
+	                                      gimp_window_transient_show,
+	                                      NULL);
+	[NSApp arrangeInFront: nil];
 }
 #endif
 
@@ -281,24 +281,24 @@ void
 gimp_window_set_transient_for_display (GtkWindow   *window,
                                        GimpDisplay *display)
 {
-    g_return_if_fail (gimp_ui_initialized);
-    g_return_if_fail (GTK_IS_WINDOW (window));
+	g_return_if_fail (gimp_ui_initialized);
+	g_return_if_fail (GTK_IS_WINDOW (window));
 
-    if (! gimp_window_set_transient_for (window,
-                                         gimp_ui_get_display_window (display)))
-    {
-        /*  if setting the window transient failed, at least set
-         *  WIN_POS_CENTER, which will center the window on the screen
-         *  where the mouse is (see bug #684003).
-         */
-        gtk_window_set_position (window, GTK_WIN_POS_CENTER);
+	if (!gimp_window_set_transient_for (window,
+	                                    gimp_ui_get_display_window (display)))
+	{
+		/*  if setting the window transient failed, at least set
+		 *  WIN_POS_CENTER, which will center the window on the screen
+		 *  where the mouse is (see bug #684003).
+		 */
+		gtk_window_set_position (window, GTK_WIN_POS_CENTER);
 
 #ifdef GDK_WINDOWING_QUARTZ
-        g_signal_connect (window, "show",
-                          G_CALLBACK (gimp_window_transient_show),
-                          NULL);
+		g_signal_connect (window, "show",
+		                  G_CALLBACK (gimp_window_transient_show),
+		                  NULL);
 #endif
-    }
+	}
 }
 
 /**
@@ -314,20 +314,20 @@ gimp_window_set_transient_for_display (GtkWindow   *window,
 void
 gimp_window_set_transient (GtkWindow *window)
 {
-    g_return_if_fail (gimp_ui_initialized);
-    g_return_if_fail (GTK_IS_WINDOW (window));
+	g_return_if_fail (gimp_ui_initialized);
+	g_return_if_fail (GTK_IS_WINDOW (window));
 
-    if (! gimp_window_set_transient_for (window, gimp_ui_get_progress_window ()))
-    {
-        /*  see above  */
-        gtk_window_set_position (window, GTK_WIN_POS_CENTER);
+	if (!gimp_window_set_transient_for (window, gimp_ui_get_progress_window ()))
+	{
+		/*  see above  */
+		gtk_window_set_position (window, GTK_WIN_POS_CENTER);
 
 #ifdef GDK_WINDOWING_QUARTZ
-        g_signal_connect (window, "show",
-                          G_CALLBACK (gimp_window_transient_show),
-                          NULL);
+		g_signal_connect (window, "show",
+		                  G_CALLBACK (gimp_window_transient_show),
+		                  NULL);
 #endif
-    }
+	}
 }
 
 
@@ -335,70 +335,70 @@ gimp_window_set_transient (GtkWindow *window)
 
 static void
 gimp_ui_help_func (const gchar *help_id,
-                   gpointer     help_data)
+                   gpointer help_data)
 {
-    gimp_help (NULL, help_id);
+	gimp_help (NULL, help_id);
 }
 
 static void
 gimp_ui_theme_changed (GFileMonitor      *monitor,
                        GFile             *file,
                        GFile             *other_file,
-                       GFileMonitorEvent  event_type,
+                       GFileMonitorEvent event_type,
                        GtkCssProvider    *css_provider)
 {
-    GError *error = NULL;
-    gchar  *contents;
+	GError *error = NULL;
+	gchar  *contents;
 
-    file = gimp_directory_file ("theme.css", NULL);
+	file = gimp_directory_file ("theme.css", NULL);
 
-    if (g_file_load_contents (file, NULL, &contents, NULL, NULL, &error))
-    {
-        gboolean prefer_dark_theme;
+	if (g_file_load_contents (file, NULL, &contents, NULL, NULL, &error))
+	{
+		gboolean prefer_dark_theme;
 
-        prefer_dark_theme = strstr (contents, "/* prefer-dark-theme */") != NULL;
+		prefer_dark_theme = strstr (contents, "/* prefer-dark-theme */") != NULL;
 
-        g_object_set (gtk_settings_get_for_screen (gdk_screen_get_default ()),
-                      "gtk-application-prefer-dark-theme", prefer_dark_theme,
-                      NULL);
+		g_object_set (gtk_settings_get_for_screen (gdk_screen_get_default ()),
+		              "gtk-application-prefer-dark-theme", prefer_dark_theme,
+		              NULL);
 
-        g_free (contents);
-    }
-    else
-    {
-        g_printerr ("%s: error loading %s: %s\n", G_STRFUNC,
-                    gimp_file_get_utf8_name (file), error->message);
-        g_clear_error (&error);
-    }
+		g_free (contents);
+	}
+	else
+	{
+		g_printerr ("%s: error loading %s: %s\n", G_STRFUNC,
+		            gimp_file_get_utf8_name (file), error->message);
+		g_clear_error (&error);
+	}
 
-    if (! gtk_css_provider_load_from_file (css_provider, file, &error))
-    {
-        g_printerr ("%s: error parsing %s: %s\n", G_STRFUNC,
-                    gimp_file_get_utf8_name (file), error->message);
-        g_clear_error (&error);
-    }
+	if (!gtk_css_provider_load_from_file (css_provider, file, &error))
+	{
+		g_printerr ("%s: error parsing %s: %s\n", G_STRFUNC,
+		            gimp_file_get_utf8_name (file), error->message);
+		g_clear_error (&error);
+	}
 
-    g_object_unref (file);
+	g_object_unref (file);
 }
 
 static void
 gimp_ensure_modules (void)
 {
-    static GimpModuleDB *module_db = NULL;
+	static GimpModuleDB *module_db = NULL;
 
-    if (! module_db)
-    {
-        gchar *load_inhibit = gimp_get_module_load_inhibit ();
-        gchar *module_path  = gimp_gimprc_query ("module-path");
+	if (!module_db)
+	{
+		gchar *load_inhibit = gimp_get_module_load_inhibit ();
+		gchar *module_path  = gimp_gimprc_query ("module-path");
 
-        module_db = gimp_module_db_new (FALSE);
+		module_db = gimp_module_db_new (FALSE);
 
-        gimp_module_db_set_load_inhibit (module_db, load_inhibit);
-        gimp_module_db_load (module_db, module_path);
+		gimp_module_db_set_load_inhibit (module_db, load_inhibit);
+		gimp_module_db_load (module_db, module_path);
 
-        g_free (module_path);
-        g_free (load_inhibit);
-    }
+		g_free (module_path);
+		g_free (load_inhibit);
+	}
 }
 
 #ifndef GDK_WINDOWING_WIN32
@@ -406,8 +406,8 @@ static void
 gimp_window_transient_realized (GtkWidget *window,
                                 GdkWindow *parent)
 {
-    if (gtk_widget_get_realized (window))
-        gdk_window_set_transient_for (gtk_widget_get_window (window), parent);
+	if (gtk_widget_get_realized (window))
+		gdk_window_set_transient_for (gtk_widget_get_window (window), parent);
 }
 #endif
 
@@ -415,40 +415,40 @@ static gboolean
 gimp_window_set_transient_for (GtkWindow *window,
                                GdkWindow *parent)
 {
-    gtk_window_set_transient_for (window, NULL);
+	gtk_window_set_transient_for (window, NULL);
 
-    /* To know why it is disabled on Win32, see
-     * gimp_window_set_transient_for() in app/widgets/gimpwidgets-utils.c.
-     */
+	/* To know why it is disabled on Win32, see
+	 * gimp_window_set_transient_for() in app/widgets/gimpwidgets-utils.c.
+	 */
 #ifndef GDK_WINDOWING_WIN32
-    g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
-                                          0, 0, NULL,
-                                          gimp_window_transient_realized,
-                                          NULL);
+	g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+	                                      0, 0, NULL,
+	                                      gimp_window_transient_realized,
+	                                      NULL);
 
-    if (! parent)
-        return FALSE;
+	if (!parent)
+		return FALSE;
 
-    if (gtk_widget_get_realized (GTK_WIDGET (window)))
-        gdk_window_set_transient_for (gtk_widget_get_window (GTK_WIDGET (window)),
-                                      parent);
+	if (gtk_widget_get_realized (GTK_WIDGET (window)))
+		gdk_window_set_transient_for (gtk_widget_get_window (GTK_WIDGET (window)),
+		                              parent);
 
-    g_signal_connect_object (window, "realize",
-                             G_CALLBACK (gimp_window_transient_realized),
-                             parent, 0);
-    g_object_unref (parent);
+	g_signal_connect_object (window, "realize",
+	                         G_CALLBACK (gimp_window_transient_realized),
+	                         parent, 0);
+	g_object_unref (parent);
 
-    return TRUE;
+	return TRUE;
 #endif
 
-    return FALSE;
+	return FALSE;
 }
 
 #ifdef GDK_WINDOWING_QUARTZ
 static gboolean
 gimp_osx_focus_window (gpointer user_data)
 {
-    [NSApp activateIgnoringOtherApps:YES];
-    return FALSE;
+	[NSApp activateIgnoringOtherApps: YES];
+	return FALSE;
 }
 #endif

@@ -38,7 +38,7 @@ void   gimp_rgb_to_hsv          (const GimpRGB  *rgb,
 void   gimp_rgb_to_hsl          (const GimpRGB  *rgb,
                                  GimpHSL        *hsl);
 void   gimp_rgb_to_cmyk         (const GimpRGB  *rgb,
-                                 gdouble         pullout,
+                                 gdouble pullout,
                                  GimpCMYK       *cmyk);
 
 void   gimp_hsv_to_rgb          (const GimpHSV  *hsv,

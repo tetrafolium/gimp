@@ -31,32 +31,32 @@
 static CmdExecuteValue_t cut_object_command_execute(Command_t *parent);
 
 static CommandClass_t cut_object_command_class = {
-    NULL,                        /* cut_object_command_destruct */
-    cut_object_command_execute,
-    NULL,                        /* cut_object_command_undo */
-    NULL                         /* cut_object_command_redo */
+	NULL,                    /* cut_object_command_destruct */
+	cut_object_command_execute,
+	NULL,                    /* cut_object_command_undo */
+	NULL                     /* cut_object_command_redo */
 };
 
 typedef struct {
-    Command_t parent;
+	Command_t parent;
 } CutObjectCommand_t;
 
 Command_t*
 cut_object_command_new(Object_t *obj)
 {
-    CutObjectCommand_t *command = g_new(CutObjectCommand_t, 1);
-    Command_t *parent;
+	CutObjectCommand_t *command = g_new(CutObjectCommand_t, 1);
+	Command_t *parent;
 
-    parent = command_init(&command->parent, _("Cut"),
-                          &cut_object_command_class);
-    command_add_subcommand(parent, copy_object_command_new(obj));
-    command_add_subcommand(parent, delete_command_new(obj->list, obj));
+	parent = command_init(&command->parent, _("Cut"),
+	                      &cut_object_command_class);
+	command_add_subcommand(parent, copy_object_command_new(obj));
+	command_add_subcommand(parent, delete_command_new(obj->list, obj));
 
-    return parent;
+	return parent;
 }
 
 static CmdExecuteValue_t
 cut_object_command_execute(Command_t *parent)
 {
-    return CMD_APPEND;
+	return CMD_APPEND;
 }

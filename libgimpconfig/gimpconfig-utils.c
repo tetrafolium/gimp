@@ -47,101 +47,101 @@ gimp_config_diff_property (GObject    *a,
                            GObject    *b,
                            GParamSpec *prop_spec)
 {
-    GValue    a_value = G_VALUE_INIT;
-    GValue    b_value = G_VALUE_INIT;
-    gboolean  retval  = FALSE;
+	GValue a_value = G_VALUE_INIT;
+	GValue b_value = G_VALUE_INIT;
+	gboolean retval  = FALSE;
 
-    g_value_init (&a_value, prop_spec->value_type);
-    g_value_init (&b_value, prop_spec->value_type);
+	g_value_init (&a_value, prop_spec->value_type);
+	g_value_init (&b_value, prop_spec->value_type);
 
-    g_object_get_property (a, prop_spec->name, &a_value);
-    g_object_get_property (b, prop_spec->name, &b_value);
+	g_object_get_property (a, prop_spec->name, &a_value);
+	g_object_get_property (b, prop_spec->name, &b_value);
 
-    if (g_param_values_cmp (prop_spec, &a_value, &b_value))
-    {
-        if ((prop_spec->flags & GIMP_CONFIG_PARAM_AGGREGATE) &&
-                G_IS_PARAM_SPEC_OBJECT (prop_spec)               &&
-                g_type_interface_peek (g_type_class_peek (prop_spec->value_type),
-                                       GIMP_TYPE_CONFIG))
-        {
-            if (! gimp_config_is_equal_to (g_value_get_object (&a_value),
-                                           g_value_get_object (&b_value)))
-            {
-                retval = TRUE;
-            }
-        }
-        else
-        {
-            retval = TRUE;
-        }
-    }
+	if (g_param_values_cmp (prop_spec, &a_value, &b_value))
+	{
+		if ((prop_spec->flags & GIMP_CONFIG_PARAM_AGGREGATE) &&
+		    G_IS_PARAM_SPEC_OBJECT (prop_spec)               &&
+		    g_type_interface_peek (g_type_class_peek (prop_spec->value_type),
+		                           GIMP_TYPE_CONFIG))
+		{
+			if (!gimp_config_is_equal_to (g_value_get_object (&a_value),
+			                              g_value_get_object (&b_value)))
+			{
+				retval = TRUE;
+			}
+		}
+		else
+		{
+			retval = TRUE;
+		}
+	}
 
-    g_value_unset (&a_value);
-    g_value_unset (&b_value);
+	g_value_unset (&a_value);
+	g_value_unset (&b_value);
 
-    return retval;
+	return retval;
 }
 
 static GList *
 gimp_config_diff_same (GObject     *a,
                        GObject     *b,
-                       GParamFlags  flags)
+                       GParamFlags flags)
 {
-    GParamSpec **param_specs;
-    guint        n_param_specs;
-    gint         i;
-    GList       *list = NULL;
+	GParamSpec **param_specs;
+	guint n_param_specs;
+	gint i;
+	GList       *list = NULL;
 
-    param_specs = g_object_class_list_properties (G_OBJECT_GET_CLASS (a),
-                  &n_param_specs);
+	param_specs = g_object_class_list_properties (G_OBJECT_GET_CLASS (a),
+	                                              &n_param_specs);
 
-    for (i = 0; i < n_param_specs; i++)
-    {
-        GParamSpec *prop_spec = param_specs[i];
+	for (i = 0; i < n_param_specs; i++)
+	{
+		GParamSpec *prop_spec = param_specs[i];
 
-        if (! flags || ((prop_spec->flags & flags) == flags))
-        {
-            if (gimp_config_diff_property (a, b, prop_spec))
-                list = g_list_prepend (list, prop_spec);
-        }
-    }
+		if (!flags || ((prop_spec->flags & flags) == flags))
+		{
+			if (gimp_config_diff_property (a, b, prop_spec))
+				list = g_list_prepend (list, prop_spec);
+		}
+	}
 
-    g_free (param_specs);
+	g_free (param_specs);
 
-    return list;
+	return list;
 }
 
 static GList *
 gimp_config_diff_other (GObject     *a,
                         GObject     *b,
-                        GParamFlags  flags)
+                        GParamFlags flags)
 {
-    GParamSpec **param_specs;
-    guint        n_param_specs;
-    gint         i;
-    GList       *list = NULL;
+	GParamSpec **param_specs;
+	guint n_param_specs;
+	gint i;
+	GList       *list = NULL;
 
-    param_specs = g_object_class_list_properties (G_OBJECT_GET_CLASS (a),
-                  &n_param_specs);
+	param_specs = g_object_class_list_properties (G_OBJECT_GET_CLASS (a),
+	                                              &n_param_specs);
 
-    for (i = 0; i < n_param_specs; i++)
-    {
-        GParamSpec *a_spec = param_specs[i];
-        GParamSpec *b_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (b),
-                             a_spec->name);
+	for (i = 0; i < n_param_specs; i++)
+	{
+		GParamSpec *a_spec = param_specs[i];
+		GParamSpec *b_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (b),
+		                                                   a_spec->name);
 
-        if (b_spec &&
-                (a_spec->value_type == b_spec->value_type) &&
-                (! flags || (a_spec->flags & b_spec->flags & flags) == flags))
-        {
-            if (gimp_config_diff_property (a, b, b_spec))
-                list = g_list_prepend (list, b_spec);
-        }
-    }
+		if (b_spec &&
+		    (a_spec->value_type == b_spec->value_type) &&
+		    (!flags || (a_spec->flags & b_spec->flags & flags) == flags))
+		{
+			if (gimp_config_diff_property (a, b, b_spec))
+				list = g_list_prepend (list, b_spec);
+		}
+	}
 
-    g_free (param_specs);
+	g_free (param_specs);
 
-    return list;
+	return list;
 }
 
 
@@ -165,19 +165,19 @@ gimp_config_diff_other (GObject     *a,
 GList *
 gimp_config_diff (GObject     *a,
                   GObject     *b,
-                  GParamFlags  flags)
+                  GParamFlags flags)
 {
-    GList *diff;
+	GList *diff;
 
-    g_return_val_if_fail (G_IS_OBJECT (a), NULL);
-    g_return_val_if_fail (G_IS_OBJECT (b), NULL);
+	g_return_val_if_fail (G_IS_OBJECT (a), NULL);
+	g_return_val_if_fail (G_IS_OBJECT (b), NULL);
 
-    if (G_TYPE_FROM_INSTANCE (a) == G_TYPE_FROM_INSTANCE (b))
-        diff = gimp_config_diff_same (a, b, flags);
-    else
-        diff = gimp_config_diff_other (a, b, flags);
+	if (G_TYPE_FROM_INSTANCE (a) == G_TYPE_FROM_INSTANCE (b))
+		diff = gimp_config_diff_same (a, b, flags);
+	else
+		diff = gimp_config_diff_other (a, b, flags);
 
-    return g_list_reverse (diff);
+	return g_list_reverse (diff);
 }
 
 /**
@@ -203,50 +203,50 @@ gimp_config_diff (GObject     *a,
 gboolean
 gimp_config_sync (GObject     *src,
                   GObject     *dest,
-                  GParamFlags  flags)
+                  GParamFlags flags)
 {
-    GList *diff;
-    GList *list;
+	GList *diff;
+	GList *list;
 
-    g_return_val_if_fail (G_IS_OBJECT (src), FALSE);
-    g_return_val_if_fail (G_IS_OBJECT (dest), FALSE);
+	g_return_val_if_fail (G_IS_OBJECT (src), FALSE);
+	g_return_val_if_fail (G_IS_OBJECT (dest), FALSE);
 
-    /* we use the internal versions here for a number of reasons:
-     *  - it saves a g_list_reverse()
-     *  - it avoids duplicated parameter checks
-     */
-    if (G_TYPE_FROM_INSTANCE (src) == G_TYPE_FROM_INSTANCE (dest))
-        diff = gimp_config_diff_same (src, dest, (flags | G_PARAM_READWRITE));
-    else
-        diff = gimp_config_diff_other (src, dest, flags);
+	/* we use the internal versions here for a number of reasons:
+	 *  - it saves a g_list_reverse()
+	 *  - it avoids duplicated parameter checks
+	 */
+	if (G_TYPE_FROM_INSTANCE (src) == G_TYPE_FROM_INSTANCE (dest))
+		diff = gimp_config_diff_same (src, dest, (flags | G_PARAM_READWRITE));
+	else
+		diff = gimp_config_diff_other (src, dest, flags);
 
-    if (!diff)
-        return FALSE;
+	if (!diff)
+		return FALSE;
 
-    g_object_freeze_notify (G_OBJECT (dest));
+	g_object_freeze_notify (G_OBJECT (dest));
 
-    for (list = diff; list; list = list->next)
-    {
-        GParamSpec *prop_spec = list->data;
+	for (list = diff; list; list = list->next)
+	{
+		GParamSpec *prop_spec = list->data;
 
-        if (! (prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
-        {
-            GValue value = G_VALUE_INIT;
+		if (!(prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
+		{
+			GValue value = G_VALUE_INIT;
 
-            g_value_init (&value, prop_spec->value_type);
+			g_value_init (&value, prop_spec->value_type);
 
-            g_object_get_property (src,  prop_spec->name, &value);
-            g_object_set_property (dest, prop_spec->name, &value);
+			g_object_get_property (src,  prop_spec->name, &value);
+			g_object_set_property (dest, prop_spec->name, &value);
 
-            g_value_unset (&value);
-        }
-    }
+			g_value_unset (&value);
+		}
+	}
 
-    g_object_thaw_notify (G_OBJECT (dest));
+	g_object_thaw_notify (G_OBJECT (dest));
 
-    g_list_free (diff);
+	g_list_free (diff);
 
-    return TRUE;
+	return TRUE;
 }
 
 /**
@@ -264,72 +264,72 @@ gimp_config_sync (GObject     *src,
 void
 gimp_config_reset_properties (GObject *object)
 {
-    GObjectClass  *klass;
-    GParamSpec   **property_specs;
-    guint          n_property_specs;
-    guint          i;
+	GObjectClass  *klass;
+	GParamSpec   **property_specs;
+	guint n_property_specs;
+	guint i;
 
-    g_return_if_fail (G_IS_OBJECT (object));
+	g_return_if_fail (G_IS_OBJECT (object));
 
-    klass = G_OBJECT_GET_CLASS (object);
+	klass = G_OBJECT_GET_CLASS (object);
 
-    property_specs = g_object_class_list_properties (klass, &n_property_specs);
-    if (!property_specs)
-        return;
+	property_specs = g_object_class_list_properties (klass, &n_property_specs);
+	if (!property_specs)
+		return;
 
-    g_object_freeze_notify (object);
+	g_object_freeze_notify (object);
 
-    for (i = 0; i < n_property_specs; i++)
-    {
-        GParamSpec *prop_spec;
-        GValue      value = G_VALUE_INIT;
+	for (i = 0; i < n_property_specs; i++)
+	{
+		GParamSpec *prop_spec;
+		GValue value = G_VALUE_INIT;
 
-        prop_spec = property_specs[i];
+		prop_spec = property_specs[i];
 
-        if ((prop_spec->flags & G_PARAM_WRITABLE) &&
-                ! (prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
-        {
-            if (G_IS_PARAM_SPEC_OBJECT (prop_spec))
-            {
-                if ((prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE) &&
-                        (prop_spec->flags & GIMP_CONFIG_PARAM_AGGREGATE) &&
-                        g_type_interface_peek (g_type_class_peek (prop_spec->value_type),
-                                               GIMP_TYPE_CONFIG))
-                {
-                    g_value_init (&value, prop_spec->value_type);
+		if ((prop_spec->flags & G_PARAM_WRITABLE) &&
+		    !(prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
+		{
+			if (G_IS_PARAM_SPEC_OBJECT (prop_spec))
+			{
+				if ((prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE) &&
+				    (prop_spec->flags & GIMP_CONFIG_PARAM_AGGREGATE) &&
+				    g_type_interface_peek (g_type_class_peek (prop_spec->value_type),
+				                           GIMP_TYPE_CONFIG))
+				{
+					g_value_init (&value, prop_spec->value_type);
 
-                    g_object_get_property (object, prop_spec->name, &value);
+					g_object_get_property (object, prop_spec->name, &value);
 
-                    gimp_config_reset (g_value_get_object (&value));
+					gimp_config_reset (g_value_get_object (&value));
 
-                    g_value_unset (&value);
-                }
-            }
-            else
-            {
-                GValue default_value = G_VALUE_INIT;
+					g_value_unset (&value);
+				}
+			}
+			else
+			{
+				GValue default_value = G_VALUE_INIT;
 
-                g_value_init (&default_value, prop_spec->value_type);
-                g_value_init (&value,         prop_spec->value_type);
+				g_value_init (&default_value, prop_spec->value_type);
+				g_value_init (&value,         prop_spec->value_type);
 
-                g_param_value_set_default (prop_spec, &default_value);
-                g_object_get_property (object, prop_spec->name, &value);
+				g_param_value_set_default (prop_spec, &default_value);
+				g_object_get_property (object, prop_spec->name, &value);
 
-                if (g_param_values_cmp (prop_spec, &default_value, &value))
-                {
-                    g_object_set_property (object, prop_spec->name,
-                                           &default_value);
-                }
+				if (g_param_values_cmp (prop_spec, &default_value, &value))
+				{
+					g_object_set_property (object, prop_spec->name,
+					                       &default_value);
+				}
 
-                g_value_unset (&value);
-                g_value_unset (&default_value);
-            }
-        }
-    }
+				g_value_unset (&value);
+				g_value_unset (&default_value);
+			}
+		}
+	}
 
-    g_object_thaw_notify (object);
+	g_object_thaw_notify (object);
 
-    g_free (property_specs);
+	g_free (property_specs);
 }
 
 
@@ -347,50 +347,50 @@ void
 gimp_config_reset_property (GObject     *object,
                             const gchar *property_name)
 {
-    GObjectClass  *klass;
-    GParamSpec    *prop_spec;
+	GObjectClass  *klass;
+	GParamSpec    *prop_spec;
 
-    g_return_if_fail (G_IS_OBJECT (object));
-    g_return_if_fail (property_name != NULL);
+	g_return_if_fail (G_IS_OBJECT (object));
+	g_return_if_fail (property_name != NULL);
 
-    klass = G_OBJECT_GET_CLASS (object);
+	klass = G_OBJECT_GET_CLASS (object);
 
-    prop_spec = g_object_class_find_property (klass, property_name);
+	prop_spec = g_object_class_find_property (klass, property_name);
 
-    if (!prop_spec)
-        return;
+	if (!prop_spec)
+		return;
 
-    if ((prop_spec->flags & G_PARAM_WRITABLE) &&
-            ! (prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
-    {
-        GValue  value = G_VALUE_INIT;
+	if ((prop_spec->flags & G_PARAM_WRITABLE) &&
+	    !(prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
+	{
+		GValue value = G_VALUE_INIT;
 
-        if (G_IS_PARAM_SPEC_OBJECT (prop_spec))
-        {
-            if ((prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE) &&
-                    (prop_spec->flags & GIMP_CONFIG_PARAM_AGGREGATE) &&
-                    g_type_interface_peek (g_type_class_peek (prop_spec->value_type),
-                                           GIMP_TYPE_CONFIG))
-            {
-                g_value_init (&value, prop_spec->value_type);
+		if (G_IS_PARAM_SPEC_OBJECT (prop_spec))
+		{
+			if ((prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE) &&
+			    (prop_spec->flags & GIMP_CONFIG_PARAM_AGGREGATE) &&
+			    g_type_interface_peek (g_type_class_peek (prop_spec->value_type),
+			                           GIMP_TYPE_CONFIG))
+			{
+				g_value_init (&value, prop_spec->value_type);
 
-                g_object_get_property (object, prop_spec->name, &value);
+				g_object_get_property (object, prop_spec->name, &value);
 
-                gimp_config_reset (g_value_get_object (&value));
+				gimp_config_reset (g_value_get_object (&value));
 
-                g_value_unset (&value);
-            }
-        }
-        else
-        {
-            g_value_init (&value, prop_spec->value_type);
-            g_param_value_set_default (prop_spec, &value);
+				g_value_unset (&value);
+			}
+		}
+		else
+		{
+			g_value_init (&value, prop_spec->value_type);
+			g_param_value_set_default (prop_spec, &value);
 
-            g_object_set_property (object, prop_spec->name, &value);
+			g_object_set_property (object, prop_spec->name, &value);
 
-            g_value_unset (&value);
-        }
-    }
+			g_value_unset (&value);
+		}
+	}
 }
 
 
@@ -414,69 +414,69 @@ void
 gimp_config_string_append_escaped (GString     *string,
                                    const gchar *val)
 {
-    g_return_if_fail (string != NULL);
+	g_return_if_fail (string != NULL);
 
-    if (val)
-    {
-        const guchar *p;
-        gchar         buf[4] = { '\\', 0, 0, 0 };
-        gint          len;
+	if (val)
+	{
+		const guchar *p;
+		gchar buf[4] = { '\\', 0, 0, 0 };
+		gint len;
 
-        g_string_append_c (string, '\"');
+		g_string_append_c (string, '\"');
 
-        for (p = (const guchar *) val, len = 0; *p; p++)
-        {
-            if (*p < ' ' || *p == '\\' || *p == '\"')
-            {
-                g_string_append_len (string, val, len);
+		for (p = (const guchar *) val, len = 0; *p; p++)
+		{
+			if (*p < ' ' || *p == '\\' || *p == '\"')
+			{
+				g_string_append_len (string, val, len);
 
-                len = 2;
-                switch (*p)
-                {
-                case '\b':
-                    buf[1] = 'b';
-                    break;
-                case '\f':
-                    buf[1] = 'f';
-                    break;
-                case '\n':
-                    buf[1] = 'n';
-                    break;
-                case '\r':
-                    buf[1] = 'r';
-                    break;
-                case '\t':
-                    buf[1] = 't';
-                    break;
-                case '\\':
-                case '"':
-                    buf[1] = *p;
-                    break;
+				len = 2;
+				switch (*p)
+				{
+				case '\b':
+					buf[1] = 'b';
+					break;
+				case '\f':
+					buf[1] = 'f';
+					break;
+				case '\n':
+					buf[1] = 'n';
+					break;
+				case '\r':
+					buf[1] = 'r';
+					break;
+				case '\t':
+					buf[1] = 't';
+					break;
+				case '\\':
+				case '"':
+					buf[1] = *p;
+					break;
 
-                default:
-                    len = 4;
-                    buf[1] = '0' + (((*p) >> 6) & 07);
-                    buf[2] = '0' + (((*p) >> 3) & 07);
-                    buf[3] = '0' + ((*p) & 07);
-                    break;
-                }
+				default:
+					len = 4;
+					buf[1] = '0' + (((*p) >> 6) & 07);
+					buf[2] = '0' + (((*p) >> 3) & 07);
+					buf[3] = '0' + ((*p) & 07);
+					break;
+				}
 
-                g_string_append_len (string, buf, len);
+				g_string_append_len (string, buf, len);
 
-                val = (const gchar *) p + 1;
-                len = 0;
-            }
-            else
-            {
-                len++;
-            }
-        }
+				val = (const gchar *) p + 1;
+				len = 0;
+			}
+			else
+			{
+				len++;
+			}
+		}
 
-        g_string_append_len (string, val, len);
-        g_string_append_c   (string, '\"');
-    }
-    else
-    {
-        g_string_append_len (string, "\"\"", 2);
-    }
+		g_string_append_len (string, val, len);
+		g_string_append_c   (string, '\"');
+	}
+	else
+	{
+		g_string_append_len (string, "\"\"", 2);
+	}
 }

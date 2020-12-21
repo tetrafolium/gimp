@@ -34,17 +34,17 @@ typedef struct CommandList_t CommandList_t;
 typedef enum {CMD_APPEND, CMD_DESTRUCT, CMD_IGNORE} CmdExecuteValue_t;
 
 struct CommandClass_t {
-    void (*destruct)(Command_t*);
-    CmdExecuteValue_t (*execute)(Command_t*);
-    void (*undo)(Command_t*);
-    void (*redo)(Command_t*);
+	void (*destruct)(Command_t*);
+	CmdExecuteValue_t (*execute)(Command_t*);
+	void (*undo)(Command_t*);
+	void (*redo)(Command_t*);
 };
 
 struct Command_t {
-    CommandClass_t      *class;
-    CommandList_t       *sub_commands;
-    const gchar         *name;
-    gboolean             locked;
+	CommandClass_t      *class;
+	CommandList_t       *sub_commands;
+	const gchar         *name;
+	gboolean locked;
 };
 
 
@@ -53,21 +53,21 @@ typedef Command_t* (*CommandFactory_t)(void);
 typedef void (*CommandListCallbackFunc_t)(Command_t*, gpointer);
 
 typedef struct {
-    CommandListCallbackFunc_t func;
-    gpointer data;
+	CommandListCallbackFunc_t func;
+	gpointer data;
 } CommandListCB_t;
 
 typedef struct {
-    GList *list;
+	GList *list;
 } CommandListCallback_t;
 
 struct CommandList_t {
-    CommandList_t *parent;
-    gint undo_levels;
-    GList *list;
-    GList *undo;                 /* Pointer to current undo command */
-    GList *redo;                 /* Pointer to current redo command */
-    CommandListCallback_t update_cb;
+	CommandList_t *parent;
+	gint undo_levels;
+	GList *list;
+	GList *undo;             /* Pointer to current undo command */
+	GList *redo;             /* Pointer to current redo command */
+	CommandListCallback_t update_cb;
 };
 
 CommandList_t *command_list_new(gint undo_levels);

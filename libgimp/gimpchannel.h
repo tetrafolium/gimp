@@ -40,41 +40,41 @@ G_BEGIN_DECLS
 #define GIMP_CHANNEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CHANNEL, GimpChannelClass))
 
 
-typedef struct _GimpChannelClass   GimpChannelClass;
+typedef struct _GimpChannelClass GimpChannelClass;
 typedef struct _GimpChannelPrivate GimpChannelPrivate;
 
 struct _GimpChannel
 {
-    GimpDrawable        parent_instance;
+	GimpDrawable parent_instance;
 
-    GimpChannelPrivate *priv;
+	GimpChannelPrivate *priv;
 };
 
 struct _GimpChannelClass
 {
-    GimpDrawableClass parent_class;
+	GimpDrawableClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType         gimp_channel_get_type  (void) G_GNUC_CONST;
 
-GimpChannel * gimp_channel_get_by_id (gint32         channel_id);
+GimpChannel * gimp_channel_get_by_id (gint32 channel_id);
 
 GimpChannel * gimp_channel_new       (GimpImage     *image,
                                       const gchar   *name,
-                                      guint          width,
-                                      guint          height,
-                                      gdouble        opacity,
+                                      guint width,
+                                      guint height,
+                                      gdouble opacity,
                                       const GimpRGB *color);
 
 

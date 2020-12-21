@@ -39,36 +39,36 @@ G_BEGIN_DECLS
 #define GIMP_DISPLAY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DISPLAY, GimpDisplayClass))
 
 
-typedef struct _GimpDisplayClass   GimpDisplayClass;
+typedef struct _GimpDisplayClass GimpDisplayClass;
 typedef struct _GimpDisplayPrivate GimpDisplayPrivate;
 
 struct _GimpDisplay
 {
-    GObject             parent_instance;
+	GObject parent_instance;
 
-    GimpDisplayPrivate *priv;
+	GimpDisplayPrivate *priv;
 };
 
 struct _GimpDisplayClass
 {
-    GObjectClass parent_class;
+	GObjectClass parent_class;
 
-    /* Padding for future expansion */
-    void (*_gimp_reserved1) (void);
-    void (*_gimp_reserved2) (void);
-    void (*_gimp_reserved3) (void);
-    void (*_gimp_reserved4) (void);
-    void (*_gimp_reserved5) (void);
-    void (*_gimp_reserved6) (void);
-    void (*_gimp_reserved7) (void);
-    void (*_gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (*_gimp_reserved1) (void);
+	void (*_gimp_reserved2) (void);
+	void (*_gimp_reserved3) (void);
+	void (*_gimp_reserved4) (void);
+	void (*_gimp_reserved5) (void);
+	void (*_gimp_reserved6) (void);
+	void (*_gimp_reserved7) (void);
+	void (*_gimp_reserved8) (void);
 };
 
 
 GType         gimp_display_get_type     (void) G_GNUC_CONST;
 
 gint32        gimp_display_get_id       (GimpDisplay    *display);
-GimpDisplay * gimp_display_get_by_id    (gint32          display_id);
+GimpDisplay * gimp_display_get_by_id    (gint32 display_id);
 
 gboolean      gimp_display_is_valid     (GimpDisplay    *display);
 

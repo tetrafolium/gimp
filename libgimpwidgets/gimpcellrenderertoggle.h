@@ -38,32 +38,32 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpCellRendererTogglePrivate GimpCellRendererTogglePrivate;
-typedef struct _GimpCellRendererToggleClass   GimpCellRendererToggleClass;
+typedef struct _GimpCellRendererToggleClass GimpCellRendererToggleClass;
 
 struct _GimpCellRendererToggle
 {
-    GtkCellRendererToggle          parent_instance;
+	GtkCellRendererToggle parent_instance;
 
-    GimpCellRendererTogglePrivate *priv;
+	GimpCellRendererTogglePrivate *priv;
 };
 
 struct _GimpCellRendererToggleClass
 {
-    GtkCellRendererToggleClass  parent_class;
+	GtkCellRendererToggleClass parent_class;
 
-    void (* clicked) (GimpCellRendererToggle *cell,
-                      const gchar            *path,
-                      GdkModifierType         state);
+	void (* clicked) (GimpCellRendererToggle *cell,
+	                  const gchar            *path,
+	                  GdkModifierType state);
 
-    /* Padding for future expansion */
-    void (* _gimp_reserved1) (void);
-    void (* _gimp_reserved2) (void);
-    void (* _gimp_reserved3) (void);
-    void (* _gimp_reserved4) (void);
-    void (* _gimp_reserved5) (void);
-    void (* _gimp_reserved6) (void);
-    void (* _gimp_reserved7) (void);
-    void (* _gimp_reserved8) (void);
+	/* Padding for future expansion */
+	void (* _gimp_reserved1) (void);
+	void (* _gimp_reserved2) (void);
+	void (* _gimp_reserved3) (void);
+	void (* _gimp_reserved4) (void);
+	void (* _gimp_reserved5) (void);
+	void (* _gimp_reserved6) (void);
+	void (* _gimp_reserved7) (void);
+	void (* _gimp_reserved8) (void);
 };
 
 
@@ -72,8 +72,8 @@ GType             gimp_cell_renderer_toggle_get_type (void) G_GNUC_CONST;
 GtkCellRenderer * gimp_cell_renderer_toggle_new      (const gchar *icon_name);
 
 void    gimp_cell_renderer_toggle_clicked (GimpCellRendererToggle *cell,
-        const gchar            *path,
-        GdkModifierType         state);
+                                           const gchar            *path,
+                                           GdkModifierType state);
 
 
 G_END_DECLS

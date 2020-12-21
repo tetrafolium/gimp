@@ -26,12 +26,12 @@
 #include <libgimpbase/gimpbasetypes.h>
 
 
-typedef struct _GimpConfig        GimpConfig; /* dummy typedef */
-typedef struct _GimpConfigWriter  GimpConfigWriter;
+typedef struct _GimpConfig GimpConfig;        /* dummy typedef */
+typedef struct _GimpConfigWriter GimpConfigWriter;
 typedef gchar *                   GimpConfigPath; /* to satisfy docs */
-typedef struct _GScanner          GimpScanner;
+typedef struct _GScanner GimpScanner;
 
-typedef struct _GimpColorConfig   GimpColorConfig;
+typedef struct _GimpColorConfig GimpColorConfig;
 
 #include <libgimpconfig/gimpconfigenums.h>
 
