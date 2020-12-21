@@ -19,9 +19,6 @@
 #ifndef __BMP_LOAD_H__
 #define __BMP_LOAD_H__
 
-
-GimpImage * load_image (GFile   *file,
-                        GError **error);
-
+GimpImage *load_image(GFile *file, GError **error);
 
 #endif /* __BMP_LOAD_H__ */

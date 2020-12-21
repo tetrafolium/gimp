@@ -16,15 +16,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef cmap_included
 #define cmap_included
 
 #define cmap_random (-1)
 
-
-
-#define vlen(x) (sizeof(x)/sizeof(*x))
+#define vlen(x) (sizeof(x) / sizeof(*x))
 
 typedef double clrmap[256][3];
 

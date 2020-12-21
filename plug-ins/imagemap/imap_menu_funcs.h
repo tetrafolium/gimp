@@ -35,5 +35,4 @@ void menu_command(GtkWidget *widget, gpointer data);
 void add_accelerator(GtkWidget *widget, guint accelerator_key,
                      guint8 accelerator_mods);
 
-
 #endif /* _IMAP_MENU_FUNCS_H */

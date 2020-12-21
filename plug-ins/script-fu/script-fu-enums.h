@@ -20,35 +20,30 @@
 
 /*  Typedefs for script-fu argument types  */
 
-typedef enum
-{
-	SF_IMAGE = 0,
-	SF_DRAWABLE,
-	SF_LAYER,
-	SF_CHANNEL,
-	SF_VECTORS,
-	SF_COLOR,
-	SF_TOGGLE,
-	SF_VALUE,
-	SF_STRING,
-	SF_ADJUSTMENT,
-	SF_FONT,
-	SF_PATTERN,
-	SF_BRUSH,
-	SF_GRADIENT,
-	SF_FILENAME,
-	SF_DIRNAME,
-	SF_OPTION,
-	SF_PALETTE,
-	SF_TEXT,
-	SF_ENUM,
-	SF_DISPLAY
+typedef enum {
+  SF_IMAGE = 0,
+  SF_DRAWABLE,
+  SF_LAYER,
+  SF_CHANNEL,
+  SF_VECTORS,
+  SF_COLOR,
+  SF_TOGGLE,
+  SF_VALUE,
+  SF_STRING,
+  SF_ADJUSTMENT,
+  SF_FONT,
+  SF_PATTERN,
+  SF_BRUSH,
+  SF_GRADIENT,
+  SF_FILENAME,
+  SF_DIRNAME,
+  SF_OPTION,
+  SF_PALETTE,
+  SF_TEXT,
+  SF_ENUM,
+  SF_DISPLAY
 } SFArgType;
 
-typedef enum
-{
-	SF_SLIDER = 0,
-	SF_SPINNER
-} SFAdjustmentType;
+typedef enum { SF_SLIDER = 0, SF_SPINNER } SFAdjustmentType;
 
 #endif /*  __SCRIPT_FU_ENUMS__  */

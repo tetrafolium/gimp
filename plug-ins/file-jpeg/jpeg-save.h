@@ -18,20 +18,13 @@
 #ifndef __JPEG_SAVE_H__
 #define __JPEG_SAVE_H__
 
+extern GimpImage *orig_image_global;
+extern GimpDrawable *drawable_global;
 
-extern GimpImage       *orig_image_global;
-extern GimpDrawable    *drawable_global;
-
-
-gboolean    save_image         (GFile                *file,
-                                GimpProcedureConfig *config,
-                                GimpImage            *image,
-                                GimpDrawable         *drawable,
-                                GimpImage            *orig_image,
-                                gboolean preview,
-                                GError              **error);
-gboolean    save_dialog        (GimpProcedure        *procedure,
-                                GimpProcedureConfig  *config,
-                                GimpDrawable         *drawable);
+gboolean save_image(GFile *file, GimpProcedureConfig *config, GimpImage *image,
+                    GimpDrawable *drawable, GimpImage *orig_image,
+                    gboolean preview, GError **error);
+gboolean save_dialog(GimpProcedure *procedure, GimpProcedureConfig *config,
+                     GimpDrawable *drawable);
 
 #endif /* __JPEG_SAVE_H__ */

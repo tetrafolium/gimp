@@ -35,48 +35,38 @@ static void create_command_destruct(Command_t *parent);
 static void create_command_undo(Command_t *parent);
 
 static CommandClass_t create_command_class = {
-	create_command_destruct,
-	create_command_execute,
-	create_command_undo,
-	NULL                     /* create_command_redo */
+    create_command_destruct, create_command_execute, create_command_undo,
+    NULL /* create_command_redo */
 };
 
 typedef struct {
-	Command_t parent;
-	ObjectList_t *list;
-	Object_t     *obj;
-	gboolean changed;
+  Command_t parent;
+  ObjectList_t *list;
+  Object_t *obj;
+  gboolean changed;
 } CreateCommand_t;
 
-Command_t*
-create_command_new(ObjectList_t *list, Object_t *obj)
-{
-	CreateCommand_t *command = g_new(CreateCommand_t, 1);
-	command->list = list;
-	command->obj = object_ref(obj);
-	return command_init(&command->parent, _("Create"), &create_command_class);
+Command_t *create_command_new(ObjectList_t *list, Object_t *obj) {
+  CreateCommand_t *command = g_new(CreateCommand_t, 1);
+  command->list = list;
+  command->obj = object_ref(obj);
+  return command_init(&command->parent, _("Create"), &create_command_class);
 }
 
-static void
-create_command_destruct(Command_t *parent)
-{
-	CreateCommand_t *command = (CreateCommand_t*) parent;
-	object_unref(command->obj);
+static void create_command_destruct(Command_t *parent) {
+  CreateCommand_t *command = (CreateCommand_t *)parent;
+  object_unref(command->obj);
 }
 
-static CmdExecuteValue_t
-create_command_execute(Command_t *parent)
-{
-	CreateCommand_t *command = (CreateCommand_t*) parent;
-	command->changed = object_list_get_changed(command->list);
-	object_list_append(command->list, object_ref(command->obj));
-	return CMD_APPEND;
+static CmdExecuteValue_t create_command_execute(Command_t *parent) {
+  CreateCommand_t *command = (CreateCommand_t *)parent;
+  command->changed = object_list_get_changed(command->list);
+  object_list_append(command->list, object_ref(command->obj));
+  return CMD_APPEND;
 }
 
-static void
-create_command_undo(Command_t *parent)
-{
-	CreateCommand_t *command = (CreateCommand_t*) parent;
-	object_list_remove(command->list, command->obj);
-	object_list_set_changed(command->list, command->changed);
+static void create_command_undo(Command_t *parent) {
+  CreateCommand_t *command = (CreateCommand_t *)parent;
+  object_list_remove(command->list, command->obj);
+  object_list_set_changed(command->list, command->changed);
 }

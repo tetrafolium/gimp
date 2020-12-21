@@ -23,25 +23,29 @@
 
 G_BEGIN_DECLS
 
-#define GIMP_TYPE_THROBBER_ACTION            (gimp_throbber_action_get_type ())
-#define GIMP_THROBBER_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_THROBBER_ACTION, GimpThrobberAction))
-#define GIMP_THROBBER_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_THROBBER_ACTION, GimpThrobberActionClass))
-#define GIMP_IS_THROBBER_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_THROBBER_ACTION))
-#define GIMP_IS_THROBBER_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), GIMP_TYPE_THROBBER_ACTION))
-#define GIMP_THROBBER_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_THROBBER_ACTION, GimpThrobberActionClass))
-
+#define GIMP_TYPE_THROBBER_ACTION (gimp_throbber_action_get_type())
+#define GIMP_THROBBER_ACTION(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_THROBBER_ACTION,                \
+                              GimpThrobberAction))
+#define GIMP_THROBBER_ACTION_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_THROBBER_ACTION,                 \
+                           GimpThrobberActionClass))
+#define GIMP_IS_THROBBER_ACTION(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_THROBBER_ACTION))
+#define GIMP_IS_THROBBER_ACTION_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), GIMP_TYPE_THROBBER_ACTION))
+#define GIMP_THROBBER_ACTION_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_THROBBER_ACTION,                 \
+                             GimpThrobberActionClass))
 
 typedef GtkAction GimpThrobberAction;
 typedef GtkActionClass GimpThrobberActionClass;
 
+GType gimp_throbber_action_get_type(void) G_GNUC_CONST;
 
-GType       gimp_throbber_action_get_type (void) G_GNUC_CONST;
-
-GtkAction * gimp_throbber_action_new      (const gchar *name,
-                                           const gchar *label,
-                                           const gchar *tooltip,
-                                           const gchar *icon_name);
-
+GtkAction *gimp_throbber_action_new(const gchar *name, const gchar *label,
+                                    const gchar *tooltip,
+                                    const gchar *icon_name);
 
 G_END_DECLS
 

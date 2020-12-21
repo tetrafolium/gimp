@@ -18,9 +18,7 @@
 #ifndef __SCRIPT_FU_EVAL_H__
 #define __SCRIPT_FU_EVAL_H__
 
-
-GimpValueArray * script_fu_eval_run (GimpProcedure        *procedure,
-                                     const GimpValueArray *args);
-
+GimpValueArray *script_fu_eval_run(GimpProcedure *procedure,
+                                   const GimpValueArray *args);
 
 #endif /*  __SCRIPT_FU_EVAL_H__  */

@@ -25,13 +25,11 @@
 #include "gtk/gtk.h"
 #include "libgimp/gimp.h"
 
-guchar sel_pixel_value       (gint, gint);
-gint sel_pixel_is_white    (gint, gint);
-gint            sel_get_width         (void);
-gint            sel_get_height        (void);
-gboolean sel_valid_pixel       (gint, gint);
-void            reset_adv_dialog      (void);
+guchar sel_pixel_value(gint, gint);
+gint sel_pixel_is_white(gint, gint);
+gint sel_get_width(void);
+gint sel_get_height(void);
+gboolean sel_valid_pixel(gint, gint);
+void reset_adv_dialog(void);
 
-
-GtkWidget *     dialog_create_selection_area(SELVALS *);
-
+GtkWidget *dialog_create_selection_area(SELVALS *);

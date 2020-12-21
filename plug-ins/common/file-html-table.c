@@ -56,710 +56,579 @@
 
 #include "libgimp/stdplugins-intl.h"
 
-
-#define SAVE_PROC      "file-html-table-save"
+#define SAVE_PROC "file-html-table-save"
 #define PLUG_IN_BINARY "file-html-table"
-
 
 typedef struct _Html Html;
 typedef struct _HtmlClass HtmlClass;
 
-struct _Html
-{
-	GimpPlugIn parent_instance;
+struct _Html {
+  GimpPlugIn parent_instance;
 };
 
-struct _HtmlClass
-{
-	GimpPlugInClass parent_class;
+struct _HtmlClass {
+  GimpPlugInClass parent_class;
 };
 
+#define HTML_TYPE (html_get_type())
+#define HTML (obj)(G_TYPE_CHECK_INSTANCE_CAST((obj), HTML_TYPE, Html))
 
-#define HTML_TYPE  (html_get_type ())
-#define HTML (obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), HTML_TYPE, Html))
+GType html_get_type(void) G_GNUC_CONST;
 
-GType                   html_get_type          (void) G_GNUC_CONST;
+static GList *html_query_procedures(GimpPlugIn *plug_in);
+static GimpProcedure *html_create_procedure(GimpPlugIn *plug_in,
+                                            const gchar *name);
 
-static GList          * html_query_procedures  (GimpPlugIn           *plug_in);
-static GimpProcedure  * html_create_procedure  (GimpPlugIn           *plug_in,
-                                                const gchar          *name);
+static GimpValueArray *html_save(GimpProcedure *procedure, GimpRunMode run_mode,
+                                 GimpImage *image, gint n_drawables,
+                                 GimpDrawable **drawables, GFile *file,
+                                 const GimpValueArray *args, gpointer run_data);
 
-static GimpValueArray * html_save              (GimpProcedure        *procedure,
-                                                GimpRunMode run_mode,
-                                                GimpImage            *image,
-                                                gint n_drawables,
-                                                GimpDrawable        **drawables,
-                                                GFile                *file,
-                                                const GimpValueArray *args,
-                                                gpointer run_data);
+static gboolean save_image(GFile *file, GeglBuffer *buffer, GObject *config,
+                           GError **error);
+static gboolean save_dialog(GimpImage *image, GimpProcedure *procedure,
+                            GObject *config);
 
-static gboolean         save_image             (GFile                *file,
-                                                GeglBuffer           *buffer,
-                                                GObject              *config,
-                                                GError              **error);
-static gboolean         save_dialog            (GimpImage            *image,
-                                                GimpProcedure        *procedure,
-                                                GObject              *config);
+static gboolean print(GOutputStream *output, GError **error,
+                      const gchar *format, ...) G_GNUC_PRINTF(3, 0);
+static gboolean color_comp(guchar *buffer, guchar *buf2);
 
-static gboolean         print                  (GOutputStream        *output,
-                                                GError              **error,
-                                                const gchar          *format,
-                                                ...) G_GNUC_PRINTF (3, 0);
-static gboolean         color_comp             (guchar               *buffer,
-                                                guchar               *buf2);
+G_DEFINE_TYPE(Html, html, GIMP_TYPE_PLUG_IN)
 
+GIMP_MAIN(HTML_TYPE)
 
-G_DEFINE_TYPE (Html, html, GIMP_TYPE_PLUG_IN)
+static void html_class_init(HtmlClass *klass) {
+  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS(klass);
 
-GIMP_MAIN (HTML_TYPE)
-
-
-static void
-html_class_init (HtmlClass *klass)
-{
-	GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
-
-	plug_in_class->query_procedures = html_query_procedures;
-	plug_in_class->create_procedure = html_create_procedure;
+  plug_in_class->query_procedures = html_query_procedures;
+  plug_in_class->create_procedure = html_create_procedure;
 }
 
-static void
-html_init (Html *html)
-{
+static void html_init(Html *html) {}
+
+static GList *html_query_procedures(GimpPlugIn *plug_in) {
+  return g_list_append(NULL, g_strdup(SAVE_PROC));
 }
 
-static GList *
-html_query_procedures (GimpPlugIn *plug_in)
-{
-	return g_list_append (NULL, g_strdup (SAVE_PROC));
+static GimpProcedure *html_create_procedure(GimpPlugIn *plug_in,
+                                            const gchar *name) {
+  GimpProcedure *procedure = NULL;
+
+  if (!strcmp(name, SAVE_PROC)) {
+    procedure = gimp_save_procedure_new(
+        plug_in, name, GIMP_PDB_PROC_TYPE_PLUGIN, html_save, NULL, NULL);
+
+    gimp_procedure_set_image_types(procedure, "*");
+
+    gimp_procedure_set_menu_label(procedure, N_("HTML table"));
+
+    gimp_procedure_set_documentation(procedure, "GIMP Table Magic",
+                                     "Allows you to draw an HTML table "
+                                     "in GIMP. See help for more info.",
+                                     name);
+    gimp_procedure_set_attribution(procedure, "Daniel Dunbar", "Daniel Dunbar",
+                                   "1998");
+
+    gimp_file_procedure_set_handles_remote(GIMP_FILE_PROCEDURE(procedure),
+                                           TRUE);
+    gimp_file_procedure_set_mime_types(GIMP_FILE_PROCEDURE(procedure),
+                                       "text/html");
+    gimp_file_procedure_set_extensions(GIMP_FILE_PROCEDURE(procedure),
+                                       "html,htm");
+
+    GIMP_PROC_AUX_ARG_BOOLEAN(procedure, "use-caption", "Use caption",
+                              _("Enable if you would like to have the table "
+                                "captioned."),
+                              FALSE, GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_STRING(procedure, "caption-text", "Caption text",
+                             _("The text for the table caption."),
+                             "Made with GIMP Table Magic",
+                             GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_STRING(procedure, "cell-content", "Cell content",
+                             _("The text to go into each cell."), "&nbsp;",
+                             GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_STRING(procedure, "cell-width", "Cell width",
+                             _("The width for each table cell. "
+                               "Can be a number or a percent."),
+                             "", GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_STRING(procedure, "cell-height", "Cell height",
+                             _("The height for each table cell. "
+                               "Can be a number or a percent."),
+                             "", GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_BOOLEAN(procedure, "full-document", "Full document",
+                              _("If enabled GTM will output a full HTML "
+                                "document with <HTML>, <BODY>, etc. tags "
+                                "instead of just the table html."),
+                              TRUE, GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_INT(procedure, "border", "Border",
+                          _("The number of pixels in the table border."), 0,
+                          1000, 2, GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_BOOLEAN(procedure, "span-tags", "Span tags",
+                              _("If enabled GTM will replace any "
+                                "rectangular sections of identically "
+                                "colored blocks with one large cell with "
+                                "ROWSPAN and COLSPAN values."),
+                              FALSE, GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_BOOLEAN(procedure, "compress-td-tags", "Compress td tags",
+                              _("Enabling this will cause GTM to "
+                                "leave no whitespace between the TD "
+                                "tags and the cell content. This is only "
+                                "necessary for pixel level positioning "
+                                "control."),
+                              FALSE, GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_INT(procedure, "cell-padding", "Cell padding",
+                          _("The amount of cell padding."), 0, 1000, 4,
+                          GIMP_PARAM_READWRITE);
+
+    GIMP_PROC_AUX_ARG_INT(procedure, "cell-spacing", "Cell spacing",
+                          _("The amount of cell spacing."), 0, 1000, 0,
+                          GIMP_PARAM_READWRITE);
+  }
+
+  return procedure;
 }
 
-static GimpProcedure *
-html_create_procedure (GimpPlugIn  *plug_in,
-                       const gchar *name)
-{
-	GimpProcedure *procedure = NULL;
+static GimpValueArray *html_save(GimpProcedure *procedure, GimpRunMode run_mode,
+                                 GimpImage *image, gint n_drawables,
+                                 GimpDrawable **drawables, GFile *file,
+                                 const GimpValueArray *args,
+                                 gpointer run_data) {
+  GimpProcedureConfig *config;
+  GimpPDBStatusType status = GIMP_PDB_SUCCESS;
+  GeglBuffer *buffer;
+  GError *error = NULL;
 
-	if (!strcmp (name, SAVE_PROC))
-	{
-		procedure = gimp_save_procedure_new (plug_in, name,
-		                                     GIMP_PDB_PROC_TYPE_PLUGIN,
-		                                     html_save, NULL, NULL);
+  INIT_I18N();
+  gegl_init(NULL, NULL);
 
-		gimp_procedure_set_image_types (procedure, "*");
+  if (run_mode != GIMP_RUN_INTERACTIVE)
+    return gimp_procedure_new_return_values(procedure, GIMP_PDB_CALLING_ERROR,
+                                            NULL);
 
-		gimp_procedure_set_menu_label (procedure, N_("HTML table"));
+  config = gimp_procedure_create_config(procedure);
+  gimp_procedure_config_begin_run(config, image, run_mode, args);
 
-		gimp_procedure_set_documentation (procedure,
-		                                  "GIMP Table Magic",
-		                                  "Allows you to draw an HTML table "
-		                                  "in GIMP. See help for more info.",
-		                                  name);
-		gimp_procedure_set_attribution (procedure,
-		                                "Daniel Dunbar",
-		                                "Daniel Dunbar",
-		                                "1998");
+  if (!save_dialog(image, procedure, G_OBJECT(config)))
+    return gimp_procedure_new_return_values(procedure, GIMP_PDB_CANCEL, NULL);
 
-		gimp_file_procedure_set_handles_remote (GIMP_FILE_PROCEDURE (procedure),
-		                                        TRUE);
-		gimp_file_procedure_set_mime_types (GIMP_FILE_PROCEDURE (procedure),
-		                                    "text/html");
-		gimp_file_procedure_set_extensions (GIMP_FILE_PROCEDURE (procedure),
-		                                    "html,htm");
+  if (n_drawables != 1) {
+    g_set_error(&error, G_FILE_ERROR, 0,
+                _("HTML table plug-in does not support multiple layers."));
 
-		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "use-caption",
-		                           "Use caption",
-		                           _("Enable if you would like to have the table "
-		                             "captioned."),
-		                           FALSE,
-		                           GIMP_PARAM_READWRITE);
+    return gimp_procedure_new_return_values(procedure, GIMP_PDB_CALLING_ERROR,
+                                            error);
+  }
 
-		GIMP_PROC_AUX_ARG_STRING (procedure, "caption-text",
-		                          "Caption text",
-		                          _("The text for the table caption."),
-		                          "Made with GIMP Table Magic",
-		                          GIMP_PARAM_READWRITE);
+  buffer = gimp_drawable_get_buffer(drawables[0]);
 
-		GIMP_PROC_AUX_ARG_STRING (procedure, "cell-content",
-		                          "Cell content",
-		                          _("The text to go into each cell."),
-		                          "&nbsp;",
-		                          GIMP_PARAM_READWRITE);
+  if (!save_image(file, buffer, G_OBJECT(config), &error)) {
+    status = GIMP_PDB_EXECUTION_ERROR;
+  }
 
-		GIMP_PROC_AUX_ARG_STRING (procedure, "cell-width",
-		                          "Cell width",
-		                          _("The width for each table cell. "
-		                            "Can be a number or a percent."),
-		                          "",
-		                          GIMP_PARAM_READWRITE);
+  g_object_unref(buffer);
 
-		GIMP_PROC_AUX_ARG_STRING (procedure, "cell-height",
-		                          "Cell height",
-		                          _("The height for each table cell. "
-		                            "Can be a number or a percent."),
-		                          "",
-		                          GIMP_PARAM_READWRITE);
+  gimp_procedure_config_end_run(config, status);
+  g_object_unref(config);
 
-		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "full-document",
-		                           "Full document",
-		                           _("If enabled GTM will output a full HTML "
-		                             "document with <HTML>, <BODY>, etc. tags "
-		                             "instead of just the table html."),
-		                           TRUE,
-		                           GIMP_PARAM_READWRITE);
-
-		GIMP_PROC_AUX_ARG_INT (procedure, "border",
-		                       "Border",
-		                       _("The number of pixels in the table border."),
-		                       0, 1000, 2,
-		                       GIMP_PARAM_READWRITE);
-
-		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "span-tags",
-		                           "Span tags",
-		                           _("If enabled GTM will replace any "
-		                             "rectangular sections of identically "
-		                             "colored blocks with one large cell with "
-		                             "ROWSPAN and COLSPAN values."),
-		                           FALSE,
-		                           GIMP_PARAM_READWRITE);
-
-		GIMP_PROC_AUX_ARG_BOOLEAN (procedure, "compress-td-tags",
-		                           "Compress td tags",
-		                           _("Enabling this will cause GTM to "
-		                             "leave no whitespace between the TD "
-		                             "tags and the cell content. This is only "
-		                             "necessary for pixel level positioning "
-		                             "control."),
-		                           FALSE,
-		                           GIMP_PARAM_READWRITE);
-
-		GIMP_PROC_AUX_ARG_INT (procedure, "cell-padding",
-		                       "Cell padding",
-		                       _("The amount of cell padding."),
-		                       0, 1000, 4,
-		                       GIMP_PARAM_READWRITE);
-
-		GIMP_PROC_AUX_ARG_INT (procedure, "cell-spacing",
-		                       "Cell spacing",
-		                       _("The amount of cell spacing."),
-		                       0, 1000, 0,
-		                       GIMP_PARAM_READWRITE);
-	}
-
-	return procedure;
+  return gimp_procedure_new_return_values(procedure, status, error);
 }
 
-static GimpValueArray *
-html_save (GimpProcedure        *procedure,
-           GimpRunMode run_mode,
-           GimpImage            *image,
-           gint n_drawables,
-           GimpDrawable        **drawables,
-           GFile                *file,
-           const GimpValueArray *args,
-           gpointer run_data)
-{
-	GimpProcedureConfig *config;
-	GimpPDBStatusType status = GIMP_PDB_SUCCESS;
-	GeglBuffer          *buffer;
-	GError              *error  = NULL;
+static gboolean save_image(GFile *file, GeglBuffer *buffer, GObject *config,
+                           GError **error) {
+  const Babl *format = babl_format("R'G'B'A u8");
+  GeglSampler *sampler;
+  GCancellable *cancellable;
+  GOutputStream *output;
+  gint row, col;
+  gint cols, rows;
+  gint x, y;
+  gint colcount, colspan, rowspan;
+  gint *palloc;
+  guchar *buf, *buf2;
+  gchar *width = NULL;
+  gchar *height = NULL;
+  gboolean config_use_caption;
+  gchar *config_caption_text;
+  gchar *config_cell_content;
+  gchar *config_cell_width;
+  gchar *config_cell_height;
+  gboolean config_full_document;
+  gint config_border;
+  gboolean config_span_tags;
+  gboolean config_compress_td_tags;
+  gint config_cell_padding;
+  gint config_cell_spacing;
 
-	INIT_I18N ();
-	gegl_init (NULL, NULL);
+  g_object_get(config, "use-caption", &config_use_caption, "caption-text",
+               &config_caption_text, "cell-content", &config_cell_content,
+               "cell-width", &config_cell_width, "cell-height",
+               &config_cell_height, "full-document", &config_full_document,
+               "border", &config_border, "span-tags", &config_span_tags,
+               "compress-td-tags", &config_compress_td_tags, "cell-padding",
+               &config_cell_padding, "cell-spacing", &config_cell_spacing,
+               NULL);
 
-	if (run_mode != GIMP_RUN_INTERACTIVE)
-		return gimp_procedure_new_return_values (procedure,
-		                                         GIMP_PDB_CALLING_ERROR,
-		                                         NULL);
+  if (!config_caption_text)
+    config_caption_text = g_strdup("");
+  if (!config_cell_content)
+    config_cell_content = g_strdup("");
+  if (!config_cell_width)
+    config_cell_width = g_strdup("");
+  if (!config_cell_height)
+    config_cell_height = g_strdup("");
 
-	config = gimp_procedure_create_config (procedure);
-	gimp_procedure_config_begin_run (config, image, run_mode, args);
+  cols = gegl_buffer_get_width(buffer);
+  rows = gegl_buffer_get_height(buffer);
 
-	if (!save_dialog (image, procedure, G_OBJECT (config)))
-		return gimp_procedure_new_return_values (procedure,
-		                                         GIMP_PDB_CANCEL,
-		                                         NULL);
+  gimp_progress_init_printf(_("Exporting '%s'"), gimp_file_get_utf8_name(file));
 
-	if (n_drawables != 1)
-	{
-		g_set_error (&error, G_FILE_ERROR, 0,
-		             _("HTML table plug-in does not support multiple layers."));
+  output = G_OUTPUT_STREAM(
+      g_file_replace(file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error));
+  if (output) {
+    GOutputStream *buffered;
 
-		return gimp_procedure_new_return_values (procedure,
-		                                         GIMP_PDB_CALLING_ERROR,
-		                                         error);
-	}
+    buffered = g_buffered_output_stream_new(output);
+    g_object_unref(output);
 
-	buffer = gimp_drawable_get_buffer (drawables[0]);
+    output = buffered;
+  } else {
+    return FALSE;
+  }
 
-	if (!save_image (file, buffer, G_OBJECT (config),
-	                 &error))
-	{
-		status = GIMP_PDB_EXECUTION_ERROR;
-	}
+  sampler = gegl_buffer_sampler_new(buffer, format, GEGL_SAMPLER_NEAREST);
 
-	g_object_unref (buffer);
+  palloc = g_new(int, rows *cols);
 
-	gimp_procedure_config_end_run (config, status);
-	g_object_unref (config);
+  if (config_full_document) {
+    if (!print(output, error,
+               "<HTML>\n<HEAD><TITLE>%s</TITLE></HEAD>\n<BODY>\n",
+               gimp_file_get_utf8_name(file)) ||
+        !print(output, error, "<H1>%s</H1>\n", gimp_file_get_utf8_name(file))) {
+      goto fail;
+    }
+  }
 
-	return gimp_procedure_new_return_values (procedure, status, error);
-}
+  if (!print(output, error, "<TABLE BORDER=%d CELLPADDING=%d CELLSPACING=%d>\n",
+             config_border, config_cell_padding, config_cell_spacing))
+    goto fail;
 
-static gboolean
-save_image (GFile       *file,
-            GeglBuffer  *buffer,
-            GObject     *config,
-            GError     **error)
-{
-	const Babl    *format = babl_format ("R'G'B'A u8");
-	GeglSampler   *sampler;
-	GCancellable  *cancellable;
-	GOutputStream *output;
-	gint row, col;
-	gint cols, rows;
-	gint x, y;
-	gint colcount, colspan, rowspan;
-	gint          *palloc;
-	guchar        *buf, *buf2;
-	gchar         *width  = NULL;
-	gchar         *height = NULL;
-	gboolean config_use_caption;
-	gchar         *config_caption_text;
-	gchar         *config_cell_content;
-	gchar         *config_cell_width;
-	gchar         *config_cell_height;
-	gboolean config_full_document;
-	gint config_border;
-	gboolean config_span_tags;
-	gboolean config_compress_td_tags;
-	gint config_cell_padding;
-	gint config_cell_spacing;
+  if (config_use_caption) {
+    if (!print(output, error, "<CAPTION>%s</CAPTION>\n", config_caption_text))
+      goto fail;
+  }
 
-	g_object_get (config,
-	              "use-caption",      &config_use_caption,
-	              "caption-text",     &config_caption_text,
-	              "cell-content",     &config_cell_content,
-	              "cell-width",       &config_cell_width,
-	              "cell-height",      &config_cell_height,
-	              "full-document",    &config_full_document,
-	              "border",           &config_border,
-	              "span-tags",        &config_span_tags,
-	              "compress-td-tags", &config_compress_td_tags,
-	              "cell-padding",     &config_cell_padding,
-	              "cell-spacing",     &config_cell_spacing,
-	              NULL);
+  buf = g_newa(guchar, babl_format_get_bytes_per_pixel(format));
+  buf2 = g_newa(guchar, babl_format_get_bytes_per_pixel(format));
 
-	if (!config_caption_text) config_caption_text = g_strdup ("");
-	if (!config_cell_content) config_cell_content = g_strdup ("");
-	if (!config_cell_width) config_cell_width   = g_strdup ("");
-	if (!config_cell_height) config_cell_height  = g_strdup ("");
+  if (strcmp(config_cell_width, "") != 0) {
+    width = g_strdup_printf(" WIDTH=\"%s\"", config_cell_width);
+  }
 
-	cols = gegl_buffer_get_width  (buffer);
-	rows = gegl_buffer_get_height (buffer);
+  if (strcmp(config_cell_height, "") != 0) {
+    height = g_strdup_printf(" HEIGHT=\"%s\" ", config_cell_height);
+  }
 
-	gimp_progress_init_printf (_("Exporting '%s'"),
-	                           gimp_file_get_utf8_name (file));
+  if (!width)
+    width = g_strdup(" ");
 
-	output = G_OUTPUT_STREAM (g_file_replace (file,
-	                                          NULL, FALSE, G_FILE_CREATE_NONE,
-	                                          NULL, error));
-	if (output)
-	{
-		GOutputStream *buffered;
+  if (!height)
+    height = g_strdup(" ");
 
-		buffered = g_buffered_output_stream_new (output);
-		g_object_unref (output);
+  /* Initialize array to hold ROWSPAN and COLSPAN cell allocation table */
 
-		output = buffered;
-	}
-	else
-	{
-		return FALSE;
-	}
+  for (row = 0; row < rows; row++)
+    for (col = 0; col < cols; col++)
+      palloc[cols * row + col] = 1;
 
-	sampler = gegl_buffer_sampler_new (buffer, format, GEGL_SAMPLER_NEAREST);
+  colspan = 0;
+  rowspan = 0;
 
-	palloc = g_new (int, rows * cols);
+  for (y = 0; y < rows; y++) {
+    if (!print(output, error, "   <TR>\n"))
+      goto fail;
 
-	if (config_full_document)
-	{
-		if (!print (output, error,
-		            "<HTML>\n<HEAD><TITLE>%s</TITLE></HEAD>\n<BODY>\n",
-		            gimp_file_get_utf8_name (file)) ||
-		    !print (output, error, "<H1>%s</H1>\n",
-		            gimp_file_get_utf8_name (file)))
-		{
-			goto fail;
-		}
-	}
+    for (x = 0; x < cols; x++) {
+      gegl_sampler_get(sampler, x, y, NULL, buf, GEGL_ABYSS_NONE);
 
-	if (!print (output, error,
-	            "<TABLE BORDER=%d CELLPADDING=%d CELLSPACING=%d>\n",
-	            config_border, config_cell_padding, config_cell_spacing))
-		goto fail;
+      /* Determine ROWSPAN and COLSPAN */
 
-	if (config_use_caption)
-	{
-		if (!print (output, error, "<CAPTION>%s</CAPTION>\n",
-		            config_caption_text))
-			goto fail;
-	}
+      if (config_span_tags) {
+        col = x;
+        row = y;
+        colcount = 0;
+        colspan = 0;
+        rowspan = 0;
 
-	buf  = g_newa (guchar, babl_format_get_bytes_per_pixel (format));
-	buf2 = g_newa (guchar, babl_format_get_bytes_per_pixel (format));
+        gegl_sampler_get(sampler, col, row, NULL, buf2, GEGL_ABYSS_NONE);
 
-	if (strcmp (config_cell_width, "") != 0)
-	{
-		width = g_strdup_printf (" WIDTH=\"%s\"", config_cell_width);
-	}
+        while (color_comp(buf, buf2) && palloc[cols * row + col] == 1 &&
+               row < rows) {
+          while (color_comp(buf, buf2) && palloc[cols * row + col] == 1 &&
+                 col < cols) {
+            colcount++;
+            col++;
 
-	if (strcmp (config_cell_height, "") != 0)
-	{
-		height = g_strdup_printf (" HEIGHT=\"%s\" ", config_cell_height);
-	}
+            gegl_sampler_get(sampler, col, row, NULL, buf2, GEGL_ABYSS_NONE);
+          }
 
-	if (!width)
-		width = g_strdup (" ");
+          if (colcount != 0) {
+            row++;
+            rowspan++;
+          }
 
-	if (!height)
-		height = g_strdup (" ");
+          if (colcount < colspan || colspan == 0)
+            colspan = colcount;
 
-	/* Initialize array to hold ROWSPAN and COLSPAN cell allocation table */
+          col = x;
+          colcount = 0;
 
-	for (row = 0; row < rows; row++)
-		for (col = 0; col < cols; col++)
-			palloc[cols * row + col] = 1;
+          gegl_sampler_get(sampler, col, row, NULL, buf2, GEGL_ABYSS_NONE);
+        }
 
-	colspan = 0;
-	rowspan = 0;
+        if (colspan > 1 || rowspan > 1) {
+          for (row = 0; row < rowspan; row++)
+            for (col = 0; col < colspan; col++)
+              palloc[cols * (row + y) + (col + x)] = 0;
 
-	for (y = 0; y < rows; y++)
-	{
-		if (!print (output, error, "   <TR>\n"))
-			goto fail;
+          palloc[cols * y + x] = 2;
+        }
+      }
 
-		for (x = 0; x < cols; x++)
-		{
-			gegl_sampler_get (sampler, x, y, NULL, buf, GEGL_ABYSS_NONE);
+      if (palloc[cols * y + x] == 1) {
+        if (!print(output, error, "      <TD%s%sBGCOLOR=#%02x%02x%02x>", width,
+                   height, buf[0], buf[1], buf[2]))
+          goto fail;
+      }
 
-			/* Determine ROWSPAN and COLSPAN */
+      if (palloc[cols * y + x] == 2) {
+        if (!print(output, error,
+                   "      <TD ROWSPAN=\"%d\" "
+                   "COLSPAN=\"%d\"%s%sBGCOLOR=#%02x%02x%02x>",
+                   rowspan, colspan, width, height, buf[0], buf[1], buf[2]))
+          goto fail;
+      }
 
-			if (config_span_tags)
-			{
-				col      = x;
-				row      = y;
-				colcount = 0;
-				colspan  = 0;
-				rowspan  = 0;
+      if (palloc[cols * y + x] != 0) {
+        if (config_compress_td_tags) {
+          if (!print(output, error, "%s</TD>\n", config_cell_content))
+            goto fail;
+        } else {
+          if (!print(output, error, "\n      %s\n      </TD>\n",
+                     config_cell_content))
+            goto fail;
+        }
+      }
+    }
 
-				gegl_sampler_get (sampler, col, row, NULL, buf2, GEGL_ABYSS_NONE);
+    if (!print(output, error, "   </TR>\n"))
+      goto fail;
 
-				while (color_comp (buf, buf2) &&
-				       palloc[cols * row + col] == 1 &&
-				       row < rows)
-				{
-					while (color_comp (buf, buf2) &&
-					       palloc[cols * row + col] == 1 &&
-					       col < cols)
-					{
-						colcount++;
-						col++;
+    gimp_progress_update((double)y / (double)rows);
+  }
 
-						gegl_sampler_get (sampler,
-						                  col, row, NULL, buf2, GEGL_ABYSS_NONE);
-					}
+  if (config_full_document) {
+    if (!print(output, error, "</TABLE></BODY></HTML>\n"))
+      goto fail;
+  } else {
+    if (!print(output, error, "</TABLE>\n"))
+      goto fail;
+  }
 
-					if (colcount != 0)
-					{
-						row++;
-						rowspan++;
-					}
+  if (!g_output_stream_close(output, NULL, error))
+    goto fail;
 
-					if (colcount < colspan || colspan == 0)
-						colspan = colcount;
+  g_object_unref(output);
+  g_object_unref(sampler);
+  g_free(width);
+  g_free(height);
+  g_free(palloc);
 
-					col = x;
-					colcount = 0;
+  g_free(config_caption_text);
+  g_free(config_cell_content);
+  g_free(config_cell_width);
+  g_free(config_cell_height);
 
-					gegl_sampler_get (sampler,
-					                  col, row, NULL, buf2, GEGL_ABYSS_NONE);
-				}
+  gimp_progress_update(1.0);
 
-				if (colspan > 1 || rowspan > 1)
-				{
-					for (row = 0; row < rowspan; row++)
-						for (col = 0; col < colspan; col++)
-							palloc[cols * (row + y) + (col + x)] = 0;
-
-					palloc[cols * y + x] = 2;
-				}
-			}
-
-			if (palloc[cols * y + x] == 1)
-			{
-				if (!print (output, error,
-				            "      <TD%s%sBGCOLOR=#%02x%02x%02x>",
-				            width, height, buf[0], buf[1], buf[2]))
-					goto fail;
-			}
-
-			if (palloc[cols * y + x] == 2)
-			{
-				if (!print (output, error,
-				            "      <TD ROWSPAN=\"%d\" COLSPAN=\"%d\"%s%sBGCOLOR=#%02x%02x%02x>",
-				            rowspan, colspan, width, height,
-				            buf[0], buf[1], buf[2]))
-					goto fail;
-			}
-
-			if (palloc[cols * y + x] != 0)
-			{
-				if (config_compress_td_tags)
-				{
-					if (!print (output, error,
-					            "%s</TD>\n", config_cell_content))
-						goto fail;
-				}
-				else
-				{
-					if (!print (output, error,
-					            "\n      %s\n      </TD>\n", config_cell_content))
-						goto fail;
-				}
-			}
-		}
-
-		if (!print (output, error, "   </TR>\n"))
-			goto fail;
-
-		gimp_progress_update ((double) y / (double) rows);
-	}
-
-	if (config_full_document)
-	{
-		if (!print (output, error, "</TABLE></BODY></HTML>\n"))
-			goto fail;
-	}
-	else
-	{
-		if (!print (output, error, "</TABLE>\n"))
-			goto fail;
-	}
-
-	if (!g_output_stream_close (output, NULL, error))
-		goto fail;
-
-	g_object_unref (output);
-	g_object_unref (sampler);
-	g_free (width);
-	g_free (height);
-	g_free (palloc);
-
-	g_free (config_caption_text);
-	g_free (config_cell_content);
-	g_free (config_cell_width);
-	g_free (config_cell_height);
-
-	gimp_progress_update (1.0);
-
-	return TRUE;
+  return TRUE;
 
 fail:
 
-	cancellable = g_cancellable_new ();
-	g_cancellable_cancel (cancellable);
-	g_output_stream_close (output, cancellable, NULL);
-	g_object_unref (cancellable);
+  cancellable = g_cancellable_new();
+  g_cancellable_cancel(cancellable);
+  g_output_stream_close(output, cancellable, NULL);
+  g_object_unref(cancellable);
 
-	g_object_unref (output);
-	g_object_unref (sampler);
-	g_free (width);
-	g_free (height);
-	g_free (palloc);
+  g_object_unref(output);
+  g_object_unref(sampler);
+  g_free(width);
+  g_free(height);
+  g_free(palloc);
 
-	g_free (config_caption_text);
-	g_free (config_cell_content);
-	g_free (config_cell_width);
-	g_free (config_cell_height);
+  g_free(config_caption_text);
+  g_free(config_cell_content);
+  g_free(config_cell_width);
+  g_free(config_cell_height);
 
-	return FALSE;
+  return FALSE;
 }
 
-static gint
-save_dialog (GimpImage     *image,
-             GimpProcedure *procedure,
-             GObject       *config)
-{
-	GtkWidget *dialog;
-	GtkWidget *main_vbox;
-	GtkWidget *frame;
-	GtkWidget *vbox;
-	GtkWidget *grid;
-	GtkWidget *spinbutton;
-	GtkWidget *entry;
-	GtkWidget *toggle;
-	gboolean run;
+static gint save_dialog(GimpImage *image, GimpProcedure *procedure,
+                        GObject *config) {
+  GtkWidget *dialog;
+  GtkWidget *main_vbox;
+  GtkWidget *frame;
+  GtkWidget *vbox;
+  GtkWidget *grid;
+  GtkWidget *spinbutton;
+  GtkWidget *entry;
+  GtkWidget *toggle;
+  gboolean run;
 
-	gimp_ui_init (PLUG_IN_BINARY);
+  gimp_ui_init(PLUG_IN_BINARY);
 
-	dialog = gimp_procedure_dialog_new (procedure,
-	                                    GIMP_PROCEDURE_CONFIG (config),
-	                                    _("Export Image as HTML Table"));
+  dialog = gimp_procedure_dialog_new(procedure, GIMP_PROCEDURE_CONFIG(config),
+                                     _("Export Image as HTML Table"));
 
-	main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-	gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-	                    main_vbox, TRUE, TRUE, 0);
-	gtk_widget_show (main_vbox);
+  main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
+  gtk_container_set_border_width(GTK_CONTAINER(main_vbox), 12);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
+                     main_vbox, TRUE, TRUE, 0);
+  gtk_widget_show(main_vbox);
 
-	if (gimp_image_width (image) * gimp_image_height (image) > 4096)
-	{
-		GtkWidget *eek;
-		GtkWidget *label;
-		GtkWidget *hbox;
+  if (gimp_image_width(image) * gimp_image_height(image) > 4096) {
+    GtkWidget *eek;
+    GtkWidget *label;
+    GtkWidget *hbox;
 
-		frame = gimp_frame_new (_("Warning"));
-		gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-		gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+    frame = gimp_frame_new(_("Warning"));
+    gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_IN);
+    gtk_box_pack_start(GTK_BOX(main_vbox), frame, FALSE, FALSE, 0);
 
-		hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
-		gtk_container_add (GTK_CONTAINER (frame), hbox);
+    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
+    gtk_container_add(GTK_CONTAINER(frame), hbox);
 
-		eek = gtk_image_new_from_icon_name (GIMP_ICON_WILBER_EEK,
-		                                    GTK_ICON_SIZE_DIALOG);
-		gtk_box_pack_start (GTK_BOX (hbox), eek, FALSE, FALSE, 0);
+    eek = gtk_image_new_from_icon_name(GIMP_ICON_WILBER_EEK,
+                                       GTK_ICON_SIZE_DIALOG);
+    gtk_box_pack_start(GTK_BOX(hbox), eek, FALSE, FALSE, 0);
 
-		label = gtk_label_new (_("You are about to create a huge\n"
-		                         "HTML file which will most likely\n"
-		                         "crash your browser."));
-		gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+    label = gtk_label_new(_("You are about to create a huge\n"
+                            "HTML file which will most likely\n"
+                            "crash your browser."));
+    gtk_box_pack_start(GTK_BOX(hbox), label, TRUE, TRUE, 0);
 
-		gtk_widget_show_all (frame);
-	}
+    gtk_widget_show_all(frame);
+  }
 
-	/* HTML Page Options */
-	frame = gimp_frame_new (_("HTML Page Options"));
-	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-	gtk_widget_show (frame);
+  /* HTML Page Options */
+  frame = gimp_frame_new(_("HTML Page Options"));
+  gtk_box_pack_start(GTK_BOX(main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show(frame);
 
-	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-	gtk_container_add (GTK_CONTAINER (frame), vbox);
-	gtk_widget_show (vbox);
+  vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
+  gtk_container_add(GTK_CONTAINER(frame), vbox);
+  gtk_widget_show(vbox);
 
-	toggle = gimp_prop_check_button_new (config, "full-document",
-	                                     _("_Generate full HTML document"));
-	gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+  toggle = gimp_prop_check_button_new(config, "full-document",
+                                      _("_Generate full HTML document"));
+  gtk_box_pack_start(GTK_BOX(vbox), toggle, FALSE, FALSE, 0);
 
-	/* HTML Table Creation Options */
-	frame = gimp_frame_new (_("Table Creation Options"));
-	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-	gtk_widget_show (frame);
+  /* HTML Table Creation Options */
+  frame = gimp_frame_new(_("Table Creation Options"));
+  gtk_box_pack_start(GTK_BOX(main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show(frame);
 
-	grid = gtk_grid_new ();
-	gtk_grid_set_row_spacing (GTK_GRID (grid), 6);
-	gtk_grid_set_column_spacing (GTK_GRID (grid), 6);
-	gtk_container_add (GTK_CONTAINER (frame), grid);
-	gtk_widget_show (grid);
+  grid = gtk_grid_new();
+  gtk_grid_set_row_spacing(GTK_GRID(grid), 6);
+  gtk_grid_set_column_spacing(GTK_GRID(grid), 6);
+  gtk_container_add(GTK_CONTAINER(frame), grid);
+  gtk_widget_show(grid);
 
-	toggle = gimp_prop_check_button_new (config, "span-tags",
-	                                     _("_Use cellspan"));
-	gtk_grid_attach (GTK_GRID (grid), toggle, 0, 0, 2, 1);
+  toggle = gimp_prop_check_button_new(config, "span-tags", _("_Use cellspan"));
+  gtk_grid_attach(GTK_GRID(grid), toggle, 0, 0, 2, 1);
 
-	toggle = gimp_prop_check_button_new (config, "compress-td-tags",
-	                                     _("Co_mpress TD tags"));
-	gtk_grid_attach (GTK_GRID (grid), toggle, 0, 1, 2, 1);
+  toggle = gimp_prop_check_button_new(config, "compress-td-tags",
+                                      _("Co_mpress TD tags"));
+  gtk_grid_attach(GTK_GRID(grid), toggle, 0, 1, 2, 1);
 
-	toggle = gimp_prop_check_button_new (config, "use-caption",
-	                                     _("C_aption"));
-	gtk_grid_attach (GTK_GRID (grid), toggle, 0, 2, 1, 1);
+  toggle = gimp_prop_check_button_new(config, "use-caption", _("C_aption"));
+  gtk_grid_attach(GTK_GRID(grid), toggle, 0, 2, 1, 1);
 
-	entry = gimp_prop_entry_new (config, "caption-text", -1);
-	gtk_widget_set_size_request (entry, 200, -1);
-	gtk_grid_attach (GTK_GRID (grid), entry, 1, 2, 1, 1);
+  entry = gimp_prop_entry_new(config, "caption-text", -1);
+  gtk_widget_set_size_request(entry, 200, -1);
+  gtk_grid_attach(GTK_GRID(grid), entry, 1, 2, 1, 1);
 
-	g_object_bind_property (config, "use-caption",
-	                        entry,  "sensitive",
-	                        G_BINDING_SYNC_CREATE);
+  g_object_bind_property(config, "use-caption", entry, "sensitive",
+                         G_BINDING_SYNC_CREATE);
 
-	entry = gimp_prop_entry_new (config, "cell-content", -1);
-	gtk_widget_set_size_request (entry, 200, -1);
-	gimp_grid_attach_aligned (GTK_GRID (grid), 0, 3,
-	                          _("C_ell content:"), 0.0, 0.5,
-	                          entry, 1);
+  entry = gimp_prop_entry_new(config, "cell-content", -1);
+  gtk_widget_set_size_request(entry, 200, -1);
+  gimp_grid_attach_aligned(GTK_GRID(grid), 0, 3, _("C_ell content:"), 0.0, 0.5,
+                           entry, 1);
 
-	/* HTML Table Options */
-	frame = gimp_frame_new (_("Table Options"));
-	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-	gtk_widget_show (frame);
+  /* HTML Table Options */
+  frame = gimp_frame_new(_("Table Options"));
+  gtk_box_pack_start(GTK_BOX(main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show(frame);
 
-	grid = gtk_grid_new ();
-	gtk_grid_set_row_spacing (GTK_GRID (grid), 6);
-	gtk_grid_set_column_spacing (GTK_GRID (grid), 6);
-	gtk_container_add (GTK_CONTAINER (frame), grid);
-	gtk_widget_show (grid);
+  grid = gtk_grid_new();
+  gtk_grid_set_row_spacing(GTK_GRID(grid), 6);
+  gtk_grid_set_column_spacing(GTK_GRID(grid), 6);
+  gtk_container_add(GTK_CONTAINER(frame), grid);
+  gtk_widget_show(grid);
 
-	spinbutton = gimp_prop_spin_button_new (config, "border",
-	                                        1, 10, 0);
-	gimp_grid_attach_aligned (GTK_GRID (grid), 0, 0,
-	                          _("_Border:"), 0.0, 0.5,
-	                          spinbutton, 1);
+  spinbutton = gimp_prop_spin_button_new(config, "border", 1, 10, 0);
+  gimp_grid_attach_aligned(GTK_GRID(grid), 0, 0, _("_Border:"), 0.0, 0.5,
+                           spinbutton, 1);
 
-	entry = gimp_prop_entry_new (config, "cell-width", -1);
-	gtk_widget_set_size_request (entry, 60, -1);
-	gimp_grid_attach_aligned (GTK_GRID (grid), 0, 1,
-	                          _("_Width:"), 0.0, 0.5,
-	                          entry, 1);
+  entry = gimp_prop_entry_new(config, "cell-width", -1);
+  gtk_widget_set_size_request(entry, 60, -1);
+  gimp_grid_attach_aligned(GTK_GRID(grid), 0, 1, _("_Width:"), 0.0, 0.5, entry,
+                           1);
 
-	entry = gimp_prop_entry_new (config, "cell-height", -1);
-	gtk_widget_set_size_request (entry, 60, -1);
-	gimp_grid_attach_aligned (GTK_GRID (grid), 0, 2,
-	                          _("_Height:"), 0.0, 0.5,
-	                          entry, 1);
+  entry = gimp_prop_entry_new(config, "cell-height", -1);
+  gtk_widget_set_size_request(entry, 60, -1);
+  gimp_grid_attach_aligned(GTK_GRID(grid), 0, 2, _("_Height:"), 0.0, 0.5, entry,
+                           1);
 
-	spinbutton = gimp_prop_spin_button_new (config, "cell-padding",
-	                                        1, 10, 0);
-	gimp_grid_attach_aligned (GTK_GRID (grid), 0, 3,
-	                          _("Cell-_padding:"), 0.0, 0.5,
-	                          spinbutton, 1);
+  spinbutton = gimp_prop_spin_button_new(config, "cell-padding", 1, 10, 0);
+  gimp_grid_attach_aligned(GTK_GRID(grid), 0, 3, _("Cell-_padding:"), 0.0, 0.5,
+                           spinbutton, 1);
 
-	spinbutton = gimp_prop_spin_button_new (config, "cell-spacing",
-	                                        1, 10, 0);
-	gimp_grid_attach_aligned (GTK_GRID (grid), 0, 4,
-	                          _("Cell-_spacing:"), 0.0, 0.5,
-	                          spinbutton, 1);
+  spinbutton = gimp_prop_spin_button_new(config, "cell-spacing", 1, 10, 0);
+  gimp_grid_attach_aligned(GTK_GRID(grid), 0, 4, _("Cell-_spacing:"), 0.0, 0.5,
+                           spinbutton, 1);
 
-	gtk_widget_show (dialog);
+  gtk_widget_show(dialog);
 
-	run = gimp_procedure_dialog_run (GIMP_PROCEDURE_DIALOG (dialog));
+  run = gimp_procedure_dialog_run(GIMP_PROCEDURE_DIALOG(dialog));
 
-	gtk_widget_destroy (dialog);
+  gtk_widget_destroy(dialog);
 
-	return run;
+  return run;
 }
 
-static gboolean
-print (GOutputStream  *output,
-       GError        **error,
-       const gchar    *format,
-       ...)
-{
-	va_list args;
-	gboolean success;
+static gboolean print(GOutputStream *output, GError **error,
+                      const gchar *format, ...) {
+  va_list args;
+  gboolean success;
 
-	va_start (args, format);
-	success = g_output_stream_vprintf (output, NULL, NULL,
-	                                   error, format, args);
-	va_end (args);
+  va_start(args, format);
+  success = g_output_stream_vprintf(output, NULL, NULL, error, format, args);
+  va_end(args);
 
-	return success;
+  return success;
 }
 
-static gboolean
-color_comp (guchar *buf,
-            guchar *buf2)
-{
-	return (buf[0] == buf2[0] &&
-	        buf[1] == buf2[1] &&
-	        buf[2] == buf2[2]);
+static gboolean color_comp(guchar *buf, guchar *buf2) {
+  return (buf[0] == buf2[0] && buf[1] == buf2[1] && buf[2] == buf2[2]);
 }

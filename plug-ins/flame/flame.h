@@ -16,6 +16,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "cmap.h"
 #include "libifs.h"
 #include "rect.h"
-#include "cmap.h"

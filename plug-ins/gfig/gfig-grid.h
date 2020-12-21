@@ -28,20 +28,18 @@
 #define GFIG_NORMAL_GC -1
 #define GFIG_BLACK_GC -2
 #define GFIG_WHITE_GC -3
-#define GFIG_GREY_GC  -4
+#define GFIG_GREY_GC -4
 #define GFIG_DARKER_GC -5
 #define GFIG_LIGHTER_GC -6
 #define GFIG_VERY_DARK_GC -7
 
-#define MIN_GRID         10
-#define MAX_GRID         50
+#define MIN_GRID 10
+#define MAX_GRID 50
 
 extern gint grid_gc_type;
 
-void gfig_grid_colors (GtkWidget *widget);
-void find_grid_pos     (GdkPoint  *p,
-                        GdkPoint  *gp,
-                        guint state);
-void draw_grid         (cairo_t *cr);
+void gfig_grid_colors(GtkWidget *widget);
+void find_grid_pos(GdkPoint *p, GdkPoint *gp, guint state);
+void draw_grid(cairo_t *cr);
 
 #endif /* __GFIG_GRID_H__ */

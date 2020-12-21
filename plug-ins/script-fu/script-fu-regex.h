@@ -18,8 +18,6 @@
 #ifndef __SCRIPT_FU_REGEX_H__
 #define __SCRIPT_FU_REGEX_H__
 
-
-void   script_fu_regex_init (scheme *sc);
-
+void script_fu_regex_init(scheme *sc);
 
 #endif /* __SCRIPT_FU_REGEX_H__ */

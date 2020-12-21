@@ -18,20 +18,20 @@
 #ifndef __MAPOBJECT_ICONS_H__
 #define __MAPOBJECT_ICONS_H__
 
+#define MAPOBJECT_INTENSITY_AMBIENT_LOW "lighting-intensity-ambient-low"
+#define MAPOBJECT_INTENSITY_AMBIENT_HIGH "lighting-intensity-ambient-high"
+#define MAPOBJECT_INTENSITY_DIFFUSE_LOW "lighting-intensity-diffuse-low"
+#define MAPOBJECT_INTENSITY_DIFFUSE_HIGH "lighting-intensity-diffuse-high"
+#define MAPOBJECT_REFLECTIVITY_DIFFUSE_LOW "lighting-reflectivity-diffuse-low"
+#define MAPOBJECT_REFLECTIVITY_DIFFUSE_HIGH "lighting-reflectivity-diffuse-high"
+#define MAPOBJECT_REFLECTIVITY_SPECULAR_LOW "lighting-reflectivity-specular-low"
+#define MAPOBJECT_REFLECTIVITY_SPECULAR_HIGH                                   \
+  "lighting-reflectivity-specular-high"
+#define MAPOBJECT_REFLECTIVITY_HIGHLIGHT_LOW                                   \
+  "lighting-reflectivity-highlight-low"
+#define MAPOBJECT_REFLECTIVITY_HIGHLIGHT_HIGH                                  \
+  "lighting-reflectivity-highlight-high"
 
-#define MAPOBJECT_INTENSITY_AMBIENT_LOW        "lighting-intensity-ambient-low"
-#define MAPOBJECT_INTENSITY_AMBIENT_HIGH       "lighting-intensity-ambient-high"
-#define MAPOBJECT_INTENSITY_DIFFUSE_LOW        "lighting-intensity-diffuse-low"
-#define MAPOBJECT_INTENSITY_DIFFUSE_HIGH       "lighting-intensity-diffuse-high"
-#define MAPOBJECT_REFLECTIVITY_DIFFUSE_LOW     "lighting-reflectivity-diffuse-low"
-#define MAPOBJECT_REFLECTIVITY_DIFFUSE_HIGH    "lighting-reflectivity-diffuse-high"
-#define MAPOBJECT_REFLECTIVITY_SPECULAR_LOW    "lighting-reflectivity-specular-low"
-#define MAPOBJECT_REFLECTIVITY_SPECULAR_HIGH   "lighting-reflectivity-specular-high"
-#define MAPOBJECT_REFLECTIVITY_HIGHLIGHT_LOW   "lighting-reflectivity-highlight-low"
-#define MAPOBJECT_REFLECTIVITY_HIGHLIGHT_HIGH  "lighting-reflectivity-highlight-high"
-
-
-void  mapobject_icons_init (void);
-
+void mapobject_icons_init(void);
 
 #endif /* __MAPOBJECT_ICONS_H__ */

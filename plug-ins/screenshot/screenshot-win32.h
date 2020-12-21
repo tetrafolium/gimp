@@ -18,27 +18,24 @@
 #ifndef __SCREENSHOT_WIN32_H__
 #define __SCREENSHOT_WIN32_H__
 
-
 #ifdef G_OS_WIN32
 
 #define IDC_STATIC -1
 
-#define IDS_APP_TITLE       500
-#define IDS_DISPLAYCHANGED  501
-#define IDS_VER_INFO_LANG   502
-#define IDS_VERSION_ERROR   503
-#define IDS_NO_HELP         504
+#define IDS_APP_TITLE 500
+#define IDS_DISPLAYCHANGED 501
+#define IDS_VER_INFO_LANG 502
+#define IDS_VERSION_ERROR 503
+#define IDS_NO_HELP 504
 
-gboolean               screenshot_win32_available        (void);
+gboolean screenshot_win32_available(void);
 
-ScreenshotCapabilities screenshot_win32_get_capabilities (void);
+ScreenshotCapabilities screenshot_win32_get_capabilities(void);
 
-GimpPDBStatusType      screenshot_win32_shoot            (ScreenshotValues  *shootvals,
-                                                          GdkMonitor        *monitor,
-                                                          GimpImage        **image,
-                                                          GError           **error);
+GimpPDBStatusType screenshot_win32_shoot(ScreenshotValues *shootvals,
+                                         GdkMonitor *monitor, GimpImage **image,
+                                         GError **error);
 
 #endif /* G_OS_WIN32 */
-
 
 #endif /* __SCREENSHOT_WIN32_H__ */

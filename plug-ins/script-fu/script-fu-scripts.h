@@ -18,13 +18,8 @@
 #ifndef __SCRIPT_FU_SCRIPTS_H__
 #define __SCRIPT_FU_SCRIPTS_H__
 
-
-void      script_fu_find_scripts  (GimpPlugIn *plug_in,
-                                   GList      *path);
-pointer   script_fu_add_script    (scheme     *sc,
-                                   pointer a);
-pointer   script_fu_add_menu      (scheme     *sc,
-                                   pointer a);
-
+void script_fu_find_scripts(GimpPlugIn *plug_in, GList *path);
+pointer script_fu_add_script(scheme *sc, pointer a);
+pointer script_fu_add_menu(scheme *sc, pointer a);
 
 #endif /*  __SCRIPT_FU_SCRIPTS__  */

@@ -28,4 +28,3 @@ void draw_sash(cairo_t *cr, gint x, gint y);
 gboolean near_sash(gint sash_x, gint sash_y, gint x, gint y);
 
 #endif /* _IMAP_MISC_H */
-

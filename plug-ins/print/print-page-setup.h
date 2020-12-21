@@ -15,13 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EMBED_PAGE_SETUP
-void   print_page_setup_dialog (GtkPrintOperation *operation);
+void print_page_setup_dialog(GtkPrintOperation *operation);
 #endif
-void   print_page_setup_load   (GtkPrintOperation *operation,
-                                GimpImage         *image);
-void   print_page_setup_save   (GtkPrintOperation *operation,
-                                GimpImage         *image);
-
-
+void print_page_setup_load(GtkPrintOperation *operation, GimpImage *image);
+void print_page_setup_save(GtkPrintOperation *operation, GimpImage *image);

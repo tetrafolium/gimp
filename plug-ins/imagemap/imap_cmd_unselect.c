@@ -33,44 +33,33 @@ static CmdExecuteValue_t unselect_command_execute(Command_t *parent);
 static void unselect_command_undo(Command_t *parent);
 
 static CommandClass_t unselect_command_class = {
-	unselect_command_destruct,
-	unselect_command_execute,
-	unselect_command_undo,
-	NULL                     /* unselect_command_redo */
+    unselect_command_destruct, unselect_command_execute, unselect_command_undo,
+    NULL /* unselect_command_redo */
 };
 
 typedef struct {
-	Command_t parent;
-	Object_t *obj;
+  Command_t parent;
+  Object_t *obj;
 } UnselectCommand_t;
 
-Command_t*
-unselect_command_new(Object_t *obj)
-{
-	UnselectCommand_t *command = g_new(UnselectCommand_t, 1);
-	command->obj = object_ref(obj);
-	return command_init(&command->parent, _("Unselect"),
-	                    &unselect_command_class);
+Command_t *unselect_command_new(Object_t *obj) {
+  UnselectCommand_t *command = g_new(UnselectCommand_t, 1);
+  command->obj = object_ref(obj);
+  return command_init(&command->parent, _("Unselect"), &unselect_command_class);
 }
 
-static void
-unselect_command_destruct(Command_t *command)
-{
-	UnselectCommand_t *unselect_command = (UnselectCommand_t*) command;
-	object_unref(unselect_command->obj);
+static void unselect_command_destruct(Command_t *command) {
+  UnselectCommand_t *unselect_command = (UnselectCommand_t *)command;
+  object_unref(unselect_command->obj);
 }
 
-static CmdExecuteValue_t
-unselect_command_execute(Command_t *command)
-{
-	UnselectCommand_t *unselect_command = (UnselectCommand_t*) command;
-	object_unselect(unselect_command->obj);
-	return CMD_APPEND;
+static CmdExecuteValue_t unselect_command_execute(Command_t *command) {
+  UnselectCommand_t *unselect_command = (UnselectCommand_t *)command;
+  object_unselect(unselect_command->obj);
+  return CMD_APPEND;
 }
 
-static void
-unselect_command_undo(Command_t *command)
-{
-	UnselectCommand_t *unselect_command = (UnselectCommand_t*) command;
-	object_select(unselect_command->obj);
+static void unselect_command_undo(Command_t *command) {
+  UnselectCommand_t *unselect_command = (UnselectCommand_t *)command;
+  object_select(unselect_command->obj);
 }

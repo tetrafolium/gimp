@@ -24,12 +24,9 @@
 #ifndef __DIALOG_H__
 #define __DIALOG_H__
 
+void browser_dialog_open(const gchar *plug_in_binary);
+void browser_dialog_load(const gchar *uri);
 
-void   browser_dialog_open       (const gchar    *plug_in_binary);
-void   browser_dialog_load       (const gchar    *uri);
-
-void   browser_dialog_make_index (GimpHelpDomain *domain,
-                                  GimpHelpLocale *locale);
-
+void browser_dialog_make_index(GimpHelpDomain *domain, GimpHelpLocale *locale);
 
 #endif /* ! __DIALOG_H__ */

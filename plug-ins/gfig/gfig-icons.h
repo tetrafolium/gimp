@@ -25,23 +25,23 @@
 #ifndef __GFIG_ICONS_H__
 #define __GFIG_ICONS_H__
 
-#define GFIG_ICON_BEZIER         "gfig-bezier"
-#define GFIG_ICON_CIRCLE         "gfig-circle"
-#define GFIG_ICON_COPY_OBJECT    "gfig-copy-object"
-#define GFIG_ICON_CURVE          "gfig-curve"
-#define GFIG_ICON_DELETE_OBJECT  "gfig-delete-object"
-#define GFIG_ICON_ELLIPSE        "gfig-ellipse"
-#define GFIG_ICON_LINE           "gfig-line"
-#define GFIG_ICON_MOVE_OBJECT    "gfig-move-object"
-#define GFIG_ICON_MOVE_POINT     "gfig-move-point"
-#define GFIG_ICON_POLYGON        "gfig-polygon"
-#define GFIG_ICON_RECTANGLE      "gfig-rectangle"
-#define GFIG_ICON_SELECT_OBJECT  "gfig-select-object"
-#define GFIG_ICON_SHOW_ALL       "gfig-show-all"
-#define GFIG_ICON_SPIRAL         "gfig-spiral"
-#define GFIG_ICON_STAR           "gfig-star"
-#define GFIG_ICON_LOGO           "gfig-logo"
+#define GFIG_ICON_BEZIER "gfig-bezier"
+#define GFIG_ICON_CIRCLE "gfig-circle"
+#define GFIG_ICON_COPY_OBJECT "gfig-copy-object"
+#define GFIG_ICON_CURVE "gfig-curve"
+#define GFIG_ICON_DELETE_OBJECT "gfig-delete-object"
+#define GFIG_ICON_ELLIPSE "gfig-ellipse"
+#define GFIG_ICON_LINE "gfig-line"
+#define GFIG_ICON_MOVE_OBJECT "gfig-move-object"
+#define GFIG_ICON_MOVE_POINT "gfig-move-point"
+#define GFIG_ICON_POLYGON "gfig-polygon"
+#define GFIG_ICON_RECTANGLE "gfig-rectangle"
+#define GFIG_ICON_SELECT_OBJECT "gfig-select-object"
+#define GFIG_ICON_SHOW_ALL "gfig-show-all"
+#define GFIG_ICON_SPIRAL "gfig-spiral"
+#define GFIG_ICON_STAR "gfig-star"
+#define GFIG_ICON_LOGO "gfig-logo"
 
-void  gfig_icons_init (void);
+void gfig_icons_init(void);
 
 #endif /* __GFIG_ICONS_H__ */

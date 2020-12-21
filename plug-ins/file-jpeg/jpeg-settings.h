@@ -21,17 +21,15 @@
 #ifndef __JPEG_SETTINGS_H__
 #define __JPEG_SETTINGS_H__
 
-gboolean  jpeg_detect_original_settings  (struct jpeg_decompress_struct *cinfo,
-                                          GimpImage       *image);
+gboolean jpeg_detect_original_settings(struct jpeg_decompress_struct *cinfo,
+                                       GimpImage *image);
 
-gboolean  jpeg_restore_original_settings (GimpImage       *image,
-                                          gint            *quality,
-                                          JpegSubsampling *subsmp,
-                                          gint            *num_quant_tables);
+gboolean jpeg_restore_original_settings(GimpImage *image, gint *quality,
+                                        JpegSubsampling *subsmp,
+                                        gint *num_quant_tables);
 
-guint   **jpeg_restore_original_tables   (GimpImage       *image,
-                                          gint num_quant_tables);
+guint **jpeg_restore_original_tables(GimpImage *image, gint num_quant_tables);
 
-void      jpeg_swap_original_settings    (GimpImage       *image);
+void jpeg_swap_original_settings(GimpImage *image);
 
 #endif /* __JPEG_SETTINGS_H__ */

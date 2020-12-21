@@ -18,24 +18,20 @@
 
 #include "libifs.h"
 
-
 /* size of the cmap actually used. may be smaller than input cmap size */
 #define CMAP_SIZE 256
 
 typedef struct {
-	double temporal_filter_radius;
-	control_point *cps;
-	int ncps;
-	double time;
+  double temporal_filter_radius;
+  control_point *cps;
+  int ncps;
+  double time;
 } frame_spec;
 
-
-#define field_both  0
-#define field_even  1
-#define field_odd   2
-
+#define field_both 0
+#define field_even 1
+#define field_odd 2
 
 extern void render_rectangle(frame_spec *spec, unsigned char *out,
                              int out_width, int field, int nchan,
                              int progress(double));
-

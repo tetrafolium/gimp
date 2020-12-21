@@ -21,4 +21,3 @@
 extern GRand *random_generator;
 
 #endif
-

@@ -17,22 +17,19 @@
 #ifndef __LIGHTING_PREVIEW_H__
 #define __LIGHTING_PREVIEW_H__
 
-#define PREVIEW_WIDTH  200
+#define PREVIEW_WIDTH 200
 #define PREVIEW_HEIGHT 200
 
 /* Externally visible variables */
 
-extern gdouble    *xpostab, *ypostab;
+extern gdouble *xpostab, *ypostab;
 
 /* Externally visible functions */
 
-void     preview_compute              (void);
-void     interactive_preview_callback (GtkWidget *widget);
-gboolean preview_events               (GtkWidget *area,
-                                       GdkEvent  *event);
-gboolean preview_draw                 (GtkWidget *area,
-                                       cairo_t   *cr);
-void     update_light                 (gint xpos,
-                                       gint ypos);
+void preview_compute(void);
+void interactive_preview_callback(GtkWidget *widget);
+gboolean preview_events(GtkWidget *area, GdkEvent *event);
+gboolean preview_draw(GtkWidget *area, cairo_t *cr);
+void update_light(gint xpos, gint ypos);
 
-#endif  /* __LIGHTING_PREVIEW_H__ */
+#endif /* __LIGHTING_PREVIEW_H__ */

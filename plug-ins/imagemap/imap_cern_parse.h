@@ -31,10 +31,10 @@
    version 2.2 of Bison.  */
 
 #ifndef CERN_Y_TAB_H
-# define CERN_Y_TAB_H
+#define CERN_Y_TAB_H
 /* Enabling traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+#define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int cern_debug;
@@ -42,20 +42,20 @@ extern int cern_debug;
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#define YYTOKENTYPE
 /* Put the tokens into the symbol table, so that GDB and other debuggers
    know about them.  */
 enum yytokentype {
-	RECTANGLE = 258,
-	POLYGON = 259,
-	CIRCLE = 260,
-	DEFAULT = 261,
-	AUTHOR = 262,
-	DESCRIPTION = 263,
-	BEGIN_COMMENT = 264,
-	FLOAT = 265,
-	COMMENT = 266,
-	LINK = 267
+  RECTANGLE = 258,
+  POLYGON = 259,
+  CIRCLE = 260,
+  DEFAULT = 261,
+  AUTHOR = 262,
+  DESCRIPTION = 263,
+  BEGIN_COMMENT = 264,
+  FLOAT = 265,
+  COMMENT = 266,
+  LINK = 267
 };
 #endif
 /* Tokens.  */
@@ -70,40 +70,36 @@ enum yytokentype {
 #define COMMENT 266
 #define LINK 267
 
-
-
 #if !defined YYSTYPE && !defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-{
-	/* Line 2049 of yacc.c  */
+typedef union YYSTYPE {
+  /* Line 2049 of yacc.c  */
 #line 46 "imap_cern.y"
 
-	int val;
-	double value;
-	char *id;
+  int val;
+  double value;
+  char *id;
 
-
-	/* Line 2049 of yacc.c  */
+  /* Line 2049 of yacc.c  */
 #line 88 "y.tab.h"
 } YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#define YYSTYPE_IS_TRIVIAL 1
+#define yystype YYSTYPE /* obsolescent; will be withdrawn */
+#define YYSTYPE_IS_DECLARED 1
 #endif
 
 extern YYSTYPE cern_lval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
-int cern_parse (void *YYPARSE_PARAM);
+int cern_parse(void *YYPARSE_PARAM);
 #else
-int cern_parse ();
+int cern_parse();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int cern_parse (void);
+int cern_parse(void);
 #else
-int cern_parse ();
+int cern_parse();
 #endif
 #endif /* ! YYPARSE_PARAM */
 

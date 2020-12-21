@@ -23,29 +23,22 @@
 #ifndef __GIMP_HELP_DOMAIN_H__
 #define __GIMP_HELP_DOMAIN_H__
 
-
-struct _GimpHelpDomain
-{
-	gchar      *help_domain;
-	gchar      *help_uri;
-	GHashTable *help_locales;
+struct _GimpHelpDomain {
+  gchar *help_domain;
+  gchar *help_uri;
+  GHashTable *help_locales;
 };
 
+GimpHelpDomain *gimp_help_domain_new(const gchar *domain_name,
+                                     const gchar *domain_uri);
+void gimp_help_domain_free(GimpHelpDomain *domain);
 
-GimpHelpDomain * gimp_help_domain_new           (const gchar       *domain_name,
-                                                 const gchar       *domain_uri);
-void             gimp_help_domain_free          (GimpHelpDomain    *domain);
-
-GimpHelpLocale * gimp_help_domain_lookup_locale (GimpHelpDomain    *domain,
-                                                 const gchar       *locale_id,
-                                                 GimpHelpProgress  *progress);
-gchar          * gimp_help_domain_map           (GimpHelpDomain    *domain,
-                                                 GList             *help_locales,
-                                                 const gchar       *help_id,
-                                                 GimpHelpProgress  *progress,
-                                                 GimpHelpLocale   **locale,
-                                                 gboolean          *fatal_error);
-void             gimp_help_domain_exit          (void);
-
+GimpHelpLocale *gimp_help_domain_lookup_locale(GimpHelpDomain *domain,
+                                               const gchar *locale_id,
+                                               GimpHelpProgress *progress);
+gchar *gimp_help_domain_map(GimpHelpDomain *domain, GList *help_locales,
+                            const gchar *help_id, GimpHelpProgress *progress,
+                            GimpHelpLocale **locale, gboolean *fatal_error);
+void gimp_help_domain_exit(void);
 
 #endif /* ! __GIMP_HELP_DOMAIN_H__ */

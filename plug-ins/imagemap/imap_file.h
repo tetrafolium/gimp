@@ -27,8 +27,8 @@ void do_file_open_dialog(void);
 void do_file_save_as_dialog(void);
 void do_file_error_dialog(const char *error, const char *filename);
 
-gboolean load_csim (const char* filename);
-gboolean load_cern (const char* filename);
-gboolean load_ncsa (const char* filename);
+gboolean load_csim(const char *filename);
+gboolean load_cern(const char *filename);
+gboolean load_ncsa(const char *filename);
 
 #endif /* _IMAP_FILE_H */

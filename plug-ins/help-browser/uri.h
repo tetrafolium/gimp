@@ -18,5 +18,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-gchar * uri_to_abs (const gchar *uri,
-                    const gchar *base_uri);
+gchar *uri_to_abs(const gchar *uri, const gchar *base_uri);

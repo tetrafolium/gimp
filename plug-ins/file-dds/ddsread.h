@@ -21,13 +21,9 @@
 #ifndef __DDSREAD_H__
 #define __DDSREAD_H__
 
-
-extern GimpPDBStatusType read_dds (GFile          *file,
-                                   GimpImage     **image,
-                                   gboolean interactive,
-                                   GimpProcedure  *procedure,
-                                   GObject        *config,
-                                   GError        **error);
-
+extern GimpPDBStatusType read_dds(GFile *file, GimpImage **image,
+                                  gboolean interactive,
+                                  GimpProcedure *procedure, GObject *config,
+                                  GError **error);
 
 #endif /* __DDSREAD_H__ */

@@ -23,17 +23,14 @@
 #ifndef __GIMP_HELP_PROGRESS_PRIVATE_H__
 #define __GIMP_HELP_PROGRESS_PRIVATE_H__
 
-
 /*  internal API  */
 
-void  _gimp_help_progress_start  (GimpHelpProgress   *progress,
-                                  GCancellable       *cancellable,
-                                  const gchar        *format,
-                                  ...) G_GNUC_PRINTF (3, 4)       G_GNUC_INTERNAL;
-void  _gimp_help_progress_update (GimpHelpProgress   *progress,
-                                  gdouble percentage) G_GNUC_INTERNAL;
-void  _gimp_help_progress_pulse  (GimpHelpProgress   *progress)   G_GNUC_INTERNAL;
-void  _gimp_help_progress_finish (GimpHelpProgress   *progress)   G_GNUC_INTERNAL;
-
+void _gimp_help_progress_start(GimpHelpProgress *progress,
+                               GCancellable *cancellable, const gchar *format,
+                               ...) G_GNUC_PRINTF(3, 4) G_GNUC_INTERNAL;
+void _gimp_help_progress_update(GimpHelpProgress *progress,
+                                gdouble percentage) G_GNUC_INTERNAL;
+void _gimp_help_progress_pulse(GimpHelpProgress *progress) G_GNUC_INTERNAL;
+void _gimp_help_progress_finish(GimpHelpProgress *progress) G_GNUC_INTERNAL;
 
 #endif /* ! __GIMP_HELP_PROGRESS_PRIVATE_H__ */

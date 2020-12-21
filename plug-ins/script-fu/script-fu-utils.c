@@ -23,47 +23,42 @@
 
 #include "script-fu-utils.h"
 
-
 /*
  * Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\' and '"'
  * in the string source by inserting a '\' before them.
  */
-gchar *
-script_fu_strescape (const gchar *source)
-{
-	const guchar *p;
-	gchar        *dest;
-	gchar        *q;
+gchar *script_fu_strescape(const gchar *source) {
+  const guchar *p;
+  gchar *dest;
+  gchar *q;
 
-	g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail(source != NULL, NULL);
 
-	p = (const guchar *) source;
+  p = (const guchar *)source;
 
-	/* Each source byte needs maximally two destination chars */
-	q = dest = g_malloc (strlen (source) * 2 + 1);
+  /* Each source byte needs maximally two destination chars */
+  q = dest = g_malloc(strlen(source) * 2 + 1);
 
-	while (*p)
-	{
-		switch (*p)
-		{
-		case '\b':
-		case '\f':
-		case '\n':
-		case '\r':
-		case '\t':
-		case '\\':
-		case '"':
-			*q++ = '\\';
-		/* fallthrough */
-		default:
-			*q++ = *p;
-			break;
-		}
+  while (*p) {
+    switch (*p) {
+    case '\b':
+    case '\f':
+    case '\n':
+    case '\r':
+    case '\t':
+    case '\\':
+    case '"':
+      *q++ = '\\';
+    /* fallthrough */
+    default:
+      *q++ = *p;
+      break;
+    }
 
-		p++;
-	}
+    p++;
+  }
 
-	*q = 0;
+  *q = 0;
 
-	return dest;
+  return dest;
 }

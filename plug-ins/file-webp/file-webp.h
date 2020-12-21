@@ -22,11 +22,9 @@
 #ifndef __FILE_WEBP_H__
 #define __FILE_WEBP_H__
 
-
-#define LOAD_PROC      "file-webp-load"
-#define SAVE_PROC      "file-webp-save"
+#define LOAD_PROC "file-webp-load"
+#define SAVE_PROC "file-webp-save"
 #define PLUG_IN_BINARY "file-webp"
-#define PLUG_IN_ROLE   "gimp-file-webp"
-
+#define PLUG_IN_ROLE "gimp-file-webp"
 
 #endif /* __FILE_WEBP_H__ */

@@ -18,12 +18,10 @@
 #ifndef __SCRIPT_FU_SERVER_H__
 #define __SCRIPT_FU_SERVER_H__
 
-
-GimpValueArray * script_fu_server_run      (GimpProcedure        *procedure,
-                                            const GimpValueArray *args);
-void             script_fu_server_listen   (gint timeout);
-gint             script_fu_server_get_mode (void);
-void             script_fu_server_quit     (void);
-
+GimpValueArray *script_fu_server_run(GimpProcedure *procedure,
+                                     const GimpValueArray *args);
+void script_fu_server_listen(gint timeout);
+gint script_fu_server_get_mode(void);
+void script_fu_server_quit(void);
 
 #endif /*  __SCRIPT_FU_SERVER__  */

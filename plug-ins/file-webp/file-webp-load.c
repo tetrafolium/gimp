@@ -21,9 +21,9 @@
 
 #include "config.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 
 #include <webp/decode.h>
 #include <webp/demux.h>
@@ -38,267 +38,230 @@
 
 #include "libgimp/stdplugins-intl.h"
 
+static void create_layer(GimpImage *image, uint8_t *layer_data, gint32 position,
+                         gchar *name, gint width, gint height) {
+  GimpLayer *layer;
+  GeglBuffer *buffer;
+  GeglRectangle extent;
 
-static void
-create_layer (GimpImage *image,
-              uint8_t   *layer_data,
-              gint32 position,
-              gchar     *name,
-              gint width,
-              gint height)
-{
-	GimpLayer     *layer;
-	GeglBuffer    *buffer;
-	GeglRectangle extent;
+  layer = gimp_layer_new(image, name, width, height, GIMP_RGBA_IMAGE, 100,
+                         gimp_image_get_default_new_layer_mode(image));
 
-	layer = gimp_layer_new (image, name,
-	                        width, height,
-	                        GIMP_RGBA_IMAGE,
-	                        100,
-	                        gimp_image_get_default_new_layer_mode (image));
+  gimp_image_insert_layer(image, layer, NULL, position);
 
-	gimp_image_insert_layer (image, layer, NULL, position);
+  /* Retrieve the buffer for the layer */
+  buffer = gimp_drawable_get_buffer(GIMP_DRAWABLE(layer));
 
-	/* Retrieve the buffer for the layer */
-	buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
+  /* Copy the image data to the region */
+  gegl_rectangle_set(&extent, 0, 0, width, height);
+  gegl_buffer_set(buffer, &extent, 0, NULL, layer_data, GEGL_AUTO_ROWSTRIDE);
 
-	/* Copy the image data to the region */
-	gegl_rectangle_set (&extent, 0, 0, width, height);
-	gegl_buffer_set (buffer, &extent, 0, NULL, layer_data,
-	                 GEGL_AUTO_ROWSTRIDE);
-
-	/* Flush the drawable and detach */
-	gegl_buffer_flush (buffer);
-	g_object_unref (buffer);
+  /* Flush the drawable and detach */
+  gegl_buffer_flush(buffer);
+  g_object_unref(buffer);
 }
 
-GimpImage *
-load_image (GFile    *file,
-            gboolean interactive,
-            GError   **error)
-{
-	gchar            *filename;
-	uint8_t          *indata = NULL;
-	gsize indatalen;
-	gint width;
-	gint height;
-	GimpImage        *image;
-	WebPMux          *mux;
-	WebPData wp_data;
-	GimpColorProfile *profile   = NULL;
-	uint32_t flags;
-	gboolean animation = FALSE;
-	gboolean icc       = FALSE;
-	gboolean exif      = FALSE;
-	gboolean xmp       = FALSE;
+GimpImage *load_image(GFile *file, gboolean interactive, GError **error) {
+  gchar *filename;
+  uint8_t *indata = NULL;
+  gsize indatalen;
+  gint width;
+  gint height;
+  GimpImage *image;
+  WebPMux *mux;
+  WebPData wp_data;
+  GimpColorProfile *profile = NULL;
+  uint32_t flags;
+  gboolean animation = FALSE;
+  gboolean icc = FALSE;
+  gboolean exif = FALSE;
+  gboolean xmp = FALSE;
 
-	filename = g_file_get_path (file);
+  filename = g_file_get_path(file);
 
-	/* Attempt to read the file contents from disk */
-	if (!g_file_get_contents (filename,
-	                          (gchar **) &indata,
-	                          &indatalen,
-	                          error))
-	{
-		g_free (filename);
-		return NULL;
-	}
+  /* Attempt to read the file contents from disk */
+  if (!g_file_get_contents(filename, (gchar **)&indata, &indatalen, error)) {
+    g_free(filename);
+    return NULL;
+  }
 
-	/* Validate WebP data */
-	if (!WebPGetInfo (indata, indatalen, &width, &height))
-	{
-		g_set_error (error, G_FILE_ERROR, 0,
-		             _("Invalid WebP file '%s'"),
-		             gimp_file_get_utf8_name (file));
-		g_free (filename);
-		return NULL;
-	}
+  /* Validate WebP data */
+  if (!WebPGetInfo(indata, indatalen, &width, &height)) {
+    g_set_error(error, G_FILE_ERROR, 0, _("Invalid WebP file '%s'"),
+                gimp_file_get_utf8_name(file));
+    g_free(filename);
+    return NULL;
+  }
 
-	wp_data.bytes = indata;
-	wp_data.size  = indatalen;
+  wp_data.bytes = indata;
+  wp_data.size = indatalen;
 
-	mux = WebPMuxCreate (&wp_data, 1);
-	if (!mux)
-	{
-		g_free (filename);
-		return NULL;
-	}
+  mux = WebPMuxCreate(&wp_data, 1);
+  if (!mux) {
+    g_free(filename);
+    return NULL;
+  }
 
-	WebPMuxGetFeatures (mux, &flags);
+  WebPMuxGetFeatures(mux, &flags);
 
-	if (flags & ANIMATION_FLAG)
-		animation = TRUE;
+  if (flags & ANIMATION_FLAG)
+    animation = TRUE;
 
-	if (flags & ICCP_FLAG)
-		icc = TRUE;
+  if (flags & ICCP_FLAG)
+    icc = TRUE;
 
-	if (flags & EXIF_FLAG)
-		exif = TRUE;
+  if (flags & EXIF_FLAG)
+    exif = TRUE;
 
-	if (flags & XMP_FLAG)
-		xmp = TRUE;
+  if (flags & XMP_FLAG)
+    xmp = TRUE;
 
-	/* TODO: decode the image in "chunks" or "tiles" */
-	/* TODO: check if an alpha channel is present */
+  /* TODO: decode the image in "chunks" or "tiles" */
+  /* TODO: check if an alpha channel is present */
 
-	/* Create the new image and associated layer */
-	image = gimp_image_new (width, height, GIMP_RGB);
+  /* Create the new image and associated layer */
+  image = gimp_image_new(width, height, GIMP_RGB);
 
-	if (icc)
-	{
-		WebPData icc_profile;
+  if (icc) {
+    WebPData icc_profile;
 
-		WebPMuxGetChunk (mux, "ICCP", &icc_profile);
-		profile = gimp_color_profile_new_from_icc_profile (icc_profile.bytes,
-		                                                   icc_profile.size, NULL);
-		if (profile)
-			gimp_image_set_color_profile (image, profile);
-	}
+    WebPMuxGetChunk(mux, "ICCP", &icc_profile);
+    profile = gimp_color_profile_new_from_icc_profile(icc_profile.bytes,
+                                                      icc_profile.size, NULL);
+    if (profile)
+      gimp_image_set_color_profile(image, profile);
+  }
 
-	if (!animation)
-	{
-		uint8_t *outdata;
+  if (!animation) {
+    uint8_t *outdata;
 
-		/* Attempt to decode the data as a WebP image */
-		outdata = WebPDecodeRGBA (indata, indatalen, &width, &height);
+    /* Attempt to decode the data as a WebP image */
+    outdata = WebPDecodeRGBA(indata, indatalen, &width, &height);
 
-		/* Check to ensure the image data was loaded correctly */
-		if (!outdata)
-		{
-			WebPMuxDelete (mux);
-			g_free (filename);
-			return NULL;
-		}
+    /* Check to ensure the image data was loaded correctly */
+    if (!outdata) {
+      WebPMuxDelete(mux);
+      g_free(filename);
+      return NULL;
+    }
 
-		create_layer (image, outdata, 0, _("Background"),
-		              width, height);
+    create_layer(image, outdata, 0, _("Background"), width, height);
 
-		/* Free the image data */
-		free (outdata);
-	}
-	else
-	{
-		WebPAnimDecoder       *dec = NULL;
-		WebPAnimInfo anim_info;
-		WebPAnimDecoderOptions dec_options;
-		gint frame_num = 1;
-		WebPDemuxer           *demux     = NULL;
-		WebPIterator iter      = { 0, };
+    /* Free the image data */
+    free(outdata);
+  } else {
+    WebPAnimDecoder *dec = NULL;
+    WebPAnimInfo anim_info;
+    WebPAnimDecoderOptions dec_options;
+    gint frame_num = 1;
+    WebPDemuxer *demux = NULL;
+    WebPIterator iter = {
+        0,
+    };
 
-		if (!WebPAnimDecoderOptionsInit (&dec_options))
-		{
-error:
-			if (dec)
-				WebPAnimDecoderDelete (dec);
+    if (!WebPAnimDecoderOptionsInit(&dec_options)) {
+    error:
+      if (dec)
+        WebPAnimDecoderDelete(dec);
 
-			if (demux)
-			{
-				WebPDemuxReleaseIterator (&iter);
-				WebPDemuxDelete (demux);
-			}
+      if (demux) {
+        WebPDemuxReleaseIterator(&iter);
+        WebPDemuxDelete(demux);
+      }
 
-			WebPMuxDelete (mux);
-			g_free (filename);
-			return NULL;
-		}
+      WebPMuxDelete(mux);
+      g_free(filename);
+      return NULL;
+    }
 
-		/* dec_options.color_mode is MODE_RGBA by default here */
-		dec = WebPAnimDecoderNew (&wp_data, &dec_options);
-		if (!dec)
-		{
-			g_set_error (error, G_FILE_ERROR, 0,
-			             _("Failed to decode animated WebP file '%s'"),
-			             gimp_file_get_utf8_name (file));
-			goto error;
-		}
+    /* dec_options.color_mode is MODE_RGBA by default here */
+    dec = WebPAnimDecoderNew(&wp_data, &dec_options);
+    if (!dec) {
+      g_set_error(error, G_FILE_ERROR, 0,
+                  _("Failed to decode animated WebP file '%s'"),
+                  gimp_file_get_utf8_name(file));
+      goto error;
+    }
 
-		if (!WebPAnimDecoderGetInfo (dec, &anim_info))
-		{
-			g_set_error (error, G_FILE_ERROR, 0,
-			             _("Failed to decode animated WebP information from '%s'"),
-			             gimp_file_get_utf8_name (file));
-			goto error;
-		}
+    if (!WebPAnimDecoderGetInfo(dec, &anim_info)) {
+      g_set_error(error, G_FILE_ERROR, 0,
+                  _("Failed to decode animated WebP information from '%s'"),
+                  gimp_file_get_utf8_name(file));
+      goto error;
+    }
 
-		demux = WebPDemux (&wp_data);
-		if (!demux || !WebPDemuxGetFrame (demux, 1, &iter))
-			goto error;
+    demux = WebPDemux(&wp_data);
+    if (!demux || !WebPDemuxGetFrame(demux, 1, &iter))
+      goto error;
 
-		/* Attempt to decode the data as a WebP animation image */
-		while (WebPAnimDecoderHasMoreFrames (dec))
-		{
-			uint8_t *outdata;
-			int timestamp;
-			gchar   *name;
+    /* Attempt to decode the data as a WebP animation image */
+    while (WebPAnimDecoderHasMoreFrames(dec)) {
+      uint8_t *outdata;
+      int timestamp;
+      gchar *name;
 
-			if (!WebPAnimDecoderGetNext (dec, &outdata, &timestamp))
-			{
-				g_set_error (error, G_FILE_ERROR, 0,
-				             _("Failed to decode animated WebP frame from '%s'"),
-				             gimp_file_get_utf8_name (file));
-				goto error;
-			}
+      if (!WebPAnimDecoderGetNext(dec, &outdata, &timestamp)) {
+        g_set_error(error, G_FILE_ERROR, 0,
+                    _("Failed to decode animated WebP frame from '%s'"),
+                    gimp_file_get_utf8_name(file));
+        goto error;
+      }
 
-			name = g_strdup_printf (_("Frame %d (%dms)"), frame_num, iter.duration);
-			create_layer (image, outdata, 0, name, width, height);
-			g_free (name);
+      name = g_strdup_printf(_("Frame %d (%dms)"), frame_num, iter.duration);
+      create_layer(image, outdata, 0, name, width, height);
+      g_free(name);
 
-			frame_num++;
-			WebPDemuxNextFrame (&iter);
-		}
+      frame_num++;
+      WebPDemuxNextFrame(&iter);
+    }
 
-		WebPAnimDecoderDelete (dec);
-		WebPDemuxReleaseIterator (&iter);
-		WebPDemuxDelete (demux);
-	}
+    WebPAnimDecoderDelete(dec);
+    WebPDemuxReleaseIterator(&iter);
+    WebPDemuxDelete(demux);
+  }
 
-	/* Free the original compressed data */
-	g_free (indata);
+  /* Free the original compressed data */
+  g_free(indata);
 
-	if (exif || xmp)
-	{
-		GimpMetadata *metadata;
-		GFile        *file;
+  if (exif || xmp) {
+    GimpMetadata *metadata;
+    GFile *file;
 
-		if (exif)
-		{
-			WebPData exif;
+    if (exif) {
+      WebPData exif;
 
-			WebPMuxGetChunk (mux, "EXIF", &exif);
-		}
+      WebPMuxGetChunk(mux, "EXIF", &exif);
+    }
 
-		if (xmp)
-		{
-			WebPData xmp;
+    if (xmp) {
+      WebPData xmp;
 
-			WebPMuxGetChunk (mux, "XMP ", &xmp);
-		}
+      WebPMuxGetChunk(mux, "XMP ", &xmp);
+    }
 
-		file = g_file_new_for_path (filename);
-		metadata = gimp_image_metadata_load_prepare (image, "image/webp",
-		                                             file, NULL);
-		if (metadata)
-		{
-			GimpMetadataLoadFlags flags = GIMP_METADATA_LOAD_ALL;
+    file = g_file_new_for_path(filename);
+    metadata =
+        gimp_image_metadata_load_prepare(image, "image/webp", file, NULL);
+    if (metadata) {
+      GimpMetadataLoadFlags flags = GIMP_METADATA_LOAD_ALL;
 
-			if (profile)
-				flags &= ~GIMP_METADATA_LOAD_COLORSPACE;
+      if (profile)
+        flags &= ~GIMP_METADATA_LOAD_COLORSPACE;
 
-			gimp_image_metadata_load_finish (image, "image/webp",
-			                                 metadata, flags);
-			g_object_unref (metadata);
-		}
+      gimp_image_metadata_load_finish(image, "image/webp", metadata, flags);
+      g_object_unref(metadata);
+    }
 
-		g_object_unref (file);
-	}
+    g_object_unref(file);
+  }
 
-	WebPMuxDelete (mux);
+  WebPMuxDelete(mux);
 
-	gimp_image_set_file (image, file);
+  gimp_image_set_file(image, file);
 
-	g_free (filename);
-	if (profile)
-		g_object_unref (profile);
+  g_free(filename);
+  if (profile)
+    g_object_unref(profile);
 
-	return image;
+  return image;
 }

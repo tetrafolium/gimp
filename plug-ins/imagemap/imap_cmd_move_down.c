@@ -31,52 +31,44 @@
 static CmdExecuteValue_t move_down_command_execute(Command_t *parent);
 
 static CommandClass_t move_down_command_class = {
-	NULL,                    /* move_down_command_destruct */
-	move_down_command_execute,
-	NULL,                    /* move_down_command_undo */
-	NULL                     /* move_down_command_redo */
+    NULL,                            /* move_down_command_destruct */
+    move_down_command_execute, NULL, /* move_down_command_undo */
+    NULL                             /* move_down_command_redo */
 };
 
 typedef struct {
-	Command_t parent;
-	ObjectList_t *list;
-	gboolean add;
+  Command_t parent;
+  ObjectList_t *list;
+  gboolean add;
 } MoveDownCommand_t;
 
-Command_t*
-move_down_command_new(ObjectList_t *list)
-{
-	MoveDownCommand_t *command = g_new(MoveDownCommand_t, 1);
-	command->list = list;
-	command->add = FALSE;
-	return command_init(&command->parent, _("Move Down"),
-	                    &move_down_command_class);
+Command_t *move_down_command_new(ObjectList_t *list) {
+  MoveDownCommand_t *command = g_new(MoveDownCommand_t, 1);
+  command->list = list;
+  command->add = FALSE;
+  return command_init(&command->parent, _("Move Down"),
+                      &move_down_command_class);
 }
 
-static void
-move_down_one_object(Object_t *obj, gpointer data)
-{
-	MoveDownCommand_t *command = (MoveDownCommand_t*) data;
+static void move_down_one_object(Object_t *obj, gpointer data) {
+  MoveDownCommand_t *command = (MoveDownCommand_t *)data;
 
-	if (command->add) {
-		command_add_subcommand(&command->parent,
-		                       object_down_command_new(command->list, obj));
-		command->add = FALSE;
-	}
-	else {
-		command->add = TRUE;
-	}
+  if (command->add) {
+    command_add_subcommand(&command->parent,
+                           object_down_command_new(command->list, obj));
+    command->add = FALSE;
+  } else {
+    command->add = TRUE;
+  }
 }
 
-static CmdExecuteValue_t
-move_down_command_execute(Command_t *parent)
-{
-	MoveDownCommand_t *command = (MoveDownCommand_t*) parent;
-	gpointer id;
+static CmdExecuteValue_t move_down_command_execute(Command_t *parent) {
+  MoveDownCommand_t *command = (MoveDownCommand_t *)parent;
+  gpointer id;
 
-	id = object_list_add_move_cb(command->list, move_down_one_object, command);
-	object_list_move_selected_down(command->list);
-	object_list_remove_move_cb(command->list, id);
+  id = object_list_add_move_cb(command->list, move_down_one_object, command);
+  object_list_move_selected_down(command->list);
+  object_list_remove_move_cb(command->list, id);
 
-	return CMD_APPEND;
+  return CMD_APPEND;
 }

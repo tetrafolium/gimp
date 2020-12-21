@@ -31,10 +31,10 @@
    version 2.2 of Bison.  */
 
 #ifndef CSIM_Y_TAB_H
-# define CSIM_Y_TAB_H
+#define CSIM_Y_TAB_H
 /* Enabling traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+#define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int csim_debug;
@@ -42,36 +42,36 @@ extern int csim_debug;
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#define YYTOKENTYPE
 /* Put the tokens into the symbol table, so that GDB and other debuggers
    know about them.  */
 enum yytokentype {
-	IMG = 258,
-	SRC = 259,
-	WIDTH = 260,
-	HEIGHT = 261,
-	BORDER = 262,
-	USEMAP = 263,
-	START_MAP = 264,
-	END_MAP = 265,
-	NAME = 266,
-	AREA = 267,
-	SHAPE = 268,
-	COORDS = 269,
-	ALT = 270,
-	HREF = 271,
-	NOHREF = 272,
-	TARGET = 273,
-	ONMOUSEOVER = 274,
-	ONMOUSEOUT = 275,
-	ONFOCUS = 276,
-	ONBLUR = 277,
-	AUTHOR = 278,
-	DESCRIPTION = 279,
-	BEGIN_COMMENT = 280,
-	END_COMMENT = 281,
-	FLOAT = 282,
-	STRING = 283
+  IMG = 258,
+  SRC = 259,
+  WIDTH = 260,
+  HEIGHT = 261,
+  BORDER = 262,
+  USEMAP = 263,
+  START_MAP = 264,
+  END_MAP = 265,
+  NAME = 266,
+  AREA = 267,
+  SHAPE = 268,
+  COORDS = 269,
+  ALT = 270,
+  HREF = 271,
+  NOHREF = 272,
+  TARGET = 273,
+  ONMOUSEOVER = 274,
+  ONMOUSEOUT = 275,
+  ONFOCUS = 276,
+  ONBLUR = 277,
+  AUTHOR = 278,
+  DESCRIPTION = 279,
+  BEGIN_COMMENT = 280,
+  END_COMMENT = 281,
+  FLOAT = 282,
+  STRING = 283
 };
 #endif
 /* Tokens.  */
@@ -102,40 +102,36 @@ enum yytokentype {
 #define FLOAT 282
 #define STRING 283
 
-
-
 #if !defined YYSTYPE && !defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-{
-	/* Line 2049 of yacc.c  */
+typedef union YYSTYPE {
+  /* Line 2049 of yacc.c  */
 #line 49 "imap_csim.y"
 
-	int val;
-	double value;
-	char *id;
+  int val;
+  double value;
+  char *id;
 
-
-	/* Line 2049 of yacc.c  */
+  /* Line 2049 of yacc.c  */
 #line 120 "y.tab.h"
 } YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#define YYSTYPE_IS_TRIVIAL 1
+#define yystype YYSTYPE /* obsolescent; will be withdrawn */
+#define YYSTYPE_IS_DECLARED 1
 #endif
 
 extern YYSTYPE csim_lval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
-int csim_parse (void *YYPARSE_PARAM);
+int csim_parse(void *YYPARSE_PARAM);
 #else
-int csim_parse ();
+int csim_parse();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int csim_parse (void);
+int csim_parse(void);
 #else
-int csim_parse ();
+int csim_parse();
 #endif
 #endif /* ! YYPARSE_PARAM */
 

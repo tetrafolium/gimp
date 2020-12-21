@@ -23,9 +23,6 @@
 #ifndef __LOCALES_H__
 #define __LOCALES_H__
 
-
-GList * locales_parse (const gchar *help_locales);
-
+GList *locales_parse(const gchar *help_locales);
 
 #endif /* ! __LOCALES_H__ */
-

@@ -22,10 +22,7 @@
 #ifndef __WEBP_DIALOG_H__
 #define __WEBP_DIALOG_H__
 
-
-gboolean   save_dialog (GimpImage     *image,
-                        GimpProcedure *procedure,
-                        GObject       *config);
-
+gboolean save_dialog(GimpImage *image, GimpProcedure *procedure,
+                     GObject *config);
 
 #endif /* __WEBP_DIALOG_H__ */

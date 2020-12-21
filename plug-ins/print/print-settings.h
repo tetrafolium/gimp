@@ -15,5 +15,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-gboolean  print_settings_load (PrintData *data);
-void      print_settings_save (PrintData *data);
+gboolean print_settings_load(PrintData *data);
+void print_settings_save(PrintData *data);

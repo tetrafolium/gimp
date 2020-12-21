@@ -27,24 +27,24 @@
 #include "imap_mru.h"
 
 typedef struct {
-	GtkWidget *file_menu;
-	GtkWidget *edit_menu;
-	GtkWidget *open_recent;
-	GtkWidget *undo;
-	GtkWidget *redo;
-	GtkWidget *arrow;
-	GtkWidget *fuzzy_select;
-	GtkWidget *rectangle;
-	GtkWidget *circle;
-	GtkWidget *polygon;
-	GtkWidget *grid;
-	GtkWidget *gray;
-	GtkWidget *color;
-	GtkWidget *zoom[8];
-	GtkWidget *zoom_in;
-	GtkWidget *zoom_out;
+  GtkWidget *file_menu;
+  GtkWidget *edit_menu;
+  GtkWidget *open_recent;
+  GtkWidget *undo;
+  GtkWidget *redo;
+  GtkWidget *arrow;
+  GtkWidget *fuzzy_select;
+  GtkWidget *rectangle;
+  GtkWidget *circle;
+  GtkWidget *polygon;
+  GtkWidget *grid;
+  GtkWidget *gray;
+  GtkWidget *color;
+  GtkWidget *zoom[8];
+  GtkWidget *zoom_in;
+  GtkWidget *zoom_out;
 
-	gint nr_off_mru_items;
+  gint nr_off_mru_items;
 } Menu_t;
 
 GtkWidget *menu_get_widget(const gchar *path);

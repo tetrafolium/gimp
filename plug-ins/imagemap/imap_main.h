@@ -28,23 +28,23 @@
 #include "imap_preferences.h"
 #include "imap_preview.h"
 
-#define PLUG_IN_PROC   "plug-in-imagemap"
+#define PLUG_IN_PROC "plug-in-imagemap"
 #define PLUG_IN_BINARY "imagemap"
-#define PLUG_IN_ROLE   "gimp-imagemap"
+#define PLUG_IN_ROLE "gimp-imagemap"
 
-typedef enum {NCSA, CERN, CSIM} MapFormat_t;
+typedef enum { NCSA, CERN, CSIM } MapFormat_t;
 
 typedef struct {
-	MapFormat_t map_format;
-	gchar *image_name;
-	gchar *title;
-	gchar *author;
-	gchar *default_url;
-	gchar *description;
-	gint old_image_width;
-	gint old_image_height;
-	gboolean color;          /* Color (TRUE) or Gray (FALSE) */
-	gboolean show_gray;
+  MapFormat_t map_format;
+  gchar *image_name;
+  gchar *title;
+  gchar *author;
+  gchar *default_url;
+  gchar *description;
+  gint old_image_width;
+  gint old_image_height;
+  gboolean color; /* Color (TRUE) or Gray (FALSE) */
+  gboolean show_gray;
 } MapInfo_t;
 
 void main_set_dimension(gint width, gint height);
@@ -67,12 +67,10 @@ void main_toolbar_set_grid(gboolean active);
 
 void set_zoom(gint zoom_factor);
 gint get_real_coord(gint coord);
-void draw_line(cairo_t *cr, gint x1, gint y1, gint x2,
-               gint y2);
-void draw_rectangle(cairo_t *cr, gboolean filled, gint x, gint y,
-                    gint width, gint height);
-void draw_circle(cairo_t *cr, gint x, gint y,
-                 gint r);
+void draw_line(cairo_t *cr, gint x1, gint y1, gint x2, gint y2);
+void draw_rectangle(cairo_t *cr, gboolean filled, gint x, gint y, gint width,
+                    gint height);
+void draw_circle(cairo_t *cr, gint x, gint y, gint r);
 void draw_polygon(cairo_t *cr, GList *list);
 
 const char *get_filename(void);
@@ -89,37 +87,34 @@ void draw_shapes(cairo_t *cr);
 void show_url(void);
 void hide_url(void);
 
-void            set_preview_color          (GtkRadioAction *action,
-                                            GtkRadioAction *current,
-                                            gpointer user_data);
-void            set_zoom_factor            (GtkRadioAction *action,
-                                            GtkRadioAction *current,
-                                            gpointer user_data);
-void            set_func                   (GtkRadioAction *action,
-                                            GtkRadioAction *current,
-                                            gpointer user_data);
-void            do_edit_selected_shape     (void);
-void            do_zoom_in                 (void);
-void            do_zoom_out                (void);
-void            do_close                   (void);
-void            do_quit                    (void);
-void            do_undo                    (void);
-void            do_redo                    (void);
-void            do_cut                     (void);
-void            do_copy                    (void);
-void            do_paste                   (void);
-void            do_select_all              (void);
-void            do_deselect_all            (void);
-void            do_clear                   (void);
-void            do_move_up                 (void);
-void            do_move_down               (void);
-void            do_move_to_front           (void);
-void            do_send_to_back            (void);
-void            do_use_gimp_guides_dialog  (void);
-void            do_create_guides_dialog    (void);
-void            save                       (void);
-void            imap_help                  (void);
-void            toggle_area_list           (void);
-const gchar *   get_image_name             (void);
+void set_preview_color(GtkRadioAction *action, GtkRadioAction *current,
+                       gpointer user_data);
+void set_zoom_factor(GtkRadioAction *action, GtkRadioAction *current,
+                     gpointer user_data);
+void set_func(GtkRadioAction *action, GtkRadioAction *current,
+              gpointer user_data);
+void do_edit_selected_shape(void);
+void do_zoom_in(void);
+void do_zoom_out(void);
+void do_close(void);
+void do_quit(void);
+void do_undo(void);
+void do_redo(void);
+void do_cut(void);
+void do_copy(void);
+void do_paste(void);
+void do_select_all(void);
+void do_deselect_all(void);
+void do_clear(void);
+void do_move_up(void);
+void do_move_down(void);
+void do_move_to_front(void);
+void do_send_to_back(void);
+void do_use_gimp_guides_dialog(void);
+void do_create_guides_dialog(void);
+void save(void);
+void imap_help(void);
+void toggle_area_list(void);
+const gchar *get_image_name(void);
 
 #endif /* _IMAP_MAIN_H */

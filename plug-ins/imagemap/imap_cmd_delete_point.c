@@ -33,54 +33,46 @@ static CmdExecuteValue_t delete_point_command_execute(Command_t *parent);
 static void delete_point_command_undo(Command_t *parent);
 
 static CommandClass_t delete_point_command_class = {
-	NULL,                    /* delete_point_command_destruct */
-	delete_point_command_execute,
-	delete_point_command_undo,
-	NULL                     /* delete_point_command_redo */
+    NULL, /* delete_point_command_destruct */
+    delete_point_command_execute, delete_point_command_undo,
+    NULL /* delete_point_command_redo */
 };
 
 typedef struct {
-	Command_t parent;
-	Polygon_t   *polygon;
-	GdkPoint    *point;
-	GdkPoint copy;
-	gint position;
+  Command_t parent;
+  Polygon_t *polygon;
+  GdkPoint *point;
+  GdkPoint copy;
+  gint position;
 } DeletePointCommand_t;
 
-Command_t*
-delete_point_command_new(Object_t *obj, GdkPoint *point)
-{
-	DeletePointCommand_t *command = g_new(DeletePointCommand_t, 1);
+Command_t *delete_point_command_new(Object_t *obj, GdkPoint *point) {
+  DeletePointCommand_t *command = g_new(DeletePointCommand_t, 1);
 
-	command->polygon = ObjectToPolygon(obj);
-	command->point = point;
-	command->copy = *point;
-	command->position = g_list_index(command->polygon->points,
-	                                 (gpointer) point);
-	return command_init(&command->parent, _("Delete Point"),
-	                    &delete_point_command_class);
+  command->polygon = ObjectToPolygon(obj);
+  command->point = point;
+  command->copy = *point;
+  command->position = g_list_index(command->polygon->points, (gpointer)point);
+  return command_init(&command->parent, _("Delete Point"),
+                      &delete_point_command_class);
 }
 
-static CmdExecuteValue_t
-delete_point_command_execute(Command_t *parent)
-{
-	DeletePointCommand_t *command = (DeletePointCommand_t*) parent;
-	Polygon_t *polygon = command->polygon;
-	GList *p = g_list_find(polygon->points, (gpointer) command->point);
+static CmdExecuteValue_t delete_point_command_execute(Command_t *parent) {
+  DeletePointCommand_t *command = (DeletePointCommand_t *)parent;
+  Polygon_t *polygon = command->polygon;
+  GList *p = g_list_find(polygon->points, (gpointer)command->point);
 
-	g_free(p->data);
-	polygon->points = g_list_remove_link(polygon->points, p);
-	return CMD_APPEND;
+  g_free(p->data);
+  polygon->points = g_list_remove_link(polygon->points, p);
+  return CMD_APPEND;
 }
 
-static void
-delete_point_command_undo(Command_t *parent)
-{
-	DeletePointCommand_t *command = (DeletePointCommand_t*) parent;
-	Polygon_t *polygon = command->polygon;
-	GdkPoint *point = &command->copy;
+static void delete_point_command_undo(Command_t *parent) {
+  DeletePointCommand_t *command = (DeletePointCommand_t *)parent;
+  Polygon_t *polygon = command->polygon;
+  GdkPoint *point = &command->copy;
 
-	command->point = new_point(point->x, point->y);
-	polygon->points = g_list_insert(polygon->points, (gpointer) command->point,
-	                                command->position);
+  command->point = new_point(point->x, point->y);
+  polygon->points = g_list_insert(polygon->points, (gpointer)command->point,
+                                  command->position);
 }

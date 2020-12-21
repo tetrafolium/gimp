@@ -15,6 +15,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-gboolean print_draw_page (GtkPrintContext *context,
-                          PrintData       *data,
-                          GError         **error);
+gboolean print_draw_page(GtkPrintContext *context, PrintData *data,
+                         GError **error);

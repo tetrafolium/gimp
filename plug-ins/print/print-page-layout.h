@@ -15,6 +15,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-GtkWidget * print_page_layout_gui (PrintData   *data,
-                                   const gchar *help_id);
-
+GtkWidget *print_page_layout_gui(PrintData *data, const gchar *help_id);

@@ -21,23 +21,12 @@
 #ifndef __ICO_LOAD_H__
 #define __ICO_LOAD_H__
 
+GimpImage *ico_load_image(GFile *file, GError **error);
+GimpImage *ico_load_thumbnail_image(GFile *file, gint *width, gint *height,
+                                    GError **error);
 
-GimpImage * ico_load_image           (GFile         *file,
-                                      GError       **error);
-GimpImage * ico_load_thumbnail_image (GFile         *file,
-                                      gint          *width,
-                                      gint          *height,
-                                      GError       **error);
-
-gint        ico_get_bit_from_data    (const guint8  *data,
-                                      gint line_width,
-                                      gint bit);
-gint        ico_get_nibble_from_data (const guint8  *data,
-                                      gint line_width,
-                                      gint nibble);
-gint        ico_get_byte_from_data   (const guint8  *data,
-                                      gint line_width,
-                                      gint byte);
-
+gint ico_get_bit_from_data(const guint8 *data, gint line_width, gint bit);
+gint ico_get_nibble_from_data(const guint8 *data, gint line_width, gint nibble);
+gint ico_get_byte_from_data(const guint8 *data, gint line_width, gint byte);
 
 #endif /* __ICO_LOAD_H__ */

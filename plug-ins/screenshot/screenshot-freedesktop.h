@@ -18,15 +18,13 @@
 #ifndef __SCREENSHOT_FREEDESKTOP_H__
 #define __SCREENSHOT_FREEDESKTOP_H__
 
+gboolean screenshot_freedesktop_available(void);
 
-gboolean               screenshot_freedesktop_available        (void);
+ScreenshotCapabilities screenshot_freedesktop_get_capabilities(void);
 
-ScreenshotCapabilities screenshot_freedesktop_get_capabilities (void);
-
-GimpPDBStatusType      screenshot_freedesktop_shoot            (ScreenshotValues  *shootvals,
-                                                                GdkMonitor        *monitor,
-                                                                GimpImage        **image,
-                                                                GError           **error);
-
+GimpPDBStatusType screenshot_freedesktop_shoot(ScreenshotValues *shootvals,
+                                               GdkMonitor *monitor,
+                                               GimpImage **image,
+                                               GError **error);
 
 #endif /* __SCREENSHOT_FREEDESKTOP_H__ */

@@ -25,11 +25,10 @@
 #ifndef __GFIG_PREVIEW_H__
 #define __GFIG_PREVIEW_H__
 
-#define PREVIEW_SIZE     400
+#define PREVIEW_SIZE 400
 
-GtkWidget *make_preview            (void);
+GtkWidget *make_preview(void);
 
-void       gfig_pos_enable         (GtkWidget    *widget,
-                                    gpointer data);
+void gfig_pos_enable(GtkWidget *widget, gpointer data);
 
 #endif /* __GFIG_PREVIEW_H__ */

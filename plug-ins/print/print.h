@@ -15,42 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef G_OS_WIN32
 #define EMBED_PAGE_SETUP 1
 #endif
 
-#define GIMP_PLUGIN_PRINT_ERROR gimp_plugin_print_error_quark ()
+#define GIMP_PLUGIN_PRINT_ERROR gimp_plugin_print_error_quark()
 
-typedef enum
-{
-	GIMP_PLUGIN_PRINT_ERROR_FAILED
-} GimpPluginPrintError;
+typedef enum { GIMP_PLUGIN_PRINT_ERROR_FAILED } GimpPluginPrintError;
 
-GQuark gimp_plugin_print_error_quark (void);
+GQuark gimp_plugin_print_error_quark(void);
 
-typedef enum
-{
-	CENTER_NONE         = 0,
-	CENTER_HORIZONTALLY = 1,
-	CENTER_VERTICALLY   = 2,
-	CENTER_BOTH         = 3
+typedef enum {
+  CENTER_NONE = 0,
+  CENTER_HORIZONTALLY = 1,
+  CENTER_VERTICALLY = 2,
+  CENTER_BOTH = 3
 } PrintCenterMode;
 
-typedef struct
-{
-	GimpImage          *image;
-	GimpDrawable       *drawable;
-	GimpUnit unit;
-	gdouble xres;
-	gdouble yres;
-	gdouble min_xres;
-	gdouble min_yres;
-	GimpUnit image_unit;
-	gdouble offset_x;
-	gdouble offset_y;
-	PrintCenterMode center;
-	gboolean use_full_page;
-	gboolean draw_crop_marks;
-	GtkPrintOperation  *operation;
+typedef struct {
+  GimpImage *image;
+  GimpDrawable *drawable;
+  GimpUnit unit;
+  gdouble xres;
+  gdouble yres;
+  gdouble min_xres;
+  gdouble min_yres;
+  GimpUnit image_unit;
+  gdouble offset_x;
+  gdouble offset_y;
+  PrintCenterMode center;
+  gboolean use_full_page;
+  gboolean draw_crop_marks;
+  GtkPrintOperation *operation;
 } PrintData;

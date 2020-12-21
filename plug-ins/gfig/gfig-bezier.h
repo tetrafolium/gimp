@@ -27,16 +27,13 @@
 
 extern GfigObject *tmp_bezier;
 
-void d_draw_bezier              (GfigObject *obj,
-                                 cairo_t    *cr);
+void d_draw_bezier(GfigObject *obj, cairo_t *cr);
 
-void d_bezier_object_class_init (void);
+void d_bezier_object_class_init(void);
 
-void d_bezier_start             (GdkPoint   *pnt,
-                                 gboolean shift_down);
-void d_bezier_end               (GdkPoint   *pnt,
-                                 gboolean shift_down);
+void d_bezier_start(GdkPoint *pnt, gboolean shift_down);
+void d_bezier_end(GdkPoint *pnt, gboolean shift_down);
 
-void tool_options_bezier        (GtkWidget  *notebook);
+void tool_options_bezier(GtkWidget *notebook);
 
 #endif /* __GFIG_BEZIER_H__ */

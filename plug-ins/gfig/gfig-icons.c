@@ -30,20 +30,17 @@
 
 #include "images/gfig-icon-images.h"
 
+void gfig_icons_init(void) {
+  static gboolean initialized = FALSE;
 
-void
-gfig_icons_init (void)
-{
-	static gboolean initialized = FALSE;
+  GtkIconTheme *icon_theme;
 
-	GtkIconTheme *icon_theme;
+  if (initialized)
+    return;
 
-	if (initialized)
-		return;
+  initialized = TRUE;
 
-	initialized = TRUE;
+  icon_theme = gtk_icon_theme_get_default();
 
-	icon_theme = gtk_icon_theme_get_default ();
-
-	gtk_icon_theme_add_resource_path (icon_theme, "/org/gimp/gfig/icons");
+  gtk_icon_theme_add_resource_path(icon_theme, "/org/gimp/gfig/icons");
 }

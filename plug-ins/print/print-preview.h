@@ -20,40 +20,38 @@
 
 G_BEGIN_DECLS
 
-
-#define PRINT_TYPE_PREVIEW            (print_preview_get_type ())
-#define PRINT_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), PRINT_TYPE_PREVIEW, PrintPreview))
-#define PRINT_PREVIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), PRINT_TYPE_PREVIEW, PrintPreviewClass))
-#define PRINT_IS_PREVIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), PRINT_TYPE_PREVIEW))
-#define PRINT_IS_PREVIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), PRINT_TYPE_PREVIEW))
-#define PRINT_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), PRINT_TYPE_PREVIEW, PrintPreviewClass))
+#define PRINT_TYPE_PREVIEW (print_preview_get_type())
+#define PRINT_PREVIEW(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), PRINT_TYPE_PREVIEW, PrintPreview))
+#define PRINT_PREVIEW_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), PRINT_TYPE_PREVIEW, PrintPreviewClass))
+#define PRINT_IS_PREVIEW(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), PRINT_TYPE_PREVIEW))
+#define PRINT_IS_PREVIEW_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), PRINT_TYPE_PREVIEW))
+#define PRINT_PREVIEW_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), PRINT_TYPE_PREVIEW, PrintPreviewClass))
 
 typedef struct _PrintPreview PrintPreview;
 typedef struct _PrintPreviewClass PrintPreviewClass;
 
+GType print_preview_get_type(void) G_GNUC_CONST;
 
-GType       print_preview_get_type              (void) G_GNUC_CONST;
+GtkWidget *print_preview_new(GtkPageSetup *page, GimpDrawable *drawable);
 
-GtkWidget * print_preview_new                   (GtkPageSetup *page,
-                                                 GimpDrawable *drawable);
+void print_preview_set_image_dpi(PrintPreview *preview, gdouble xres,
+                                 gdouble yres);
 
-void        print_preview_set_image_dpi         (PrintPreview *preview,
-                                                 gdouble xres,
-                                                 gdouble yres);
+void print_preview_set_page_setup(PrintPreview *preview, GtkPageSetup *page);
 
-void        print_preview_set_page_setup        (PrintPreview *preview,
-                                                 GtkPageSetup *page);
+void print_preview_set_image_offsets(PrintPreview *preview, gdouble offset_x,
+                                     gdouble offset_y);
 
-void        print_preview_set_image_offsets     (PrintPreview *preview,
-                                                 gdouble offset_x,
-                                                 gdouble offset_y);
+void print_preview_set_image_offsets_max(PrintPreview *preview,
+                                         gdouble offset_x_max,
+                                         gdouble offset_y_max);
 
-void        print_preview_set_image_offsets_max (PrintPreview *preview,
-                                                 gdouble offset_x_max,
-                                                 gdouble offset_y_max);
-
-void        print_preview_set_use_full_page     (PrintPreview *preview,
-                                                 gboolean full_page);
+void print_preview_set_use_full_page(PrintPreview *preview, gboolean full_page);
 
 G_END_DECLS
 

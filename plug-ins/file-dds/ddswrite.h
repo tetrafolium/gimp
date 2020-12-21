@@ -21,13 +21,8 @@
 #ifndef __DDSWRITE_H__
 #define __DDSWRITE_H__
 
-
-extern GimpPDBStatusType write_dds (GFile         *file,
-                                    GimpImage     *image,
-                                    GimpDrawable  *drawable,
-                                    gboolean interactive,
-                                    GimpProcedure *procedure,
-                                    GObject       *config);
-
+extern GimpPDBStatusType write_dds(GFile *file, GimpImage *image,
+                                   GimpDrawable *drawable, gboolean interactive,
+                                   GimpProcedure *procedure, GObject *config);
 
 #endif /* __DDSWRITE_H__ */

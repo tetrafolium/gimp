@@ -20,8 +20,7 @@
 #ifndef __METADATA_IMPEXP_H__
 #define __METADATA_IMPEXP_H__
 
-void   import_file_metadata (metadata_editor *args);
-void   export_file_metadata (metadata_editor *args);
+void import_file_metadata(metadata_editor *args);
+void export_file_metadata(metadata_editor *args);
 
 #endif /* __METADATA_IMPEXP_H__ */
-

@@ -18,15 +18,13 @@
 #ifndef __SCREENSHOT_GNOME_SHELL_H__
 #define __SCREENSHOT_GNOME_SHELL_H__
 
+gboolean screenshot_gnome_shell_available(void);
 
-gboolean               screenshot_gnome_shell_available        (void);
+ScreenshotCapabilities screenshot_gnome_shell_get_capabilities(void);
 
-ScreenshotCapabilities screenshot_gnome_shell_get_capabilities (void);
-
-GimpPDBStatusType      screenshot_gnome_shell_shoot            (ScreenshotValues  *shootvals,
-                                                                GdkMonitor        *monitor,
-                                                                GimpImage        **image,
-                                                                GError           **error);
-
+GimpPDBStatusType screenshot_gnome_shell_shoot(ScreenshotValues *shootvals,
+                                               GdkMonitor *monitor,
+                                               GimpImage **image,
+                                               GError **error);
 
 #endif /* __SCREENSHOT_GNOME_SHELL_H__ */

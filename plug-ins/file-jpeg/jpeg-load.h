@@ -18,16 +18,10 @@
 #ifndef __JPEG_LOAD_H__
 #define __JPEG_LOAD_H__
 
-GimpImage * load_image           (GFile        *file,
-                                  GimpRunMode runmode,
-                                  gboolean preview,
-                                  gboolean     *resolution_loaded,
-                                  GError      **error);
+GimpImage *load_image(GFile *file, GimpRunMode runmode, gboolean preview,
+                      gboolean *resolution_loaded, GError **error);
 
-GimpImage * load_thumbnail_image (GFile         *file,
-                                  gint          *width,
-                                  gint          *height,
-                                  GimpImageType *type,
-                                  GError       **error);
+GimpImage *load_thumbnail_image(GFile *file, gint *width, gint *height,
+                                GimpImageType *type, GError **error);
 
 #endif /* __JPEG_LOAD_H__ */

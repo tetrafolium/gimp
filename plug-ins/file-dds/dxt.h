@@ -21,29 +21,18 @@
 #ifndef __DXT_H__
 #define __DXT_H__
 
-typedef enum dxt_flags_e
-{
-	DXT_BC1           = 1 << 0,
-	DXT_BC2           = 1 << 1,
-	DXT_BC3           = 1 << 2,
-	DXT_PERCEPTUAL    = 1 << 3,
+typedef enum dxt_flags_e {
+  DXT_BC1 = 1 << 0,
+  DXT_BC2 = 1 << 1,
+  DXT_BC3 = 1 << 2,
+  DXT_PERCEPTUAL = 1 << 3,
 } dxt_flags_t;
 
-int dxt_compress   (unsigned char *dst,
-                    unsigned char *src,
-                    int format,
-                    unsigned int width,
-                    unsigned int height,
-                    int bpp,
-                    int mipmaps,
-                    int flags);
-int dxt_decompress (unsigned char *dst,
-                    unsigned char *src,
-                    int format,
-                    unsigned int size,
-                    unsigned int width,
-                    unsigned int height,
-                    int bpp,
-                    int normals);
+int dxt_compress(unsigned char *dst, unsigned char *src, int format,
+                 unsigned int width, unsigned int height, int bpp, int mipmaps,
+                 int flags);
+int dxt_decompress(unsigned char *dst, unsigned char *src, int format,
+                   unsigned int size, unsigned int width, unsigned int height,
+                   int bpp, int normals);
 
 #endif /* __DXT_H__ */

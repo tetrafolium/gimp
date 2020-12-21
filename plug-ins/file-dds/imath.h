@@ -22,56 +22,51 @@
 #define __IMATH_H__
 
 #ifndef MIN
-# ifdef __GNUC__
-#  define MIN(a, b)  ({typeof(a) _a=(a); typeof(b) _b=(b); _a < _b ? _a : _b;})
-# else
-#  define MIN(a, b)  ((a) < (b) ? (a) : (b))
-# endif
+#ifdef __GNUC__
+#define MIN(a, b)                                                              \
+  ({                                                                           \
+    typeof(a) _a = (a);                                                        \
+    typeof(b) _b = (b);                                                        \
+    _a < _b ? _a : _b;                                                         \
+  })
+#else
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#endif
 #endif
 
 #ifndef MAX
-# ifdef __GNUC__
-#  define MAX(a, b)  ({typeof(a) _a=(a); typeof(b) _b=(b); _a > _b ? _a : _b;})
-# else
-#  define MAX(a, b)  ((a) > (b) ? (a) : (b))
-# endif
+#ifdef __GNUC__
+#define MAX(a, b)                                                              \
+  ({                                                                           \
+    typeof(a) _a = (a);                                                        \
+    typeof(b) _b = (b);                                                        \
+    _a > _b ? _a : _b;                                                         \
+  })
+#else
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#endif
 #endif
 
-#define IS_POW2(x)     (!((x) & ((x) - 1)))
-#define IS_MUL4(x)     (((x) & 3) == 0)
+#define IS_POW2(x) (!((x) & ((x)-1)))
+#define IS_MUL4(x) (((x)&3) == 0)
 
 /* round integer x up to next multiple of 4 */
-#define RND_MUL4(x)    ((x) + (4 - ((x) & 3)))
+#define RND_MUL4(x) ((x) + (4 - ((x)&3)))
 
-static inline int
-mul8bit (int a,
-         int b)
-{
-	int t = a * b + 128;
+static inline int mul8bit(int a, int b) {
+  int t = a * b + 128;
 
-	return (t + (t >> 8)) >> 8;
+  return (t + (t >> 8)) >> 8;
 }
 
-static inline int
-blerp (int a,
-       int b,
-       int x)
-{
-	return a + mul8bit(b - a, x);
-}
+static inline int blerp(int a, int b, int x) { return a + mul8bit(b - a, x); }
 
-static inline int
-icerp (int a,
-       int b,
-       int c,
-       int d,
-       int x)
-{
-	int p = (d - c) - (a - b);
-	int q = (a - b) - p;
-	int r = c - a;
+static inline int icerp(int a, int b, int c, int d, int x) {
+  int p = (d - c) - (a - b);
+  int q = (a - b) - p;
+  int r = c - a;
 
-	return (x * (x * (x * p + (q << 7)) + (r << 14)) + (b << 21)) >> 21;
+  return (x * (x * (x * p + (q << 7)) + (r << 14)) + (b << 21)) >> 21;
 }
 
 #endif /* __IMATH_H__ */

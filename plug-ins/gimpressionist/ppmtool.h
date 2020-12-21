@@ -21,9 +21,9 @@
 #include <glib.h>
 
 typedef struct ppm {
-	int width;
-	int height;
-	unsigned char *col;
+  int width;
+  int height;
+  unsigned char *col;
 } ppm_t;
 
 void fatal(char *s);
@@ -38,15 +38,16 @@ void ppm_save(ppm_t *p, const char *fn);
 void ppm_copy(ppm_t *s, ppm_t *p);
 void fill(ppm_t *p, guchar *c);
 void free_rotate(ppm_t *p, double amount);
-void ppm_pad(ppm_t *p, int left,int right, int top, int bottom, guchar *);
-void edgepad(ppm_t *p, int left,int right, int top, int bottom);
+void ppm_pad(ppm_t *p, int left, int right, int top, int bottom, guchar *);
+void edgepad(ppm_t *p, int left, int right, int top, int bottom);
 void autocrop(ppm_t *p, int room);
 void crop(ppm_t *p, int lx, int ly, int hx, int hy);
 void ppm_apply_gamma(ppm_t *p, float e, int r, int g, int b);
 void ppm_apply_brightness(ppm_t *p, float e, int r, int g, int b);
 void ppm_put_rgb_fast(ppm_t *s, float xo, float yo, guchar *d);
 void ppm_put_rgb(ppm_t *s, float xo, float yo, guchar *d);
-void ppm_drawline(ppm_t *p, float fx, float fy, float tx, float ty, guchar *col);
+void ppm_drawline(ppm_t *p, float fx, float fy, float tx, float ty,
+                  guchar *col);
 
 void repaint(ppm_t *p, ppm_t *a);
 
@@ -57,4 +58,3 @@ void mkgrayplasma(ppm_t *p, float turb);
 #define PPM_IS_INITED(ppm_ptr) ((ppm_ptr)->col != NULL)
 
 #endif /* #ifndef __PPM_TOOL_H */
-

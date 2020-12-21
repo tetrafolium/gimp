@@ -22,24 +22,18 @@
 #ifndef __FILE_TIFF_LOAD_H__
 #define __FILE_TIFF_LOAD_H__
 
-#define LOAD_PROC      "file-tiff-load"
+#define LOAD_PROC "file-tiff-load"
 
-typedef struct
-{
-	gint o_pages;
-	gint n_pages;
-	gint                   *pages;
-	GimpPageSelectorTarget target;
-	gboolean keep_empty_space;
+typedef struct {
+  gint o_pages;
+  gint n_pages;
+  gint *pages;
+  GimpPageSelectorTarget target;
+  gboolean keep_empty_space;
 } TiffSelectedPages;
 
-
-GimpPDBStatusType load_image  (GFile        *file,
-                               GimpRunMode run_mode,
-                               GimpImage   **image,
-                               gboolean     *resolution_loaded,
-                               gboolean     *profile_loaded,
-                               GError      **error);
-
+GimpPDBStatusType load_image(GFile *file, GimpRunMode run_mode,
+                             GimpImage **image, gboolean *resolution_loaded,
+                             gboolean *profile_loaded, GError **error);
 
 #endif /* __FILE_TIFF_LOAD_H__ */

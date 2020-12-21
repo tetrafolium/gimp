@@ -18,8 +18,6 @@
 #ifndef __SCRIPT_FU_UTILS_H__
 #define __SCRIPT_FU_UTILS_H__
 
-
-gchar * script_fu_strescape (const gchar *source);
-
+gchar *script_fu_strescape(const gchar *source);
 
 #endif /*  __SCRIPT_FU_UTILS__  */

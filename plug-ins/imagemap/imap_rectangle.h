@@ -26,16 +26,16 @@
 #include "imap_object.h"
 
 typedef struct {
-	Object_t obj;
-	gint x;
-	gint y;
-	gint width;
-	gint height;
+  Object_t obj;
+  gint x;
+  gint y;
+  gint width;
+  gint height;
 } Rectangle_t;
 
-#define ObjectToRectangle(obj) ((Rectangle_t*) (obj))
+#define ObjectToRectangle(obj) ((Rectangle_t *)(obj))
 
-Object_t* create_rectangle(gint x, gint y, gint width, gint height);
+Object_t *create_rectangle(gint x, gint y, gint width, gint height);
 ObjectFactory_t *get_rectangle_factory(guint state);
 
 #endif /* _IMAP_RECTANGLE_H */

@@ -31,22 +31,16 @@
 
 static gint _sash_size = SASH_SIZE;
 
-void
-set_sash_size(gboolean double_size)
-{
-	_sash_size = (double_size) ? 2 * SASH_SIZE : SASH_SIZE;
+void set_sash_size(gboolean double_size) {
+  _sash_size = (double_size) ? 2 * SASH_SIZE : SASH_SIZE;
 }
 
-void
-draw_sash(cairo_t *cr, gint x, gint y)
-{
-	draw_rectangle(cr, TRUE, x - _sash_size / 2, y - _sash_size / 2,
-	               _sash_size, _sash_size);
+void draw_sash(cairo_t *cr, gint x, gint y) {
+  draw_rectangle(cr, TRUE, x - _sash_size / 2, y - _sash_size / 2, _sash_size,
+                 _sash_size);
 }
 
-gboolean
-near_sash(gint sash_x, gint sash_y, gint x, gint y)
-{
-	return x >= sash_x - _sash_size / 2 && x <= sash_x + _sash_size / 2 &&
-	       y >= sash_y - _sash_size / 2 && y <= sash_y + _sash_size / 2;
+gboolean near_sash(gint sash_x, gint sash_y, gint x, gint y) {
+  return x >= sash_x - _sash_size / 2 && x <= sash_x + _sash_size / 2 &&
+         y >= sash_y - _sash_size / 2 && y <= sash_y + _sash_size / 2;
 }

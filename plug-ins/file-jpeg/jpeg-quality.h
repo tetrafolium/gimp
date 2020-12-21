@@ -21,6 +21,6 @@
 #ifndef __JPEG_QUALITY_H__
 #define __JPEG_QUALITY_H__
 
-gint jpeg_detect_quality (struct jpeg_decompress_struct *cinfo);
+gint jpeg_detect_quality(struct jpeg_decompress_struct *cinfo);
 
 #endif /* __JPEG_QUALITY_H__ */

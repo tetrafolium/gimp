@@ -25,11 +25,9 @@
 #ifndef __GFIG_LINE_H__
 #define __GFIG_LINE_H__
 
-void        d_line_object_class_init (void);
+void d_line_object_class_init(void);
 
-void        d_line_start             (GdkPoint   *pnt,
-                                      gboolean shift_down);
-void        d_line_end               (GdkPoint   *pnt,
-                                      gboolean shift_down);
+void d_line_start(GdkPoint *pnt, gboolean shift_down);
+void d_line_end(GdkPoint *pnt, gboolean shift_down);
 
 #endif /* __GFIG_LINE_H__ */

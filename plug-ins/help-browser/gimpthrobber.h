@@ -23,45 +23,43 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_THROBBER            (gimp_throbber_get_type ())
-#define GIMP_THROBBER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_THROBBER, GimpThrobber))
-#define GIMP_THROBBER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_THROBBER, GimpThrobberClass))
-#define GIMP_IS_THROBBER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_THROBBER))
-#define GIMP_IS_THROBBER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_THROBBER))
-#define GIMP_THROBBER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_THROBBER, GimpThrobberClass))
-
+#define GIMP_TYPE_THROBBER (gimp_throbber_get_type())
+#define GIMP_THROBBER(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_THROBBER, GimpThrobber))
+#define GIMP_THROBBER_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_THROBBER, GimpThrobberClass))
+#define GIMP_IS_THROBBER(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_THROBBER))
+#define GIMP_IS_THROBBER_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_THROBBER))
+#define GIMP_THROBBER_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_THROBBER, GimpThrobberClass))
 
 typedef struct _GimpThrobber GimpThrobber;
 typedef struct _GimpThrobberClass GimpThrobberClass;
 typedef struct _GimpThrobberPrivate GimpThrobberPrivate;
 
-struct _GimpThrobber
-{
-	GtkToolItem parent;
+struct _GimpThrobber {
+  GtkToolItem parent;
 
-	/*< private >*/
-	GimpThrobberPrivate *priv;
+  /*< private >*/
+  GimpThrobberPrivate *priv;
 };
 
-struct _GimpThrobberClass
-{
-	GtkToolItemClass parent_class;
+struct _GimpThrobberClass {
+  GtkToolItemClass parent_class;
 
-	/* signal */
-	void (* clicked) (GimpThrobber *button);
+  /* signal */
+  void (*clicked)(GimpThrobber *button);
 };
 
-GType         gimp_throbber_get_type      (void) G_GNUC_CONST;
+GType gimp_throbber_get_type(void) G_GNUC_CONST;
 
-GtkToolItem * gimp_throbber_new           (const gchar  *icon_name);
-void          gimp_throbber_set_icon_name (GimpThrobber *button,
-                                           const gchar  *icon_name);
-const gchar * gimp_throbber_get_icon_name (GimpThrobber *button);
-void          gimp_throbber_set_image     (GimpThrobber *button,
-                                           GtkWidget    *image);
-GtkWidget   * gimp_throbber_get_image     (GimpThrobber *button);
-
+GtkToolItem *gimp_throbber_new(const gchar *icon_name);
+void gimp_throbber_set_icon_name(GimpThrobber *button, const gchar *icon_name);
+const gchar *gimp_throbber_get_icon_name(GimpThrobber *button);
+void gimp_throbber_set_image(GimpThrobber *button, GtkWidget *image);
+GtkWidget *gimp_throbber_get_image(GimpThrobber *button);
 
 G_END_DECLS
 

@@ -22,7 +22,6 @@
 #include "pxl-outline.h"
 #include "spline.h"
 
-
 /* See fit.c for descriptions of these variables, all of which can be
    set using options.  */
 extern real align_threshold;
@@ -45,10 +44,9 @@ extern unsigned subdivide_surround;
 extern real subdivide_threshold;
 extern unsigned tangent_surround;
 
-
 /* Fit splines and lines to LIST.  */
-extern spline_list_array_type fitted_splines (pixel_outline_list_type list);
-void   fit_set_params(SELVALS *);
-void   fit_set_default_params(SELVALS *);
+extern spline_list_array_type fitted_splines(pixel_outline_list_type list);
+void fit_set_params(SELVALS *);
+void fit_set_default_params(SELVALS *);
 
 #endif /* not FIT_H */

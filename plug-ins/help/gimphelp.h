@@ -23,7 +23,6 @@
 #ifndef __GIMP_HELP_H__
 #define __GIMP_HELP_H__
 
-
 #include "gimphelptypes.h"
 
 #include "gimphelpdomain.h"
@@ -31,28 +30,23 @@
 #include "gimphelplocale.h"
 #include "gimphelpprogress.h"
 
+#define GIMP_HELP_DEFAULT_DOMAIN "https://www.gimp.org/help"
+#define GIMP_HELP_DEFAULT_ID "gimp-main"
+#define GIMP_HELP_DEFAULT_LOCALE "en"
 
-#define GIMP_HELP_DEFAULT_DOMAIN  "https://www.gimp.org/help"
-#define GIMP_HELP_DEFAULT_ID      "gimp-main"
-#define GIMP_HELP_DEFAULT_LOCALE  "en"
-
-#define GIMP_HELP_PREFIX          "help"
-#define GIMP_HELP_ENV_URI         "GIMP2_HELP_URI"
+#define GIMP_HELP_PREFIX "help"
+#define GIMP_HELP_ENV_URI "GIMP2_HELP_URI"
 
 /* #define GIMP_HELP_DEBUG */
 
+gboolean gimp_help_init(gint n_domain_names, const gchar **domain_names,
+                        gint n_domain_uris, const gchar **domain_uris);
+void gimp_help_exit(void);
 
-gboolean         gimp_help_init            (gint n_domain_names,
-                                            const gchar   **domain_names,
-                                            gint n_domain_uris,
-                                            const gchar   **domain_uris);
-void             gimp_help_exit            (void);
+void gimp_help_register_domain(const gchar *domain_name,
+                               const gchar *domain_uri);
+GimpHelpDomain *gimp_help_lookup_domain(const gchar *domain_name);
 
-void             gimp_help_register_domain (const gchar    *domain_name,
-                                            const gchar    *domain_uri);
-GimpHelpDomain * gimp_help_lookup_domain   (const gchar    *domain_name);
-
-GList          * gimp_help_parse_locales   (const gchar    *help_locales);
-
+GList *gimp_help_parse_locales(const gchar *help_locales);
 
 #endif /* ! __GIMP_HELP_H__ */

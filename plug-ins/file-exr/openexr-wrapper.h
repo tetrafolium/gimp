@@ -25,43 +25,29 @@ G_BEGIN_DECLS
  */
 typedef struct _EXRLoader EXRLoader;
 
-typedef enum
-{
-	PREC_UINT,
-	PREC_HALF,
-	PREC_FLOAT
-} EXRPrecision;
+typedef enum { PREC_UINT, PREC_HALF, PREC_FLOAT } EXRPrecision;
 
-typedef enum
-{
-	IMAGE_TYPE_RGB,
-	IMAGE_TYPE_GRAY
-} EXRImageType;
+typedef enum { IMAGE_TYPE_RGB, IMAGE_TYPE_GRAY } EXRImageType;
 
+EXRLoader *exr_loader_new(const char *filename);
 
-EXRLoader        * exr_loader_new            (const char *filename);
+EXRLoader *exr_loader_ref(EXRLoader *loader);
+void exr_loader_unref(EXRLoader *loader);
 
-EXRLoader        * exr_loader_ref            (EXRLoader  *loader);
-void               exr_loader_unref          (EXRLoader  *loader);
+int exr_loader_get_width(EXRLoader *loader);
+int exr_loader_get_height(EXRLoader *loader);
 
-int                exr_loader_get_width      (EXRLoader  *loader);
-int                exr_loader_get_height     (EXRLoader  *loader);
+EXRPrecision exr_loader_get_precision(EXRLoader *loader);
+EXRImageType exr_loader_get_image_type(EXRLoader *loader);
+int exr_loader_has_alpha(EXRLoader *loader);
 
-EXRPrecision       exr_loader_get_precision  (EXRLoader  *loader);
-EXRImageType       exr_loader_get_image_type (EXRLoader  *loader);
-int                exr_loader_has_alpha      (EXRLoader  *loader);
+GimpColorProfile *exr_loader_get_profile(EXRLoader *loader);
+gchar *exr_loader_get_comment(EXRLoader *loader);
+guchar *exr_loader_get_exif(EXRLoader *loader, guint *size);
+guchar *exr_loader_get_xmp(EXRLoader *loader, guint *size);
 
-GimpColorProfile * exr_loader_get_profile    (EXRLoader  *loader);
-gchar            * exr_loader_get_comment    (EXRLoader  *loader);
-guchar           * exr_loader_get_exif       (EXRLoader  *loader,
-                                              guint      *size);
-guchar           * exr_loader_get_xmp        (EXRLoader  *loader,
-                                              guint      *size);
-
-int                exr_loader_read_pixel_row (EXRLoader *loader,
-                                              char      *pixels,
-                                              int bpp,
-                                              int row);
+int exr_loader_read_pixel_row(EXRLoader *loader, char *pixels, int bpp,
+                              int row);
 
 G_END_DECLS
 

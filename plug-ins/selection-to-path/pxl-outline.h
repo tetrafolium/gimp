@@ -21,13 +21,11 @@
 
 #include "types.h"
 
-
 /* This is a list of contiguous points on the bitmap.  */
-typedef struct
-{
-	coordinate_type *data;
-	unsigned length;
-	boolean clockwise;
+typedef struct {
+  coordinate_type *data;
+  unsigned length;
+  boolean clockwise;
 } pixel_outline_type;
 
 /* The Nth coordinate in the list.  */
@@ -42,14 +40,13 @@ typedef struct
 /* Since a pixel outline is cyclic, the index of the next coordinate
    after the last is the first, and the previous coordinate before the
    first is the last.  */
-#define O_NEXT(p_o, n) (((n) + 1) % O_LENGTH (p_o))
-#define O_PREV(p_o, n) ((n) == 0 ? O_LENGTH (p_o) - 1 : (n) - 1)
+#define O_NEXT(p_o, n) (((n) + 1) % O_LENGTH(p_o))
+#define O_PREV(p_o, n) ((n) == 0 ? O_LENGTH(p_o) - 1 : (n)-1)
 
 /* And the character turns into a list of such lists.  */
-typedef struct
-{
-	pixel_outline_type *data;
-	unsigned length;
+typedef struct {
+  pixel_outline_type *data;
+  unsigned length;
 } pixel_outline_list_type;
 
 /* The Nth list in the list of lists.  */
@@ -58,11 +55,10 @@ typedef struct
 /* The length of the list of lists.  */
 #define O_LIST_LENGTH(p_o_l) ((p_o_l).length)
 
-
 /* Find all pixels on the outline in the character C.  */
-extern pixel_outline_list_type find_outline_pixels (void);
+extern pixel_outline_list_type find_outline_pixels(void);
 
 /* Free the memory in the list.  */
-extern void free_pixel_outline_list (pixel_outline_list_type *);
+extern void free_pixel_outline_list(pixel_outline_list_type *);
 
 #endif /* not PXL_OUTLINE_H */

@@ -21,8 +21,8 @@
 #ifndef _TW_PLATFORM_H
 #define _TW_PLATFORM_H
 
-#include <windows.h>
 #include "twain.h"
+#include <windows.h>
 
 /* The DLL to be loaded for TWAIN support */
 #define TWAIN_DLL_NAME "TWAIN_32.DLL"

@@ -22,19 +22,11 @@
 #ifndef __WEBP_SAVE_H__
 #define __WEBP_SAVE_H__
 
+gboolean save_layer(GFile *file, GimpImage *image, GimpDrawable *drawable,
+                    GObject *config, GError **error);
 
-gboolean   save_layer     (GFile         *file,
-                           GimpImage     *image,
-                           GimpDrawable  *drawable,
-                           GObject       *config,
-                           GError       **error);
-
-gboolean   save_animation (GFile         *file,
-                           GimpImage     *image,
-                           gint n_drawables,
-                           GimpDrawable **drawables,
-                           GObject       *config,
-                           GError       **error);
-
+gboolean save_animation(GFile *file, GimpImage *image, gint n_drawables,
+                        GimpDrawable **drawables, GObject *config,
+                        GError **error);
 
 #endif /* __WEBP_SAVE_H__ */

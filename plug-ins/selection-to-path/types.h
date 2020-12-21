@@ -43,7 +43,6 @@ typedef double real;
    font (like TeX and PostScript).  */
 typedef unsigned char charcode_type;
 
-
 /* Used in file formats.  */
 typedef unsigned char one_byte;
 typedef signed char signed_byte;
@@ -55,40 +54,33 @@ typedef int byte_count_type;
 
 /* These are intended to be used for output in file formats where a
    ``byte'' is defined to be eight bits, regardless of the hardware.  */
-#define ONE_BYTE_BIG  (1 << 8)
-#define TWO_BYTES_BIG  (1 << 16)
+#define ONE_BYTE_BIG (1 << 8)
+#define TWO_BYTES_BIG (1 << 16)
 #define THREE_BYTES_BIG (1 << 24)
 
-
 /* Complex numbers.  */
-typedef struct
-{
-	real real;
-	real imag;
+typedef struct {
+  real real;
+  real imag;
 } complex;
-typedef enum { first_complex_part, second_complex_part} complex_part_type;
-typedef enum { polar_rep, rectangular_rep} complex_rep_type;
-
+typedef enum { first_complex_part, second_complex_part } complex_part_type;
+typedef enum { polar_rep, rectangular_rep } complex_rep_type;
 
 /* Dimensions of a rectangle.  */
-typedef struct
-{
-	unsigned height, width;
+typedef struct {
+  unsigned height, width;
 } dimensions_type;
 
 #define DIMENSIONS_HEIGHT(d) ((d).height)
 #define DIMENSIONS_WIDTH(d) ((d).width)
 
-
 /* Cartesian points.  */
-typedef struct
-{
-	int x, y;
+typedef struct {
+  int x, y;
 } coordinate_type;
 
-typedef struct
-{
-	double x, y;
+typedef struct {
+  double x, y;
 } real_coordinate_type;
 
 #if 0
@@ -118,28 +110,27 @@ typedef struct
 
 #else
 
-typedef struct
-{
-	double align_threshold;
-	double corner_always_threshold;
-	double corner_surround;
-	double corner_threshold;
-	double error_threshold;
-	double filter_alternative_surround;
-	double filter_epsilon;
-	double filter_iteration_count;
-	double filter_percent;
-	double filter_secondary_surround;
-	double filter_surround;
-	boolean keep_knees;
-	double line_reversion_threshold;
-	double line_threshold;
-	double reparameterize_improvement;
-	double reparameterize_threshold;
-	double subdivide_search;
-	double subdivide_surround;
-	double subdivide_threshold;
-	double tangent_surround;
+typedef struct {
+  double align_threshold;
+  double corner_always_threshold;
+  double corner_surround;
+  double corner_threshold;
+  double error_threshold;
+  double filter_alternative_surround;
+  double filter_epsilon;
+  double filter_iteration_count;
+  double filter_percent;
+  double filter_secondary_surround;
+  double filter_surround;
+  boolean keep_knees;
+  double line_reversion_threshold;
+  double line_threshold;
+  double reparameterize_improvement;
+  double reparameterize_threshold;
+  double subdivide_search;
+  double subdivide_surround;
+  double subdivide_threshold;
+  double tangent_surround;
 } SELVALS;
 
 #endif /* 1 */

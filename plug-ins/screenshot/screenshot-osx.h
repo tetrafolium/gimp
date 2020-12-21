@@ -18,19 +18,16 @@
 #ifndef __SCREENSHOT_OSX_H__
 #define __SCREENSHOT_OSX_H__
 
-
 #ifdef PLATFORM_OSX
 
-gboolean               screenshot_osx_available        (void);
+gboolean screenshot_osx_available(void);
 
-ScreenshotCapabilities screenshot_osx_get_capabilities (void);
+ScreenshotCapabilities screenshot_osx_get_capabilities(void);
 
-GimpPDBStatusType      screenshot_osx_shoot            (ScreenshotValues  *shootvals,
-                                                        GdkScreen         *screen,
-                                                        GimpImage        **image,
-                                                        GError           **error);
+GimpPDBStatusType screenshot_osx_shoot(ScreenshotValues *shootvals,
+                                       GdkScreen *screen, GimpImage **image,
+                                       GError **error);
 
 #endif /* PLATFORM_OSX */
-
 
 #endif /* __SCREENSHOT_OSX_H__ */

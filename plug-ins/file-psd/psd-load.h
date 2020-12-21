@@ -21,12 +21,8 @@
 #ifndef __PSD_LOAD_H__
 #define __PSD_LOAD_H__
 
-
-GimpImage * load_image (GFile        *file,
-                        gboolean merged_image_only,
-                        gboolean     *resolution_loaded,
-                        gboolean     *profile_loaded,
-                        GError      **error);
-
+GimpImage *load_image(GFile *file, gboolean merged_image_only,
+                      gboolean *resolution_loaded, gboolean *profile_loaded,
+                      GError **error);
 
 #endif /* __PSD_LOAD_H__ */

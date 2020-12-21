@@ -23,20 +23,17 @@
 
 #include "../lighting/images/lighting-icon-images.h"
 
+void mapobject_icons_init(void) {
+  static gboolean initialized = FALSE;
 
-void
-mapobject_icons_init (void)
-{
-	static gboolean initialized = FALSE;
+  GtkIconTheme *icon_theme;
 
-	GtkIconTheme *icon_theme;
+  if (initialized)
+    return;
 
-	if (initialized)
-		return;
+  initialized = TRUE;
 
-	initialized = TRUE;
+  icon_theme = gtk_icon_theme_get_default();
 
-	icon_theme = gtk_icon_theme_get_default ();
-
-	gtk_icon_theme_add_resource_path (icon_theme, "/org/gimp/lighting/icons");
+  gtk_icon_theme_add_resource_path(icon_theme, "/org/gimp/lighting/icons");
 }

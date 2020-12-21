@@ -22,311 +22,251 @@
 
 #include "libgimp/stdplugins-intl.h"
 
-
 #define PLUG_IN_PROC "plug-in-zealouscrop"
 
 #define EPSILON (1e-5)
 #define FLOAT_IS_ZERO(value) (value > -EPSILON && value < EPSILON)
-#define FLOAT_EQUAL(v1, v2)  ((v1 - v2) > -EPSILON && (v1 - v2) < EPSILON)
-
+#define FLOAT_EQUAL(v1, v2) ((v1 - v2) > -EPSILON && (v1 - v2) < EPSILON)
 
 typedef struct _Crop Crop;
 typedef struct _CropClass CropClass;
 
-struct _Crop
-{
-	GimpPlugIn parent_instance;
+struct _Crop {
+  GimpPlugIn parent_instance;
 };
 
-struct _CropClass
-{
-	GimpPlugInClass parent_class;
+struct _CropClass {
+  GimpPlugInClass parent_class;
 };
 
-#define CROP_TYPE  (crop_get_type ())
-#define CROP (obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), CROP_TYPE, Crop))
+#define CROP_TYPE (crop_get_type())
+#define CROP (obj)(G_TYPE_CHECK_INSTANCE_CAST((obj), CROP_TYPE, Crop))
 
-GType                   crop_get_type         (void) G_GNUC_CONST;
+GType crop_get_type(void) G_GNUC_CONST;
 
-static GList          * crop_query_procedures (GimpPlugIn           *plug_in);
-static GimpProcedure  * crop_create_procedure (GimpPlugIn           *plug_in,
-                                               const gchar          *name);
+static GList *crop_query_procedures(GimpPlugIn *plug_in);
+static GimpProcedure *crop_create_procedure(GimpPlugIn *plug_in,
+                                            const gchar *name);
 
-static GimpValueArray * crop_run              (GimpProcedure        *procedure,
-                                               GimpRunMode run_mode,
-                                               GimpImage            *image,
-                                               GimpDrawable         *drawable,
-                                               const GimpValueArray *args,
-                                               gpointer run_data);
+static GimpValueArray *crop_run(GimpProcedure *procedure, GimpRunMode run_mode,
+                                GimpImage *image, GimpDrawable *drawable,
+                                const GimpValueArray *args, gpointer run_data);
 
-static inline gboolean  colors_equal          (const gfloat         *col1,
-                                               const gfloat         *col2,
-                                               gint components,
-                                               gboolean has_alpha);
-static void             do_zcrop              (GimpDrawable         *drawable,
-                                               GimpImage            *image);
+static inline gboolean colors_equal(const gfloat *col1, const gfloat *col2,
+                                    gint components, gboolean has_alpha);
+static void do_zcrop(GimpDrawable *drawable, GimpImage *image);
 
+G_DEFINE_TYPE(Crop, crop, GIMP_TYPE_PLUG_IN)
 
-G_DEFINE_TYPE (Crop, crop, GIMP_TYPE_PLUG_IN)
+GIMP_MAIN(CROP_TYPE)
 
-GIMP_MAIN (CROP_TYPE)
+static void crop_class_init(CropClass *klass) {
+  GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS(klass);
 
-
-static void
-crop_class_init (CropClass *klass)
-{
-	GimpPlugInClass *plug_in_class = GIMP_PLUG_IN_CLASS (klass);
-
-	plug_in_class->query_procedures = crop_query_procedures;
-	plug_in_class->create_procedure = crop_create_procedure;
+  plug_in_class->query_procedures = crop_query_procedures;
+  plug_in_class->create_procedure = crop_create_procedure;
 }
 
-static void
-crop_init (Crop *crop)
-{
+static void crop_init(Crop *crop) {}
+
+static GList *crop_query_procedures(GimpPlugIn *plug_in) {
+  return g_list_append(NULL, g_strdup(PLUG_IN_PROC));
 }
 
-static GList *
-crop_query_procedures (GimpPlugIn *plug_in)
-{
-	return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+static GimpProcedure *crop_create_procedure(GimpPlugIn *plug_in,
+                                            const gchar *name) {
+  GimpProcedure *procedure = NULL;
+
+  if (!strcmp(name, PLUG_IN_PROC)) {
+    procedure = gimp_image_procedure_new(
+        plug_in, name, GIMP_PDB_PROC_TYPE_PLUGIN, crop_run, NULL, NULL);
+
+    gimp_procedure_set_image_types(procedure, "*");
+
+    gimp_procedure_set_menu_label(procedure, N_("_Zealous Crop"));
+    gimp_procedure_add_menu_path(procedure, "<Image>/Image/Crop");
+
+    gimp_procedure_set_documentation(procedure,
+                                     N_("Autocrop unused space from "
+                                        "edges and middle"),
+                                     NULL, name);
+    gimp_procedure_set_attribution(procedure, "Adam D. Moss", "Adam D. Moss",
+                                   "1997");
+  }
+
+  return procedure;
 }
 
-static GimpProcedure *
-crop_create_procedure (GimpPlugIn  *plug_in,
-                       const gchar *name)
-{
-	GimpProcedure *procedure = NULL;
+static GimpValueArray *crop_run(GimpProcedure *procedure, GimpRunMode run_mode,
+                                GimpImage *image, GimpDrawable *drawable,
+                                const GimpValueArray *args, gpointer run_data) {
+  INIT_I18N();
+  gegl_init(NULL, NULL);
 
-	if (!strcmp (name, PLUG_IN_PROC))
-	{
-		procedure = gimp_image_procedure_new (plug_in, name,
-		                                      GIMP_PDB_PROC_TYPE_PLUGIN,
-		                                      crop_run, NULL, NULL);
+  gimp_progress_init(_("Zealous cropping"));
 
-		gimp_procedure_set_image_types (procedure, "*");
+  do_zcrop(drawable, image);
 
-		gimp_procedure_set_menu_label (procedure, N_("_Zealous Crop"));
-		gimp_procedure_add_menu_path (procedure, "<Image>/Image/Crop");
+  if (run_mode != GIMP_RUN_NONINTERACTIVE)
+    gimp_displays_flush();
 
-		gimp_procedure_set_documentation (procedure,
-		                                  N_("Autocrop unused space from "
-		                                     "edges and middle"),
-		                                  NULL,
-		                                  name);
-		gimp_procedure_set_attribution (procedure,
-		                                "Adam D. Moss",
-		                                "Adam D. Moss",
-		                                "1997");
-	}
-
-	return procedure;
+  return gimp_procedure_new_return_values(procedure, GIMP_PDB_SUCCESS, NULL);
 }
 
-static GimpValueArray *
-crop_run (GimpProcedure        *procedure,
-          GimpRunMode run_mode,
-          GimpImage            *image,
-          GimpDrawable         *drawable,
-          const GimpValueArray *args,
-          gpointer run_data)
-{
-	INIT_I18N ();
-	gegl_init (NULL, NULL);
+static inline gboolean colors_equal(const gfloat *col1, const gfloat *col2,
+                                    gint components, gboolean has_alpha) {
+  if (has_alpha && FLOAT_IS_ZERO(col1[components - 1]) &&
+      FLOAT_IS_ZERO(col2[components - 1])) {
+    return TRUE;
+  } else {
+    gint b;
 
-	gimp_progress_init (_("Zealous cropping"));
+    for (b = 0; b < components; b++) {
+      if (!FLOAT_EQUAL(col1[b], col2[b]))
+        return FALSE;
+    }
 
-	do_zcrop (drawable, image);
-
-	if (run_mode != GIMP_RUN_NONINTERACTIVE)
-		gimp_displays_flush ();
-
-	return gimp_procedure_new_return_values (procedure, GIMP_PDB_SUCCESS, NULL);
+    return TRUE;
+  }
 }
 
-static inline gboolean
-colors_equal (const gfloat   *col1,
-              const gfloat   *col2,
-              gint components,
-              gboolean has_alpha)
-{
-	if (has_alpha &&
-	    FLOAT_IS_ZERO (col1[components - 1]) &&
-	    FLOAT_IS_ZERO (col2[components - 1]))
-	{
-		return TRUE;
-	}
-	else
-	{
-		gint b;
+static void do_zcrop(GimpDrawable *drawable, GimpImage *image) {
+  GeglBuffer *drawable_buffer;
+  GeglBuffer *shadow_buffer;
+  gfloat *linear_buf;
+  const Babl *format;
 
-		for (b = 0; b < components; b++)
-		{
-			if (!FLOAT_EQUAL (col1[b], col2[b]))
-				return FALSE;
-		}
+  gint x, y, width, height;
+  gint components;
+  gint8 *killrows;
+  gint8 *killcols;
+  gint32 livingrows, livingcols, destrow, destcol;
+  GimpChannel *selection_copy;
+  gboolean has_alpha;
 
-		return TRUE;
-	}
-}
+  drawable_buffer = gimp_drawable_get_buffer(drawable);
+  shadow_buffer = gimp_drawable_get_shadow_buffer(drawable);
 
-static void
-do_zcrop (GimpDrawable *drawable,
-          GimpImage    *image)
-{
-	GeglBuffer   *drawable_buffer;
-	GeglBuffer   *shadow_buffer;
-	gfloat       *linear_buf;
-	const Babl   *format;
+  width = gegl_buffer_get_width(drawable_buffer);
+  height = gegl_buffer_get_height(drawable_buffer);
+  has_alpha = gimp_drawable_has_alpha(drawable);
 
-	gint x, y, width, height;
-	gint components;
-	gint8        *killrows;
-	gint8        *killcols;
-	gint32 livingrows, livingcols, destrow, destcol;
-	GimpChannel  *selection_copy;
-	gboolean has_alpha;
+  if (has_alpha)
+    format = babl_format("R'G'B'A float");
+  else
+    format = babl_format("R'G'B' float");
 
-	drawable_buffer = gimp_drawable_get_buffer (drawable);
-	shadow_buffer   = gimp_drawable_get_shadow_buffer (drawable);
+  components = babl_format_get_n_components(format);
 
-	width  = gegl_buffer_get_width (drawable_buffer);
-	height = gegl_buffer_get_height (drawable_buffer);
-	has_alpha = gimp_drawable_has_alpha (drawable);
+  killrows = g_new(gint8, height);
+  killcols = g_new(gint8, width);
 
-	if (has_alpha)
-		format = babl_format ("R'G'B'A float");
-	else
-		format = babl_format ("R'G'B' float");
+  linear_buf = g_new(gfloat, (width > height ? width : height) * components);
 
-	components = babl_format_get_n_components (format);
+  /* search which rows to remove */
 
-	killrows = g_new (gint8, height);
-	killcols = g_new (gint8, width);
+  livingrows = 0;
+  for (y = 0; y < height; y++) {
+    gegl_buffer_get(drawable_buffer, GEGL_RECTANGLE(0, y, width, 1), 1.0,
+                    format, linear_buf, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-	linear_buf = g_new (gfloat, (width > height ? width : height) * components);
+    killrows[y] = TRUE;
 
-	/* search which rows to remove */
+    for (x = components; x < width * components; x += components) {
+      if (!colors_equal(linear_buf, &linear_buf[x], components, has_alpha)) {
+        livingrows++;
+        killrows[y] = FALSE;
+        break;
+      }
+    }
+  }
 
-	livingrows = 0;
-	for (y = 0; y < height; y++)
-	{
-		gegl_buffer_get (drawable_buffer, GEGL_RECTANGLE (0, y, width, 1),
-		                 1.0, format, linear_buf,
-		                 GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  gimp_progress_update(0.25);
 
-		killrows[y] = TRUE;
+  /* search which columns to remove */
 
-		for (x = components; x < width * components; x += components)
-		{
-			if (!colors_equal (linear_buf, &linear_buf[x], components, has_alpha))
-			{
-				livingrows++;
-				killrows[y] = FALSE;
-				break;
-			}
-		}
-	}
+  livingcols = 0;
+  for (x = 0; x < width; x++) {
+    gegl_buffer_get(drawable_buffer, GEGL_RECTANGLE(x, 0, 1, height), 1.0,
+                    format, linear_buf, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-	gimp_progress_update (0.25);
+    killcols[x] = TRUE;
 
-	/* search which columns to remove */
+    for (y = components; y < height * components; y += components) {
+      if (!colors_equal(linear_buf, &linear_buf[y], components, has_alpha)) {
+        livingcols++;
+        killcols[x] = FALSE;
+        break;
+      }
+    }
+  }
 
-	livingcols = 0;
-	for (x = 0; x < width; x++)
-	{
-		gegl_buffer_get (drawable_buffer, GEGL_RECTANGLE (x, 0, 1, height),
-		                 1.0, format, linear_buf,
-		                 GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  gimp_progress_update(0.5);
 
-		killcols[x] = TRUE;
+  if ((livingcols == 0 || livingrows == 0) ||
+      (livingcols == width && livingrows == height)) {
+    g_message(_("Nothing to crop."));
 
-		for (y = components; y < height * components; y += components)
-		{
-			if (!colors_equal (linear_buf, &linear_buf[y], components, has_alpha))
-			{
-				livingcols++;
-				killcols[x] = FALSE;
-				break;
-			}
-		}
-	}
+    g_object_unref(shadow_buffer);
+    g_object_unref(drawable_buffer);
 
-	gimp_progress_update (0.5);
+    g_free(linear_buf);
+    g_free(killrows);
+    g_free(killcols);
+    return;
+  }
 
-	if ((livingcols == 0 || livingrows == 0) ||
-	    (livingcols == width && livingrows == height))
-	{
-		g_message (_("Nothing to crop."));
+  /* restitute living rows */
 
-		g_object_unref (shadow_buffer);
-		g_object_unref (drawable_buffer);
+  destrow = 0;
+  for (y = 0; y < height; y++) {
+    if (!killrows[y]) {
+      gegl_buffer_copy(drawable_buffer, GEGL_RECTANGLE(0, y, width, 1),
+                       GEGL_ABYSS_NONE, shadow_buffer,
+                       GEGL_RECTANGLE(0, destrow, width, 1));
 
-		g_free (linear_buf);
-		g_free (killrows);
-		g_free (killcols);
-		return;
-	}
+      destrow++;
+    }
+  }
 
-	/* restitute living rows */
+  gimp_progress_update(0.75);
 
-	destrow = 0;
-	for (y = 0; y < height; y++)
-	{
-		if (!killrows[y])
-		{
-			gegl_buffer_copy (drawable_buffer,
-			                  GEGL_RECTANGLE (0, y, width, 1),
-			                  GEGL_ABYSS_NONE,
-			                  shadow_buffer,
-			                  GEGL_RECTANGLE (0, destrow, width, 1));
+  /* restitute living columns */
 
-			destrow++;
-		}
-	}
+  destcol = 0;
+  for (x = 0; x < width; x++) {
+    if (!killcols[x]) {
+      gegl_buffer_copy(shadow_buffer, GEGL_RECTANGLE(x, 0, 1, height),
+                       GEGL_ABYSS_NONE, shadow_buffer,
+                       GEGL_RECTANGLE(destcol, 0, 1, height));
 
-	gimp_progress_update (0.75);
+      destcol++;
+    }
+  }
 
-	/* restitute living columns */
+  gimp_progress_update(1.00);
 
-	destcol = 0;
-	for (x = 0; x < width; x++)
-	{
-		if (!killcols[x])
-		{
-			gegl_buffer_copy (shadow_buffer,
-			                  GEGL_RECTANGLE (x, 0, 1, height),
-			                  GEGL_ABYSS_NONE,
-			                  shadow_buffer,
-			                  GEGL_RECTANGLE (destcol, 0, 1, height));
+  gimp_image_undo_group_start(image);
 
-			destcol++;
-		}
-	}
+  selection_copy = GIMP_CHANNEL(gimp_selection_save(image));
+  gimp_selection_none(image);
 
-	gimp_progress_update (1.00);
+  gegl_buffer_flush(shadow_buffer);
+  gimp_drawable_merge_shadow(drawable, TRUE);
+  gegl_buffer_flush(drawable_buffer);
 
-	gimp_image_undo_group_start (image);
+  gimp_image_select_item(image, GIMP_CHANNEL_OP_REPLACE,
+                         GIMP_ITEM(selection_copy));
+  gimp_image_remove_channel(image, selection_copy);
 
-	selection_copy = GIMP_CHANNEL (gimp_selection_save (image));
-	gimp_selection_none (image);
+  gimp_image_crop(image, livingcols, livingrows, 0, 0);
 
-	gegl_buffer_flush (shadow_buffer);
-	gimp_drawable_merge_shadow (drawable, TRUE);
-	gegl_buffer_flush (drawable_buffer);
+  gimp_image_undo_group_end(image);
 
-	gimp_image_select_item (image, GIMP_CHANNEL_OP_REPLACE,
-	                        GIMP_ITEM (selection_copy));
-	gimp_image_remove_channel (image, selection_copy);
+  g_object_unref(shadow_buffer);
+  g_object_unref(drawable_buffer);
 
-	gimp_image_crop (image, livingcols, livingrows, 0, 0);
-
-	gimp_image_undo_group_end (image);
-
-	g_object_unref (shadow_buffer);
-	g_object_unref (drawable_buffer);
-
-	g_free (linear_buf);
-	g_free (killrows);
-	g_free (killcols);
+  g_free(linear_buf);
+  g_free(killrows);
+  g_free(killcols);
 }

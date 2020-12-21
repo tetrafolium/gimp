@@ -31,41 +31,34 @@
 static CmdExecuteValue_t paste_command_execute(Command_t *parent);
 
 static CommandClass_t paste_command_class = {
-	NULL,                    /* paste_command_destruct, */
-	paste_command_execute,
-	NULL,                    /* paste_command_undo */
-	NULL                     /* paste_command_redo */
+    NULL,                        /* paste_command_destruct, */
+    paste_command_execute, NULL, /* paste_command_undo */
+    NULL                         /* paste_command_redo */
 };
 
 typedef struct {
-	Command_t parent;
-	ObjectList_t *list;
+  Command_t parent;
+  ObjectList_t *list;
 } PasteCommand_t;
 
-Command_t*
-paste_command_new(ObjectList_t *list)
-{
-	PasteCommand_t *command = g_new(PasteCommand_t, 1);
-	command->list = list;
-	return command_init(&command->parent, _("Paste"), &paste_command_class);
+Command_t *paste_command_new(ObjectList_t *list) {
+  PasteCommand_t *command = g_new(PasteCommand_t, 1);
+  command->list = list;
+  return command_init(&command->parent, _("Paste"), &paste_command_class);
 }
 
-static void
-paste_one_object(Object_t *obj, gpointer data)
-{
-	PasteCommand_t *command = (PasteCommand_t*) data;
-	command_add_subcommand(&command->parent,
-	                       create_command_new(command->list, obj));
+static void paste_one_object(Object_t *obj, gpointer data) {
+  PasteCommand_t *command = (PasteCommand_t *)data;
+  command_add_subcommand(&command->parent,
+                         create_command_new(command->list, obj));
 }
 
-static CmdExecuteValue_t
-paste_command_execute(Command_t *parent)
-{
-	PasteCommand_t *command = (PasteCommand_t*) parent;
-	gpointer id;
+static CmdExecuteValue_t paste_command_execute(Command_t *parent) {
+  PasteCommand_t *command = (PasteCommand_t *)parent;
+  gpointer id;
 
-	id = object_list_add_add_cb(command->list, paste_one_object, command);
-	object_list_paste(command->list);
-	object_list_remove_add_cb(command->list, id);
-	return CMD_APPEND;
+  id = object_list_add_add_cb(command->list, paste_one_object, command);
+  object_list_paste(command->list);
+  object_list_remove_add_cb(command->list, id);
+  return CMD_APPEND;
 }

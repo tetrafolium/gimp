@@ -25,14 +25,11 @@
 #ifndef __GFIG_STAR_H__
 #define __GFIG_STAR_H__
 
-void tool_options_star        (GtkWidget *notebook);
+void tool_options_star(GtkWidget *notebook);
 
-void d_star_object_class_init (void);
+void d_star_object_class_init(void);
 
-void d_star_start             (GdkPoint  *pnt,
-                               gboolean shift_down);
-void d_star_end               (GdkPoint  *pnt,
-                               gboolean shift_down);
-
+void d_star_start(GdkPoint *pnt, gboolean shift_down);
+void d_star_end(GdkPoint *pnt, gboolean shift_down);
 
 #endif /* __GFIG_STAR_H__ */

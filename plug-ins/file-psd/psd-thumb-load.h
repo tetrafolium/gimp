@@ -21,11 +21,7 @@
 #ifndef __PSD_THUMB_LOAD_H__
 #define __PSD_THUMB_LOAD_H__
 
-
-GimpImage * load_thumbnail_image (GFile   *file,
-                                  gint    *width,
-                                  gint    *height,
-                                  GError **error);
-
+GimpImage *load_thumbnail_image(GFile *file, gint *width, gint *height,
+                                GError **error);
 
 #endif /* __PSD_THUMB_LOAD_H__ */

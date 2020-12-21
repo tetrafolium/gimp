@@ -70,7 +70,7 @@
  * Sent to the caller before any of the
  * images are transferred to the application.
  */
-typedef void (* TW_PRE_TXFR_CB)(void *);
+typedef void (*TW_PRE_TXFR_CB)(void *);
 
 /*
  * Image transfer begin function type
@@ -81,7 +81,7 @@ typedef void (* TW_PRE_TXFR_CB)(void *);
  * Otherwise, the function should return a
  * TRUE value.
  */
-typedef int (* TW_TXFR_BEGIN_CB)(pTW_IMAGEINFO, void *);
+typedef int (*TW_TXFR_BEGIN_CB)(pTW_IMAGEINFO, void *);
 
 /*
  * Image transfer callback function type
@@ -90,7 +90,7 @@ typedef int (* TW_TXFR_BEGIN_CB)(pTW_IMAGEINFO, void *);
  * should continue.  False if the transfer should
  * be cancelled.
  */
-typedef int (* TW_TXFR_DATA_CB)(pTW_IMAGEINFO, pTW_IMAGEMEMXFER, void *);
+typedef int (*TW_TXFR_DATA_CB)(pTW_IMAGEINFO, pTW_IMAGEMEMXFER, void *);
 
 /*
  * Image transfer end function type
@@ -108,7 +108,7 @@ typedef int (* TW_TXFR_DATA_CB)(pTW_IMAGEINFO, pTW_IMAGEMEMXFER, void *);
  * TWRC_FAILURE
  *  The transfer failed.
  */
-typedef int (* TW_TXFR_END_CB)(int, int, void *);
+typedef int (*TW_TXFR_END_CB)(int, int, void *);
 
 /*
  * Post-image transfer callback
@@ -117,7 +117,7 @@ typedef int (* TW_TXFR_END_CB)(int, int, void *);
  * of the possible images have been transferred
  * from the datasource.
  */
-typedef void (* TW_POST_TXFR_CB)(int, void *);
+typedef void (*TW_POST_TXFR_CB)(int, void *);
 
 /*
  * The following structure defines the
@@ -128,20 +128,20 @@ typedef void (* TW_POST_TXFR_CB)(int, void *);
  * not be called.
  */
 typedef struct _TXFR_CB_FUNCS {
-	/* Pre-transfer function */
-	TW_PRE_TXFR_CB preTxfrCb;
+  /* Pre-transfer function */
+  TW_PRE_TXFR_CB preTxfrCb;
 
-	/* Begin function */
-	TW_TXFR_BEGIN_CB txfrBeginCb;
+  /* Begin function */
+  TW_TXFR_BEGIN_CB txfrBeginCb;
 
-	/* Data transfer */
-	TW_TXFR_DATA_CB txfrDataCb;
+  /* Data transfer */
+  TW_TXFR_DATA_CB txfrDataCb;
 
-	/* End function */
-	TW_TXFR_END_CB txfrEndCb;
+  /* End function */
+  TW_TXFR_END_CB txfrEndCb;
 
-	/* Post-transfer function */
-	TW_POST_TXFR_CB postTxfrCb;
+  /* Post-transfer function */
+  TW_POST_TXFR_CB postTxfrCb;
 } TXFR_CB_FUNCS, *pTXFR_CB_FUNCS;
 
 /*
@@ -150,39 +150,39 @@ typedef struct _TXFR_CB_FUNCS {
  * session.
  */
 typedef struct _TWAIN_SESSION {
-	/* The window handle related to the TWAIN application on Win32 */
-	TW_HANDLE hwnd;
+  /* The window handle related to the TWAIN application on Win32 */
+  TW_HANDLE hwnd;
 
-	/* The current TWAIN return code */
-	TW_UINT16 twRC;
+  /* The current TWAIN return code */
+  TW_UINT16 twRC;
 
-	/* The application's TWAIN identity */
-	pTW_IDENTITY appIdentity;
+  /* The application's TWAIN identity */
+  pTW_IDENTITY appIdentity;
 
-	/* The datasource's TWAIN identity */
-	pTW_IDENTITY dsIdentity;
+  /* The datasource's TWAIN identity */
+  pTW_IDENTITY dsIdentity;
 
-	/* The image data transfer functions */
-	pTXFR_CB_FUNCS transferFunctions;
+  /* The image data transfer functions */
+  pTXFR_CB_FUNCS transferFunctions;
 
-	/* Client data that is associated with the image
-	 * transfer callback
-	 */
-	void *clientData;
+  /* Client data that is associated with the image
+   * transfer callback
+   */
+  void *clientData;
 
-	/*
-	 * The following variable tracks the current state
-	 * as related to the TWAIN engine.  The states are:
-	 *
-	 * 1) Pre-session: The DSM has not been loaded
-	 * 2) Source Manager Loaded (not opened)
-	 * 3) Source Manager Opened
-	 * 4) Source Open
-	 * 5) Source Enabled
-	 * 6) Transfer ready
-	 * 7) Transferring
-	 */
-	int twainState;
+  /*
+   * The following variable tracks the current state
+   * as related to the TWAIN engine.  The states are:
+   *
+   * 1) Pre-session: The DSM has not been loaded
+   * 2) Source Manager Loaded (not opened)
+   * 3) Source Manager Opened
+   * 4) Source Open
+   * 5) Source Enabled
+   * 6) Transfer ready
+   * 7) Transferring
+   */
+  int twainState;
 
 } TW_SESSION, *pTW_SESSION;
 
@@ -221,7 +221,7 @@ int disableDS(pTW_SESSION);
 int closeDS(pTW_SESSION);
 int closeDSM(pTW_SESSION);
 void cancelPendingTransfers(pTW_SESSION);
-int scanImage (void);
+int scanImage(void);
 
 TW_FIX32 FloatToFIX32(float);
 float FIX32ToFloat(TW_FIX32);

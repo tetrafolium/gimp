@@ -18,52 +18,47 @@
 #ifndef __JPEG_H__
 #define __JPEG_H__
 
-#define LOAD_PROC       "file-jpeg-load"
+#define LOAD_PROC "file-jpeg-load"
 #define LOAD_THUMB_PROC "file-jpeg-load-thumb"
-#define SAVE_PROC       "file-jpeg-save"
-#define PLUG_IN_BINARY  "file-jpeg"
-#define PLUG_IN_ROLE    "gimp-file-jpeg"
+#define SAVE_PROC "file-jpeg-save"
+#define PLUG_IN_BINARY "file-jpeg"
+#define PLUG_IN_ROLE "gimp-file-jpeg"
 
 /* headers used in some APPn markers */
 #define JPEG_APP_HEADER_EXIF "Exif\0\0"
-#define JPEG_APP_HEADER_XMP  "http://ns.adobe.com/xap/1.0/"
+#define JPEG_APP_HEADER_XMP "http://ns.adobe.com/xap/1.0/"
 
-typedef struct my_error_mgr
-{
-	struct jpeg_error_mgr pub;        /* "public" fields */
+typedef struct my_error_mgr {
+  struct jpeg_error_mgr pub; /* "public" fields */
 
 #ifdef __ia64__
-	/* Ugh, the jmp_buf field needs to be 16-byte aligned on ia64 and some
-	 * glibc/icc combinations don't guarantee this. So we pad. See bug #138357
-	 * for details.
-	 */
-	long double dummy;
+  /* Ugh, the jmp_buf field needs to be 16-byte aligned on ia64 and some
+   * glibc/icc combinations don't guarantee this. So we pad. See bug #138357
+   * for details.
+   */
+  long double dummy;
 #endif
 
-	jmp_buf setjmp_buffer;            /* for return to caller */
-} *my_error_ptr;
+  jmp_buf setjmp_buffer; /* for return to caller */
+} * my_error_ptr;
 
-typedef enum
-{
-	JPEG_SUBSAMPLING_2x2_1x1_1x1 = 0, /* smallest file */
-	JPEG_SUBSAMPLING_2x1_1x1_1x1 = 1, /* 4:2:2         */
-	JPEG_SUBSAMPLING_1x1_1x1_1x1 = 2,
-	JPEG_SUBSAMPLING_1x2_1x1_1x1 = 3
+typedef enum {
+  JPEG_SUBSAMPLING_2x2_1x1_1x1 = 0, /* smallest file */
+  JPEG_SUBSAMPLING_2x1_1x1_1x1 = 1, /* 4:2:2         */
+  JPEG_SUBSAMPLING_1x1_1x1_1x1 = 2,
+  JPEG_SUBSAMPLING_1x2_1x1_1x1 = 3
 } JpegSubsampling;
 
-extern GimpImage * volatile preview_image;
-extern GimpLayer *      preview_layer;
+extern GimpImage *volatile preview_image;
+extern GimpLayer *preview_layer;
 extern gboolean undo_touched;
 extern gboolean load_interactive;
-extern GimpDisplay     *display;
+extern GimpDisplay *display;
 
+void destroy_preview(void);
 
-void      destroy_preview               (void);
-
-void      my_error_exit                 (j_common_ptr cinfo);
-void      my_emit_message               (j_common_ptr cinfo,
-                                         int msg_level);
-void      my_output_message             (j_common_ptr cinfo);
-
+void my_error_exit(j_common_ptr cinfo);
+void my_emit_message(j_common_ptr cinfo, int msg_level);
+void my_output_message(j_common_ptr cinfo);
 
 #endif /* __JPEG_H__ */

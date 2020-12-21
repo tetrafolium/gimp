@@ -18,20 +18,20 @@
 #ifndef __LIGHTING_ICONS_H__
 #define __LIGHTING_ICONS_H__
 
+#define LIGHTING_INTENSITY_AMBIENT_LOW "lighting-intensity-ambient-low"
+#define LIGHTING_INTENSITY_AMBIENT_HIGH "lighting-intensity-ambient-high"
+#define LIGHTING_INTENSITY_DIFFUSE_LOW "lighting-intensity-diffuse-low"
+#define LIGHTING_INTENSITY_DIFFUSE_HIGH "lighting-intensity-diffuse-high"
+#define LIGHTING_REFLECTIVITY_DIFFUSE_LOW "lighting-reflectivity-diffuse-low"
+#define LIGHTING_REFLECTIVITY_DIFFUSE_HIGH "lighting-reflectivity-diffuse-high"
+#define LIGHTING_REFLECTIVITY_SPECULAR_LOW "lighting-reflectivity-specular-low"
+#define LIGHTING_REFLECTIVITY_SPECULAR_HIGH                                    \
+  "lighting-reflectivity-specular-high"
+#define LIGHTING_REFLECTIVITY_HIGHLIGHT_LOW                                    \
+  "lighting-reflectivity-highlight-low"
+#define LIGHTING_REFLECTIVITY_HIGHLIGHT_HIGH                                   \
+  "lighting-reflectivity-highlight-high"
 
-#define LIGHTING_INTENSITY_AMBIENT_LOW        "lighting-intensity-ambient-low"
-#define LIGHTING_INTENSITY_AMBIENT_HIGH       "lighting-intensity-ambient-high"
-#define LIGHTING_INTENSITY_DIFFUSE_LOW        "lighting-intensity-diffuse-low"
-#define LIGHTING_INTENSITY_DIFFUSE_HIGH       "lighting-intensity-diffuse-high"
-#define LIGHTING_REFLECTIVITY_DIFFUSE_LOW     "lighting-reflectivity-diffuse-low"
-#define LIGHTING_REFLECTIVITY_DIFFUSE_HIGH    "lighting-reflectivity-diffuse-high"
-#define LIGHTING_REFLECTIVITY_SPECULAR_LOW    "lighting-reflectivity-specular-low"
-#define LIGHTING_REFLECTIVITY_SPECULAR_HIGH   "lighting-reflectivity-specular-high"
-#define LIGHTING_REFLECTIVITY_HIGHLIGHT_LOW   "lighting-reflectivity-highlight-low"
-#define LIGHTING_REFLECTIVITY_HIGHLIGHT_HIGH  "lighting-reflectivity-highlight-high"
-
-
-void  lighting_icons_init (void);
-
+void lighting_icons_init(void);
 
 #endif /* __LIGHTING_ICONs_H__ */

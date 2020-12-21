@@ -22,10 +22,6 @@
 #ifndef __WEBP_LOAD_H__
 #define __WEBP_LOAD_H__
 
-
-GimpImage * load_image (GFile       *file,
-                        gboolean interactive,
-                        GError     **error);
-
+GimpImage *load_image(GFile *file, gboolean interactive, GError **error);
 
 #endif /* __WEBP_LOAD_H__ */
