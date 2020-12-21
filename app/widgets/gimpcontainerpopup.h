@@ -37,52 +37,52 @@ typedef struct _GimpContainerPopupClass  GimpContainerPopupClass;
 
 struct _GimpContainerPopup
 {
-  GimpPopup            parent_instance;
+    GimpPopup            parent_instance;
 
-  GimpContainer       *container;
-  GimpContext         *orig_context;
-  GimpContext         *context;
+    GimpContainer       *container;
+    GimpContext         *orig_context;
+    GimpContext         *context;
 
-  GimpViewType         view_type;
-  gint                 default_view_size;
-  gint                 view_size;
-  gint                 view_border_width;
+    GimpViewType         view_type;
+    gint                 default_view_size;
+    gint                 view_size;
+    gint                 view_border_width;
 
-  GtkWidget           *frame;
-  GimpContainerEditor *editor;
+    GtkWidget           *frame;
+    GimpContainerEditor *editor;
 
-  GimpDialogFactory   *dialog_factory;
-  gchar               *dialog_identifier;
-  gchar               *dialog_icon_name;
-  gchar               *dialog_tooltip;
+    GimpDialogFactory   *dialog_factory;
+    gchar               *dialog_identifier;
+    gchar               *dialog_icon_name;
+    gchar               *dialog_tooltip;
 };
 
 struct _GimpContainerPopupClass
 {
-  GimpPopupClass  parent_instance;
+    GimpPopupClass  parent_instance;
 };
 
 
 GType       gimp_container_popup_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_container_popup_new      (GimpContainer      *container,
-                                           GimpContext        *context,
-                                           GimpViewType        view_type,
-                                           gint                default_view_size,
-                                           gint                view_size,
-                                           gint                view_border_width,
-                                           GimpDialogFactory  *dialog_factory,
-                                           const gchar        *dialog_identifier,
-                                           const gchar        *dialog_icon_name,
-                                           const gchar        *dialog_tooltip);
+        GimpContext        *context,
+        GimpViewType        view_type,
+        gint                default_view_size,
+        gint                view_size,
+        gint                view_border_width,
+        GimpDialogFactory  *dialog_factory,
+        const gchar        *dialog_identifier,
+        const gchar        *dialog_icon_name,
+        const gchar        *dialog_tooltip);
 
 GimpViewType gimp_container_popup_get_view_type (GimpContainerPopup *popup);
 void         gimp_container_popup_set_view_type (GimpContainerPopup *popup,
-                                                 GimpViewType        view_type);
+        GimpViewType        view_type);
 
 gint         gimp_container_popup_get_view_size (GimpContainerPopup *popup);
 void         gimp_container_popup_set_view_size (GimpContainerPopup *popup,
-                                                 gint                view_size);
+        gint                view_size);
 
 
 #endif  /*  __GIMP_CONTAINER_POPUP_H__  */

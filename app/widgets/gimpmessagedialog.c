@@ -56,59 +56,59 @@ gimp_message_dialog_new (const gchar    *title,
                          const gchar    *help_id,
                          ...)
 {
-  GimpMessageDialog *dialog;
-  va_list            args;
-  gboolean           use_header_bar;
+    GimpMessageDialog *dialog;
+    va_list            args;
+    gboolean           use_header_bar;
 
-  g_return_val_if_fail (title != NULL, NULL);
-  g_return_val_if_fail (parent == NULL || GTK_IS_WIDGET (parent), NULL);
+    g_return_val_if_fail (title != NULL, NULL);
+    g_return_val_if_fail (parent == NULL || GTK_IS_WIDGET (parent), NULL);
 
-  g_object_get (gtk_settings_get_default (),
-                "gtk-dialogs-use-header", &use_header_bar,
-                NULL);
+    g_object_get (gtk_settings_get_default (),
+                  "gtk-dialogs-use-header", &use_header_bar,
+                  NULL);
 
-  dialog = g_object_new (GIMP_TYPE_MESSAGE_DIALOG,
-                         "title",          title,
-                         "role",           "gimp-message-dialog",
-                         "modal",          (flags & GTK_DIALOG_MODAL),
-                         "help-func",      help_func,
-                         "help-id",        help_id,
-                         "use-header-bar", use_header_bar,
-                         NULL);
+    dialog = g_object_new (GIMP_TYPE_MESSAGE_DIALOG,
+                           "title",          title,
+                           "role",           "gimp-message-dialog",
+                           "modal",          (flags & GTK_DIALOG_MODAL),
+                           "help-func",      help_func,
+                           "help-id",        help_id,
+                           "use-header-bar", use_header_bar,
+                           NULL);
 
-  if (parent)
+    if (parent)
     {
-      if (! GTK_IS_WINDOW (parent))
-        parent = gtk_widget_get_toplevel (parent);
+        if (! GTK_IS_WINDOW (parent))
+            parent = gtk_widget_get_toplevel (parent);
 
-      if (GTK_IS_WINDOW (parent))
+        if (GTK_IS_WINDOW (parent))
         {
-          gtk_window_set_transient_for (GTK_WINDOW (dialog),
-                                        GTK_WINDOW (parent));
+            gtk_window_set_transient_for (GTK_WINDOW (dialog),
+                                          GTK_WINDOW (parent));
 
-          if (flags & GTK_DIALOG_DESTROY_WITH_PARENT)
-            gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
+            if (flags & GTK_DIALOG_DESTROY_WITH_PARENT)
+                gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
         }
-      else
+        else
         {
-          gtk_window_set_screen (GTK_WINDOW (dialog),
-                                 gtk_widget_get_screen (parent));
+            gtk_window_set_screen (GTK_WINDOW (dialog),
+                                   gtk_widget_get_screen (parent));
         }
     }
 
-  va_start (args, help_id);
+    va_start (args, help_id);
 
-  gimp_dialog_add_buttons_valist (GIMP_DIALOG (dialog), args);
+    gimp_dialog_add_buttons_valist (GIMP_DIALOG (dialog), args);
 
-  va_end (args);
+    va_end (args);
 
-  dialog->box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
-                              "icon-name", icon_name,
-                              NULL);
+    dialog->box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
+                                "icon-name", icon_name,
+                                NULL);
 
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      GTK_WIDGET (dialog->box), FALSE, FALSE, 0);
-  gtk_widget_show (GTK_WIDGET (dialog->box));
+    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                        GTK_WIDGET (dialog->box), FALSE, FALSE, 0);
+    gtk_widget_show (GTK_WIDGET (dialog->box));
 
-  return GTK_WIDGET (dialog);
+    return GTK_WIDGET (dialog);
 }

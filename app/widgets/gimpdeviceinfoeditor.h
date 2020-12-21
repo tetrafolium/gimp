@@ -34,12 +34,12 @@ typedef struct _GimpDeviceInfoEditorClass GimpDeviceInfoEditorClass;
 
 struct _GimpDeviceInfoEditor
 {
-  GtkBox  parent_instance;
+    GtkBox  parent_instance;
 };
 
 struct _GimpDeviceInfoEditorClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 };
 
 

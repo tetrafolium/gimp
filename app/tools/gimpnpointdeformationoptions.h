@@ -37,22 +37,22 @@ typedef struct _GimpNPointDeformationOptionsClass GimpNPointDeformationOptionsCl
 
 struct _GimpNPointDeformationOptions
 {
-  GimpToolOptions  parent_instance;
+    GimpToolOptions  parent_instance;
 
-  gdouble          square_size;
-  gdouble          rigidity;
-  gboolean         asap_deformation;
-  gboolean         mls_weights;
-  gdouble          mls_weights_alpha;
-  gboolean         mesh_visible;
+    gdouble          square_size;
+    gdouble          rigidity;
+    gboolean         asap_deformation;
+    gboolean         mls_weights;
+    gdouble          mls_weights_alpha;
+    gboolean         mesh_visible;
 
-  GtkWidget       *scale_square_size;
-  GtkWidget       *check_mesh_visible;
+    GtkWidget       *scale_square_size;
+    GtkWidget       *check_mesh_visible;
 };
 
 struct _GimpNPointDeformationOptionsClass
 {
-  GimpToolOptionsClass  parent_class;
+    GimpToolOptionsClass  parent_class;
 };
 
 
@@ -61,7 +61,7 @@ GType       gimp_n_point_deformation_options_get_type (void) G_GNUC_CONST;
 GtkWidget * gimp_n_point_deformation_options_gui      (GimpToolOptions *tool_options);
 
 void        gimp_n_point_deformation_options_set_sensitivity (GimpNPointDeformationOptions *npd_options,
-                                                              gboolean                      tool_active);
+        gboolean                      tool_active);
 
 
 #endif  /*  __GIMP_N_POINT_DEFORMATION_OPTIONS_H__  */

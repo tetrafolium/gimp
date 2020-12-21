@@ -43,7 +43,7 @@
 /*  local function prototypes  */
 
 static gboolean   gimp_generic_transform_tool_info_to_matrix (GimpTransformGridTool *tg_tool,
-                                                              GimpMatrix3           *transform);
+        GimpMatrix3           *transform);
 static void       gimp_generic_transform_tool_dialog         (GimpTransformGridTool *tg_tool);
 static void       gimp_generic_transform_tool_dialog_update  (GimpTransformGridTool *tg_tool);
 static void       gimp_generic_transform_tool_prepare        (GimpTransformGridTool *tg_tool);
@@ -58,12 +58,12 @@ G_DEFINE_TYPE (GimpGenericTransformTool, gimp_generic_transform_tool,
 static void
 gimp_generic_transform_tool_class_init (GimpGenericTransformToolClass *klass)
 {
-  GimpTransformGridToolClass *tg_class = GIMP_TRANSFORM_GRID_TOOL_CLASS (klass);
+    GimpTransformGridToolClass *tg_class = GIMP_TRANSFORM_GRID_TOOL_CLASS (klass);
 
-  tg_class->info_to_matrix = gimp_generic_transform_tool_info_to_matrix;
-  tg_class->dialog         = gimp_generic_transform_tool_dialog;
-  tg_class->dialog_update  = gimp_generic_transform_tool_dialog_update;
-  tg_class->prepare        = gimp_generic_transform_tool_prepare;
+    tg_class->info_to_matrix = gimp_generic_transform_tool_info_to_matrix;
+    tg_class->dialog         = gimp_generic_transform_tool_dialog;
+    tg_class->dialog_update  = gimp_generic_transform_tool_dialog_update;
+    tg_class->prepare        = gimp_generic_transform_tool_prepare;
 }
 
 static void
@@ -73,121 +73,129 @@ gimp_generic_transform_tool_init (GimpGenericTransformTool *unified_tool)
 
 static gboolean
 gimp_generic_transform_tool_info_to_matrix (GimpTransformGridTool *tg_tool,
-                                            GimpMatrix3           *transform)
+        GimpMatrix3           *transform)
 {
-  GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
+    GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
 
-  if (GIMP_GENERIC_TRANSFORM_TOOL_GET_CLASS (generic)->info_to_points)
-    GIMP_GENERIC_TRANSFORM_TOOL_GET_CLASS (generic)->info_to_points (generic);
+    if (GIMP_GENERIC_TRANSFORM_TOOL_GET_CLASS (generic)->info_to_points)
+        GIMP_GENERIC_TRANSFORM_TOOL_GET_CLASS (generic)->info_to_points (generic);
 
-  gimp_matrix3_identity (transform);
+    gimp_matrix3_identity (transform);
 
-  return gimp_transform_matrix_generic (transform,
-                                        generic->input_points,
-                                        generic->output_points);
+    return gimp_transform_matrix_generic (transform,
+                                          generic->input_points,
+                                          generic->output_points);
 }
 
 static void
 gimp_generic_transform_tool_dialog (GimpTransformGridTool *tg_tool)
 {
-  GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
-  GtkWidget                *frame;
-  GtkWidget                *vbox;
-  GtkWidget                *grid;
-  GtkWidget                *label;
-  GtkSizeGroup             *size_group;
-  gint                      x, y;
+    GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
+    GtkWidget                *frame;
+    GtkWidget                *vbox;
+    GtkWidget                *grid;
+    GtkWidget                *label;
+    GtkSizeGroup             *size_group;
+    gint                      x, y;
 
-  frame = gimp_frame_new (_("Transform Matrix"));
-  gtk_box_pack_start (GTK_BOX (gimp_tool_gui_get_vbox (tg_tool->gui)), frame,
-                      FALSE, FALSE, 0);
-  gtk_widget_show (frame);
+    frame = gimp_frame_new (_("Transform Matrix"));
+    gtk_box_pack_start (GTK_BOX (gimp_tool_gui_get_vbox (tg_tool->gui)), frame,
+                        FALSE, FALSE, 0);
+    gtk_widget_show (frame);
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (frame), vbox);
-  gtk_widget_show (vbox);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_add (GTK_CONTAINER (frame), vbox);
+    gtk_widget_show (vbox);
 
-  size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
+    size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
-  grid = generic->matrix_grid = gtk_grid_new ();
-  gtk_grid_set_row_spacing (GTK_GRID (grid), 2);
-  gtk_grid_set_column_spacing (GTK_GRID (grid), 2);
-  gtk_box_pack_start (GTK_BOX (vbox), grid, TRUE, TRUE, 0);
-  gtk_size_group_add_widget (size_group, grid);
-  gtk_widget_show (grid);
+    grid = generic->matrix_grid = gtk_grid_new ();
+    gtk_grid_set_row_spacing (GTK_GRID (grid), 2);
+    gtk_grid_set_column_spacing (GTK_GRID (grid), 2);
+    gtk_box_pack_start (GTK_BOX (vbox), grid, TRUE, TRUE, 0);
+    gtk_size_group_add_widget (size_group, grid);
+    gtk_widget_show (grid);
 
-  for (y = 0; y < 3; y++)
+    for (y = 0; y < 3; y++)
     {
-      for (x = 0; x < 3; x++)
+        for (x = 0; x < 3; x++)
         {
-          label = generic->matrix_labels[y][x] = gtk_label_new (" ");
-          gtk_label_set_xalign (GTK_LABEL (label), 1.0);
-          gtk_label_set_width_chars (GTK_LABEL (label), 8);
-          gimp_label_set_attributes (GTK_LABEL (label),
-                                     PANGO_ATTR_SCALE, PANGO_SCALE_SMALL,
-                                     -1);
-          gtk_grid_attach (GTK_GRID (grid), label, x, y, 1, 1);
-          gtk_widget_show (label);
+            label = generic->matrix_labels[y][x] = gtk_label_new (" ");
+            gtk_label_set_xalign (GTK_LABEL (label), 1.0);
+            gtk_label_set_width_chars (GTK_LABEL (label), 8);
+            gimp_label_set_attributes (GTK_LABEL (label),
+                                       PANGO_ATTR_SCALE, PANGO_SCALE_SMALL,
+                                       -1);
+            gtk_grid_attach (GTK_GRID (grid), label, x, y, 1, 1);
+            gtk_widget_show (label);
         }
     }
 
-  label = generic->invalid_label = gtk_label_new (_("Invalid transform"));
-  gimp_label_set_attributes (GTK_LABEL (label),
-                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
-                             -1);
-  gtk_size_group_add_widget (size_group, label);
-  gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
+    label = generic->invalid_label = gtk_label_new (_("Invalid transform"));
+    gimp_label_set_attributes (GTK_LABEL (label),
+                               PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                               -1);
+    gtk_size_group_add_widget (size_group, label);
+    gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
 
-  g_object_unref (size_group);
+    g_object_unref (size_group);
 }
 
 static void
 gimp_generic_transform_tool_dialog_update (GimpTransformGridTool *tg_tool)
 {
-  GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
-  GimpMatrix3               transform;
-  gboolean                  transform_valid;
+    GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
+    GimpMatrix3               transform;
+    gboolean                  transform_valid;
 
-  transform_valid = gimp_transform_grid_tool_info_to_matrix (tg_tool,
-                                                             &transform);
+    transform_valid = gimp_transform_grid_tool_info_to_matrix (tg_tool,
+                      &transform);
 
-  if (transform_valid)
+    if (transform_valid)
     {
-      gint x, y;
+        gint x, y;
 
-      gtk_widget_show (generic->matrix_grid);
-      gtk_widget_hide (generic->invalid_label);
+        gtk_widget_show (generic->matrix_grid);
+        gtk_widget_hide (generic->invalid_label);
 
-      for (y = 0; y < 3; y++)
+        for (y = 0; y < 3; y++)
         {
-          for (x = 0; x < 3; x++)
+            for (x = 0; x < 3; x++)
             {
-              gchar buf[32];
+                gchar buf[32];
 
-              g_snprintf (buf, sizeof (buf), "%.4f", transform.coeff[y][x]);
+                g_snprintf (buf, sizeof (buf), "%.4f", transform.coeff[y][x]);
 
-              gtk_label_set_text (GTK_LABEL (generic->matrix_labels[y][x]), buf);
+                gtk_label_set_text (GTK_LABEL (generic->matrix_labels[y][x]), buf);
             }
         }
     }
-  else
+    else
     {
-      gtk_widget_show (generic->invalid_label);
-      gtk_widget_hide (generic->matrix_grid);
+        gtk_widget_show (generic->invalid_label);
+        gtk_widget_hide (generic->matrix_grid);
     }
 }
 
 static void
 gimp_generic_transform_tool_prepare (GimpTransformGridTool *tg_tool)
 {
-  GimpTransformTool        *tr_tool = GIMP_TRANSFORM_TOOL (tg_tool);
-  GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
+    GimpTransformTool        *tr_tool = GIMP_TRANSFORM_TOOL (tg_tool);
+    GimpGenericTransformTool *generic = GIMP_GENERIC_TRANSFORM_TOOL (tg_tool);
 
-  generic->input_points[0] = (GimpVector2) {tr_tool->x1, tr_tool->y1};
-  generic->input_points[1] = (GimpVector2) {tr_tool->x2, tr_tool->y1};
-  generic->input_points[2] = (GimpVector2) {tr_tool->x1, tr_tool->y2};
-  generic->input_points[3] = (GimpVector2) {tr_tool->x2, tr_tool->y2};
+    generic->input_points[0] = (GimpVector2) {
+        tr_tool->x1, tr_tool->y1
+    };
+    generic->input_points[1] = (GimpVector2) {
+        tr_tool->x2, tr_tool->y1
+    };
+    generic->input_points[2] = (GimpVector2) {
+        tr_tool->x1, tr_tool->y2
+    };
+    generic->input_points[3] = (GimpVector2) {
+        tr_tool->x2, tr_tool->y2
+    };
 
-  memcpy (generic->output_points, generic->input_points,
-          sizeof (generic->input_points));
+    memcpy (generic->output_points, generic->input_points,
+            sizeof (generic->input_points));
 }

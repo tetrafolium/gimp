@@ -37,12 +37,12 @@ typedef struct _GimpInkToolClass GimpInkToolClass;
 
 struct _GimpInkTool
 {
-  GimpPaintTool parent_instance;
+    GimpPaintTool parent_instance;
 };
 
 struct _GimpInkToolClass
 {
-  GimpPaintToolClass parent_class;
+    GimpPaintToolClass parent_class;
 };
 
 

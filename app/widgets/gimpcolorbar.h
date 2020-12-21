@@ -31,15 +31,15 @@ typedef struct _GimpColorBarClass  GimpColorBarClass;
 
 struct _GimpColorBar
 {
-  GtkEventBox     parent_class;
+    GtkEventBox     parent_class;
 
-  GtkOrientation  orientation;
-  guchar          buf[3 * 256];
+    GtkOrientation  orientation;
+    guchar          buf[3 * 256];
 };
 
 struct _GimpColorBarClass
 {
-  GtkEventBoxClass  parent_class;
+    GtkEventBoxClass  parent_class;
 };
 
 

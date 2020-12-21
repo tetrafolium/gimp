@@ -36,12 +36,12 @@ typedef struct _GimpViewRendererVectorsClass  GimpViewRendererVectorsClass;
 
 struct _GimpViewRendererVectors
 {
-  GimpViewRenderer  parent_instance;
+    GimpViewRenderer  parent_instance;
 };
 
 struct _GimpViewRendererVectorsClass
 {
-  GimpViewRendererClass  parent_class;
+    GimpViewRendererClass  parent_class;
 };
 
 

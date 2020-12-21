@@ -106,12 +106,12 @@ void  gimp_dnd_init (Gimp *gimp);
 /*  uri list dnd functions  */
 
 typedef GList * (* GimpDndDragUriListFunc) (GtkWidget *widget,
-                                            gpointer   data);
+        gpointer   data);
 typedef void    (* GimpDndDropUriListFunc) (GtkWidget *widget,
-                                            gint       x,
-                                            gint       y,
-                                            GList     *uri_list,
-                                            gpointer   data);
+        gint       x,
+        gint       y,
+        GList     *uri_list,
+        gpointer   data);
 
 void  gimp_dnd_uri_list_source_add    (GtkWidget              *widget,
                                        GimpDndDragUriListFunc  get_uri_list_func,
@@ -149,14 +149,14 @@ void  gimp_dnd_color_dest_remove   (GtkWidget            *widget);
 /*  stream dnd functions  */
 
 typedef guchar * (* GimpDndDragStreamFunc) (GtkWidget    *widget,
-                                            gsize        *stream_len,
-                                            gpointer      data);
+        gsize        *stream_len,
+        gpointer      data);
 typedef void     (* GimpDndDropStreamFunc) (GtkWidget    *widget,
-                                            gint          x,
-                                            gint          y,
-                                            const guchar *stream,
-                                            gsize         stream_len,
-                                            gpointer      data);
+        gint          x,
+        gint          y,
+        const guchar *stream,
+        gsize         stream_len,
+        gpointer      data);
 
 void  gimp_dnd_svg_source_add    (GtkWidget              *widget,
                                   GimpDndDragStreamFunc   get_svg_func,
@@ -172,12 +172,12 @@ void  gimp_dnd_svg_dest_remove   (GtkWidget              *widget);
 /*  pixbuf dnd functions  */
 
 typedef GdkPixbuf * (* GimpDndDragPixbufFunc) (GtkWidget    *widget,
-                                               gpointer      data);
+        gpointer      data);
 typedef void        (* GimpDndDropPixbufFunc) (GtkWidget    *widget,
-                                               gint          x,
-                                               gint          y,
-                                               GdkPixbuf    *pixbuf,
-                                               gpointer      data);
+        gint          x,
+        gint          y,
+        GdkPixbuf    *pixbuf,
+        gpointer      data);
 
 void  gimp_dnd_pixbuf_source_add    (GtkWidget              *widget,
                                      GimpDndDragPixbufFunc   get_pixbuf_func,
@@ -193,15 +193,15 @@ void  gimp_dnd_pixbuf_dest_remove   (GtkWidget              *widget);
 /*  component dnd functions  */
 
 typedef GimpImage * (* GimpDndDragComponentFunc) (GtkWidget       *widget,
-                                                  GimpContext    **context,
-                                                  GimpChannelType *channel,
-                                                  gpointer         data);
+        GimpContext    **context,
+        GimpChannelType *channel,
+        gpointer         data);
 typedef void        (* GimpDndDropComponentFunc) (GtkWidget       *widget,
-                                                  gint             x,
-                                                  gint             y,
-                                                  GimpImage       *image,
-                                                  GimpChannelType  channel,
-                                                  gpointer         data);
+        gint             x,
+        gint             y,
+        GimpImage       *image,
+        GimpChannelType  channel,
+        gpointer         data);
 
 void  gimp_dnd_component_source_add    (GtkWidget                 *widget,
                                         GimpDndDragComponentFunc   get_comp_func,
@@ -217,64 +217,64 @@ void  gimp_dnd_component_dest_remove   (GtkWidget                 *widget);
 /*  GimpViewable (by GType) dnd functions  */
 
 typedef GimpViewable * (* GimpDndDragViewableFunc) (GtkWidget     *widget,
-                                                    GimpContext  **context,
-                                                    gpointer       data);
+        GimpContext  **context,
+        gpointer       data);
 typedef void           (* GimpDndDropViewableFunc) (GtkWidget     *widget,
-                                                    gint           x,
-                                                    gint           y,
-                                                    GimpViewable  *viewable,
-                                                    gpointer       data);
+        gint           x,
+        gint           y,
+        GimpViewable  *viewable,
+        gpointer       data);
 
 
 gboolean gimp_dnd_drag_source_set_by_type (GtkWidget               *widget,
-                                           GdkModifierType          start_button_mask,
-                                           GType                    type,
-                                           GdkDragAction            actions);
+        GdkModifierType          start_button_mask,
+        GType                    type,
+        GdkDragAction            actions);
 gboolean gimp_dnd_viewable_source_add     (GtkWidget               *widget,
-                                           GType                    type,
-                                           GimpDndDragViewableFunc  get_viewable_func,
-                                           gpointer                 data);
+        GType                    type,
+        GimpDndDragViewableFunc  get_viewable_func,
+        gpointer                 data);
 gboolean gimp_dnd_viewable_source_remove  (GtkWidget               *widget,
-                                           GType                    type);
+        GType                    type);
 
 gboolean gimp_dnd_drag_dest_set_by_type   (GtkWidget               *widget,
-                                           GtkDestDefaults          flags,
-                                           GType                    type,
-                                           gboolean                 list_accepted,
-                                           GdkDragAction            actions);
+        GtkDestDefaults          flags,
+        GType                    type,
+        gboolean                 list_accepted,
+        GdkDragAction            actions);
 
 gboolean gimp_dnd_viewable_dest_add       (GtkWidget               *widget,
-                                           GType                    type,
-                                           GimpDndDropViewableFunc  set_viewable_func,
-                                           gpointer                 data);
+        GType                    type,
+        GimpDndDropViewableFunc  set_viewable_func,
+        gpointer                 data);
 gboolean gimp_dnd_viewable_dest_remove    (GtkWidget               *widget,
-                                           GType                    type);
+        GType                    type);
 
 GimpViewable * gimp_dnd_get_drag_viewable (GtkWidget               *widget);
 
 /*  GimpViewable (by GType) GList dnd functions  */
 
 typedef GList * (* GimpDndDragViewableListFunc) (GtkWidget     *widget,
-                                                 GimpContext  **context,
-                                                 gpointer       data);
+        GimpContext  **context,
+        gpointer       data);
 typedef void    (* GimpDndDropViewableListFunc) (GtkWidget     *widget,
-                                                 gint           x,
-                                                 gint           y,
-                                                 GList         *viewables,
-                                                 gpointer       data);
+        gint           x,
+        gint           y,
+        GList         *viewables,
+        gpointer       data);
 
 gboolean   gimp_dnd_viewable_list_source_add    (GtkWidget                   *widget,
-                                                 GType                        type,
-                                                 GimpDndDragViewableListFunc  get_viewable_list_func,
-                                                 gpointer                     data);
+        GType                        type,
+        GimpDndDragViewableListFunc  get_viewable_list_func,
+        gpointer                     data);
 gboolean   gimp_dnd_viewable_list_source_remove (GtkWidget                   *widget,
-                                                 GType                        type);
+        GType                        type);
 gboolean   gimp_dnd_viewable_list_dest_add      (GtkWidget                   *widget,
-                                                 GType                        type,
-                                                 GimpDndDropViewableListFunc  set_viewable_func,
-                                                 gpointer                     data);
+        GType                        type,
+        GimpDndDropViewableListFunc  set_viewable_func,
+        gpointer                     data);
 gboolean   gimp_dnd_viewable_list_dest_remove   (GtkWidget                   *widget,
-                                                 GType                        type);
+        GType                        type);
 GList    * gimp_dnd_get_drag_list               (GtkWidget                   *widget);
 
 /*  Direct Save Protocol (XDS)  */

@@ -42,14 +42,14 @@ typedef struct _GimpDialClass   GimpDialClass;
 
 struct _GimpDial
 {
-  GimpCircle       parent_instance;
+    GimpCircle       parent_instance;
 
-  GimpDialPrivate *priv;
+    GimpDialPrivate *priv;
 };
 
 struct _GimpDialClass
 {
-  GimpCircleClass  parent_class;
+    GimpCircleClass  parent_class;
 };
 
 

@@ -38,39 +38,39 @@ typedef struct _GimpTextLayerPrivate GimpTextLayerPrivate;
 
 struct _GimpTextLayer
 {
-  GimpLayer     layer;
+    GimpLayer     layer;
 
-  GimpText     *text;
-  const gchar  *text_parasite;  /*  parasite name that this text was set from,
+    GimpText     *text;
+    const gchar  *text_parasite;  /*  parasite name that this text was set from,
                                  *  and that should be removed when the text
                                  *  is changed.
                                  */
-  gboolean      auto_rename;
-  gboolean      modified;
+    gboolean      auto_rename;
+    gboolean      modified;
 
-  const Babl   *convert_format;
+    const Babl   *convert_format;
 
-  GimpTextLayerPrivate *private;
+    GimpTextLayerPrivate *private;
 };
 
 struct _GimpTextLayerClass
 {
-  GimpLayerClass  parent_class;
+    GimpLayerClass  parent_class;
 };
 
 
 GType       gimp_text_layer_get_type    (void) G_GNUC_CONST;
 
 GimpLayer * gimp_text_layer_new         (GimpImage     *image,
-                                         GimpText      *text);
+        GimpText      *text);
 GimpText  * gimp_text_layer_get_text    (GimpTextLayer *layer);
 void        gimp_text_layer_set_text    (GimpTextLayer *layer,
-                                         GimpText      *text);
+        GimpText      *text);
 void        gimp_text_layer_discard     (GimpTextLayer *layer);
 void        gimp_text_layer_set         (GimpTextLayer *layer,
-                                         const gchar   *undo_desc,
-                                         const gchar   *first_property_name,
-                                         ...) G_GNUC_NULL_TERMINATED;
+        const gchar   *undo_desc,
+        const gchar   *first_property_name,
+        ...) G_GNUC_NULL_TERMINATED;
 
 gboolean    gimp_item_is_text_layer     (GimpItem      *item);
 

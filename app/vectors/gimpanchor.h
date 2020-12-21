@@ -31,10 +31,10 @@ GType   gimp_anchor_get_type           (void) G_GNUC_CONST;
 
 struct _GimpAnchor
 {
-  GimpCoords        position;
+    GimpCoords        position;
 
-  GimpAnchorType    type;   /* Interpretation dependent on GimpStroke type */
-  gboolean          selected;
+    GimpAnchorType    type;   /* Interpretation dependent on GimpStroke type */
+    gboolean          selected;
 };
 
 

@@ -32,22 +32,22 @@
 
 enum
 {
-  CHANGE_SIZE,
-  CHANGE_BASELINE,
-  CHANGE_KERNING,
-  LAST_SIGNAL
+    CHANGE_SIZE,
+    CHANGE_BASELINE,
+    CHANGE_KERNING,
+    LAST_SIGNAL
 };
 
 
 static void   gimp_text_proxy_move_cursor        (GtkTextView     *text_view,
-                                                  GtkMovementStep  step,
-                                                  gint             count,
-                                                  gboolean         extend_selection);
+        GtkMovementStep  step,
+        gint             count,
+        gboolean         extend_selection);
 static void   gimp_text_proxy_insert_at_cursor   (GtkTextView     *text_view,
-                                                  const gchar     *str);
+        const gchar     *str);
 static void   gimp_text_proxy_delete_from_cursor (GtkTextView     *text_view,
-                                                  GtkDeleteType    type,
-                                                  gint             count);
+        GtkDeleteType    type,
+        gint             count);
 static void   gimp_text_proxy_backspace          (GtkTextView     *text_view);
 static void   gimp_text_proxy_cut_clipboard      (GtkTextView     *text_view);
 static void   gimp_text_proxy_copy_clipboard     (GtkTextView     *text_view);
@@ -63,67 +63,67 @@ static guint proxy_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_text_proxy_class_init (GimpTextProxyClass *klass)
 {
-  GtkTextViewClass *tv_class = GTK_TEXT_VIEW_CLASS (klass);
-  GtkBindingSet    *binding_set;
+    GtkTextViewClass *tv_class = GTK_TEXT_VIEW_CLASS (klass);
+    GtkBindingSet    *binding_set;
 
-  tv_class->move_cursor        = gimp_text_proxy_move_cursor;
-  tv_class->insert_at_cursor   = gimp_text_proxy_insert_at_cursor;
-  tv_class->delete_from_cursor = gimp_text_proxy_delete_from_cursor;
-  tv_class->backspace          = gimp_text_proxy_backspace;
-  tv_class->cut_clipboard      = gimp_text_proxy_cut_clipboard;
-  tv_class->copy_clipboard     = gimp_text_proxy_copy_clipboard;
-  tv_class->paste_clipboard    = gimp_text_proxy_paste_clipboard;
-  tv_class->toggle_overwrite   = gimp_text_proxy_toggle_overwrite;
+    tv_class->move_cursor        = gimp_text_proxy_move_cursor;
+    tv_class->insert_at_cursor   = gimp_text_proxy_insert_at_cursor;
+    tv_class->delete_from_cursor = gimp_text_proxy_delete_from_cursor;
+    tv_class->backspace          = gimp_text_proxy_backspace;
+    tv_class->cut_clipboard      = gimp_text_proxy_cut_clipboard;
+    tv_class->copy_clipboard     = gimp_text_proxy_copy_clipboard;
+    tv_class->paste_clipboard    = gimp_text_proxy_paste_clipboard;
+    tv_class->toggle_overwrite   = gimp_text_proxy_toggle_overwrite;
 
-  proxy_signals[CHANGE_SIZE] =
-    g_signal_new ("change-size",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                  G_STRUCT_OFFSET (GimpTextProxyClass, change_size),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_DOUBLE);
+    proxy_signals[CHANGE_SIZE] =
+        g_signal_new ("change-size",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                      G_STRUCT_OFFSET (GimpTextProxyClass, change_size),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_DOUBLE);
 
-  proxy_signals[CHANGE_BASELINE] =
-    g_signal_new ("change-baseline",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                  G_STRUCT_OFFSET (GimpTextProxyClass, change_baseline),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_DOUBLE);
+    proxy_signals[CHANGE_BASELINE] =
+        g_signal_new ("change-baseline",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                      G_STRUCT_OFFSET (GimpTextProxyClass, change_baseline),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_DOUBLE);
 
-  proxy_signals[CHANGE_KERNING] =
-    g_signal_new ("change-kerning",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                  G_STRUCT_OFFSET (GimpTextProxyClass, change_kerning),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_DOUBLE);
+    proxy_signals[CHANGE_KERNING] =
+        g_signal_new ("change-kerning",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                      G_STRUCT_OFFSET (GimpTextProxyClass, change_kerning),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_DOUBLE);
 
-  binding_set = gtk_binding_set_by_class (klass);
+    binding_set = gtk_binding_set_by_class (klass);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_KEY_plus, GDK_MOD1_MASK,
-                                "change-size", 1,
-                                G_TYPE_DOUBLE, 1.0);
-  gtk_binding_entry_add_signal (binding_set, GDK_KEY_minus, GDK_MOD1_MASK,
-                                "change-size", 1,
-                                G_TYPE_DOUBLE, -1.0);
+    gtk_binding_entry_add_signal (binding_set, GDK_KEY_plus, GDK_MOD1_MASK,
+                                  "change-size", 1,
+                                  G_TYPE_DOUBLE, 1.0);
+    gtk_binding_entry_add_signal (binding_set, GDK_KEY_minus, GDK_MOD1_MASK,
+                                  "change-size", 1,
+                                  G_TYPE_DOUBLE, -1.0);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Up, GDK_MOD1_MASK,
-                                "change-baseline", 1,
-                                G_TYPE_DOUBLE, 1.0);
-  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Down, GDK_MOD1_MASK,
-                                "change-baseline", 1,
-                                G_TYPE_DOUBLE, -1.0);
+    gtk_binding_entry_add_signal (binding_set, GDK_KEY_Up, GDK_MOD1_MASK,
+                                  "change-baseline", 1,
+                                  G_TYPE_DOUBLE, 1.0);
+    gtk_binding_entry_add_signal (binding_set, GDK_KEY_Down, GDK_MOD1_MASK,
+                                  "change-baseline", 1,
+                                  G_TYPE_DOUBLE, -1.0);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Left, GDK_MOD1_MASK,
-                                "change-kerning", 1,
-                                G_TYPE_DOUBLE, -1.0);
-  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Right, GDK_MOD1_MASK,
-                                "change-kerning", 1,
-                                G_TYPE_DOUBLE, 1.0);
+    gtk_binding_entry_add_signal (binding_set, GDK_KEY_Left, GDK_MOD1_MASK,
+                                  "change-kerning", 1,
+                                  G_TYPE_DOUBLE, -1.0);
+    gtk_binding_entry_add_signal (binding_set, GDK_KEY_Right, GDK_MOD1_MASK,
+                                  "change-kerning", 1,
+                                  G_TYPE_DOUBLE, 1.0);
 }
 
 static void
@@ -183,14 +183,14 @@ gimp_text_proxy_toggle_overwrite (GtkTextView *text_view)
 GtkWidget *
 gimp_text_proxy_new (void)
 {
-  GtkTextBuffer *buffer = gtk_text_buffer_new (NULL);
-  GtkWidget     *proxy;
+    GtkTextBuffer *buffer = gtk_text_buffer_new (NULL);
+    GtkWidget     *proxy;
 
-  proxy = g_object_new (GIMP_TYPE_TEXT_PROXY,
-                        "buffer", buffer,
-                        NULL);
+    proxy = g_object_new (GIMP_TYPE_TEXT_PROXY,
+                          "buffer", buffer,
+                          NULL);
 
-  g_object_unref (buffer);
+    g_object_unref (buffer);
 
-  return proxy;
+    return proxy;
 }

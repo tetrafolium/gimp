@@ -35,25 +35,25 @@ xcf_write_int8 (XcfInfo       *info,
                 gint           count,
                 GError       **error)
 {
-  GError *my_error      = NULL;
-  gsize   bytes_written = 0;
+    GError *my_error      = NULL;
+    gsize   bytes_written = 0;
 
-  /* we allow for 'data == NULL && count == 0', which
-   * g_output_stream_write_all() rejects.
-   */
-  if (count > 0)
+    /* we allow for 'data == NULL && count == 0', which
+     * g_output_stream_write_all() rejects.
+     */
+    if (count > 0)
     {
-      if (! g_output_stream_write_all (info->output, data, count,
-                                       &bytes_written, NULL, &my_error))
+        if (! g_output_stream_write_all (info->output, data, count,
+                                         &bytes_written, NULL, &my_error))
         {
-          g_propagate_prefixed_error (error, my_error,
-                                      _("Error writing XCF: "));
+            g_propagate_prefixed_error (error, my_error,
+                                        _("Error writing XCF: "));
         }
 
-      info->cp += bytes_written;
+        info->cp += bytes_written;
     }
 
-  return bytes_written;
+    return bytes_written;
 }
 
 guint
@@ -62,27 +62,27 @@ xcf_write_int16 (XcfInfo        *info,
                  gint            count,
                  GError        **error)
 {
-  GError *tmp_error = NULL;
-  gint    i;
+    GError *tmp_error = NULL;
+    gint    i;
 
-  if (count > 0)
+    if (count > 0)
     {
-      for (i = 0; i < count; i++)
+        for (i = 0; i < count; i++)
         {
-          guint16 tmp = g_htons (data[i]);
+            guint16 tmp = g_htons (data[i]);
 
-          xcf_write_int8 (info, (const guint8 *) &tmp, 2, &tmp_error);
+            xcf_write_int8 (info, (const guint8 *) &tmp, 2, &tmp_error);
 
-          if (tmp_error)
+            if (tmp_error)
             {
-              g_propagate_error (error, tmp_error);
+                g_propagate_error (error, tmp_error);
 
-              return i * 2;
+                return i * 2;
             }
         }
     }
 
-  return count * 2;
+    return count * 2;
 }
 
 guint
@@ -91,27 +91,27 @@ xcf_write_int32 (XcfInfo        *info,
                  gint            count,
                  GError        **error)
 {
-  GError  *tmp_error = NULL;
-  gint     i;
+    GError  *tmp_error = NULL;
+    gint     i;
 
-  if (count > 0)
+    if (count > 0)
     {
-      for (i = 0; i < count; i++)
+        for (i = 0; i < count; i++)
         {
-          guint32  tmp = g_htonl (data[i]);
+            guint32  tmp = g_htonl (data[i]);
 
-          xcf_write_int8 (info, (const guint8 *) &tmp, 4, &tmp_error);
+            xcf_write_int8 (info, (const guint8 *) &tmp, 4, &tmp_error);
 
-          if (tmp_error)
+            if (tmp_error)
             {
-              g_propagate_error (error, tmp_error);
+                g_propagate_error (error, tmp_error);
 
-              return i * 4;
+                return i * 4;
             }
         }
     }
 
-  return count * 4;
+    return count * 4;
 }
 
 guint
@@ -120,27 +120,27 @@ xcf_write_int64 (XcfInfo        *info,
                  gint            count,
                  GError        **error)
 {
-  GError *tmp_error = NULL;
-  gint    i;
+    GError *tmp_error = NULL;
+    gint    i;
 
-  if (count > 0)
+    if (count > 0)
     {
-      for (i = 0; i < count; i++)
+        for (i = 0; i < count; i++)
         {
-          guint64 tmp = GINT64_TO_BE (data[i]);
+            guint64 tmp = GINT64_TO_BE (data[i]);
 
-          xcf_write_int8 (info, (const guint8 *) &tmp, 8, &tmp_error);
+            xcf_write_int8 (info, (const guint8 *) &tmp, 8, &tmp_error);
 
-          if (tmp_error)
+            if (tmp_error)
             {
-              g_propagate_error (error, tmp_error);
+                g_propagate_error (error, tmp_error);
 
-              return i * 8;
+                return i * 8;
             }
         }
     }
 
-  return count * 8;
+    return count * 8;
 }
 
 guint
@@ -149,37 +149,37 @@ xcf_write_offset (XcfInfo        *info,
                   gint            count,
                   GError        **error)
 {
-  if (count > 0)
+    if (count > 0)
     {
-      gint i;
+        gint i;
 
-      for (i = 0; i < count; i++)
+        for (i = 0; i < count; i++)
         {
-          GError *tmp_error = NULL;
+            GError *tmp_error = NULL;
 
-          if (info->bytes_per_offset == 4)
+            if (info->bytes_per_offset == 4)
             {
-              guint32 tmp = g_htonl (data[i]);
+                guint32 tmp = g_htonl (data[i]);
 
-              xcf_write_int8 (info, (const guint8 *) &tmp, 4, &tmp_error);
+                xcf_write_int8 (info, (const guint8 *) &tmp, 4, &tmp_error);
             }
-          else
+            else
             {
-              gint64 tmp = GINT64_TO_BE (data[i]);
+                gint64 tmp = GINT64_TO_BE (data[i]);
 
-              xcf_write_int8 (info, (const guint8 *) &tmp, 8, &tmp_error);
+                xcf_write_int8 (info, (const guint8 *) &tmp, 8, &tmp_error);
             }
 
-          if (tmp_error)
+            if (tmp_error)
             {
-              g_propagate_error (error, tmp_error);
+                g_propagate_error (error, tmp_error);
 
-              return i * info->bytes_per_offset;
+                return i * info->bytes_per_offset;
             }
         }
     }
 
-  return count * info->bytes_per_offset;
+    return count * info->bytes_per_offset;
 }
 
 guint
@@ -187,31 +187,31 @@ xcf_write_zero_offset (XcfInfo  *info,
                        gint      count,
                        GError  **error)
 {
-  if (count > 0)
+    if (count > 0)
     {
-      guint8 *tmp;
-      guint   bytes_written = 0;
+        guint8 *tmp;
+        guint   bytes_written = 0;
 
-      tmp = g_try_malloc (count * info->bytes_per_offset);
-      if (! tmp)
+        tmp = g_try_malloc (count * info->bytes_per_offset);
+        if (! tmp)
         {
-          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                       _("Error writing XCF: failed to allocate %d bytes of memory."),
-                       count * info->bytes_per_offset);
+            g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                         _("Error writing XCF: failed to allocate %d bytes of memory."),
+                         count * info->bytes_per_offset);
         }
-      else
+        else
         {
-          memset (tmp, 0, count * info->bytes_per_offset);
+            memset (tmp, 0, count * info->bytes_per_offset);
 
-          bytes_written = xcf_write_int8 (info, (const guint8 *) tmp,
-                                          count * info->bytes_per_offset, error);
-          g_free (tmp);
+            bytes_written = xcf_write_int8 (info, (const guint8 *) tmp,
+                                            count * info->bytes_per_offset, error);
+            g_free (tmp);
         }
 
-      return bytes_written;
+        return bytes_written;
     }
 
-  return 0;
+    return 0;
 }
 
 guint
@@ -220,9 +220,9 @@ xcf_write_float (XcfInfo       *info,
                  gint           count,
                  GError       **error)
 {
-  return xcf_write_int32 (info,
-                          (const guint32 *)((gconstpointer) data), count,
-                          error);
+    return xcf_write_int32 (info,
+                            (const guint32 *)((gconstpointer) data), count,
+                            error);
 }
 
 guint
@@ -231,40 +231,40 @@ xcf_write_string (XcfInfo  *info,
                   gint      count,
                   GError  **error)
 {
-  GError *tmp_error = NULL;
-  guint   total     = 0;
-  gint    i;
+    GError *tmp_error = NULL;
+    guint   total     = 0;
+    gint    i;
 
-  for (i = 0; i < count; i++)
+    for (i = 0; i < count; i++)
     {
-      guint32 tmp;
+        guint32 tmp;
 
-      if (data[i])
-        tmp = strlen (data[i]) + 1;
-      else
-        tmp = 0;
+        if (data[i])
+            tmp = strlen (data[i]) + 1;
+        else
+            tmp = 0;
 
-      xcf_write_int32 (info, &tmp, 1, &tmp_error);
+        xcf_write_int32 (info, &tmp, 1, &tmp_error);
 
-      if (tmp_error)
+        if (tmp_error)
         {
-          g_propagate_error (error, tmp_error);
-          return total;
+            g_propagate_error (error, tmp_error);
+            return total;
         }
 
-      if (tmp > 0)
-        xcf_write_int8 (info, (const guint8 *) data[i], tmp, &tmp_error);
+        if (tmp > 0)
+            xcf_write_int8 (info, (const guint8 *) data[i], tmp, &tmp_error);
 
-      if (tmp_error)
+        if (tmp_error)
         {
-          g_propagate_error (error, tmp_error);
-          return total;
+            g_propagate_error (error, tmp_error);
+            return total;
         }
 
-      total += 4 + tmp;
+        total += 4 + tmp;
     }
 
-  return total;
+    return total;
 }
 
 guint
@@ -274,27 +274,27 @@ xcf_write_component (XcfInfo       *info,
                      gint           count,
                      GError       **error)
 {
-  switch (bpc)
+    switch (bpc)
     {
     case 1:
-      return xcf_write_int8 (info, data, count, error);
+        return xcf_write_int8 (info, data, count, error);
 
     case 2:
-      return xcf_write_int16 (info, (const guint16 *) data, count, error);
+        return xcf_write_int16 (info, (const guint16 *) data, count, error);
 
     case 4:
-      return xcf_write_int32 (info, (const guint32 *) data, count, error);
+        return xcf_write_int32 (info, (const guint32 *) data, count, error);
 
     case 8:
-      return xcf_write_int64 (info, (const guint64 *) data, count, error);
+        return xcf_write_int64 (info, (const guint64 *) data, count, error);
 
     default:
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("Error writing XCF: unsupported BPC when writing pixel: %d"),
-                   bpc);
+        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                     _("Error writing XCF: unsupported BPC when writing pixel: %d"),
+                     bpc);
     }
 
-  return 0;
+    return 0;
 }
 
 void
@@ -302,38 +302,38 @@ xcf_write_to_be (gint    bpc,
                  guint8 *data,
                  gint    count)
 {
-  gint i;
+    gint i;
 
-  switch (bpc)
+    switch (bpc)
     {
     case 1:
-      break;
+        break;
 
     case 2:
-      {
+    {
         guint16 *d = (guint16 *) data;
 
         for (i = 0; i < count; i++)
-          d[i] = g_htons (d[i]);
-      }
-      break;
+            d[i] = g_htons (d[i]);
+    }
+    break;
 
     case 4:
-      {
+    {
         guint32 *d = (guint32 *) data;
 
         for (i = 0; i < count; i++)
-          d[i] = g_htonl (d[i]);
-      }
-      break;
+            d[i] = g_htonl (d[i]);
+    }
+    break;
 
     case 8:
-      {
+    {
         guint64 *d = (guint64 *) data;
 
         for (i = 0; i < count; i++)
-          d[i] = GINT64_TO_BE (d[i]);
-      }
-      break;
+            d[i] = GINT64_TO_BE (d[i]);
+    }
+    break;
     }
 }

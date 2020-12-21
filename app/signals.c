@@ -51,72 +51,72 @@ static void         gimp_sigfatal_handler (gint sig_num) G_GNUC_NORETURN;
 void
 gimp_init_signal_handlers (gchar **backtrace_file)
 {
-  time_t  t;
-  gchar  *filename;
-  gchar  *dir;
+    time_t  t;
+    gchar  *filename;
+    gchar  *dir;
 
 #ifdef G_OS_WIN32
-  /* This has to be the non-roaming directory (i.e., the local
-     directory) as backtraces correspond to the binaries on this
-     system. */
-  dir = g_build_filename (g_get_user_data_dir (),
-                          GIMPDIR, GIMP_USER_VERSION, "CrashLog",
-                          NULL);
+    /* This has to be the non-roaming directory (i.e., the local
+       directory) as backtraces correspond to the binaries on this
+       system. */
+    dir = g_build_filename (g_get_user_data_dir (),
+                            GIMPDIR, GIMP_USER_VERSION, "CrashLog",
+                            NULL);
 #else
-  dir = g_build_filename (gimp_directory (), "CrashLog", NULL);
+    dir = g_build_filename (gimp_directory (), "CrashLog", NULL);
 #endif
 
-  time (&t);
-  filename = g_strdup_printf ("%s-crash-%" G_GUINT64_FORMAT ".txt",
-                              PACKAGE_NAME, (guint64) t);
-  *backtrace_file = g_build_filename (dir, filename, NULL);
-  g_free (filename);
-  g_free (dir);
+    time (&t);
+    filename = g_strdup_printf ("%s-crash-%" G_GUINT64_FORMAT ".txt",
+                                PACKAGE_NAME, (guint64) t);
+    *backtrace_file = g_build_filename (dir, filename, NULL);
+    g_free (filename);
+    g_free (dir);
 
 #ifdef G_OS_WIN32
-  /* Use Dr. Mingw (dumps backtrace on crash) if it is available. Do
-   * nothing otherwise on Win32.
-   * The user won't get any stack trace from glib anyhow.
-   * Without Dr. MinGW, It's better to let Windows inform about the
-   * program error, and offer debugging (if the user has installed MSVC
-   * or some other compiler that knows how to install itself as a
-   * handler for program errors).
-   */
+    /* Use Dr. Mingw (dumps backtrace on crash) if it is available. Do
+     * nothing otherwise on Win32.
+     * The user won't get any stack trace from glib anyhow.
+     * Without Dr. MinGW, It's better to let Windows inform about the
+     * program error, and offer debugging (if the user has installed MSVC
+     * or some other compiler that knows how to install itself as a
+     * handler for program errors).
+     */
 
 #ifdef HAVE_EXCHNDL
-  /* Order is very important here. We need to add our signal handler
-   * first, then run ExcHndlInit() which will add its own handler, so
-   * that ExcHnl's handler runs first since that's in FILO order.
-   */
-  if (! g_prevExceptionFilter)
-    g_prevExceptionFilter = SetUnhandledExceptionFilter (gimp_sigfatal_handler);
+    /* Order is very important here. We need to add our signal handler
+     * first, then run ExcHndlInit() which will add its own handler, so
+     * that ExcHnl's handler runs first since that's in FILO order.
+     */
+    if (! g_prevExceptionFilter)
+        g_prevExceptionFilter = SetUnhandledExceptionFilter (gimp_sigfatal_handler);
 
-  ExcHndlInit ();
-  ExcHndlSetLogFileNameA (*backtrace_file);
+    ExcHndlInit ();
+    ExcHndlSetLogFileNameA (*backtrace_file);
 
 #endif /* HAVE_EXCHNDL */
 
 #else
 
-  /* Handle fatal signals */
+    /* Handle fatal signals */
 
-  /* these are handled by gimp_terminate() */
-  gimp_signal_private (SIGHUP,  gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGINT,  gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGQUIT, gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGTERM, gimp_sigfatal_handler, 0);
+    /* these are handled by gimp_terminate() */
+    gimp_signal_private (SIGHUP,  gimp_sigfatal_handler, 0);
+    gimp_signal_private (SIGINT,  gimp_sigfatal_handler, 0);
+    gimp_signal_private (SIGQUIT, gimp_sigfatal_handler, 0);
+    gimp_signal_private (SIGTERM, gimp_sigfatal_handler, 0);
 
-  /* these are handled by gimp_fatal_error() */
-  gimp_signal_private (SIGABRT, gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGBUS,  gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGSEGV, gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGFPE,  gimp_sigfatal_handler, 0);
+    /* these are handled by gimp_fatal_error() */
+    gimp_signal_private (SIGABRT, gimp_sigfatal_handler, 0);
+    gimp_signal_private (SIGBUS,  gimp_sigfatal_handler, 0);
+    gimp_signal_private (SIGSEGV, gimp_sigfatal_handler, 0);
+    gimp_signal_private (SIGFPE,  gimp_sigfatal_handler, 0);
 
-  /* Ignore SIGPIPE because plug_in.c handles broken pipes */
-  gimp_signal_private (SIGPIPE, SIG_IGN, 0);
+    /* Ignore SIGPIPE because plug_in.c handles broken pipes */
+    gimp_signal_private (SIGPIPE, SIG_IGN, 0);
 
-  /* Restart syscalls on SIGCHLD */
-  gimp_signal_private (SIGCHLD, SIG_DFL, SA_RESTART);
+    /* Restart syscalls on SIGCHLD */
+    gimp_signal_private (SIGCHLD, SIG_DFL, SA_RESTART);
 
 #endif /* G_OS_WIN32 */
 }
@@ -128,32 +128,32 @@ gimp_init_signal_handlers (gchar **backtrace_file)
 static LONG WINAPI
 gimp_sigfatal_handler (PEXCEPTION_POINTERS pExceptionInfo)
 {
-  EXCEPTION_RECORD *er;
-  int               fatal;
+    EXCEPTION_RECORD *er;
+    int               fatal;
 
-  if (pExceptionInfo == NULL ||
-      pExceptionInfo->ExceptionRecord == NULL)
-    return EXCEPTION_CONTINUE_SEARCH;
+    if (pExceptionInfo == NULL ||
+            pExceptionInfo->ExceptionRecord == NULL)
+        return EXCEPTION_CONTINUE_SEARCH;
 
-  er = pExceptionInfo->ExceptionRecord;
-  fatal = I_RpcExceptionFilter (er->ExceptionCode);
+    er = pExceptionInfo->ExceptionRecord;
+    fatal = I_RpcExceptionFilter (er->ExceptionCode);
 
-  /* IREF() returns EXCEPTION_CONTINUE_SEARCH for fatal exceptions */
-  if (fatal == EXCEPTION_CONTINUE_SEARCH)
+    /* IREF() returns EXCEPTION_CONTINUE_SEARCH for fatal exceptions */
+    if (fatal == EXCEPTION_CONTINUE_SEARCH)
     {
-      /* Just in case, so that we don't loop or anything similar, just
-       * re-establish previous handler.
-       */
-      SetUnhandledExceptionFilter (g_prevExceptionFilter);
+        /* Just in case, so that we don't loop or anything similar, just
+         * re-establish previous handler.
+         */
+        SetUnhandledExceptionFilter (g_prevExceptionFilter);
 
-      /* Now process the exception. */
-      gimp_fatal_error ("unhandled exception");
+        /* Now process the exception. */
+        gimp_fatal_error ("unhandled exception");
     }
 
-  if (g_prevExceptionFilter && g_prevExceptionFilter != gimp_sigfatal_handler)
-    return g_prevExceptionFilter (pExceptionInfo);
-  else
-    return EXCEPTION_CONTINUE_SEARCH;
+    if (g_prevExceptionFilter && g_prevExceptionFilter != gimp_sigfatal_handler)
+        return g_prevExceptionFilter (pExceptionInfo);
+    else
+        return EXCEPTION_CONTINUE_SEARCH;
 }
 #endif
 
@@ -164,22 +164,22 @@ gimp_sigfatal_handler (PEXCEPTION_POINTERS pExceptionInfo)
 static void
 gimp_sigfatal_handler (gint sig_num)
 {
-  switch (sig_num)
+    switch (sig_num)
     {
     case SIGHUP:
     case SIGINT:
     case SIGQUIT:
     case SIGTERM:
-      gimp_terminate (g_strsignal (sig_num));
-      break;
+        gimp_terminate (g_strsignal (sig_num));
+        break;
 
     case SIGABRT:
     case SIGBUS:
     case SIGSEGV:
     case SIGFPE:
     default:
-      gimp_fatal_error (g_strsignal (sig_num));
-      break;
+        gimp_fatal_error (g_strsignal (sig_num));
+        break;
     }
 }
 

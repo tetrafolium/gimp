@@ -38,21 +38,21 @@ typedef struct _GimpAlignOptionsClass GimpAlignOptionsClass;
 
 struct _GimpAlignOptions
 {
-  GimpToolOptions         parent_instance;
+    GimpToolOptions         parent_instance;
 
-  GimpAlignReferenceType  align_reference;
-  gdouble                 offset_x;
-  gdouble                 offset_y;
+    GimpAlignReferenceType  align_reference;
+    gdouble                 offset_x;
+    gdouble                 offset_y;
 
-  GtkWidget              *button[ALIGN_OPTIONS_N_BUTTONS];
+    GtkWidget              *button[ALIGN_OPTIONS_N_BUTTONS];
 };
 
 struct _GimpAlignOptionsClass
 {
-  GimpToolOptionsClass  parent_class;
+    GimpToolOptionsClass  parent_class;
 
-  void (* align_button_clicked) (GimpAlignOptions  *options,
-                                 GimpAlignmentType  align_type);
+    void (* align_button_clicked) (GimpAlignOptions  *options,
+                                   GimpAlignmentType  align_type);
 };
 
 

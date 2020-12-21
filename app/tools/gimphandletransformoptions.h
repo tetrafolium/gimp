@@ -35,14 +35,14 @@ typedef struct _GimpHandleTransformOptionsClass GimpHandleTransformOptionsClass;
 
 struct _GimpHandleTransformOptions
 {
-  GimpTransformGridOptions  parent_instance;
+    GimpTransformGridOptions  parent_instance;
 
-  GimpTransformHandleMode   handle_mode;
+    GimpTransformHandleMode   handle_mode;
 };
 
 struct _GimpHandleTransformOptionsClass
 {
-  GimpTransformGridOptionsClass  parent_class;
+    GimpTransformGridOptionsClass  parent_class;
 };
 
 

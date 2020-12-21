@@ -32,19 +32,19 @@
 
 enum
 {
-  PROP_0,
-  PROP_SCALE
+    PROP_0,
+    PROP_SCALE
 };
 
 
 static void   gimp_histogram_options_set_property (GObject      *object,
-                                                   guint         property_id,
-                                                   const GValue *value,
-                                                   GParamSpec   *pspec);
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec);
 static void   gimp_histogram_options_get_property (GObject      *object,
-                                                   guint         property_id,
-                                                   GValue       *value,
-                                                   GParamSpec   *pspec);
+        guint         property_id,
+        GValue       *value,
+        GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpHistogramOptions, gimp_histogram_options,
@@ -54,18 +54,18 @@ G_DEFINE_TYPE (GimpHistogramOptions, gimp_histogram_options,
 static void
 gimp_histogram_options_class_init (GimpHistogramOptionsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_histogram_options_set_property;
-  object_class->get_property = gimp_histogram_options_get_property;
+    object_class->set_property = gimp_histogram_options_set_property;
+    object_class->get_property = gimp_histogram_options_get_property;
 
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_SCALE,
-                         "histogram-scale",
-                         _("Histogram Scale"),
-                         NULL,
-                         GIMP_TYPE_HISTOGRAM_SCALE,
-                         GIMP_HISTOGRAM_SCALE_LINEAR,
-                         GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_SCALE,
+                           "histogram-scale",
+                           _("Histogram Scale"),
+                           NULL,
+                           GIMP_TYPE_HISTOGRAM_SCALE,
+                           GIMP_HISTOGRAM_SCALE_LINEAR,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -79,17 +79,17 @@ gimp_histogram_options_set_property (GObject      *object,
                                      const GValue *value,
                                      GParamSpec   *pspec)
 {
-  GimpHistogramOptions *options = GIMP_HISTOGRAM_OPTIONS (object);
+    GimpHistogramOptions *options = GIMP_HISTOGRAM_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_SCALE:
-      options->scale = g_value_get_enum (value);
-      break;
+        options->scale = g_value_get_enum (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -99,16 +99,16 @@ gimp_histogram_options_get_property (GObject    *object,
                                      GValue     *value,
                                      GParamSpec *pspec)
 {
-  GimpHistogramOptions *options = GIMP_HISTOGRAM_OPTIONS (object);
+    GimpHistogramOptions *options = GIMP_HISTOGRAM_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_SCALE:
-      g_value_set_enum (value, options->scale);
-      break;
+        g_value_set_enum (value, options->scale);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }

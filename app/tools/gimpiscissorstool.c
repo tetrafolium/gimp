@@ -100,16 +100,16 @@
 
 struct _ISegment
 {
-  gint       x1, y1;
-  gint       x2, y2;
-  GPtrArray *points;
+    gint       x1, y1;
+    gint       x2, y2;
+    GPtrArray *points;
 };
 
 struct _ICurve
 {
-  GQueue   *segments;
-  gboolean  first_point;
-  gboolean  closed;
+    GQueue   *segments;
+    gboolean  first_point;
+    gboolean  closed;
 };
 
 
@@ -118,45 +118,45 @@ struct _ICurve
 static void          gimp_iscissors_tool_finalize       (GObject               *object);
 
 static void          gimp_iscissors_tool_control        (GimpTool              *tool,
-                                                         GimpToolAction         action,
-                                                         GimpDisplay           *display);
+        GimpToolAction         action,
+        GimpDisplay           *display);
 static void          gimp_iscissors_tool_button_press   (GimpTool              *tool,
-                                                         const GimpCoords      *coords,
-                                                         guint32                time,
-                                                         GdkModifierType        state,
-                                                         GimpButtonPressType    press_type,
-                                                         GimpDisplay           *display);
+        const GimpCoords      *coords,
+        guint32                time,
+        GdkModifierType        state,
+        GimpButtonPressType    press_type,
+        GimpDisplay           *display);
 static void          gimp_iscissors_tool_button_release (GimpTool              *tool,
-                                                         const GimpCoords      *coords,
-                                                         guint32                time,
-                                                         GdkModifierType        state,
-                                                         GimpButtonReleaseType  release_type,
-                                                         GimpDisplay           *display);
+        const GimpCoords      *coords,
+        guint32                time,
+        GdkModifierType        state,
+        GimpButtonReleaseType  release_type,
+        GimpDisplay           *display);
 static void          gimp_iscissors_tool_motion         (GimpTool              *tool,
-                                                         const GimpCoords      *coords,
-                                                         guint32                time,
-                                                         GdkModifierType        state,
-                                                         GimpDisplay           *display);
+        const GimpCoords      *coords,
+        guint32                time,
+        GdkModifierType        state,
+        GimpDisplay           *display);
 static void          gimp_iscissors_tool_oper_update    (GimpTool              *tool,
-                                                         const GimpCoords      *coords,
-                                                         GdkModifierType        state,
-                                                         gboolean               proximity,
-                                                         GimpDisplay           *display);
+        const GimpCoords      *coords,
+        GdkModifierType        state,
+        gboolean               proximity,
+        GimpDisplay           *display);
 static void          gimp_iscissors_tool_cursor_update  (GimpTool              *tool,
-                                                         const GimpCoords      *coords,
-                                                         GdkModifierType        state,
-                                                         GimpDisplay           *display);
+        const GimpCoords      *coords,
+        GdkModifierType        state,
+        GimpDisplay           *display);
 static gboolean      gimp_iscissors_tool_key_press      (GimpTool              *tool,
-                                                         GdkEventKey           *kevent,
-                                                         GimpDisplay           *display);
+        GdkEventKey           *kevent,
+        GimpDisplay           *display);
 static const gchar * gimp_iscissors_tool_can_undo       (GimpTool              *tool,
-                                                         GimpDisplay           *display);
+        GimpDisplay           *display);
 static const gchar * gimp_iscissors_tool_can_redo       (GimpTool              *tool,
-                                                         GimpDisplay           *display);
+        GimpDisplay           *display);
 static gboolean      gimp_iscissors_tool_undo           (GimpTool              *tool,
-                                                         GimpDisplay           *display);
+        GimpDisplay           *display);
 static gboolean      gimp_iscissors_tool_redo           (GimpTool              *tool,
-                                                         GimpDisplay           *display);
+        GimpDisplay           *display);
 
 static void          gimp_iscissors_tool_draw           (GimpDrawTool          *draw_tool);
 
@@ -165,56 +165,56 @@ static void          gimp_iscissors_tool_pop_undo       (GimpIscissorsTool     *
 static void          gimp_iscissors_tool_free_redo      (GimpIscissorsTool     *iscissors);
 
 static void          gimp_iscissors_tool_halt           (GimpIscissorsTool     *iscissors,
-                                                         GimpDisplay           *display);
+        GimpDisplay           *display);
 static void          gimp_iscissors_tool_commit         (GimpIscissorsTool     *iscissors,
-                                                         GimpDisplay           *display);
+        GimpDisplay           *display);
 
 static void          iscissors_convert         (GimpIscissorsTool *iscissors,
-                                                GimpDisplay       *display);
+        GimpDisplay       *display);
 static GeglBuffer  * gradient_map_new          (GimpPickable      *pickable);
 
 static void          find_optimal_path         (GeglBuffer        *gradient_map,
-                                                GimpTempBuf       *dp_buf,
-                                                gint               x1,
-                                                gint               y1,
-                                                gint               x2,
-                                                gint               y2,
-                                                gint               xs,
-                                                gint               ys);
+        GimpTempBuf       *dp_buf,
+        gint               x1,
+        gint               y1,
+        gint               x2,
+        gint               y2,
+        gint               xs,
+        gint               ys);
 static void          find_max_gradient         (GimpIscissorsTool *iscissors,
-                                                GimpPickable      *pickable,
-                                                gint              *x,
-                                                gint              *y);
+        GimpPickable      *pickable,
+        gint              *x,
+        gint              *y);
 static void          calculate_segment         (GimpIscissorsTool *iscissors,
-                                                ISegment          *segment);
+        ISegment          *segment);
 static GimpCanvasItem * iscissors_draw_segment (GimpDrawTool      *draw_tool,
-                                                ISegment          *segment);
+        ISegment          *segment);
 
 static gint          mouse_over_vertex         (GimpIscissorsTool *iscissors,
-                                                gdouble            x,
-                                                gdouble            y);
+        gdouble            x,
+        gdouble            y);
 static gboolean      clicked_on_vertex         (GimpIscissorsTool *iscissors,
-                                                gdouble            x,
-                                                gdouble            y);
+        gdouble            x,
+        gdouble            y);
 static GList       * mouse_over_segment        (GimpIscissorsTool *iscissors,
-                                                gdouble            x,
-                                                gdouble            y);
+        gdouble            x,
+        gdouble            y);
 static gboolean      clicked_on_segment        (GimpIscissorsTool *iscissors,
-                                                gdouble            x,
-                                                gdouble            y);
+        gdouble            x,
+        gdouble            y);
 
 static GPtrArray   * plot_pixels               (GimpTempBuf       *dp_buf,
-                                                gint               x1,
-                                                gint               y1,
-                                                gint               xs,
-                                                gint               ys,
-                                                gint               xe,
-                                                gint               ye);
+        gint               x1,
+        gint               y1,
+        gint               xs,
+        gint               ys,
+        gint               xe,
+        gint               ye);
 
 static ISegment    * isegment_new              (gint               x1,
-                                                gint               y1,
-                                                gint               x2,
-                                                gint               y2);
+        gint               y1,
+        gint               x2,
+        gint               y2);
 static ISegment    * isegment_copy             (ISegment          *segment);
 static void          isegment_free             (ISegment          *segment);
 
@@ -224,23 +224,23 @@ static void          icurve_clear              (ICurve            *curve);
 static void          icurve_free               (ICurve            *curve);
 
 static ISegment    * icurve_append_segment     (ICurve            *curve,
-                                                gint               x1,
-                                                gint               y1,
-                                                gint               x2,
-                                                gint               y2);
+        gint               x1,
+        gint               y1,
+        gint               x2,
+        gint               y2);
 static ISegment    * icurve_insert_segment     (ICurve            *curve,
-                                                GList             *sibling,
-                                                gint               x1,
-                                                gint               y1,
-                                                gint               x2,
-                                                gint               y2);
+        GList             *sibling,
+        gint               x1,
+        gint               y1,
+        gint               x2,
+        gint               y2);
 static void          icurve_delete_segment     (ICurve            *curve,
-                                                ISegment          *segment);
+        ISegment          *segment);
 
 static void          icurve_close              (ICurve            *curve);
 
 static GimpScanConvert *
-                    icurve_create_scan_convert (ICurve            *curve);
+icurve_create_scan_convert (ICurve            *curve);
 
 
 /*  static variables  */
@@ -248,14 +248,14 @@ static GimpScanConvert *
 /*  where to move on a given link direction  */
 static const gint move[8][2] =
 {
-  {  1,  0 },
-  {  0,  1 },
-  { -1,  1 },
-  {  1,  1 },
-  { -1,  0 },
-  {  0, -1 },
-  {  1, -1 },
-  { -1, -1 },
+    {  1,  0 },
+    {  0,  1 },
+    { -1,  1 },
+    {  1,  1 },
+    { -1,  0 },
+    {  0, -1 },
+    {  1, -1 },
+    { -1, -1 },
 };
 
 /* IE:
@@ -284,100 +284,100 @@ void
 gimp_iscissors_tool_register (GimpToolRegisterCallback  callback,
                               gpointer                  data)
 {
-  (* callback) (GIMP_TYPE_ISCISSORS_TOOL,
-                GIMP_TYPE_ISCISSORS_OPTIONS,
-                gimp_iscissors_options_gui,
-                0,
-                "gimp-iscissors-tool",
-                _("Scissors Select"),
-                _("Scissors Select Tool: Select shapes using intelligent edge-fitting"),
-                N_("Intelligent _Scissors"),
-                "I",
-                NULL, GIMP_HELP_TOOL_ISCISSORS,
-                GIMP_ICON_TOOL_ISCISSORS,
-                data);
+    (* callback) (GIMP_TYPE_ISCISSORS_TOOL,
+                  GIMP_TYPE_ISCISSORS_OPTIONS,
+                  gimp_iscissors_options_gui,
+                  0,
+                  "gimp-iscissors-tool",
+                  _("Scissors Select"),
+                  _("Scissors Select Tool: Select shapes using intelligent edge-fitting"),
+                  N_("Intelligent _Scissors"),
+                  "I",
+                  NULL, GIMP_HELP_TOOL_ISCISSORS,
+                  GIMP_ICON_TOOL_ISCISSORS,
+                  data);
 }
 
 static void
 gimp_iscissors_tool_class_init (GimpIscissorsToolClass *klass)
 {
-  GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
-  GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
-  GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-  gint               i, j;
-  gint               radius;
+    GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
+    GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
+    GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
+    gint               i, j;
+    gint               radius;
 
-  object_class->finalize     = gimp_iscissors_tool_finalize;
+    object_class->finalize     = gimp_iscissors_tool_finalize;
 
-  tool_class->control        = gimp_iscissors_tool_control;
-  tool_class->button_press   = gimp_iscissors_tool_button_press;
-  tool_class->button_release = gimp_iscissors_tool_button_release;
-  tool_class->motion         = gimp_iscissors_tool_motion;
-  tool_class->key_press      = gimp_iscissors_tool_key_press;
-  tool_class->oper_update    = gimp_iscissors_tool_oper_update;
-  tool_class->cursor_update  = gimp_iscissors_tool_cursor_update;
-  tool_class->can_undo       = gimp_iscissors_tool_can_undo;
-  tool_class->can_redo       = gimp_iscissors_tool_can_redo;
-  tool_class->undo           = gimp_iscissors_tool_undo;
-  tool_class->redo           = gimp_iscissors_tool_redo;
+    tool_class->control        = gimp_iscissors_tool_control;
+    tool_class->button_press   = gimp_iscissors_tool_button_press;
+    tool_class->button_release = gimp_iscissors_tool_button_release;
+    tool_class->motion         = gimp_iscissors_tool_motion;
+    tool_class->key_press      = gimp_iscissors_tool_key_press;
+    tool_class->oper_update    = gimp_iscissors_tool_oper_update;
+    tool_class->cursor_update  = gimp_iscissors_tool_cursor_update;
+    tool_class->can_undo       = gimp_iscissors_tool_can_undo;
+    tool_class->can_redo       = gimp_iscissors_tool_can_redo;
+    tool_class->undo           = gimp_iscissors_tool_undo;
+    tool_class->redo           = gimp_iscissors_tool_redo;
 
-  draw_tool_class->draw      = gimp_iscissors_tool_draw;
+    draw_tool_class->draw      = gimp_iscissors_tool_draw;
 
-  for (i = 0; i < 256; i++)
+    for (i = 0; i < 256; i++)
     {
-      /*  The diagonal weight array  */
-      diagonal_weight[i] = (int) (i * G_SQRT2);
+        /*  The diagonal weight array  */
+        diagonal_weight[i] = (int) (i * G_SQRT2);
 
-      /*  The direction value array  */
-      direction_value[i][0] = (127 - abs (127 - i)) * 2;
-      direction_value[i][1] = abs (127 - i) * 2;
-      direction_value[i][2] = abs (191 - i) * 2;
-      direction_value[i][3] = abs (63 - i) * 2;
+        /*  The direction value array  */
+        direction_value[i][0] = (127 - abs (127 - i)) * 2;
+        direction_value[i][1] = abs (127 - i) * 2;
+        direction_value[i][2] = abs (191 - i) * 2;
+        direction_value[i][3] = abs (63 - i) * 2;
     }
 
-  /*  set the 256th index of the direction_values to the highest cost  */
-  direction_value[255][0] = 255;
-  direction_value[255][1] = 255;
-  direction_value[255][2] = 255;
-  direction_value[255][3] = 255;
+    /*  set the 256th index of the direction_values to the highest cost  */
+    direction_value[255][0] = 255;
+    direction_value[255][1] = 255;
+    direction_value[255][2] = 255;
+    direction_value[255][3] = 255;
 
-  /*  compute the distance weights  */
-  radius = GRADIENT_SEARCH >> 1;
+    /*  compute the distance weights  */
+    radius = GRADIENT_SEARCH >> 1;
 
-  for (i = 0; i < GRADIENT_SEARCH; i++)
-    for (j = 0; j < GRADIENT_SEARCH; j++)
-      distance_weights[i * GRADIENT_SEARCH + j] =
-        1.0 / (1 + sqrt (SQR (i - radius) + SQR (j - radius)));
+    for (i = 0; i < GRADIENT_SEARCH; i++)
+        for (j = 0; j < GRADIENT_SEARCH; j++)
+            distance_weights[i * GRADIENT_SEARCH + j] =
+                1.0 / (1 + sqrt (SQR (i - radius) + SQR (j - radius)));
 }
 
 static void
 gimp_iscissors_tool_init (GimpIscissorsTool *iscissors)
 {
-  GimpTool *tool = GIMP_TOOL (iscissors);
+    GimpTool *tool = GIMP_TOOL (iscissors);
 
-  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
-  gimp_tool_control_set_snap_to     (tool->control, FALSE);
-  gimp_tool_control_set_preserve    (tool->control, FALSE);
-  gimp_tool_control_set_dirty_mask  (tool->control,
-                                     GIMP_DIRTY_IMAGE_SIZE |
-                                     GIMP_DIRTY_ACTIVE_DRAWABLE);
-  gimp_tool_control_set_tool_cursor (tool->control,
-                                     GIMP_TOOL_CURSOR_ISCISSORS);
+    gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+    gimp_tool_control_set_snap_to     (tool->control, FALSE);
+    gimp_tool_control_set_preserve    (tool->control, FALSE);
+    gimp_tool_control_set_dirty_mask  (tool->control,
+                                       GIMP_DIRTY_IMAGE_SIZE |
+                                       GIMP_DIRTY_ACTIVE_DRAWABLE);
+    gimp_tool_control_set_tool_cursor (tool->control,
+                                       GIMP_TOOL_CURSOR_ISCISSORS);
 
-  iscissors->op    = ISCISSORS_OP_NONE;
-  iscissors->curve = icurve_new ();
-  iscissors->state = NO_ACTION;
+    iscissors->op    = ISCISSORS_OP_NONE;
+    iscissors->curve = icurve_new ();
+    iscissors->state = NO_ACTION;
 }
 
 static void
 gimp_iscissors_tool_finalize (GObject *object)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (object);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (object);
 
-  icurve_free (iscissors->curve);
-  iscissors->curve = NULL;
+    icurve_free (iscissors->curve);
+    iscissors->curve = NULL;
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -385,24 +385,24 @@ gimp_iscissors_tool_control (GimpTool       *tool,
                              GimpToolAction  action,
                              GimpDisplay    *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  switch (action)
+    switch (action)
     {
     case GIMP_TOOL_ACTION_PAUSE:
     case GIMP_TOOL_ACTION_RESUME:
-      break;
+        break;
 
     case GIMP_TOOL_ACTION_HALT:
-      gimp_iscissors_tool_halt (iscissors, display);
-      break;
+        gimp_iscissors_tool_halt (iscissors, display);
+        break;
 
     case GIMP_TOOL_ACTION_COMMIT:
-      gimp_iscissors_tool_commit (iscissors, display);
-      break;
+        gimp_iscissors_tool_commit (iscissors, display);
+        break;
     }
 
-  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
+    GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
 
 static void
@@ -413,138 +413,138 @@ gimp_iscissors_tool_button_press (GimpTool            *tool,
                                   GimpButtonPressType  press_type,
                                   GimpDisplay         *display)
 {
-  GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
-  GimpImage            *image     = gimp_display_get_image (display);
-  ISegment             *segment;
+    GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
+    GimpImage            *image     = gimp_display_get_image (display);
+    ISegment             *segment;
 
-  iscissors->x = RINT (coords->x);
-  iscissors->y = RINT (coords->y);
+    iscissors->x = RINT (coords->x);
+    iscissors->y = RINT (coords->y);
 
-  /*  If the tool was being used in another image...reset it  */
-  if (display != tool->display)
-    gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
+    /*  If the tool was being used in another image...reset it  */
+    if (display != tool->display)
+        gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
 
-  gimp_tool_control_activate (tool->control);
-  tool->display = display;
+    gimp_tool_control_activate (tool->control);
+    tool->display = display;
 
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  switch (iscissors->state)
+    switch (iscissors->state)
     {
     case NO_ACTION:
-      iscissors->state = SEED_PLACEMENT;
+        iscissors->state = SEED_PLACEMENT;
 
-      if (! (state & gimp_get_extend_selection_mask ()))
-        find_max_gradient (iscissors, GIMP_PICKABLE (image),
-                           &iscissors->x, &iscissors->y);
+        if (! (state & gimp_get_extend_selection_mask ()))
+            find_max_gradient (iscissors, GIMP_PICKABLE (image),
+                               &iscissors->x, &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, gimp_image_get_width  (image) - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, gimp_image_get_height (image) - 1);
+        iscissors->x = CLAMP (iscissors->x, 0, gimp_image_get_width  (image) - 1);
+        iscissors->y = CLAMP (iscissors->y, 0, gimp_image_get_height (image) - 1);
 
-      gimp_iscissors_tool_push_undo (iscissors);
+        gimp_iscissors_tool_push_undo (iscissors);
 
-      segment = icurve_append_segment (iscissors->curve,
-                                       iscissors->x,
-                                       iscissors->y,
-                                       iscissors->x,
-                                       iscissors->y);
+        segment = icurve_append_segment (iscissors->curve,
+                                         iscissors->x,
+                                         iscissors->y,
+                                         iscissors->x,
+                                         iscissors->y);
 
-      /*  Initialize the draw tool only on starting the tool  */
-      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
-      break;
+        /*  Initialize the draw tool only on starting the tool  */
+        gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
+        break;
 
     default:
-      /*  Check if the mouse click occurred on a vertex or the curve itself  */
-      if (clicked_on_vertex (iscissors, coords->x, coords->y))
+        /*  Check if the mouse click occurred on a vertex or the curve itself  */
+        if (clicked_on_vertex (iscissors, coords->x, coords->y))
         {
-          iscissors->state = SEED_ADJUSTMENT;
+            iscissors->state = SEED_ADJUSTMENT;
 
-          /*  recalculate both segments  */
-          if (iscissors->segment1)
+            /*  recalculate both segments  */
+            if (iscissors->segment1)
             {
-              iscissors->segment1->x1 = iscissors->x;
-              iscissors->segment1->y1 = iscissors->y;
+                iscissors->segment1->x1 = iscissors->x;
+                iscissors->segment1->y1 = iscissors->y;
 
-              if (options->interactive)
-                calculate_segment (iscissors, iscissors->segment1);
+                if (options->interactive)
+                    calculate_segment (iscissors, iscissors->segment1);
             }
 
-          if (iscissors->segment2)
+            if (iscissors->segment2)
             {
-              iscissors->segment2->x2 = iscissors->x;
-              iscissors->segment2->y2 = iscissors->y;
+                iscissors->segment2->x2 = iscissors->x;
+                iscissors->segment2->y2 = iscissors->y;
 
-              if (options->interactive)
-                calculate_segment (iscissors, iscissors->segment2);
+                if (options->interactive)
+                    calculate_segment (iscissors, iscissors->segment2);
             }
         }
-      /*  If the iscissors is closed, check if the click was inside  */
-      else if (iscissors->curve->closed && iscissors->mask &&
-               gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
-                                             iscissors->x,
-                                             iscissors->y))
-        {
-          gimp_tool_control (tool, GIMP_TOOL_ACTION_COMMIT, display);
-        }
-      else if (! iscissors->curve->closed)
-        {
-          /*  if we're not closed, we're adding a new point  */
-
-          ISegment *last = g_queue_peek_tail (iscissors->curve->segments);
-
-          iscissors->state = SEED_PLACEMENT;
-
-          gimp_iscissors_tool_push_undo (iscissors);
-
-          if (last->x1 == last->x2 &&
-              last->y1 == last->y2)
-            {
-              last->x2 = iscissors->x;
-              last->y2 = iscissors->y;
-
-              if (options->interactive)
-                calculate_segment (iscissors, last);
-            }
-          else
-            {
-              segment = icurve_append_segment (iscissors->curve,
-                                               last->x2,
-                                               last->y2,
+        /*  If the iscissors is closed, check if the click was inside  */
+        else if (iscissors->curve->closed && iscissors->mask &&
+                 gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
                                                iscissors->x,
-                                               iscissors->y);
+                                               iscissors->y))
+        {
+            gimp_tool_control (tool, GIMP_TOOL_ACTION_COMMIT, display);
+        }
+        else if (! iscissors->curve->closed)
+        {
+            /*  if we're not closed, we're adding a new point  */
 
-              if (options->interactive)
-                calculate_segment (iscissors, segment);
+            ISegment *last = g_queue_peek_tail (iscissors->curve->segments);
+
+            iscissors->state = SEED_PLACEMENT;
+
+            gimp_iscissors_tool_push_undo (iscissors);
+
+            if (last->x1 == last->x2 &&
+                    last->y1 == last->y2)
+            {
+                last->x2 = iscissors->x;
+                last->y2 = iscissors->y;
+
+                if (options->interactive)
+                    calculate_segment (iscissors, last);
+            }
+            else
+            {
+                segment = icurve_append_segment (iscissors->curve,
+                                                 last->x2,
+                                                 last->y2,
+                                                 iscissors->x,
+                                                 iscissors->y);
+
+                if (options->interactive)
+                    calculate_segment (iscissors, segment);
             }
         }
-      break;
+        break;
     }
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }
 
 static void
 iscissors_convert (GimpIscissorsTool *iscissors,
                    GimpDisplay       *display)
 {
-  GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (iscissors);
-  GimpImage            *image   = gimp_display_get_image (display);
-  GimpScanConvert      *sc;
+    GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (iscissors);
+    GimpImage            *image   = gimp_display_get_image (display);
+    GimpScanConvert      *sc;
 
-  sc = icurve_create_scan_convert (iscissors->curve);
+    sc = icurve_create_scan_convert (iscissors->curve);
 
-  if (iscissors->mask)
-    g_object_unref (iscissors->mask);
+    if (iscissors->mask)
+        g_object_unref (iscissors->mask);
 
-  iscissors->mask = gimp_channel_new_mask (image,
-                                           gimp_image_get_width  (image),
-                                           gimp_image_get_height (image));
-  gimp_scan_convert_render (sc,
-                            gimp_drawable_get_buffer (GIMP_DRAWABLE (iscissors->mask)),
-                            0, 0, options->antialias);
+    iscissors->mask = gimp_channel_new_mask (image,
+                      gimp_image_get_width  (image),
+                      gimp_image_get_height (image));
+    gimp_scan_convert_render (sc,
+                              gimp_drawable_get_buffer (GIMP_DRAWABLE (iscissors->mask)),
+                              0, 0, options->antialias);
 
-  gimp_scan_convert_free (sc);
+    gimp_scan_convert_free (sc);
 }
 
 static void
@@ -555,138 +555,138 @@ gimp_iscissors_tool_button_release (GimpTool              *tool,
                                     GimpButtonReleaseType  release_type,
                                     GimpDisplay           *display)
 {
-  GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
+    GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
 
-  gimp_tool_control_halt (tool->control);
+    gimp_tool_control_halt (tool->control);
 
-  /* Make sure X didn't skip the button release event -- as it's known
-   * to do
-   */
-  if (iscissors->state == WAITING)
-    return;
+    /* Make sure X didn't skip the button release event -- as it's known
+     * to do
+     */
+    if (iscissors->state == WAITING)
+        return;
 
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  if (release_type != GIMP_BUTTON_RELEASE_CANCEL)
+    if (release_type != GIMP_BUTTON_RELEASE_CANCEL)
     {
-      /*  Progress to the next stage of intelligent selection  */
-      switch (iscissors->state)
+        /*  Progress to the next stage of intelligent selection  */
+        switch (iscissors->state)
         {
         case SEED_PLACEMENT:
-          /*  Add a new segment  */
-          if (! iscissors->curve->first_point)
+            /*  Add a new segment  */
+            if (! iscissors->curve->first_point)
             {
-              /*  Determine if we're connecting to the first point  */
+                /*  Determine if we're connecting to the first point  */
 
-              ISegment *segment = g_queue_peek_head (iscissors->curve->segments);
+                ISegment *segment = g_queue_peek_head (iscissors->curve->segments);
 
-              if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
-                                            iscissors->x, iscissors->y,
-                                            GIMP_HANDLE_CIRCLE,
-                                            segment->x1, segment->y1,
-                                            GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                            GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                            GIMP_HANDLE_ANCHOR_CENTER))
+                if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
+                                              iscissors->x, iscissors->y,
+                                              GIMP_HANDLE_CIRCLE,
+                                              segment->x1, segment->y1,
+                                              GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                              GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                              GIMP_HANDLE_ANCHOR_CENTER))
                 {
-                  iscissors->x = segment->x1;
-                  iscissors->y = segment->y1;
+                    iscissors->x = segment->x1;
+                    iscissors->y = segment->y1;
 
-                  icurve_close (iscissors->curve);
+                    icurve_close (iscissors->curve);
 
-                  if (! options->interactive)
+                    if (! options->interactive)
                     {
-                      segment = g_queue_peek_tail (iscissors->curve->segments);
-                      calculate_segment (iscissors, segment);
-                    }
-
-                  gimp_iscissors_tool_free_redo (iscissors);
-                }
-              else
-                {
-                  segment = g_queue_peek_tail (iscissors->curve->segments);
-
-                  if (segment->x1 != segment->x2 ||
-                      segment->y1 != segment->y2)
-                    {
-                      if (! options->interactive)
+                        segment = g_queue_peek_tail (iscissors->curve->segments);
                         calculate_segment (iscissors, segment);
-
-                      gimp_iscissors_tool_free_redo (iscissors);
                     }
-                  else
+
+                    gimp_iscissors_tool_free_redo (iscissors);
+                }
+                else
+                {
+                    segment = g_queue_peek_tail (iscissors->curve->segments);
+
+                    if (segment->x1 != segment->x2 ||
+                            segment->y1 != segment->y2)
                     {
-                      gimp_iscissors_tool_pop_undo (iscissors);
+                        if (! options->interactive)
+                            calculate_segment (iscissors, segment);
+
+                        gimp_iscissors_tool_free_redo (iscissors);
+                    }
+                    else
+                    {
+                        gimp_iscissors_tool_pop_undo (iscissors);
                     }
                 }
             }
-          else /* this was our first point */
+            else /* this was our first point */
             {
-              iscissors->curve->first_point = FALSE;
+                iscissors->curve->first_point = FALSE;
 
-              gimp_iscissors_tool_free_redo (iscissors);
+                gimp_iscissors_tool_free_redo (iscissors);
             }
-          break;
+            break;
 
         case SEED_ADJUSTMENT:
-          if (state & gimp_get_modify_selection_mask ())
+            if (state & gimp_get_modify_selection_mask ())
             {
-              if (iscissors->segment1 && iscissors->segment2)
+                if (iscissors->segment1 && iscissors->segment2)
                 {
-                  icurve_delete_segment (iscissors->curve,
-                                         iscissors->segment2);
+                    icurve_delete_segment (iscissors->curve,
+                                           iscissors->segment2);
 
-                  calculate_segment (iscissors, iscissors->segment1);
-                }
-            }
-          else
-            {
-              /*  recalculate both segments  */
-
-              if (iscissors->segment1)
-                {
-                  if (! options->interactive)
                     calculate_segment (iscissors, iscissors->segment1);
                 }
+            }
+            else
+            {
+                /*  recalculate both segments  */
 
-              if (iscissors->segment2)
+                if (iscissors->segment1)
                 {
-                  if (! options->interactive)
-                    calculate_segment (iscissors, iscissors->segment2);
+                    if (! options->interactive)
+                        calculate_segment (iscissors, iscissors->segment1);
+                }
+
+                if (iscissors->segment2)
+                {
+                    if (! options->interactive)
+                        calculate_segment (iscissors, iscissors->segment2);
                 }
             }
 
-          gimp_iscissors_tool_free_redo (iscissors);
-          break;
+            gimp_iscissors_tool_free_redo (iscissors);
+            break;
 
         default:
-          break;
+            break;
         }
     }
-  else
+    else
     {
-      switch (iscissors->state)
+        switch (iscissors->state)
         {
         case SEED_PLACEMENT:
         case SEED_ADJUSTMENT:
-          gimp_iscissors_tool_pop_undo (iscissors);
-          break;
+            gimp_iscissors_tool_pop_undo (iscissors);
+            break;
 
         default:
-          break;
+            break;
         }
     }
 
-  if (iscissors->curve->first_point)
-    iscissors->state = NO_ACTION;
-  else
-    iscissors->state = WAITING;
+    if (iscissors->curve->first_point)
+        iscissors->state = NO_ACTION;
+    else
+        iscissors->state = WAITING;
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 
-  /*  convert the curves into a region  */
-  if (iscissors->curve->closed)
-    iscissors_convert (iscissors, display);
+    /*  convert the curves into a region  */
+    if (iscissors->curve->closed)
+        iscissors_convert (iscissors, display);
 }
 
 static void
@@ -696,156 +696,156 @@ gimp_iscissors_tool_motion (GimpTool         *tool,
                             GdkModifierType   state,
                             GimpDisplay      *display)
 {
-  GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
-  GimpImage            *image     = gimp_display_get_image (display);
-  ISegment             *segment;
+    GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
+    GimpImage            *image     = gimp_display_get_image (display);
+    ISegment             *segment;
 
-  if (iscissors->state == NO_ACTION)
-    return;
+    if (iscissors->state == NO_ACTION)
+        return;
 
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  iscissors->x = RINT (coords->x);
-  iscissors->y = RINT (coords->y);
+    iscissors->x = RINT (coords->x);
+    iscissors->y = RINT (coords->y);
 
-  /*  Hold the shift key down to disable the auto-edge snap feature  */
-  if (! (state & gimp_get_extend_selection_mask ()))
-    find_max_gradient (iscissors, GIMP_PICKABLE (image),
-                       &iscissors->x, &iscissors->y);
+    /*  Hold the shift key down to disable the auto-edge snap feature  */
+    if (! (state & gimp_get_extend_selection_mask ()))
+        find_max_gradient (iscissors, GIMP_PICKABLE (image),
+                           &iscissors->x, &iscissors->y);
 
-  iscissors->x = CLAMP (iscissors->x, 0, gimp_image_get_width  (image) - 1);
-  iscissors->y = CLAMP (iscissors->y, 0, gimp_image_get_height (image) - 1);
+    iscissors->x = CLAMP (iscissors->x, 0, gimp_image_get_width  (image) - 1);
+    iscissors->y = CLAMP (iscissors->y, 0, gimp_image_get_height (image) - 1);
 
-  switch (iscissors->state)
+    switch (iscissors->state)
     {
     case SEED_PLACEMENT:
-      segment = g_queue_peek_tail (iscissors->curve->segments);
+        segment = g_queue_peek_tail (iscissors->curve->segments);
 
-      segment->x2 = iscissors->x;
-      segment->y2 = iscissors->y;
+        segment->x2 = iscissors->x;
+        segment->y2 = iscissors->y;
 
-      if (iscissors->curve->first_point)
+        if (iscissors->curve->first_point)
         {
-          segment->x1 = segment->x2;
-          segment->y1 = segment->y2;
+            segment->x1 = segment->x2;
+            segment->y1 = segment->y2;
         }
-      else
+        else
         {
-          if (options->interactive)
-            calculate_segment (iscissors, segment);
+            if (options->interactive)
+                calculate_segment (iscissors, segment);
         }
-      break;
+        break;
 
     case SEED_ADJUSTMENT:
-      if (iscissors->segment1)
+        if (iscissors->segment1)
         {
-          iscissors->segment1->x1 = iscissors->x;
-          iscissors->segment1->y1 = iscissors->y;
+            iscissors->segment1->x1 = iscissors->x;
+            iscissors->segment1->y1 = iscissors->y;
 
-          if (options->interactive)
-            calculate_segment (iscissors, iscissors->segment1);
+            if (options->interactive)
+                calculate_segment (iscissors, iscissors->segment1);
         }
 
-      if (iscissors->segment2)
+        if (iscissors->segment2)
         {
-          iscissors->segment2->x2 = iscissors->x;
-          iscissors->segment2->y2 = iscissors->y;
+            iscissors->segment2->x2 = iscissors->x;
+            iscissors->segment2->y2 = iscissors->y;
 
-          if (options->interactive)
-            calculate_segment (iscissors, iscissors->segment2);
+            if (options->interactive)
+                calculate_segment (iscissors, iscissors->segment2);
         }
-      break;
+        break;
 
     default:
-      break;
+        break;
     }
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }
 
 static void
 gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 {
-  GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (draw_tool);
-  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (draw_tool);
-  GimpCanvasItem       *item;
-  GList                *list;
+    GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (draw_tool);
+    GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (draw_tool);
+    GimpCanvasItem       *item;
+    GList                *list;
 
-  /*  First, render all segments and lines  */
-  if (! iscissors->curve->first_point)
+    /*  First, render all segments and lines  */
+    if (! iscissors->curve->first_point)
     {
-      for (list = g_queue_peek_head_link (iscissors->curve->segments);
-           list;
-           list = g_list_next (list))
+        for (list = g_queue_peek_head_link (iscissors->curve->segments);
+                list;
+                list = g_list_next (list))
         {
-          ISegment *segment = list->data;
+            ISegment *segment = list->data;
 
-          /*  plot the segment  */
-          item = iscissors_draw_segment (draw_tool, segment);
+            /*  plot the segment  */
+            item = iscissors_draw_segment (draw_tool, segment);
 
-          /*  if this segment is currently being added or adjusted  */
-          if ((iscissors->state == SEED_PLACEMENT  &&
-               ! list->next)
-              ||
-              (iscissors->state == SEED_ADJUSTMENT &&
-               (segment == iscissors->segment1 ||
-                segment == iscissors->segment2)))
+            /*  if this segment is currently being added or adjusted  */
+            if ((iscissors->state == SEED_PLACEMENT  &&
+                    ! list->next)
+                    ||
+                    (iscissors->state == SEED_ADJUSTMENT &&
+                     (segment == iscissors->segment1 ||
+                      segment == iscissors->segment2)))
             {
-              if (! options->interactive)
-                item = gimp_draw_tool_add_line (draw_tool,
-                                                segment->x1, segment->y1,
-                                                segment->x2, segment->y2);
+                if (! options->interactive)
+                    item = gimp_draw_tool_add_line (draw_tool,
+                                                    segment->x1, segment->y1,
+                                                    segment->x2, segment->y2);
 
-              if (item)
-                gimp_canvas_item_set_highlight (item, TRUE);
+                if (item)
+                    gimp_canvas_item_set_highlight (item, TRUE);
             }
         }
     }
 
-  /*  Then, render the handles on top of the segments  */
-  for (list = g_queue_peek_head_link (iscissors->curve->segments);
-       list;
-       list = g_list_next (list))
+    /*  Then, render the handles on top of the segments  */
+    for (list = g_queue_peek_head_link (iscissors->curve->segments);
+            list;
+            list = g_list_next (list))
     {
-      ISegment *segment = list->data;
+        ISegment *segment = list->data;
 
-      if (! iscissors->curve->first_point)
+        if (! iscissors->curve->first_point)
         {
-          gboolean adjustment = (iscissors->state == SEED_ADJUSTMENT &&
-                                 segment == iscissors->segment1);
+            gboolean adjustment = (iscissors->state == SEED_ADJUSTMENT &&
+                                   segment == iscissors->segment1);
 
-          item = gimp_draw_tool_add_handle (draw_tool,
-                                            adjustment ?
-                                            GIMP_HANDLE_CROSS :
-                                            GIMP_HANDLE_FILLED_CIRCLE,
-                                            segment->x1,
-                                            segment->y1,
-                                            GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                            GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                            GIMP_HANDLE_ANCHOR_CENTER);
+            item = gimp_draw_tool_add_handle (draw_tool,
+                                              adjustment ?
+                                              GIMP_HANDLE_CROSS :
+                                              GIMP_HANDLE_FILLED_CIRCLE,
+                                              segment->x1,
+                                              segment->y1,
+                                              GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                              GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                              GIMP_HANDLE_ANCHOR_CENTER);
 
-          if (adjustment)
-            gimp_canvas_item_set_highlight (item, TRUE);
+            if (adjustment)
+                gimp_canvas_item_set_highlight (item, TRUE);
         }
 
-      /*  Draw the last point if the curve is not closed  */
-      if (! list->next && ! iscissors->curve->closed)
+        /*  Draw the last point if the curve is not closed  */
+        if (! list->next && ! iscissors->curve->closed)
         {
-          gboolean placement = (iscissors->state == SEED_PLACEMENT);
+            gboolean placement = (iscissors->state == SEED_PLACEMENT);
 
-          item = gimp_draw_tool_add_handle (draw_tool,
-                                            placement ?
-                                            GIMP_HANDLE_CROSS :
-                                            GIMP_HANDLE_FILLED_CIRCLE,
-                                            segment->x2,
-                                            segment->y2,
-                                            GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                            GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                            GIMP_HANDLE_ANCHOR_CENTER);
+            item = gimp_draw_tool_add_handle (draw_tool,
+                                              placement ?
+                                              GIMP_HANDLE_CROSS :
+                                              GIMP_HANDLE_FILLED_CIRCLE,
+                                              segment->x2,
+                                              segment->y2,
+                                              GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                              GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                              GIMP_HANDLE_ANCHOR_CENTER);
 
-          if (placement)
-            gimp_canvas_item_set_highlight (item, TRUE);
+            if (placement)
+                gimp_canvas_item_set_highlight (item, TRUE);
         }
     }
 }
@@ -854,31 +854,31 @@ static GimpCanvasItem *
 iscissors_draw_segment (GimpDrawTool *draw_tool,
                         ISegment     *segment)
 {
-  GimpCanvasItem *item;
-  GimpVector2    *points;
-  gpointer       *point;
-  gint            i, len;
+    GimpCanvasItem *item;
+    GimpVector2    *points;
+    gpointer       *point;
+    gint            i, len;
 
-  if (! segment->points)
-    return NULL;
+    if (! segment->points)
+        return NULL;
 
-  len = segment->points->len;
+    len = segment->points->len;
 
-  points = g_new (GimpVector2, len);
+    points = g_new (GimpVector2, len);
 
-  for (i = 0, point = segment->points->pdata; i < len; i++, point++)
+    for (i = 0, point = segment->points->pdata; i < len; i++, point++)
     {
-      guint32 coords = GPOINTER_TO_INT (*point);
+        guint32 coords = GPOINTER_TO_INT (*point);
 
-      points[i].x = (coords & 0x0000ffff);
-      points[i].y = (coords >> 16);
+        points[i].x = (coords & 0x0000ffff);
+        points[i].y = (coords >> 16);
     }
 
-  item = gimp_draw_tool_add_lines (draw_tool, points, len, NULL, FALSE);
+    item = gimp_draw_tool_add_lines (draw_tool, points, len, NULL, FALSE);
 
-  g_free (points);
+    g_free (points);
 
-  return item;
+    return item;
 }
 
 static void
@@ -888,109 +888,109 @@ gimp_iscissors_tool_oper_update (GimpTool         *tool,
                                  gboolean          proximity,
                                  GimpDisplay      *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
-                                               display);
-  /* parent sets a message in the status bar, but it will be replaced here */
+    GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
+            display);
+    /* parent sets a message in the status bar, but it will be replaced here */
 
-  if (mouse_over_vertex (iscissors, coords->x, coords->y) > 1)
+    if (mouse_over_vertex (iscissors, coords->x, coords->y) > 1)
     {
-      GdkModifierType snap_mask   = gimp_get_extend_selection_mask ();
-      GdkModifierType remove_mask = gimp_get_modify_selection_mask ();
+        GdkModifierType snap_mask   = gimp_get_extend_selection_mask ();
+        GdkModifierType remove_mask = gimp_get_modify_selection_mask ();
 
-      if (state & remove_mask)
+        if (state & remove_mask)
         {
-          gimp_tool_replace_status (tool, display,
-                                    _("Click to remove this point"));
-          iscissors->op = ISCISSORS_OP_REMOVE_POINT;
+            gimp_tool_replace_status (tool, display,
+                                      _("Click to remove this point"));
+            iscissors->op = ISCISSORS_OP_REMOVE_POINT;
         }
-      else
+        else
         {
-          gchar *status =
-            gimp_suggest_modifiers (_("Click-Drag to move this point"),
-                                    (snap_mask | remove_mask) & ~state,
-                                    _("%s: disable auto-snap"),
-                                    _("%s: remove this point"),
-                                    NULL);
-          gimp_tool_replace_status (tool, display, "%s", status);
-          g_free (status);
-          iscissors->op = ISCISSORS_OP_MOVE_POINT;
+            gchar *status =
+                gimp_suggest_modifiers (_("Click-Drag to move this point"),
+                                        (snap_mask | remove_mask) & ~state,
+                                        _("%s: disable auto-snap"),
+                                        _("%s: remove this point"),
+                                        NULL);
+            gimp_tool_replace_status (tool, display, "%s", status);
+            g_free (status);
+            iscissors->op = ISCISSORS_OP_MOVE_POINT;
         }
     }
-  else if (mouse_over_segment (iscissors, coords->x, coords->y))
+    else if (mouse_over_segment (iscissors, coords->x, coords->y))
     {
-      ISegment *segment = g_queue_peek_head (iscissors->curve->segments);
+        ISegment *segment = g_queue_peek_head (iscissors->curve->segments);
 
-      if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
-                                    RINT (coords->x), RINT (coords->y),
-                                    GIMP_HANDLE_CIRCLE,
-                                    segment->x1, segment->y1,
-                                    GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                    GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                    GIMP_HANDLE_ANCHOR_CENTER))
+        if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
+                                      RINT (coords->x), RINT (coords->y),
+                                      GIMP_HANDLE_CIRCLE,
+                                      segment->x1, segment->y1,
+                                      GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                      GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                      GIMP_HANDLE_ANCHOR_CENTER))
         {
-          gimp_tool_replace_status (tool, display,
-                                    _("Click to close the curve"));
-          iscissors->op = ISCISSORS_OP_CONNECT;
+            gimp_tool_replace_status (tool, display,
+                                      _("Click to close the curve"));
+            iscissors->op = ISCISSORS_OP_CONNECT;
         }
-      else
+        else
         {
-          gimp_tool_replace_status (tool, display,
-                                    _("Click to add a point on this segment"));
-          iscissors->op = ISCISSORS_OP_ADD_POINT;
+            gimp_tool_replace_status (tool, display,
+                                      _("Click to add a point on this segment"));
+            iscissors->op = ISCISSORS_OP_ADD_POINT;
         }
     }
-  else if (iscissors->curve->closed && iscissors->mask)
+    else if (iscissors->curve->closed && iscissors->mask)
     {
-      if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
-                                        RINT (coords->x),
-                                        RINT (coords->y)))
+        if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
+                                          RINT (coords->x),
+                                          RINT (coords->y)))
         {
-          if (proximity)
+            if (proximity)
             {
-              gimp_tool_replace_status (tool, display,
-                                        _("Click or press Enter to convert to"
-                                          " a selection"));
+                gimp_tool_replace_status (tool, display,
+                                          _("Click or press Enter to convert to"
+                                            " a selection"));
             }
-          iscissors->op = ISCISSORS_OP_SELECT;
+            iscissors->op = ISCISSORS_OP_SELECT;
         }
-      else
+        else
         {
-          if (proximity)
+            if (proximity)
             {
-              gimp_tool_replace_status (tool, display,
-                                        _("Press Enter to convert to a"
-                                          " selection"));
+                gimp_tool_replace_status (tool, display,
+                                          _("Press Enter to convert to a"
+                                            " selection"));
             }
-          iscissors->op = ISCISSORS_OP_IMPOSSIBLE;
+            iscissors->op = ISCISSORS_OP_IMPOSSIBLE;
         }
     }
-  else
+    else
     {
-      switch (iscissors->state)
+        switch (iscissors->state)
         {
         case WAITING:
-          if (proximity)
+            if (proximity)
             {
-              GdkModifierType  snap_mask = gimp_get_extend_selection_mask ();
-              gchar           *status;
+                GdkModifierType  snap_mask = gimp_get_extend_selection_mask ();
+                gchar           *status;
 
-              status = gimp_suggest_modifiers (_("Click or Click-Drag to add a"
-                                                 " point"),
-                                               snap_mask & ~state,
-                                               _("%s: disable auto-snap"),
-                                               NULL, NULL);
-              gimp_tool_replace_status (tool, display, "%s", status);
-              g_free (status);
+                status = gimp_suggest_modifiers (_("Click or Click-Drag to add a"
+                                                   " point"),
+                                                 snap_mask & ~state,
+                                                 _("%s: disable auto-snap"),
+                                                 NULL, NULL);
+                gimp_tool_replace_status (tool, display, "%s", status);
+                g_free (status);
             }
-          iscissors->op = ISCISSORS_OP_ADD_POINT;
-          break;
+            iscissors->op = ISCISSORS_OP_ADD_POINT;
+            break;
 
         default:
-          /* if NO_ACTION, keep parent's status bar message (selection tool) */
-          iscissors->op = ISCISSORS_OP_NONE;
-          break;
+            /* if NO_ACTION, keep parent's status bar message (selection tool) */
+            iscissors->op = ISCISSORS_OP_NONE;
+            break;
         }
     }
 }
@@ -1001,60 +1001,60 @@ gimp_iscissors_tool_cursor_update (GimpTool         *tool,
                                    GdkModifierType   state,
                                    GimpDisplay      *display)
 {
-  GimpIscissorsTool  *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpCursorModifier  modifier  = GIMP_CURSOR_MODIFIER_NONE;
+    GimpIscissorsTool  *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpCursorModifier  modifier  = GIMP_CURSOR_MODIFIER_NONE;
 
-  switch (iscissors->op)
+    switch (iscissors->op)
     {
     case ISCISSORS_OP_SELECT:
-      {
+    {
         GimpSelectionOptions *options;
 
         options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
 
         /* Do not overwrite the modifiers for add, subtract, intersect */
         if (options->operation == GIMP_CHANNEL_OP_REPLACE)
-          {
+        {
             modifier = GIMP_CURSOR_MODIFIER_SELECT;
-          }
-      }
-      break;
+        }
+    }
+    break;
 
     case ISCISSORS_OP_MOVE_POINT:
-      modifier = GIMP_CURSOR_MODIFIER_MOVE;
-      break;
+        modifier = GIMP_CURSOR_MODIFIER_MOVE;
+        break;
 
     case ISCISSORS_OP_ADD_POINT:
-      modifier = GIMP_CURSOR_MODIFIER_PLUS;
-      break;
+        modifier = GIMP_CURSOR_MODIFIER_PLUS;
+        break;
 
     case ISCISSORS_OP_REMOVE_POINT:
-      modifier = GIMP_CURSOR_MODIFIER_MINUS;
-      break;
+        modifier = GIMP_CURSOR_MODIFIER_MINUS;
+        break;
 
     case ISCISSORS_OP_CONNECT:
-      modifier = GIMP_CURSOR_MODIFIER_JOIN;
-      break;
+        modifier = GIMP_CURSOR_MODIFIER_JOIN;
+        break;
 
     case ISCISSORS_OP_IMPOSSIBLE:
-      modifier = GIMP_CURSOR_MODIFIER_BAD;
-      break;
+        modifier = GIMP_CURSOR_MODIFIER_BAD;
+        break;
 
     default:
-      break;
+        break;
     }
 
-  if (modifier != GIMP_CURSOR_MODIFIER_NONE)
+    if (modifier != GIMP_CURSOR_MODIFIER_NONE)
     {
-      gimp_tool_set_cursor (tool, display,
-                            GIMP_CURSOR_MOUSE,
-                            GIMP_TOOL_CURSOR_ISCISSORS,
-                            modifier);
+        gimp_tool_set_cursor (tool, display,
+                              GIMP_CURSOR_MOUSE,
+                              GIMP_TOOL_CURSOR_ISCISSORS,
+                              modifier);
     }
-  else
+    else
     {
-      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords,
-                                                     state, display);
+        GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords,
+                state, display);
     }
 }
 
@@ -1063,66 +1063,66 @@ gimp_iscissors_tool_key_press (GimpTool    *tool,
                                GdkEventKey *kevent,
                                GimpDisplay *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  if (display != tool->display)
-    return FALSE;
+    if (display != tool->display)
+        return FALSE;
 
-  switch (kevent->keyval)
+    switch (kevent->keyval)
     {
     case GDK_KEY_BackSpace:
-      if (! iscissors->curve->closed &&
-          g_queue_peek_tail (iscissors->curve->segments))
+        if (! iscissors->curve->closed &&
+                g_queue_peek_tail (iscissors->curve->segments))
         {
-          ISegment *segment = g_queue_peek_tail (iscissors->curve->segments);
+            ISegment *segment = g_queue_peek_tail (iscissors->curve->segments);
 
-          if (g_queue_get_length (iscissors->curve->segments) > 1)
+            if (g_queue_get_length (iscissors->curve->segments) > 1)
             {
-              gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+                gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-              gimp_iscissors_tool_push_undo (iscissors);
-              icurve_delete_segment (iscissors->curve, segment);
-              gimp_iscissors_tool_free_redo (iscissors);
+                gimp_iscissors_tool_push_undo (iscissors);
+                icurve_delete_segment (iscissors->curve, segment);
+                gimp_iscissors_tool_free_redo (iscissors);
 
-              gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+                gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
             }
-          else if (segment->x2 != segment->x1 || segment->y2 != segment->y1)
+            else if (segment->x2 != segment->x1 || segment->y2 != segment->y1)
             {
-              gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+                gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-              gimp_iscissors_tool_push_undo (iscissors);
-              segment->x2 = segment->x1;
-              segment->y2 = segment->y1;
-              g_ptr_array_remove_range (segment->points,
-                                        0, segment->points->len);
-              gimp_iscissors_tool_free_redo (iscissors);
+                gimp_iscissors_tool_push_undo (iscissors);
+                segment->x2 = segment->x1;
+                segment->y2 = segment->y1;
+                g_ptr_array_remove_range (segment->points,
+                                          0, segment->points->len);
+                gimp_iscissors_tool_free_redo (iscissors);
 
-              gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+                gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
             }
-          else
+            else
             {
-              gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
+                gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
             }
-          return TRUE;
+            return TRUE;
         }
-      return FALSE;
+        return FALSE;
 
     case GDK_KEY_Return:
     case GDK_KEY_KP_Enter:
     case GDK_KEY_ISO_Enter:
-      if (iscissors->curve->closed && iscissors->mask)
+        if (iscissors->curve->closed && iscissors->mask)
         {
-          gimp_tool_control (tool, GIMP_TOOL_ACTION_COMMIT, display);
-          return TRUE;
+            gimp_tool_control (tool, GIMP_TOOL_ACTION_COMMIT, display);
+            return TRUE;
         }
-      return FALSE;
+        return FALSE;
 
     case GDK_KEY_Escape:
-      gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
-      return TRUE;
+        gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
+        return TRUE;
 
     default:
-      return FALSE;
+        return FALSE;
     }
 }
 
@@ -1130,184 +1130,184 @@ static const gchar *
 gimp_iscissors_tool_can_undo (GimpTool    *tool,
                               GimpDisplay *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  if (! iscissors->undo_stack)
-    return NULL;
+    if (! iscissors->undo_stack)
+        return NULL;
 
-  return _("Modify Scissors Curve");
+    return _("Modify Scissors Curve");
 }
 
 static const gchar *
 gimp_iscissors_tool_can_redo (GimpTool    *tool,
                               GimpDisplay *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  if (! iscissors->redo_stack)
-    return NULL;
+    if (! iscissors->redo_stack)
+        return NULL;
 
-  return _("Modify Scissors Curve");
+    return _("Modify Scissors Curve");
 }
 
 static gboolean
 gimp_iscissors_tool_undo (GimpTool    *tool,
                           GimpDisplay *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  iscissors->redo_stack = g_list_prepend (iscissors->redo_stack,
-                                          iscissors->curve);
+    iscissors->redo_stack = g_list_prepend (iscissors->redo_stack,
+                                            iscissors->curve);
 
-  iscissors->curve = iscissors->undo_stack->data;
+    iscissors->curve = iscissors->undo_stack->data;
 
-  iscissors->undo_stack = g_list_remove (iscissors->undo_stack,
-                                         iscissors->curve);
+    iscissors->undo_stack = g_list_remove (iscissors->undo_stack,
+                                           iscissors->curve);
 
-  if (! iscissors->undo_stack)
+    if (! iscissors->undo_stack)
     {
-      iscissors->state = NO_ACTION;
+        iscissors->state = NO_ACTION;
 
-      gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
+        gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
     }
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 
-  return TRUE;
+    return TRUE;
 }
 
 static gboolean
 gimp_iscissors_tool_redo (GimpTool    *tool,
                           GimpDisplay *display)
 {
-  GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
+    GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  if (! iscissors->undo_stack)
+    if (! iscissors->undo_stack)
     {
-      iscissors->state = WAITING;
+        iscissors->state = WAITING;
 
-      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
+        gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
     }
 
-  iscissors->undo_stack = g_list_prepend (iscissors->undo_stack,
-                                          iscissors->curve);
+    iscissors->undo_stack = g_list_prepend (iscissors->undo_stack,
+                                            iscissors->curve);
 
-  iscissors->curve = iscissors->redo_stack->data;
+    iscissors->curve = iscissors->redo_stack->data;
 
-  iscissors->redo_stack = g_list_remove (iscissors->redo_stack,
-                                         iscissors->curve);
+    iscissors->redo_stack = g_list_remove (iscissors->redo_stack,
+                                           iscissors->curve);
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+    gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 
-  return TRUE;
+    return TRUE;
 }
 
 static void
 gimp_iscissors_tool_push_undo (GimpIscissorsTool *iscissors)
 {
-  iscissors->undo_stack = g_list_prepend (iscissors->undo_stack,
-                                          icurve_copy (iscissors->curve));
+    iscissors->undo_stack = g_list_prepend (iscissors->undo_stack,
+                                            icurve_copy (iscissors->curve));
 }
 
 static void
 gimp_iscissors_tool_pop_undo (GimpIscissorsTool *iscissors)
 {
-  icurve_free (iscissors->curve);
-  iscissors->curve = iscissors->undo_stack->data;
+    icurve_free (iscissors->curve);
+    iscissors->curve = iscissors->undo_stack->data;
 
-  iscissors->undo_stack = g_list_remove (iscissors->undo_stack,
-                                         iscissors->curve);
+    iscissors->undo_stack = g_list_remove (iscissors->undo_stack,
+                                           iscissors->curve);
 
-  if (! iscissors->undo_stack)
+    if (! iscissors->undo_stack)
     {
-      iscissors->state = NO_ACTION;
+        iscissors->state = NO_ACTION;
 
-      gimp_draw_tool_stop (GIMP_DRAW_TOOL (iscissors));
+        gimp_draw_tool_stop (GIMP_DRAW_TOOL (iscissors));
     }
 }
 
 static void
 gimp_iscissors_tool_free_redo (GimpIscissorsTool *iscissors)
 {
-  g_list_free_full (iscissors->redo_stack,
-                    (GDestroyNotify) icurve_free);
-  iscissors->redo_stack = NULL;
+    g_list_free_full (iscissors->redo_stack,
+                      (GDestroyNotify) icurve_free);
+    iscissors->redo_stack = NULL;
 
-  /*  update the undo actions / menu items  */
-  gimp_image_flush (gimp_display_get_image (GIMP_TOOL (iscissors)->display));
+    /*  update the undo actions / menu items  */
+    gimp_image_flush (gimp_display_get_image (GIMP_TOOL (iscissors)->display));
 }
 
 static void
 gimp_iscissors_tool_halt (GimpIscissorsTool *iscissors,
                           GimpDisplay       *display)
 {
-  icurve_clear (iscissors->curve);
+    icurve_clear (iscissors->curve);
 
-  iscissors->segment1 = NULL;
-  iscissors->segment2 = NULL;
-  iscissors->state    = NO_ACTION;
+    iscissors->segment1 = NULL;
+    iscissors->segment2 = NULL;
+    iscissors->state    = NO_ACTION;
 
-  if (iscissors->undo_stack)
+    if (iscissors->undo_stack)
     {
-      g_list_free_full (iscissors->undo_stack, (GDestroyNotify) icurve_free);
-      iscissors->undo_stack = NULL;
+        g_list_free_full (iscissors->undo_stack, (GDestroyNotify) icurve_free);
+        iscissors->undo_stack = NULL;
     }
 
-  if (iscissors->redo_stack)
+    if (iscissors->redo_stack)
     {
-      g_list_free_full (iscissors->redo_stack, (GDestroyNotify) icurve_free);
-      iscissors->redo_stack = NULL;
+        g_list_free_full (iscissors->redo_stack, (GDestroyNotify) icurve_free);
+        iscissors->redo_stack = NULL;
     }
 
-  g_clear_object (&iscissors->gradient_map);
-  g_clear_object (&iscissors->mask);
+    g_clear_object (&iscissors->gradient_map);
+    g_clear_object (&iscissors->mask);
 }
 
 static void
 gimp_iscissors_tool_commit (GimpIscissorsTool *iscissors,
                             GimpDisplay       *display)
 {
-  GimpTool             *tool    = GIMP_TOOL (iscissors);
-  GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
-  GimpImage            *image   = gimp_display_get_image (display);
+    GimpTool             *tool    = GIMP_TOOL (iscissors);
+    GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+    GimpImage            *image   = gimp_display_get_image (display);
 
-  if (! iscissors->curve->closed)
+    if (! iscissors->curve->closed)
     {
-      ISegment *first = g_queue_peek_head (iscissors->curve->segments);
-      ISegment *last  = g_queue_peek_tail (iscissors->curve->segments);
+        ISegment *first = g_queue_peek_head (iscissors->curve->segments);
+        ISegment *last  = g_queue_peek_tail (iscissors->curve->segments);
 
-      if (first && last && first != last)
+        if (first && last && first != last)
         {
-          ISegment *segment;
+            ISegment *segment;
 
-          segment = icurve_append_segment (iscissors->curve,
-                                           last->x2,
-                                           last->y2,
-                                           first->x1,
-                                           first->y1);
-          icurve_close (iscissors->curve);
-          calculate_segment (iscissors, segment);
+            segment = icurve_append_segment (iscissors->curve,
+                                             last->x2,
+                                             last->y2,
+                                             first->x1,
+                                             first->y1);
+            icurve_close (iscissors->curve);
+            calculate_segment (iscissors, segment);
 
-          iscissors_convert (iscissors, display);
+            iscissors_convert (iscissors, display);
         }
     }
 
-  if (iscissors->curve->closed && iscissors->mask)
+    if (iscissors->curve->closed && iscissors->mask)
     {
-      gimp_channel_select_channel (gimp_image_get_mask (image),
-                                   gimp_tool_get_undo_desc (tool),
-                                   iscissors->mask,
-                                   0, 0,
-                                   options->operation,
-                                   options->feather,
-                                   options->feather_radius,
-                                   options->feather_radius);
+        gimp_channel_select_channel (gimp_image_get_mask (image),
+                                     gimp_tool_get_undo_desc (tool),
+                                     iscissors->mask,
+                                     0, 0,
+                                     options->operation,
+                                     options->feather,
+                                     options->feather_radius,
+                                     options->feather_radius);
 
-      gimp_image_flush (image);
+        gimp_image_flush (image);
     }
 }
 
@@ -1319,53 +1319,53 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
                    gdouble            x,
                    gdouble            y)
 {
-  GList *list;
-  gint   segments_found = 0;
+    GList *list;
+    gint   segments_found = 0;
 
-  /*  traverse through the list, returning non-zero if the current cursor
-   *  position is on an existing curve vertex.  Set the segment1 and segment2
-   *  variables to the two segments containing the vertex in question
-   */
+    /*  traverse through the list, returning non-zero if the current cursor
+     *  position is on an existing curve vertex.  Set the segment1 and segment2
+     *  variables to the two segments containing the vertex in question
+     */
 
-  iscissors->segment1 = iscissors->segment2 = NULL;
+    iscissors->segment1 = iscissors->segment2 = NULL;
 
-  for (list = g_queue_peek_head_link (iscissors->curve->segments);
-       list;
-       list = g_list_next (list))
+    for (list = g_queue_peek_head_link (iscissors->curve->segments);
+            list;
+            list = g_list_next (list))
     {
-      ISegment *segment = list->data;
+        ISegment *segment = list->data;
 
-      if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
-                                    GIMP_TOOL (iscissors)->display,
-                                    x, y,
-                                    GIMP_HANDLE_CIRCLE,
-                                    segment->x1, segment->y1,
-                                    GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                    GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                    GIMP_HANDLE_ANCHOR_CENTER))
+        if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
+                                      GIMP_TOOL (iscissors)->display,
+                                      x, y,
+                                      GIMP_HANDLE_CIRCLE,
+                                      segment->x1, segment->y1,
+                                      GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                      GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                      GIMP_HANDLE_ANCHOR_CENTER))
         {
-          iscissors->segment1 = segment;
+            iscissors->segment1 = segment;
 
-          if (segments_found++)
-            return segments_found;
+            if (segments_found++)
+                return segments_found;
         }
-      else if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
-                                         GIMP_TOOL (iscissors)->display,
-                                         x, y,
-                                         GIMP_HANDLE_CIRCLE,
-                                         segment->x2, segment->y2,
-                                         GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                         GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                         GIMP_HANDLE_ANCHOR_CENTER))
+        else if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
+                                           GIMP_TOOL (iscissors)->display,
+                                           x, y,
+                                           GIMP_HANDLE_CIRCLE,
+                                           segment->x2, segment->y2,
+                                           GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                           GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                           GIMP_HANDLE_ANCHOR_CENTER))
         {
-          iscissors->segment2 = segment;
+            iscissors->segment2 = segment;
 
-          if (segments_found++)
-            return segments_found;
+            if (segments_found++)
+                return segments_found;
         }
     }
 
-  return segments_found;
+    return segments_found;
 }
 
 static gboolean
@@ -1373,23 +1373,23 @@ clicked_on_vertex (GimpIscissorsTool *iscissors,
                    gdouble            x,
                    gdouble            y)
 {
-  gint segments_found  = mouse_over_vertex (iscissors, x, y);
+    gint segments_found  = mouse_over_vertex (iscissors, x, y);
 
-  if (segments_found > 1)
+    if (segments_found > 1)
     {
-      gimp_iscissors_tool_push_undo (iscissors);
+        gimp_iscissors_tool_push_undo (iscissors);
 
-      return TRUE;
+        return TRUE;
     }
 
-  /*  if only one segment was found, the segments are unconnected, and
-   *  the user only wants to move either the first or last point
-   *  disallow this for now.
-   */
-  if (segments_found == 1)
-    return FALSE;
+    /*  if only one segment was found, the segments are unconnected, and
+     *  the user only wants to move either the first or last point
+     *  disallow this for now.
+     */
+    if (segments_found == 1)
+        return FALSE;
 
-  return clicked_on_segment (iscissors, x, y);
+    return clicked_on_segment (iscissors, x, y);
 }
 
 
@@ -1398,46 +1398,46 @@ mouse_over_segment (GimpIscissorsTool *iscissors,
                     gdouble            x,
                     gdouble            y)
 {
-  GList *list;
+    GList *list;
 
-  /*  traverse through the list, returning the curve segment's list element
-   *  if the current cursor position is on a curve...
-   */
-  for (list = g_queue_peek_head_link (iscissors->curve->segments);
-       list;
-       list = g_list_next (list))
+    /*  traverse through the list, returning the curve segment's list element
+     *  if the current cursor position is on a curve...
+     */
+    for (list = g_queue_peek_head_link (iscissors->curve->segments);
+            list;
+            list = g_list_next (list))
     {
-      ISegment *segment = list->data;
-      gpointer *pt;
-      gint      len;
+        ISegment *segment = list->data;
+        gpointer *pt;
+        gint      len;
 
-      if (! segment->points)
-        continue;
+        if (! segment->points)
+            continue;
 
-      pt  = segment->points->pdata;
-      len = segment->points->len;
+        pt  = segment->points->pdata;
+        len = segment->points->len;
 
-      while (len--)
+        while (len--)
         {
-          guint32 coords = GPOINTER_TO_INT (*pt);
-          gint    tx, ty;
+            guint32 coords = GPOINTER_TO_INT (*pt);
+            gint    tx, ty;
 
-          pt++;
-          tx = coords & 0x0000ffff;
-          ty = coords >> 16;
+            pt++;
+            tx = coords & 0x0000ffff;
+            ty = coords >> 16;
 
-          /*  Is the specified point close enough to the segment?  */
-          if (gimp_draw_tool_calc_distance_square (GIMP_DRAW_TOOL (iscissors),
-                                                   GIMP_TOOL (iscissors)->display,
-                                                   tx, ty,
-                                                   x, y) < SQR (GIMP_TOOL_HANDLE_SIZE_CIRCLE / 2))
+            /*  Is the specified point close enough to the segment?  */
+            if (gimp_draw_tool_calc_distance_square (GIMP_DRAW_TOOL (iscissors),
+                    GIMP_TOOL (iscissors)->display,
+                    tx, ty,
+                    x, y) < SQR (GIMP_TOOL_HANDLE_SIZE_CIRCLE / 2))
             {
-              return list;
+                return list;
             }
         }
     }
 
-  return NULL;
+    return NULL;
 }
 
 static gboolean
@@ -1445,35 +1445,35 @@ clicked_on_segment (GimpIscissorsTool *iscissors,
                     gdouble            x,
                     gdouble            y)
 {
-  GList *list = mouse_over_segment (iscissors, x, y);
+    GList *list = mouse_over_segment (iscissors, x, y);
 
-  /*  traverse through the list, getting back the curve segment's list
-   *  element if the current cursor position is on a segment...
-   *  If this occurs, replace the segment with two new segments,
-   *  separated by a new vertex.
-   */
+    /*  traverse through the list, getting back the curve segment's list
+     *  element if the current cursor position is on a segment...
+     *  If this occurs, replace the segment with two new segments,
+     *  separated by a new vertex.
+     */
 
-  if (list)
+    if (list)
     {
-      ISegment *segment = list->data;
-      ISegment *new_segment;
+        ISegment *segment = list->data;
+        ISegment *new_segment;
 
-      gimp_iscissors_tool_push_undo (iscissors);
+        gimp_iscissors_tool_push_undo (iscissors);
 
-      new_segment = icurve_insert_segment (iscissors->curve,
-                                           list,
-                                           iscissors->x,
-                                           iscissors->y,
-                                           segment->x2,
-                                           segment->y2);
+        new_segment = icurve_insert_segment (iscissors->curve,
+                                             list,
+                                             iscissors->x,
+                                             iscissors->y,
+                                             segment->x2,
+                                             segment->y2);
 
-      iscissors->segment1 = new_segment;
-      iscissors->segment2 = segment;
+        iscissors->segment1 = new_segment;
+        iscissors->segment2 = segment;
 
-      return TRUE;
+        return TRUE;
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 
@@ -1481,118 +1481,118 @@ static void
 calculate_segment (GimpIscissorsTool *iscissors,
                    ISegment          *segment)
 {
-  GimpDisplay  *display  = GIMP_TOOL (iscissors)->display;
-  GimpPickable *pickable = GIMP_PICKABLE (gimp_display_get_image (display));
-  gint          width;
-  gint          height;
-  gint          xs, ys, xe, ye;
-  gint          x1, y1, x2, y2;
-  gint          ewidth, eheight;
+    GimpDisplay  *display  = GIMP_TOOL (iscissors)->display;
+    GimpPickable *pickable = GIMP_PICKABLE (gimp_display_get_image (display));
+    gint          width;
+    gint          height;
+    gint          xs, ys, xe, ye;
+    gint          x1, y1, x2, y2;
+    gint          ewidth, eheight;
 
-  /* Initialise the gradient map buffer for this pickable if we don't
-   * already have one.
-   */
-  if (! iscissors->gradient_map)
-    iscissors->gradient_map = gradient_map_new (pickable);
+    /* Initialise the gradient map buffer for this pickable if we don't
+     * already have one.
+     */
+    if (! iscissors->gradient_map)
+        iscissors->gradient_map = gradient_map_new (pickable);
 
-  width  = gegl_buffer_get_width  (iscissors->gradient_map);
-  height = gegl_buffer_get_height (iscissors->gradient_map);
+    width  = gegl_buffer_get_width  (iscissors->gradient_map);
+    height = gegl_buffer_get_height (iscissors->gradient_map);
 
-  /*  Calculate the lowest cost path from one vertex to the next as specified
-   *  by the parameter "segment".
-   *    Here are the steps:
-   *      1)  Calculate the appropriate working area for this operation
-   *      2)  Allocate a temp buf for the dynamic programming array
-   *      3)  Run the dynamic programming algorithm to find the optimal path
-   *      4)  Translate the optimal path into pixels in the isegment data
-   *            structure.
-   */
+    /*  Calculate the lowest cost path from one vertex to the next as specified
+     *  by the parameter "segment".
+     *    Here are the steps:
+     *      1)  Calculate the appropriate working area for this operation
+     *      2)  Allocate a temp buf for the dynamic programming array
+     *      3)  Run the dynamic programming algorithm to find the optimal path
+     *      4)  Translate the optimal path into pixels in the isegment data
+     *            structure.
+     */
 
-  /*  Get the bounding box  */
-  xs = CLAMP (segment->x1, 0, width  - 1);
-  ys = CLAMP (segment->y1, 0, height - 1);
-  xe = CLAMP (segment->x2, 0, width  - 1);
-  ye = CLAMP (segment->y2, 0, height - 1);
-  x1 = MIN (xs, xe);
-  y1 = MIN (ys, ye);
-  x2 = MAX (xs, xe) + 1;  /*  +1 because if xe = 199 & xs = 0, x2 - x1, width = 200  */
-  y2 = MAX (ys, ye) + 1;
+    /*  Get the bounding box  */
+    xs = CLAMP (segment->x1, 0, width  - 1);
+    ys = CLAMP (segment->y1, 0, height - 1);
+    xe = CLAMP (segment->x2, 0, width  - 1);
+    ye = CLAMP (segment->y2, 0, height - 1);
+    x1 = MIN (xs, xe);
+    y1 = MIN (ys, ye);
+    x2 = MAX (xs, xe) + 1;  /*  +1 because if xe = 199 & xs = 0, x2 - x1, width = 200  */
+    y2 = MAX (ys, ye) + 1;
 
-  /*  expand the boundaries past the ending points by
-   *  some percentage of width and height.  This serves the following purpose:
-   *  It gives the algorithm more area to search so better solutions
-   *  are found.  This is particularly helpful in finding "bumps" which
-   *  fall outside the bounding box represented by the start and end
-   *  coordinates of the "segment".
-   */
-  ewidth  = (x2 - x1) * EXTEND_BY + FIXED;
-  eheight = (y2 - y1) * EXTEND_BY + FIXED;
+    /*  expand the boundaries past the ending points by
+     *  some percentage of width and height.  This serves the following purpose:
+     *  It gives the algorithm more area to search so better solutions
+     *  are found.  This is particularly helpful in finding "bumps" which
+     *  fall outside the bounding box represented by the start and end
+     *  coordinates of the "segment".
+     */
+    ewidth  = (x2 - x1) * EXTEND_BY + FIXED;
+    eheight = (y2 - y1) * EXTEND_BY + FIXED;
 
-  if (xe >= xs)
-    x2 += CLAMP (ewidth, 0, width - x2);
-  else
-    x1 -= CLAMP (ewidth, 0, x1);
+    if (xe >= xs)
+        x2 += CLAMP (ewidth, 0, width - x2);
+    else
+        x1 -= CLAMP (ewidth, 0, x1);
 
-  if (ye >= ys)
-    y2 += CLAMP (eheight, 0, height - y2);
-  else
-    y1 -= CLAMP (eheight, 0, y1);
+    if (ye >= ys)
+        y2 += CLAMP (eheight, 0, height - y2);
+    else
+        y1 -= CLAMP (eheight, 0, y1);
 
-  /* blow away any previous points list we might have */
-  if (segment->points)
+    /* blow away any previous points list we might have */
+    if (segment->points)
     {
-      g_ptr_array_free (segment->points, TRUE);
-      segment->points = NULL;
+        g_ptr_array_free (segment->points, TRUE);
+        segment->points = NULL;
     }
 
-  if ((x2 - x1) && (y2 - y1))
+    if ((x2 - x1) && (y2 - y1))
     {
-      /*  If the bounding box has width and height...  */
+        /*  If the bounding box has width and height...  */
 
-      GimpTempBuf *dp_buf; /*  dynamic programming buffer  */
-      gint         dp_width  = (x2 - x1);
-      gint         dp_height = (y2 - y1);
+        GimpTempBuf *dp_buf; /*  dynamic programming buffer  */
+        gint         dp_width  = (x2 - x1);
+        gint         dp_height = (y2 - y1);
 
-      dp_buf = gimp_temp_buf_new (dp_width, dp_height,
-                                  babl_format ("Y u32"));
+        dp_buf = gimp_temp_buf_new (dp_width, dp_height,
+                                    babl_format ("Y u32"));
 
-      /*  find the optimal path of pixels from (x1, y1) to (x2, y2)  */
-      find_optimal_path (iscissors->gradient_map, dp_buf,
-                         x1, y1, x2, y2, xs, ys);
+        /*  find the optimal path of pixels from (x1, y1) to (x2, y2)  */
+        find_optimal_path (iscissors->gradient_map, dp_buf,
+                           x1, y1, x2, y2, xs, ys);
 
-      /*  get a list of the pixels in the optimal path  */
-      segment->points = plot_pixels (dp_buf, x1, y1, xs, ys, xe, ye);
+        /*  get a list of the pixels in the optimal path  */
+        segment->points = plot_pixels (dp_buf, x1, y1, xs, ys, xe, ye);
 
-      gimp_temp_buf_unref (dp_buf);
+        gimp_temp_buf_unref (dp_buf);
     }
-  else if ((x2 - x1) == 0)
+    else if ((x2 - x1) == 0)
     {
-      /*  If the bounding box has no width  */
+        /*  If the bounding box has no width  */
 
-      /*  plot a vertical line  */
-      gint y   = ys;
-      gint dir = (ys > ye) ? -1 : 1;
+        /*  plot a vertical line  */
+        gint y   = ys;
+        gint dir = (ys > ye) ? -1 : 1;
 
-      segment->points = g_ptr_array_new ();
-      while (y != ye)
+        segment->points = g_ptr_array_new ();
+        while (y != ye)
         {
-          g_ptr_array_add (segment->points, GINT_TO_POINTER ((y << 16) + xs));
-          y += dir;
+            g_ptr_array_add (segment->points, GINT_TO_POINTER ((y << 16) + xs));
+            y += dir;
         }
     }
-  else if ((y2 - y1) == 0)
+    else if ((y2 - y1) == 0)
     {
-      /*  If the bounding box has no height  */
+        /*  If the bounding box has no height  */
 
-      /*  plot a horizontal line  */
-      gint x   = xs;
-      gint dir = (xs > xe) ? -1 : 1;
+        /*  plot a horizontal line  */
+        gint x   = xs;
+        gint dir = (xs > xe) ? -1 : 1;
 
-      segment->points = g_ptr_array_new ();
-      while (x != xe)
+        segment->points = g_ptr_array_new ();
+        while (x != xe)
         {
-          g_ptr_array_add (segment->points, GINT_TO_POINTER ((ys << 16) + x));
-          x += dir;
+            g_ptr_array_add (segment->points, GINT_TO_POINTER ((ys << 16) + x));
+            x += dir;
         }
     }
 }
@@ -1607,22 +1607,22 @@ gradient_map_value (GeglSampler         *map_sampler,
                     guint8              *grad,
                     guint8              *dir)
 {
-  if (x >= map_extent->x     &&
-      y >= map_extent->y     &&
-      x <  map_extent->width &&
-      y <  map_extent->height)
+    if (x >= map_extent->x     &&
+            y >= map_extent->y     &&
+            x <  map_extent->width &&
+            y <  map_extent->height)
     {
-      guint8 sample[2];
+        guint8 sample[2];
 
-      gegl_sampler_get (map_sampler, x, y, NULL, sample, GEGL_ABYSS_NONE);
+        gegl_sampler_get (map_sampler, x, y, NULL, sample, GEGL_ABYSS_NONE);
 
-      *grad = sample[0];
-      *dir  = sample[1];
+        *grad = sample[0];
+        *dir  = sample[1];
 
-      return TRUE;
+        return TRUE;
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 static gint
@@ -1633,39 +1633,39 @@ calculate_link (GeglSampler         *map_sampler,
                 guint32              pixel,
                 gint                 link)
 {
-  gint   value = 0;
-  guint8 grad1, dir1, grad2, dir2;
+    gint   value = 0;
+    guint8 grad1, dir1, grad2, dir2;
 
-  if (! gradient_map_value (map_sampler, map_extent, x, y, &grad1, &dir1))
+    if (! gradient_map_value (map_sampler, map_extent, x, y, &grad1, &dir1))
     {
-      grad1 = 0;
-      dir1 = 255;
+        grad1 = 0;
+        dir1 = 255;
     }
 
-  /* Convert the gradient into a cost: large gradients are good, and
-   * so have low cost. */
-  grad1 = 255 - grad1;
+    /* Convert the gradient into a cost: large gradients are good, and
+     * so have low cost. */
+    grad1 = 255 - grad1;
 
-  /*  calculate the contribution of the gradient magnitude  */
-  if (link > 1)
-    value += diagonal_weight[grad1] * OMEGA_G;
-  else
-    value += grad1 * OMEGA_G;
+    /*  calculate the contribution of the gradient magnitude  */
+    if (link > 1)
+        value += diagonal_weight[grad1] * OMEGA_G;
+    else
+        value += grad1 * OMEGA_G;
 
-  /*  calculate the contribution of the gradient direction  */
-  x += (gint8)(pixel & 0xff);
-  y += (gint8)((pixel & 0xff00) >> 8);
+    /*  calculate the contribution of the gradient direction  */
+    x += (gint8)(pixel & 0xff);
+    y += (gint8)((pixel & 0xff00) >> 8);
 
-  if (! gradient_map_value (map_sampler, map_extent, x, y, &grad2, &dir2))
+    if (! gradient_map_value (map_sampler, map_extent, x, y, &grad2, &dir2))
     {
-      grad2 = 0;
-      dir2 = 255;
+        grad2 = 0;
+        dir2 = 255;
     }
 
-  value +=
-    (direction_value[dir1][link] + direction_value[dir2][link]) * OMEGA_D;
+    value +=
+        (direction_value[dir1][link] + direction_value[dir2][link]) * OMEGA_D;
 
-  return value;
+    return value;
 }
 
 
@@ -1678,37 +1678,37 @@ plot_pixels (GimpTempBuf *dp_buf,
              gint         xe,
              gint         ye)
 {
-  gint       x, y;
-  guint32    coords;
-  gint       link;
-  gint       width = gimp_temp_buf_get_width (dp_buf);
-  guint     *data;
-  GPtrArray *list;
+    gint       x, y;
+    guint32    coords;
+    gint       link;
+    gint       width = gimp_temp_buf_get_width (dp_buf);
+    guint     *data;
+    GPtrArray *list;
 
-  /*  Start the data pointer at the correct location  */
-  data = (guint *) gimp_temp_buf_get_data (dp_buf) + (ye - y1) * width + (xe - x1);
+    /*  Start the data pointer at the correct location  */
+    data = (guint *) gimp_temp_buf_get_data (dp_buf) + (ye - y1) * width + (xe - x1);
 
-  x = xe;
-  y = ye;
+    x = xe;
+    y = ye;
 
-  list = g_ptr_array_new ();
+    list = g_ptr_array_new ();
 
-  while (TRUE)
+    while (TRUE)
     {
-      coords = (y << 16) + x;
-      g_ptr_array_add (list, GINT_TO_POINTER (coords));
+        coords = (y << 16) + x;
+        g_ptr_array_add (list, GINT_TO_POINTER (coords));
 
-      link = PIXEL_DIR (*data);
-      if (link == SEED_POINT)
-        return list;
+        link = PIXEL_DIR (*data);
+        if (link == SEED_POINT)
+            return list;
 
-      x += move[link][0];
-      y += move[link][1];
-      data += move[link][1] * width + move[link][0];
+        x += move[link][0];
+        y += move[link][1];
+        data += move[link][1] * width + move[link][0];
     }
 
-  /*  won't get here  */
-  return NULL;
+    /*  won't get here  */
+    return NULL;
 }
 
 
@@ -1727,170 +1727,170 @@ find_optimal_path (GeglBuffer  *gradient_map,
                    gint         xs,
                    gint         ys)
 {
-  GeglSampler         *map_sampler;
-  const GeglRectangle *map_extent;
-  gint                 i, j, k;
-  gint                 x, y;
-  gint                 link;
-  gint                 linkdir;
-  gint                 dirx, diry;
-  gint                 min_cost;
-  gint                 new_cost;
-  gint                 offset;
-  gint                 cum_cost[8];
-  gint                 link_cost[8];
-  gint                 pixel_cost[8];
-  guint32              pixel[8];
-  guint32             *data;
-  guint32             *d;
-  gint                 dp_buf_width  = gimp_temp_buf_get_width  (dp_buf);
-  gint                 dp_buf_height = gimp_temp_buf_get_height (dp_buf);
+    GeglSampler         *map_sampler;
+    const GeglRectangle *map_extent;
+    gint                 i, j, k;
+    gint                 x, y;
+    gint                 link;
+    gint                 linkdir;
+    gint                 dirx, diry;
+    gint                 min_cost;
+    gint                 new_cost;
+    gint                 offset;
+    gint                 cum_cost[8];
+    gint                 link_cost[8];
+    gint                 pixel_cost[8];
+    guint32              pixel[8];
+    guint32             *data;
+    guint32             *d;
+    gint                 dp_buf_width  = gimp_temp_buf_get_width  (dp_buf);
+    gint                 dp_buf_height = gimp_temp_buf_get_height (dp_buf);
 
-  /*  initialize the gradient map sampler and extent  */
-  map_sampler = gegl_buffer_sampler_new (gradient_map,
-                                         gegl_buffer_get_format (gradient_map),
-                                         GEGL_SAMPLER_NEAREST);
-  map_extent  = gegl_buffer_get_extent (gradient_map);
+    /*  initialize the gradient map sampler and extent  */
+    map_sampler = gegl_buffer_sampler_new (gradient_map,
+                                           gegl_buffer_get_format (gradient_map),
+                                           GEGL_SAMPLER_NEAREST);
+    map_extent  = gegl_buffer_get_extent (gradient_map);
 
-  /*  initialize the dynamic programming buffer  */
-  data = (guint32 *) gimp_temp_buf_data_clear (dp_buf);
+    /*  initialize the dynamic programming buffer  */
+    data = (guint32 *) gimp_temp_buf_data_clear (dp_buf);
 
-  /*  what directions are we filling the array in according to?  */
-  dirx = (xs - x1 == 0) ? 1 : -1;
-  diry = (ys - y1 == 0) ? 1 : -1;
-  linkdir = (dirx * diry);
+    /*  what directions are we filling the array in according to?  */
+    dirx = (xs - x1 == 0) ? 1 : -1;
+    diry = (ys - y1 == 0) ? 1 : -1;
+    linkdir = (dirx * diry);
 
-  y = ys;
+    y = ys;
 
-  for (i = 0; i < dp_buf_height; i++)
+    for (i = 0; i < dp_buf_height; i++)
     {
-      x = xs;
+        x = xs;
 
-      d = data + (y-y1) * dp_buf_width + (x-x1);
+        d = data + (y-y1) * dp_buf_width + (x-x1);
 
-      for (j = 0; j < dp_buf_width; j++)
+        for (j = 0; j < dp_buf_width; j++)
         {
-          min_cost = G_MAXINT;
+            min_cost = G_MAXINT;
 
-          /* pixel[] array encodes how to get to a neighbour, if possible.
-           * 0 means no connection (eg edge).
-           * Rest packed as bottom two bytes: y offset then x offset.
-           * Initially, we assume we can't get anywhere.
-           */
-          for (k = 0; k < 8; k++)
-            pixel[k] = 0;
+            /* pixel[] array encodes how to get to a neighbour, if possible.
+             * 0 means no connection (eg edge).
+             * Rest packed as bottom two bytes: y offset then x offset.
+             * Initially, we assume we can't get anywhere.
+             */
+            for (k = 0; k < 8; k++)
+                pixel[k] = 0;
 
-          /*  Find the valid neighboring pixels  */
-          /*  the previous pixel  */
-          if (j)
-            pixel[((dirx == 1) ? 4 : 0)] = PACK (-dirx, 0);
+            /*  Find the valid neighboring pixels  */
+            /*  the previous pixel  */
+            if (j)
+                pixel[((dirx == 1) ? 4 : 0)] = PACK (-dirx, 0);
 
-          /*  the previous row of pixels  */
-          if (i)
+            /*  the previous row of pixels  */
+            if (i)
             {
-              pixel[((diry == 1) ? 5 : 1)] = PACK (0, -diry);
+                pixel[((diry == 1) ? 5 : 1)] = PACK (0, -diry);
 
-              link = (linkdir == 1) ? 3 : 2;
-              if (j)
-                pixel[((diry == 1) ? (link + 4) : link)] = PACK (-dirx, -diry);
+                link = (linkdir == 1) ? 3 : 2;
+                if (j)
+                    pixel[((diry == 1) ? (link + 4) : link)] = PACK (-dirx, -diry);
 
-              link = (linkdir == 1) ? 2 : 3;
-              if (j != dp_buf_width - 1)
-                pixel[((diry == 1) ? (link + 4) : link)] = PACK (dirx, -diry);
+                link = (linkdir == 1) ? 2 : 3;
+                if (j != dp_buf_width - 1)
+                    pixel[((diry == 1) ? (link + 4) : link)] = PACK (dirx, -diry);
             }
 
-          /*  find the minimum cost of going through each neighbor to reach the
-           *  seed point...
-           */
-          link = -1;
-          for (k = 0; k < 8; k ++)
-            if (pixel[k])
-              {
-                link_cost[k] = calculate_link (map_sampler, map_extent,
-                                               xs + j*dirx, ys + i*diry,
-                                               pixel [k],
-                                               ((k > 3) ? k - 4 : k));
-                offset = OFFSET (pixel [k]);
-                pixel_cost[k] = PIXEL_COST (d[offset]);
-                cum_cost[k] = pixel_cost[k] + link_cost[k];
-                if (cum_cost[k] < min_cost)
-                  {
-                    min_cost = cum_cost[k];
-                    link = k;
-                  }
-              }
-
-          /*  If anything can be done...  */
-          if (link >= 0)
-            {
-              /*  set the cumulative cost of this pixel and the new direction
-               */
-              *d = (cum_cost[link] << 8) + link;
-
-              /*  possibly change the links from the other pixels to this pixel...
-               *  these changes occur if a neighboring pixel will receive a lower
-               *  cumulative cost by going through this pixel.
-               */
-              for (k = 0; k < 8; k ++)
-                if (pixel[k] && k != link)
-                  {
-                    /*  if the cumulative cost at the neighbor is greater than
-                     *  the cost through the link to the current pixel, change the
-                     *  neighbor's link to point to the current pixel.
-                     */
-                    new_cost = link_cost[k] + cum_cost[link];
-                    if (pixel_cost[k] > new_cost)
+            /*  find the minimum cost of going through each neighbor to reach the
+             *  seed point...
+             */
+            link = -1;
+            for (k = 0; k < 8; k ++)
+                if (pixel[k])
+                {
+                    link_cost[k] = calculate_link (map_sampler, map_extent,
+                                                   xs + j*dirx, ys + i*diry,
+                                                   pixel [k],
+                                                   ((k > 3) ? k - 4 : k));
+                    offset = OFFSET (pixel [k]);
+                    pixel_cost[k] = PIXEL_COST (d[offset]);
+                    cum_cost[k] = pixel_cost[k] + link_cost[k];
+                    if (cum_cost[k] < min_cost)
                     {
-                      /*  reverse the link direction   /--------------------\ */
-                      offset = OFFSET (pixel[k]);
-                      d[offset] = (new_cost << 8) + ((k > 3) ? k - 4 : k + 4);
+                        min_cost = cum_cost[k];
+                        link = k;
                     }
-                  }
-            }
-          /*  Set the seed point  */
-          else if (!i && !j)
+                }
+
+            /*  If anything can be done...  */
+            if (link >= 0)
             {
-              *d = SEED_POINT;
+                /*  set the cumulative cost of this pixel and the new direction
+                 */
+                *d = (cum_cost[link] << 8) + link;
+
+                /*  possibly change the links from the other pixels to this pixel...
+                 *  these changes occur if a neighboring pixel will receive a lower
+                 *  cumulative cost by going through this pixel.
+                 */
+                for (k = 0; k < 8; k ++)
+                    if (pixel[k] && k != link)
+                    {
+                        /*  if the cumulative cost at the neighbor is greater than
+                         *  the cost through the link to the current pixel, change the
+                         *  neighbor's link to point to the current pixel.
+                         */
+                        new_cost = link_cost[k] + cum_cost[link];
+                        if (pixel_cost[k] > new_cost)
+                        {
+                            /*  reverse the link direction   /--------------------\ */
+                            offset = OFFSET (pixel[k]);
+                            d[offset] = (new_cost << 8) + ((k > 3) ? k - 4 : k + 4);
+                        }
+                    }
+            }
+            /*  Set the seed point  */
+            else if (!i && !j)
+            {
+                *d = SEED_POINT;
             }
 
-          /*  increment the data pointer and the x counter  */
-          d += dirx;
-          x += dirx;
+            /*  increment the data pointer and the x counter  */
+            d += dirx;
+            x += dirx;
         }
 
-      /*  increment the y counter  */
-      y += diry;
+        /*  increment the y counter  */
+        y += diry;
     }
 
-  g_object_unref (map_sampler);
+    g_object_unref (map_sampler);
 }
 
 static GeglBuffer *
 gradient_map_new (GimpPickable *pickable)
 {
-  GeglBuffer      *buffer;
-  GeglTileHandler *handler;
+    GeglBuffer      *buffer;
+    GeglTileHandler *handler;
 
-  buffer = gimp_pickable_get_buffer (pickable);
+    buffer = gimp_pickable_get_buffer (pickable);
 
-  buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
-                                            gegl_buffer_get_width  (buffer),
-                                            gegl_buffer_get_height (buffer)),
-                            babl_format_n (babl_type ("u8"), 2));
+    buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                              gegl_buffer_get_width  (buffer),
+                              gegl_buffer_get_height (buffer)),
+                              babl_format_n (babl_type ("u8"), 2));
 
-  handler = gimp_tile_handler_iscissors_new (pickable);
+    handler = gimp_tile_handler_iscissors_new (pickable);
 
-  gimp_tile_handler_validate_assign (GIMP_TILE_HANDLER_VALIDATE (handler),
-                                     buffer);
+    gimp_tile_handler_validate_assign (GIMP_TILE_HANDLER_VALIDATE (handler),
+                                       buffer);
 
-  gimp_tile_handler_validate_invalidate (GIMP_TILE_HANDLER_VALIDATE (handler),
-                                         GEGL_RECTANGLE (0, 0,
-                                                         gegl_buffer_get_width  (buffer),
-                                                         gegl_buffer_get_height (buffer)));
+    gimp_tile_handler_validate_invalidate (GIMP_TILE_HANDLER_VALIDATE (handler),
+                                           GEGL_RECTANGLE (0, 0,
+                                                   gegl_buffer_get_width  (buffer),
+                                                   gegl_buffer_get_height (buffer)));
 
-  g_object_unref (handler);
+    g_object_unref (handler);
 
-  return buffer;
+    return buffer;
 }
 
 static void
@@ -1899,70 +1899,70 @@ find_max_gradient (GimpIscissorsTool *iscissors,
                    gint              *x,
                    gint              *y)
 {
-  GeglBufferIterator *iter;
-  GeglRectangle      *roi;
-  gint                width;
-  gint                height;
-  gint                radius;
-  gint                cx, cy;
-  gint                x1, y1, x2, y2;
-  gfloat              max_gradient;
+    GeglBufferIterator *iter;
+    GeglRectangle      *roi;
+    gint                width;
+    gint                height;
+    gint                radius;
+    gint                cx, cy;
+    gint                x1, y1, x2, y2;
+    gfloat              max_gradient;
 
-  /* Initialise the gradient map buffer for this pickable if we don't
-   * already have one.
-   */
-  if (! iscissors->gradient_map)
-    iscissors->gradient_map = gradient_map_new (pickable);
+    /* Initialise the gradient map buffer for this pickable if we don't
+     * already have one.
+     */
+    if (! iscissors->gradient_map)
+        iscissors->gradient_map = gradient_map_new (pickable);
 
-  width  = gegl_buffer_get_width  (iscissors->gradient_map);
-  height = gegl_buffer_get_height (iscissors->gradient_map);
+    width  = gegl_buffer_get_width  (iscissors->gradient_map);
+    height = gegl_buffer_get_height (iscissors->gradient_map);
 
-  radius = GRADIENT_SEARCH >> 1;
+    radius = GRADIENT_SEARCH >> 1;
 
-  /*  calculate the extent of the search  */
-  cx = CLAMP (*x, 0, width);
-  cy = CLAMP (*y, 0, height);
-  x1 = CLAMP (cx - radius, 0, width);
-  y1 = CLAMP (cy - radius, 0, height);
-  x2 = CLAMP (cx + radius, 0, width);
-  y2 = CLAMP (cy + radius, 0, height);
-  /*  calculate the factor to multiply the distance from the cursor by  */
+    /*  calculate the extent of the search  */
+    cx = CLAMP (*x, 0, width);
+    cy = CLAMP (*y, 0, height);
+    x1 = CLAMP (cx - radius, 0, width);
+    y1 = CLAMP (cy - radius, 0, height);
+    x2 = CLAMP (cx + radius, 0, width);
+    y2 = CLAMP (cy + radius, 0, height);
+    /*  calculate the factor to multiply the distance from the cursor by  */
 
-  max_gradient = 0;
-  *x = cx;
-  *y = cy;
+    max_gradient = 0;
+    *x = cx;
+    *y = cy;
 
-  iter = gegl_buffer_iterator_new (iscissors->gradient_map,
-                                   GEGL_RECTANGLE (x1, y1, x2 - x1, y2 - y1),
-                                   0, NULL,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 1);
-  roi = &iter->items[0].roi;
+    iter = gegl_buffer_iterator_new (iscissors->gradient_map,
+                                     GEGL_RECTANGLE (x1, y1, x2 - x1, y2 - y1),
+                                     0, NULL,
+                                     GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 1);
+    roi = &iter->items[0].roi;
 
-  while (gegl_buffer_iterator_next (iter))
+    while (gegl_buffer_iterator_next (iter))
     {
-      guint8 *data = iter->items[0].data;
-      gint    endx = roi->x + roi->width;
-      gint    endy = roi->y + roi->height;
-      gint    i, j;
+        guint8 *data = iter->items[0].data;
+        gint    endx = roi->x + roi->width;
+        gint    endy = roi->y + roi->height;
+        gint    i, j;
 
-      for (i = roi->y; i < endy; i++)
+        for (i = roi->y; i < endy; i++)
         {
-          const guint8 *gradient = data + 2 * roi->width * (i - roi->y);
+            const guint8 *gradient = data + 2 * roi->width * (i - roi->y);
 
-          for (j = roi->x; j < endx; j++)
+            for (j = roi->x; j < endx; j++)
             {
-              gfloat g = *gradient;
+                gfloat g = *gradient;
 
-              gradient += COST_WIDTH;
+                gradient += COST_WIDTH;
 
-              g *= distance_weights [(i - y1) * GRADIENT_SEARCH + (j - x1)];
+                g *= distance_weights [(i - y1) * GRADIENT_SEARCH + (j - x1)];
 
-              if (g > max_gradient)
+                if (g > max_gradient)
                 {
-                  max_gradient = g;
+                    max_gradient = g;
 
-                  *x = j;
-                  *y = i;
+                    *x = j;
+                    *y = i;
                 }
             }
         }
@@ -1975,96 +1975,96 @@ isegment_new (gint x1,
               gint x2,
               gint y2)
 {
-  ISegment *segment = g_slice_new0 (ISegment);
+    ISegment *segment = g_slice_new0 (ISegment);
 
-  segment->x1 = x1;
-  segment->y1 = y1;
-  segment->x2 = x2;
-  segment->y2 = y2;
+    segment->x1 = x1;
+    segment->y1 = y1;
+    segment->x2 = x2;
+    segment->y2 = y2;
 
-  return segment;
+    return segment;
 }
 
 static ISegment *
 isegment_copy (ISegment *segment)
 {
-  ISegment *copy = isegment_new (segment->x1,
-                                 segment->y1,
-                                 segment->x2,
-                                 segment->y2);
+    ISegment *copy = isegment_new (segment->x1,
+                                   segment->y1,
+                                   segment->x2,
+                                   segment->y2);
 
-  if (segment->points)
+    if (segment->points)
     {
-      gint i;
+        gint i;
 
-      copy->points = g_ptr_array_sized_new (segment->points->len);
+        copy->points = g_ptr_array_sized_new (segment->points->len);
 
-      for (i = 0; i < segment->points->len; i++)
+        for (i = 0; i < segment->points->len; i++)
         {
-          gpointer value = g_ptr_array_index (segment->points, i);
+            gpointer value = g_ptr_array_index (segment->points, i);
 
-          g_ptr_array_add (copy->points, value);
+            g_ptr_array_add (copy->points, value);
         }
     }
 
-  return copy;
+    return copy;
 }
 
 static void
 isegment_free (ISegment *segment)
 {
-  if (segment->points)
-    g_ptr_array_free (segment->points, TRUE);
+    if (segment->points)
+        g_ptr_array_free (segment->points, TRUE);
 
-  g_slice_free (ISegment, segment);
+    g_slice_free (ISegment, segment);
 }
 
 static ICurve *
 icurve_new (void)
 {
-  ICurve *curve = g_slice_new0 (ICurve);
+    ICurve *curve = g_slice_new0 (ICurve);
 
-  curve->segments    = g_queue_new ();
-  curve->first_point = TRUE;
+    curve->segments    = g_queue_new ();
+    curve->first_point = TRUE;
 
-  return curve;
+    return curve;
 }
 
 static ICurve *
 icurve_copy (ICurve *curve)
 {
-  ICurve *copy = icurve_new ();
-  GList  *link;
+    ICurve *copy = icurve_new ();
+    GList  *link;
 
-  for (link = g_queue_peek_head_link (curve->segments);
-       link;
-       link = g_list_next (link))
+    for (link = g_queue_peek_head_link (curve->segments);
+            link;
+            link = g_list_next (link))
     {
-      g_queue_push_tail (copy->segments, isegment_copy (link->data));
+        g_queue_push_tail (copy->segments, isegment_copy (link->data));
     }
 
-  copy->first_point = curve->first_point;
-  copy->closed      = curve->closed;
+    copy->first_point = curve->first_point;
+    copy->closed      = curve->closed;
 
-  return copy;
+    return copy;
 }
 
 static void
 icurve_clear (ICurve *curve)
 {
-  while (! g_queue_is_empty (curve->segments))
-    isegment_free (g_queue_pop_head (curve->segments));
+    while (! g_queue_is_empty (curve->segments))
+        isegment_free (g_queue_pop_head (curve->segments));
 
-  curve->first_point = TRUE;
-  curve->closed      = FALSE;
+    curve->first_point = TRUE;
+    curve->closed      = FALSE;
 }
 
 static void
 icurve_free (ICurve *curve)
 {
-  g_queue_free_full (curve->segments, (GDestroyNotify) isegment_free);
+    g_queue_free_full (curve->segments, (GDestroyNotify) isegment_free);
 
-  g_slice_free (ICurve, curve);
+    g_slice_free (ICurve, curve);
 }
 
 static ISegment *
@@ -2074,11 +2074,11 @@ icurve_append_segment (ICurve *curve,
                        gint    x2,
                        gint    y2)
 {
-  ISegment *segment = isegment_new (x1, y1, x2, y2);
+    ISegment *segment = isegment_new (x1, y1, x2, y2);
 
-  g_queue_push_tail (curve->segments, segment);
+    g_queue_push_tail (curve->segments, segment);
 
-  return segment;
+    return segment;
 }
 
 static ISegment *
@@ -2089,100 +2089,100 @@ icurve_insert_segment (ICurve *curve,
                        gint    x2,
                        gint    y2)
 {
-  ISegment *segment = sibling->data;
-  ISegment *new_segment;
+    ISegment *segment = sibling->data;
+    ISegment *new_segment;
 
-  new_segment = isegment_new (x1, y1, x2, y2);
+    new_segment = isegment_new (x1, y1, x2, y2);
 
-  segment->x2 = x1;
-  segment->y2 = y1;
+    segment->x2 = x1;
+    segment->y2 = y1;
 
-  g_queue_insert_after (curve->segments, sibling, new_segment);
+    g_queue_insert_after (curve->segments, sibling, new_segment);
 
-  return new_segment;
+    return new_segment;
 }
 
 static void
 icurve_delete_segment (ICurve   *curve,
                        ISegment *segment)
 {
-  GList    *link         = g_queue_find (curve->segments, segment);
-  ISegment *next_segment = NULL;
+    GList    *link         = g_queue_find (curve->segments, segment);
+    ISegment *next_segment = NULL;
 
-  if (link->next)
-    next_segment = link->next->data;
-  else if (curve->closed)
-    next_segment = g_queue_peek_head (curve->segments);
+    if (link->next)
+        next_segment = link->next->data;
+    else if (curve->closed)
+        next_segment = g_queue_peek_head (curve->segments);
 
-  if (next_segment)
+    if (next_segment)
     {
-      next_segment->x1 = segment->x1;
-      next_segment->y1 = segment->y1;
+        next_segment->x1 = segment->x1;
+        next_segment->y1 = segment->y1;
     }
 
-  g_queue_remove (curve->segments, segment);
-  isegment_free (segment);
+    g_queue_remove (curve->segments, segment);
+    isegment_free (segment);
 }
 
 static void
 icurve_close (ICurve *curve)
 {
-  ISegment *first = g_queue_peek_head (curve->segments);
-  ISegment *last  = g_queue_peek_tail (curve->segments);
+    ISegment *first = g_queue_peek_head (curve->segments);
+    ISegment *last  = g_queue_peek_tail (curve->segments);
 
-  last->x2 = first->x1;
-  last->y2 = first->y1;
+    last->x2 = first->x1;
+    last->y2 = first->y1;
 
-  curve->closed = TRUE;
+    curve->closed = TRUE;
 }
 
 static GimpScanConvert *
 icurve_create_scan_convert (ICurve *curve)
 {
-  GimpScanConvert *sc;
-  GList           *list;
-  GimpVector2     *points;
-  guint            n_total_points = 0;
+    GimpScanConvert *sc;
+    GList           *list;
+    GimpVector2     *points;
+    guint            n_total_points = 0;
 
-  sc = gimp_scan_convert_new ();
+    sc = gimp_scan_convert_new ();
 
-  for (list = g_queue_peek_tail_link (curve->segments);
-       list;
-       list = g_list_previous (list))
+    for (list = g_queue_peek_tail_link (curve->segments);
+            list;
+            list = g_list_previous (list))
     {
-      ISegment *segment = list->data;
+        ISegment *segment = list->data;
 
-      n_total_points += segment->points->len;
+        n_total_points += segment->points->len;
     }
 
-  points = g_new (GimpVector2, n_total_points);
-  n_total_points = 0;
+    points = g_new (GimpVector2, n_total_points);
+    n_total_points = 0;
 
-  /* go over the segments in reverse order, adding the points we have */
-  for (list = g_queue_peek_tail_link (curve->segments);
-       list;
-       list = g_list_previous (list))
+    /* go over the segments in reverse order, adding the points we have */
+    for (list = g_queue_peek_tail_link (curve->segments);
+            list;
+            list = g_list_previous (list))
     {
-      ISegment *segment = list->data;
-      guint     n_points;
-      gint      i;
+        ISegment *segment = list->data;
+        guint     n_points;
+        gint      i;
 
-      n_points = segment->points->len;
+        n_points = segment->points->len;
 
-      for (i = 0; i < n_points; i++)
+        for (i = 0; i < n_points; i++)
         {
-          guint32 packed = GPOINTER_TO_INT (g_ptr_array_index (segment->points,
-                                                               i));
+            guint32 packed = GPOINTER_TO_INT (g_ptr_array_index (segment->points,
+                                              i));
 
-          points[n_total_points + i].x = packed & 0x0000ffff;
-          points[n_total_points + i].y = packed >> 16;
+            points[n_total_points + i].x = packed & 0x0000ffff;
+            points[n_total_points + i].y = packed >> 16;
         }
 
-      n_total_points += n_points;
+        n_total_points += n_points;
     }
 
-  gimp_scan_convert_add_polyline (sc, n_total_points, points, TRUE);
-  g_free (points);
+    gimp_scan_convert_add_polyline (sc, n_total_points, points, TRUE);
+    g_free (points);
 
-  return sc;
+    return sc;
 }

@@ -23,9 +23,9 @@
 
 
 GimpStroke * gimp_stroke_new_from_coords (GimpVectorsStrokeType  type,
-                                          const GimpCoords      *coords,
-                                          gint                   n_coords,
-                                          gboolean               closed);
+        const GimpCoords      *coords,
+        gint                   n_coords,
+        gboolean               closed);
 
 
 #endif /* __GIMP_VECTORS_NEW_H__ */

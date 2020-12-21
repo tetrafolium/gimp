@@ -39,40 +39,40 @@ typedef struct _GimpCageToolClass GimpCageToolClass;
 
 struct _GimpCageTool
 {
-  GimpDrawTool    parent_instance;
+    GimpDrawTool    parent_instance;
 
-  GimpCageConfig *config;
+    GimpCageConfig *config;
 
-  gint            offset_x; /* used to convert the cage point coords */
-  gint            offset_y; /* to drawable coords */
+    gint            offset_x; /* used to convert the cage point coords */
+    gint            offset_y; /* to drawable coords */
 
-  gdouble         cursor_x; /* Hold the cursor x position */
-  gdouble         cursor_y; /* Hold the cursor y position */
+    gdouble         cursor_x; /* Hold the cursor x position */
+    gdouble         cursor_y; /* Hold the cursor y position */
 
-  gdouble         movement_start_x; /* Where the movement started */
-  gdouble         movement_start_y; /* Where the movement started */
+    gdouble         movement_start_x; /* Where the movement started */
+    gdouble         movement_start_y; /* Where the movement started */
 
-  gdouble         selection_start_x; /* Where the selection started */
-  gdouble         selection_start_y; /* Where the selection started */
+    gdouble         selection_start_x; /* Where the selection started */
+    gdouble         selection_start_y; /* Where the selection started */
 
-  gint            hovering_handle; /* Handle which the cursor is above */
-  gint            hovering_edge; /* Edge which the cursor is above */
+    gint            hovering_handle; /* Handle which the cursor is above */
+    gint            hovering_edge; /* Edge which the cursor is above */
 
-  GeglBuffer     *coef; /* Gegl buffer where the coefficient of the transformation are stored */
-  gboolean        dirty_coef; /* Indicate if the coef are still valid */
+    GeglBuffer     *coef; /* Gegl buffer where the coefficient of the transformation are stored */
+    gboolean        dirty_coef; /* Indicate if the coef are still valid */
 
-  GeglNode       *render_node; /* Gegl node graph to render the transformation */
-  GeglNode       *cage_node; /* Gegl node that compute the cage transform */
-  GeglNode       *coef_node; /* Gegl node that read in the coef buffer */
+    GeglNode       *render_node; /* Gegl node graph to render the transformation */
+    GeglNode       *cage_node; /* Gegl node that compute the cage transform */
+    GeglNode       *coef_node; /* Gegl node that read in the coef buffer */
 
-  gint            tool_state; /* Current state in statemachine */
+    gint            tool_state; /* Current state in statemachine */
 
-  GimpDrawableFilter *filter; /* For preview */
+    GimpDrawableFilter *filter; /* For preview */
 };
 
 struct _GimpCageToolClass
 {
-  GimpDrawToolClass parent_class;
+    GimpDrawToolClass parent_class;
 };
 
 

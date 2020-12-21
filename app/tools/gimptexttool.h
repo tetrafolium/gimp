@@ -41,73 +41,73 @@ typedef struct _GimpTextToolClass  GimpTextToolClass;
 
 struct _GimpTextTool
 {
-  GimpDrawTool    parent_instance;
+    GimpDrawTool    parent_instance;
 
-  GimpText       *proxy;
-  GList          *pending;
-  guint           idle_id;
+    GimpText       *proxy;
+    GList          *pending;
+    guint           idle_id;
 
-  gboolean        moving;
+    gboolean        moving;
 
-  GimpTextBuffer *buffer;
+    GimpTextBuffer *buffer;
 
-  GimpText       *text;
-  GimpTextLayer  *layer;
-  GimpImage      *image;
+    GimpText       *text;
+    GimpTextLayer  *layer;
+    GimpImage      *image;
 
-  GtkWidget      *confirm_dialog;
-  GimpUIManager  *ui_manager;
+    GtkWidget      *confirm_dialog;
+    GimpUIManager  *ui_manager;
 
-  gboolean        handle_rectangle_change_complete;
-  gboolean        text_box_fixed;
+    gboolean        handle_rectangle_change_complete;
+    gboolean        text_box_fixed;
 
-  GimpTextLayout *layout;
-  gint            drawing_blocked;
+    GimpTextLayout *layout;
+    gint            drawing_blocked;
 
-  GimpToolWidget *widget;
-  GimpToolWidget *grab_widget;
+    GimpToolWidget *widget;
+    GimpToolWidget *grab_widget;
 
-  /* text editor state: */
+    /* text editor state: */
 
-  GtkWidget      *style_overlay;
-  GtkWidget      *style_editor;
+    GtkWidget      *style_overlay;
+    GtkWidget      *style_editor;
 
-  gboolean        selecting;
-  GtkTextIter     select_start_iter;
-  gboolean        select_words;
-  gboolean        select_lines;
+    gboolean        selecting;
+    GtkTextIter     select_start_iter;
+    gboolean        select_words;
+    gboolean        select_lines;
 
-  GtkIMContext   *im_context;
-  gboolean        needs_im_reset;
+    GtkIMContext   *im_context;
+    gboolean        needs_im_reset;
 
-  gboolean        preedit_active;
-  gchar          *preedit_string;
-  gint            preedit_cursor;
-  GtkTextMark    *preedit_start;
-  GtkTextMark    *preedit_end;
+    gboolean        preedit_active;
+    gchar          *preedit_string;
+    gint            preedit_cursor;
+    GtkTextMark    *preedit_start;
+    GtkTextMark    *preedit_end;
 
-  gboolean        overwrite_mode;
-  gint            x_pos;
+    gboolean        overwrite_mode;
+    gint            x_pos;
 
-  GtkWidget      *offscreen_window;
-  GtkWidget      *proxy_text_view;
+    GtkWidget      *offscreen_window;
+    GtkWidget      *proxy_text_view;
 
-  GtkWidget      *editor_dialog;
+    GtkWidget      *editor_dialog;
 };
 
 struct _GimpTextToolClass
 {
-  GimpDrawToolClass  parent_class;
+    GimpDrawToolClass  parent_class;
 };
 
 
 void       gimp_text_tool_register               (GimpToolRegisterCallback  callback,
-                                                  gpointer                  data);
+        gpointer                  data);
 
 GType      gimp_text_tool_get_type               (void) G_GNUC_CONST;
 
 gboolean   gimp_text_tool_set_layer              (GimpTextTool *text_tool,
-                                                  GimpLayer    *layer);
+        GimpLayer    *layer);
 
 gboolean   gimp_text_tool_get_has_text_selection (GimpTextTool *text_tool);
 
@@ -120,13 +120,13 @@ void       gimp_text_tool_create_vectors         (GimpTextTool *text_tool);
 void       gimp_text_tool_create_vectors_warped  (GimpTextTool *text_tool);
 
 GimpTextDirection
-           gimp_text_tool_get_direction          (GimpTextTool *text_tool);
+gimp_text_tool_get_direction          (GimpTextTool *text_tool);
 
 /*  only for the text editor  */
 void       gimp_text_tool_clear_layout           (GimpTextTool *text_tool);
 gboolean   gimp_text_tool_ensure_layout          (GimpTextTool *text_tool);
 void       gimp_text_tool_apply                  (GimpTextTool *text_tool,
-                                                  gboolean      push_undo);
+        gboolean      push_undo);
 
 
 #endif /* __GIMP_TEXT_TOOL_H__ */

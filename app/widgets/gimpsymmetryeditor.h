@@ -38,14 +38,14 @@ typedef struct _GimpSymmetryEditorClass    GimpSymmetryEditorClass;
 
 struct _GimpSymmetryEditor
 {
-  GimpImageEditor            parent_instance;
+    GimpImageEditor            parent_instance;
 
-  GimpSymmetryEditorPrivate *p;
+    GimpSymmetryEditorPrivate *p;
 };
 
 struct _GimpSymmetryEditorClass
 {
-  GimpImageEditorClass  parent_class;
+    GimpImageEditorClass  parent_class;
 };
 
 

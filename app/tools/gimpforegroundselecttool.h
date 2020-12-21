@@ -24,9 +24,9 @@
 
 typedef enum
 {
-  MATTING_STATE_FREE_SELECT = 0,
-  MATTING_STATE_PAINT_TRIMAP,
-  MATTING_STATE_PREVIEW_MASK,
+    MATTING_STATE_FREE_SELECT = 0,
+    MATTING_STATE_PAINT_TRIMAP,
+    MATTING_STATE_PREVIEW_MASK,
 } MattingState;
 
 
@@ -45,32 +45,32 @@ typedef struct _GimpForegroundSelectToolClass GimpForegroundSelectToolClass;
 
 struct _GimpForegroundSelectTool
 {
-  GimpPolygonSelectTool  parent_instance;
+    GimpPolygonSelectTool  parent_instance;
 
-  MattingState           state;
+    MattingState           state;
 
-  GimpCoords             last_coords;
-  GArray                *stroke;
-  GeglBuffer            *trimap;
-  GeglBuffer            *mask;
+    GimpCoords             last_coords;
+    GArray                *stroke;
+    GeglBuffer            *trimap;
+    GeglBuffer            *mask;
 
-  GList                 *undo_stack;
-  GList                 *redo_stack;
+    GList                 *undo_stack;
+    GList                 *redo_stack;
 
-  GimpToolGui           *gui;
-  GtkWidget             *preview_toggle;
+    GimpToolGui           *gui;
+    GtkWidget             *preview_toggle;
 
-  GimpCanvasItem        *grayscale_preview;
+    GimpCanvasItem        *grayscale_preview;
 };
 
 struct _GimpForegroundSelectToolClass
 {
-  GimpPolygonSelectToolClass  parent_class;
+    GimpPolygonSelectToolClass  parent_class;
 };
 
 
 void    gimp_foreground_select_tool_register (GimpToolRegisterCallback  callback,
-                                              gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_foreground_select_tool_get_type (void) G_GNUC_CONST;
 

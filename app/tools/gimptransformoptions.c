@@ -42,31 +42,31 @@
 
 enum
 {
-  PROP_0,
-  PROP_TYPE,
-  PROP_DIRECTION,
-  PROP_INTERPOLATION,
-  PROP_CLIP
+    PROP_0,
+    PROP_TYPE,
+    PROP_DIRECTION,
+    PROP_INTERPOLATION,
+    PROP_CLIP
 };
 
 
 static void     gimp_transform_options_config_iface_init (GimpConfigInterface *config_iface);
 
 static void     gimp_transform_options_set_property (GObject         *object,
-                                                     guint            property_id,
-                                                     const GValue    *value,
-                                                     GParamSpec      *pspec);
+        guint            property_id,
+        const GValue    *value,
+        GParamSpec      *pspec);
 static void     gimp_transform_options_get_property (GObject         *object,
-                                                     guint            property_id,
-                                                     GValue          *value,
-                                                     GParamSpec      *pspec);
+        guint            property_id,
+        GValue          *value,
+        GParamSpec      *pspec);
 
 static void     gimp_transform_options_reset        (GimpConfig      *config);
 
 G_DEFINE_TYPE_WITH_CODE (GimpTransformOptions, gimp_transform_options,
                          GIMP_TYPE_TOOL_OPTIONS,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
-                                                gimp_transform_options_config_iface_init))
+                                 gimp_transform_options_config_iface_init))
 
 #define parent_class gimp_transform_options_parent_class
 
@@ -76,49 +76,49 @@ static GimpConfigInterface *parent_config_iface = NULL;
 static void
 gimp_transform_options_class_init (GimpTransformOptionsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_transform_options_set_property;
-  object_class->get_property = gimp_transform_options_get_property;
+    object_class->set_property = gimp_transform_options_set_property;
+    object_class->get_property = gimp_transform_options_get_property;
 
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
-                         "type",
-                         NULL, NULL,
-                         GIMP_TYPE_TRANSFORM_TYPE,
-                         GIMP_TRANSFORM_TYPE_LAYER,
-                         GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
+                           "type",
+                           NULL, NULL,
+                           GIMP_TYPE_TRANSFORM_TYPE,
+                           GIMP_TRANSFORM_TYPE_LAYER,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_DIRECTION,
-                         "direction",
-                         _("Direction"),
-                         _("Direction of transformation"),
-                         GIMP_TYPE_TRANSFORM_DIRECTION,
-                         GIMP_TRANSFORM_FORWARD,
-                         GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_DIRECTION,
+                           "direction",
+                           _("Direction"),
+                           _("Direction of transformation"),
+                           GIMP_TYPE_TRANSFORM_DIRECTION,
+                           GIMP_TRANSFORM_FORWARD,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_INTERPOLATION,
-                         "interpolation",
-                         _("Interpolation"),
-                         _("Interpolation method"),
-                         GIMP_TYPE_INTERPOLATION_TYPE,
-                         GIMP_INTERPOLATION_LINEAR,
-                         GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_INTERPOLATION,
+                           "interpolation",
+                           _("Interpolation"),
+                           _("Interpolation method"),
+                           GIMP_TYPE_INTERPOLATION_TYPE,
+                           GIMP_INTERPOLATION_LINEAR,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_CLIP,
-                         "clip",
-                         _("Clipping"),
-                         _("How to clip"),
-                         GIMP_TYPE_TRANSFORM_RESIZE,
-                         GIMP_TRANSFORM_RESIZE_ADJUST,
-                         GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_CLIP,
+                           "clip",
+                           _("Clipping"),
+                           _("How to clip"),
+                           GIMP_TYPE_TRANSFORM_RESIZE,
+                           GIMP_TRANSFORM_RESIZE_ADJUST,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
 gimp_transform_options_config_iface_init (GimpConfigInterface *config_iface)
 {
-  parent_config_iface = g_type_interface_peek_parent (config_iface);
+    parent_config_iface = g_type_interface_peek_parent (config_iface);
 
-  config_iface->reset = gimp_transform_options_reset;
+    config_iface->reset = gimp_transform_options_reset;
 }
 
 static void
@@ -132,25 +132,25 @@ gimp_transform_options_set_property (GObject      *object,
                                      const GValue *value,
                                      GParamSpec   *pspec)
 {
-  GimpTransformOptions *options = GIMP_TRANSFORM_OPTIONS (object);
+    GimpTransformOptions *options = GIMP_TRANSFORM_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_TYPE:
-      options->type = g_value_get_enum (value);
-      break;
+        options->type = g_value_get_enum (value);
+        break;
     case PROP_DIRECTION:
-      options->direction = g_value_get_enum (value);
-      break;
+        options->direction = g_value_get_enum (value);
+        break;
     case PROP_INTERPOLATION:
-      options->interpolation = g_value_get_enum (value);
-      break;
+        options->interpolation = g_value_get_enum (value);
+        break;
     case PROP_CLIP:
-      options->clip = g_value_get_enum (value);
-      break;
+        options->clip = g_value_get_enum (value);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -160,42 +160,42 @@ gimp_transform_options_get_property (GObject    *object,
                                      GValue     *value,
                                      GParamSpec *pspec)
 {
-  GimpTransformOptions *options = GIMP_TRANSFORM_OPTIONS (object);
+    GimpTransformOptions *options = GIMP_TRANSFORM_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_TYPE:
-      g_value_set_enum (value, options->type);
-      break;
+        g_value_set_enum (value, options->type);
+        break;
     case PROP_DIRECTION:
-      g_value_set_enum (value, options->direction);
-      break;
+        g_value_set_enum (value, options->direction);
+        break;
     case PROP_INTERPOLATION:
-      g_value_set_enum (value, options->interpolation);
-      break;
+        g_value_set_enum (value, options->interpolation);
+        break;
     case PROP_CLIP:
-      g_value_set_enum (value, options->clip);
-      break;
+        g_value_set_enum (value, options->clip);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
 static void
 gimp_transform_options_reset (GimpConfig *config)
 {
-  GimpToolOptions *tool_options = GIMP_TOOL_OPTIONS (config);
-  GParamSpec      *pspec;
+    GimpToolOptions *tool_options = GIMP_TOOL_OPTIONS (config);
+    GParamSpec      *pspec;
 
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (config),
-                                        "interpolation");
+    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (config),
+                                          "interpolation");
 
-  if (pspec)
-    G_PARAM_SPEC_ENUM (pspec)->default_value =
-      tool_options->tool_info->gimp->config->interpolation_type;
+    if (pspec)
+        G_PARAM_SPEC_ENUM (pspec)->default_value =
+            tool_options->tool_info->gimp->config->interpolation_type;
 
-  parent_config_iface->reset (config);
+    parent_config_iface->reset (config);
 }
 
 /**
@@ -215,54 +215,54 @@ gimp_transform_options_gui (GimpToolOptions *tool_options,
                             gboolean         interpolation,
                             gboolean         clipping)
 {
-  GObject              *config  = G_OBJECT (tool_options);
-  GimpTransformOptions *options = GIMP_TRANSFORM_OPTIONS (tool_options);
-  GtkWidget            *vbox    = gimp_tool_options_gui (tool_options);
-  GtkWidget            *hbox;
-  GtkWidget            *box;
-  GtkWidget            *label;
-  GtkWidget            *frame;
-  GtkWidget            *combo;
+    GObject              *config  = G_OBJECT (tool_options);
+    GimpTransformOptions *options = GIMP_TRANSFORM_OPTIONS (tool_options);
+    GtkWidget            *vbox    = gimp_tool_options_gui (tool_options);
+    GtkWidget            *hbox;
+    GtkWidget            *box;
+    GtkWidget            *label;
+    GtkWidget            *frame;
+    GtkWidget            *combo;
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+    gtk_widget_show (hbox);
 
-  options->type_box = hbox;
+    options->type_box = hbox;
 
-  label = gtk_label_new (_("Transform:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
+    label = gtk_label_new (_("Transform:"));
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
 
-  box = gimp_prop_enum_icon_box_new (config, "type", "gimp", 0, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
+    box = gimp_prop_enum_icon_box_new (config, "type", "gimp", 0, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
 
-  if (direction)
+    if (direction)
     {
-      frame = gimp_prop_enum_radio_frame_new (config, "direction", NULL,
-                                              0, 0);
-      gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+        frame = gimp_prop_enum_radio_frame_new (config, "direction", NULL,
+                                                0, 0);
+        gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-      options->direction_frame = frame;
+        options->direction_frame = frame;
     }
 
-  /*  the interpolation menu  */
-  if (interpolation)
+    /*  the interpolation menu  */
+    if (interpolation)
     {
-      combo = gimp_prop_enum_combo_box_new (config, "interpolation", 0, 0);
-      gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Interpolation"));
-      g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-      gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
+        combo = gimp_prop_enum_combo_box_new (config, "interpolation", 0, 0);
+        gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Interpolation"));
+        g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
     }
 
-  /*  the clipping menu  */
-  if (clipping)
+    /*  the clipping menu  */
+    if (clipping)
     {
-      combo = gimp_prop_enum_combo_box_new (config, "clip", 0, 0);
-      gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Clipping"));
-      g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-      gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
+        combo = gimp_prop_enum_combo_box_new (config, "clip", 0, 0);
+        gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Clipping"));
+        g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
     }
 
-  return vbox;
+    return vbox;
 }

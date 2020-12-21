@@ -34,21 +34,21 @@ typedef struct _GimpSelectionEditorClass GimpSelectionEditorClass;
 
 struct _GimpSelectionEditor
 {
-  GimpImageEditor  parent_instance;
+    GimpImageEditor  parent_instance;
 
-  GtkWidget       *view;
+    GtkWidget       *view;
 
-  GtkWidget       *all_button;
-  GtkWidget       *none_button;
-  GtkWidget       *invert_button;
-  GtkWidget       *save_button;
-  GtkWidget       *path_button;
-  GtkWidget       *stroke_button;
+    GtkWidget       *all_button;
+    GtkWidget       *none_button;
+    GtkWidget       *invert_button;
+    GtkWidget       *save_button;
+    GtkWidget       *path_button;
+    GtkWidget       *stroke_button;
 };
 
 struct _GimpSelectionEditorClass
 {
-  GimpImageEditorClass  parent_class;
+    GimpImageEditorClass  parent_class;
 };
 
 

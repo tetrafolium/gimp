@@ -54,40 +54,40 @@ typedef struct _GimpDockPrivate  GimpDockPrivate;
  */
 struct _GimpDock
 {
-  GtkBox           parent_instance;
+    GtkBox           parent_instance;
 
-  GimpDockPrivate *p;
+    GimpDockPrivate *p;
 };
 
 struct _GimpDockClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  /*  virtual functions  */
-  gchar * (* get_description)         (GimpDock       *dock,
-                                       gboolean        complete);
-  void    (* set_host_geometry_hints) (GimpDock       *dock,
-                                       GtkWindow      *window);
+    /*  virtual functions  */
+    gchar * (* get_description)         (GimpDock       *dock,
+                                         gboolean        complete);
+    void    (* set_host_geometry_hints) (GimpDock       *dock,
+                                         GtkWindow      *window);
 
-  /*  signals  */
-  void    (* book_added)              (GimpDock       *dock,
-                                       GimpDockbook   *dockbook);
-  void    (* book_removed)            (GimpDock       *dock,
-                                       GimpDockbook   *dockbook);
-  void    (* description_invalidated) (GimpDock       *dock);
-  void    (* geometry_invalidated)    (GimpDock       *dock);
+    /*  signals  */
+    void    (* book_added)              (GimpDock       *dock,
+                                         GimpDockbook   *dockbook);
+    void    (* book_removed)            (GimpDock       *dock,
+                                         GimpDockbook   *dockbook);
+    void    (* description_invalidated) (GimpDock       *dock);
+    void    (* geometry_invalidated)    (GimpDock       *dock);
 };
 
 
 GType               gimp_dock_get_type                (void) G_GNUC_CONST;
 
 gchar             * gimp_dock_get_description         (GimpDock       *dock,
-                                                       gboolean        complete);
+        gboolean        complete);
 void                gimp_dock_set_host_geometry_hints (GimpDock       *dock,
-                                                       GtkWindow      *window);
+        GtkWindow      *window);
 void                gimp_dock_invalidate_geometry     (GimpDock       *dock);
 void                gimp_dock_update_with_context     (GimpDock       *dock,
-                                                       GimpContext    *context);
+        GimpContext    *context);
 GimpContext       * gimp_dock_get_context             (GimpDock       *dock);
 GimpDialogFactory * gimp_dock_get_dialog_factory      (GimpDock       *dock);
 GimpUIManager     * gimp_dock_get_ui_manager          (GimpDock       *dock);
@@ -97,14 +97,14 @@ GtkWidget         * gimp_dock_get_main_vbox           (GimpDock       *dock);
 GtkWidget         * gimp_dock_get_vbox                (GimpDock       *dock);
 
 void                gimp_dock_set_id                  (GimpDock       *dock,
-                                                       gint            ID);
+        gint            ID);
 gint                gimp_dock_get_id                  (GimpDock       *dock);
 
 void                gimp_dock_add_book                (GimpDock       *dock,
-                                                       GimpDockbook   *dockbook,
-                                                       gint            index);
+        GimpDockbook   *dockbook,
+        gint            index);
 void                gimp_dock_remove_book             (GimpDock       *dock,
-                                                       GimpDockbook   *dockbook);
+        GimpDockbook   *dockbook);
 
 
 #endif /* __GIMP_DOCK_H__ */

@@ -34,20 +34,20 @@ typedef struct _GimpSettingsEditorClass GimpSettingsEditorClass;
 
 struct _GimpSettingsEditor
 {
-  GtkBox  parent_instance;
+    GtkBox  parent_instance;
 };
 
 struct _GimpSettingsEditorClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 };
 
 
 GType       gimp_settings_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_settings_editor_new      (Gimp          *gimp,
-                                           GObject       *config,
-                                           GimpContainer *container);
+        GObject       *config,
+        GimpContainer *container);
 
 
 #endif  /*  __GIMP_SETTINGS_EDITOR_H__  */

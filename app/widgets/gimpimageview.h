@@ -37,16 +37,16 @@ typedef struct _GimpImageViewClass GimpImageViewClass;
 
 struct _GimpImageView
 {
-  GimpContainerEditor  parent_instance;
+    GimpContainerEditor  parent_instance;
 
-  GtkWidget           *raise_button;
-  GtkWidget           *new_button;
-  GtkWidget           *delete_button;
+    GtkWidget           *raise_button;
+    GtkWidget           *new_button;
+    GtkWidget           *delete_button;
 };
 
 struct _GimpImageViewClass
 {
-  GimpContainerEditorClass  parent_class;
+    GimpContainerEditorClass  parent_class;
 };
 
 

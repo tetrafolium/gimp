@@ -34,14 +34,14 @@ typedef struct _GimpProgressDialogClass  GimpProgressDialogClass;
 
 struct _GimpProgressDialog
 {
-  GimpDialog  parent_instance;
+    GimpDialog  parent_instance;
 
-  GtkWidget  *box;
+    GtkWidget  *box;
 };
 
 struct _GimpProgressDialogClass
 {
-  GimpDialogClass  parent_class;
+    GimpDialogClass  parent_class;
 };
 
 

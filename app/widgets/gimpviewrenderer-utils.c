@@ -51,48 +51,48 @@
 GType
 gimp_view_renderer_type_from_viewable_type (GType viewable_type)
 {
-  GType type = GIMP_TYPE_VIEW_RENDERER;
+    GType type = GIMP_TYPE_VIEW_RENDERER;
 
-  g_return_val_if_fail (g_type_is_a (viewable_type, GIMP_TYPE_VIEWABLE),
-                        G_TYPE_NONE);
+    g_return_val_if_fail (g_type_is_a (viewable_type, GIMP_TYPE_VIEWABLE),
+                          G_TYPE_NONE);
 
-  if (g_type_is_a (viewable_type, GIMP_TYPE_BRUSH))
+    if (g_type_is_a (viewable_type, GIMP_TYPE_BRUSH))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_BRUSH;
+        type = GIMP_TYPE_VIEW_RENDERER_BRUSH;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_BUFFER))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_BUFFER))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_BUFFER;
+        type = GIMP_TYPE_VIEW_RENDERER_BUFFER;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_IMAGE) ||
-           g_type_is_a (viewable_type, GIMP_TYPE_IMAGE_PROXY))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_IMAGE) ||
+             g_type_is_a (viewable_type, GIMP_TYPE_IMAGE_PROXY))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_IMAGE;
+        type = GIMP_TYPE_VIEW_RENDERER_IMAGE;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_LAYER))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_LAYER))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_LAYER;
+        type = GIMP_TYPE_VIEW_RENDERER_LAYER;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_DRAWABLE))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_DRAWABLE))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_DRAWABLE;
+        type = GIMP_TYPE_VIEW_RENDERER_DRAWABLE;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_GRADIENT))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_GRADIENT))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_GRADIENT;
+        type = GIMP_TYPE_VIEW_RENDERER_GRADIENT;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_VECTORS))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_VECTORS))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_VECTORS;
+        type = GIMP_TYPE_VIEW_RENDERER_VECTORS;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_IMAGEFILE))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_IMAGEFILE))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_IMAGEFILE;
+        type = GIMP_TYPE_VIEW_RENDERER_IMAGEFILE;
     }
-  else if (g_type_is_a (viewable_type, GIMP_TYPE_PALETTE))
+    else if (g_type_is_a (viewable_type, GIMP_TYPE_PALETTE))
     {
-      type = GIMP_TYPE_VIEW_RENDERER_PALETTE;
+        type = GIMP_TYPE_VIEW_RENDERER_PALETTE;
     }
 
-  return type;
+    return type;
 }

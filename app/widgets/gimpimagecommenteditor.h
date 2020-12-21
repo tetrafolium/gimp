@@ -37,15 +37,15 @@ typedef struct _GimpImageCommentEditorClass GimpImageCommentEditorClass;
 
 struct _GimpImageCommentEditor
 {
-  GimpImageParasiteView  parent_instance;
+    GimpImageParasiteView  parent_instance;
 
-  GtkTextBuffer         *buffer;
-  gboolean               recoursing;
+    GtkTextBuffer         *buffer;
+    gboolean               recoursing;
 };
 
 struct _GimpImageCommentEditorClass
 {
-  GimpImageParasiteViewClass  parent_class;
+    GimpImageParasiteViewClass  parent_class;
 };
 
 

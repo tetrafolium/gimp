@@ -33,20 +33,20 @@ typedef struct _GimpBlobEditorClass GimpBlobEditorClass;
 
 struct _GimpBlobEditor
 {
-  GtkDrawingArea       parent_instance;
+    GtkDrawingArea       parent_instance;
 
-  GimpInkBlobType      type;
-  gdouble              aspect;
-  gdouble              angle;
+    GimpInkBlobType      type;
+    gdouble              aspect;
+    gdouble              angle;
 
-  /*<  private  >*/
-  gboolean             in_handle;
-  gboolean             active;
+    /*<  private  >*/
+    gboolean             in_handle;
+    gboolean             active;
 };
 
 struct _GimpBlobEditorClass
 {
-  GtkDrawingAreaClass  parent_class;
+    GtkDrawingAreaClass  parent_class;
 };
 
 

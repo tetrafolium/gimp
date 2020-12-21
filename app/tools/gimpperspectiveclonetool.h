@@ -38,33 +38,33 @@ typedef struct _GimpPerspectiveCloneToolClass GimpPerspectiveCloneToolClass;
 
 struct _GimpPerspectiveCloneTool
 {
-  GimpBrushTool        parent_instance;
+    GimpBrushTool        parent_instance;
 
-  GimpDisplay         *src_display;
-  gint                 src_x;
-  gint                 src_y;
+    GimpDisplay         *src_display;
+    gint                 src_x;
+    gint                 src_y;
 
-  GimpMatrix3          transform;      /*  transformation matrix            */
-  TransInfo            trans_info;     /*  transformation info              */
-  TransInfo            old_trans_info; /*  for cancelling a drag operation  */
+    GimpMatrix3          transform;      /*  transformation matrix            */
+    TransInfo            trans_info;     /*  transformation info              */
+    TransInfo            old_trans_info; /*  for cancelling a drag operation  */
 
-  gint                 x1, y1;         /*  upper left hand coordinate       */
-  gint                 x2, y2;         /*  lower right hand coords          */
+    gint                 x1, y1;         /*  upper left hand coordinate       */
+    gint                 x2, y2;         /*  lower right hand coords          */
 
-  GimpCursorPrecision  saved_precision;
+    GimpCursorPrecision  saved_precision;
 
-  GimpToolWidget      *widget;
-  GimpToolWidget      *grab_widget;
+    GimpToolWidget      *widget;
+    GimpToolWidget      *grab_widget;
 };
 
 struct _GimpPerspectiveCloneToolClass
 {
-  GimpBrushToolClass  parent_class;
+    GimpBrushToolClass  parent_class;
 };
 
 
 void    gimp_perspective_clone_tool_register (GimpToolRegisterCallback  callback,
-                                              gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_perspective_clone_tool_get_type (void) G_GNUC_CONST;
 

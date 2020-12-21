@@ -34,30 +34,30 @@ typedef struct _GimpImagePropViewClass GimpImagePropViewClass;
 
 struct _GimpImagePropView
 {
-  GtkGrid    parent_instance;
+    GtkGrid    parent_instance;
 
-  GimpImage *image;
+    GimpImage *image;
 
-  GtkWidget *pixel_size_label;
-  GtkWidget *print_size_label;
-  GtkWidget *resolution_label;
-  GtkWidget *colorspace_label;
-  GtkWidget *precision_label;
-  GtkWidget *filename_label;
-  GtkWidget *filesize_label;
-  GtkWidget *filetype_label;
-  GtkWidget *memsize_label;
-  GtkWidget *undo_label;
-  GtkWidget *redo_label;
-  GtkWidget *pixels_label;
-  GtkWidget *layers_label;
-  GtkWidget *channels_label;
-  GtkWidget *vectors_label;
+    GtkWidget *pixel_size_label;
+    GtkWidget *print_size_label;
+    GtkWidget *resolution_label;
+    GtkWidget *colorspace_label;
+    GtkWidget *precision_label;
+    GtkWidget *filename_label;
+    GtkWidget *filesize_label;
+    GtkWidget *filetype_label;
+    GtkWidget *memsize_label;
+    GtkWidget *undo_label;
+    GtkWidget *redo_label;
+    GtkWidget *pixels_label;
+    GtkWidget *layers_label;
+    GtkWidget *channels_label;
+    GtkWidget *vectors_label;
 };
 
 struct _GimpImagePropViewClass
 {
-  GtkGridClass  parent_class;
+    GtkGridClass  parent_class;
 };
 
 

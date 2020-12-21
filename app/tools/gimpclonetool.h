@@ -35,12 +35,12 @@ typedef struct _GimpCloneToolClass GimpCloneToolClass;
 
 struct _GimpCloneTool
 {
-  GimpSourceTool parent_instance;
+    GimpSourceTool parent_instance;
 };
 
 struct _GimpCloneToolClass
 {
-  GimpSourceToolClass parent_class;
+    GimpSourceToolClass parent_class;
 };
 
 

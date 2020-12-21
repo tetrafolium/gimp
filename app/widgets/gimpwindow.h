@@ -34,24 +34,24 @@ typedef struct _GimpWindowPrivate GimpWindowPrivate;
 
 struct _GimpWindow
 {
-  GtkWindow          parent_instance;
+    GtkWindow          parent_instance;
 
-  GimpWindowPrivate *private;
+    GimpWindowPrivate *private;
 };
 
 struct _GimpWindowClass
 {
-  GtkWindowClass  parent_class;
+    GtkWindowClass  parent_class;
 
-  void (* monitor_changed) (GimpWindow *window,
-                            GdkMonitor *monitor);
+    void (* monitor_changed) (GimpWindow *window,
+                              GdkMonitor *monitor);
 };
 
 
 GType       gimp_window_get_type                 (void) G_GNUC_CONST;
 
 void        gimp_window_set_primary_focus_widget (GimpWindow *window,
-                                                  GtkWidget  *primary_focus);
+        GtkWidget  *primary_focus);
 GtkWidget * gimp_window_get_primary_focus_widget (GimpWindow *window);
 
 

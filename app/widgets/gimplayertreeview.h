@@ -38,14 +38,14 @@ typedef struct _GimpLayerTreeViewPrivate GimpLayerTreeViewPrivate;
 
 struct _GimpLayerTreeView
 {
-  GimpDrawableTreeView      parent_instance;
+    GimpDrawableTreeView      parent_instance;
 
-  GimpLayerTreeViewPrivate *priv;
+    GimpLayerTreeViewPrivate *priv;
 };
 
 struct _GimpLayerTreeViewClass
 {
-  GimpDrawableTreeViewClass  parent_class;
+    GimpDrawableTreeViewClass  parent_class;
 };
 
 

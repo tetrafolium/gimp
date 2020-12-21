@@ -20,29 +20,29 @@
 
 
 typedef void (* GimpPaintToolPaintFunc) (GimpPaintTool *tool,
-                                         gpointer       data);
+        gpointer       data);
 
 
 
 gboolean   gimp_paint_tool_paint_start     (GimpPaintTool           *tool,
-                                            GimpDisplay             *display,
-                                            const GimpCoords        *coords,
-                                            guint32                  time,
-                                            gboolean                 constrain,
-                                            GError                 **error);
+        GimpDisplay             *display,
+        const GimpCoords        *coords,
+        guint32                  time,
+        gboolean                 constrain,
+        GError                 **error);
 void       gimp_paint_tool_paint_end       (GimpPaintTool           *tool,
-                                            guint32                  time,
-                                            gboolean                 cancel);
+        guint32                  time,
+        gboolean                 cancel);
 
 gboolean   gimp_paint_tool_paint_is_active (GimpPaintTool           *tool);
 
 void       gimp_paint_tool_paint_push      (GimpPaintTool           *tool,
-                                            GimpPaintToolPaintFunc   func,
-                                            gpointer                 data);
+        GimpPaintToolPaintFunc   func,
+        gpointer                 data);
 
 void       gimp_paint_tool_paint_motion    (GimpPaintTool           *tool,
-                                            const GimpCoords        *coords,
-                                            guint32                  time);
+        const GimpCoords        *coords,
+        guint32                  time);
 
 
 #endif  /*  __GIMP_PAINT_TOOL_PAINT_H__  */

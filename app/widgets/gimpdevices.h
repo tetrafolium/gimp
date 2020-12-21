@@ -24,25 +24,25 @@ void                gimp_devices_exit           (Gimp       *gimp);
 
 void                gimp_devices_restore        (Gimp       *gimp);
 void                gimp_devices_save           (Gimp       *gimp,
-                                                 gboolean    always_save);
+        gboolean    always_save);
 
 gboolean            gimp_devices_clear          (Gimp       *gimp,
-                                                 GError    **error);
+        GError    **error);
 
 GimpDeviceManager * gimp_devices_get_manager    (Gimp       *gimp);
 
 GdkDevice         * gimp_devices_get_from_event (Gimp            *gimp,
-                                                 const GdkEvent  *event,
-                                                 GdkDevice      **grab_device);
+        const GdkEvent  *event,
+        GdkDevice      **grab_device);
 
 void                gimp_devices_add_widget     (Gimp       *gimp,
-                                                 GtkWidget  *widget);
+        GtkWidget  *widget);
 
 gboolean            gimp_devices_check_callback (GtkWidget  *widget,
-                                                 GdkEvent   *event,
-                                                 Gimp       *gimp);
+        GdkEvent   *event,
+        Gimp       *gimp);
 gboolean            gimp_devices_check_change   (Gimp       *gimp,
-                                                 GdkDevice  *device);
+        GdkDevice  *device);
 
 
 #endif /* __GIMP_DEVICES_H__ */

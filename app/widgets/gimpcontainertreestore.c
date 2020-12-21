@@ -40,9 +40,9 @@
 
 enum
 {
-  PROP_0,
-  PROP_CONTAINER_VIEW,
-  PROP_USE_NAME
+    PROP_0,
+    PROP_CONTAINER_VIEW,
+    PROP_USE_NAME
 };
 
 
@@ -50,9 +50,9 @@ typedef struct _GimpContainerTreeStorePrivate GimpContainerTreeStorePrivate;
 
 struct _GimpContainerTreeStorePrivate
 {
-  GimpContainerView *container_view;
-  GList             *renderer_cells;
-  gboolean           use_name;
+    GimpContainerView *container_view;
+    GList             *renderer_cells;
+    gboolean           use_name;
 };
 
 #define GET_PRIVATE(store) \
@@ -62,19 +62,19 @@ struct _GimpContainerTreeStorePrivate
 static void   gimp_container_tree_store_constructed     (GObject                *object);
 static void   gimp_container_tree_store_finalize        (GObject                *object);
 static void   gimp_container_tree_store_set_property    (GObject                *object,
-                                                         guint                   property_id,
-                                                         const GValue           *value,
-                                                         GParamSpec             *pspec);
+        guint                   property_id,
+        const GValue           *value,
+        GParamSpec             *pspec);
 static void   gimp_container_tree_store_get_property    (GObject                *object,
-                                                         guint                   property_id,
-                                                         GValue                 *value,
-                                                         GParamSpec             *pspec);
+        guint                   property_id,
+        GValue                 *value,
+        GParamSpec             *pspec);
 
 static void   gimp_container_tree_store_set             (GimpContainerTreeStore *store,
-                                                         GtkTreeIter            *iter,
-                                                         GimpViewable           *viewable);
+        GtkTreeIter            *iter,
+        GimpViewable           *viewable);
 static void   gimp_container_tree_store_renderer_update (GimpViewRenderer       *renderer,
-                                                         GimpContainerTreeStore *store);
+        GimpContainerTreeStore *store);
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpContainerTreeStore, gimp_container_tree_store,
@@ -86,25 +86,25 @@ G_DEFINE_TYPE_WITH_PRIVATE (GimpContainerTreeStore, gimp_container_tree_store,
 static void
 gimp_container_tree_store_class_init (GimpContainerTreeStoreClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed  = gimp_container_tree_store_constructed;
-  object_class->finalize     = gimp_container_tree_store_finalize;
-  object_class->set_property = gimp_container_tree_store_set_property;
-  object_class->get_property = gimp_container_tree_store_get_property;
+    object_class->constructed  = gimp_container_tree_store_constructed;
+    object_class->finalize     = gimp_container_tree_store_finalize;
+    object_class->set_property = gimp_container_tree_store_set_property;
+    object_class->get_property = gimp_container_tree_store_get_property;
 
-  g_object_class_install_property (object_class, PROP_CONTAINER_VIEW,
-                                   g_param_spec_object ("container-view",
-                                                        NULL, NULL,
-                                                        GIMP_TYPE_CONTAINER_VIEW,
-                                                        GIMP_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_CONTAINER_VIEW,
+                                     g_param_spec_object ("container-view",
+                                             NULL, NULL,
+                                             GIMP_TYPE_CONTAINER_VIEW,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 
-  g_object_class_install_property (object_class, PROP_USE_NAME,
-                                   g_param_spec_boolean ("use-name",
-                                                         NULL, NULL,
-                                                         FALSE,
-                                                         GIMP_PARAM_READWRITE));
+    g_object_class_install_property (object_class, PROP_USE_NAME,
+                                     g_param_spec_boolean ("use-name",
+                                             NULL, NULL,
+                                             FALSE,
+                                             GIMP_PARAM_READWRITE));
 }
 
 static void
@@ -115,21 +115,21 @@ gimp_container_tree_store_init (GimpContainerTreeStore *store)
 static void
 gimp_container_tree_store_constructed (GObject *object)
 {
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 }
 
 static void
 gimp_container_tree_store_finalize (GObject *object)
 {
-  GimpContainerTreeStorePrivate *private = GET_PRIVATE (object);
+    GimpContainerTreeStorePrivate *private = GET_PRIVATE (object);
 
-  if (private->renderer_cells)
+    if (private->renderer_cells)
     {
-      g_list_free (private->renderer_cells);
-      private->renderer_cells = NULL;
+        g_list_free (private->renderer_cells);
+        private->renderer_cells = NULL;
     }
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -138,20 +138,20 @@ gimp_container_tree_store_set_property (GObject      *object,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  GimpContainerTreeStorePrivate *private = GET_PRIVATE (object);
+    GimpContainerTreeStorePrivate *private = GET_PRIVATE (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CONTAINER_VIEW:
-      private->container_view = g_value_get_object (value); /* don't ref */
-      break;
+        private->container_view = g_value_get_object (value); /* don't ref */
+        break;
     case PROP_USE_NAME:
-      private->use_name = g_value_get_boolean (value);
-      break;
+        private->use_name = g_value_get_boolean (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -161,20 +161,20 @@ gimp_container_tree_store_get_property (GObject    *object,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-  GimpContainerTreeStorePrivate *private = GET_PRIVATE (object);
+    GimpContainerTreeStorePrivate *private = GET_PRIVATE (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CONTAINER_VIEW:
-      g_value_set_object (value, private->container_view);
-      break;
+        g_value_set_object (value, private->container_view);
+        break;
     case PROP_USE_NAME:
-      g_value_set_boolean (value, private->use_name);
-      break;
+        g_value_set_boolean (value, private->use_name);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -186,89 +186,89 @@ gimp_container_tree_store_new (GimpContainerView *container_view,
                                gint               n_columns,
                                GType             *types)
 {
-  GimpContainerTreeStore *store;
+    GimpContainerTreeStore *store;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER_VIEW (container_view), NULL);
-  g_return_val_if_fail (n_columns >= GIMP_CONTAINER_TREE_STORE_N_COLUMNS, NULL);
-  g_return_val_if_fail (types != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER_VIEW (container_view), NULL);
+    g_return_val_if_fail (n_columns >= GIMP_CONTAINER_TREE_STORE_N_COLUMNS, NULL);
+    g_return_val_if_fail (types != NULL, NULL);
 
-  store = g_object_new (GIMP_TYPE_CONTAINER_TREE_STORE,
-                        "container-view", container_view,
-                        NULL);
+    store = g_object_new (GIMP_TYPE_CONTAINER_TREE_STORE,
+                          "container-view", container_view,
+                          NULL);
 
-  gtk_tree_store_set_column_types (GTK_TREE_STORE (store), n_columns, types);
+    gtk_tree_store_set_column_types (GTK_TREE_STORE (store), n_columns, types);
 
-  return GTK_TREE_MODEL (store);
+    return GTK_TREE_MODEL (store);
 }
 
 void
 gimp_container_tree_store_add_renderer_cell (GimpContainerTreeStore *store,
-                                             GtkCellRenderer        *cell)
+        GtkCellRenderer        *cell)
 {
-  GimpContainerTreeStorePrivate *private;
+    GimpContainerTreeStorePrivate *private;
 
-  g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
-  g_return_if_fail (GIMP_IS_CELL_RENDERER_VIEWABLE (cell));
+    g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
+    g_return_if_fail (GIMP_IS_CELL_RENDERER_VIEWABLE (cell));
 
-  private = GET_PRIVATE (store);
+    private = GET_PRIVATE (store);
 
-  private->renderer_cells = g_list_prepend (private->renderer_cells, cell);
+    private->renderer_cells = g_list_prepend (private->renderer_cells, cell);
 }
 
 void
 gimp_container_tree_store_set_use_name (GimpContainerTreeStore *store,
                                         gboolean                use_name)
 {
-  GimpContainerTreeStorePrivate *private;
+    GimpContainerTreeStorePrivate *private;
 
-  g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
+    g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
 
-  private = GET_PRIVATE (store);
+    private = GET_PRIVATE (store);
 
-  if (private->use_name != use_name)
+    if (private->use_name != use_name)
     {
-      private->use_name = use_name ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (store), "use-name");
+        private->use_name = use_name ? TRUE : FALSE;
+        g_object_notify (G_OBJECT (store), "use-name");
     }
 }
 
 gboolean
 gimp_container_tree_store_get_use_name (GimpContainerTreeStore *store)
 {
-  g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store), FALSE);
 
-  return GET_PRIVATE (store)->use_name;
+    return GET_PRIVATE (store)->use_name;
 }
 
 static gboolean
 gimp_container_tree_store_set_context_foreach (GtkTreeModel *model,
-                                               GtkTreePath  *path,
-                                               GtkTreeIter  *iter,
-                                               gpointer      data)
+        GtkTreePath  *path,
+        GtkTreeIter  *iter,
+        gpointer      data)
 {
-  GimpContext      *context = data;
-  GimpViewRenderer *renderer;
+    GimpContext      *context = data;
+    GimpViewRenderer *renderer;
 
-  gtk_tree_model_get (model, iter,
-                      GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER, &renderer,
-                      -1);
+    gtk_tree_model_get (model, iter,
+                        GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER, &renderer,
+                        -1);
 
-  gimp_view_renderer_set_context (renderer, context);
+    gimp_view_renderer_set_context (renderer, context);
 
-  g_object_unref (renderer);
+    g_object_unref (renderer);
 
-  return FALSE;
+    return FALSE;
 }
 
 void
 gimp_container_tree_store_set_context (GimpContainerTreeStore *store,
                                        GimpContext            *context)
 {
-  g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
+    g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
 
-  gtk_tree_model_foreach (GTK_TREE_MODEL (store),
-                          gimp_container_tree_store_set_context_foreach,
-                          context);
+    gtk_tree_model_foreach (GTK_TREE_MODEL (store),
+                            gimp_container_tree_store_set_context_foreach,
+                            context);
 }
 
 GtkTreeIter *
@@ -277,18 +277,18 @@ gimp_container_tree_store_insert_item (GimpContainerTreeStore *store,
                                        GtkTreeIter            *parent,
                                        gint                    index)
 {
-  GtkTreeIter iter;
+    GtkTreeIter iter;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store), NULL);
 
-  if (index == -1)
-    gtk_tree_store_append (GTK_TREE_STORE (store), &iter, parent);
-  else
-    gtk_tree_store_insert (GTK_TREE_STORE (store), &iter, parent, index);
+    if (index == -1)
+        gtk_tree_store_append (GTK_TREE_STORE (store), &iter, parent);
+    else
+        gtk_tree_store_insert (GTK_TREE_STORE (store), &iter, parent, index);
 
-  gimp_container_tree_store_set (store, &iter, viewable);
+    gimp_container_tree_store_set (store, &iter, viewable);
 
-  return gtk_tree_iter_copy (&iter);
+    return gtk_tree_iter_copy (&iter);
 }
 
 void
@@ -296,33 +296,33 @@ gimp_container_tree_store_remove_item (GimpContainerTreeStore *store,
                                        GimpViewable           *viewable,
                                        GtkTreeIter            *iter)
 {
-  if (iter)
+    if (iter)
     {
-      GtkTreeModel *model = GTK_TREE_MODEL (store);
-      GtkTreePath  *path;
+        GtkTreeModel *model = GTK_TREE_MODEL (store);
+        GtkTreePath  *path;
 
-      /* emit a "row-changed" signal for 'iter', so that editing of
-       * corresponding tree-view rows is canceled.  otherwise, if we remove the
-       * item while a corresponding row is being edited, bad things happen (see
-       * bug #792991).
-       */
-      path = gtk_tree_model_get_path (model, iter);
-      gtk_tree_model_row_changed (model, path, iter);
-      gtk_tree_path_free (path);
+        /* emit a "row-changed" signal for 'iter', so that editing of
+         * corresponding tree-view rows is canceled.  otherwise, if we remove the
+         * item while a corresponding row is being edited, bad things happen (see
+         * bug #792991).
+         */
+        path = gtk_tree_model_get_path (model, iter);
+        gtk_tree_model_row_changed (model, path, iter);
+        gtk_tree_path_free (path);
 
-      gtk_tree_store_remove (GTK_TREE_STORE (store), iter);
+        gtk_tree_store_remove (GTK_TREE_STORE (store), iter);
 
-      /*  If the store is empty after this remove, clear out renderers
-       *  from all cells so they don't keep refing the viewables
-       *  (see bug #149906).
-       */
-      if (! gtk_tree_model_iter_n_children (model, NULL))
+        /*  If the store is empty after this remove, clear out renderers
+         *  from all cells so they don't keep refing the viewables
+         *  (see bug #149906).
+         */
+        if (! gtk_tree_model_iter_n_children (model, NULL))
         {
-          GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
-          GList                         *list;
+            GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
+            GList                         *list;
 
-          for (list = private->renderer_cells; list; list = list->next)
-            g_object_set (list->data, "renderer", NULL, NULL);
+            for (list = private->renderer_cells; list; list = list->next)
+                g_object_set (list->data, "renderer", NULL, NULL);
         }
     }
 }
@@ -333,63 +333,63 @@ gimp_container_tree_store_reorder_item (GimpContainerTreeStore *store,
                                         gint                    new_index,
                                         GtkTreeIter            *iter)
 {
-  GimpContainerTreeStorePrivate *private;
-  GimpViewable                  *parent;
-  GimpContainer                 *container;
+    GimpContainerTreeStorePrivate *private;
+    GimpViewable                  *parent;
+    GimpContainer                 *container;
 
-  g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
+    g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
 
-  private = GET_PRIVATE (store);
+    private = GET_PRIVATE (store);
 
-  if (! iter)
-    return;
+    if (! iter)
+        return;
 
-  parent = gimp_viewable_get_parent (viewable);
+    parent = gimp_viewable_get_parent (viewable);
 
-  if (parent)
-    container = gimp_viewable_get_children (parent);
-  else
-    container = gimp_container_view_get_container (private->container_view);
+    if (parent)
+        container = gimp_viewable_get_children (parent);
+    else
+        container = gimp_container_view_get_container (private->container_view);
 
-  if (new_index == -1 ||
-      new_index == gimp_container_get_n_children (container) - 1)
+    if (new_index == -1 ||
+            new_index == gimp_container_get_n_children (container) - 1)
     {
-      gtk_tree_store_move_before (GTK_TREE_STORE (store), iter, NULL);
+        gtk_tree_store_move_before (GTK_TREE_STORE (store), iter, NULL);
     }
-  else if (new_index == 0)
+    else if (new_index == 0)
     {
-      gtk_tree_store_move_after (GTK_TREE_STORE (store), iter, NULL);
+        gtk_tree_store_move_after (GTK_TREE_STORE (store), iter, NULL);
     }
-  else
+    else
     {
-      GtkTreePath *path;
-      GtkTreeIter  place_iter;
-      gint         depth;
-      gint        *indices;
-      gint         old_index;
+        GtkTreePath *path;
+        GtkTreeIter  place_iter;
+        gint         depth;
+        gint        *indices;
+        gint         old_index;
 
-      path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), iter);
-      indices = gtk_tree_path_get_indices (path);
+        path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), iter);
+        indices = gtk_tree_path_get_indices (path);
 
-      depth = gtk_tree_path_get_depth (path);
+        depth = gtk_tree_path_get_depth (path);
 
-      old_index = indices[depth - 1];
+        old_index = indices[depth - 1];
 
-      if (new_index != old_index)
+        if (new_index != old_index)
         {
-          indices[depth - 1] = new_index;
+            indices[depth - 1] = new_index;
 
-          gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &place_iter, path);
+            gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &place_iter, path);
 
-          if (new_index > old_index)
-            gtk_tree_store_move_after (GTK_TREE_STORE (store),
-                                       iter, &place_iter);
-          else
-            gtk_tree_store_move_before (GTK_TREE_STORE (store),
-                                        iter, &place_iter);
+            if (new_index > old_index)
+                gtk_tree_store_move_after (GTK_TREE_STORE (store),
+                                           iter, &place_iter);
+            else
+                gtk_tree_store_move_before (GTK_TREE_STORE (store),
+                                            iter, &place_iter);
         }
 
-      gtk_tree_path_free (path);
+        gtk_tree_path_free (path);
     }
 }
 
@@ -398,107 +398,107 @@ gimp_container_tree_store_rename_item (GimpContainerTreeStore *store,
                                        GimpViewable           *viewable,
                                        GtkTreeIter            *iter)
 {
-  gboolean new_name_shorter = FALSE;
+    gboolean new_name_shorter = FALSE;
 
-  g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store), FALSE);
+    g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store), FALSE);
 
-  if (iter)
+    if (iter)
     {
-      GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
-      gchar                         *name;
-      gchar                         *old_name;
+        GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
+        gchar                         *name;
+        gchar                         *old_name;
 
-      if (private->use_name)
-        name = (gchar *) gimp_object_get_name (viewable);
-      else
-        name = gimp_viewable_get_description (viewable, NULL);
+        if (private->use_name)
+            name = (gchar *) gimp_object_get_name (viewable);
+        else
+            name = gimp_viewable_get_description (viewable, NULL);
 
-      gtk_tree_model_get (GTK_TREE_MODEL (store), iter,
-                          GIMP_CONTAINER_TREE_STORE_COLUMN_NAME, &old_name,
-                          -1);
+        gtk_tree_model_get (GTK_TREE_MODEL (store), iter,
+                            GIMP_CONTAINER_TREE_STORE_COLUMN_NAME, &old_name,
+                            -1);
 
-      gtk_tree_store_set (GTK_TREE_STORE (store), iter,
-                          GIMP_CONTAINER_TREE_STORE_COLUMN_NAME, name,
-                          -1);
+        gtk_tree_store_set (GTK_TREE_STORE (store), iter,
+                            GIMP_CONTAINER_TREE_STORE_COLUMN_NAME, name,
+                            -1);
 
-      if (name && old_name && strlen (name) < strlen (old_name))
-        new_name_shorter = TRUE;
+        if (name && old_name && strlen (name) < strlen (old_name))
+            new_name_shorter = TRUE;
 
-      if (! private->use_name)
-        g_free (name);
+        if (! private->use_name)
+            g_free (name);
 
-      g_free (old_name);
+        g_free (old_name);
     }
 
-  return new_name_shorter;
+    return new_name_shorter;
 }
 
 void
 gimp_container_tree_store_clear_items (GimpContainerTreeStore *store)
 {
-  g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
+    g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
 
-  gtk_tree_store_clear (GTK_TREE_STORE (store));
+    gtk_tree_store_clear (GTK_TREE_STORE (store));
 
-  /*  If the store is empty after this remove, clear out renderers
-   *  from all cells so they don't keep refing the viewables
-   *  (see bug #149906).
-   */
-  if (! gtk_tree_model_iter_n_children (GTK_TREE_MODEL (store), NULL))
+    /*  If the store is empty after this remove, clear out renderers
+     *  from all cells so they don't keep refing the viewables
+     *  (see bug #149906).
+     */
+    if (! gtk_tree_model_iter_n_children (GTK_TREE_MODEL (store), NULL))
     {
-      GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
-      GList                         *list;
+        GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
+        GList                         *list;
 
-      for (list = private->renderer_cells; list; list = list->next)
-        g_object_set (list->data, "renderer", NULL, NULL);
+        for (list = private->renderer_cells; list; list = list->next)
+            g_object_set (list->data, "renderer", NULL, NULL);
     }
 }
 
 typedef struct
 {
-  gint view_size;
-  gint border_width;
+    gint view_size;
+    gint border_width;
 } SetSizeForeachData;
 
 static gboolean
 gimp_container_tree_store_set_view_size_foreach (GtkTreeModel *model,
-                                                 GtkTreePath  *path,
-                                                 GtkTreeIter  *iter,
-                                                 gpointer      data)
+        GtkTreePath  *path,
+        GtkTreeIter  *iter,
+        gpointer      data)
 {
-  SetSizeForeachData *size_data = data;
-  GimpViewRenderer   *renderer;
+    SetSizeForeachData *size_data = data;
+    GimpViewRenderer   *renderer;
 
-  gtk_tree_model_get (model, iter,
-                      GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER, &renderer,
-                      -1);
+    gtk_tree_model_get (model, iter,
+                        GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER, &renderer,
+                        -1);
 
-  gimp_view_renderer_set_size (renderer,
-                               size_data->view_size,
-                               size_data->border_width);
+    gimp_view_renderer_set_size (renderer,
+                                 size_data->view_size,
+                                 size_data->border_width);
 
-  g_object_unref (renderer);
+    g_object_unref (renderer);
 
-  return FALSE;
+    return FALSE;
 }
 
 void
 gimp_container_tree_store_set_view_size (GimpContainerTreeStore *store)
 {
-  GimpContainerTreeStorePrivate *private;
-  SetSizeForeachData             size_data;
+    GimpContainerTreeStorePrivate *private;
+    SetSizeForeachData             size_data;
 
-  g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
+    g_return_if_fail (GIMP_IS_CONTAINER_TREE_STORE (store));
 
-  private = GET_PRIVATE (store);
+    private = GET_PRIVATE (store);
 
-  size_data.view_size =
-    gimp_container_view_get_view_size (private->container_view,
-                                       &size_data.border_width);
+    size_data.view_size =
+        gimp_container_view_get_view_size (private->container_view,
+                                           &size_data.border_width);
 
-  gtk_tree_model_foreach (GTK_TREE_MODEL (store),
-                          gimp_container_tree_store_set_view_size_foreach,
-                          &size_data);
+    gtk_tree_model_foreach (GTK_TREE_MODEL (store),
+                            gimp_container_tree_store_set_view_size_foreach,
+                            &size_data);
 }
 
 
@@ -508,29 +508,29 @@ void
 gimp_container_tree_store_columns_init (GType *types,
                                         gint  *n_types)
 {
-  g_return_if_fail (types != NULL);
-  g_return_if_fail (n_types != NULL);
-  g_return_if_fail (*n_types == 0);
+    g_return_if_fail (types != NULL);
+    g_return_if_fail (n_types != NULL);
+    g_return_if_fail (*n_types == 0);
 
-  gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER ==
-               gimp_container_tree_store_columns_add (types, n_types,
-                                                      GIMP_TYPE_VIEW_RENDERER));
+    gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER ==
+                 gimp_container_tree_store_columns_add (types, n_types,
+                         GIMP_TYPE_VIEW_RENDERER));
 
-  gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_NAME ==
-               gimp_container_tree_store_columns_add (types, n_types,
-                                                      G_TYPE_STRING));
+    gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_NAME ==
+                 gimp_container_tree_store_columns_add (types, n_types,
+                         G_TYPE_STRING));
 
-  gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_ATTRIBUTES ==
-               gimp_container_tree_store_columns_add (types, n_types,
-                                                      PANGO_TYPE_ATTR_LIST));
+    gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_ATTRIBUTES ==
+                 gimp_container_tree_store_columns_add (types, n_types,
+                         PANGO_TYPE_ATTR_LIST));
 
-  gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_SENSITIVE ==
-               gimp_container_tree_store_columns_add (types, n_types,
-                                                      G_TYPE_BOOLEAN));
+    gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_SENSITIVE ==
+                 gimp_container_tree_store_columns_add (types, n_types,
+                         G_TYPE_BOOLEAN));
 
-  gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_USER_DATA ==
-               gimp_container_tree_store_columns_add (types, n_types,
-                                                      G_TYPE_POINTER));
+    gimp_assert (GIMP_CONTAINER_TREE_STORE_COLUMN_USER_DATA ==
+                 gimp_container_tree_store_columns_add (types, n_types,
+                         G_TYPE_POINTER));
 }
 
 gint
@@ -538,14 +538,14 @@ gimp_container_tree_store_columns_add (GType *types,
                                        gint  *n_types,
                                        GType  type)
 {
-  g_return_val_if_fail (types != NULL, 0);
-  g_return_val_if_fail (n_types != NULL, 0);
-  g_return_val_if_fail (*n_types >= 0, 0);
+    g_return_val_if_fail (types != NULL, 0);
+    g_return_val_if_fail (n_types != NULL, 0);
+    g_return_val_if_fail (*n_types >= 0, 0);
 
-  types[*n_types] = type;
-  (*n_types)++;
+    types[*n_types] = type;
+    (*n_types)++;
 
-  return *n_types - 1;
+    return *n_types - 1;
 }
 
 static void
@@ -553,62 +553,62 @@ gimp_container_tree_store_set (GimpContainerTreeStore *store,
                                GtkTreeIter            *iter,
                                GimpViewable           *viewable)
 {
-  GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
-  GimpContext                   *context;
-  GimpViewRenderer              *renderer;
-  gchar                         *name;
-  gint                           view_size;
-  gint                           border_width;
+    GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
+    GimpContext                   *context;
+    GimpViewRenderer              *renderer;
+    gchar                         *name;
+    gint                           view_size;
+    gint                           border_width;
 
-  context = gimp_container_view_get_context (private->container_view);
+    context = gimp_container_view_get_context (private->container_view);
 
-  view_size = gimp_container_view_get_view_size (private->container_view,
-                                                 &border_width);
+    view_size = gimp_container_view_get_view_size (private->container_view,
+                &border_width);
 
-  renderer = gimp_view_renderer_new (context,
-                                     G_TYPE_FROM_INSTANCE (viewable),
-                                     view_size, border_width,
-                                     FALSE);
-  gimp_view_renderer_set_viewable (renderer, viewable);
-  gimp_view_renderer_remove_idle (renderer);
+    renderer = gimp_view_renderer_new (context,
+                                       G_TYPE_FROM_INSTANCE (viewable),
+                                       view_size, border_width,
+                                       FALSE);
+    gimp_view_renderer_set_viewable (renderer, viewable);
+    gimp_view_renderer_remove_idle (renderer);
 
-  g_signal_connect (renderer, "update",
-                    G_CALLBACK (gimp_container_tree_store_renderer_update),
-                    store);
+    g_signal_connect (renderer, "update",
+                      G_CALLBACK (gimp_container_tree_store_renderer_update),
+                      store);
 
-  if (private->use_name)
-    name = (gchar *) gimp_object_get_name (viewable);
-  else
-    name = gimp_viewable_get_description (viewable, NULL);
+    if (private->use_name)
+        name = (gchar *) gimp_object_get_name (viewable);
+    else
+        name = gimp_viewable_get_description (viewable, NULL);
 
-  gtk_tree_store_set (GTK_TREE_STORE (store), iter,
-                      GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER,       renderer,
-                      GIMP_CONTAINER_TREE_STORE_COLUMN_NAME,           name,
-                      GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_SENSITIVE, TRUE,
-                      -1);
+    gtk_tree_store_set (GTK_TREE_STORE (store), iter,
+                        GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER,       renderer,
+                        GIMP_CONTAINER_TREE_STORE_COLUMN_NAME,           name,
+                        GIMP_CONTAINER_TREE_STORE_COLUMN_NAME_SENSITIVE, TRUE,
+                        -1);
 
-  if (! private->use_name)
-    g_free (name);
+    if (! private->use_name)
+        g_free (name);
 
-  g_object_unref (renderer);
+    g_object_unref (renderer);
 }
 
 static void
 gimp_container_tree_store_renderer_update (GimpViewRenderer       *renderer,
-                                           GimpContainerTreeStore *store)
+        GimpContainerTreeStore *store)
 {
-  GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
-  GtkTreeIter                   *iter;
+    GimpContainerTreeStorePrivate *private = GET_PRIVATE (store);
+    GtkTreeIter                   *iter;
 
-  iter = gimp_container_view_lookup (private->container_view,
-                                     renderer->viewable);
+    iter = gimp_container_view_lookup (private->container_view,
+                                       renderer->viewable);
 
-  if (iter)
+    if (iter)
     {
-      GtkTreePath *path;
+        GtkTreePath *path;
 
-      path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), iter);
-      gtk_tree_model_row_changed (GTK_TREE_MODEL (store), path, iter);
-      gtk_tree_path_free (path);
+        path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), iter);
+        gtk_tree_model_row_changed (GTK_TREE_MODEL (store), path, iter);
+        gtk_tree_path_free (path);
     }
 }

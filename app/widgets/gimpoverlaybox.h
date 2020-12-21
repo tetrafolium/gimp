@@ -34,14 +34,14 @@ typedef struct _GimpOverlayBoxClass GimpOverlayBoxClass;
 
 struct _GimpOverlayBox
 {
-  GtkContainer  parent_instance;
+    GtkContainer  parent_instance;
 
-  GList        *children;
+    GList        *children;
 };
 
 struct _GimpOverlayBoxClass
 {
-  GtkContainerClass  parent_class;
+    GtkContainerClass  parent_class;
 };
 
 
@@ -50,27 +50,27 @@ GType       gimp_overlay_box_get_type            (void) G_GNUC_CONST;
 GtkWidget * gimp_overlay_box_new                 (void);
 
 void        gimp_overlay_box_add_child           (GimpOverlayBox *box,
-                                                  GtkWidget      *child,
-                                                  gdouble         xalign,
-                                                  gdouble         yalign);
+        GtkWidget      *child,
+        gdouble         xalign,
+        gdouble         yalign);
 void        gimp_overlay_box_set_child_alignment (GimpOverlayBox *box,
-                                                  GtkWidget      *child,
-                                                  gdouble         xalign,
-                                                  gdouble         yalign);
+        GtkWidget      *child,
+        gdouble         xalign,
+        gdouble         yalign);
 void        gimp_overlay_box_set_child_position  (GimpOverlayBox *box,
-                                                  GtkWidget      *child,
-                                                  gdouble         x,
-                                                  gdouble         y);
+        GtkWidget      *child,
+        gdouble         x,
+        gdouble         y);
 void        gimp_overlay_box_set_child_angle     (GimpOverlayBox *box,
-                                                  GtkWidget      *child,
-                                                  gdouble         angle);
+        GtkWidget      *child,
+        gdouble         angle);
 void        gimp_overlay_box_set_child_opacity   (GimpOverlayBox *box,
-                                                  GtkWidget      *child,
-                                                  gdouble         opacity);
+        GtkWidget      *child,
+        gdouble         opacity);
 
 void        gimp_overlay_box_scroll              (GimpOverlayBox *box,
-                                                  gint            offset_x,
-                                                  gint            offset_y);
+        gint            offset_x,
+        gint            offset_y);
 
 
 #endif /*  __GIMP_OVERLAY_BOX_H__  */

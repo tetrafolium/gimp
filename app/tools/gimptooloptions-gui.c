@@ -36,28 +36,28 @@
 GtkWidget *
 gimp_tool_options_gui (GimpToolOptions *tool_options)
 {
-  GtkWidget *vbox;
+    GtkWidget *vbox;
 
-  g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), NULL);
+    g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), NULL);
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
 
-  return vbox;
+    return vbox;
 }
 
 GtkWidget *
 gimp_tool_options_empty_gui (GimpToolOptions *tool_options)
 {
-  GtkWidget *vbox = gimp_tool_options_gui (tool_options);
-  GtkWidget *label;
+    GtkWidget *vbox = gimp_tool_options_gui (tool_options);
+    GtkWidget *label;
 
-  label = gtk_label_new (_("This tool has\nno options."));
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
-  gimp_label_set_attributes (GTK_LABEL (label),
-                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
-                             -1);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 6);
-  gtk_widget_show (label);
+    label = gtk_label_new (_("This tool has\nno options."));
+    gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
+    gimp_label_set_attributes (GTK_LABEL (label),
+                               PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                               -1);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 6);
+    gtk_widget_show (label);
 
-  return vbox;
+    return vbox;
 }

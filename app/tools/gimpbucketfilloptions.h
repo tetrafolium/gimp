@@ -36,27 +36,27 @@ typedef struct _GimpPaintOptionsClass        GimpBucketFillOptionsClass;
 
 struct _GimpBucketFillOptions
 {
-  GimpPaintOptions              paint_options;
+    GimpPaintOptions              paint_options;
 
-  GimpBucketFillMode            fill_mode;
-  GimpBucketFillArea            fill_area;
-  gboolean                      fill_transparent;
-  gboolean                      sample_merged;
-  gboolean                      diagonal_neighbors;
-  gboolean                      antialias;
-  gboolean                      feather;
-  gdouble                       feather_radius;
-  gdouble                       threshold;
+    GimpBucketFillMode            fill_mode;
+    GimpBucketFillArea            fill_area;
+    gboolean                      fill_transparent;
+    gboolean                      sample_merged;
+    gboolean                      diagonal_neighbors;
+    gboolean                      antialias;
+    gboolean                      feather;
+    gdouble                       feather_radius;
+    gdouble                       threshold;
 
-  GtkWidget                    *line_art_busy_box;
-  GimpLineArtSource             line_art_source;
-  gdouble                       line_art_threshold;
-  gint                          line_art_max_grow;
-  gint                          line_art_max_gap_length;
+    GtkWidget                    *line_art_busy_box;
+    GimpLineArtSource             line_art_source;
+    gdouble                       line_art_threshold;
+    gint                          line_art_max_grow;
+    gint                          line_art_max_gap_length;
 
-  GimpSelectCriterion           fill_criterion;
+    GimpSelectCriterion           fill_criterion;
 
-  GimpBucketFillOptionsPrivate *priv;
+    GimpBucketFillOptionsPrivate *priv;
 };
 
 

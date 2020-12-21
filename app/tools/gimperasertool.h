@@ -37,12 +37,12 @@ typedef struct _GimpEraserToolClass GimpEraserToolClass;
 
 struct _GimpEraserTool
 {
-  GimpBrushTool parent_instance;
+    GimpBrushTool parent_instance;
 };
 
 struct _GimpEraserToolClass
 {
-  GimpBrushToolClass parent_class;
+    GimpBrushToolClass parent_class;
 };
 
 

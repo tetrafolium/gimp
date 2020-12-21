@@ -35,14 +35,14 @@ typedef struct _GimpViewRendererImageClass  GimpViewRendererImageClass;
 
 struct _GimpViewRendererImage
 {
-  GimpViewRenderer parent_instance;
+    GimpViewRenderer parent_instance;
 
-  GimpChannelType     channel;
+    GimpChannelType     channel;
 };
 
 struct _GimpViewRendererImageClass
 {
-  GimpViewRendererClass  parent_class;
+    GimpViewRendererClass  parent_class;
 };
 
 

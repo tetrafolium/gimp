@@ -35,16 +35,16 @@ typedef struct _GimpGeglToolClass GimpGeglToolClass;
 
 struct _GimpGeglTool
 {
-  GimpOperationTool  parent_instance;
+    GimpOperationTool  parent_instance;
 
-  /* dialog */
-  GtkWidget         *operation_combo;
-  GtkWidget         *description_label;
+    /* dialog */
+    GtkWidget         *operation_combo;
+    GtkWidget         *description_label;
 };
 
 struct _GimpGeglToolClass
 {
-  GimpOperationToolClass  parent_class;
+    GimpOperationToolClass  parent_class;
 };
 
 

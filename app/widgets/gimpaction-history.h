@@ -23,9 +23,9 @@
 
 
 typedef gboolean (* GimpActionMatchFunc) (GimpAction  *action,
-                                          const gchar *keyword,
-                                          gint        *section,
-                                          Gimp        *gimp);
+        const gchar *keyword,
+        gint        *section,
+        Gimp        *gimp);
 
 
 void       gimp_action_history_init                  (Gimp                *gimp);
@@ -34,8 +34,8 @@ void       gimp_action_history_exit                  (Gimp                *gimp)
 void       gimp_action_history_clear                 (Gimp                *gimp);
 
 GList    * gimp_action_history_search                (Gimp                *gimp,
-                                                      GimpActionMatchFunc  match_func,
-                                                      const gchar         *keyword);
+        GimpActionMatchFunc  match_func,
+        const gchar         *keyword);
 
 gboolean   gimp_action_history_is_blacklisted_action (const gchar         *action_name);
 gboolean   gimp_action_history_is_excluded_action    (const gchar         *action_name);

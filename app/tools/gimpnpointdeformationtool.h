@@ -41,53 +41,53 @@ typedef struct _GimpNPointDeformationToolClass GimpNPointDeformationToolClass;
 
 struct _GimpNPointDeformationTool
 {
-  GimpDrawTool      parent_instance;
+    GimpDrawTool      parent_instance;
 
-  guint             draw_timeout_id;
-  GThread          *deform_thread;
+    guint             draw_timeout_id;
+    GThread          *deform_thread;
 
-  GeglNode         *graph;
-  GeglNode         *source;
-  GeglNode         *npd_node;
-  GeglNode         *sink;
+    GeglNode         *graph;
+    GeglNode         *source;
+    GeglNode         *npd_node;
+    GeglNode         *sink;
 
-  GeglBuffer       *preview_buffer;
+    GeglBuffer       *preview_buffer;
 
-  NPDModel         *model;
-  NPDControlPoint  *selected_cp;    /* last selected control point     */
-  GList            *selected_cps;   /* list of selected control points */
-  NPDControlPoint  *hovering_cp;
+    NPDModel         *model;
+    NPDControlPoint  *selected_cp;    /* last selected control point     */
+    GList            *selected_cps;   /* list of selected control points */
+    NPDControlPoint  *hovering_cp;
 
-  GimpVector2      *lattice_points;
+    GimpVector2      *lattice_points;
 
-  gdouble           start_x;
-  gdouble           start_y;
+    gdouble           start_x;
+    gdouble           start_y;
 
-  gdouble           last_x;
-  gdouble           last_y;
+    gdouble           last_x;
+    gdouble           last_y;
 
-  gdouble           cursor_x;
-  gdouble           cursor_y;
+    gdouble           cursor_x;
+    gdouble           cursor_y;
 
-  gint              offset_x;
-  gint              offset_y;
+    gint              offset_x;
+    gint              offset_y;
 
-  gfloat            cp_scaled_radius;  /* radius of a control point scaled
+    gfloat            cp_scaled_radius;  /* radius of a control point scaled
                                         * according to display shell's scale
                                         */
 
-  gboolean          active;
-  volatile gboolean deformation_active;
-  gboolean          rubber_band;
+    gboolean          active;
+    volatile gboolean deformation_active;
+    gboolean          rubber_band;
 };
 
 struct _GimpNPointDeformationToolClass
 {
-  GimpDrawToolClass parent_class;
+    GimpDrawToolClass parent_class;
 };
 
 void    gimp_n_point_deformation_tool_register (GimpToolRegisterCallback  callback,
-                                                gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_n_point_deformation_tool_get_type (void) G_GNUC_CONST;
 

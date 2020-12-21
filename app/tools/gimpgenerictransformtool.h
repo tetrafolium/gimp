@@ -34,22 +34,22 @@ typedef struct _GimpGenericTransformToolClass GimpGenericTransformToolClass;
 
 struct _GimpGenericTransformTool
 {
-  GimpTransformGridTool  parent_instance;
+    GimpTransformGridTool  parent_instance;
 
-  GimpVector2            input_points[4];
-  GimpVector2            output_points[4];
+    GimpVector2            input_points[4];
+    GimpVector2            output_points[4];
 
-  GtkWidget             *matrix_grid;
-  GtkWidget             *matrix_labels[3][3];
-  GtkWidget             *invalid_label;
+    GtkWidget             *matrix_grid;
+    GtkWidget             *matrix_labels[3][3];
+    GtkWidget             *invalid_label;
 };
 
 struct _GimpGenericTransformToolClass
 {
-  GimpTransformGridToolClass  parent_class;
+    GimpTransformGridToolClass  parent_class;
 
-  /*  virtual functions  */
-  void   (* info_to_points) (GimpGenericTransformTool *generic);
+    /*  virtual functions  */
+    void   (* info_to_points) (GimpGenericTransformTool *generic);
 };
 
 

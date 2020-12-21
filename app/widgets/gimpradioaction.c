@@ -33,10 +33,10 @@
 
 
 static void   gimp_radio_action_connect_proxy (GtkAction      *action,
-                                               GtkWidget      *proxy);
+        GtkWidget      *proxy);
 
 static void   gimp_radio_action_changed       (GtkRadioAction *action,
-                                               GtkRadioAction *current);
+        GtkRadioAction *current);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpRadioAction, gimp_radio_action,
@@ -49,37 +49,37 @@ G_DEFINE_TYPE_WITH_CODE (GimpRadioAction, gimp_radio_action,
 static void
 gimp_radio_action_class_init (GimpRadioActionClass *klass)
 {
-  GtkActionClass      *action_class = GTK_ACTION_CLASS (klass);
-  GtkRadioActionClass *radio_class  = GTK_RADIO_ACTION_CLASS (klass);
+    GtkActionClass      *action_class = GTK_ACTION_CLASS (klass);
+    GtkRadioActionClass *radio_class  = GTK_RADIO_ACTION_CLASS (klass);
 
-  action_class->connect_proxy = gimp_radio_action_connect_proxy;
+    action_class->connect_proxy = gimp_radio_action_connect_proxy;
 
-  radio_class->changed        = gimp_radio_action_changed;
+    radio_class->changed        = gimp_radio_action_changed;
 }
 
 static void
 gimp_radio_action_init (GimpRadioAction *action)
 {
-  gimp_action_init (GIMP_ACTION (action));
+    gimp_action_init (GIMP_ACTION (action));
 }
 
 static void
 gimp_radio_action_connect_proxy (GtkAction *action,
                                  GtkWidget *proxy)
 {
-  GTK_ACTION_CLASS (parent_class)->connect_proxy (action, proxy);
+    GTK_ACTION_CLASS (parent_class)->connect_proxy (action, proxy);
 
-  gimp_action_set_proxy (GIMP_ACTION (action), proxy);
+    gimp_action_set_proxy (GIMP_ACTION (action), proxy);
 }
 
 static void
 gimp_radio_action_changed (GtkRadioAction *action,
                            GtkRadioAction *current)
 {
-  gint value = gtk_radio_action_get_current_value (action);
+    gint value = gtk_radio_action_get_current_value (action);
 
-  gimp_action_emit_change_state (GIMP_ACTION (action),
-                                 g_variant_new_int32 (value));
+    gimp_action_emit_change_state (GIMP_ACTION (action),
+                                   g_variant_new_int32 (value));
 }
 
 
@@ -93,17 +93,17 @@ gimp_radio_action_new (const gchar *name,
                        const gchar *help_id,
                        gint         value)
 {
-  GtkRadioAction *action;
+    GtkRadioAction *action;
 
-  action = g_object_new (GIMP_TYPE_RADIO_ACTION,
-                         "name",      name,
-                         "label",     label,
-                         "tooltip",   tooltip,
-                         "icon-name", icon_name,
-                         "value",     value,
-                         NULL);
+    action = g_object_new (GIMP_TYPE_RADIO_ACTION,
+                           "name",      name,
+                           "label",     label,
+                           "tooltip",   tooltip,
+                           "icon-name", icon_name,
+                           "value",     value,
+                           NULL);
 
-  gimp_action_set_help_id (GIMP_ACTION (action), help_id);
+    gimp_action_set_help_id (GIMP_ACTION (action), help_id);
 
-  return action;
+    return action;
 }

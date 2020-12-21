@@ -35,12 +35,12 @@ typedef struct _GimpViewRendererBufferClass  GimpViewRendererBufferClass;
 
 struct _GimpViewRendererBuffer
 {
-  GimpViewRenderer  parent_instance;
+    GimpViewRenderer  parent_instance;
 };
 
 struct _GimpViewRendererBufferClass
 {
-  GimpViewRendererClass  parent_class;
+    GimpViewRendererClass  parent_class;
 };
 
 

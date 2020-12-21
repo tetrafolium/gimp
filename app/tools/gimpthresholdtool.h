@@ -35,18 +35,18 @@ typedef struct _GimpThresholdToolClass GimpThresholdToolClass;
 
 struct _GimpThresholdTool
 {
-  GimpFilterTool    parent_instance;
+    GimpFilterTool    parent_instance;
 
-  /*  dialog  */
-  GimpHistogram    *histogram;
-  GimpAsync        *histogram_async;
-  GtkWidget        *channel_menu;
-  GimpHistogramBox *histogram_box;
+    /*  dialog  */
+    GimpHistogram    *histogram;
+    GimpAsync        *histogram_async;
+    GtkWidget        *channel_menu;
+    GimpHistogramBox *histogram_box;
 };
 
 struct _GimpThresholdToolClass
 {
-  GimpFilterToolClass  parent_class;
+    GimpFilterToolClass  parent_class;
 };
 
 

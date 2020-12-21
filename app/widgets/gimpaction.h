@@ -32,12 +32,12 @@ typedef struct _GimpActionInterface GimpActionInterface;
 
 struct _GimpActionInterface
 {
-  GTypeInterface base_interface;
+    GTypeInterface base_interface;
 
-  void (* activate)     (GimpAction *action,
-                         GVariant   *value);
-  void (* change_state) (GimpAction *action,
-                         GVariant   *value);
+    void (* activate)     (GimpAction *action,
+                           GVariant   *value);
+    void (* change_state) (GimpAction *action,
+                           GVariant   *value);
 };
 
 
@@ -46,53 +46,53 @@ GType         gimp_action_get_type            (void) G_GNUC_CONST;
 void          gimp_action_init                (GimpAction    *action);
 
 void          gimp_action_emit_activate       (GimpAction    *action,
-                                               GVariant      *value);
+        GVariant      *value);
 void          gimp_action_emit_change_state   (GimpAction    *action,
-                                               GVariant      *value);
+        GVariant      *value);
 
 void          gimp_action_set_proxy           (GimpAction    *action,
-                                               GtkWidget     *proxy);
+        GtkWidget     *proxy);
 
 const gchar * gimp_action_get_name            (GimpAction    *action);
 
 void          gimp_action_set_label           (GimpAction    *action,
-                                               const gchar   *label);
+        const gchar   *label);
 const gchar * gimp_action_get_label           (GimpAction    *action);
 
 void          gimp_action_set_tooltip         (GimpAction    *action,
-                                               const gchar   *tooltip);
+        const gchar   *tooltip);
 const gchar * gimp_action_get_tooltip         (GimpAction    *action);
 
 void          gimp_action_set_icon_name       (GimpAction    *action,
-                                               const gchar   *icon_name);
+        const gchar   *icon_name);
 const gchar * gimp_action_get_icon_name       (GimpAction    *action);
 
 void          gimp_action_set_gicon           (GimpAction    *action,
-                                               GIcon         *icon);
+        GIcon         *icon);
 GIcon       * gimp_action_get_gicon           (GimpAction    *action);
 
 void          gimp_action_set_help_id         (GimpAction    *action,
-                                               const gchar   *help_id);
+        const gchar   *help_id);
 const gchar * gimp_action_get_help_id         (GimpAction    *action);
 
 void          gimp_action_set_visible         (GimpAction    *action,
-                                               gboolean       visible);
+        gboolean       visible);
 gboolean      gimp_action_get_visible         (GimpAction    *action);
 gboolean      gimp_action_is_visible          (GimpAction    *action);
 
 void          gimp_action_set_sensitive       (GimpAction    *action,
-                                               gboolean       sensitive);
+        gboolean       sensitive);
 gboolean      gimp_action_get_sensitive       (GimpAction    *action);
 gboolean      gimp_action_is_sensitive        (GimpAction    *action);
 
 GClosure    * gimp_action_get_accel_closure   (GimpAction    *action);
 
 void          gimp_action_set_accel_path      (GimpAction    *action,
-                                               const gchar   *accel_path);
+        const gchar   *accel_path);
 const gchar * gimp_action_get_accel_path      (GimpAction    *action);
 
 void          gimp_action_set_accel_group     (GimpAction    *action,
-                                               GtkAccelGroup *accel_group);
+        GtkAccelGroup *accel_group);
 void          gimp_action_connect_accelerator (GimpAction    *action);
 
 GSList      * gimp_action_get_proxies         (GimpAction    *action);
@@ -100,7 +100,7 @@ GSList      * gimp_action_get_proxies         (GimpAction    *action);
 void          gimp_action_activate            (GimpAction    *action);
 
 gint          gimp_action_name_compare        (GimpAction    *action1,
-                                               GimpAction    *action2);
+        GimpAction    *action2);
 
 gboolean      gimp_action_is_gui_blacklisted  (const gchar   *action_name);
 

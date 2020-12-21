@@ -36,30 +36,30 @@ typedef struct _GimpTransform3DToolClass GimpTransform3DToolClass;
 
 struct _GimpTransform3DTool
 {
-  GimpTransformGridTool  parent_instance;
+    GimpTransformGridTool  parent_instance;
 
-  gboolean               updating;
+    gboolean               updating;
 
-  GtkWidget             *notebook;
-  GtkWidget             *vanishing_point_se;
-  GtkWidget             *lens_mode_combo;
-  GtkWidget             *focal_length_se;
-  GtkWidget             *angle_of_view_scale;
-  GtkAdjustment         *angle_of_view_adj;
-  GtkWidget             *offset_se;
-  GtkWidget             *rotation_order_buttons[3];
-  GtkAdjustment         *angle_adj[3];
-  GtkWidget             *pivot_selector;
+    GtkWidget             *notebook;
+    GtkWidget             *vanishing_point_se;
+    GtkWidget             *lens_mode_combo;
+    GtkWidget             *focal_length_se;
+    GtkWidget             *angle_of_view_scale;
+    GtkAdjustment         *angle_of_view_adj;
+    GtkWidget             *offset_se;
+    GtkWidget             *rotation_order_buttons[3];
+    GtkAdjustment         *angle_adj[3];
+    GtkWidget             *pivot_selector;
 };
 
 struct _GimpTransform3DToolClass
 {
-  GimpTransformGridToolClass parent_class;
+    GimpTransformGridToolClass parent_class;
 };
 
 
 void    gimp_transform_3d_tool_register (GimpToolRegisterCallback  callback,
-                                         gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_transform_3d_tool_get_type (void) G_GNUC_CONST;
 

@@ -34,23 +34,23 @@ typedef struct _GimpContainerEntryClass  GimpContainerEntryClass;
 
 struct _GimpContainerEntry
 {
-  GtkEntry        parent_instance;
+    GtkEntry        parent_instance;
 
-  GimpViewable   *viewable;
+    GimpViewable   *viewable;
 };
 
 struct _GimpContainerEntryClass
 {
-  GtkEntryClass   parent_class;
+    GtkEntryClass   parent_class;
 };
 
 
 GType       gimp_container_entry_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_container_entry_new      (GimpContainer *container,
-                                           GimpContext   *context,
-                                           gint           view_size,
-                                           gint           view_border_width);
+        GimpContext   *context,
+        gint           view_size,
+        gint           view_border_width);
 
 
 #endif  /*  __GIMP_CONTAINER_ENTRY_H__  */

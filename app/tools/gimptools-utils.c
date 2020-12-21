@@ -44,36 +44,36 @@ void
 gimp_tools_blink_lock_box (Gimp     *gimp,
                            GimpItem *item)
 {
-  GtkWidget        *dockable;
-  GimpItemTreeView *view;
-  GdkMonitor       *monitor;
-  const gchar      *identifier;
+    GtkWidget        *dockable;
+    GimpItemTreeView *view;
+    GdkMonitor       *monitor;
+    const gchar      *identifier;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (GIMP_IS_ITEM (item));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_ITEM (item));
 
-  if (GIMP_IS_LAYER (item))
-    identifier = "gimp-layer-list";
-  else if (GIMP_IS_CHANNEL (item))
-    identifier = "gimp-channel-list";
-  else if (GIMP_IS_VECTORS (item))
-    identifier = "gimp-vectors-list";
-  else
-    return;
+    if (GIMP_IS_LAYER (item))
+        identifier = "gimp-layer-list";
+    else if (GIMP_IS_CHANNEL (item))
+        identifier = "gimp-channel-list";
+    else if (GIMP_IS_VECTORS (item))
+        identifier = "gimp-vectors-list";
+    else
+        return;
 
-  monitor = gimp_get_monitor_at_pointer ();
+    monitor = gimp_get_monitor_at_pointer ();
 
-  dockable = gimp_window_strategy_show_dockable_dialog (
-    GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
-    gimp,
-    gimp_dialog_factory_get_singleton (),
-    monitor,
-    identifier);
+    dockable = gimp_window_strategy_show_dockable_dialog (
+                   GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
+                   gimp,
+                   gimp_dialog_factory_get_singleton (),
+                   monitor,
+                   identifier);
 
-  if (! dockable)
-    return;
+    if (! dockable)
+        return;
 
-  view = GIMP_ITEM_TREE_VIEW (gtk_bin_get_child (GTK_BIN (dockable)));
+    view = GIMP_ITEM_TREE_VIEW (gtk_bin_get_child (GTK_BIN (dockable)));
 
-  gimp_widget_blink (gimp_item_tree_view_get_lock_box (view));
+    gimp_widget_blink (gimp_item_tree_view_get_lock_box (view));
 }

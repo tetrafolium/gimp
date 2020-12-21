@@ -31,38 +31,38 @@
 
 enum
 {
-  PROP_0,
-  PROP_TYPE,
-  PROP_ASPECT,
-  PROP_ANGLE
+    PROP_0,
+    PROP_TYPE,
+    PROP_ASPECT,
+    PROP_ANGLE
 };
 
 
 static void      gimp_blob_editor_set_property   (GObject        *object,
-                                                  guint           property_id,
-                                                  const GValue   *value,
-                                                  GParamSpec     *pspec);
+        guint           property_id,
+        const GValue   *value,
+        GParamSpec     *pspec);
 static void      gimp_blob_editor_get_property   (GObject        *object,
-                                                  guint           property_id,
-                                                  GValue         *value,
-                                                  GParamSpec     *pspec);
+        guint           property_id,
+        GValue         *value,
+        GParamSpec     *pspec);
 
 static gboolean  gimp_blob_editor_draw           (GtkWidget      *widget,
-                                                  cairo_t        *cr);
+        cairo_t        *cr);
 static gboolean  gimp_blob_editor_button_press   (GtkWidget      *widget,
-                                                  GdkEventButton *event);
+        GdkEventButton *event);
 static gboolean  gimp_blob_editor_button_release (GtkWidget      *widget,
-                                                  GdkEventButton *event);
+        GdkEventButton *event);
 static gboolean  gimp_blob_editor_motion_notify  (GtkWidget      *widget,
-                                                  GdkEventMotion *event);
+        GdkEventMotion *event);
 
 static void      gimp_blob_editor_get_handle     (GimpBlobEditor *editor,
-                                                  GdkRectangle   *rect);
+        GdkRectangle   *rect);
 static void      gimp_blob_editor_draw_blob      (GimpBlobEditor *editor,
-                                                  cairo_t        *cr,
-                                                  gdouble         xc,
-                                                  gdouble         yc,
-                                                  gdouble         radius);
+        cairo_t        *cr,
+        gdouble         xc,
+        gdouble         yc,
+        gdouble         radius);
 
 
 G_DEFINE_TYPE (GimpBlobEditor, gimp_blob_editor, GTK_TYPE_DRAWING_AREA)
@@ -73,48 +73,48 @@ G_DEFINE_TYPE (GimpBlobEditor, gimp_blob_editor, GTK_TYPE_DRAWING_AREA)
 static void
 gimp_blob_editor_class_init (GimpBlobEditorClass *klass)
 {
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+    GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->set_property         = gimp_blob_editor_set_property;
-  object_class->get_property         = gimp_blob_editor_get_property;
+    object_class->set_property         = gimp_blob_editor_set_property;
+    object_class->get_property         = gimp_blob_editor_get_property;
 
-  widget_class->draw                 = gimp_blob_editor_draw;
-  widget_class->button_press_event   = gimp_blob_editor_button_press;
-  widget_class->button_release_event = gimp_blob_editor_button_release;
-  widget_class->motion_notify_event  = gimp_blob_editor_motion_notify;
+    widget_class->draw                 = gimp_blob_editor_draw;
+    widget_class->button_press_event   = gimp_blob_editor_button_press;
+    widget_class->button_release_event = gimp_blob_editor_button_release;
+    widget_class->motion_notify_event  = gimp_blob_editor_motion_notify;
 
-  g_object_class_install_property (object_class, PROP_TYPE,
-                                   g_param_spec_enum ("blob-type",
-                                                      NULL, NULL,
-                                                      GIMP_TYPE_INK_BLOB_TYPE,
-                                                      GIMP_INK_BLOB_TYPE_CIRCLE,
-                                                      GIMP_PARAM_READWRITE |
-                                                      G_PARAM_CONSTRUCT));
-  g_object_class_install_property (object_class, PROP_ASPECT,
-                                   g_param_spec_double ("blob-aspect",
-                                                        NULL, NULL,
-                                                        1.0, 10.0, 1.0,
-                                                        GIMP_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
-  g_object_class_install_property (object_class, PROP_ANGLE,
-                                   g_param_spec_double ("blob-angle",
-                                                        NULL, NULL,
-                                                        -G_PI, G_PI, 0.0,
-                                                        GIMP_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+    g_object_class_install_property (object_class, PROP_TYPE,
+                                     g_param_spec_enum ("blob-type",
+                                             NULL, NULL,
+                                             GIMP_TYPE_INK_BLOB_TYPE,
+                                             GIMP_INK_BLOB_TYPE_CIRCLE,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT));
+    g_object_class_install_property (object_class, PROP_ASPECT,
+                                     g_param_spec_double ("blob-aspect",
+                                             NULL, NULL,
+                                             1.0, 10.0, 1.0,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT));
+    g_object_class_install_property (object_class, PROP_ANGLE,
+                                     g_param_spec_double ("blob-angle",
+                                             NULL, NULL,
+                                             -G_PI, G_PI, 0.0,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT));
 }
 
 static void
 gimp_blob_editor_init (GimpBlobEditor *editor)
 {
-  editor->active = FALSE;
+    editor->active = FALSE;
 
-  gtk_widget_add_events (GTK_WIDGET (editor),
-                         GDK_BUTTON_PRESS_MASK   |
-                         GDK_BUTTON_RELEASE_MASK |
-                         GDK_POINTER_MOTION_MASK |
-                         GDK_EXPOSURE_MASK);
+    gtk_widget_add_events (GTK_WIDGET (editor),
+                           GDK_BUTTON_PRESS_MASK   |
+                           GDK_BUTTON_RELEASE_MASK |
+                           GDK_POINTER_MOTION_MASK |
+                           GDK_EXPOSURE_MASK);
 }
 
 GtkWidget *
@@ -122,11 +122,11 @@ gimp_blob_editor_new (GimpInkBlobType  type,
                       gdouble          aspect,
                       gdouble          angle)
 {
-  return g_object_new (GIMP_TYPE_BLOB_EDITOR,
-                       "blob-type",   type,
-                       "blob-aspect", aspect,
-                       "blob-angle",  angle,
-                       NULL);
+    return g_object_new (GIMP_TYPE_BLOB_EDITOR,
+                         "blob-type",   type,
+                         "blob-aspect", aspect,
+                         "blob-angle",  angle,
+                         NULL);
 }
 
 static void
@@ -135,26 +135,26 @@ gimp_blob_editor_set_property (GObject      *object,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-  GimpBlobEditor *editor = GIMP_BLOB_EDITOR (object);
+    GimpBlobEditor *editor = GIMP_BLOB_EDITOR (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_TYPE:
-      editor->type = g_value_get_enum (value);
-      break;
+        editor->type = g_value_get_enum (value);
+        break;
     case PROP_ASPECT:
-      editor->aspect = g_value_get_double (value);
-      break;
+        editor->aspect = g_value_get_double (value);
+        break;
     case PROP_ANGLE:
-      editor->angle = g_value_get_double (value);
-      break;
+        editor->angle = g_value_get_double (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 
-  gtk_widget_queue_draw (GTK_WIDGET (editor));
+    gtk_widget_queue_draw (GTK_WIDGET (editor));
 }
 
 static void
@@ -163,23 +163,23 @@ gimp_blob_editor_get_property (GObject    *object,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-  GimpBlobEditor *editor = GIMP_BLOB_EDITOR (object);
+    GimpBlobEditor *editor = GIMP_BLOB_EDITOR (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_TYPE:
-      g_value_set_enum (value, editor->type);
-      break;
+        g_value_set_enum (value, editor->type);
+        break;
     case PROP_ASPECT:
-      g_value_set_double (value, editor->aspect);
-      break;
+        g_value_set_double (value, editor->aspect);
+        break;
     case PROP_ANGLE:
-      g_value_set_double (value, editor->angle);
-      break;
+        g_value_set_double (value, editor->angle);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -187,155 +187,155 @@ static gboolean
 gimp_blob_editor_draw (GtkWidget *widget,
                        cairo_t   *cr)
 {
-  GimpBlobEditor  *editor = GIMP_BLOB_EDITOR (widget);
-  GtkStyleContext *style  = gtk_widget_get_style_context (widget);
-  GtkAllocation    allocation;
-  GdkRectangle     rect;
-  gint             r0;
+    GimpBlobEditor  *editor = GIMP_BLOB_EDITOR (widget);
+    GtkStyleContext *style  = gtk_widget_get_style_context (widget);
+    GtkAllocation    allocation;
+    GdkRectangle     rect;
+    gint             r0;
 
-  gtk_widget_get_allocation (widget, &allocation);
+    gtk_widget_get_allocation (widget, &allocation);
 
-  r0 = MIN (allocation.width, allocation.height) / 2;
+    r0 = MIN (allocation.width, allocation.height) / 2;
 
-  if (r0 < 2)
+    if (r0 < 2)
+        return TRUE;
+
+    gimp_blob_editor_draw_blob (editor, cr,
+                                allocation.width  / 2.0,
+                                allocation.height / 2.0,
+                                0.9 * r0);
+
+    gimp_blob_editor_get_handle (editor, &rect);
+
+    gtk_style_context_save (style);
+
+    gtk_style_context_add_class (style, GTK_STYLE_CLASS_BUTTON);
+
+    gtk_style_context_set_state (style,
+                                 editor->in_handle ?
+                                 GTK_STATE_FLAG_PRELIGHT : 0);
+
+    gtk_render_background (style, cr, rect.x, rect.y, rect.width, rect.height);
+    gtk_render_frame (style, cr, rect.x, rect.y, rect.width, rect.height);
+
+    gtk_style_context_restore (style);
+
     return TRUE;
-
-  gimp_blob_editor_draw_blob (editor, cr,
-                              allocation.width  / 2.0,
-                              allocation.height / 2.0,
-                              0.9 * r0);
-
-  gimp_blob_editor_get_handle (editor, &rect);
-
-  gtk_style_context_save (style);
-
-  gtk_style_context_add_class (style, GTK_STYLE_CLASS_BUTTON);
-
-  gtk_style_context_set_state (style,
-                               editor->in_handle ?
-                               GTK_STATE_FLAG_PRELIGHT : 0);
-
-  gtk_render_background (style, cr, rect.x, rect.y, rect.width, rect.height);
-  gtk_render_frame (style, cr, rect.x, rect.y, rect.width, rect.height);
-
-  gtk_style_context_restore (style);
-
-  return TRUE;
 }
 
 static gboolean
 gimp_blob_editor_button_press (GtkWidget      *widget,
                                GdkEventButton *event)
 {
-  GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
+    GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
 
-  if (editor->in_handle)
-    editor->active = TRUE;
+    if (editor->in_handle)
+        editor->active = TRUE;
 
-  return TRUE;
+    return TRUE;
 }
 
 static gboolean
 gimp_blob_editor_button_release (GtkWidget      *widget,
                                  GdkEventButton *event)
 {
-  GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
+    GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
 
-  editor->active = FALSE;
+    editor->active = FALSE;
 
-  return TRUE;
+    return TRUE;
 }
 
 static gboolean
 gimp_blob_editor_motion_notify (GtkWidget      *widget,
                                 GdkEventMotion *event)
 {
-  GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
+    GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
 
-  if (editor->active)
+    if (editor->active)
     {
-      GtkAllocation allocation;
-      gint          x;
-      gint          y;
-      gint          rsquare;
+        GtkAllocation allocation;
+        gint          x;
+        gint          y;
+        gint          rsquare;
 
-      gtk_widget_get_allocation (widget, &allocation);
+        gtk_widget_get_allocation (widget, &allocation);
 
-      x = event->x - allocation.width  / 2;
-      y = event->y - allocation.height / 2;
+        x = event->x - allocation.width  / 2;
+        y = event->y - allocation.height / 2;
 
-      rsquare = SQR (x) + SQR (y);
+        rsquare = SQR (x) + SQR (y);
 
-      if (rsquare > 0)
+        if (rsquare > 0)
         {
-          gint     r0;
-          gdouble  angle;
-          gdouble  aspect;
+            gint     r0;
+            gdouble  angle;
+            gdouble  aspect;
 
-          r0 = MIN (allocation.width, allocation.height) / 2;
+            r0 = MIN (allocation.width, allocation.height) / 2;
 
-          angle  = atan2 (y, x);
-          aspect = 10.0 * sqrt ((gdouble) rsquare / (r0 * r0)) / 0.85;
+            angle  = atan2 (y, x);
+            aspect = 10.0 * sqrt ((gdouble) rsquare / (r0 * r0)) / 0.85;
 
-          aspect = CLAMP (aspect, 1.0, 10.0);
+            aspect = CLAMP (aspect, 1.0, 10.0);
 
-          g_object_set (editor,
-                        "blob-angle",  angle,
-                        "blob-aspect", aspect,
-                        NULL);
+            g_object_set (editor,
+                          "blob-angle",  angle,
+                          "blob-aspect", aspect,
+                          NULL);
         }
     }
-  else
+    else
     {
-      GdkRectangle rect;
-      gboolean     in_handle;
+        GdkRectangle rect;
+        gboolean     in_handle;
 
-      gimp_blob_editor_get_handle (editor, &rect);
+        gimp_blob_editor_get_handle (editor, &rect);
 
-      if ((event->x >= rect.x) && (event->x - rect.x < rect.width) &&
-          (event->y >= rect.y) && (event->y - rect.y < rect.height))
+        if ((event->x >= rect.x) && (event->x - rect.x < rect.width) &&
+                (event->y >= rect.y) && (event->y - rect.y < rect.height))
         {
-          in_handle = TRUE;
+            in_handle = TRUE;
         }
-      else
+        else
         {
-          in_handle = FALSE;
+            in_handle = FALSE;
         }
 
-      if (in_handle != editor->in_handle)
+        if (in_handle != editor->in_handle)
         {
-          editor->in_handle = in_handle;
+            editor->in_handle = in_handle;
 
-          gtk_widget_queue_draw (widget);
+            gtk_widget_queue_draw (widget);
         }
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 static void
 gimp_blob_editor_get_handle (GimpBlobEditor *editor,
                              GdkRectangle   *rect)
 {
-  GtkWidget     *widget = GTK_WIDGET (editor);
-  GtkAllocation  allocation;
-  gint           x, y;
-  gint           r;
+    GtkWidget     *widget = GTK_WIDGET (editor);
+    GtkAllocation  allocation;
+    gint           x, y;
+    gint           r;
 
-  gtk_widget_get_allocation (widget, &allocation);
+    gtk_widget_get_allocation (widget, &allocation);
 
-  r = MIN (allocation.width, allocation.height) / 2;
+    r = MIN (allocation.width, allocation.height) / 2;
 
-  x = (allocation.width / 2 +
-       0.85 * r *editor->aspect / 10.0 * cos (editor->angle));
+    x = (allocation.width / 2 +
+         0.85 * r *editor->aspect / 10.0 * cos (editor->angle));
 
-  y = (allocation.height / 2 +
-       0.85 * r * editor->aspect / 10.0 * sin (editor->angle));
+    y = (allocation.height / 2 +
+         0.85 * r * editor->aspect / 10.0 * sin (editor->angle));
 
-  rect->x      = x - 5;
-  rect->y      = y - 5;
-  rect->width  = 10;
-  rect->height = 10;
+    rect->x      = x - 5;
+    rect->y      = y - 5;
+    rect->width  = 10;
+    rect->height = 10;
 }
 
 static void
@@ -345,65 +345,65 @@ gimp_blob_editor_draw_blob (GimpBlobEditor *editor,
                             gdouble         yc,
                             gdouble         radius)
 {
-  GtkWidget       *widget   = GTK_WIDGET (editor);
-  GtkStyleContext *style    = gtk_widget_get_style_context (widget);
-  GimpBlob        *blob;
-  GimpBlobFunc     function = gimp_blob_ellipse;
-  GdkRGBA          color;
-  gint             i;
+    GtkWidget       *widget   = GTK_WIDGET (editor);
+    GtkStyleContext *style    = gtk_widget_get_style_context (widget);
+    GimpBlob        *blob;
+    GimpBlobFunc     function = gimp_blob_ellipse;
+    GdkRGBA          color;
+    gint             i;
 
-  switch (editor->type)
+    switch (editor->type)
     {
     case GIMP_INK_BLOB_TYPE_CIRCLE:
-      function = gimp_blob_ellipse;
-      break;
+        function = gimp_blob_ellipse;
+        break;
 
     case GIMP_INK_BLOB_TYPE_SQUARE:
-      function = gimp_blob_square;
-      break;
+        function = gimp_blob_square;
+        break;
 
     case GIMP_INK_BLOB_TYPE_DIAMOND:
-      function = gimp_blob_diamond;
-      break;
+        function = gimp_blob_diamond;
+        break;
     }
 
-  /*  to get a nice antialiased outline, render the blob at double size  */
-  radius *= 2.0;
-  blob = function (2.0 * xc, 2.0 * yc,
-                   radius * cos (editor->angle),
-                   radius * sin (editor->angle),
-                   (- (radius / editor->aspect) * sin (editor->angle)),
-                   (  (radius / editor->aspect) * cos (editor->angle)));
+    /*  to get a nice antialiased outline, render the blob at double size  */
+    radius *= 2.0;
+    blob = function (2.0 * xc, 2.0 * yc,
+                     radius * cos (editor->angle),
+                     radius * sin (editor->angle),
+                     (- (radius / editor->aspect) * sin (editor->angle)),
+                     (  (radius / editor->aspect) * cos (editor->angle)));
 
-  for (i = 0; i < blob->height; i++)
-    if (blob->data[i].left <= blob->data[i].right)
-      {
-        cairo_move_to (cr, blob->data[i].left / 2.0, (blob->y + i) / 2.0);
-        break;
-      }
+    for (i = 0; i < blob->height; i++)
+        if (blob->data[i].left <= blob->data[i].right)
+        {
+            cairo_move_to (cr, blob->data[i].left / 2.0, (blob->y + i) / 2.0);
+            break;
+        }
 
-  for (i = i + 1; i < blob->height; i++)
+    for (i = i + 1; i < blob->height; i++)
     {
-      if (blob->data[i].left > blob->data[i].right)
-        break;
+        if (blob->data[i].left > blob->data[i].right)
+            break;
 
-      cairo_line_to (cr, blob->data[i].left / 2.0, (blob->y + i) / 2.0);
+        cairo_line_to (cr, blob->data[i].left / 2.0, (blob->y + i) / 2.0);
     }
 
-  for (i = i - 1; i >= 0; i--)
+    for (i = i - 1; i >= 0; i--)
     {
-      if (blob->data[i].left > blob->data[i].right)
-        break;
+        if (blob->data[i].left > blob->data[i].right)
+            break;
 
-      cairo_line_to (cr, blob->data[i].right / 2.0, (blob->y + i) / 2.0);
+        cairo_line_to (cr, blob->data[i].right / 2.0, (blob->y + i) / 2.0);
     }
 
-  cairo_close_path (cr);
+    cairo_close_path (cr);
 
-  g_free (blob);
+    g_free (blob);
 
-  gtk_style_context_get_color (style, gtk_widget_get_state_flags (widget),
-                               &color);
-  gdk_cairo_set_source_rgba (cr, &color);
-  cairo_fill (cr);
+    gtk_style_context_get_color (style, gtk_widget_get_state_flags (widget),
+                                 &color);
+    gdk_cairo_set_source_rgba (cr, &color);
+    cairo_fill (cr);
 }

@@ -35,17 +35,17 @@ typedef struct _GimpRotateToolClass GimpRotateToolClass;
 
 struct _GimpRotateTool
 {
-  GimpTransformGridTool  parent_instance;
+    GimpTransformGridTool  parent_instance;
 
-  GtkAdjustment         *angle_adj;
-  GtkWidget             *angle_spin_button;
-  GtkWidget             *sizeentry;
-  GtkWidget             *pivot_selector;
+    GtkAdjustment         *angle_adj;
+    GtkWidget             *angle_spin_button;
+    GtkWidget             *sizeentry;
+    GtkWidget             *pivot_selector;
 };
 
 struct _GimpRotateToolClass
 {
-  GimpTransformGridToolClass  parent_class;
+    GimpTransformGridToolClass  parent_class;
 };
 
 

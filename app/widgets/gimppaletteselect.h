@@ -38,12 +38,12 @@ typedef struct _GimpPaletteSelectClass  GimpPaletteSelectClass;
 
 struct _GimpPaletteSelect
 {
-  GimpPdbDialog  parent_instance;
+    GimpPdbDialog  parent_instance;
 };
 
 struct _GimpPaletteSelectClass
 {
-  GimpPdbDialogClass  parent_class;
+    GimpPdbDialogClass  parent_class;
 };
 
 

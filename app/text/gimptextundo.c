@@ -38,29 +38,29 @@
 
 enum
 {
-  PROP_0,
-  PROP_PARAM
+    PROP_0,
+    PROP_PARAM
 };
 
 
 static void     gimp_text_undo_constructed  (GObject             *object);
 static void     gimp_text_undo_set_property (GObject             *object,
-                                             guint                property_id,
-                                             const GValue        *value,
-                                             GParamSpec          *pspec);
+        guint                property_id,
+        const GValue        *value,
+        GParamSpec          *pspec);
 static void     gimp_text_undo_get_property (GObject             *object,
-                                             guint                property_id,
-                                             GValue              *value,
-                                             GParamSpec          *pspec);
+        guint                property_id,
+        GValue              *value,
+        GParamSpec          *pspec);
 
 static gint64   gimp_text_undo_get_memsize  (GimpObject          *object,
-                                             gint64              *gui_size);
+        gint64              *gui_size);
 
 static void     gimp_text_undo_pop          (GimpUndo            *undo,
-                                             GimpUndoMode         undo_mode,
-                                             GimpUndoAccumulator *accum);
+        GimpUndoMode         undo_mode,
+        GimpUndoAccumulator *accum);
 static void     gimp_text_undo_free         (GimpUndo            *undo,
-                                             GimpUndoMode         undo_mode);
+        GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpTextUndo, gimp_text_undo, GIMP_TYPE_ITEM_UNDO)
@@ -71,24 +71,24 @@ G_DEFINE_TYPE (GimpTextUndo, gimp_text_undo, GIMP_TYPE_ITEM_UNDO)
 static void
 gimp_text_undo_class_init (GimpTextUndoClass *klass)
 {
-  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
-  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
-  GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
+    GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+    GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+    GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructed      = gimp_text_undo_constructed;
-  object_class->set_property     = gimp_text_undo_set_property;
-  object_class->get_property     = gimp_text_undo_get_property;
+    object_class->constructed      = gimp_text_undo_constructed;
+    object_class->set_property     = gimp_text_undo_set_property;
+    object_class->get_property     = gimp_text_undo_get_property;
 
-  gimp_object_class->get_memsize = gimp_text_undo_get_memsize;
+    gimp_object_class->get_memsize = gimp_text_undo_get_memsize;
 
-  undo_class->pop                = gimp_text_undo_pop;
-  undo_class->free               = gimp_text_undo_free;
+    undo_class->pop                = gimp_text_undo_pop;
+    undo_class->free               = gimp_text_undo_free;
 
-  g_object_class_install_property (object_class, PROP_PARAM,
-                                   g_param_spec_param ("param", NULL, NULL,
-                                                       G_TYPE_PARAM,
-                                                       GIMP_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_PARAM,
+                                     g_param_spec_param ("param", NULL, NULL,
+                                             G_TYPE_PARAM,
+                                             GIMP_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -99,44 +99,44 @@ gimp_text_undo_init (GimpTextUndo *undo)
 static void
 gimp_text_undo_constructed (GObject *object)
 {
-  GimpTextUndo  *text_undo = GIMP_TEXT_UNDO (object);
-  GimpTextLayer *layer;
+    GimpTextUndo  *text_undo = GIMP_TEXT_UNDO (object);
+    GimpTextLayer *layer;
 
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  gimp_assert (GIMP_IS_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item));
+    gimp_assert (GIMP_IS_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item));
 
-  layer = GIMP_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item);
+    layer = GIMP_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item);
 
-  switch (GIMP_UNDO (object)->undo_type)
+    switch (GIMP_UNDO (object)->undo_type)
     {
     case GIMP_UNDO_TEXT_LAYER:
-      if (text_undo->pspec)
+        if (text_undo->pspec)
         {
-          gimp_assert (text_undo->pspec->owner_type == GIMP_TYPE_TEXT);
+            gimp_assert (text_undo->pspec->owner_type == GIMP_TYPE_TEXT);
 
-          text_undo->value = g_slice_new0 (GValue);
+            text_undo->value = g_slice_new0 (GValue);
 
-          g_value_init (text_undo->value, text_undo->pspec->value_type);
-          g_object_get_property (G_OBJECT (layer->text),
-                                 text_undo->pspec->name, text_undo->value);
+            g_value_init (text_undo->value, text_undo->pspec->value_type);
+            g_object_get_property (G_OBJECT (layer->text),
+                                   text_undo->pspec->name, text_undo->value);
         }
-      else if (layer->text)
+        else if (layer->text)
         {
-          text_undo->text = gimp_config_duplicate (GIMP_CONFIG (layer->text));
+            text_undo->text = gimp_config_duplicate (GIMP_CONFIG (layer->text));
         }
-      break;
+        break;
 
     case GIMP_UNDO_TEXT_LAYER_MODIFIED:
-      text_undo->modified = layer->modified;
-      break;
+        text_undo->modified = layer->modified;
+        break;
 
     case GIMP_UNDO_TEXT_LAYER_CONVERT:
-      text_undo->format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
-      break;
+        text_undo->format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+        break;
 
     default:
-      gimp_assert_not_reached ();
+        gimp_assert_not_reached ();
     }
 }
 
@@ -146,17 +146,17 @@ gimp_text_undo_set_property (GObject      *object,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
-  GimpTextUndo *text_undo = GIMP_TEXT_UNDO (object);
+    GimpTextUndo *text_undo = GIMP_TEXT_UNDO (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_PARAM:
-      text_undo->pspec = g_value_get_param (value);
-      break;
+        text_undo->pspec = g_value_get_param (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -166,17 +166,17 @@ gimp_text_undo_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
-  GimpTextUndo *text_undo = GIMP_TEXT_UNDO (object);
+    GimpTextUndo *text_undo = GIMP_TEXT_UNDO (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_PARAM:
-      g_value_set_param (value, (GParamSpec *) text_undo->pspec);
-      break;
+        g_value_set_param (value, (GParamSpec *) text_undo->pspec);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -184,14 +184,14 @@ static gint64
 gimp_text_undo_get_memsize (GimpObject *object,
                             gint64     *gui_size)
 {
-  GimpTextUndo *undo    = GIMP_TEXT_UNDO (object);
-  gint64        memsize = 0;
+    GimpTextUndo *undo    = GIMP_TEXT_UNDO (object);
+    gint64        memsize = 0;
 
-  memsize += gimp_g_value_get_memsize (undo->value);
-  memsize += gimp_object_get_memsize (GIMP_OBJECT (undo->text), NULL);
+    memsize += gimp_g_value_get_memsize (undo->value);
+    memsize += gimp_object_get_memsize (GIMP_OBJECT (undo->text), NULL);
 
-  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
-                                                                  gui_size);
+    return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+            gui_size);
 }
 
 static void
@@ -199,56 +199,56 @@ gimp_text_undo_pop (GimpUndo            *undo,
                     GimpUndoMode         undo_mode,
                     GimpUndoAccumulator *accum)
 {
-  GimpTextUndo  *text_undo = GIMP_TEXT_UNDO (undo);
-  GimpTextLayer *layer     = GIMP_TEXT_LAYER (GIMP_ITEM_UNDO (undo)->item);
+    GimpTextUndo  *text_undo = GIMP_TEXT_UNDO (undo);
+    GimpTextLayer *layer     = GIMP_TEXT_LAYER (GIMP_ITEM_UNDO (undo)->item);
 
-  GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
+    GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
-  switch (undo->undo_type)
+    switch (undo->undo_type)
     {
     case GIMP_UNDO_TEXT_LAYER:
-      if (text_undo->pspec)
+        if (text_undo->pspec)
         {
-          GValue *value;
+            GValue *value;
 
-          g_return_if_fail (layer->text != NULL);
+            g_return_if_fail (layer->text != NULL);
 
-          value = g_slice_new0 (GValue);
-          g_value_init (value, text_undo->pspec->value_type);
+            value = g_slice_new0 (GValue);
+            g_value_init (value, text_undo->pspec->value_type);
 
-          g_object_get_property (G_OBJECT (layer->text),
-                                 text_undo->pspec->name, value);
+            g_object_get_property (G_OBJECT (layer->text),
+                                   text_undo->pspec->name, value);
 
-          g_object_set_property (G_OBJECT (layer->text),
-                                 text_undo->pspec->name, text_undo->value);
+            g_object_set_property (G_OBJECT (layer->text),
+                                   text_undo->pspec->name, text_undo->value);
 
-          g_value_unset (text_undo->value);
-          g_slice_free (GValue, text_undo->value);
+            g_value_unset (text_undo->value);
+            g_slice_free (GValue, text_undo->value);
 
-          text_undo->value = value;
+            text_undo->value = value;
         }
-      else
+        else
         {
-          GimpText *text;
+            GimpText *text;
 
-          text = (layer->text ?
-                  gimp_config_duplicate (GIMP_CONFIG (layer->text)) : NULL);
+            text = (layer->text ?
+                    gimp_config_duplicate (GIMP_CONFIG (layer->text)) : NULL);
 
-          if (layer->text && text_undo->text)
-            gimp_config_sync (G_OBJECT (text_undo->text),
-                              G_OBJECT (layer->text), 0);
-          else
-            gimp_text_layer_set_text (layer, text_undo->text);
+            if (layer->text && text_undo->text)
+                gimp_config_sync (G_OBJECT (text_undo->text),
+                                  G_OBJECT (layer->text), 0);
+            else
+                gimp_text_layer_set_text (layer, text_undo->text);
 
-          if (text_undo->text)
-            g_object_unref (text_undo->text);
+            if (text_undo->text)
+                g_object_unref (text_undo->text);
 
-          text_undo->text = text;
+            text_undo->text = text;
         }
-      break;
+        break;
 
     case GIMP_UNDO_TEXT_LAYER_MODIFIED:
-      {
+    {
         gboolean modified;
 
 #if 0
@@ -262,11 +262,11 @@ gimp_text_undo_pop (GimpUndo            *undo,
         text_undo->modified = modified;
 
         gimp_viewable_invalidate_preview (GIMP_VIEWABLE (layer));
-      }
-      break;
+    }
+    break;
 
     case GIMP_UNDO_TEXT_LAYER_CONVERT:
-      {
+    {
         const Babl *format;
 
         format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
@@ -279,11 +279,11 @@ gimp_text_undo_pop (GimpUndo            *undo,
                                     GEGL_DITHER_NONE, GEGL_DITHER_NONE,
                                     FALSE, NULL);
         text_undo->format = format;
-      }
-      break;
+    }
+    break;
 
     default:
-      gimp_assert_not_reached ();
+        gimp_assert_not_reached ();
     }
 }
 
@@ -291,18 +291,18 @@ static void
 gimp_text_undo_free (GimpUndo     *undo,
                      GimpUndoMode  undo_mode)
 {
-  GimpTextUndo *text_undo = GIMP_TEXT_UNDO (undo);
+    GimpTextUndo *text_undo = GIMP_TEXT_UNDO (undo);
 
-  g_clear_object (&text_undo->text);
+    g_clear_object (&text_undo->text);
 
-  if (text_undo->pspec)
+    if (text_undo->pspec)
     {
-      g_value_unset (text_undo->value);
-      g_slice_free (GValue, text_undo->value);
+        g_value_unset (text_undo->value);
+        g_slice_free (GValue, text_undo->value);
 
-      text_undo->value = NULL;
-      text_undo->pspec = NULL;
+        text_undo->value = NULL;
+        text_undo->pspec = NULL;
     }
 
-  GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
+    GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

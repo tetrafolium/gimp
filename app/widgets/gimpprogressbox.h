@@ -36,19 +36,19 @@ typedef struct _GimpProgressBoxClass  GimpProgressBoxClass;
 
 struct _GimpProgressBox
 {
-  GtkBox     parent_instance;
+    GtkBox     parent_instance;
 
-  gboolean   active;
-  gboolean   cancellable;
-  gdouble    value;
+    gboolean   active;
+    gboolean   cancellable;
+    gdouble    value;
 
-  GtkWidget *label;
-  GtkWidget *progress;
+    GtkWidget *label;
+    GtkWidget *progress;
 };
 
 struct _GimpProgressBoxClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 };
 
 

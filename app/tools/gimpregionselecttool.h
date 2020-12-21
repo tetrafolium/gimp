@@ -39,24 +39,24 @@ typedef struct _GimpRegionSelectToolClass GimpRegionSelectToolClass;
 
 struct _GimpRegionSelectTool
 {
-  GimpSelectionTool  parent_instance;
+    GimpSelectionTool  parent_instance;
 
-  gint               x, y;
-  gdouble            saved_threshold;
+    gint               x, y;
+    gdouble            saved_threshold;
 
-  GeglBuffer        *region_mask;
-  GimpBoundSeg      *segs;
-  gint               n_segs;
+    GeglBuffer        *region_mask;
+    GimpBoundSeg      *segs;
+    gint               n_segs;
 };
 
 struct _GimpRegionSelectToolClass
 {
-  GimpSelectionToolClass parent_class;
+    GimpSelectionToolClass parent_class;
 
-  const gchar * undo_desc;
+    const gchar * undo_desc;
 
-  GeglBuffer * (* get_mask) (GimpRegionSelectTool *region_tool,
-                             GimpDisplay          *display);
+    GeglBuffer * (* get_mask) (GimpRegionSelectTool *region_tool,
+                               GimpDisplay          *display);
 };
 
 

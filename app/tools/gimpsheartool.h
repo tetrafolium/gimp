@@ -35,15 +35,15 @@ typedef struct _GimpShearToolClass GimpShearToolClass;
 
 struct _GimpShearTool
 {
-  GimpTransformGridTool  parent_instance;
+    GimpTransformGridTool  parent_instance;
 
-  GtkAdjustment         *x_adj;
-  GtkAdjustment         *y_adj;
+    GtkAdjustment         *x_adj;
+    GtkAdjustment         *y_adj;
 };
 
 struct _GimpShearToolClass
 {
-  GimpTransformGridToolClass  parent_class;
+    GimpTransformGridToolClass  parent_class;
 };
 
 

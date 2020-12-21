@@ -34,14 +34,14 @@ typedef struct _GimpScaleToolClass GimpScaleToolClass;
 
 struct _GimpScaleTool
 {
-  GimpTransformGridTool  parent_instance;
+    GimpTransformGridTool  parent_instance;
 
-  GtkWidget             *box;
+    GtkWidget             *box;
 };
 
 struct _GimpScaleToolClass
 {
-  GimpTransformGridToolClass parent_class;
+    GimpTransformGridToolClass parent_class;
 };
 
 

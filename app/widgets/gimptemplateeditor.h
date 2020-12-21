@@ -34,30 +34,30 @@ typedef struct _GimpTemplateEditorClass GimpTemplateEditorClass;
 
 struct _GimpTemplateEditor
 {
-  GtkBox  parent_instance;
+    GtkBox  parent_instance;
 };
 
 struct _GimpTemplateEditorClass
 {
-  GtkBoxClass   parent_class;
+    GtkBoxClass   parent_class;
 };
 
 
 GType          gimp_template_editor_get_type      (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_template_editor_new           (GimpTemplate       *template,
-                                                   Gimp               *gimp,
-                                                   gboolean            edit_template);
+        Gimp               *gimp,
+        gboolean            edit_template);
 
 GimpTemplate * gimp_template_editor_get_template  (GimpTemplateEditor *editor);
 
 void           gimp_template_editor_show_advanced (GimpTemplateEditor *editor,
-                                                   gboolean            expanded);
+        gboolean            expanded);
 GtkWidget    * gimp_template_editor_get_size_se   (GimpTemplateEditor *editor);
 GtkWidget    * gimp_template_editor_get_resolution_se
-                                                  (GimpTemplateEditor *editor);
+(GimpTemplateEditor *editor);
 GtkWidget    * gimp_template_editor_get_resolution_chain
-                                                  (GimpTemplateEditor *editor);
+(GimpTemplateEditor *editor);
 
 
 #endif  /*  __GIMP_TEMPLATE_EDITOR_H__  */

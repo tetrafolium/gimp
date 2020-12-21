@@ -35,25 +35,25 @@ typedef struct _GimpPaintOptionsClass GimpGradientOptionsClass;
 
 struct _GimpGradientOptions
 {
-  GimpPaintOptions   paint_options;
+    GimpPaintOptions   paint_options;
 
-  gdouble            offset;
-  GimpGradientType   gradient_type;
-  GeglDistanceMetric distance_metric;
+    gdouble            offset;
+    GimpGradientType   gradient_type;
+    GeglDistanceMetric distance_metric;
 
-  gboolean           supersample;
-  gint               supersample_depth;
-  gdouble            supersample_threshold;
+    gboolean           supersample;
+    gint               supersample_depth;
+    gdouble            supersample_threshold;
 
-  gboolean           dither;
+    gboolean           dither;
 
-  gboolean           instant;
-  gboolean           modify_active;
+    gboolean           instant;
+    gboolean           modify_active;
 
-  /*  options gui  */
-  GtkWidget         *instant_toggle;
-  GtkWidget         *modify_active_frame;
-  GtkWidget         *modify_active_hint;
+    /*  options gui  */
+    GtkWidget         *instant_toggle;
+    GtkWidget         *modify_active_frame;
+    GtkWidget         *modify_active_hint;
 };
 
 

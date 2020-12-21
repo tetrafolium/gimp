@@ -34,7 +34,7 @@ typedef struct _GimpLanguageEntryClass  GimpLanguageEntryClass;
 
 struct _GimpLanguageEntryClass
 {
-  GtkEntryClass  parent_class;
+    GtkEntryClass  parent_class;
 };
 
 
@@ -44,7 +44,7 @@ GtkWidget   * gimp_language_entry_new      (void);
 
 const gchar * gimp_language_entry_get_code (GimpLanguageEntry *entry);
 gboolean      gimp_language_entry_set_code (GimpLanguageEntry *entry,
-                                            const gchar       *code);
+        const gchar       *code);
 
 
 #endif  /* __GIMP_LANGUAGE_ENTRY_H__ */

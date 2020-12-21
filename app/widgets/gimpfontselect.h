@@ -38,12 +38,12 @@ typedef struct _GimpFontSelectClass  GimpFontSelectClass;
 
 struct _GimpFontSelect
 {
-  GimpPdbDialog  parent_instance;
+    GimpPdbDialog  parent_instance;
 };
 
 struct _GimpFontSelectClass
 {
-  GimpPdbDialogClass  parent_class;
+    GimpPdbDialogClass  parent_class;
 };
 
 

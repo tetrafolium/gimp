@@ -29,8 +29,8 @@ typedef struct _GimpDeviceKey GimpDeviceKey;
 
 struct _GimpDeviceKey
 {
-  guint           keyval;
-  GdkModifierType modifiers;
+    guint           keyval;
+    GdkModifierType modifiers;
 };
 
 
@@ -47,28 +47,28 @@ typedef struct _GimpDeviceInfoClass   GimpDeviceInfoClass;
 
 struct _GimpDeviceInfo
 {
-  GimpToolPreset  parent_instance;
+    GimpToolPreset  parent_instance;
 
-  GimpDeviceInfoPrivate *priv;
+    GimpDeviceInfoPrivate *priv;
 };
 
 struct _GimpDeviceInfoClass
 {
-  GimpToolPresetClass  parent_class;
+    GimpToolPresetClass  parent_class;
 };
 
 
 GType             gimp_device_info_get_type             (void) G_GNUC_CONST;
 
 GimpDeviceInfo  * gimp_device_info_new                  (Gimp            *gimp,
-                                                         GdkDevice       *device,
-                                                         GdkDisplay      *display);
+        GdkDevice       *device,
+        GdkDisplay      *display);
 
 GdkDevice       * gimp_device_info_get_device           (GimpDeviceInfo  *info,
-                                                         GdkDisplay     **display);
+        GdkDisplay     **display);
 gboolean          gimp_device_info_set_device           (GimpDeviceInfo  *info,
-                                                         GdkDevice       *device,
-                                                         GdkDisplay      *display);
+        GdkDevice       *device,
+        GdkDisplay      *display);
 
 void              gimp_device_info_set_default_tool     (GimpDeviceInfo  *info);
 
@@ -77,7 +77,7 @@ void              gimp_device_info_restore_tool         (GimpDeviceInfo  *info);
 
 GdkInputMode      gimp_device_info_get_mode             (GimpDeviceInfo  *info);
 void              gimp_device_info_set_mode             (GimpDeviceInfo  *info,
-                                                         GdkInputMode     mode);
+        GdkInputMode     mode);
 
 gboolean          gimp_device_info_has_cursor           (GimpDeviceInfo  *info);
 
@@ -92,37 +92,37 @@ guint64           gimp_device_info_get_tool_hardware_id (GimpDeviceInfo  *info);
 
 gint             gimp_device_info_get_n_axes            (GimpDeviceInfo  *info);
 gboolean         gimp_device_info_ignore_axis           (GimpDeviceInfo  *info,
-                                                         gint             axis);
+        gint             axis);
 const gchar    * gimp_device_info_get_axis_name         (GimpDeviceInfo  *info,
-                                                         gint             axis);
+        gint             axis);
 GdkAxisUse       gimp_device_info_get_axis_use          (GimpDeviceInfo  *info,
-                                                         gint             axis);
+        gint             axis);
 void             gimp_device_info_set_axis_use          (GimpDeviceInfo  *info,
-                                                         gint             axis,
-                                                         GdkAxisUse       use);
+        gint             axis,
+        GdkAxisUse       use);
 
 gint             gimp_device_info_get_n_keys            (GimpDeviceInfo  *info);
 void             gimp_device_info_get_key               (GimpDeviceInfo  *info,
-                                                         gint             key,
-                                                         guint           *keyval,
-                                                         GdkModifierType *modifiers);
+        gint             key,
+        guint           *keyval,
+        GdkModifierType *modifiers);
 void             gimp_device_info_set_key               (GimpDeviceInfo  *info,
-                                                         gint             key,
-                                                         guint            keyval,
-                                                         GdkModifierType  modifiers);
+        gint             key,
+        guint            keyval,
+        GdkModifierType  modifiers);
 
 GimpCurve      * gimp_device_info_get_curve             (GimpDeviceInfo  *info,
-                                                         GdkAxisUse       use);
+        GdkAxisUse       use);
 gdouble          gimp_device_info_map_axis              (GimpDeviceInfo  *info,
-                                                         GdkAxisUse       use,
-                                                         gdouble          value);
+        GdkAxisUse       use,
+        gdouble          value);
 
 void             gimp_device_info_changed               (GimpDeviceInfo  *info);
 
 GimpDeviceInfo * gimp_device_info_get_by_device         (GdkDevice       *device);
 
 gint             gimp_device_info_compare               (GimpDeviceInfo  *a,
-                                                         GimpDeviceInfo  *b);
+        GimpDeviceInfo  *b);
 
 
 G_END_DECLS

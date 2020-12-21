@@ -34,32 +34,32 @@ typedef struct _GimpCellRendererViewableClass GimpCellRendererViewableClass;
 
 struct _GimpCellRendererViewable
 {
-  GtkCellRenderer   parent_instance;
+    GtkCellRenderer   parent_instance;
 
-  GimpViewRenderer *renderer;
+    GimpViewRenderer *renderer;
 };
 
 struct _GimpCellRendererViewableClass
 {
-  GtkCellRendererClass  parent_class;
+    GtkCellRendererClass  parent_class;
 
-  gboolean (* pre_clicked) (GimpCellRendererViewable *cell,
-                            const gchar              *path,
-                            GdkModifierType           state);
-  void     (* clicked)     (GimpCellRendererViewable *cell,
-                            const gchar              *path,
-                            GdkModifierType           state);
+    gboolean (* pre_clicked) (GimpCellRendererViewable *cell,
+                              const gchar              *path,
+                              GdkModifierType           state);
+    void     (* clicked)     (GimpCellRendererViewable *cell,
+                              const gchar              *path,
+                              GdkModifierType           state);
 };
 
 
 GType             gimp_cell_renderer_viewable_get_type    (void) G_GNUC_CONST;
 GtkCellRenderer * gimp_cell_renderer_viewable_new         (void);
 gboolean          gimp_cell_renderer_viewable_pre_clicked (GimpCellRendererViewable *cell,
-                                                           const gchar              *path,
-                                                           GdkModifierType           state);
+        const gchar              *path,
+        GdkModifierType           state);
 void              gimp_cell_renderer_viewable_clicked     (GimpCellRendererViewable *cell,
-                                                           const gchar              *path,
-                                                           GdkModifierType           state);
+        const gchar              *path,
+        GdkModifierType           state);
 
 
 #endif /* __GIMP_CELL_RENDERER_VIEWABLE_H__ */

@@ -35,17 +35,17 @@ typedef struct _GimpEllipseSelectToolClass GimpEllipseSelectToolClass;
 
 struct _GimpEllipseSelectTool
 {
-  GimpRectangleSelectTool  parent_instance;
+    GimpRectangleSelectTool  parent_instance;
 };
 
 struct _GimpEllipseSelectToolClass
 {
-  GimpRectangleSelectToolClass  parent_class;
+    GimpRectangleSelectToolClass  parent_class;
 };
 
 
 void    gimp_ellipse_select_tool_register (GimpToolRegisterCallback  callback,
-                                           gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_ellipse_select_tool_get_type (void) G_GNUC_CONST;
 

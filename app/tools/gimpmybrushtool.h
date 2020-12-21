@@ -37,12 +37,12 @@ typedef struct _GimpMybrushToolClass GimpMybrushToolClass;
 
 struct _GimpMybrushTool
 {
-  GimpPaintTool parent_instance;
+    GimpPaintTool parent_instance;
 };
 
 struct _GimpMybrushToolClass
 {
-  GimpPaintToolClass parent_class;
+    GimpPaintToolClass parent_class;
 };
 
 
@@ -52,9 +52,9 @@ void    gimp_mybrush_tool_register (GimpToolRegisterCallback  callback,
 GType   gimp_mybrush_tool_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_mybrush_tool_create_cursor (GimpPaintTool *paint_tool,
-                                                  GimpDisplay   *display,
-                                                  gdouble        x,
-                                                  gdouble        y,
-                                                  gdouble        radius);
+        GimpDisplay   *display,
+        gdouble        x,
+        gdouble        y,
+        gdouble        radius);
 
 #endif  /*  __GIMP_MYBRUSH_TOOL_H__  */

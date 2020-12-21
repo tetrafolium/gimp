@@ -42,37 +42,37 @@ typedef struct _GimpPanedBoxPrivate  GimpPanedBoxPrivate;
  */
 struct _GimpPanedBox
 {
-  GtkBox parent_instance;
+    GtkBox parent_instance;
 
-  GimpPanedBoxPrivate *p;
+    GimpPanedBoxPrivate *p;
 };
 
 struct _GimpPanedBoxClass
 {
-  GtkBoxClass parent_class;
+    GtkBoxClass parent_class;
 };
 
 
 GType               gimp_paned_box_get_type              (void) G_GNUC_CONST;
 GtkWidget         * gimp_paned_box_new                   (gboolean                 homogeneous,
-                                                          gint                     spacing,
-                                                          GtkOrientation           orientation);
+        gint                     spacing,
+        GtkOrientation           orientation);
 void                gimp_paned_box_set_dropped_cb        (GimpPanedBox            *paned_box,
-                                                          GimpPanedBoxDroppedFunc  dropped_cb,
-                                                          gpointer                 dropped_cb_data);
+        GimpPanedBoxDroppedFunc  dropped_cb,
+        gpointer                 dropped_cb_data);
 void                gimp_paned_box_add_widget            (GimpPanedBox            *paned_box,
-                                                          GtkWidget               *widget,
-                                                          gint                     index);
+        GtkWidget               *widget,
+        gint                     index);
 void                gimp_paned_box_remove_widget         (GimpPanedBox            *paned_box,
-                                                          GtkWidget               *widget);
+        GtkWidget               *widget);
 gboolean            gimp_paned_box_will_handle_drag      (GimpPanedBox            *paned_box,
-                                                          GtkWidget               *widget,
-                                                          GdkDragContext          *context,
-                                                          gint                     x,
-                                                          gint                     y,
-                                                          gint                     time);
+        GtkWidget               *widget,
+        GdkDragContext          *context,
+        gint                     x,
+        gint                     y,
+        gint                     time);
 void                gimp_paned_box_set_drag_handler      (GimpPanedBox            *paned_box,
-                                                          GimpPanedBox            *drag_handler);
+        GimpPanedBox            *drag_handler);
 
 
 #endif /* __GIMP_PANED_BOX_H__ */

@@ -38,28 +38,28 @@ typedef struct _GimpRectangleSelectToolClass   GimpRectangleSelectToolClass;
 
 struct _GimpRectangleSelectTool
 {
-  GimpSelectionTool               parent_instance;
+    GimpSelectionTool               parent_instance;
 
-  GimpRectangleSelectToolPrivate *private;
+    GimpRectangleSelectToolPrivate *private;
 };
 
 struct _GimpRectangleSelectToolClass
 {
-  GimpSelectionToolClass  parent_class;
+    GimpSelectionToolClass  parent_class;
 
-  void (* select) (GimpRectangleSelectTool *rect_select,
-                   GimpChannelOps           operation,
-                   gint                     x,
-                   gint                     y,
-                   gint                     w,
-                   gint                     h);
+    void (* select) (GimpRectangleSelectTool *rect_select,
+                     GimpChannelOps           operation,
+                     gint                     x,
+                     gint                     y,
+                     gint                     w,
+                     gint                     h);
 
-  gboolean draw_ellipse;
+    gboolean draw_ellipse;
 };
 
 
 void    gimp_rectangle_select_tool_register (GimpToolRegisterCallback  callback,
-                                             gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_rectangle_select_tool_get_type (void) G_GNUC_CONST;
 

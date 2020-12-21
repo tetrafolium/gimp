@@ -34,23 +34,23 @@ typedef struct _GimpUndoEditorClass GimpUndoEditorClass;
 
 struct _GimpUndoEditor
 {
-  GimpImageEditor  parent_instance;
+    GimpImageEditor  parent_instance;
 
-  GimpContext     *context;
-  GimpContainer   *container;
-  GtkWidget       *view;
-  GimpViewSize     view_size;
+    GimpContext     *context;
+    GimpContainer   *container;
+    GtkWidget       *view;
+    GimpViewSize     view_size;
 
-  GimpUndo        *base_item;
+    GimpUndo        *base_item;
 
-  GtkWidget       *undo_button;
-  GtkWidget       *redo_button;
-  GtkWidget       *clear_button;
+    GtkWidget       *undo_button;
+    GtkWidget       *redo_button;
+    GtkWidget       *clear_button;
 };
 
 struct _GimpUndoEditorClass
 {
-  GimpImageEditorClass  parent_class;
+    GimpImageEditorClass  parent_class;
 };
 
 

@@ -35,25 +35,25 @@ typedef struct _GimpBrightnessContrastToolClass GimpBrightnessContrastToolClass;
 
 struct _GimpBrightnessContrastTool
 {
-  GimpFilterTool  parent_instance;
+    GimpFilterTool  parent_instance;
 
-  gboolean        dragging;
-  gdouble         x, y;
-  gdouble         dx, dy;
+    gboolean        dragging;
+    gdouble         x, y;
+    gdouble         dx, dy;
 
-  /* dialog */
-  GtkWidget      *brightness_scale;
-  GtkWidget      *contrast_scale;
+    /* dialog */
+    GtkWidget      *brightness_scale;
+    GtkWidget      *contrast_scale;
 };
 
 struct _GimpBrightnessContrastToolClass
 {
-  GimpFilterToolClass  parent_class;
+    GimpFilterToolClass  parent_class;
 };
 
 
 void    gimp_brightness_contrast_tool_register (GimpToolRegisterCallback  callback,
-                                                gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_brightness_contrast_tool_get_type (void) G_GNUC_CONST;
 

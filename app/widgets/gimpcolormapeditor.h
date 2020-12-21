@@ -34,15 +34,15 @@ typedef struct _GimpColormapEditorClass GimpColormapEditorClass;
 
 struct _GimpColormapEditor
 {
-  GimpImageEditor  parent_instance;
+    GimpImageEditor  parent_instance;
 
-  GtkWidget       *selection;
-  GtkWidget       *color_dialog;
+    GtkWidget       *selection;
+    GtkWidget       *color_dialog;
 };
 
 struct _GimpColormapEditorClass
 {
-  GimpImageEditorClass  parent_class;
+    GimpImageEditorClass  parent_class;
 };
 
 
@@ -53,10 +53,10 @@ GtkWidget * gimp_colormap_editor_new        (GimpMenuFactory    *menu_factory);
 void        gimp_colormap_editor_edit_color (GimpColormapEditor *editor);
 
 gint        gimp_colormap_editor_get_index  (GimpColormapEditor *editor,
-                                             const GimpRGB      *search);
+        const GimpRGB      *search);
 gboolean    gimp_colormap_editor_set_index  (GimpColormapEditor *editor,
-                                             gint                index,
-                                             GimpRGB            *color);
+        gint                index,
+        GimpRGB            *color);
 
 gint        gimp_colormap_editor_max_index  (GimpColormapEditor *editor);
 

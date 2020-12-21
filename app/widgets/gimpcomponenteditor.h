@@ -37,33 +37,33 @@ typedef struct _GimpComponentEditorClass  GimpComponentEditorClass;
 
 struct _GimpComponentEditor
 {
-  GimpImageEditor    parent_instance;
+    GimpImageEditor    parent_instance;
 
-  gint               view_size;
+    gint               view_size;
 
-  GtkTreeModel      *model;
-  GtkTreeView       *view;
-  GtkTreeSelection  *selection;
+    GtkTreeModel      *model;
+    GtkTreeView       *view;
+    GtkTreeSelection  *selection;
 
-  GtkTreeViewColumn *eye_column;
-  GtkCellRenderer   *eye_cell;
-  GtkCellRenderer   *renderer_cell;
+    GtkTreeViewColumn *eye_column;
+    GtkCellRenderer   *eye_cell;
+    GtkCellRenderer   *renderer_cell;
 
-  GimpChannelType    clicked_component;
+    GimpChannelType    clicked_component;
 };
 
 struct _GimpComponentEditorClass
 {
-  GimpImageEditorClass  parent_class;
+    GimpImageEditorClass  parent_class;
 };
 
 
 GType       gimp_component_editor_get_type      (void) G_GNUC_CONST;
 
 GtkWidget * gimp_component_editor_new           (gint                 view_size,
-                                                 GimpMenuFactory     *menu_factory);
+        GimpMenuFactory     *menu_factory);
 void        gimp_component_editor_set_view_size (GimpComponentEditor *editor,
-                                                 gint                 view_size);
+        gint                 view_size);
 
 
 #endif  /*  __GIMP_COMPONENT_EDITOR_H__  */

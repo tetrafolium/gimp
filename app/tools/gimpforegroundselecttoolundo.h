@@ -37,14 +37,14 @@ typedef struct _GimpForegroundSelectToolUndoClass GimpForegroundSelectToolUndoCl
 
 struct _GimpForegroundSelectToolUndo
 {
-  GimpUndo                  parent_instance;
+    GimpUndo                  parent_instance;
 
-  GimpForegroundSelectTool *foreground_select_tool;
+    GimpForegroundSelectTool *foreground_select_tool;
 };
 
 struct _GimpForegroundSelectToolUndoClass
 {
-  GimpUndoClass  parent_class;
+    GimpUndoClass  parent_class;
 };
 
 

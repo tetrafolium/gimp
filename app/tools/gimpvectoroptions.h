@@ -35,15 +35,15 @@ typedef struct _GimpToolOptionsClass GimpVectorOptionsClass;
 
 struct _GimpVectorOptions
 {
-  GimpToolOptions  parent_instance;
+    GimpToolOptions  parent_instance;
 
-  GimpVectorMode   edit_mode;
-  gboolean         polygonal;
+    GimpVectorMode   edit_mode;
+    gboolean         polygonal;
 
-  /*  options gui  */
-  GtkWidget       *to_selection_button;
-  GtkWidget       *fill_button;
-  GtkWidget       *stroke_button;
+    /*  options gui  */
+    GtkWidget       *to_selection_button;
+    GtkWidget       *fill_button;
+    GtkWidget       *stroke_button;
 };
 
 

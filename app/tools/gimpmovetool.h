@@ -37,20 +37,20 @@ typedef struct _GimpMoveToolClass GimpMoveToolClass;
 
 struct _GimpMoveTool
 {
-  GimpDrawTool         parent_instance;
+    GimpDrawTool         parent_instance;
 
-  GimpLayer           *floating_layer;
-  GList               *guides;
+    GimpLayer           *floating_layer;
+    GList               *guides;
 
-  GimpTransformType    saved_type;
+    GimpTransformType    saved_type;
 
-  GList               *old_selected_layers;
-  GList               *old_selected_vectors;
+    GList               *old_selected_layers;
+    GList               *old_selected_vectors;
 };
 
 struct _GimpMoveToolClass
 {
-  GimpDrawToolClass  parent_class;
+    GimpDrawToolClass  parent_class;
 };
 
 

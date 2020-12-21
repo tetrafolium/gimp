@@ -25,22 +25,22 @@
 /*  The possible states...  */
 typedef enum
 {
-  NO_ACTION,
-  SEED_PLACEMENT,
-  SEED_ADJUSTMENT,
-  WAITING
+    NO_ACTION,
+    SEED_PLACEMENT,
+    SEED_ADJUSTMENT,
+    WAITING
 } IscissorsState;
 
 /*  For oper_update & cursor_update  */
 typedef enum
 {
-  ISCISSORS_OP_NONE,
-  ISCISSORS_OP_SELECT,
-  ISCISSORS_OP_MOVE_POINT,
-  ISCISSORS_OP_ADD_POINT,
-  ISCISSORS_OP_REMOVE_POINT,
-  ISCISSORS_OP_CONNECT,
-  ISCISSORS_OP_IMPOSSIBLE
+    ISCISSORS_OP_NONE,
+    ISCISSORS_OP_SELECT,
+    ISCISSORS_OP_MOVE_POINT,
+    ISCISSORS_OP_ADD_POINT,
+    ISCISSORS_OP_REMOVE_POINT,
+    ISCISSORS_OP_CONNECT,
+    ISCISSORS_OP_IMPOSSIBLE
 } IscissorsOps;
 
 typedef struct _ISegment ISegment;
@@ -62,29 +62,29 @@ typedef struct _GimpIscissorsToolClass GimpIscissorsToolClass;
 
 struct _GimpIscissorsTool
 {
-  GimpSelectionTool  parent_instance;
+    GimpSelectionTool  parent_instance;
 
-  IscissorsOps    op;
+    IscissorsOps    op;
 
-  gint            x, y;         /*  mouse coordinates                       */
+    gint            x, y;         /*  mouse coordinates                       */
 
-  ISegment       *segment1;     /*  1st segment connected to current point  */
-  ISegment       *segment2;     /*  2nd segment connected to current point  */
+    ISegment       *segment1;     /*  1st segment connected to current point  */
+    ISegment       *segment2;     /*  2nd segment connected to current point  */
 
-  ICurve         *curve;        /*  the curve                               */
+    ICurve         *curve;        /*  the curve                               */
 
-  GList          *undo_stack;   /*  stack of ICurves for undo               */
-  GList          *redo_stack;   /*  stack of ICurves for redo               */
+    GList          *undo_stack;   /*  stack of ICurves for undo               */
+    GList          *redo_stack;   /*  stack of ICurves for redo               */
 
-  IscissorsState  state;        /*  state of iscissors                      */
+    IscissorsState  state;        /*  state of iscissors                      */
 
-  GeglBuffer     *gradient_map; /*  lazily filled gradient map              */
-  GimpChannel    *mask;         /*  selection mask                          */
+    GeglBuffer     *gradient_map; /*  lazily filled gradient map              */
+    GimpChannel    *mask;         /*  selection mask                          */
 };
 
 struct _GimpIscissorsToolClass
 {
-  GimpSelectionToolClass parent_class;
+    GimpSelectionToolClass parent_class;
 };
 
 

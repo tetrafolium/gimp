@@ -46,38 +46,38 @@
 
 enum
 {
-  BOOK_ADDED,
-  BOOK_REMOVED,
-  DESCRIPTION_INVALIDATED,
-  GEOMETRY_INVALIDATED,
-  LAST_SIGNAL
+    BOOK_ADDED,
+    BOOK_REMOVED,
+    DESCRIPTION_INVALIDATED,
+    GEOMETRY_INVALIDATED,
+    LAST_SIGNAL
 };
 
 
 struct _GimpDockPrivate
 {
-  GtkWidget *main_vbox;
-  GtkWidget *paned_vbox;
+    GtkWidget *main_vbox;
+    GtkWidget *paned_vbox;
 
-  GList     *dockbooks;
+    GList     *dockbooks;
 
-  gint       ID;
+    gint       ID;
 };
 
 
 static void       gimp_dock_dispose                (GObject      *object);
 
 static gchar    * gimp_dock_real_get_description   (GimpDock     *dock,
-                                                    gboolean      complete);
+        gboolean      complete);
 static void       gimp_dock_real_book_added        (GimpDock     *dock,
-                                                    GimpDockbook *dockbook);
+        GimpDockbook *dockbook);
 static void       gimp_dock_real_book_removed      (GimpDock     *dock,
-                                                    GimpDockbook *dockbook);
+        GimpDockbook *dockbook);
 static void       gimp_dock_invalidate_description (GimpDock     *dock);
 static gboolean   gimp_dock_dropped_cb             (GtkWidget    *notebook,
-                                                    GtkWidget    *child,
-                                                    gint          insert_index,
-                                                    gpointer      data);
+        GtkWidget    *child,
+        gint          insert_index,
+        gpointer      data);
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpDock, gimp_dock, GTK_TYPE_BOX)
@@ -90,179 +90,179 @@ static guint dock_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_dock_class_init (GimpDockClass *klass)
 {
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+    GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  dock_signals[BOOK_ADDED] =
-    g_signal_new ("book-added",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpDockClass, book_added),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  GIMP_TYPE_DOCKBOOK);
+    dock_signals[BOOK_ADDED] =
+        g_signal_new ("book-added",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpDockClass, book_added),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      GIMP_TYPE_DOCKBOOK);
 
-  dock_signals[BOOK_REMOVED] =
-    g_signal_new ("book-removed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpDockClass, book_removed),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  GIMP_TYPE_DOCKBOOK);
+    dock_signals[BOOK_REMOVED] =
+        g_signal_new ("book-removed",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpDockClass, book_removed),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      GIMP_TYPE_DOCKBOOK);
 
-  dock_signals[DESCRIPTION_INVALIDATED] =
-    g_signal_new ("description-invalidated",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpDockClass, description_invalidated),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
+    dock_signals[DESCRIPTION_INVALIDATED] =
+        g_signal_new ("description-invalidated",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpDockClass, description_invalidated),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 0);
 
-  dock_signals[GEOMETRY_INVALIDATED] =
-    g_signal_new ("geometry-invalidated",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpDockClass, geometry_invalidated),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
+    dock_signals[GEOMETRY_INVALIDATED] =
+        g_signal_new ("geometry-invalidated",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpDockClass, geometry_invalidated),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 0);
 
-  object_class->dispose          = gimp_dock_dispose;
+    object_class->dispose          = gimp_dock_dispose;
 
-  klass->get_description         = gimp_dock_real_get_description;
-  klass->set_host_geometry_hints = NULL;
-  klass->book_added              = gimp_dock_real_book_added;
-  klass->book_removed            = gimp_dock_real_book_removed;
-  klass->description_invalidated = NULL;
-  klass->geometry_invalidated    = NULL;
+    klass->get_description         = gimp_dock_real_get_description;
+    klass->set_host_geometry_hints = NULL;
+    klass->book_added              = gimp_dock_real_book_added;
+    klass->book_removed            = gimp_dock_real_book_removed;
+    klass->description_invalidated = NULL;
+    klass->geometry_invalidated    = NULL;
 
-  gtk_widget_class_set_css_name (widget_class, "GimpDock");
+    gtk_widget_class_set_css_name (widget_class, "GimpDock");
 }
 
 static void
 gimp_dock_init (GimpDock *dock)
 {
-  static gint  dock_ID = 1;
-  gchar       *name    = NULL;
+    static gint  dock_ID = 1;
+    gchar       *name    = NULL;
 
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (dock),
-                                  GTK_ORIENTATION_VERTICAL);
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (dock),
+                                    GTK_ORIENTATION_VERTICAL);
 
-  dock->p = gimp_dock_get_instance_private (dock);
-  dock->p->ID = dock_ID++;
+    dock->p = gimp_dock_get_instance_private (dock);
+    dock->p->ID = dock_ID++;
 
-  name = g_strdup_printf ("gimp-internal-dock-%d", dock->p->ID);
-  gtk_widget_set_name (GTK_WIDGET (dock), name);
-  g_free (name);
+    name = g_strdup_printf ("gimp-internal-dock-%d", dock->p->ID);
+    gtk_widget_set_name (GTK_WIDGET (dock), name);
+    g_free (name);
 
-  dock->p->main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_box_pack_start (GTK_BOX (dock), dock->p->main_vbox, TRUE, TRUE, 0);
-  gtk_widget_show (dock->p->main_vbox);
+    dock->p->main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    gtk_box_pack_start (GTK_BOX (dock), dock->p->main_vbox, TRUE, TRUE, 0);
+    gtk_widget_show (dock->p->main_vbox);
 
-  dock->p->paned_vbox = gimp_paned_box_new (FALSE, 0, GTK_ORIENTATION_VERTICAL);
-  gimp_paned_box_set_dropped_cb (GIMP_PANED_BOX (dock->p->paned_vbox),
-                                 gimp_dock_dropped_cb,
-                                 dock);
-  gtk_box_pack_start (GTK_BOX (dock->p->main_vbox), dock->p->paned_vbox,
-                      TRUE, TRUE, 0);
-  gtk_widget_show (dock->p->paned_vbox);
+    dock->p->paned_vbox = gimp_paned_box_new (FALSE, 0, GTK_ORIENTATION_VERTICAL);
+    gimp_paned_box_set_dropped_cb (GIMP_PANED_BOX (dock->p->paned_vbox),
+                                   gimp_dock_dropped_cb,
+                                   dock);
+    gtk_box_pack_start (GTK_BOX (dock->p->main_vbox), dock->p->paned_vbox,
+                        TRUE, TRUE, 0);
+    gtk_widget_show (dock->p->paned_vbox);
 }
 
 static void
 gimp_dock_dispose (GObject *object)
 {
-  GimpDock *dock = GIMP_DOCK (object);
+    GimpDock *dock = GIMP_DOCK (object);
 
-  while (dock->p->dockbooks)
+    while (dock->p->dockbooks)
     {
-      GimpDockbook *dockbook = dock->p->dockbooks->data;
+        GimpDockbook *dockbook = dock->p->dockbooks->data;
 
-      g_object_ref (dockbook);
-      gimp_dock_remove_book (dock, dockbook);
-      gtk_widget_destroy (GTK_WIDGET (dockbook));
-      g_object_unref (dockbook);
+        g_object_ref (dockbook);
+        gimp_dock_remove_book (dock, dockbook);
+        gtk_widget_destroy (GTK_WIDGET (dockbook));
+        g_object_unref (dockbook);
     }
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+    G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static gchar *
 gimp_dock_real_get_description (GimpDock *dock,
                                 gboolean  complete)
 {
-  GString *desc;
-  GList   *list;
+    GString *desc;
+    GList   *list;
 
-  desc = g_string_new (NULL);
+    desc = g_string_new (NULL);
 
-  for (list = gimp_dock_get_dockbooks (dock);
-       list;
-       list = g_list_next (list))
+    for (list = gimp_dock_get_dockbooks (dock);
+            list;
+            list = g_list_next (list))
     {
-      GimpDockbook *dockbook = list->data;
-      GList        *children;
-      GList        *child;
+        GimpDockbook *dockbook = list->data;
+        GList        *children;
+        GList        *child;
 
-      if (complete)
+        if (complete)
         {
-          /* Include all dockables */
-          children = gtk_container_get_children (GTK_CONTAINER (dockbook));
+            /* Include all dockables */
+            children = gtk_container_get_children (GTK_CONTAINER (dockbook));
         }
-      else
+        else
         {
-          GtkWidget *dockable = NULL;
-          gint       page_num = 0;
+            GtkWidget *dockable = NULL;
+            gint       page_num = 0;
 
-          page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (dockbook));
-          dockable = gtk_notebook_get_nth_page (GTK_NOTEBOOK (dockbook), page_num);
+            page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (dockbook));
+            dockable = gtk_notebook_get_nth_page (GTK_NOTEBOOK (dockbook), page_num);
 
-          /* Only include active dockables */
-          children = g_list_append (NULL, dockable);
-        }
-
-      for (child = children; child; child = g_list_next (child))
-        {
-          GimpDockable *dockable = child->data;
-
-          g_string_append (desc, gimp_dockable_get_name (dockable));
-
-          if (g_list_next (child))
-            g_string_append (desc, GIMP_DOCK_DOCKABLE_SEPARATOR);
+            /* Only include active dockables */
+            children = g_list_append (NULL, dockable);
         }
 
-      g_list_free (children);
+        for (child = children; child; child = g_list_next (child))
+        {
+            GimpDockable *dockable = child->data;
 
-      if (g_list_next (list))
-        g_string_append (desc, GIMP_DOCK_BOOK_SEPARATOR);
+            g_string_append (desc, gimp_dockable_get_name (dockable));
+
+            if (g_list_next (child))
+                g_string_append (desc, GIMP_DOCK_DOCKABLE_SEPARATOR);
+        }
+
+        g_list_free (children);
+
+        if (g_list_next (list))
+            g_string_append (desc, GIMP_DOCK_BOOK_SEPARATOR);
     }
 
-  return g_string_free (desc, FALSE);
+    return g_string_free (desc, FALSE);
 }
 
 static void
 gimp_dock_real_book_added (GimpDock     *dock,
                            GimpDockbook *dockbook)
 {
-  g_signal_connect_object (dockbook, "switch-page",
-                           G_CALLBACK (gimp_dock_invalidate_description),
-                           dock, G_CONNECT_SWAPPED);
+    g_signal_connect_object (dockbook, "switch-page",
+                             G_CALLBACK (gimp_dock_invalidate_description),
+                             dock, G_CONNECT_SWAPPED);
 }
 
 static void
 gimp_dock_real_book_removed (GimpDock     *dock,
                              GimpDockbook *dockbook)
 {
-  g_signal_handlers_disconnect_by_func (dockbook,
-                                        gimp_dock_invalidate_description,
-                                        dock);
+    g_signal_handlers_disconnect_by_func (dockbook,
+                                          gimp_dock_invalidate_description,
+                                          dock);
 }
 
 static void
 gimp_dock_invalidate_description (GimpDock *dock)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
 
-  g_signal_emit (dock, dock_signals[DESCRIPTION_INVALIDATED], 0);
+    g_signal_emit (dock, dock_signals[DESCRIPTION_INVALIDATED], 0);
 }
 
 static gboolean
@@ -271,41 +271,41 @@ gimp_dock_dropped_cb (GtkWidget *notebook,
                       gint       insert_index,
                       gpointer   data)
 {
-  GimpDock          *dock     = GIMP_DOCK (data);
-  GimpDockbook      *dockbook = GIMP_DOCKBOOK (notebook);
-  GimpDockable      *dockable = GIMP_DOCKABLE (child);
-  GimpDialogFactory *factory;
-  GtkWidget         *new_dockbook;
+    GimpDock          *dock     = GIMP_DOCK (data);
+    GimpDockbook      *dockbook = GIMP_DOCKBOOK (notebook);
+    GimpDockable      *dockable = GIMP_DOCKABLE (child);
+    GimpDialogFactory *factory;
+    GtkWidget         *new_dockbook;
 
-  /*  if dropping to the same dock, take care that we don't try
-   *  to reorder the *only* dockable in the dock
-   */
-  if (gimp_dockbook_get_dock (dockbook) == dock)
+    /*  if dropping to the same dock, take care that we don't try
+     *  to reorder the *only* dockable in the dock
+     */
+    if (gimp_dockbook_get_dock (dockbook) == dock)
     {
-      GList *children    = gtk_container_get_children (GTK_CONTAINER (dockable));
-      gint   n_dockables = g_list_length (children);
-      gint   n_books     = g_list_length (gimp_dock_get_dockbooks (dock));
+        GList *children    = gtk_container_get_children (GTK_CONTAINER (dockable));
+        gint   n_dockables = g_list_length (children);
+        gint   n_books     = g_list_length (gimp_dock_get_dockbooks (dock));
 
-      g_list_free (children);
+        g_list_free (children);
 
-      if (n_books == 1 && n_dockables == 1)
-        return TRUE; /* successfully do nothing */
+        if (n_books == 1 && n_dockables == 1)
+            return TRUE; /* successfully do nothing */
     }
 
-  /* Detach the dockable from the old dockbook */
-  g_object_ref (dockable);
-  gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), child);
+    /* Detach the dockable from the old dockbook */
+    g_object_ref (dockable);
+    gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), child);
 
-  /* Create a new dockbook */
-  factory = gimp_dock_get_dialog_factory (dock);
-  new_dockbook = gimp_dockbook_new (gimp_dialog_factory_get_menu_factory (factory));
-  gimp_dock_add_book (dock, GIMP_DOCKBOOK (new_dockbook), insert_index);
+    /* Create a new dockbook */
+    factory = gimp_dock_get_dialog_factory (dock);
+    new_dockbook = gimp_dockbook_new (gimp_dialog_factory_get_menu_factory (factory));
+    gimp_dock_add_book (dock, GIMP_DOCKBOOK (new_dockbook), insert_index);
 
-  /* Add the dockable to new new dockbook */
-  gtk_notebook_append_page (GTK_NOTEBOOK (new_dockbook), child, NULL);
-  g_object_unref (dockable);
+    /* Add the dockable to new new dockbook */
+    gtk_notebook_append_page (GTK_NOTEBOOK (new_dockbook), child, NULL);
+    g_object_unref (dockable);
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -323,12 +323,12 @@ gchar *
 gimp_dock_get_description (GimpDock *dock,
                            gboolean  complete)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  if (GIMP_DOCK_GET_CLASS (dock)->get_description)
-    return GIMP_DOCK_GET_CLASS (dock)->get_description (dock, complete);
+    if (GIMP_DOCK_GET_CLASS (dock)->get_description)
+        return GIMP_DOCK_GET_CLASS (dock)->get_description (dock, complete);
 
-  return NULL;
+    return NULL;
 }
 
 /**
@@ -344,11 +344,11 @@ void
 gimp_dock_set_host_geometry_hints (GimpDock  *dock,
                                    GtkWindow *window)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
-  g_return_if_fail (GTK_IS_WINDOW (window));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GTK_IS_WINDOW (window));
 
-  if (GIMP_DOCK_GET_CLASS (dock)->set_host_geometry_hints)
-    GIMP_DOCK_GET_CLASS (dock)->set_host_geometry_hints (dock, window);
+    if (GIMP_DOCK_GET_CLASS (dock)->set_host_geometry_hints)
+        GIMP_DOCK_GET_CLASS (dock)->set_host_geometry_hints (dock, window);
 }
 
 /**
@@ -361,9 +361,9 @@ gimp_dock_set_host_geometry_hints (GimpDock  *dock,
 void
 gimp_dock_invalidate_geometry (GimpDock *dock)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
 
-  g_signal_emit (dock, dock_signals[GEOMETRY_INVALIDATED], 0);
+    g_signal_emit (dock, dock_signals[GEOMETRY_INVALIDATED], 0);
 }
 
 /**
@@ -377,15 +377,15 @@ void
 gimp_dock_update_with_context (GimpDock    *dock,
                                GimpContext *context)
 {
-  GList *iter = NULL;
+    GList *iter = NULL;
 
-  for (iter = gimp_dock_get_dockbooks (dock);
-       iter;
-       iter = g_list_next (iter))
+    for (iter = gimp_dock_get_dockbooks (dock);
+            iter;
+            iter = g_list_next (iter))
     {
-      GimpDockbook *dockbook = GIMP_DOCKBOOK (iter->data);
+        GimpDockbook *dockbook = GIMP_DOCKBOOK (iter->data);
 
-      gimp_dockbook_update_with_context (dockbook, context);
+        gimp_dockbook_update_with_context (dockbook, context);
     }
 }
 
@@ -398,33 +398,33 @@ gimp_dock_update_with_context (GimpDock    *dock,
 GimpContext *
 gimp_dock_get_context (GimpDock *dock)
 {
-  GimpContext *context = NULL;
+    GimpContext *context = NULL;
 
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  /* First try GimpDockColumns */
-  if (! context)
+    /* First try GimpDockColumns */
+    if (! context)
     {
-      GimpDockColumns *dock_columns;
+        GimpDockColumns *dock_columns;
 
-      dock_columns =
-        GIMP_DOCK_COLUMNS (gtk_widget_get_ancestor (GTK_WIDGET (dock),
-                                                    GIMP_TYPE_DOCK_COLUMNS));
+        dock_columns =
+            GIMP_DOCK_COLUMNS (gtk_widget_get_ancestor (GTK_WIDGET (dock),
+                               GIMP_TYPE_DOCK_COLUMNS));
 
-      if (dock_columns)
-        context = gimp_dock_columns_get_context (dock_columns);
+        if (dock_columns)
+            context = gimp_dock_columns_get_context (dock_columns);
     }
 
-  /* Then GimpDockWindow */
-  if (! context)
+    /* Then GimpDockWindow */
+    if (! context)
     {
-      GimpDockWindow *dock_window = gimp_dock_window_from_dock (dock);
+        GimpDockWindow *dock_window = gimp_dock_window_from_dock (dock);
 
-      if (dock_window)
-        context = gimp_dock_window_get_context (dock_window);
+        if (dock_window)
+            context = gimp_dock_window_get_context (dock_window);
     }
 
-  return context;
+    return context;
 }
 
 /**
@@ -437,33 +437,33 @@ gimp_dock_get_context (GimpDock *dock)
 GimpDialogFactory *
 gimp_dock_get_dialog_factory (GimpDock *dock)
 {
-  GimpDialogFactory *dialog_factory = NULL;
+    GimpDialogFactory *dialog_factory = NULL;
 
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  /* First try GimpDockColumns */
-  if (! dialog_factory)
+    /* First try GimpDockColumns */
+    if (! dialog_factory)
     {
-      GimpDockColumns *dock_columns;
+        GimpDockColumns *dock_columns;
 
-      dock_columns =
-        GIMP_DOCK_COLUMNS (gtk_widget_get_ancestor (GTK_WIDGET (dock),
-                                                    GIMP_TYPE_DOCK_COLUMNS));
+        dock_columns =
+            GIMP_DOCK_COLUMNS (gtk_widget_get_ancestor (GTK_WIDGET (dock),
+                               GIMP_TYPE_DOCK_COLUMNS));
 
-      if (dock_columns)
-        dialog_factory = gimp_dock_columns_get_dialog_factory (dock_columns);
+        if (dock_columns)
+            dialog_factory = gimp_dock_columns_get_dialog_factory (dock_columns);
     }
 
-  /* Then GimpDockWindow */
-  if (! dialog_factory)
+    /* Then GimpDockWindow */
+    if (! dialog_factory)
     {
-      GimpDockWindow *dock_window = gimp_dock_window_from_dock (dock);
+        GimpDockWindow *dock_window = gimp_dock_window_from_dock (dock);
 
-      if (dock_window)
-        dialog_factory = gimp_dock_container_get_dialog_factory (GIMP_DOCK_CONTAINER (dock_window));
+        if (dock_window)
+            dialog_factory = gimp_dock_container_get_dialog_factory (GIMP_DOCK_CONTAINER (dock_window));
     }
 
-  return dialog_factory;
+    return dialog_factory;
 }
 
 /**
@@ -476,92 +476,92 @@ gimp_dock_get_dialog_factory (GimpDock *dock)
 GimpUIManager *
 gimp_dock_get_ui_manager (GimpDock *dock)
 {
-  GimpUIManager *ui_manager = NULL;
+    GimpUIManager *ui_manager = NULL;
 
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  /* First try GimpDockColumns */
-  if (! ui_manager)
+    /* First try GimpDockColumns */
+    if (! ui_manager)
     {
-      GimpDockColumns *dock_columns;
+        GimpDockColumns *dock_columns;
 
-      dock_columns =
-        GIMP_DOCK_COLUMNS (gtk_widget_get_ancestor (GTK_WIDGET (dock),
-                                                    GIMP_TYPE_DOCK_COLUMNS));
+        dock_columns =
+            GIMP_DOCK_COLUMNS (gtk_widget_get_ancestor (GTK_WIDGET (dock),
+                               GIMP_TYPE_DOCK_COLUMNS));
 
-      if (dock_columns)
-        ui_manager = gimp_dock_columns_get_ui_manager (dock_columns);
+        if (dock_columns)
+            ui_manager = gimp_dock_columns_get_ui_manager (dock_columns);
     }
 
-  /* Then GimpDockContainer */
-  if (! ui_manager)
+    /* Then GimpDockContainer */
+    if (! ui_manager)
     {
-      GimpDockWindow *dock_window = gimp_dock_window_from_dock (dock);
+        GimpDockWindow *dock_window = gimp_dock_window_from_dock (dock);
 
-      if (dock_window)
+        if (dock_window)
         {
-          GimpDockContainer *dock_container = GIMP_DOCK_CONTAINER (dock_window);
+            GimpDockContainer *dock_container = GIMP_DOCK_CONTAINER (dock_window);
 
-          ui_manager = gimp_dock_container_get_ui_manager (dock_container);
+            ui_manager = gimp_dock_container_get_ui_manager (dock_container);
         }
     }
 
-  return ui_manager;
+    return ui_manager;
 }
 
 GList *
 gimp_dock_get_dockbooks (GimpDock *dock)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  return dock->p->dockbooks;
+    return dock->p->dockbooks;
 }
 
 gint
 gimp_dock_get_n_dockables (GimpDock *dock)
 {
-  GList *list = NULL;
-  gint   n    = 0;
+    GList *list = NULL;
+    gint   n    = 0;
 
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), 0);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), 0);
 
-  for (list = dock->p->dockbooks; list; list = list->next)
-    n += gtk_notebook_get_n_pages (GTK_NOTEBOOK (list->data));
+    for (list = dock->p->dockbooks; list; list = list->next)
+        n += gtk_notebook_get_n_pages (GTK_NOTEBOOK (list->data));
 
-  return n;
+    return n;
 }
 
 GtkWidget *
 gimp_dock_get_main_vbox (GimpDock *dock)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  return dock->p->main_vbox;
+    return dock->p->main_vbox;
 }
 
 GtkWidget *
 gimp_dock_get_vbox (GimpDock *dock)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  return dock->p->paned_vbox;
+    return dock->p->paned_vbox;
 }
 
 void
 gimp_dock_set_id (GimpDock *dock,
                   gint      ID)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
 
-  dock->p->ID = ID;
+    dock->p->ID = ID;
 }
 
 gint
 gimp_dock_get_id (GimpDock *dock)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK (dock), 0);
+    g_return_val_if_fail (GIMP_IS_DOCK (dock), 0);
 
-  return dock->p->ID;
+    return dock->p->ID;
 }
 
 void
@@ -569,59 +569,59 @@ gimp_dock_add_book (GimpDock     *dock,
                     GimpDockbook *dockbook,
                     gint          index)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
-  g_return_if_fail (GIMP_IS_DOCKBOOK (dockbook));
-  g_return_if_fail (gimp_dockbook_get_dock (dockbook) == NULL);
+    g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCKBOOK (dockbook));
+    g_return_if_fail (gimp_dockbook_get_dock (dockbook) == NULL);
 
-  gimp_dockbook_set_dock (dockbook, dock);
+    gimp_dockbook_set_dock (dockbook, dock);
 
-  g_signal_connect_object (dockbook, "dockable-added",
-                           G_CALLBACK (gimp_dock_invalidate_description),
-                           dock, G_CONNECT_SWAPPED);
-  g_signal_connect_object (dockbook, "dockable-removed",
-                           G_CALLBACK (gimp_dock_invalidate_description),
-                           dock, G_CONNECT_SWAPPED);
-  g_signal_connect_object (dockbook, "dockable-reordered",
-                           G_CALLBACK (gimp_dock_invalidate_description),
-                           dock, G_CONNECT_SWAPPED);
+    g_signal_connect_object (dockbook, "dockable-added",
+                             G_CALLBACK (gimp_dock_invalidate_description),
+                             dock, G_CONNECT_SWAPPED);
+    g_signal_connect_object (dockbook, "dockable-removed",
+                             G_CALLBACK (gimp_dock_invalidate_description),
+                             dock, G_CONNECT_SWAPPED);
+    g_signal_connect_object (dockbook, "dockable-reordered",
+                             G_CALLBACK (gimp_dock_invalidate_description),
+                             dock, G_CONNECT_SWAPPED);
 
-  dock->p->dockbooks = g_list_insert (dock->p->dockbooks, dockbook, index);
-  gimp_paned_box_add_widget (GIMP_PANED_BOX (dock->p->paned_vbox),
-                             GTK_WIDGET (dockbook),
-                             index);
-  gtk_widget_show (GTK_WIDGET (dockbook));
+    dock->p->dockbooks = g_list_insert (dock->p->dockbooks, dockbook, index);
+    gimp_paned_box_add_widget (GIMP_PANED_BOX (dock->p->paned_vbox),
+                               GTK_WIDGET (dockbook),
+                               index);
+    gtk_widget_show (GTK_WIDGET (dockbook));
 
-  gimp_dock_invalidate_description (dock);
+    gimp_dock_invalidate_description (dock);
 
-  g_signal_emit (dock, dock_signals[BOOK_ADDED], 0, dockbook);
+    g_signal_emit (dock, dock_signals[BOOK_ADDED], 0, dockbook);
 }
 
 void
 gimp_dock_remove_book (GimpDock     *dock,
                        GimpDockbook *dockbook)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
-  g_return_if_fail (GIMP_IS_DOCKBOOK (dockbook));
-  g_return_if_fail (gimp_dockbook_get_dock (dockbook) == dock);
+    g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCKBOOK (dockbook));
+    g_return_if_fail (gimp_dockbook_get_dock (dockbook) == dock);
 
-  gimp_dockbook_set_dock (dockbook, NULL);
+    gimp_dockbook_set_dock (dockbook, NULL);
 
-  g_signal_handlers_disconnect_by_func (dockbook,
-                                        gimp_dock_invalidate_description,
-                                        dock);
+    g_signal_handlers_disconnect_by_func (dockbook,
+                                          gimp_dock_invalidate_description,
+                                          dock);
 
-  /* Ref the dockbook so we can emit the "book-removed" signal and
-   * pass it as a parameter before it's destroyed
-   */
-  g_object_ref (dockbook);
+    /* Ref the dockbook so we can emit the "book-removed" signal and
+     * pass it as a parameter before it's destroyed
+     */
+    g_object_ref (dockbook);
 
-  dock->p->dockbooks = g_list_remove (dock->p->dockbooks, dockbook);
-  gimp_paned_box_remove_widget (GIMP_PANED_BOX (dock->p->paned_vbox),
-                                GTK_WIDGET (dockbook));
+    dock->p->dockbooks = g_list_remove (dock->p->dockbooks, dockbook);
+    gimp_paned_box_remove_widget (GIMP_PANED_BOX (dock->p->paned_vbox),
+                                  GTK_WIDGET (dockbook));
 
-  gimp_dock_invalidate_description (dock);
+    gimp_dock_invalidate_description (dock);
 
-  g_signal_emit (dock, dock_signals[BOOK_REMOVED], 0, dockbook);
+    g_signal_emit (dock, dock_signals[BOOK_REMOVED], 0, dockbook);
 
-  g_object_unref (dockbook);
+    g_object_unref (dockbook);
 }

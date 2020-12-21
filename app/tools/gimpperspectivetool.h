@@ -35,12 +35,12 @@ typedef struct _GimpPerspectiveToolClass GimpPerspectiveToolClass;
 
 struct _GimpPerspectiveTool
 {
-  GimpGenericTransformTool  parent_instance;
+    GimpGenericTransformTool  parent_instance;
 };
 
 struct _GimpPerspectiveToolClass
 {
-  GimpGenericTransformToolClass  parent_class;
+    GimpGenericTransformToolClass  parent_class;
 };
 
 

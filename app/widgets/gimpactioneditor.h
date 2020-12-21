@@ -34,22 +34,22 @@ typedef struct _GimpActionEditorClass GimpActionEditorClass;
 
 struct _GimpActionEditor
 {
-  GtkBox     parent_instance;
+    GtkBox     parent_instance;
 
-  GtkWidget *view;
+    GtkWidget *view;
 };
 
 struct _GimpActionEditorClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 };
 
 
 GType       gimp_action_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_action_editor_new      (GimpUIManager *manager,
-                                         const gchar   *select_action,
-                                         gboolean       show_shortcuts);
+        const gchar   *select_action,
+        gboolean       show_shortcuts);
 
 
 #endif  /*  __GIMP_ACTION_EDITOR_H__  */

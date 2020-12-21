@@ -34,30 +34,30 @@ typedef struct _GimpBrushToolClass GimpBrushToolClass;
 
 struct _GimpBrushTool
 {
-  GimpPaintTool   parent_instance;
+    GimpPaintTool   parent_instance;
 
-  GimpBezierDesc *boundary;
-  gint            boundary_width;
-  gint            boundary_height;
-  gdouble         boundary_scale;
-  gdouble         boundary_aspect_ratio;
-  gdouble         boundary_angle;
-  gboolean        boundary_reflect;
-  gdouble         boundary_hardness;
+    GimpBezierDesc *boundary;
+    gint            boundary_width;
+    gint            boundary_height;
+    gdouble         boundary_scale;
+    gdouble         boundary_aspect_ratio;
+    gdouble         boundary_angle;
+    gboolean        boundary_reflect;
+    gdouble         boundary_hardness;
 };
 
 struct _GimpBrushToolClass
 {
-  GimpPaintToolClass  parent_class;
+    GimpPaintToolClass  parent_class;
 };
 
 
 GType            gimp_brush_tool_get_type       (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_brush_tool_create_outline (GimpBrushTool *brush_tool,
-                                                 GimpDisplay   *display,
-                                                 gdouble        x,
-                                                 gdouble        y);
+        GimpDisplay   *display,
+        gdouble        x,
+        gdouble        y);
 
 
 #endif  /*  __GIMP_BRUSH_TOOL_H__  */

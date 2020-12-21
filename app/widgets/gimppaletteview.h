@@ -36,28 +36,28 @@ typedef struct _GimpPaletteViewClass  GimpPaletteViewClass;
 
 struct _GimpPaletteView
 {
-  GimpView          parent_instance;
+    GimpView          parent_instance;
 
-  GimpPaletteEntry *selected;
-  GimpPaletteEntry *dnd_entry;
+    GimpPaletteEntry *selected;
+    GimpPaletteEntry *dnd_entry;
 };
 
 struct _GimpPaletteViewClass
 {
-  GimpViewClass  parent_class;
+    GimpViewClass  parent_class;
 
-  void (* entry_clicked)   (GimpPaletteView  *view,
-                            GimpPaletteEntry *entry,
-                            GdkModifierType   state);
-  void (* entry_selected)  (GimpPaletteView  *view,
-                            GimpPaletteEntry *entry);
-  void (* entry_activated) (GimpPaletteView  *view,
-                            GimpPaletteEntry *entry);
-  void (* entry_context)   (GimpPaletteView  *view,
-                            GimpPaletteEntry *entry);
-  void (* color_dropped)   (GimpPaletteView  *view,
-                            GimpPaletteEntry *entry,
-                            const GimpRGB    *color);
+    void (* entry_clicked)   (GimpPaletteView  *view,
+                              GimpPaletteEntry *entry,
+                              GdkModifierType   state);
+    void (* entry_selected)  (GimpPaletteView  *view,
+                              GimpPaletteEntry *entry);
+    void (* entry_activated) (GimpPaletteView  *view,
+                              GimpPaletteEntry *entry);
+    void (* entry_context)   (GimpPaletteView  *view,
+                              GimpPaletteEntry *entry);
+    void (* color_dropped)   (GimpPaletteView  *view,
+                              GimpPaletteEntry *entry,
+                              const GimpRGB    *color);
 };
 
 

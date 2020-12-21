@@ -26,11 +26,11 @@
 
 gchar    * gimp_text_font_name_from_xlfd (const gchar *xlfd);
 gboolean   gimp_text_font_size_from_xlfd (const gchar *xlfd,
-                                          gdouble     *size,
-                                          GimpUnit    *size_unit);
+        gdouble     *size,
+        GimpUnit    *size_unit);
 
 void       gimp_text_set_font_from_xlfd  (GimpText    *text,
-                                          const gchar *xlfd);
+        const gchar *xlfd);
 
 
 #endif /* __GIMP_TEXT_COMPAT_H__ */

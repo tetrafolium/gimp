@@ -35,18 +35,18 @@ typedef struct _GimpTransformGridToolUndoClass GimpTransformGridToolUndoClass;
 
 struct _GimpTransformGridToolUndo
 {
-  GimpUndo               parent_instance;
+    GimpUndo               parent_instance;
 
-  GimpTransformGridTool *tg_tool;
-  TransInfo              trans_infos[2];
-#if 0                   
-  TileManager           *original;
+    GimpTransformGridTool *tg_tool;
+    TransInfo              trans_infos[2];
+#if 0
+    TileManager           *original;
 #endif
 };
 
 struct _GimpTransformGridToolUndoClass
 {
-  GimpUndoClass  parent_class;
+    GimpUndoClass  parent_class;
 };
 
 

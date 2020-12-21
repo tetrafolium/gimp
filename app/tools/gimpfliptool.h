@@ -37,14 +37,14 @@ typedef struct _GimpFlipToolClass GimpFlipToolClass;
 
 struct _GimpFlipTool
 {
-  GimpTransformTool  parent_instance;
+    GimpTransformTool  parent_instance;
 
-  GimpGuide         *guide;
+    GimpGuide         *guide;
 };
 
 struct _GimpFlipToolClass
 {
-  GimpTransformToolClass  parent_class;
+    GimpTransformToolClass  parent_class;
 };
 
 

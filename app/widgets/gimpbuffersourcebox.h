@@ -35,22 +35,22 @@ typedef struct _GimpBufferSourceBoxClass   GimpBufferSourceBoxClass;
 
 struct _GimpBufferSourceBox
 {
-  GtkBox                      parent_instance;
+    GtkBox                      parent_instance;
 
-  GimpBufferSourceBoxPrivate *priv;
+    GimpBufferSourceBoxPrivate *priv;
 };
 
 struct _GimpBufferSourceBoxClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 };
 
 
 GType       gimp_buffer_source_box_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_buffer_source_box_new        (GimpContext         *context,
-                                               GeglNode            *source_node,
-                                               const gchar         *name);
+        GeglNode            *source_node,
+        const gchar         *name);
 
 GtkWidget * gimp_buffer_source_box_get_toggle (GimpBufferSourceBox *box);
 

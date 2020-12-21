@@ -37,40 +37,40 @@ typedef struct _GimpTextClass  GimpTextClass;
 
 struct _GimpText
 {
-  GimpObject             parent_instance;
+    GimpObject             parent_instance;
 
-  gchar                 *text;
-  gchar                 *markup;
-  gchar                 *font;
-  GimpUnit               unit;
-  gdouble                font_size;
-  gboolean               antialias;
-  GimpTextHintStyle      hint_style;
-  gboolean               kerning;
-  gchar                 *language;
-  GimpTextDirection      base_dir;
-  GimpRGB                color;
-  GimpTextOutline        outline;
-  GimpTextJustification  justify;
-  gdouble                indent;
-  gdouble                line_spacing;
-  gdouble                letter_spacing;
-  GimpTextBoxMode        box_mode;
-  gdouble                box_width;
-  gdouble                box_height;
-  GimpUnit               box_unit;
-  GimpMatrix2            transformation;
-  gdouble                offset_x;
-  gdouble                offset_y;
+    gchar                 *text;
+    gchar                 *markup;
+    gchar                 *font;
+    GimpUnit               unit;
+    gdouble                font_size;
+    gboolean               antialias;
+    GimpTextHintStyle      hint_style;
+    gboolean               kerning;
+    gchar                 *language;
+    GimpTextDirection      base_dir;
+    GimpRGB                color;
+    GimpTextOutline        outline;
+    GimpTextJustification  justify;
+    gdouble                indent;
+    gdouble                line_spacing;
+    gdouble                letter_spacing;
+    GimpTextBoxMode        box_mode;
+    gdouble                box_width;
+    gdouble                box_height;
+    GimpUnit               box_unit;
+    GimpMatrix2            transformation;
+    gdouble                offset_x;
+    gdouble                offset_y;
 
-  gdouble                border;
+    gdouble                border;
 };
 
 struct _GimpTextClass
 {
-  GimpObjectClass        parent_class;
+    GimpObjectClass        parent_class;
 
-  void (* changed) (GimpText *text);
+    void (* changed) (GimpText *text);
 };
 
 

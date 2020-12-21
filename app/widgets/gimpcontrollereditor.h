@@ -34,31 +34,31 @@ typedef struct _GimpControllerEditorClass GimpControllerEditorClass;
 
 struct _GimpControllerEditor
 {
-  GtkBox              parent_instance;
+    GtkBox              parent_instance;
 
-  GimpControllerInfo *info;
-  GimpContext        *context;
+    GimpControllerInfo *info;
+    GimpContext        *context;
 
-  GtkTreeSelection   *sel;
+    GtkTreeSelection   *sel;
 
-  GtkWidget          *grab_button;
-  GtkWidget          *edit_button;
-  GtkWidget          *delete_button;
+    GtkWidget          *grab_button;
+    GtkWidget          *edit_button;
+    GtkWidget          *delete_button;
 
-  GtkWidget          *edit_dialog;
-  GtkTreeSelection   *edit_sel;
+    GtkWidget          *edit_dialog;
+    GtkTreeSelection   *edit_sel;
 };
 
 struct _GimpControllerEditorClass
 {
-  GtkBoxClass   parent_class;
+    GtkBoxClass   parent_class;
 };
 
 
 GType       gimp_controller_editor_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_controller_editor_new      (GimpControllerInfo *info,
-                                             GimpContext        *context);
+        GimpContext        *context);
 
 
 #endif  /*  __GIMP_CONTROLLER_EDITOR_H__  */

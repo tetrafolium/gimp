@@ -23,12 +23,12 @@
 
 
 GdkPixbuf * gimp_view_renderer_get_frame_pixbuf (GimpViewRenderer *renderer,
-                                                 GtkWidget        *widget,
-                                                 gint              width,
-                                                 gint              height);
+        GtkWidget        *widget,
+        gint              width,
+        gint              height);
 
 void        gimp_view_renderer_get_frame_size   (gint             *width,
-                                                 gint             *height);
+        gint             *height);
 
 
 #endif /* __GIMP_VIEW_RENDERER_FRAME_H__ */

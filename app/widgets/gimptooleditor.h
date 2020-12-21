@@ -39,23 +39,23 @@ typedef struct _GimpToolEditorClass   GimpToolEditorClass;
 
 struct _GimpToolEditor
 {
-  GimpContainerTreeView  parent_instance;
+    GimpContainerTreeView  parent_instance;
 
-  GimpToolEditorPrivate *priv;
+    GimpToolEditorPrivate *priv;
 };
 
 struct _GimpToolEditorClass
 {
-  GimpContainerTreeViewClass  parent_class;
+    GimpContainerTreeViewClass  parent_class;
 };
 
 
 GType       gimp_tool_editor_get_type       (void) G_GNUC_CONST;
 
 GtkWidget * gimp_tool_editor_new            (GimpContainer  *container,
-                                             GimpContext    *context,
-                                             gint            view_size,
-                                             gint            view_border_width);
+        GimpContext    *context,
+        gint            view_size,
+        gint            view_border_width);
 
 void        gimp_tool_editor_revert_changes (GimpToolEditor *tool_editor);
 

@@ -38,20 +38,20 @@ typedef struct _GimpToolOptionsEditorClass    GimpToolOptionsEditorClass;
 
 struct _GimpToolOptionsEditor
 {
-  GimpEditor                    parent_instance;
+    GimpEditor                    parent_instance;
 
-  GimpToolOptionsEditorPrivate *p;
+    GimpToolOptionsEditorPrivate *p;
 };
 
 struct _GimpToolOptionsEditorClass
 {
-  GimpEditorClass  parent_class;
+    GimpEditorClass  parent_class;
 };
 
 
 GType             gimp_tool_options_editor_get_type         (void) G_GNUC_CONST;
 GtkWidget       * gimp_tool_options_editor_new              (Gimp                  *gimp,
-                                                             GimpMenuFactory       *menu_factory);
+        GimpMenuFactory       *menu_factory);
 GimpToolOptions * gimp_tool_options_editor_get_tool_options (GimpToolOptionsEditor *editor);
 
 

@@ -40,18 +40,18 @@ typedef struct _GimpVectorToolClass GimpVectorToolClass;
 
 struct _GimpVectorTool
 {
-  GimpDrawTool    parent_instance;
+    GimpDrawTool    parent_instance;
 
-  GimpVectors    *vectors;        /* the current Vector data           */
-  GimpVectorMode  saved_mode;     /* used by modifier_key()            */
+    GimpVectors    *vectors;        /* the current Vector data           */
+    GimpVectorMode  saved_mode;     /* used by modifier_key()            */
 
-  GimpToolWidget *widget;
-  GimpToolWidget *grab_widget;
+    GimpToolWidget *widget;
+    GimpToolWidget *grab_widget;
 };
 
 struct _GimpVectorToolClass
 {
-  GimpDrawToolClass  parent_class;
+    GimpDrawToolClass  parent_class;
 };
 
 

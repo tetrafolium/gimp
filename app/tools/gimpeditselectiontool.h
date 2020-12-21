@@ -32,19 +32,19 @@
 GType      gimp_edit_selection_tool_get_type  (void) G_GNUC_CONST;
 
 void       gimp_edit_selection_tool_start     (GimpTool          *parent_tool,
-                                               GimpDisplay       *display,
-                                               const GimpCoords  *coords,
-                                               GimpTranslateMode  edit_mode,
-                                               gboolean           propagate_release);
+        GimpDisplay       *display,
+        const GimpCoords  *coords,
+        GimpTranslateMode  edit_mode,
+        gboolean           propagate_release);
 
 gboolean   gimp_edit_selection_tool_key_press (GimpTool          *tool,
-                                               GdkEventKey       *kevent,
-                                               GimpDisplay       *display);
+        GdkEventKey       *kevent,
+        GimpDisplay       *display);
 gboolean   gimp_edit_selection_tool_translate (GimpTool          *tool,
-                                               GdkEventKey       *kevent,
-                                               GimpTransformType  translate_type,
-                                               GimpDisplay       *display,
-                                               GtkWidget         *type_box);
+        GdkEventKey       *kevent,
+        GimpTransformType  translate_type,
+        GimpDisplay       *display,
+        GtkWidget         *type_box);
 
 
 #endif  /*  __GIMP_EDIT_SELECTION_TOOL_H__  */

@@ -38,21 +38,21 @@ typedef struct _GimpFontFactoryClass   GimpFontFactoryClass;
 
 struct _GimpFontFactory
 {
-  GimpDataFactory         parent_instance;
+    GimpDataFactory         parent_instance;
 
-  GimpFontFactoryPrivate *priv;
+    GimpFontFactoryPrivate *priv;
 };
 
 struct _GimpFontFactoryClass
 {
-  GimpDataFactoryClass  parent_class;
+    GimpDataFactoryClass  parent_class;
 };
 
 
 GType             gimp_font_factory_get_type (void) G_GNUC_CONST;
 
 GimpDataFactory * gimp_font_factory_new      (Gimp        *gimp,
-                                              const gchar *path_property_name);
+        const gchar *path_property_name);
 
 
 #endif  /*  __GIMP_FONT_FACTORY_H__  */

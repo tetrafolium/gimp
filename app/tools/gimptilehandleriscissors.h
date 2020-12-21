@@ -40,14 +40,14 @@ typedef struct _GimpTileHandlerIscissorsClass GimpTileHandlerIscissorsClass;
 
 struct _GimpTileHandlerIscissors
 {
-  GimpTileHandlerValidate  parent_instance;
+    GimpTileHandlerValidate  parent_instance;
 
-  GimpPickable            *pickable;
+    GimpPickable            *pickable;
 };
 
 struct _GimpTileHandlerIscissorsClass
 {
-  GimpTileHandlerValidateClass  parent_class;
+    GimpTileHandlerValidateClass  parent_class;
 };
 
 

@@ -55,100 +55,100 @@ static gboolean devicerc_deleted = FALSE;
 void
 gimp_devices_init (Gimp *gimp)
 {
-  GimpDeviceManager *manager;
+    GimpDeviceManager *manager;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  manager = g_object_get_data (G_OBJECT (gimp), GIMP_DEVICE_MANAGER_DATA_KEY);
+    manager = g_object_get_data (G_OBJECT (gimp), GIMP_DEVICE_MANAGER_DATA_KEY);
 
-  g_return_if_fail (manager == NULL);
+    g_return_if_fail (manager == NULL);
 
-  manager = gimp_device_manager_new (gimp);
+    manager = gimp_device_manager_new (gimp);
 
-  g_object_set_data_full (G_OBJECT (gimp),
-                          GIMP_DEVICE_MANAGER_DATA_KEY, manager,
-                          (GDestroyNotify) g_object_unref);
+    g_object_set_data_full (G_OBJECT (gimp),
+                            GIMP_DEVICE_MANAGER_DATA_KEY, manager,
+                            (GDestroyNotify) g_object_unref);
 }
 
 void
 gimp_devices_exit (Gimp *gimp)
 {
-  GimpDeviceManager *manager;
+    GimpDeviceManager *manager;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  manager = gimp_devices_get_manager (gimp);
+    manager = gimp_devices_get_manager (gimp);
 
-  g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
+    g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
 
-  g_object_set_data (G_OBJECT (gimp), GIMP_DEVICE_MANAGER_DATA_KEY, NULL);
+    g_object_set_data (G_OBJECT (gimp), GIMP_DEVICE_MANAGER_DATA_KEY, NULL);
 }
 
 void
 gimp_devices_restore (Gimp *gimp)
 {
-  GimpDeviceManager *manager;
-  GList             *list;
-  GFile             *file;
-  GError            *error = NULL;
+    GimpDeviceManager *manager;
+    GList             *list;
+    GFile             *file;
+    GError            *error = NULL;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  manager = gimp_devices_get_manager (gimp);
+    manager = gimp_devices_get_manager (gimp);
 
-  g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
+    g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
 
-  for (list = GIMP_LIST (manager)->queue->head;
-       list;
-       list = g_list_next (list))
+    for (list = GIMP_LIST (manager)->queue->head;
+            list;
+            list = g_list_next (list))
     {
-      GimpDeviceInfo *device_info = list->data;
+        GimpDeviceInfo *device_info = list->data;
 
-      gimp_device_info_save_tool (device_info);
-      gimp_device_info_set_default_tool (device_info);
+        gimp_device_info_save_tool (device_info);
+        gimp_device_info_set_default_tool (device_info);
     }
 
-  file = gimp_directory_file ("devicerc", NULL);
+    file = gimp_directory_file ("devicerc", NULL);
 
-  if (gimp->be_verbose)
-    g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
+    if (gimp->be_verbose)
+        g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
 
-  if (! gimp_config_deserialize_file (GIMP_CONFIG (manager),
-                                      file,
-                                      gimp,
-                                      &error))
+    if (! gimp_config_deserialize_file (GIMP_CONFIG (manager),
+                                        file,
+                                        gimp,
+                                        &error))
     {
-      if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
-        gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
+        if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
+            gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
 
-      g_error_free (error);
-      /* don't bail out here */
+        g_error_free (error);
+        /* don't bail out here */
     }
 
-  g_object_unref (file);
+    g_object_unref (file);
 
-  for (list = GIMP_LIST (manager)->queue->head;
-       list;
-       list = g_list_next (list))
+    for (list = GIMP_LIST (manager)->queue->head;
+            list;
+            list = g_list_next (list))
     {
-      GimpDeviceInfo *device_info = list->data;
+        GimpDeviceInfo *device_info = list->data;
 
-      if (! GIMP_TOOL_PRESET (device_info)->tool_options)
+        if (! GIMP_TOOL_PRESET (device_info)->tool_options)
         {
-          gimp_device_info_save_tool (device_info);
+            gimp_device_info_save_tool (device_info);
 
-          g_printerr ("%s: set default tool on loaded GimpDeviceInfo without tool options: %s\n",
-                      G_STRFUNC, gimp_object_get_name (device_info));
+            g_printerr ("%s: set default tool on loaded GimpDeviceInfo without tool options: %s\n",
+                        G_STRFUNC, gimp_object_get_name (device_info));
         }
     }
 
-  if (! GIMP_GUI_CONFIG (gimp->config)->devices_share_tool)
+    if (! GIMP_GUI_CONFIG (gimp->config)->devices_share_tool)
     {
-      GimpDeviceInfo *current_device;
+        GimpDeviceInfo *current_device;
 
-      current_device = gimp_device_manager_get_current_device (manager);
+        current_device = gimp_device_manager_get_current_device (manager);
 
-      gimp_device_info_restore_tool (current_device);
+        gimp_device_info_restore_tool (current_device);
     }
 }
 
@@ -156,98 +156,98 @@ void
 gimp_devices_save (Gimp     *gimp,
                    gboolean  always_save)
 {
-  GimpDeviceManager *manager;
-  GFile             *file;
-  GError            *error = NULL;
+    GimpDeviceManager *manager;
+    GFile             *file;
+    GError            *error = NULL;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  manager = gimp_devices_get_manager (gimp);
+    manager = gimp_devices_get_manager (gimp);
 
-  g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
+    g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
 
-  if (devicerc_deleted && ! always_save)
-    return;
+    if (devicerc_deleted && ! always_save)
+        return;
 
-  file = gimp_directory_file ("devicerc", NULL);
+    file = gimp_directory_file ("devicerc", NULL);
 
-  if (gimp->be_verbose)
-    g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
+    if (gimp->be_verbose)
+        g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
 
-  if (! GIMP_GUI_CONFIG (gimp->config)->devices_share_tool)
+    if (! GIMP_GUI_CONFIG (gimp->config)->devices_share_tool)
     {
-      GimpDeviceInfo *current_device;
+        GimpDeviceInfo *current_device;
 
-      current_device = gimp_device_manager_get_current_device (manager);
+        current_device = gimp_device_manager_get_current_device (manager);
 
-      gimp_device_info_save_tool (current_device);
+        gimp_device_info_save_tool (current_device);
     }
 
-  if (! gimp_config_serialize_to_file (GIMP_CONFIG (manager),
-                                       file,
-                                       "GIMP devicerc",
-                                       "end of devicerc",
-                                       NULL,
-                                       &error))
+    if (! gimp_config_serialize_to_file (GIMP_CONFIG (manager),
+                                         file,
+                                         "GIMP devicerc",
+                                         "end of devicerc",
+                                         NULL,
+                                         &error))
     {
-      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
-      g_error_free (error);
+        gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
+        g_error_free (error);
     }
 
-  g_object_unref (file);
+    g_object_unref (file);
 
-  devicerc_deleted = FALSE;
+    devicerc_deleted = FALSE;
 }
 
 gboolean
 gimp_devices_clear (Gimp    *gimp,
                     GError **error)
 {
-  GimpDeviceManager *manager;
-  GFile             *file;
-  GError            *my_error = NULL;
-  gboolean           success  = TRUE;
+    GimpDeviceManager *manager;
+    GFile             *file;
+    GError            *my_error = NULL;
+    gboolean           success  = TRUE;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
 
-  manager = gimp_devices_get_manager (gimp);
+    manager = gimp_devices_get_manager (gimp);
 
-  g_return_val_if_fail (GIMP_IS_DEVICE_MANAGER (manager), FALSE);
+    g_return_val_if_fail (GIMP_IS_DEVICE_MANAGER (manager), FALSE);
 
-  file = gimp_directory_file ("devicerc", NULL);
+    file = gimp_directory_file ("devicerc", NULL);
 
-  if (! g_file_delete (file, NULL, &my_error) &&
-      my_error->code != G_IO_ERROR_NOT_FOUND)
+    if (! g_file_delete (file, NULL, &my_error) &&
+            my_error->code != G_IO_ERROR_NOT_FOUND)
     {
-      success = FALSE;
+        success = FALSE;
 
-      g_set_error (error, GIMP_ERROR, GIMP_FAILED,
-                   _("Deleting \"%s\" failed: %s"),
-                   gimp_file_get_utf8_name (file), my_error->message);
+        g_set_error (error, GIMP_ERROR, GIMP_FAILED,
+                     _("Deleting \"%s\" failed: %s"),
+                     gimp_file_get_utf8_name (file), my_error->message);
     }
-  else
+    else
     {
-      devicerc_deleted = TRUE;
+        devicerc_deleted = TRUE;
     }
 
-  g_clear_error (&my_error);
-  g_object_unref (file);
+    g_clear_error (&my_error);
+    g_object_unref (file);
 
-  return success;
+    return success;
 }
 
 GimpDeviceManager *
 gimp_devices_get_manager (Gimp *gimp)
 {
-  GimpDeviceManager *manager;
+    GimpDeviceManager *manager;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-  manager = g_object_get_data (G_OBJECT (gimp), GIMP_DEVICE_MANAGER_DATA_KEY);
+    manager = g_object_get_data (G_OBJECT (gimp), GIMP_DEVICE_MANAGER_DATA_KEY);
 
-  g_return_val_if_fail (GIMP_IS_DEVICE_MANAGER (manager), NULL);
+    g_return_val_if_fail (GIMP_IS_DEVICE_MANAGER (manager), NULL);
 
-  return manager;
+    return manager;
 }
 
 GdkDevice *
@@ -255,94 +255,94 @@ gimp_devices_get_from_event (Gimp            *gimp,
                              const GdkEvent  *event,
                              GdkDevice      **grab_device)
 {
-  GdkDevice *device;
+    GdkDevice *device;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (event != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+    g_return_val_if_fail (event != NULL, NULL);
 
-  device = gdk_event_get_source_device (event);
+    device = gdk_event_get_source_device (event);
 
-  /*  initialize the default grab device to the event's device,
-   *  because that is always either a master or a floating device,
-   *  which is the types of devices we can make grabs on without
-   *  disturbing side effects.
-   */
-  if (grab_device)
-    *grab_device = gdk_event_get_device (event);
+    /*  initialize the default grab device to the event's device,
+     *  because that is always either a master or a floating device,
+     *  which is the types of devices we can make grabs on without
+     *  disturbing side effects.
+     */
+    if (grab_device)
+        *grab_device = gdk_event_get_device (event);
 
-  if (gdk_device_get_source (device) == GDK_SOURCE_KEYBOARD)
+    if (gdk_device_get_source (device) == GDK_SOURCE_KEYBOARD)
     {
-      switch (gdk_device_get_device_type (device))
+        switch (gdk_device_get_device_type (device))
         {
         case GDK_DEVICE_TYPE_MASTER:
-          /*  this happens on focus synthesized focus changed events,
-           *  and we can't do anything with the returned device, so
-           *  return NULL
-           */
-          return NULL;
+            /*  this happens on focus synthesized focus changed events,
+             *  and we can't do anything with the returned device, so
+             *  return NULL
+             */
+            return NULL;
 
         case GDK_DEVICE_TYPE_SLAVE:
-          /*  it makes no sense for us to distinguigh between
-           *  different slave keyboards, so just always return
-           *  their respective master
-           */
-          return gdk_device_get_associated_device (device);
+            /*  it makes no sense for us to distinguigh between
+             *  different slave keyboards, so just always return
+             *  their respective master
+             */
+            return gdk_device_get_associated_device (device);
 
         case GDK_DEVICE_TYPE_FLOATING:
-          /*  we have no way of explicitly enabling floating
-           *  keyboards, so we cannot get their events
-           */
-          g_return_val_if_reached (device);
-       }
+            /*  we have no way of explicitly enabling floating
+             *  keyboards, so we cannot get their events
+             */
+            g_return_val_if_reached (device);
+        }
     }
-  else
+    else
     {
-      switch (gdk_device_get_device_type (device))
+        switch (gdk_device_get_device_type (device))
         {
         case GDK_DEVICE_TYPE_MASTER:
-          /*  this can only happen for synthesized events which have
-           *  no actual source, so return NULL to indicate that we
-           *  cannot do anything with the event's device information
-           */
-          return NULL;
+            /*  this can only happen for synthesized events which have
+             *  no actual source, so return NULL to indicate that we
+             *  cannot do anything with the event's device information
+             */
+            return NULL;
 
         case GDK_DEVICE_TYPE_SLAVE:
-          /*  this is the tricky part: we do want to distingiugh slave
-           *  devices, but only if we actually enabled them ourselves
-           *  explicitly (like the pens of a tablet); however we
-           *  usually don't enable the different incarnations of the
-           *  mouse itself (like touchpad, trackpoint, usb mouse
-           *  etc.), so for these return their respective master so
-           *  its settings are used
-           */
-          if (gdk_device_get_mode (device) == GDK_MODE_DISABLED)
+            /*  this is the tricky part: we do want to distingiugh slave
+             *  devices, but only if we actually enabled them ourselves
+             *  explicitly (like the pens of a tablet); however we
+             *  usually don't enable the different incarnations of the
+             *  mouse itself (like touchpad, trackpoint, usb mouse
+             *  etc.), so for these return their respective master so
+             *  its settings are used
+             */
+            if (gdk_device_get_mode (device) == GDK_MODE_DISABLED)
             {
-              return gdk_device_get_associated_device (device);
+                return gdk_device_get_associated_device (device);
             }
 
-          return device;
+            return device;
 
         case GDK_DEVICE_TYPE_FLOATING:
-          /*  we only get events for floating devices which have
-           *  enabled ourselves, so return the floating device
-           */
-          return device;
+            /*  we only get events for floating devices which have
+             *  enabled ourselves, so return the floating device
+             */
+            return device;
         }
     }
 
-  g_return_val_if_reached (device);
+    g_return_val_if_reached (device);
 }
 
 void
 gimp_devices_add_widget (Gimp      *gimp,
                          GtkWidget *widget)
 {
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  g_signal_connect (widget, "motion-notify-event",
-                    G_CALLBACK (gimp_devices_check_callback),
-                    gimp);
+    g_signal_connect (widget, "motion-notify-event",
+                      G_CALLBACK (gimp_devices_check_callback),
+                      gimp);
 }
 
 gboolean
@@ -350,47 +350,47 @@ gimp_devices_check_callback (GtkWidget *widget,
                              GdkEvent  *event,
                              Gimp      *gimp)
 {
-  g_return_val_if_fail (event != NULL, FALSE);
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+    g_return_val_if_fail (event != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
 
-  if (! gimp->busy)
+    if (! gimp->busy)
     {
-      GdkDevice *device;
+        GdkDevice *device;
 
-      device = gimp_devices_get_from_event (gimp, event, NULL);
+        device = gimp_devices_get_from_event (gimp, event, NULL);
 
-      if (device)
-        gimp_devices_check_change (gimp, device);
+        if (device)
+            gimp_devices_check_change (gimp, device);
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 gboolean
 gimp_devices_check_change (Gimp      *gimp,
                            GdkDevice *device)
 {
-  GimpDeviceManager *manager;
-  GimpDeviceInfo    *device_info;
+    GimpDeviceManager *manager;
+    GimpDeviceInfo    *device_info;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
-  g_return_val_if_fail (GDK_IS_DEVICE (device), FALSE);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+    g_return_val_if_fail (GDK_IS_DEVICE (device), FALSE);
 
-  manager = gimp_devices_get_manager (gimp);
+    manager = gimp_devices_get_manager (gimp);
 
-  g_return_val_if_fail (GIMP_IS_DEVICE_MANAGER (manager), FALSE);
+    g_return_val_if_fail (GIMP_IS_DEVICE_MANAGER (manager), FALSE);
 
-  device_info = gimp_device_info_get_by_device (device);
+    device_info = gimp_device_info_get_by_device (device);
 
-  if (! device_info)
-    device_info = gimp_device_manager_get_current_device (manager);
+    if (! device_info)
+        device_info = gimp_device_manager_get_current_device (manager);
 
-  if (device_info &&
-      device_info != gimp_device_manager_get_current_device (manager))
+    if (device_info &&
+            device_info != gimp_device_manager_get_current_device (manager))
     {
-      gimp_device_manager_set_current_device (manager, device_info);
-      return TRUE;
+        gimp_device_manager_set_current_device (manager, device_info);
+        return TRUE;
     }
 
-  return FALSE;
+    return FALSE;
 }

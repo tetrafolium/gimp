@@ -42,25 +42,25 @@
    e.g. -adobe-courier-bold-o-normal--25-180-100-100-m-150-iso8859-1 */
 enum
 {
-  XLFD_FOUNDRY       = 0,
-  XLFD_FAMILY        = 1,
-  XLFD_WEIGHT        = 2,
-  XLFD_SLANT         = 3,
-  XLFD_SET_WIDTH     = 4,
-  XLFD_ADD_STYLE     = 5,
-  XLFD_PIXELS        = 6,
-  XLFD_POINTS        = 7,
-  XLFD_RESOLUTION_X  = 8,
-  XLFD_RESOLUTION_Y  = 9,
-  XLFD_SPACING       = 10,
-  XLFD_AVERAGE_WIDTH = 11,
-  XLFD_CHARSET       = 12,
-  XLFD_NUM_FIELDS
+    XLFD_FOUNDRY       = 0,
+    XLFD_FAMILY        = 1,
+    XLFD_WEIGHT        = 2,
+    XLFD_SLANT         = 3,
+    XLFD_SET_WIDTH     = 4,
+    XLFD_ADD_STYLE     = 5,
+    XLFD_PIXELS        = 6,
+    XLFD_POINTS        = 7,
+    XLFD_RESOLUTION_X  = 8,
+    XLFD_RESOLUTION_Y  = 9,
+    XLFD_SPACING       = 10,
+    XLFD_AVERAGE_WIDTH = 11,
+    XLFD_CHARSET       = 12,
+    XLFD_NUM_FIELDS
 };
 
 static gchar * gimp_text_get_xlfd_field (const gchar *fontname,
-                                         gint         field_num,
-                                         gchar       *buffer);
+        gint         field_num,
+        gchar       *buffer);
 static gchar * launder_font_name        (gchar       *name);
 
 
@@ -77,51 +77,51 @@ static gchar * launder_font_name        (gchar       *name);
 gchar *
 gimp_text_font_name_from_xlfd (const gchar *xlfd)
 {
-  gchar *fields[4];
-  gchar  buffers[4][XLFD_MAX_FIELD_LEN];
-  gint   i = 0;
+    gchar *fields[4];
+    gchar  buffers[4][XLFD_MAX_FIELD_LEN];
+    gint   i = 0;
 
-  /*  family  */
-  fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_FAMILY, buffers[i]);
-  if (fields[i])
-    i++;
+    /*  family  */
+    fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_FAMILY, buffers[i]);
+    if (fields[i])
+        i++;
 
-  /*  weight  */
-  fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_WEIGHT, buffers[i]);
-  if (fields[i] && strcmp (fields[i], "medium"))
-    i++;
+    /*  weight  */
+    fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_WEIGHT, buffers[i]);
+    if (fields[i] && strcmp (fields[i], "medium"))
+        i++;
 
-  /*  slant  */
-  fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_SLANT, buffers[i]);
-  if (fields[i])
+    /*  slant  */
+    fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_SLANT, buffers[i]);
+    if (fields[i])
     {
-      switch (*fields[i])
+        switch (*fields[i])
         {
         case 'i':
-          strcpy (buffers[i], "italic");
-          i++;
-          break;
+            strcpy (buffers[i], "italic");
+            i++;
+            break;
         case 'o':
-          strcpy (buffers[i], "oblique");
-          i++;
-          break;
+            strcpy (buffers[i], "oblique");
+            i++;
+            break;
         case 'r':
-          break;
+            break;
         }
     }
 
-  /*  stretch  */
-  fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_SET_WIDTH, buffers[i]);
-  if (fields[i] && strcmp (fields[i], "normal"))
-    i++;
+    /*  stretch  */
+    fields[i] = gimp_text_get_xlfd_field (xlfd, XLFD_SET_WIDTH, buffers[i]);
+    if (fields[i] && strcmp (fields[i], "normal"))
+        i++;
 
-  if (i < 4)
-    fields[i] = NULL;
+    if (i < 4)
+        fields[i] = NULL;
 
-  return launder_font_name (g_strconcat (fields[0], " ",
-                                         fields[1], " ",
-                                         fields[2], " ",
-                                         fields[3], NULL));
+    return launder_font_name (g_strconcat (fields[0], " ",
+                                           fields[1], " ",
+                                           fields[2], " ",
+                                           fields[3], NULL));
 }
 
 /**
@@ -140,29 +140,29 @@ gimp_text_font_size_from_xlfd (const gchar *xlfd,
                                gdouble     *size,
                                GimpUnit    *size_unit)
 {
-  gchar  buffer[XLFD_MAX_FIELD_LEN];
-  gchar *field;
+    gchar  buffer[XLFD_MAX_FIELD_LEN];
+    gchar *field;
 
-  if (!xlfd)
+    if (!xlfd)
+        return FALSE;
+
+    field = gimp_text_get_xlfd_field (xlfd, XLFD_PIXELS, buffer);
+    if (field)
+    {
+        *size      = atoi (field);
+        *size_unit = GIMP_UNIT_PIXEL;
+        return TRUE;
+    }
+
+    field = gimp_text_get_xlfd_field (xlfd, XLFD_POINTS, buffer);
+    if (field)
+    {
+        *size      = atoi (field) / 10.0;
+        *size_unit = GIMP_UNIT_POINT;
+        return TRUE;
+    }
+
     return FALSE;
-
-  field = gimp_text_get_xlfd_field (xlfd, XLFD_PIXELS, buffer);
-  if (field)
-    {
-      *size      = atoi (field);
-      *size_unit = GIMP_UNIT_PIXEL;
-      return TRUE;
-    }
-
-  field = gimp_text_get_xlfd_field (xlfd, XLFD_POINTS, buffer);
-  if (field)
-    {
-      *size      = atoi (field) / 10.0;
-      *size_unit = GIMP_UNIT_POINT;
-      return TRUE;
-    }
-
-  return FALSE;
 }
 
 /**
@@ -177,37 +177,37 @@ void
 gimp_text_set_font_from_xlfd (GimpText    *text,
                               const gchar *xlfd)
 {
-  gchar    *font;
-  gdouble   size;
-  GimpUnit  size_unit;
+    gchar    *font;
+    gdouble   size;
+    GimpUnit  size_unit;
 
-  g_return_if_fail (GIMP_IS_TEXT (text));
+    g_return_if_fail (GIMP_IS_TEXT (text));
 
-  if (!xlfd)
-    return;
+    if (!xlfd)
+        return;
 
-  font = gimp_text_font_name_from_xlfd (xlfd);
+    font = gimp_text_font_name_from_xlfd (xlfd);
 
 #if GIMP_TEXT_DEBUG
-  g_printerr ("XLFD: %s  font: %s\n", xlfd, font ? font : "(null)");
+    g_printerr ("XLFD: %s  font: %s\n", xlfd, font ? font : "(null)");
 #endif
 
-  if (gimp_text_font_size_from_xlfd (xlfd, &size, &size_unit))
+    if (gimp_text_font_size_from_xlfd (xlfd, &size, &size_unit))
     {
-      g_object_set (text,
-                    "font-size",          size,
-                    "font-size-unit",     size_unit,
-                    font ? "font" : NULL, font,
-                    NULL);
+        g_object_set (text,
+                      "font-size",          size,
+                      "font-size-unit",     size_unit,
+                      font ? "font" : NULL, font,
+                      NULL);
     }
-  else if (font)
+    else if (font)
     {
-      g_object_set (text,
-                    "font", font,
-                    NULL);
+        g_object_set (text,
+                      "font", font,
+                      NULL);
     }
 
-  g_free (font);
+    g_free (font);
 }
 
 /**
@@ -231,50 +231,50 @@ gimp_text_get_xlfd_field (const gchar *fontname,
                           gint         field_num,
                           gchar       *buffer)
 {
-  const gchar *t1, *t2;
-  gchar       *p;
-  gint         countdown, num_dashes;
-  gsize        len;
+    const gchar *t1, *t2;
+    gchar       *p;
+    gint         countdown, num_dashes;
+    gsize        len;
 
-  if (!fontname)
-    return NULL;
-
-  /* we assume this is a valid fontname...that is, it has 14 fields */
-
-  for (t1 = fontname, countdown = field_num; *t1 && (countdown >= 0); t1++)
-    if (*t1 == '-')
-      countdown--;
-
-  num_dashes = (field_num == XLFD_CHARSET) ? 2 : 1;
-
-  for (t2 = t1; *t2; t2++)
-    {
-      if (*t2 == '-' && --num_dashes == 0)
-        break;
-    }
-
-  if (t2 > t1)
-    {
-      /* Check we don't overflow the buffer */
-      len = (gsize) t2 - (gsize) t1;
-      if (len > XLFD_MAX_FIELD_LEN - 1)
+    if (!fontname)
         return NULL;
 
-      if (*t1 == '*')
-        return NULL;
+    /* we assume this is a valid fontname...that is, it has 14 fields */
 
-      g_strlcpy (buffer, t1, len);
+    for (t1 = fontname, countdown = field_num; *t1 && (countdown >= 0); t1++)
+        if (*t1 == '-')
+            countdown--;
 
-      /* Convert to lower case. */
-      for (p = buffer; *p; p++)
-        *p = g_ascii_tolower (*p);
-    }
-  else
+    num_dashes = (field_num == XLFD_CHARSET) ? 2 : 1;
+
+    for (t2 = t1; *t2; t2++)
     {
-      return NULL;
+        if (*t2 == '-' && --num_dashes == 0)
+            break;
     }
 
-  return buffer;
+    if (t2 > t1)
+    {
+        /* Check we don't overflow the buffer */
+        len = (gsize) t2 - (gsize) t1;
+        if (len > XLFD_MAX_FIELD_LEN - 1)
+            return NULL;
+
+        if (*t1 == '*')
+            return NULL;
+
+        g_strlcpy (buffer, t1, len);
+
+        /* Convert to lower case. */
+        for (p = buffer; *p; p++)
+            *p = g_ascii_tolower (*p);
+    }
+    else
+    {
+        return NULL;
+    }
+
+    return buffer;
 }
 
 /* Guard against font names that end in numbers being interpreted as a
@@ -283,18 +283,18 @@ gimp_text_get_xlfd_field (const gchar *fontname,
 static gchar *
 launder_font_name (gchar *name)
 {
-  gchar *laundered_name;
-  gchar  last_char;
+    gchar *laundered_name;
+    gchar  last_char;
 
-  last_char = name[strlen (name) - 1];
+    last_char = name[strlen (name) - 1];
 
-  if (g_ascii_isdigit (last_char) || last_char == '.')
+    if (g_ascii_isdigit (last_char) || last_char == '.')
     {
-      laundered_name = g_strconcat (name, ",", NULL);
-      g_free (name);
+        laundered_name = g_strconcat (name, ",", NULL);
+        g_free (name);
 
-      return laundered_name;
+        return laundered_name;
     }
-  else
-    return name;
+    else
+        return name;
 }

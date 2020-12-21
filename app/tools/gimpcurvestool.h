@@ -34,29 +34,29 @@ typedef struct _GimpCurvesToolClass GimpCurvesToolClass;
 
 struct _GimpCurvesTool
 {
-  GimpFilterTool  parent_instance;
+    GimpFilterTool  parent_instance;
 
-  /* dialog */
-  gdouble           scale;
-  gdouble           picked_color[5];
+    /* dialog */
+    gdouble           scale;
+    gdouble           picked_color[5];
 
-  GtkWidget        *channel_menu;
-  GtkWidget        *xrange;
-  GtkWidget        *yrange;
-  GtkWidget        *graph;
-  GtkWidget        *point_box;
-  GtkWidget        *point_input;
-  GtkWidget        *point_output;
-  GtkWidget        *point_type;
-  GtkWidget        *curve_type;
+    GtkWidget        *channel_menu;
+    GtkWidget        *xrange;
+    GtkWidget        *yrange;
+    GtkWidget        *graph;
+    GtkWidget        *point_box;
+    GtkWidget        *point_input;
+    GtkWidget        *point_output;
+    GtkWidget        *point_type;
+    GtkWidget        *curve_type;
 
-  /* export dialog */
-  gboolean          export_old_format;
+    /* export dialog */
+    gboolean          export_old_format;
 };
 
 struct _GimpCurvesToolClass
 {
-  GimpFilterToolClass  parent_class;
+    GimpFilterToolClass  parent_class;
 };
 
 

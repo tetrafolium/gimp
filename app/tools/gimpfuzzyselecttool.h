@@ -37,17 +37,17 @@ typedef struct _GimpFuzzySelectToolClass GimpFuzzySelectToolClass;
 
 struct _GimpFuzzySelectTool
 {
-  GimpRegionSelectTool  parent_instance;
+    GimpRegionSelectTool  parent_instance;
 };
 
 struct _GimpFuzzySelectToolClass
 {
-  GimpRegionSelectToolClass  parent_class;
+    GimpRegionSelectToolClass  parent_class;
 };
 
 
 void    gimp_fuzzy_select_tool_register (GimpToolRegisterCallback  callback,
-                                         gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_fuzzy_select_tool_get_type (void) G_GNUC_CONST;
 

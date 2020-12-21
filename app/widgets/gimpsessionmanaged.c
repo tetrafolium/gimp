@@ -52,16 +52,16 @@ gimp_session_managed_default_init (GimpSessionManagedInterface *iface)
 GList *
 gimp_session_managed_get_aux_info (GimpSessionManaged *session_managed)
 {
-  GimpSessionManagedInterface *iface;
+    GimpSessionManagedInterface *iface;
 
-  g_return_val_if_fail (GIMP_IS_SESSION_MANAGED (session_managed), NULL);
+    g_return_val_if_fail (GIMP_IS_SESSION_MANAGED (session_managed), NULL);
 
-  iface = GIMP_SESSION_MANAGED_GET_IFACE (session_managed);
+    iface = GIMP_SESSION_MANAGED_GET_IFACE (session_managed);
 
-  if (iface->get_aux_info)
-    return iface->get_aux_info (session_managed);
+    if (iface->get_aux_info)
+        return iface->get_aux_info (session_managed);
 
-  return NULL;
+    return NULL;
 }
 
 /**
@@ -76,12 +76,12 @@ void
 gimp_session_managed_set_aux_info (GimpSessionManaged *session_managed,
                                    GList              *aux_info)
 {
-  GimpSessionManagedInterface *iface;
+    GimpSessionManagedInterface *iface;
 
-  g_return_if_fail (GIMP_IS_SESSION_MANAGED (session_managed));
+    g_return_if_fail (GIMP_IS_SESSION_MANAGED (session_managed));
 
-  iface = GIMP_SESSION_MANAGED_GET_IFACE (session_managed);
+    iface = GIMP_SESSION_MANAGED_GET_IFACE (session_managed);
 
-  if (iface->set_aux_info)
-    iface->set_aux_info (session_managed, aux_info);
+    if (iface->set_aux_info)
+        iface->set_aux_info (session_managed, aux_info);
 }

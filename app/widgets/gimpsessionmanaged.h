@@ -28,18 +28,18 @@ G_DECLARE_INTERFACE (GimpSessionManaged, gimp_session_managed, GIMP, SESSION_MAN
 
 struct _GimpSessionManagedInterface
 {
-  GTypeInterface base_iface;
+    GTypeInterface base_iface;
 
-  /*  virtual functions  */
-  GList * (* get_aux_info) (GimpSessionManaged *session_managed);
-  void    (* set_aux_info) (GimpSessionManaged *session_managed,
-                            GList              *aux_info);
+    /*  virtual functions  */
+    GList * (* get_aux_info) (GimpSessionManaged *session_managed);
+    void    (* set_aux_info) (GimpSessionManaged *session_managed,
+                              GList              *aux_info);
 };
 
 
 GList            * gimp_session_managed_get_aux_info (GimpSessionManaged *session_managed);
 void               gimp_session_managed_set_aux_info (GimpSessionManaged *session_managed,
-                                                      GList              *aux_info);
+        GList              *aux_info);
 
 
 #endif  /*  __GIMP_SESSION_MANAGED_H__  */

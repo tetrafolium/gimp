@@ -298,23 +298,23 @@ typedef struct _GimpDashboardLogParams       GimpDashboardLogParams;
 /*  function types  */
 
 typedef GtkWidget * (* GimpDialogRestoreFunc)        (GimpDialogFactory *factory,
-                                                      GdkMonitor        *monitor,
-                                                      GimpSessionInfo   *info);
+        GdkMonitor        *monitor,
+        GimpSessionInfo   *info);
 typedef void        (* GimpActionGroupSetupFunc)     (GimpActionGroup   *group);
 typedef void        (* GimpActionGroupUpdateFunc)    (GimpActionGroup   *group,
-                                                      gpointer           data);
+        gpointer           data);
 
 typedef void        (* GimpUIManagerSetupFunc)       (GimpUIManager     *manager,
-                                                      const gchar       *ui_path);
+        const gchar       *ui_path);
 
 typedef void        (* GimpMenuPositionFunc)         (GtkMenu           *menu,
-                                                      gint              *x,
-                                                      gint              *y,
-                                                      gpointer           data);
+        gint              *x,
+        gint              *y,
+        gpointer           data);
 typedef gboolean    (* GimpPanedBoxDroppedFunc)      (GtkWidget         *notebook,
-                                                      GtkWidget         *child,
-                                                      gint               insert_index,
-                                                      gpointer           data);
+        GtkWidget         *child,
+        gint               insert_index,
+        gpointer           data);
 
 typedef GtkWidget * (* GimpToolOptionsGUIFunc)       (GimpToolOptions   *tool_options);
 

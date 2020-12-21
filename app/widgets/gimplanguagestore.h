@@ -24,8 +24,8 @@
 
 enum
 {
-  GIMP_LANGUAGE_STORE_LABEL,
-  GIMP_LANGUAGE_STORE_CODE
+    GIMP_LANGUAGE_STORE_LABEL,
+    GIMP_LANGUAGE_STORE_CODE
 };
 
 
@@ -41,16 +41,16 @@ typedef struct _GimpLanguageStoreClass  GimpLanguageStoreClass;
 
 struct _GimpLanguageStoreClass
 {
-  GtkListStoreClass  parent_class;
+    GtkListStoreClass  parent_class;
 
-  void (* add) (GimpLanguageStore *store,
-                const gchar       *label,
-                const gchar       *code);
+    void (* add) (GimpLanguageStore *store,
+                  const gchar       *label,
+                  const gchar       *code);
 };
 
 struct _GimpLanguageStore
 {
-  GtkListStore     parent_instance;
+    GtkListStore     parent_instance;
 };
 
 
@@ -59,7 +59,7 @@ GType          gimp_language_store_get_type (void) G_GNUC_CONST;
 GtkListStore * gimp_language_store_new      (void);
 
 gboolean       gimp_language_store_lookup   (GimpLanguageStore *store,
-                                             const gchar       *code,
-                                             GtkTreeIter       *iter);
+        const gchar       *code,
+        GtkTreeIter       *iter);
 
 #endif  /* __GIMP_LANGUAGE_STORE_H__ */

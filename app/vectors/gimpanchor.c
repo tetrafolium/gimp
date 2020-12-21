@@ -33,28 +33,28 @@ GimpAnchor *
 gimp_anchor_new (GimpAnchorType    type,
                  const GimpCoords *position)
 {
-  GimpAnchor *anchor = g_slice_new0 (GimpAnchor);
+    GimpAnchor *anchor = g_slice_new0 (GimpAnchor);
 
-  anchor->type = type;
+    anchor->type = type;
 
-  if (position)
-    anchor->position = *position;
+    if (position)
+        anchor->position = *position;
 
-  return anchor;
+    return anchor;
 }
 
 GimpAnchor *
 gimp_anchor_copy (const GimpAnchor *anchor)
 {
-  g_return_val_if_fail (anchor != NULL, NULL);
+    g_return_val_if_fail (anchor != NULL, NULL);
 
-  return g_slice_dup (GimpAnchor, anchor);
+    return g_slice_dup (GimpAnchor, anchor);
 }
 
 void
 gimp_anchor_free (GimpAnchor *anchor)
 {
-  g_return_if_fail (anchor != NULL);
+    g_return_if_fail (anchor != NULL);
 
-  g_slice_free (GimpAnchor, anchor);
+    g_slice_free (GimpAnchor, anchor);
 }

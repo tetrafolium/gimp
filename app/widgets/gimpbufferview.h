@@ -37,21 +37,21 @@ typedef struct _GimpBufferViewClass  GimpBufferViewClass;
 
 struct _GimpBufferView
 {
-  GimpContainerEditor  parent_instance;
+    GimpContainerEditor  parent_instance;
 
-  GtkWidget           *clipboard_view;
-  GtkWidget           *clipboard_label;
+    GtkWidget           *clipboard_view;
+    GtkWidget           *clipboard_label;
 
-  GtkWidget           *paste_button;
-  GtkWidget           *paste_into_button;
-  GtkWidget           *paste_as_new_layer_button;
-  GtkWidget           *paste_as_new_image_button;
-  GtkWidget           *delete_button;
+    GtkWidget           *paste_button;
+    GtkWidget           *paste_into_button;
+    GtkWidget           *paste_as_new_layer_button;
+    GtkWidget           *paste_as_new_image_button;
+    GtkWidget           *delete_button;
 };
 
 struct _GimpBufferViewClass
 {
-  GimpContainerEditorClass  parent_class;
+    GimpContainerEditorClass  parent_class;
 };
 
 

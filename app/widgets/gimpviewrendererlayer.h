@@ -35,12 +35,12 @@ typedef struct _GimpViewRendererLayerClass  GimpViewRendererLayerClass;
 
 struct _GimpViewRendererLayer
 {
-  GimpViewRendererDrawable  parent_instance;
+    GimpViewRendererDrawable  parent_instance;
 };
 
 struct _GimpViewRendererLayerClass
 {
-  GimpViewRendererDrawableClass  parent_class;
+    GimpViewRendererDrawableClass  parent_class;
 };
 
 

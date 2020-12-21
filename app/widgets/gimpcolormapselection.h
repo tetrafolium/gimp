@@ -31,36 +31,36 @@ typedef struct _GimpColormapSelectionClass GimpColormapSelectionClass;
 
 struct _GimpColormapSelection
 {
-  GtkBox  parent_instance;
+    GtkBox  parent_instance;
 
-  GimpContext     *context;
-  GimpImage       *active_image;
-  GimpPalette     *active_palette;
+    GimpContext     *context;
+    GimpImage       *active_image;
+    GimpPalette     *active_palette;
 
-  GtkWidget       *view;
-  gint             col_index;
+    GtkWidget       *view;
+    gint             col_index;
 
-  PangoLayout     *layout;
+    PangoLayout     *layout;
 
-  GtkAdjustment   *index_adjustment;
-  GtkWidget       *index_spinbutton;
-  GtkWidget       *color_entry;
+    GtkAdjustment   *index_adjustment;
+    GtkWidget       *index_spinbutton;
+    GtkWidget       *color_entry;
 
-  GtkWidget       *color_dialog;
-  GtkWidget       *right_vbox;
+    GtkWidget       *color_dialog;
+    GtkWidget       *right_vbox;
 };
 
 struct _GimpColormapSelectionClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  void (* color_context)   (GimpColormapSelection *selection,
-                            GimpPaletteEntry      *entry);
-  void (* color_clicked)   (GimpColormapSelection *selection,
-                            GimpPaletteEntry      *entry,
-                            GdkModifierType        state);
-  void (* color_activated) (GimpColormapSelection *selection,
-                            GimpPaletteEntry      *entry);
+    void (* color_context)   (GimpColormapSelection *selection,
+                              GimpPaletteEntry      *entry);
+    void (* color_clicked)   (GimpColormapSelection *selection,
+                              GimpPaletteEntry      *entry,
+                              GdkModifierType        state);
+    void (* color_activated) (GimpColormapSelection *selection,
+                              GimpPaletteEntry      *entry);
 };
 
 
@@ -69,10 +69,10 @@ GType       gimp_colormap_selection_get_type   (void) G_GNUC_CONST;
 GtkWidget * gimp_colormap_selection_new        (GimpContext *context);
 
 gint        gimp_colormap_selection_get_index  (GimpColormapSelection *selection,
-                                                const GimpRGB         *search);
+        const GimpRGB         *search);
 gboolean    gimp_colormap_selection_set_index  (GimpColormapSelection *selection,
-                                                gint                   index,
-                                                GimpRGB               *color);
+        gint                   index,
+        GimpRGB               *color);
 
 gint        gimp_colormap_selection_max_index  (GimpColormapSelection *selection);
 

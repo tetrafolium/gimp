@@ -36,19 +36,19 @@ typedef struct _GimpMessageBoxClass  GimpMessageBoxClass;
 
 struct _GimpMessageBox
 {
-  GtkBox     parent_instance;
+    GtkBox     parent_instance;
 
-  gchar     *icon_name;
-  gint       repeat;
-  GtkWidget *label[3];
-  GtkWidget *image;
+    gchar     *icon_name;
+    gint       repeat;
+    GtkWidget *label[3];
+    GtkWidget *image;
 
-  guint      idle_id;
+    guint      idle_id;
 };
 
 struct _GimpMessageBoxClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 };
 
 
@@ -56,14 +56,14 @@ GType       gimp_message_box_get_type         (void) G_GNUC_CONST;
 
 GtkWidget * gimp_message_box_new              (const gchar    *icon_name);
 void        gimp_message_box_set_primary_text (GimpMessageBox *box,
-                                               const gchar    *format,
-                                               ...) G_GNUC_PRINTF (2, 3);
+        const gchar    *format,
+        ...) G_GNUC_PRINTF (2, 3);
 void        gimp_message_box_set_text         (GimpMessageBox *box,
-                                               const gchar    *format,
-                                               ...) G_GNUC_PRINTF (2, 3);
+        const gchar    *format,
+        ...) G_GNUC_PRINTF (2, 3);
 void        gimp_message_box_set_markup       (GimpMessageBox *box,
-                                               const gchar    *format,
-                                               ...) G_GNUC_PRINTF (2, 3);
+        const gchar    *format,
+        ...) G_GNUC_PRINTF (2, 3);
 gint        gimp_message_box_repeat           (GimpMessageBox *box);
 
 

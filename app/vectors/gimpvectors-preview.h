@@ -24,9 +24,9 @@
  */
 
 GimpTempBuf * gimp_vectors_get_new_preview (GimpViewable *viewable,
-                                            GimpContext  *context,
-                                            gint          width,
-                                            gint          height);
+        GimpContext  *context,
+        gint          width,
+        gint          height);
 
 
 #endif /* __GIMP_VECTORS_PREVIEW_H__ */

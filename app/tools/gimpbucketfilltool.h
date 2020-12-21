@@ -38,14 +38,14 @@ typedef struct _GimpBucketFillToolPrivate GimpBucketFillToolPrivate;
 
 struct _GimpBucketFillTool
 {
-  GimpColorTool              parent_instance;
+    GimpColorTool              parent_instance;
 
-  GimpBucketFillToolPrivate *priv;
+    GimpBucketFillToolPrivate *priv;
 };
 
 struct _GimpBucketFillToolClass
 {
-  GimpColorToolClass  parent_class;
+    GimpColorToolClass  parent_class;
 };
 
 

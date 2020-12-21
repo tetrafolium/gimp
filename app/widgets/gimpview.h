@@ -34,75 +34,75 @@ typedef struct _GimpViewClass  GimpViewClass;
 
 struct _GimpView
 {
-  GtkWidget         parent_instance;
+    GtkWidget         parent_instance;
 
-  GdkWindow        *event_window;
+    GdkWindow        *event_window;
 
-  GimpViewable     *viewable;
-  GimpViewRenderer *renderer;
+    GimpViewable     *viewable;
+    GimpViewRenderer *renderer;
 
-  guint             clickable : 1;
-  guint             eat_button_events : 1;
-  guint             show_popup : 1;
-  guint             expand : 1;
+    guint             clickable : 1;
+    guint             eat_button_events : 1;
+    guint             show_popup : 1;
+    guint             expand : 1;
 
-  /*< private >*/
-  guint             in_button : 1;
-  guint             has_grab : 1;
-  GdkModifierType   press_state;
+    /*< private >*/
+    guint             in_button : 1;
+    guint             has_grab : 1;
+    GdkModifierType   press_state;
 };
 
 struct _GimpViewClass
 {
-  GtkWidgetClass  parent_class;
+    GtkWidgetClass  parent_class;
 
-  /*  signals  */
-  void        (* set_viewable)   (GimpView        *view,
-                                  GimpViewable    *old_viewable,
-                                  GimpViewable    *new_viewable);
-  void        (* clicked)        (GimpView        *view,
-                                  GdkModifierType  modifier_state);
-  void        (* double_clicked) (GimpView        *view);
-  void        (* context)        (GimpView        *view);
+    /*  signals  */
+    void        (* set_viewable)   (GimpView        *view,
+                                    GimpViewable    *old_viewable,
+                                    GimpViewable    *new_viewable);
+    void        (* clicked)        (GimpView        *view,
+                                    GdkModifierType  modifier_state);
+    void        (* double_clicked) (GimpView        *view);
+    void        (* context)        (GimpView        *view);
 };
 
 
 GType          gimp_view_get_type          (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_view_new               (GimpContext   *context,
-                                            GimpViewable  *viewable,
-                                            gint           size,
-                                            gint           border_width,
-                                            gboolean       is_popup);
+        GimpViewable  *viewable,
+        gint           size,
+        gint           border_width,
+        gboolean       is_popup);
 GtkWidget    * gimp_view_new_full          (GimpContext   *context,
-                                            GimpViewable  *viewable,
-                                            gint           width,
-                                            gint           height,
-                                            gint           border_width,
-                                            gboolean       is_popup,
-                                            gboolean       clickable,
-                                            gboolean       show_popup);
+        GimpViewable  *viewable,
+        gint           width,
+        gint           height,
+        gint           border_width,
+        gboolean       is_popup,
+        gboolean       clickable,
+        gboolean       show_popup);
 GtkWidget    * gimp_view_new_by_types      (GimpContext   *context,
-                                            GType          view_type,
-                                            GType          viewable_type,
-                                            gint           size,
-                                            gint           border_width,
-                                            gboolean       is_popup);
+        GType          view_type,
+        GType          viewable_type,
+        gint           size,
+        gint           border_width,
+        gboolean       is_popup);
 GtkWidget    * gimp_view_new_full_by_types (GimpContext   *context,
-                                            GType          view_type,
-                                            GType          viewable_type,
-                                            gint           width,
-                                            gint           height,
-                                            gint           border_width,
-                                            gboolean       is_popup,
-                                            gboolean       clickable,
-                                            gboolean       show_popup);
+        GType          view_type,
+        GType          viewable_type,
+        gint           width,
+        gint           height,
+        gint           border_width,
+        gboolean       is_popup,
+        gboolean       clickable,
+        gboolean       show_popup);
 
 GimpViewable * gimp_view_get_viewable      (GimpView      *view);
 void           gimp_view_set_viewable      (GimpView      *view,
-                                            GimpViewable  *viewable);
+        GimpViewable  *viewable);
 void           gimp_view_set_expand        (GimpView      *view,
-                                            gboolean       expand);
+        gboolean       expand);
 
 
 #endif /* __GIMP_VIEW_H__ */

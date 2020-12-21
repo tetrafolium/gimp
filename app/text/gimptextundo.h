@@ -34,18 +34,18 @@ typedef struct _GimpTextUndoClass GimpTextUndoClass;
 
 struct _GimpTextUndo
 {
-  GimpItemUndo      parent_instance;
+    GimpItemUndo      parent_instance;
 
-  GimpText         *text;
-  const GParamSpec *pspec;
-  GValue           *value;
-  gboolean          modified;
-  const Babl       *format;
+    GimpText         *text;
+    const GParamSpec *pspec;
+    GValue           *value;
+    gboolean          modified;
+    const Babl       *format;
 };
 
 struct _GimpTextUndoClass
 {
-  GimpItemClass  parent_class;
+    GimpItemClass  parent_class;
 };
 
 

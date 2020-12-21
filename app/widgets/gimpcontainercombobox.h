@@ -34,24 +34,24 @@ typedef struct _GimpContainerComboBoxClass  GimpContainerComboBoxClass;
 
 struct _GimpContainerComboBox
 {
-  GtkComboBox      parent_instance;
+    GtkComboBox      parent_instance;
 
-  GtkCellRenderer *text_renderer;
-  GtkCellRenderer *viewable_renderer;
+    GtkCellRenderer *text_renderer;
+    GtkCellRenderer *viewable_renderer;
 };
 
 struct _GimpContainerComboBoxClass
 {
-  GtkComboBoxClass  parent_class;
+    GtkComboBoxClass  parent_class;
 };
 
 
 GType       gimp_container_combo_box_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_container_combo_box_new      (GimpContainer *container,
-                                               GimpContext   *context,
-                                               gint           view_size,
-                                               gint           view_border_width);
+        GimpContext   *context,
+        gint           view_size,
+        gint           view_border_width);
 
 
 #endif  /*  __GIMP_CONTAINER_COMBO_BOX_H__  */

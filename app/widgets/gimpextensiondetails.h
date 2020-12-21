@@ -35,14 +35,14 @@ typedef struct _GimpExtensionDetailsPrivate  GimpExtensionDetailsPrivate;
 
 struct _GimpExtensionDetails
 {
-  GtkFrame                     parent_instance;
+    GtkFrame                     parent_instance;
 
-  GimpExtensionDetailsPrivate *p;
+    GimpExtensionDetailsPrivate *p;
 };
 
 struct _GimpExtensionDetailsClass
 {
-  GtkFrameClass                parent_class;
+    GtkFrameClass                parent_class;
 };
 
 
@@ -51,7 +51,7 @@ GType        gimp_extension_details_get_type     (void) G_GNUC_CONST;
 GtkWidget  * gimp_extension_details_new          (void);
 
 void         gimp_extension_details_set          (GimpExtensionDetails *details,
-                                                  GimpExtension        *extension);
+        GimpExtension        *extension);
 
 #endif /* __GIMP_EXTENSION_DETAILS_H__ */
 

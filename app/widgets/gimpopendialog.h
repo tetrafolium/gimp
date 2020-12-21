@@ -37,14 +37,14 @@ typedef struct _GimpOpenDialogClass GimpOpenDialogClass;
 
 struct _GimpOpenDialog
 {
-  GimpFileDialog       parent_instance;
+    GimpFileDialog       parent_instance;
 
-  gboolean             open_as_layers;
+    gboolean             open_as_layers;
 };
 
 struct _GimpOpenDialogClass
 {
-  GimpFileDialogClass  parent_class;
+    GimpFileDialogClass  parent_class;
 };
 
 
@@ -53,8 +53,8 @@ GType       gimp_open_dialog_get_type   (void) G_GNUC_CONST;
 GtkWidget * gimp_open_dialog_new        (Gimp           *gimp);
 
 void        gimp_open_dialog_set_image  (GimpOpenDialog *dialog,
-                                         GimpImage      *image,
-                                         gboolean        open_as_layers);
+        GimpImage      *image,
+        gboolean        open_as_layers);
 
 G_END_DECLS
 

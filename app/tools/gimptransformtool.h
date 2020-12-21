@@ -45,62 +45,62 @@ typedef struct _GimpTransformToolClass GimpTransformToolClass;
 
 struct _GimpTransformTool
 {
-  GimpDrawTool       parent_instance;
+    GimpDrawTool       parent_instance;
 
-  GList             *objects;            /*  List of GimpObject initially
+    GList             *objects;            /*  List of GimpObject initially
                                              selected and set for
                                              transform processing.        */
 
-  gint               x1, y1;             /*  upper left hand coordinate   */
-  gint               x2, y2;             /*  lower right hand coords      */
+    gint               x1, y1;             /*  upper left hand coordinate   */
+    gint               x2, y2;             /*  lower right hand coords      */
 
-  GimpMatrix3        transform;          /*  transformation matrix        */
-  gboolean           transform_valid;    /*  whether the matrix is valid  */
+    GimpMatrix3        transform;          /*  transformation matrix        */
+    gboolean           transform_valid;    /*  whether the matrix is valid  */
 
-  gboolean           restore_type;
-  GimpTransformType  saved_type;
+    gboolean           restore_type;
+    GimpTransformType  saved_type;
 };
 
 struct _GimpTransformToolClass
 {
-  GimpDrawToolClass  parent_class;
+    GimpDrawToolClass  parent_class;
 
-  /*  virtual functions  */
-  void                     (* recalc_matrix) (GimpTransformTool  *tr_tool);
-  gchar                  * (* get_undo_desc) (GimpTransformTool  *tr_tool);
-  GimpTransformDirection   (* get_direction) (GimpTransformTool  *tr_tool);
-  GeglBuffer             * (* transform)     (GimpTransformTool  *tr_tool,
-                                              GList              *objects,
-                                              GeglBuffer         *orig_buffer,
-                                              gint                orig_offset_x,
-                                              gint                orig_offset_y,
-                                              GimpColorProfile  **buffer_profile,
-                                              gint               *new_offset_x,
-                                              gint               *new_offset_y);
+    /*  virtual functions  */
+    void                     (* recalc_matrix) (GimpTransformTool  *tr_tool);
+    gchar                  * (* get_undo_desc) (GimpTransformTool  *tr_tool);
+    GimpTransformDirection   (* get_direction) (GimpTransformTool  *tr_tool);
+    GeglBuffer             * (* transform)     (GimpTransformTool  *tr_tool,
+            GList              *objects,
+            GeglBuffer         *orig_buffer,
+            gint                orig_offset_x,
+            gint                orig_offset_y,
+            GimpColorProfile  **buffer_profile,
+            gint               *new_offset_x,
+            gint               *new_offset_y);
 
-  const gchar *undo_desc;
-  const gchar *progress_text;
+    const gchar *undo_desc;
+    const gchar *progress_text;
 };
 
 
 GType        gimp_transform_tool_get_type            (void) G_GNUC_CONST;
 
 GList     * gimp_transform_tool_get_selected_objects (GimpTransformTool  *tr_tool,
-                                                      GimpDisplay        *display);
+        GimpDisplay        *display);
 GList   * gimp_transform_tool_check_selected_objects (GimpTransformTool  *tr_tool,
-                                                      GimpDisplay        *display,
-                                                      GError            **error);
+        GimpDisplay        *display,
+        GError            **error);
 
 gboolean     gimp_transform_tool_bounds              (GimpTransformTool  *tr_tool,
-                                                      GimpDisplay        *display);
+        GimpDisplay        *display);
 void         gimp_transform_tool_recalc_matrix       (GimpTransformTool  *tr_tool,
-                                                      GimpDisplay        *display);
+        GimpDisplay        *display);
 
 gboolean     gimp_transform_tool_transform           (GimpTransformTool  *tr_tool,
-                                                      GimpDisplay        *display);
+        GimpDisplay        *display);
 
 void         gimp_transform_tool_set_type            (GimpTransformTool  *tr_tool,
-                                                      GimpTransformType   type);
+        GimpTransformType   type);
 
 
 #endif  /*  __GIMP_TRANSFORM_TOOL_H__  */

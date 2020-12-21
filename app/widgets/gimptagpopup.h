@@ -36,41 +36,41 @@ typedef struct _PopupTagData PopupTagData;
 
 struct _GimpTagPopup
 {
-  GtkWindow          parent_instance;
+    GtkWindow          parent_instance;
 
-  GimpComboTagEntry *combo_entry;
+    GimpComboTagEntry *combo_entry;
 
-  GtkWidget         *frame;
-  GtkWidget         *border_area;
-  GtkWidget         *tag_area;
+    GtkWidget         *frame;
+    GtkWidget         *border_area;
+    GtkWidget         *tag_area;
 
-  PangoLayout       *layout;
+    PangoLayout       *layout;
 
-  PopupTagData      *tag_data;
-  gint               tag_count;
+    PopupTagData      *tag_data;
+    gint               tag_count;
 
-  PopupTagData      *prelight;
+    PopupTagData      *prelight;
 
-  gboolean           single_select_disabled;
+    gboolean           single_select_disabled;
 
-  guint              scroll_timeout_id;
-  gint               scroll_height;
-  gint               scroll_y;
-  gint               scroll_step;
-  gint               scroll_arrow_height;
-  gboolean           scroll_fast;
-  gboolean           arrows_visible;
-  gboolean           upper_arrow_prelight;
-  gboolean           lower_arrow_prelight;
-  GtkStateType       upper_arrow_state;
-  GtkStateType       lower_arrow_state;
+    guint              scroll_timeout_id;
+    gint               scroll_height;
+    gint               scroll_y;
+    gint               scroll_step;
+    gint               scroll_arrow_height;
+    gboolean           scroll_fast;
+    gboolean           arrows_visible;
+    gboolean           upper_arrow_prelight;
+    gboolean           lower_arrow_prelight;
+    GtkStateType       upper_arrow_state;
+    GtkStateType       lower_arrow_state;
 
-  gboolean           smooth_scrolling;
+    gboolean           smooth_scrolling;
 };
 
 struct _GimpTagPopupClass
 {
-  GtkWindowClass  parent_class;
+    GtkWindowClass  parent_class;
 };
 
 

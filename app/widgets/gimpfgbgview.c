@@ -43,23 +43,23 @@
 
 enum
 {
-  PROP_0,
-  PROP_CONTEXT
+    PROP_0,
+    PROP_CONTEXT
 };
 
 
 static void     gimp_fg_bg_view_dispose           (GObject        *object);
 static void     gimp_fg_bg_view_set_property      (GObject        *object,
-                                                   guint           property_id,
-                                                   const GValue   *value,
-                                                   GParamSpec     *pspec);
+        guint           property_id,
+        const GValue   *value,
+        GParamSpec     *pspec);
 static void     gimp_fg_bg_view_get_property      (GObject        *object,
-                                                   guint           property_id,
-                                                   GValue         *value,
-                                                   GParamSpec     *pspec);
+        guint           property_id,
+        GValue         *value,
+        GParamSpec     *pspec);
 
 static gboolean gimp_fg_bg_view_draw              (GtkWidget      *widget,
-                                                   cairo_t        *cr);
+        cairo_t        *cr);
 
 static void     gimp_fg_bg_view_create_transform  (GimpFgBgView   *view);
 static void     gimp_fg_bg_view_destroy_transform (GimpFgBgView   *view);
@@ -73,43 +73,43 @@ G_DEFINE_TYPE (GimpFgBgView, gimp_fg_bg_view, GTK_TYPE_WIDGET)
 static void
 gimp_fg_bg_view_class_init (GimpFgBgViewClass *klass)
 {
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+    GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->dispose      = gimp_fg_bg_view_dispose;
-  object_class->set_property = gimp_fg_bg_view_set_property;
-  object_class->get_property = gimp_fg_bg_view_get_property;
+    object_class->dispose      = gimp_fg_bg_view_dispose;
+    object_class->set_property = gimp_fg_bg_view_set_property;
+    object_class->get_property = gimp_fg_bg_view_get_property;
 
-  widget_class->draw         = gimp_fg_bg_view_draw;
+    widget_class->draw         = gimp_fg_bg_view_draw;
 
-  g_object_class_install_property (object_class, PROP_CONTEXT,
-                                   g_param_spec_object ("context",
-                                                        NULL, NULL,
-                                                        GIMP_TYPE_CONTEXT,
-                                                        GIMP_PARAM_READWRITE));
+    g_object_class_install_property (object_class, PROP_CONTEXT,
+                                     g_param_spec_object ("context",
+                                             NULL, NULL,
+                                             GIMP_TYPE_CONTEXT,
+                                             GIMP_PARAM_READWRITE));
 
-  gtk_widget_class_set_css_name (widget_class, "GimpFgBgView");
+    gtk_widget_class_set_css_name (widget_class, "GimpFgBgView");
 }
 
 static void
 gimp_fg_bg_view_init (GimpFgBgView *view)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (view), FALSE);
+    gtk_widget_set_has_window (GTK_WIDGET (view), FALSE);
 
-  gimp_widget_track_monitor (GTK_WIDGET (view),
-                             G_CALLBACK (gimp_fg_bg_view_destroy_transform),
-                             NULL, NULL);
+    gimp_widget_track_monitor (GTK_WIDGET (view),
+                               G_CALLBACK (gimp_fg_bg_view_destroy_transform),
+                               NULL, NULL);
 }
 
 static void
 gimp_fg_bg_view_dispose (GObject *object)
 {
-  GimpFgBgView *view = GIMP_FG_BG_VIEW (object);
+    GimpFgBgView *view = GIMP_FG_BG_VIEW (object);
 
-  if (view->context)
-    gimp_fg_bg_view_set_context (view, NULL);
+    if (view->context)
+        gimp_fg_bg_view_set_context (view, NULL);
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+    G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -118,17 +118,17 @@ gimp_fg_bg_view_set_property (GObject      *object,
                               const GValue *value,
                               GParamSpec   *pspec)
 {
-  GimpFgBgView *view = GIMP_FG_BG_VIEW (object);
+    GimpFgBgView *view = GIMP_FG_BG_VIEW (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CONTEXT:
-      gimp_fg_bg_view_set_context (view, g_value_get_object (value));
-      break;
+        gimp_fg_bg_view_set_context (view, g_value_get_object (value));
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -138,17 +138,17 @@ gimp_fg_bg_view_get_property (GObject    *object,
                               GValue     *value,
                               GParamSpec *pspec)
 {
-  GimpFgBgView *view = GIMP_FG_BG_VIEW (object);
+    GimpFgBgView *view = GIMP_FG_BG_VIEW (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CONTEXT:
-      g_value_set_object (value, view->context);
-      break;
+        g_value_set_object (value, view->context);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -156,116 +156,116 @@ static gboolean
 gimp_fg_bg_view_draw (GtkWidget *widget,
                       cairo_t   *cr)
 {
-  GimpFgBgView    *view   = GIMP_FG_BG_VIEW (widget);
-  GtkStyleContext *style  = gtk_widget_get_style_context (widget);
-  GtkAllocation    allocation;
-  GtkBorder        border;
-  GtkBorder        padding;
-  GdkRectangle     rect;
-  GimpRGB          color;
+    GimpFgBgView    *view   = GIMP_FG_BG_VIEW (widget);
+    GtkStyleContext *style  = gtk_widget_get_style_context (widget);
+    GtkAllocation    allocation;
+    GtkBorder        border;
+    GtkBorder        padding;
+    GdkRectangle     rect;
+    GimpRGB          color;
 
-  gtk_widget_get_allocation (widget, &allocation);
+    gtk_widget_get_allocation (widget, &allocation);
 
-  gtk_style_context_save (style);
+    gtk_style_context_save (style);
 
-  gtk_style_context_get_border (style, gtk_style_context_get_state (style),
-                                &border);
-  gtk_style_context_get_padding (style, gtk_style_context_get_state (style),
-                                 &padding);
+    gtk_style_context_get_border (style, gtk_style_context_get_state (style),
+                                  &border);
+    gtk_style_context_get_padding (style, gtk_style_context_get_state (style),
+                                   &padding);
 
-  border.left   += padding.left;
-  border.right  += padding.right;
-  border.top    += padding.top;
-  border.bottom += padding.bottom;
+    border.left   += padding.left;
+    border.right  += padding.right;
+    border.top    += padding.top;
+    border.bottom += padding.bottom;
 
-  rect.width  = (allocation.width  - border.left - border.right)  * 3 / 4;
-  rect.height = (allocation.height - border.top  - border.bottom) * 3 / 4;
+    rect.width  = (allocation.width  - border.left - border.right)  * 3 / 4;
+    rect.height = (allocation.height - border.top  - border.bottom) * 3 / 4;
 
-  if (! view->transform)
-    gimp_fg_bg_view_create_transform (view);
+    if (! view->transform)
+        gimp_fg_bg_view_create_transform (view);
 
-  /*  draw the background area  */
+    /*  draw the background area  */
 
-  rect.x = allocation.width  - rect.width  - border.right;
-  rect.y = allocation.height - rect.height - border.bottom;
+    rect.x = allocation.width  - rect.width  - border.right;
+    rect.y = allocation.height - rect.height - border.bottom;
 
-  if (view->context)
+    if (view->context)
     {
-      gimp_context_get_background (view->context, &color);
+        gimp_context_get_background (view->context, &color);
 
-      if (view->transform)
-        gimp_color_transform_process_pixels (view->transform,
-                                             babl_format ("R'G'B'A double"),
-                                             &color,
-                                             babl_format ("R'G'B'A double"),
-                                             &color,
-                                             1);
+        if (view->transform)
+            gimp_color_transform_process_pixels (view->transform,
+                                                 babl_format ("R'G'B'A double"),
+                                                 &color,
+                                                 babl_format ("R'G'B'A double"),
+                                                 &color,
+                                                 1);
 
-      gimp_cairo_set_source_rgb (cr, &color);
+        gimp_cairo_set_source_rgb (cr, &color);
 
-      cairo_rectangle (cr, rect.x, rect.y, rect.width, rect.height);
-      cairo_fill (cr);
+        cairo_rectangle (cr, rect.x, rect.y, rect.width, rect.height);
+        cairo_fill (cr);
     }
 
-  gtk_style_context_add_class (style, GTK_STYLE_CLASS_FRAME);
+    gtk_style_context_add_class (style, GTK_STYLE_CLASS_FRAME);
 
-  gtk_render_frame (style, cr, rect.x, rect.y, rect.width, rect.height);
+    gtk_render_frame (style, cr, rect.x, rect.y, rect.width, rect.height);
 
-  /*  draw the foreground area  */
+    /*  draw the foreground area  */
 
-  rect.x = border.left;
-  rect.y = border.top;
+    rect.x = border.left;
+    rect.y = border.top;
 
-  if (view->context)
+    if (view->context)
     {
-      gimp_context_get_foreground (view->context, &color);
+        gimp_context_get_foreground (view->context, &color);
 
-      if (view->transform)
-        gimp_color_transform_process_pixels (view->transform,
-                                             babl_format ("R'G'B'A double"),
-                                             &color,
-                                             babl_format ("R'G'B'A double"),
-                                             &color,
-                                             1);
+        if (view->transform)
+            gimp_color_transform_process_pixels (view->transform,
+                                                 babl_format ("R'G'B'A double"),
+                                                 &color,
+                                                 babl_format ("R'G'B'A double"),
+                                                 &color,
+                                                 1);
 
-      gimp_cairo_set_source_rgb (cr, &color);
+        gimp_cairo_set_source_rgb (cr, &color);
 
-      cairo_rectangle (cr, rect.x, rect.y, rect.width, rect.height);
-      cairo_fill (cr);
+        cairo_rectangle (cr, rect.x, rect.y, rect.width, rect.height);
+        cairo_fill (cr);
     }
 
-  gtk_render_frame (style, cr, rect.x, rect.y, rect.width, rect.height);
+    gtk_render_frame (style, cr, rect.x, rect.y, rect.width, rect.height);
 
-  gtk_style_context_restore (style);
+    gtk_style_context_restore (style);
 
-  return TRUE;
+    return TRUE;
 }
 
 static void
 gimp_fg_bg_view_create_transform (GimpFgBgView *view)
 {
-  if (view->color_config)
+    if (view->color_config)
     {
-      static GimpColorProfile *profile = NULL;
+        static GimpColorProfile *profile = NULL;
 
-      if (G_UNLIKELY (! profile))
-        profile = gimp_color_profile_new_rgb_srgb ();
+        if (G_UNLIKELY (! profile))
+            profile = gimp_color_profile_new_rgb_srgb ();
 
-      view->transform =
-        gimp_widget_get_color_transform (GTK_WIDGET (view),
-                                         view->color_config,
-                                         profile,
-                                         babl_format ("R'G'B'A double"),
-                                         babl_format ("R'G'B'A double"));
+        view->transform =
+            gimp_widget_get_color_transform (GTK_WIDGET (view),
+                                             view->color_config,
+                                             profile,
+                                             babl_format ("R'G'B'A double"),
+                                             babl_format ("R'G'B'A double"));
     }
 }
 
 static void
 gimp_fg_bg_view_destroy_transform (GimpFgBgView *view)
 {
-  g_clear_object (&view->transform);
+    g_clear_object (&view->transform);
 
-  gtk_widget_queue_draw (GTK_WIDGET (view));
+    gtk_widget_queue_draw (GTK_WIDGET (view));
 }
 
 
@@ -274,57 +274,57 @@ gimp_fg_bg_view_destroy_transform (GimpFgBgView *view)
 GtkWidget *
 gimp_fg_bg_view_new (GimpContext *context)
 {
-  g_return_val_if_fail (context == NULL || GIMP_IS_CONTEXT (context), NULL);
+    g_return_val_if_fail (context == NULL || GIMP_IS_CONTEXT (context), NULL);
 
-  return g_object_new (GIMP_TYPE_FG_BG_VIEW,
-                       "context", context,
-                       NULL);
+    return g_object_new (GIMP_TYPE_FG_BG_VIEW,
+                         "context", context,
+                         NULL);
 }
 
 void
 gimp_fg_bg_view_set_context (GimpFgBgView *view,
                              GimpContext  *context)
 {
-  g_return_if_fail (GIMP_IS_FG_BG_VIEW (view));
-  g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
+    g_return_if_fail (GIMP_IS_FG_BG_VIEW (view));
+    g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
 
-  if (context != view->context)
+    if (context != view->context)
     {
-      if (view->context)
+        if (view->context)
         {
-          g_signal_handlers_disconnect_by_func (view->context,
-                                                gtk_widget_queue_draw,
-                                                view);
-          g_clear_object (&view->context);
+            g_signal_handlers_disconnect_by_func (view->context,
+                                                  gtk_widget_queue_draw,
+                                                  view);
+            g_clear_object (&view->context);
 
-          g_signal_handlers_disconnect_by_func (view->color_config,
-                                                gimp_fg_bg_view_destroy_transform,
-                                                view);
-          g_clear_object (&view->color_config);
+            g_signal_handlers_disconnect_by_func (view->color_config,
+                                                  gimp_fg_bg_view_destroy_transform,
+                                                  view);
+            g_clear_object (&view->color_config);
         }
 
-      view->context = context;
+        view->context = context;
 
-      if (context)
+        if (context)
         {
-          g_object_ref (context);
+            g_object_ref (context);
 
-          g_signal_connect_swapped (context, "foreground-changed",
-                                    G_CALLBACK (gtk_widget_queue_draw),
-                                    view);
-          g_signal_connect_swapped (context, "background-changed",
-                                    G_CALLBACK (gtk_widget_queue_draw),
-                                    view);
+            g_signal_connect_swapped (context, "foreground-changed",
+                                      G_CALLBACK (gtk_widget_queue_draw),
+                                      view);
+            g_signal_connect_swapped (context, "background-changed",
+                                      G_CALLBACK (gtk_widget_queue_draw),
+                                      view);
 
-          view->color_config = g_object_ref (context->gimp->config->color_management);
+            view->color_config = g_object_ref (context->gimp->config->color_management);
 
-          g_signal_connect_swapped (view->color_config, "notify",
-                                    G_CALLBACK (gimp_fg_bg_view_destroy_transform),
-                                    view);
+            g_signal_connect_swapped (view->color_config, "notify",
+                                      G_CALLBACK (gimp_fg_bg_view_destroy_transform),
+                                      view);
         }
 
-      gimp_fg_bg_view_destroy_transform (view);
+        gimp_fg_bg_view_destroy_transform (view);
 
-      g_object_notify (G_OBJECT (view), "context");
+        g_object_notify (G_OBJECT (view), "context");
     }
 }

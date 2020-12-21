@@ -29,11 +29,11 @@ typedef struct _GimpActionFactoryEntry GimpActionFactoryEntry;
 
 struct _GimpActionFactoryEntry
 {
-  gchar                     *identifier;
-  gchar                     *label;
-  gchar                     *icon_name;
-  GimpActionGroupSetupFunc   setup_func;
-  GimpActionGroupUpdateFunc  update_func;
+    gchar                     *identifier;
+    gchar                     *label;
+    gchar                     *icon_name;
+    GimpActionGroupSetupFunc   setup_func;
+    GimpActionGroupUpdateFunc  update_func;
 };
 
 
@@ -49,15 +49,15 @@ typedef struct _GimpActionFactoryClass  GimpActionFactoryClass;
 
 struct _GimpActionFactory
 {
-  GimpObject  parent_instance;
+    GimpObject  parent_instance;
 
-  Gimp       *gimp;
-  GList      *registered_groups;
+    Gimp       *gimp;
+    GList      *registered_groups;
 };
 
 struct _GimpActionFactoryClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 };
 
 
@@ -66,15 +66,15 @@ GType               gimp_action_factory_get_type (void) G_GNUC_CONST;
 GimpActionFactory * gimp_action_factory_new      (Gimp              *gimp);
 
 void          gimp_action_factory_group_register (GimpActionFactory *factory,
-                                                  const gchar       *identifier,
-                                                  const gchar       *label,
-                                                  const gchar       *icon_name,
-                                                  GimpActionGroupSetupFunc  setup_func,
-                                                  GimpActionGroupUpdateFunc update_func);
+        const gchar       *identifier,
+        const gchar       *label,
+        const gchar       *icon_name,
+        GimpActionGroupSetupFunc  setup_func,
+        GimpActionGroupUpdateFunc update_func);
 
 GimpActionGroup * gimp_action_factory_group_new  (GimpActionFactory *factory,
-                                                  const gchar       *identifier,
-                                                  gpointer           user_data);
+        const gchar       *identifier,
+        gpointer           user_data);
 
 
 #endif  /*  __GIMP_ACTION_FACTORY_H__  */

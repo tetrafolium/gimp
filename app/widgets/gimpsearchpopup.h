@@ -44,31 +44,31 @@ typedef struct _GimpSearchPopupClass      GimpSearchPopupClass;
 typedef struct _GimpSearchPopupPrivate    GimpSearchPopupPrivate;
 
 typedef void   (*GimpSearchPopupCallback) (GimpSearchPopup  *popup,
-                                           const gchar      *search,
-                                           gpointer          data);
+        const gchar      *search,
+        gpointer          data);
 
 struct _GimpSearchPopup
 {
-  GimpPopup               parent_instance;
+    GimpPopup               parent_instance;
 
-  GimpSearchPopupPrivate *priv;
+    GimpSearchPopupPrivate *priv;
 };
 
 struct _GimpSearchPopupClass
 {
-  GimpPopupClass          parent_class;
+    GimpPopupClass          parent_class;
 };
 
 GType       gimp_search_popup_get_type   (void);
 
 GtkWidget * gimp_search_popup_new        (Gimp                    *gimp,
-                                          const gchar             *role,
-                                          const gchar             *title,
-                                          GimpSearchPopupCallback  callback,
-                                          gpointer                 callback_data);
+        const gchar             *role,
+        const gchar             *title,
+        GimpSearchPopupCallback  callback,
+        gpointer                 callback_data);
 
 void        gimp_search_popup_add_result (GimpSearchPopup *popup,
-                                          GimpAction      *action,
-                                          gint             section);
+        GimpAction      *action,
+        gint             section);
 
 #endif  /*  __GIMP_SEARCH_POPUP_H__  */

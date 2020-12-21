@@ -38,14 +38,14 @@ typedef struct _GimpChannelTreeViewPrivate GimpChannelTreeViewPrivate;
 
 struct _GimpChannelTreeView
 {
-  GimpDrawableTreeView        parent_instance;
+    GimpDrawableTreeView        parent_instance;
 
-  GimpChannelTreeViewPrivate *priv;
+    GimpChannelTreeViewPrivate *priv;
 };
 
 struct _GimpChannelTreeViewClass
 {
-  GimpDrawableTreeViewClass  parent_class;
+    GimpDrawableTreeViewClass  parent_class;
 };
 
 

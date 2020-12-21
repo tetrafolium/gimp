@@ -36,23 +36,23 @@ typedef struct _GimpFontFactoryViewClass GimpFontFactoryViewClass;
 
 struct _GimpFontFactoryView
 {
-  GimpDataFactoryView  parent_instance;
+    GimpDataFactoryView  parent_instance;
 };
 
 struct _GimpFontFactoryViewClass
 {
-  GimpDataFactoryViewClass  parent_class;
+    GimpDataFactoryViewClass  parent_class;
 };
 
 
 GType       gimp_font_factory_view_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_font_factory_view_new      (GimpViewType     view_type,
-                                             GimpDataFactory *factory,
-                                             GimpContext     *context,
-                                             gint             view_size,
-                                             gint             view_border_width,
-                                             GimpMenuFactory *menu_factory);
+        GimpDataFactory *factory,
+        GimpContext     *context,
+        gint             view_size,
+        gint             view_border_width,
+        GimpMenuFactory *menu_factory);
 
 
 #endif  /*  __GIMP_FONT_FACTORY_VIEW_H__  */

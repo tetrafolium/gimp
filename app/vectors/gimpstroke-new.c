@@ -34,14 +34,14 @@ gimp_stroke_new_from_coords (GimpVectorsStrokeType  type,
                              gint                   n_coords,
                              gboolean               closed)
 {
-  switch (type)
+    switch (type)
     {
     case GIMP_VECTORS_STROKE_TYPE_BEZIER:
-      return gimp_bezier_stroke_new_from_coords (coords, n_coords, closed);
-      break;
+        return gimp_bezier_stroke_new_from_coords (coords, n_coords, closed);
+        break;
     default:
-      g_warning ("unknown type in gimp_stroke_new_from_coords(): %d", type);
-      return NULL;
+        g_warning ("unknown type in gimp_stroke_new_from_coords(): %d", type);
+        return NULL;
     }
 }
 

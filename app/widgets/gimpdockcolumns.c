@@ -45,52 +45,52 @@
 
 enum
 {
-  PROP_0,
-  PROP_CONTEXT,
-  PROP_DIALOG_FACTORY,
-  PROP_UI_MANAGER
+    PROP_0,
+    PROP_CONTEXT,
+    PROP_DIALOG_FACTORY,
+    PROP_UI_MANAGER
 };
 
 enum
 {
-  DOCK_ADDED,
-  DOCK_REMOVED,
-  LAST_SIGNAL
+    DOCK_ADDED,
+    DOCK_REMOVED,
+    LAST_SIGNAL
 };
 
 
 struct _GimpDockColumnsPrivate
 {
-  GimpContext       *context;
-  GimpDialogFactory *dialog_factory;
-  GimpUIManager     *ui_manager;
+    GimpContext       *context;
+    GimpDialogFactory *dialog_factory;
+    GimpUIManager     *ui_manager;
 
-  GList             *docks;
+    GList             *docks;
 
-  GtkWidget         *paned_hbox;
+    GtkWidget         *paned_hbox;
 };
 
 
 static void      gimp_dock_columns_dispose           (GObject         *object);
 static void      gimp_dock_columns_set_property      (GObject         *object,
-                                                      guint            property_id,
-                                                      const GValue    *value,
-                                                      GParamSpec      *pspec);
+        guint            property_id,
+        const GValue    *value,
+        GParamSpec      *pspec);
 static void      gimp_dock_columns_get_property      (GObject         *object,
-                                                      guint            property_id,
-                                                      GValue          *value,
-                                                      GParamSpec      *pspec);
+        guint            property_id,
+        GValue          *value,
+        GParamSpec      *pspec);
 static gboolean  gimp_dock_columns_dropped_cb        (GtkWidget       *notebook,
-                                                      GtkWidget       *child,
-                                                      gint             insert_index,
-                                                      gpointer         data);
+        GtkWidget       *child,
+        gint             insert_index,
+        gpointer         data);
 static void      gimp_dock_columns_real_dock_added   (GimpDockColumns *dock_columns,
-                                                      GimpDock        *dock);
+        GimpDock        *dock);
 static void      gimp_dock_columns_real_dock_removed (GimpDockColumns *dock_columns,
-                                                      GimpDock        *dock);
+        GimpDock        *dock);
 static void      gimp_dock_columns_dock_book_removed (GimpDockColumns *dock_columns,
-                                                      GimpDockbook    *dockbook,
-                                                      GimpDock        *dock);
+        GimpDockbook    *dockbook,
+        GimpDock        *dock);
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpDockColumns, gimp_dock_columns, GTK_TYPE_BOX)
@@ -103,110 +103,110 @@ static guint dock_columns_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_dock_columns_class_init (GimpDockColumnsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->dispose      = gimp_dock_columns_dispose;
-  object_class->set_property = gimp_dock_columns_set_property;
-  object_class->get_property = gimp_dock_columns_get_property;
+    object_class->dispose      = gimp_dock_columns_dispose;
+    object_class->set_property = gimp_dock_columns_set_property;
+    object_class->get_property = gimp_dock_columns_get_property;
 
-  klass->dock_added   = gimp_dock_columns_real_dock_added;
-  klass->dock_removed = gimp_dock_columns_real_dock_removed;
+    klass->dock_added   = gimp_dock_columns_real_dock_added;
+    klass->dock_removed = gimp_dock_columns_real_dock_removed;
 
-  g_object_class_install_property (object_class, PROP_CONTEXT,
-                                   g_param_spec_object ("context",
-                                                        NULL, NULL,
-                                                        GIMP_TYPE_CONTEXT,
-                                                        GIMP_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_CONTEXT,
+                                     g_param_spec_object ("context",
+                                             NULL, NULL,
+                                             GIMP_TYPE_CONTEXT,
+                                             GIMP_PARAM_WRITABLE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 
-  g_object_class_install_property (object_class, PROP_DIALOG_FACTORY,
-                                   g_param_spec_object ("dialog-factory",
-                                                        NULL, NULL,
-                                                        GIMP_TYPE_DIALOG_FACTORY,
-                                                        GIMP_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_DIALOG_FACTORY,
+                                     g_param_spec_object ("dialog-factory",
+                                             NULL, NULL,
+                                             GIMP_TYPE_DIALOG_FACTORY,
+                                             GIMP_PARAM_WRITABLE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 
-  g_object_class_install_property (object_class, PROP_UI_MANAGER,
-                                   g_param_spec_object ("ui-manager",
-                                                        NULL, NULL,
-                                                        GIMP_TYPE_UI_MANAGER,
-                                                        GIMP_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_UI_MANAGER,
+                                     g_param_spec_object ("ui-manager",
+                                             NULL, NULL,
+                                             GIMP_TYPE_UI_MANAGER,
+                                             GIMP_PARAM_WRITABLE |
+                                             G_PARAM_CONSTRUCT_ONLY));
 
-  dock_columns_signals[DOCK_ADDED] =
-    g_signal_new ("dock-added",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpDockColumnsClass, dock_added),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  GIMP_TYPE_DOCK);
+    dock_columns_signals[DOCK_ADDED] =
+        g_signal_new ("dock-added",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpDockColumnsClass, dock_added),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      GIMP_TYPE_DOCK);
 
-  dock_columns_signals[DOCK_REMOVED] =
-    g_signal_new ("dock-removed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpDockColumnsClass, dock_removed),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  GIMP_TYPE_DOCK);
+    dock_columns_signals[DOCK_REMOVED] =
+        g_signal_new ("dock-removed",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpDockColumnsClass, dock_removed),
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1,
+                      GIMP_TYPE_DOCK);
 }
 
 static void
 gimp_dock_columns_init (GimpDockColumns *dock_columns)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (dock_columns),
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (dock_columns),
+                                    GTK_ORIENTATION_HORIZONTAL);
+
+    dock_columns->p = gimp_dock_columns_get_instance_private (dock_columns);
+
+    dock_columns->p->paned_hbox = gimp_paned_box_new (FALSE, 0,
                                   GTK_ORIENTATION_HORIZONTAL);
-
-  dock_columns->p = gimp_dock_columns_get_instance_private (dock_columns);
-
-  dock_columns->p->paned_hbox = gimp_paned_box_new (FALSE, 0,
-                                                    GTK_ORIENTATION_HORIZONTAL);
-  gimp_paned_box_set_dropped_cb (GIMP_PANED_BOX (dock_columns->p->paned_hbox),
-                                 gimp_dock_columns_dropped_cb,
-                                 dock_columns);
-  gtk_box_pack_start (GTK_BOX (dock_columns), dock_columns->p->paned_hbox,
-                      TRUE, TRUE, 0);
-  gtk_widget_show (dock_columns->p->paned_hbox);
+    gimp_paned_box_set_dropped_cb (GIMP_PANED_BOX (dock_columns->p->paned_hbox),
+                                   gimp_dock_columns_dropped_cb,
+                                   dock_columns);
+    gtk_box_pack_start (GTK_BOX (dock_columns), dock_columns->p->paned_hbox,
+                        TRUE, TRUE, 0);
+    gtk_widget_show (dock_columns->p->paned_hbox);
 }
 
 static void
 gimp_dock_columns_dispose (GObject *object)
 {
-  GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (object);
+    GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (object);
 
-  while (dock_columns->p->docks)
+    while (dock_columns->p->docks)
     {
-      GimpDock *dock = dock_columns->p->docks->data;
+        GimpDock *dock = dock_columns->p->docks->data;
 
-      g_object_ref (dock);
-      gimp_dock_columns_remove_dock (dock_columns, dock);
-      gtk_widget_destroy (GTK_WIDGET (dock));
-      g_object_unref (dock);
+        g_object_ref (dock);
+        gimp_dock_columns_remove_dock (dock_columns, dock);
+        gtk_widget_destroy (GTK_WIDGET (dock));
+        g_object_unref (dock);
     }
 
-  if (dock_columns->p->context)
+    if (dock_columns->p->context)
     {
-      g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->context),
-                                    (gpointer) &dock_columns->p->context);
-      dock_columns->p->context = NULL;
+        g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->context),
+                                      (gpointer) &dock_columns->p->context);
+        dock_columns->p->context = NULL;
     }
 
-  if (dock_columns->p->dialog_factory)
+    if (dock_columns->p->dialog_factory)
     {
-      g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->dialog_factory),
-                                    (gpointer) &dock_columns->p->dialog_factory);
-      dock_columns->p->dialog_factory = NULL;
+        g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->dialog_factory),
+                                      (gpointer) &dock_columns->p->dialog_factory);
+        dock_columns->p->dialog_factory = NULL;
     }
 
-  if (dock_columns->p->ui_manager)
+    if (dock_columns->p->ui_manager)
     {
-      g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->ui_manager),
-                                    (gpointer)&dock_columns->p->ui_manager);
-      dock_columns->p->ui_manager = NULL;
+        g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->ui_manager),
+                                      (gpointer)&dock_columns->p->ui_manager);
+        dock_columns->p->ui_manager = NULL;
     }
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+    G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -215,43 +215,43 @@ gimp_dock_columns_set_property (GObject      *object,
                                 const GValue *value,
                                 GParamSpec   *pspec)
 {
-  GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (object);
+    GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CONTEXT:
-      if (dock_columns->p->context)
-        g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->context),
-                                      (gpointer) &dock_columns->p->context);
-      dock_columns->p->context = g_value_get_object (value);
-      if (dock_columns->p->context)
-        g_object_add_weak_pointer (G_OBJECT (dock_columns->p->context),
-                                   (gpointer) &dock_columns->p->context);
-      break;
+        if (dock_columns->p->context)
+            g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->context),
+                                          (gpointer) &dock_columns->p->context);
+        dock_columns->p->context = g_value_get_object (value);
+        if (dock_columns->p->context)
+            g_object_add_weak_pointer (G_OBJECT (dock_columns->p->context),
+                                       (gpointer) &dock_columns->p->context);
+        break;
 
     case PROP_DIALOG_FACTORY:
-      if (dock_columns->p->dialog_factory)
-        g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->dialog_factory),
-                                      (gpointer) &dock_columns->p->dialog_factory);
-      dock_columns->p->dialog_factory = g_value_get_object (value);
-      if (dock_columns->p->dialog_factory)
-        g_object_add_weak_pointer (G_OBJECT (dock_columns->p->dialog_factory),
-                                   (gpointer) &dock_columns->p->dialog_factory);
-      break;
+        if (dock_columns->p->dialog_factory)
+            g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->dialog_factory),
+                                          (gpointer) &dock_columns->p->dialog_factory);
+        dock_columns->p->dialog_factory = g_value_get_object (value);
+        if (dock_columns->p->dialog_factory)
+            g_object_add_weak_pointer (G_OBJECT (dock_columns->p->dialog_factory),
+                                       (gpointer) &dock_columns->p->dialog_factory);
+        break;
 
     case PROP_UI_MANAGER:
-      if (dock_columns->p->ui_manager)
-        g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->ui_manager),
-                                      (gpointer) &dock_columns->p->ui_manager);
-      dock_columns->p->ui_manager = g_value_get_object (value);
-      if (dock_columns->p->ui_manager)
-        g_object_add_weak_pointer (G_OBJECT (dock_columns->p->ui_manager),
-                                   (gpointer) &dock_columns->p->ui_manager);
-      break;
+        if (dock_columns->p->ui_manager)
+            g_object_remove_weak_pointer (G_OBJECT (dock_columns->p->ui_manager),
+                                          (gpointer) &dock_columns->p->ui_manager);
+        dock_columns->p->ui_manager = g_value_get_object (value);
+        if (dock_columns->p->ui_manager)
+            g_object_add_weak_pointer (G_OBJECT (dock_columns->p->ui_manager),
+                                       (gpointer) &dock_columns->p->ui_manager);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -261,23 +261,23 @@ gimp_dock_columns_get_property (GObject    *object,
                                 GValue     *value,
                                 GParamSpec *pspec)
 {
-  GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (object);
+    GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_CONTEXT:
-      g_value_set_object (value, dock_columns->p->context);
-      break;
+        g_value_set_object (value, dock_columns->p->context);
+        break;
     case PROP_DIALOG_FACTORY:
-      g_value_set_object (value, dock_columns->p->dialog_factory);
-      break;
+        g_value_set_object (value, dock_columns->p->dialog_factory);
+        break;
     case PROP_UI_MANAGER:
-      g_value_set_object (value, dock_columns->p->ui_manager);
-      break;
+        g_value_set_object (value, dock_columns->p->ui_manager);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -287,26 +287,26 @@ gimp_dock_columns_dropped_cb (GtkWidget *notebook,
                               gint       insert_index,
                               gpointer   data)
 {
-  GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (data);
-  GimpDockable    *dockable     = GIMP_DOCKABLE (child);
-  GtkWidget       *new_dockbook = NULL;
+    GimpDockColumns *dock_columns = GIMP_DOCK_COLUMNS (data);
+    GimpDockable    *dockable     = GIMP_DOCKABLE (child);
+    GtkWidget       *new_dockbook = NULL;
 
-  /* Create a new dock (including a new dockbook) */
-  gimp_dock_columns_prepare_dockbook (dock_columns,
-                                      insert_index,
-                                      &new_dockbook);
+    /* Create a new dock (including a new dockbook) */
+    gimp_dock_columns_prepare_dockbook (dock_columns,
+                                        insert_index,
+                                        &new_dockbook);
 
-  /* Move the dockable to the new dockbook */
-  g_object_ref (new_dockbook);
-  g_object_ref (dockable);
+    /* Move the dockable to the new dockbook */
+    g_object_ref (new_dockbook);
+    g_object_ref (dockable);
 
-  gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), child);
-  gtk_notebook_append_page (GTK_NOTEBOOK (new_dockbook), child, NULL);
+    gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), child);
+    gtk_notebook_append_page (GTK_NOTEBOOK (new_dockbook), child, NULL);
 
-  g_object_unref (dockable);
-  g_object_unref (new_dockbook);
+    g_object_unref (dockable);
+    g_object_unref (new_dockbook);
 
-  return TRUE;
+    return TRUE;
 }
 
 static void
@@ -326,12 +326,12 @@ gimp_dock_columns_dock_book_removed (GimpDockColumns *dock_columns,
                                      GimpDockbook    *dockbook,
                                      GimpDock        *dock)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
 
-  if (gimp_dock_get_dockbooks (dock) == NULL &&
-      ! GIMP_IS_TOOLBOX (dock) &&
-      gtk_widget_get_parent (GTK_WIDGET (dock)) != NULL)
-    gimp_dock_columns_remove_dock (dock_columns, dock);
+    if (gimp_dock_get_dockbooks (dock) == NULL &&
+            ! GIMP_IS_TOOLBOX (dock) &&
+            gtk_widget_get_parent (GTK_WIDGET (dock)) != NULL)
+        gimp_dock_columns_remove_dock (dock_columns, dock);
 }
 
 
@@ -346,15 +346,15 @@ gimp_dock_columns_new (GimpContext       *context,
                        GimpDialogFactory *dialog_factory,
                        GimpUIManager     *ui_manager)
 {
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (dialog_factory), NULL);
-  g_return_val_if_fail (GIMP_IS_UI_MANAGER (ui_manager), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+    g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (dialog_factory), NULL);
+    g_return_val_if_fail (GIMP_IS_UI_MANAGER (ui_manager), NULL);
 
-  return g_object_new (GIMP_TYPE_DOCK_COLUMNS,
-                       "context",        context,
-                       "dialog-factory", dialog_factory,
-                       "ui-manager",     ui_manager,
-                       NULL);
+    return g_object_new (GIMP_TYPE_DOCK_COLUMNS,
+                         "context",        context,
+                         "dialog-factory", dialog_factory,
+                         "ui-manager",     ui_manager,
+                         NULL);
 }
 
 /**
@@ -369,25 +369,25 @@ gimp_dock_columns_add_dock (GimpDockColumns *dock_columns,
                             GimpDock        *dock,
                             gint             index)
 {
-  g_return_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns));
-  g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
 
-  GIMP_LOG (DND, "Adding GimpDock %p to GimpDockColumns %p", dock, dock_columns);
+    GIMP_LOG (DND, "Adding GimpDock %p to GimpDockColumns %p", dock, dock_columns);
 
-  dock_columns->p->docks = g_list_insert (dock_columns->p->docks, dock, index);
+    dock_columns->p->docks = g_list_insert (dock_columns->p->docks, dock, index);
 
-  gimp_dock_update_with_context (dock, dock_columns->p->context);
+    gimp_dock_update_with_context (dock, dock_columns->p->context);
 
-  gimp_paned_box_add_widget (GIMP_PANED_BOX (dock_columns->p->paned_hbox),
-                             GTK_WIDGET (dock),
-                             index);
+    gimp_paned_box_add_widget (GIMP_PANED_BOX (dock_columns->p->paned_hbox),
+                               GTK_WIDGET (dock),
+                               index);
 
-  g_signal_connect_object (dock, "book-removed",
-                           G_CALLBACK (gimp_dock_columns_dock_book_removed),
-                           dock_columns,
-                           G_CONNECT_SWAPPED);
+    g_signal_connect_object (dock, "book-removed",
+                             G_CALLBACK (gimp_dock_columns_dock_book_removed),
+                             dock_columns,
+                             G_CONNECT_SWAPPED);
 
-  g_signal_emit (dock_columns, dock_columns_signals[DOCK_ADDED], 0, dock);
+    g_signal_emit (dock_columns, dock_columns_signals[DOCK_ADDED], 0, dock);
 }
 
 /**
@@ -405,21 +405,21 @@ gimp_dock_columns_prepare_dockbook (GimpDockColumns  *dock_columns,
                                     gint              dock_index,
                                     GtkWidget       **dockbook_p)
 {
-  GimpMenuFactory *menu_factory;
-  GtkWidget       *dock;
-  GtkWidget       *dockbook;
+    GimpMenuFactory *menu_factory;
+    GtkWidget       *dock;
+    GtkWidget       *dockbook;
 
-  dock = gimp_menu_dock_new ();
-  gimp_dock_columns_add_dock (dock_columns, GIMP_DOCK (dock), dock_index);
+    dock = gimp_menu_dock_new ();
+    gimp_dock_columns_add_dock (dock_columns, GIMP_DOCK (dock), dock_index);
 
-  menu_factory = gimp_dialog_factory_get_menu_factory (dock_columns->p->dialog_factory);
-  dockbook = gimp_dockbook_new (menu_factory);
-  gimp_dock_add_book (GIMP_DOCK (dock), GIMP_DOCKBOOK (dockbook), -1);
+    menu_factory = gimp_dialog_factory_get_menu_factory (dock_columns->p->dialog_factory);
+    dockbook = gimp_dockbook_new (menu_factory);
+    gimp_dock_add_book (GIMP_DOCK (dock), GIMP_DOCKBOOK (dockbook), -1);
 
-  gtk_widget_show (GTK_WIDGET (dock));
+    gtk_widget_show (GTK_WIDGET (dock));
 
-  if (dockbook_p)
-    *dockbook_p = dockbook;
+    if (dockbook_p)
+        *dockbook_p = dockbook;
 }
 
 
@@ -427,64 +427,64 @@ void
 gimp_dock_columns_remove_dock (GimpDockColumns *dock_columns,
                                GimpDock        *dock)
 {
-  g_return_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns));
-  g_return_if_fail (GIMP_IS_DOCK (dock));
+    g_return_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns));
+    g_return_if_fail (GIMP_IS_DOCK (dock));
 
-  GIMP_LOG (DND, "Removing GimpDock %p from GimpDockColumns %p", dock, dock_columns);
+    GIMP_LOG (DND, "Removing GimpDock %p from GimpDockColumns %p", dock, dock_columns);
 
-  dock_columns->p->docks = g_list_remove (dock_columns->p->docks, dock);
+    dock_columns->p->docks = g_list_remove (dock_columns->p->docks, dock);
 
-  gimp_dock_update_with_context (dock, NULL);
+    gimp_dock_update_with_context (dock, NULL);
 
-  g_signal_handlers_disconnect_by_func (dock,
-                                        gimp_dock_columns_dock_book_removed,
-                                        dock_columns);
+    g_signal_handlers_disconnect_by_func (dock,
+                                          gimp_dock_columns_dock_book_removed,
+                                          dock_columns);
 
-  g_object_ref (dock);
-  gimp_paned_box_remove_widget (GIMP_PANED_BOX (dock_columns->p->paned_hbox),
-                                GTK_WIDGET (dock));
+    g_object_ref (dock);
+    gimp_paned_box_remove_widget (GIMP_PANED_BOX (dock_columns->p->paned_hbox),
+                                  GTK_WIDGET (dock));
 
-  g_signal_emit (dock_columns, dock_columns_signals[DOCK_REMOVED], 0, dock);
-  g_object_unref (dock);
+    g_signal_emit (dock_columns, dock_columns_signals[DOCK_REMOVED], 0, dock);
+    g_object_unref (dock);
 }
 
 GList *
 gimp_dock_columns_get_docks (GimpDockColumns *dock_columns)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
 
-  return dock_columns->p->docks;
+    return dock_columns->p->docks;
 }
 
 GimpContext *
 gimp_dock_columns_get_context (GimpDockColumns *dock_columns)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
 
-  return dock_columns->p->context;
+    return dock_columns->p->context;
 }
 
 void
 gimp_dock_columns_set_context (GimpDockColumns *dock_columns,
                                GimpContext     *context)
 {
-  g_return_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns));
+    g_return_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns));
 
-  dock_columns->p->context = context;
+    dock_columns->p->context = context;
 }
 
 GimpDialogFactory *
 gimp_dock_columns_get_dialog_factory (GimpDockColumns *dock_columns)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
 
-  return dock_columns->p->dialog_factory;
+    return dock_columns->p->dialog_factory;
 }
 
 GimpUIManager *
 gimp_dock_columns_get_ui_manager (GimpDockColumns *dock_columns)
 {
-  g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
+    g_return_val_if_fail (GIMP_IS_DOCK_COLUMNS (dock_columns), NULL);
 
-  return dock_columns->p->ui_manager;
+    return dock_columns->p->ui_manager;
 }

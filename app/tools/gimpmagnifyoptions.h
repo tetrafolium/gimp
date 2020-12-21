@@ -35,10 +35,10 @@ typedef struct _GimpToolOptionsClass GimpMagnifyOptionsClass;
 
 struct _GimpMagnifyOptions
 {
-  GimpToolOptions   parent_instance;
+    GimpToolOptions   parent_instance;
 
-  gboolean          auto_resize;
-  GimpZoomType      zoom_type;
+    gboolean          auto_resize;
+    GimpZoomType      zoom_type;
 };
 
 

@@ -39,19 +39,19 @@ typedef struct _GimpControllerMouseClass GimpControllerMouseClass;
 
 struct _GimpControllerMouse
 {
-  GimpController parent_instance;
+    GimpController parent_instance;
 };
 
 struct _GimpControllerMouseClass
 {
-  GimpControllerClass parent_class;
+    GimpControllerClass parent_class;
 };
 
 
 GType      gimp_controller_mouse_get_type (void) G_GNUC_CONST;
 
 gboolean   gimp_controller_mouse_button   (GimpControllerMouse  *mouse,
-                                           const GdkEventButton *bevent);
+        const GdkEventButton *bevent);
 
 
 #endif /* __GIMP_CONTROLLER_MOUSE_H__ */

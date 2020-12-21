@@ -38,33 +38,33 @@ typedef struct _GimpContainerIconViewPrivate GimpContainerIconViewPrivate;
 
 struct _GimpContainerIconView
 {
-  GimpContainerBox              parent_instance;
+    GimpContainerBox              parent_instance;
 
-  GtkTreeModel                 *model;
-  gint                          n_model_columns;
-  GType                         model_columns[16];
+    GtkTreeModel                 *model;
+    gint                          n_model_columns;
+    GType                         model_columns[16];
 
-  GtkIconView                  *view;
+    GtkIconView                  *view;
 
-  GtkCellRenderer              *renderer_cell;
+    GtkCellRenderer              *renderer_cell;
 
-  Gimp                         *dnd_gimp; /* eek */
+    Gimp                         *dnd_gimp; /* eek */
 
-  GimpContainerIconViewPrivate *priv;
+    GimpContainerIconViewPrivate *priv;
 };
 
 struct _GimpContainerIconViewClass
 {
-  GimpContainerBoxClass  parent_class;
+    GimpContainerBoxClass  parent_class;
 };
 
 
 GType       gimp_container_icon_view_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_container_icon_view_new      (GimpContainer *container,
-                                               GimpContext   *context,
-                                               gint           view_size,
-                                               gint           view_border_width);
+        GimpContext   *context,
+        gint           view_size,
+        gint           view_border_width);
 
 
 #endif  /*  __GIMP_CONTAINER_ICON_VIEW_H__  */

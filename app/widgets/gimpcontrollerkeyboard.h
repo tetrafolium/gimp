@@ -38,19 +38,19 @@ typedef struct _GimpControllerKeyboardClass GimpControllerKeyboardClass;
 
 struct _GimpControllerKeyboard
 {
-  GimpController parent_instance;
+    GimpController parent_instance;
 };
 
 struct _GimpControllerKeyboardClass
 {
-  GimpControllerClass parent_class;
+    GimpControllerClass parent_class;
 };
 
 
 GType      gimp_controller_keyboard_get_type  (void) G_GNUC_CONST;
 
 gboolean   gimp_controller_keyboard_key_press (GimpControllerKeyboard *keyboard,
-                                               const GdkEventKey      *kevent);
+        const GdkEventKey      *kevent);
 
 
 #endif /* __GIMP_CONTROLLER_KEYBOARD_H__ */

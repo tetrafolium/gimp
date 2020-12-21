@@ -22,99 +22,99 @@
 /*  uri list  */
 
 void            gimp_selection_data_set_uri_list  (GtkSelectionData *selection,
-                                                   GList            *uris);
+        GList            *uris);
 GList         * gimp_selection_data_get_uri_list  (GtkSelectionData *selection);
 
 
 /*  color  */
 
 void            gimp_selection_data_set_color     (GtkSelectionData *selection,
-                                                   const GimpRGB    *color);
+        const GimpRGB    *color);
 gboolean        gimp_selection_data_get_color     (GtkSelectionData *selection,
-                                                   GimpRGB          *color);
+        GimpRGB          *color);
 
 
 /*  image (xcf)  */
 
 void            gimp_selection_data_set_xcf       (GtkSelectionData *selection,
-                                                   GimpImage        *image);
+        GimpImage        *image);
 GimpImage     * gimp_selection_data_get_xcf       (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 
 
 /*  stream (svg/png)  */
 
 void            gimp_selection_data_set_stream    (GtkSelectionData *selection,
-                                                   const guchar     *stream,
-                                                   gsize             stream_length);
+        const guchar     *stream,
+        gsize             stream_length);
 const guchar  * gimp_selection_data_get_stream    (GtkSelectionData *selection,
-                                                   gsize            *stream_length);
+        gsize            *stream_length);
 
 
 /*  curve  */
 
 void            gimp_selection_data_set_curve     (GtkSelectionData *selection,
-                                                   GimpCurve        *curve);
+        GimpCurve        *curve);
 GimpCurve     * gimp_selection_data_get_curve     (GtkSelectionData *selection);
 
 
 /*  image  */
 
 void            gimp_selection_data_set_image     (GtkSelectionData *selection,
-                                                   GimpImage        *image);
+        GimpImage        *image);
 GimpImage     * gimp_selection_data_get_image     (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 
 
 /*  component  */
 
 void            gimp_selection_data_set_component (GtkSelectionData *selection,
-                                                   GimpImage        *image,
-                                                   GimpChannelType   channel);
+        GimpImage        *image,
+        GimpChannelType   channel);
 GimpImage     * gimp_selection_data_get_component (GtkSelectionData *selection,
-                                                   Gimp             *gimp,
-                                                   GimpChannelType  *channel);
+        Gimp             *gimp,
+        GimpChannelType  *channel);
 
 
 /*  item  */
 
 void            gimp_selection_data_set_item      (GtkSelectionData *selection,
-                                                   GimpItem         *item);
+        GimpItem         *item);
 GimpItem      * gimp_selection_data_get_item      (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 
 
 /*  item list  */
 
 void            gimp_selection_data_set_item_list (GtkSelectionData *selection,
-                                                   GList            *items);
+        GList            *items);
 GList         * gimp_selection_data_get_item_list (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 
 
 /*  various data  */
 
 void            gimp_selection_data_set_object    (GtkSelectionData *selection,
-                                                   GimpObject       *object);
+        GimpObject       *object);
 
 GimpBrush     * gimp_selection_data_get_brush     (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpPattern   * gimp_selection_data_get_pattern   (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpGradient  * gimp_selection_data_get_gradient  (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpPalette   * gimp_selection_data_get_palette   (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpFont      * gimp_selection_data_get_font      (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpBuffer    * gimp_selection_data_get_buffer    (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpImagefile * gimp_selection_data_get_imagefile (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpTemplate  * gimp_selection_data_get_template  (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 GimpToolItem  * gimp_selection_data_get_tool_item (GtkSelectionData *selection,
-                                                   Gimp             *gimp);
+        Gimp             *gimp);
 
 
 #endif /* __GIMP_SELECTION_DATA_H__ */

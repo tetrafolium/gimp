@@ -35,17 +35,17 @@ typedef struct _GimpUnifiedTransformToolClass GimpUnifiedTransformToolClass;
 
 struct _GimpUnifiedTransformTool
 {
-  GimpGenericTransformTool  parent_instance;
+    GimpGenericTransformTool  parent_instance;
 };
 
 struct _GimpUnifiedTransformToolClass
 {
-  GimpGenericTransformToolClass  parent_class;
+    GimpGenericTransformToolClass  parent_class;
 };
 
 
 void    gimp_unified_transform_tool_register (GimpToolRegisterCallback  callback,
-                                              gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_unified_transform_tool_get_type (void) G_GNUC_CONST;
 

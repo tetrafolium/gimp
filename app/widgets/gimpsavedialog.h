@@ -37,20 +37,20 @@ typedef struct _GimpSaveDialogClass GimpSaveDialogClass;
 
 struct _GimpSaveDialog
 {
-  GimpFileDialog       parent_instance;
+    GimpFileDialog       parent_instance;
 
-  gboolean             save_a_copy;
-  gboolean             close_after_saving;
-  GimpObject          *display_to_close;
+    gboolean             save_a_copy;
+    gboolean             close_after_saving;
+    GimpObject          *display_to_close;
 
-  GtkWidget           *compression_frame;
-  GtkWidget           *compat_info;
-  gboolean             compression;
+    GtkWidget           *compression_frame;
+    GtkWidget           *compat_info;
+    gboolean             compression;
 };
 
 struct _GimpSaveDialogClass
 {
-  GimpFileDialogClass  parent_class;
+    GimpFileDialogClass  parent_class;
 };
 
 

@@ -36,30 +36,30 @@ typedef struct _GimpBrushFactoryViewClass  GimpBrushFactoryViewClass;
 
 struct _GimpBrushFactoryView
 {
-  GimpDataFactoryView  parent_instance;
+    GimpDataFactoryView  parent_instance;
 
-  GtkWidget           *spacing_scale;
-  GtkAdjustment       *spacing_adjustment;
+    GtkWidget           *spacing_scale;
+    GtkAdjustment       *spacing_adjustment;
 
-  gboolean             change_brush_spacing;
-  GQuark               spacing_changed_handler_id;
+    gboolean             change_brush_spacing;
+    GQuark               spacing_changed_handler_id;
 };
 
 struct _GimpBrushFactoryViewClass
 {
-  GimpDataFactoryViewClass  parent_class;
+    GimpDataFactoryViewClass  parent_class;
 };
 
 
 GType       gimp_brush_factory_view_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_brush_factory_view_new      (GimpViewType     view_type,
-                                              GimpDataFactory *factory,
-                                              GimpContext     *context,
-                                              gboolean         change_brush_spacing,
-                                              gint             view_size,
-                                              gint             view_border_width,
-                                              GimpMenuFactory *menu_factory);
+        GimpDataFactory *factory,
+        GimpContext     *context,
+        gboolean         change_brush_spacing,
+        gint             view_size,
+        gint             view_border_width,
+        GimpMenuFactory *menu_factory);
 
 
 #endif  /*  __GIMP_BRUSH_FACTORY_VIEW_H__  */

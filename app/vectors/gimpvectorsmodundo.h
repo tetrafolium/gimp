@@ -35,14 +35,14 @@ typedef struct _GimpVectorsModUndoClass GimpVectorsModUndoClass;
 
 struct _GimpVectorsModUndo
 {
-  GimpItemUndo  parent_instance;
+    GimpItemUndo  parent_instance;
 
-  GimpVectors  *vectors;
+    GimpVectors  *vectors;
 };
 
 struct _GimpVectorsModUndoClass
 {
-  GimpItemUndoClass  parent_class;
+    GimpItemUndoClass  parent_class;
 };
 
 

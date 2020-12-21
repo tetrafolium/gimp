@@ -32,24 +32,24 @@ void       gimp_text_tool_editor_position         (GimpTextTool        *text_too
 void       gimp_text_tool_editor_halt             (GimpTextTool        *text_tool);
 
 void       gimp_text_tool_editor_button_press     (GimpTextTool        *text_tool,
-                                                   gdouble              x,
-                                                   gdouble              y,
-                                                   GimpButtonPressType  press_type);
+        gdouble              x,
+        gdouble              y,
+        GimpButtonPressType  press_type);
 void       gimp_text_tool_editor_button_release   (GimpTextTool        *text_tool);
 void       gimp_text_tool_editor_motion           (GimpTextTool        *text_tool,
-                                                   gdouble              x,
-                                                   gdouble              y);
+        gdouble              x,
+        gdouble              y);
 gboolean   gimp_text_tool_editor_key_press        (GimpTextTool        *text_tool,
-                                                   GdkEventKey         *kevent);
+        GdkEventKey         *kevent);
 gboolean   gimp_text_tool_editor_key_release      (GimpTextTool        *text_tool,
-                                                   GdkEventKey         *kevent);
+        GdkEventKey         *kevent);
 
 void       gimp_text_tool_reset_im_context        (GimpTextTool        *text_tool);
 void       gimp_text_tool_abort_im_context        (GimpTextTool        *text_tool);
 
 void       gimp_text_tool_editor_get_cursor_rect  (GimpTextTool        *text_tool,
-                                                   gboolean             overwrite,
-                                                   PangoRectangle      *cursor_rect);
+        gboolean             overwrite,
+        PangoRectangle      *cursor_rect);
 void       gimp_text_tool_editor_update_im_cursor (GimpTextTool        *text_tool);
 
 

@@ -28,19 +28,19 @@
 typedef GimpContainer * (* GimpGetContainerFunc) (GimpImage *image);
 typedef GimpItem      * (* GimpGetItemFunc)      (GimpImage *image);
 typedef void            (* GimpSetItemFunc)      (GimpImage *image,
-                                                  GimpItem  *item);
+        GimpItem  *item);
 typedef GList         * (* GimpGetItemsFunc)     (GimpImage *image);
 typedef void            (* GimpSetItemsFunc)     (GimpImage *image,
-                                                  GList     *items);
+        GList     *items);
 typedef void            (* GimpAddItemFunc)      (GimpImage *image,
-                                                  GimpItem  *item,
-                                                  GimpItem  *parent,
-                                                  gint       index,
-                                                  gboolean   push_undo);
+        GimpItem  *item,
+        GimpItem  *parent,
+        gint       index,
+        gboolean   push_undo);
 typedef void            (* GimpRemoveItemFunc)   (GimpImage *image,
-                                                  GimpItem  *item,
-                                                  gboolean   push_undo,
-                                                  GimpItem  *new_active);
+        GimpItem  *item,
+        gboolean   push_undo,
+        GimpItem  *new_active);
 typedef GimpItem      * (* GimpNewItemFunc)      (GimpImage *image);
 
 
@@ -57,83 +57,83 @@ typedef struct _GimpItemTreeViewPrivate GimpItemTreeViewPrivate;
 
 struct _GimpItemTreeView
 {
-  GimpContainerTreeView    parent_instance;
+    GimpContainerTreeView    parent_instance;
 
-  GimpItemTreeViewPrivate *priv;
+    GimpItemTreeViewPrivate *priv;
 };
 
 struct _GimpItemTreeViewClass
 {
-  GimpContainerTreeViewClass  parent_class;
+    GimpContainerTreeViewClass  parent_class;
 
-  /*  signals  */
-  void (* set_image) (GimpItemTreeView *view,
-                      GimpImage        *image);
+    /*  signals  */
+    void (* set_image) (GimpItemTreeView *view,
+                        GimpImage        *image);
 
-  GType                 item_type;
-  const gchar          *signal_name;
+    GType                 item_type;
+    const gchar          *signal_name;
 
-  /*  virtual functions for manipulating the image's item tree  */
-  GimpGetContainerFunc  get_container;
-  GimpGetItemFunc       get_active_item;
-  GimpSetItemFunc       set_active_item;
-  GimpGetItemsFunc      get_selected_items;
-  GimpSetItemsFunc      set_selected_items;
-  GimpAddItemFunc       add_item;
-  GimpRemoveItemFunc    remove_item;
-  GimpNewItemFunc       new_item;
+    /*  virtual functions for manipulating the image's item tree  */
+    GimpGetContainerFunc  get_container;
+    GimpGetItemFunc       get_active_item;
+    GimpSetItemFunc       set_active_item;
+    GimpGetItemsFunc      get_selected_items;
+    GimpSetItemsFunc      set_selected_items;
+    GimpAddItemFunc       add_item;
+    GimpRemoveItemFunc    remove_item;
+    GimpNewItemFunc       new_item;
 
-  /*  action names  */
-  const gchar          *action_group;
-  const gchar          *activate_action;
-  const gchar          *new_action;
-  const gchar          *new_default_action;
-  const gchar          *raise_action;
-  const gchar          *raise_top_action;
-  const gchar          *lower_action;
-  const gchar          *lower_bottom_action;
-  const gchar          *duplicate_action;
-  const gchar          *delete_action;
+    /*  action names  */
+    const gchar          *action_group;
+    const gchar          *activate_action;
+    const gchar          *new_action;
+    const gchar          *new_default_action;
+    const gchar          *raise_action;
+    const gchar          *raise_top_action;
+    const gchar          *lower_action;
+    const gchar          *lower_bottom_action;
+    const gchar          *duplicate_action;
+    const gchar          *delete_action;
 
-  /*  lock content button appearance  */
-  const gchar          *lock_content_icon_name;
-  const gchar          *lock_content_tooltip;
-  const gchar          *lock_content_help_id;
+    /*  lock content button appearance  */
+    const gchar          *lock_content_icon_name;
+    const gchar          *lock_content_tooltip;
+    const gchar          *lock_content_help_id;
 
-  /* lock position (translation and transformation) button appearance */
-  const gchar          *lock_position_icon_name;
-  const gchar          *lock_position_tooltip;
-  const gchar          *lock_position_help_id;
+    /* lock position (translation and transformation) button appearance */
+    const gchar          *lock_position_icon_name;
+    const gchar          *lock_position_tooltip;
+    const gchar          *lock_position_help_id;
 };
 
 
 GType       gimp_item_tree_view_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * gimp_item_tree_view_new               (GType             view_type,
-                                                   gint              view_size,
-                                                   gint              view_border_width,
-                                                   gboolean          multiple_selection,
-                                                   GimpImage        *image,
-                                                   GimpMenuFactory  *menu_facotry,
-                                                   const gchar      *menu_identifier,
-                                                   const gchar      *ui_identifier);
+        gint              view_size,
+        gint              view_border_width,
+        gboolean          multiple_selection,
+        GimpImage        *image,
+        GimpMenuFactory  *menu_facotry,
+        const gchar      *menu_identifier,
+        const gchar      *ui_identifier);
 
 void        gimp_item_tree_view_set_image         (GimpItemTreeView *view,
-                                                   GimpImage        *image);
+        GimpImage        *image);
 GimpImage * gimp_item_tree_view_get_image         (GimpItemTreeView *view);
 
 void        gimp_item_tree_view_add_options       (GimpItemTreeView *view,
-                                                   const gchar      *label,
-                                                   GtkWidget        *options);
+        const gchar      *label,
+        GtkWidget        *options);
 GtkWidget * gimp_item_tree_view_get_lock_box      (GimpItemTreeView *view);
 
 GtkWidget * gimp_item_tree_view_get_new_button    (GimpItemTreeView *view);
 GtkWidget * gimp_item_tree_view_get_delete_button (GimpItemTreeView *view);
 
 gint        gimp_item_tree_view_get_drop_index    (GimpItemTreeView *view,
-                                                   GimpViewable     *dest_viewable,
-                                                   GtkTreeViewDropPosition drop_pos,
-                                                   GimpViewable    **parent);
+        GimpViewable     *dest_viewable,
+        GtkTreeViewDropPosition drop_pos,
+        GimpViewable    **parent);
 
 
 #endif  /*  __GIMP_ITEM_TREE_VIEW_H__  */

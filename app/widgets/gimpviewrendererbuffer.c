@@ -34,7 +34,7 @@
 
 
 static void   gimp_view_renderer_buffer_render (GimpViewRenderer *renderer,
-                                                GtkWidget        *widget);
+        GtkWidget        *widget);
 
 
 G_DEFINE_TYPE (GimpViewRendererBuffer, gimp_view_renderer_buffer,
@@ -46,9 +46,9 @@ G_DEFINE_TYPE (GimpViewRendererBuffer, gimp_view_renderer_buffer,
 static void
 gimp_view_renderer_buffer_class_init (GimpViewRendererBufferClass *klass)
 {
-  GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
+    GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
 
-  renderer_class->render = gimp_view_renderer_buffer_render;
+    renderer_class->render = gimp_view_renderer_buffer_render;
 }
 
 static void
@@ -60,58 +60,58 @@ static void
 gimp_view_renderer_buffer_render (GimpViewRenderer *renderer,
                                   GtkWidget        *widget)
 {
-  gint         buffer_width;
-  gint         buffer_height;
-  gint         view_width;
-  gint         view_height;
-  gboolean     scaling_up;
-  GimpTempBuf *render_buf = NULL;
+    gint         buffer_width;
+    gint         buffer_height;
+    gint         view_width;
+    gint         view_height;
+    gboolean     scaling_up;
+    GimpTempBuf *render_buf = NULL;
 
-  gimp_viewable_get_size (renderer->viewable, &buffer_width, &buffer_height);
+    gimp_viewable_get_size (renderer->viewable, &buffer_width, &buffer_height);
 
-  gimp_viewable_calc_preview_size (buffer_width,
-                                   buffer_height,
-                                   renderer->width,
-                                   renderer->height,
-                                   TRUE, 1.0, 1.0,
-                                   &view_width,
-                                   &view_height,
-                                   &scaling_up);
+    gimp_viewable_calc_preview_size (buffer_width,
+                                     buffer_height,
+                                     renderer->width,
+                                     renderer->height,
+                                     TRUE, 1.0, 1.0,
+                                     &view_width,
+                                     &view_height,
+                                     &scaling_up);
 
-  if (scaling_up)
+    if (scaling_up)
     {
-      GimpTempBuf *temp_buf;
+        GimpTempBuf *temp_buf;
 
-      temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
-                                                renderer->context,
-                                                buffer_width, buffer_height);
+        temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
+                   renderer->context,
+                   buffer_width, buffer_height);
 
-      if (temp_buf)
+        if (temp_buf)
         {
-          render_buf = gimp_temp_buf_scale (temp_buf, view_width, view_height);
+            render_buf = gimp_temp_buf_scale (temp_buf, view_width, view_height);
 
-          gimp_temp_buf_unref (temp_buf);
+            gimp_temp_buf_unref (temp_buf);
         }
     }
-  else
+    else
     {
-      render_buf = gimp_viewable_get_new_preview (renderer->viewable,
-                                                  renderer->context,
-                                                  view_width, view_height);
+        render_buf = gimp_viewable_get_new_preview (renderer->viewable,
+                     renderer->context,
+                     view_width, view_height);
     }
 
-  if (render_buf)
+    if (render_buf)
     {
-      gimp_view_renderer_render_temp_buf_simple (renderer, widget, render_buf);
+        gimp_view_renderer_render_temp_buf_simple (renderer, widget, render_buf);
 
-      gimp_temp_buf_unref (render_buf);
+        gimp_temp_buf_unref (render_buf);
     }
-  else /* no preview available */
+    else /* no preview available */
     {
-      const gchar *icon_name;
+        const gchar *icon_name;
 
-      icon_name = gimp_viewable_get_icon_name (renderer->viewable);
+        icon_name = gimp_viewable_get_icon_name (renderer->viewable);
 
-      gimp_view_renderer_render_icon (renderer, widget, icon_name);
+        gimp_view_renderer_render_icon (renderer, widget, icon_name);
     }
 }

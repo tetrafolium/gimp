@@ -29,31 +29,31 @@
  */
 struct _GimpSessionInfoDockable
 {
-  gchar        *identifier;
-  gboolean      locked;
-  GimpTabStyle  tab_style;
-  gint          view_size;
+    gchar        *identifier;
+    gboolean      locked;
+    GimpTabStyle  tab_style;
+    gint          view_size;
 
-  /*  dialog specific list of GimpSessionInfoAux  */
-  GList        *aux_info;
+    /*  dialog specific list of GimpSessionInfoAux  */
+    GList        *aux_info;
 };
 
 
 GimpSessionInfoDockable *
-               gimp_session_info_dockable_new         (void);
+gimp_session_info_dockable_new         (void);
 void           gimp_session_info_dockable_free        (GimpSessionInfoDockable  *info);
 
 void           gimp_session_info_dockable_serialize   (GimpConfigWriter         *writer,
-                                                       GimpSessionInfoDockable  *dockable);
+        GimpSessionInfoDockable  *dockable);
 GTokenType     gimp_session_info_dockable_deserialize (GScanner                 *scanner,
-                                                       gint                      scope,
-                                                       GimpSessionInfoDockable **dockable);
+        gint                      scope,
+        GimpSessionInfoDockable **dockable);
 
 GimpSessionInfoDockable *
-               gimp_session_info_dockable_from_widget (GimpDockable             *dockable);
+gimp_session_info_dockable_from_widget (GimpDockable             *dockable);
 
 GimpDockable * gimp_session_info_dockable_restore     (GimpSessionInfoDockable  *info,
-                                                       GimpDock                 *dock);
+        GimpDock                 *dock);
 
 
 #endif  /* __GIMP_SESSION_INFO_DOCKABLE_H__ */

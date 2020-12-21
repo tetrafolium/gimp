@@ -36,19 +36,19 @@ typedef struct _GimpFreeSelectToolClass   GimpFreeSelectToolClass;
 
 struct _GimpFreeSelectTool
 {
-  GimpPolygonSelectTool      parent_instance;
+    GimpPolygonSelectTool      parent_instance;
 
-  GimpFreeSelectToolPrivate *priv;
+    GimpFreeSelectToolPrivate *priv;
 };
 
 struct _GimpFreeSelectToolClass
 {
-  GimpPolygonSelectToolClass  parent_class;
+    GimpPolygonSelectToolClass  parent_class;
 };
 
 
 void    gimp_free_select_tool_register     (GimpToolRegisterCallback  callback,
-                                            gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_free_select_tool_get_type     (void) G_GNUC_CONST;
 

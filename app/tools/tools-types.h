@@ -46,21 +46,21 @@ typedef struct _GimpFilterOptions            GimpFilterOptions;
 /*  functions  */
 
 typedef void (* GimpToolRegisterCallback) (GType                     tool_type,
-                                           GType                     tool_option_type,
-                                           GimpToolOptionsGUIFunc    options_gui_func,
-                                           GimpContextPropMask       context_props,
-                                           const gchar              *identifier,
-                                           const gchar              *label,
-                                           const gchar              *tooltip,
-                                           const gchar              *menu_path,
-                                           const gchar              *menu_accel,
-                                           const gchar              *help_domain,
-                                           const gchar              *help_data,
-                                           const gchar              *icon_name,
-                                           gpointer                  register_data);
+        GType                     tool_option_type,
+        GimpToolOptionsGUIFunc    options_gui_func,
+        GimpContextPropMask       context_props,
+        const gchar              *identifier,
+        const gchar              *label,
+        const gchar              *tooltip,
+        const gchar              *menu_path,
+        const gchar              *menu_accel,
+        const gchar              *help_domain,
+        const gchar              *help_data,
+        const gchar              *icon_name,
+        gpointer                  register_data);
 
 typedef void (* GimpToolRegisterFunc)     (GimpToolRegisterCallback  callback,
-                                           gpointer                  register_data);
+        gpointer                  register_data);
 
 
 G_END_DECLS

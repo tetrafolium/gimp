@@ -35,23 +35,23 @@ typedef struct _GimpContainerEditorClass   GimpContainerEditorClass;
 
 struct _GimpContainerEditor
 {
-  GtkBox             parent_instance;
+    GtkBox             parent_instance;
 
-  GimpContainerView *view;
+    GimpContainerView *view;
 
-  GimpContainerEditorPrivate *priv;
+    GimpContainerEditorPrivate *priv;
 };
 
 struct _GimpContainerEditorClass
 {
-  GtkBoxClass  parent_class;
+    GtkBoxClass  parent_class;
 
-  void (* select_item)   (GimpContainerEditor *editor,
-                          GimpViewable        *object);
-  void (* activate_item) (GimpContainerEditor *editor,
-                          GimpViewable        *object);
-  void (* context_item)  (GimpContainerEditor *editor,
-                          GimpViewable        *object);
+    void (* select_item)   (GimpContainerEditor *editor,
+                            GimpViewable        *object);
+    void (* activate_item) (GimpContainerEditor *editor,
+                            GimpViewable        *object);
+    void (* context_item)  (GimpContainerEditor *editor,
+                            GimpViewable        *object);
 };
 
 
@@ -59,11 +59,11 @@ GType            gimp_container_editor_get_type           (void) G_GNUC_CONST;
 
 GtkSelectionMode gimp_container_editor_get_selection_mode (GimpContainerEditor *editor);
 void             gimp_container_editor_set_selection_mode (GimpContainerEditor *editor,
-                                                           GtkSelectionMode     mode);
+        GtkSelectionMode     mode);
 
 void             gimp_container_editor_bind_to_async_set  (GimpContainerEditor *editor,
-                                                           GimpAsyncSet        *async_set,
-                                                           const gchar         *message);
+        GimpAsyncSet        *async_set,
+        const gchar         *message);
 
 
 #endif  /*  __GIMP_CONTAINER_EDITOR_H__  */

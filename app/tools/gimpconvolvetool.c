@@ -38,21 +38,21 @@
 
 
 static void   gimp_convolve_tool_modifier_key  (GimpTool         *tool,
-                                                GdkModifierType   key,
-                                                gboolean          press,
-                                                GdkModifierType   state,
-                                                GimpDisplay      *display);
+        GdkModifierType   key,
+        gboolean          press,
+        GdkModifierType   state,
+        GimpDisplay      *display);
 static void   gimp_convolve_tool_cursor_update (GimpTool         *tool,
-                                                const GimpCoords *coords,
-                                                GdkModifierType   state,
-                                                GimpDisplay      *display);
+        const GimpCoords *coords,
+        GdkModifierType   state,
+        GimpDisplay      *display);
 static void   gimp_convolve_tool_oper_update   (GimpTool         *tool,
-                                                const GimpCoords *coords,
-                                                GdkModifierType   state,
-                                                gboolean          proximity,
-                                                GimpDisplay      *display);
+        const GimpCoords *coords,
+        GdkModifierType   state,
+        gboolean          proximity,
+        GimpDisplay      *display);
 static void   gimp_convolve_tool_status_update (GimpTool         *tool,
-                                                GimpConvolveType  type);
+        GimpConvolveType  type);
 
 static GtkWidget * gimp_convolve_options_gui   (GimpToolOptions  *options);
 
@@ -66,40 +66,40 @@ void
 gimp_convolve_tool_register (GimpToolRegisterCallback  callback,
                              gpointer                  data)
 {
-  (* callback) (GIMP_TYPE_CONVOLVE_TOOL,
-                GIMP_TYPE_CONVOLVE_OPTIONS,
-                gimp_convolve_options_gui,
-                GIMP_PAINT_OPTIONS_CONTEXT_MASK,
-                "gimp-convolve-tool",
-                _("Blur / Sharpen"),
-                _("Blur / Sharpen Tool: Selective blurring or unblurring using a brush"),
-                N_("Bl_ur / Sharpen"), "<shift>U",
-                NULL, GIMP_HELP_TOOL_CONVOLVE,
-                GIMP_ICON_TOOL_BLUR,
-                data);
+    (* callback) (GIMP_TYPE_CONVOLVE_TOOL,
+                  GIMP_TYPE_CONVOLVE_OPTIONS,
+                  gimp_convolve_options_gui,
+                  GIMP_PAINT_OPTIONS_CONTEXT_MASK,
+                  "gimp-convolve-tool",
+                  _("Blur / Sharpen"),
+                  _("Blur / Sharpen Tool: Selective blurring or unblurring using a brush"),
+                  N_("Bl_ur / Sharpen"), "<shift>U",
+                  NULL, GIMP_HELP_TOOL_CONVOLVE,
+                  GIMP_ICON_TOOL_BLUR,
+                  data);
 }
 
 static void
 gimp_convolve_tool_class_init (GimpConvolveToolClass *klass)
 {
-  GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
+    GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
 
-  tool_class->modifier_key  = gimp_convolve_tool_modifier_key;
-  tool_class->cursor_update = gimp_convolve_tool_cursor_update;
-  tool_class->oper_update   = gimp_convolve_tool_oper_update;
+    tool_class->modifier_key  = gimp_convolve_tool_modifier_key;
+    tool_class->cursor_update = gimp_convolve_tool_cursor_update;
+    tool_class->oper_update   = gimp_convolve_tool_oper_update;
 }
 
 static void
 gimp_convolve_tool_init (GimpConvolveTool *convolve)
 {
-  GimpTool *tool = GIMP_TOOL (convolve);
+    GimpTool *tool = GIMP_TOOL (convolve);
 
-  gimp_tool_control_set_tool_cursor            (tool->control,
-                                                GIMP_TOOL_CURSOR_BLUR);
-  gimp_tool_control_set_toggle_cursor_modifier (tool->control,
-                                                GIMP_CURSOR_MODIFIER_MINUS);
+    gimp_tool_control_set_tool_cursor            (tool->control,
+            GIMP_TOOL_CURSOR_BLUR);
+    gimp_tool_control_set_toggle_cursor_modifier (tool->control,
+            GIMP_CURSOR_MODIFIER_MINUS);
 
-  gimp_convolve_tool_status_update (tool, GIMP_CONVOLVE_BLUR);
+    gimp_convolve_tool_status_update (tool, GIMP_CONVOLVE_BLUR);
 }
 
 static void
@@ -109,33 +109,33 @@ gimp_convolve_tool_modifier_key (GimpTool        *tool,
                                  GdkModifierType  state,
                                  GimpDisplay     *display)
 {
-  GimpConvolveTool    *convolve    = GIMP_CONVOLVE_TOOL (tool);
-  GimpConvolveOptions *options     = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
-  GdkModifierType      line_mask   = GIMP_PAINT_TOOL_LINE_MASK;
-  GdkModifierType      toggle_mask = gimp_get_toggle_behavior_mask ();
+    GimpConvolveTool    *convolve    = GIMP_CONVOLVE_TOOL (tool);
+    GimpConvolveOptions *options     = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
+    GdkModifierType      line_mask   = GIMP_PAINT_TOOL_LINE_MASK;
+    GdkModifierType      toggle_mask = gimp_get_toggle_behavior_mask ();
 
-  if (((key == toggle_mask)  &&
-       ! (state & line_mask) && /* leave stuff untouched in line draw mode */
-       press != convolve->toggled)
+    if (((key == toggle_mask)  &&
+            ! (state & line_mask) && /* leave stuff untouched in line draw mode */
+            press != convolve->toggled)
 
-      ||
+            ||
 
-      (key == line_mask  && /* toggle back after keypresses CTRL(hold)->  */
-       ! press           && /* SHIFT(hold)->CTRL(release)->SHIFT(release) */
-       convolve->toggled &&
-       ! (state & toggle_mask)))
+            (key == line_mask  && /* toggle back after keypresses CTRL(hold)->  */
+             ! press           && /* SHIFT(hold)->CTRL(release)->SHIFT(release) */
+             convolve->toggled &&
+             ! (state & toggle_mask)))
     {
-      convolve->toggled = press;
+        convolve->toggled = press;
 
-      switch (options->type)
+        switch (options->type)
         {
         case GIMP_CONVOLVE_BLUR:
-          g_object_set (options, "type", GIMP_CONVOLVE_SHARPEN, NULL);
-          break;
+            g_object_set (options, "type", GIMP_CONVOLVE_SHARPEN, NULL);
+            break;
 
         case GIMP_CONVOLVE_SHARPEN:
-          g_object_set (options, "type", GIMP_CONVOLVE_BLUR, NULL);
-          break;
+            g_object_set (options, "type", GIMP_CONVOLVE_BLUR, NULL);
+            break;
         }
     }
 }
@@ -146,12 +146,12 @@ gimp_convolve_tool_cursor_update (GimpTool         *tool,
                                   GdkModifierType   state,
                                   GimpDisplay      *display)
 {
-  GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
+    GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
 
-  gimp_tool_control_set_toggled (tool->control,
-                                 options->type == GIMP_CONVOLVE_SHARPEN);
+    gimp_tool_control_set_toggled (tool->control,
+                                   options->type == GIMP_CONVOLVE_SHARPEN);
 
-  GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
+    GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
 }
 
 static void
@@ -161,36 +161,36 @@ gimp_convolve_tool_oper_update (GimpTool         *tool,
                                 gboolean          proximity,
                                 GimpDisplay      *display)
 {
-  GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
+    GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
 
-  gimp_convolve_tool_status_update (tool, options->type);
+    gimp_convolve_tool_status_update (tool, options->type);
 
-  GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
-                                               display);
+    GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
+            display);
 }
 
 static void
 gimp_convolve_tool_status_update (GimpTool         *tool,
                                   GimpConvolveType  type)
 {
-  GimpPaintTool *paint_tool = GIMP_PAINT_TOOL (tool);
+    GimpPaintTool *paint_tool = GIMP_PAINT_TOOL (tool);
 
-  switch (type)
+    switch (type)
     {
     case GIMP_CONVOLVE_BLUR:
-      paint_tool->status      = _("Click to blur");
-      paint_tool->status_line = _("Click to blur the line");
-      paint_tool->status_ctrl = _("%s to sharpen");
-      break;
+        paint_tool->status      = _("Click to blur");
+        paint_tool->status_line = _("Click to blur the line");
+        paint_tool->status_ctrl = _("%s to sharpen");
+        break;
 
     case GIMP_CONVOLVE_SHARPEN:
-      paint_tool->status      = _("Click to sharpen");
-      paint_tool->status_line = _("Click to sharpen the line");
-      paint_tool->status_ctrl = _("%s to blur");
-      break;
+        paint_tool->status      = _("Click to sharpen");
+        paint_tool->status_line = _("Click to sharpen the line");
+        paint_tool->status_ctrl = _("%s to blur");
+        break;
 
     default:
-      break;
+        break;
     }
 }
 
@@ -200,29 +200,29 @@ gimp_convolve_tool_status_update (GimpTool         *tool,
 static GtkWidget *
 gimp_convolve_options_gui (GimpToolOptions *tool_options)
 {
-  GObject         *config = G_OBJECT (tool_options);
-  GtkWidget       *vbox   = gimp_paint_options_gui (tool_options);
-  GtkWidget       *frame;
-  GtkWidget       *scale;
-  gchar           *str;
-  GdkModifierType  toggle_mask;
+    GObject         *config = G_OBJECT (tool_options);
+    GtkWidget       *vbox   = gimp_paint_options_gui (tool_options);
+    GtkWidget       *frame;
+    GtkWidget       *scale;
+    gchar           *str;
+    GdkModifierType  toggle_mask;
 
-  toggle_mask = gimp_get_toggle_behavior_mask ();
+    toggle_mask = gimp_get_toggle_behavior_mask ();
 
-  /*  the type radio box  */
-  str = g_strdup_printf (_("Convolve Type  (%s)"),
-                         gimp_get_mod_string (toggle_mask));
+    /*  the type radio box  */
+    str = g_strdup_printf (_("Convolve Type  (%s)"),
+                           gimp_get_mod_string (toggle_mask));
 
-  frame = gimp_prop_enum_radio_frame_new (config, "type",
-                                          str, 0, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+    frame = gimp_prop_enum_radio_frame_new (config, "type",
+                                            str, 0, 0);
+    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  g_free (str);
+    g_free (str);
 
-  /*  the rate scale  */
-  scale = gimp_prop_spin_scale_new (config, "rate", NULL,
-                                    1.0, 10.0, 1);
-  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+    /*  the rate scale  */
+    scale = gimp_prop_spin_scale_new (config, "rate", NULL,
+                                      1.0, 10.0, 1);
+    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
-  return vbox;
+    return vbox;
 }

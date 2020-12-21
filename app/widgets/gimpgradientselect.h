@@ -38,14 +38,14 @@ typedef struct _GimpGradientSelectClass  GimpGradientSelectClass;
 
 struct _GimpGradientSelect
 {
-  GimpPdbDialog  parent_instance;
+    GimpPdbDialog  parent_instance;
 
-  gint           sample_size;
+    gint           sample_size;
 };
 
 struct _GimpGradientSelectClass
 {
-  GimpPdbDialogClass  parent_class;
+    GimpPdbDialogClass  parent_class;
 };
 
 

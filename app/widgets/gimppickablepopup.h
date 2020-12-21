@@ -38,22 +38,22 @@ typedef struct _GimpPickablePopupClass   GimpPickablePopupClass;
 
 struct _GimpPickablePopup
 {
-  GimpPopup                 parent_instance;
+    GimpPopup                 parent_instance;
 
-  GimpPickablePopupPrivate *priv;
+    GimpPickablePopupPrivate *priv;
 };
 
 struct _GimpPickablePopupClass
 {
-  GimpPopupClass  parent_instance;
+    GimpPopupClass  parent_instance;
 };
 
 
 GType          gimp_pickable_popup_get_type     (void) G_GNUC_CONST;
 
 GtkWidget    * gimp_pickable_popup_new          (GimpContext       *context,
-                                                 gint               view_size,
-                                                 gint               view_border_width);
+        gint               view_size,
+        gint               view_border_width);
 
 GimpPickable * gimp_pickable_popup_get_pickable (GimpPickablePopup *popup);
 

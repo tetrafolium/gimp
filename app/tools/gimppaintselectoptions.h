@@ -36,16 +36,16 @@ typedef struct _GimpPaintSelectOptionsClass GimpPaintSelectOptionsClass;
 
 struct _GimpPaintSelectOptions
 {
-  GimpToolOptions        parent_instance;
+    GimpToolOptions        parent_instance;
 
-  GimpPaintSelectMode    mode;
-  gint                   stroke_width;
-  gboolean               show_scribbles;
+    GimpPaintSelectMode    mode;
+    gint                   stroke_width;
+    gboolean               show_scribbles;
 };
 
 struct _GimpPaintSelectOptionsClass
 {
-  GimpToolOptionsClass  parent_class;
+    GimpToolOptionsClass  parent_class;
 };
 
 

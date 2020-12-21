@@ -58,34 +58,34 @@ gimp_vectors_warp_point (GimpVectors *vectors,
                          GimpCoords  *point_warped,
                          gdouble      y_offset)
 {
-  gdouble     x      = point->x;
-  gdouble     y      = point->y;
-  gdouble     len;
-  GList      *list;
-  GimpStroke *stroke;
+    gdouble     x      = point->x;
+    gdouble     y      = point->y;
+    gdouble     len;
+    GList      *list;
+    GimpStroke *stroke;
 
-  for (list = vectors->strokes->head;
-       list;
-       list = g_list_next (list))
+    for (list = vectors->strokes->head;
+            list;
+            list = g_list_next (list))
     {
-      stroke = list->data;
+        stroke = list->data;
 
-      len = gimp_vectors_stroke_get_length (vectors, stroke);
+        len = gimp_vectors_stroke_get_length (vectors, stroke);
 
-      if (x < len || ! list->next)
-        break;
+        if (x < len || ! list->next)
+            break;
 
-      x -= len;
+        x -= len;
     }
 
-  if (! list)
+    if (! list)
     {
-      point_warped->x = 0;
-      point_warped->y = 0;
-      return;
+        point_warped->x = 0;
+        point_warped->y = 0;
+        return;
     }
 
-  gimp_stroke_warp_point (stroke, x, y, point_warped, y_offset, len);
+    gimp_stroke_warp_point (stroke, x, y, point_warped, y_offset, len);
 }
 
 static void
@@ -96,83 +96,83 @@ gimp_stroke_warp_point (GimpStroke *stroke,
                         gdouble     y_offset,
                         gdouble     x_len)
 {
-  GimpCoords point_zero  = { 0, };
-  GimpCoords point_minus = { 0, };
-  GimpCoords point_plus  = { 0, };
-  gdouble    slope;
-  gdouble    dx, dy, nx, ny, len;
+    GimpCoords point_zero  = { 0, };
+    GimpCoords point_minus = { 0, };
+    GimpCoords point_plus  = { 0, };
+    gdouble    slope;
+    gdouble    dx, dy, nx, ny, len;
 
-  if (x + DX >= x_len)
+    if (x + DX >= x_len)
     {
-      gdouble tx, ty;
+        gdouble tx, ty;
 
-      if (! gimp_stroke_get_point_at_dist (stroke, x_len, EPSILON,
-                                           &point_zero, &slope))
+        if (! gimp_stroke_get_point_at_dist (stroke, x_len, EPSILON,
+                                             &point_zero, &slope))
         {
-          point_warped->x = 0;
-          point_warped->y = 0;
-          return;
+            point_warped->x = 0;
+            point_warped->y = 0;
+            return;
         }
 
-      point_warped->x = point_zero.x;
-      point_warped->y = point_zero.y;
+        point_warped->x = point_zero.x;
+        point_warped->y = point_zero.y;
 
-      if (! gimp_stroke_get_point_at_dist (stroke, x_len - DX, EPSILON,
-                                           &point_minus, &slope))
+        if (! gimp_stroke_get_point_at_dist (stroke, x_len - DX, EPSILON,
+                                             &point_minus, &slope))
+            return;
+
+        dx = point_zero.x - point_minus.x;
+        dy = point_zero.y - point_minus.y;
+
+        len = hypot (dx, dy);
+
+        if (len < 0.01)
+            return;
+
+        tx = dx / len;
+        ty = dy / len;
+
+        nx = - dy / len;
+        ny =   dx / len;
+
+        point_warped->x += tx * (x - x_len) + nx * (y - y_offset);
+        point_warped->y += ty * (x - x_len) + ny * (y - y_offset);
+
         return;
-
-      dx = point_zero.x - point_minus.x;
-      dy = point_zero.y - point_minus.y;
-
-      len = hypot (dx, dy);
-
-      if (len < 0.01)
-        return;
-
-      tx = dx / len;
-      ty = dy / len;
-
-      nx = - dy / len;
-      ny =   dx / len;
-
-      point_warped->x += tx * (x - x_len) + nx * (y - y_offset);
-      point_warped->y += ty * (x - x_len) + ny * (y - y_offset);
-
-      return;
     }
 
-  if (! gimp_stroke_get_point_at_dist (stroke, x, EPSILON,
-                                       &point_zero, &slope))
+    if (! gimp_stroke_get_point_at_dist (stroke, x, EPSILON,
+                                         &point_zero, &slope))
     {
-      point_warped->x = 0;
-      point_warped->y = 0;
-      return;
+        point_warped->x = 0;
+        point_warped->y = 0;
+        return;
     }
 
-  point_warped->x = point_zero.x;
-  point_warped->y = point_zero.y;
+    point_warped->x = point_zero.x;
+    point_warped->y = point_zero.y;
 
-  if (! gimp_stroke_get_point_at_dist (stroke, x - DX, EPSILON,
-                                       &point_minus, &slope))
-    return;
+    if (! gimp_stroke_get_point_at_dist (stroke, x - DX, EPSILON,
+                                         &point_minus, &slope))
+        return;
 
-  if (! gimp_stroke_get_point_at_dist (stroke, x + DX, EPSILON,
-                                       &point_plus, &slope))
-    return;
+    if (! gimp_stroke_get_point_at_dist (stroke, x + DX, EPSILON,
+                                         &point_plus, &slope))
+        return;
 
-  dx = point_plus.x - point_minus.x;
-  dy = point_plus.y - point_minus.y;
+    dx = point_plus.x - point_minus.x;
+    dy = point_plus.y - point_minus.y;
 
-  len = hypot (dx, dy);
+    len = hypot (dx, dy);
 
-  if (len < 0.01)
-    return;
+    if (len < 0.01)
+        return;
 
-  nx = - dy / len;
-  ny =   dx / len;
+    nx = - dy / len;
+    ny =   dx / len;
 
-  point_warped->x = point_zero.x + nx * (y - y_offset);
-  point_warped->y = point_zero.y + ny * (y - y_offset);
+    point_warped->x = point_zero.x + nx * (y - y_offset);
+    point_warped->y = point_zero.y + ny * (y - y_offset);
 }
 
 static void
@@ -180,15 +180,15 @@ gimp_vectors_warp_stroke (GimpVectors *vectors,
                           GimpStroke  *stroke,
                           gdouble      y_offset)
 {
-  GList *list;
+    GList *list;
 
-  for (list = stroke->anchors->head; list; list = g_list_next (list))
+    for (list = stroke->anchors->head; list; list = g_list_next (list))
     {
-      GimpAnchor *anchor = list->data;
+        GimpAnchor *anchor = list->data;
 
-      gimp_vectors_warp_point (vectors,
-                               &anchor->position, &anchor->position,
-                               y_offset);
+        gimp_vectors_warp_point (vectors,
+                                 &anchor->position, &anchor->position,
+                                 y_offset);
     }
 }
 
@@ -197,14 +197,14 @@ gimp_vectors_warp_vectors (GimpVectors *vectors,
                            GimpVectors *vectors_in,
                            gdouble      y_offset)
 {
-  GList *list;
+    GList *list;
 
-  for (list = vectors_in->strokes->head;
-       list;
-       list = g_list_next (list))
+    for (list = vectors_in->strokes->head;
+            list;
+            list = g_list_next (list))
     {
-      GimpStroke *stroke = list->data;
+        GimpStroke *stroke = list->data;
 
-      gimp_vectors_warp_stroke (vectors, stroke, y_offset);
+        gimp_vectors_warp_stroke (vectors, stroke, y_offset);
     }
 }

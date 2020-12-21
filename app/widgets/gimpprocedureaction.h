@@ -37,25 +37,25 @@ typedef struct _GimpProcedureActionClass GimpProcedureActionClass;
 
 struct _GimpProcedureAction
 {
-  GimpActionImpl  parent_instance;
+    GimpActionImpl  parent_instance;
 
-  GimpProcedure  *procedure;
+    GimpProcedure  *procedure;
 };
 
 struct _GimpProcedureActionClass
 {
-  GimpActionImplClass parent_class;
+    GimpActionImplClass parent_class;
 };
 
 
 GType                 gimp_procedure_action_get_type (void) G_GNUC_CONST;
 
 GimpProcedureAction * gimp_procedure_action_new      (const gchar   *name,
-                                                      const gchar   *label,
-                                                      const gchar   *tooltip,
-                                                      const gchar   *icon_name,
-                                                      const gchar   *help_id,
-                                                      GimpProcedure *procedure);
+        const gchar   *label,
+        const gchar   *tooltip,
+        const gchar   *icon_name,
+        const gchar   *help_id,
+        GimpProcedure *procedure);
 
 
 #endif  /* __GIMP_PROCEDURE_ACTION_H__ */

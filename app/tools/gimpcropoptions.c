@@ -38,89 +38,89 @@
 
 enum
 {
-  PROP_LAYER_ONLY = GIMP_RECTANGLE_OPTIONS_PROP_LAST + 1,
-  PROP_ALLOW_GROWING,
-  PROP_FILL_TYPE,
-  PROP_DELETE_PIXELS
+    PROP_LAYER_ONLY = GIMP_RECTANGLE_OPTIONS_PROP_LAST + 1,
+    PROP_ALLOW_GROWING,
+    PROP_FILL_TYPE,
+    PROP_DELETE_PIXELS
 };
 
 
 static void   gimp_crop_options_rectangle_options_iface_init (GimpRectangleOptionsInterface *iface);
 
 static void   gimp_crop_options_set_property (GObject      *object,
-                                              guint         property_id,
-                                              const GValue *value,
-                                              GParamSpec   *pspec);
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec);
 static void   gimp_crop_options_get_property (GObject      *object,
-                                              guint         property_id,
-                                              GValue       *value,
-                                              GParamSpec   *pspec);
+        guint         property_id,
+        GValue       *value,
+        GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpCropOptions, gimp_crop_options,
                          GIMP_TYPE_TOOL_OPTIONS,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_RECTANGLE_OPTIONS,
-                                                gimp_crop_options_rectangle_options_iface_init))
+                                 gimp_crop_options_rectangle_options_iface_init))
 
 
 static void
 gimp_crop_options_class_init (GimpCropOptionsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_crop_options_set_property;
-  object_class->get_property = gimp_crop_options_get_property;
+    object_class->set_property = gimp_crop_options_set_property;
+    object_class->get_property = gimp_crop_options_get_property;
 
-  /* The 'highlight' property is defined here because we want different
-   * default values for the Crop and the Rectangle Select tools.
-   */
-  GIMP_CONFIG_PROP_BOOLEAN (object_class,
-                            GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT,
-                            "highlight",
-                            _("Highlight"),
-                            _("Dim everything outside selection"),
-                            TRUE,
-                            GIMP_PARAM_STATIC_STRINGS);
+    /* The 'highlight' property is defined here because we want different
+     * default values for the Crop and the Rectangle Select tools.
+     */
+    GIMP_CONFIG_PROP_BOOLEAN (object_class,
+                              GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT,
+                              "highlight",
+                              _("Highlight"),
+                              _("Dim everything outside selection"),
+                              TRUE,
+                              GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_DOUBLE (object_class,
-                           GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT_OPACITY,
-                           "highlight-opacity",
-                           _("Highlight opacity"),
-                           _("How much to dim everything outside selection"),
-                           0.0, 1.0, 0.5,
+    GIMP_CONFIG_PROP_DOUBLE (object_class,
+                             GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT_OPACITY,
+                             "highlight-opacity",
+                             _("Highlight opacity"),
+                             _("How much to dim everything outside selection"),
+                             0.0, 1.0, 0.5,
+                             GIMP_PARAM_STATIC_STRINGS);
+
+    GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_LAYER_ONLY,
+                              "layer-only",
+                              _("Current layers only"),
+                              _("Crop only currently selected layers"),
+                              FALSE,
+                              GIMP_PARAM_STATIC_STRINGS);
+
+    GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_DELETE_PIXELS,
+                              "delete-pixels",
+                              _("Delete cropped pixels"),
+                              _("Discard non-locked layer data that falls out of the crop region"),
+                              FALSE,
+                              GIMP_PARAM_STATIC_STRINGS);
+
+    GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_ALLOW_GROWING,
+                              "allow-growing",
+                              _("Allow growing"),
+                              _("Allow resizing canvas by dragging cropping frame "
+                                "beyond image boundary"),
+                              FALSE,
+                              GIMP_PARAM_STATIC_STRINGS);
+
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_FILL_TYPE,
+                           "fill-type",
+                           _("Fill with"),
+                           _("How to fill new areas created by 'Allow growing'"),
+                           GIMP_TYPE_FILL_TYPE,
+                           GIMP_FILL_TRANSPARENT,
                            GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_LAYER_ONLY,
-                            "layer-only",
-                            _("Current layers only"),
-                            _("Crop only currently selected layers"),
-                            FALSE,
-                            GIMP_PARAM_STATIC_STRINGS);
-
-  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_DELETE_PIXELS,
-                            "delete-pixels",
-                            _("Delete cropped pixels"),
-                            _("Discard non-locked layer data that falls out of the crop region"),
-                            FALSE,
-                            GIMP_PARAM_STATIC_STRINGS);
-
-  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_ALLOW_GROWING,
-                            "allow-growing",
-                            _("Allow growing"),
-                            _("Allow resizing canvas by dragging cropping frame "
-                              "beyond image boundary"),
-                            FALSE,
-                            GIMP_PARAM_STATIC_STRINGS);
-
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_FILL_TYPE,
-                         "fill-type",
-                         _("Fill with"),
-                         _("How to fill new areas created by 'Allow growing'"),
-                         GIMP_TYPE_FILL_TYPE,
-                         GIMP_FILL_TRANSPARENT,
-                         GIMP_PARAM_STATIC_STRINGS);
-
-  gimp_rectangle_options_install_properties (object_class);
+    gimp_rectangle_options_install_properties (object_class);
 }
 
 static void
@@ -139,29 +139,29 @@ gimp_crop_options_set_property (GObject      *object,
                                 const GValue *value,
                                 GParamSpec   *pspec)
 {
-  GimpCropOptions *options = GIMP_CROP_OPTIONS (object);
+    GimpCropOptions *options = GIMP_CROP_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_LAYER_ONLY:
-      options->layer_only = g_value_get_boolean (value);
-      break;
+        options->layer_only = g_value_get_boolean (value);
+        break;
 
     case PROP_DELETE_PIXELS:
-      options->delete_pixels = g_value_get_boolean (value);
-      break;
+        options->delete_pixels = g_value_get_boolean (value);
+        break;
 
     case PROP_ALLOW_GROWING:
-      options->allow_growing = g_value_get_boolean (value);
-      break;
+        options->allow_growing = g_value_get_boolean (value);
+        break;
 
     case PROP_FILL_TYPE:
-      options->fill_type = g_value_get_enum (value);
-      break;
+        options->fill_type = g_value_get_enum (value);
+        break;
 
     default:
-      gimp_rectangle_options_set_property (object, property_id, value, pspec);
-      break;
+        gimp_rectangle_options_set_property (object, property_id, value, pspec);
+        break;
     }
 }
 
@@ -171,69 +171,69 @@ gimp_crop_options_get_property (GObject    *object,
                                 GValue     *value,
                                 GParamSpec *pspec)
 {
-  GimpCropOptions *options = GIMP_CROP_OPTIONS (object);
+    GimpCropOptions *options = GIMP_CROP_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_LAYER_ONLY:
-      g_value_set_boolean (value, options->layer_only);
-      break;
+        g_value_set_boolean (value, options->layer_only);
+        break;
 
     case PROP_DELETE_PIXELS:
-      g_value_set_boolean (value, options->delete_pixels);
-      break;
+        g_value_set_boolean (value, options->delete_pixels);
+        break;
 
     case PROP_ALLOW_GROWING:
-      g_value_set_boolean (value, options->allow_growing);
-      break;
+        g_value_set_boolean (value, options->allow_growing);
+        break;
 
     case PROP_FILL_TYPE:
-      g_value_set_enum (value, options->fill_type);
-      break;
+        g_value_set_enum (value, options->fill_type);
+        break;
 
     default:
-      gimp_rectangle_options_get_property (object, property_id, value, pspec);
-      break;
+        gimp_rectangle_options_get_property (object, property_id, value, pspec);
+        break;
     }
 }
 
 GtkWidget *
 gimp_crop_options_gui (GimpToolOptions *tool_options)
 {
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_tool_options_gui (tool_options);
-  GtkWidget *vbox_rectangle;
-  GtkWidget *button;
-  GtkWidget *button2;
-  GtkWidget *combo;
-  GtkWidget *frame;
+    GObject   *config = G_OBJECT (tool_options);
+    GtkWidget *vbox   = gimp_tool_options_gui (tool_options);
+    GtkWidget *vbox_rectangle;
+    GtkWidget *button;
+    GtkWidget *button2;
+    GtkWidget *combo;
+    GtkWidget *frame;
 
-  /*  layer toggle  */
-  button = gimp_prop_check_button_new (config, "layer-only", NULL);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+    /*  layer toggle  */
+    button = gimp_prop_check_button_new (config, "layer-only", NULL);
+    gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
 
-  /*  delete pixels toggle  */
-  button2 = gimp_prop_check_button_new (config, "delete-pixels", NULL);
-  gtk_box_pack_start (GTK_BOX (vbox), button2, FALSE, FALSE, 0);
+    /*  delete pixels toggle  */
+    button2 = gimp_prop_check_button_new (config, "delete-pixels", NULL);
+    gtk_box_pack_start (GTK_BOX (vbox), button2, FALSE, FALSE, 0);
 
-  g_object_bind_property (G_OBJECT (config),  "layer-only",
-                          G_OBJECT (button2), "sensitive",
-                          G_BINDING_SYNC_CREATE |
-                          G_BINDING_INVERT_BOOLEAN);
+    g_object_bind_property (G_OBJECT (config),  "layer-only",
+                            G_OBJECT (button2), "sensitive",
+                            G_BINDING_SYNC_CREATE |
+                            G_BINDING_INVERT_BOOLEAN);
 
-  /*  fill type combo  */
-  combo = gimp_prop_enum_combo_box_new (config, "fill-type", 0, 0);
-  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Fill with"));
+    /*  fill type combo  */
+    combo = gimp_prop_enum_combo_box_new (config, "fill-type", 0, 0);
+    gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Fill with"));
 
-  /*  allow growing toggle/frame  */
-  frame = gimp_prop_expanding_frame_new (config, "allow-growing", NULL,
-                                         combo, NULL);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+    /*  allow growing toggle/frame  */
+    frame = gimp_prop_expanding_frame_new (config, "allow-growing", NULL,
+                                           combo, NULL);
+    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  /*  rectangle options  */
-  vbox_rectangle = gimp_rectangle_options_gui (tool_options);
-  gtk_box_pack_start (GTK_BOX (vbox), vbox_rectangle, FALSE, FALSE, 0);
-  gtk_widget_show (vbox_rectangle);
+    /*  rectangle options  */
+    vbox_rectangle = gimp_rectangle_options_gui (tool_options);
+    gtk_box_pack_start (GTK_BOX (vbox), vbox_rectangle, FALSE, FALSE, 0);
+    gtk_widget_show (vbox_rectangle);
 
-  return vbox;
+    return vbox;
 }

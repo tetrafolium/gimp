@@ -26,7 +26,7 @@ void             gimp_controllers_init           (Gimp          *gimp);
 void             gimp_controllers_exit           (Gimp          *gimp);
 
 void             gimp_controllers_restore        (Gimp          *gimp,
-                                                  GimpUIManager *ui_manager);
+        GimpUIManager *ui_manager);
 void             gimp_controllers_save           (Gimp          *gimp);
 
 GimpContainer  * gimp_controllers_get_list       (Gimp          *gimp);

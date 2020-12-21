@@ -35,12 +35,12 @@ typedef struct _GimpToolOptionsClass GimpFlipOptionsClass;
 
 struct _GimpFlipOptions
 {
-  GimpTransformOptions  parent_instance;
+    GimpTransformOptions  parent_instance;
 
-  GimpOrientationType   flip_type;
+    GimpOrientationType   flip_type;
 
-  /*  options gui  */
-  GtkWidget            *direction_frame;
+    /*  options gui  */
+    GtkWidget            *direction_frame;
 };
 
 

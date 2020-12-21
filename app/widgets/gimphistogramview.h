@@ -31,29 +31,29 @@ typedef struct _GimpHistogramViewClass  GimpHistogramViewClass;
 
 struct _GimpHistogramView
 {
-  GtkDrawingArea         parent_instance;
+    GtkDrawingArea         parent_instance;
 
-  GimpHistogram         *histogram;
-  GimpHistogram         *bg_histogram;
-  GimpHistogramChannel   channel;
-  GimpHistogramScale     scale;
-  gint                   n_bins;
-  gint                   start;
-  gint                   end;
+    GimpHistogram         *histogram;
+    GimpHistogram         *bg_histogram;
+    GimpHistogramChannel   channel;
+    GimpHistogramScale     scale;
+    gint                   n_bins;
+    gint                   start;
+    gint                   end;
 
-  gint                   border_width;
-  gint                   subdivisions;
+    gint                   border_width;
+    gint                   subdivisions;
 
-  GdkSeat               *grab_seat;
+    GdkSeat               *grab_seat;
 };
 
 struct _GimpHistogramViewClass
 {
-  GtkDrawingAreaClass  parent_class;
+    GtkDrawingAreaClass  parent_class;
 
-  void (* range_changed) (GimpHistogramView *view,
-                          gint               start,
-                          gint               end);
+    void (* range_changed) (GimpHistogramView *view,
+                            gint               start,
+                            gint               end);
 };
 
 
@@ -62,29 +62,29 @@ GType           gimp_histogram_view_get_type       (void) G_GNUC_CONST;
 GtkWidget     * gimp_histogram_view_new            (gboolean             range);
 
 void            gimp_histogram_view_set_histogram  (GimpHistogramView   *view,
-                                                    GimpHistogram       *histogram);
+        GimpHistogram       *histogram);
 GimpHistogram * gimp_histogram_view_get_histogram  (GimpHistogramView   *view);
 
 void            gimp_histogram_view_set_background (GimpHistogramView   *view,
-                                                    GimpHistogram       *histogram);
+        GimpHistogram       *histogram);
 GimpHistogram * gimp_histogram_view_get_background (GimpHistogramView   *view);
 
 void            gimp_histogram_view_set_channel    (GimpHistogramView   *view,
-                                                    GimpHistogramChannel channel);
+        GimpHistogramChannel channel);
 GimpHistogramChannel
-                gimp_histogram_view_get_channel    (GimpHistogramView   *view);
+gimp_histogram_view_get_channel    (GimpHistogramView   *view);
 
 void            gimp_histogram_view_set_scale      (GimpHistogramView   *view,
-                                                    GimpHistogramScale   scale);
+        GimpHistogramScale   scale);
 GimpHistogramScale
-                gimp_histogram_view_get_scale      (GimpHistogramView   *view);
+gimp_histogram_view_get_scale      (GimpHistogramView   *view);
 
 void            gimp_histogram_view_set_range      (GimpHistogramView   *view,
-                                                    gint                 start,
-                                                    gint                 end);
+        gint                 start,
+        gint                 end);
 void            gimp_histogram_view_get_range      (GimpHistogramView   *view,
-                                                    gint                *start,
-                                                    gint                *end);
+        gint                *start,
+        gint                *end);
 
 
 #endif /* __GIMP_HISTOGRAM_VIEW_H__ */

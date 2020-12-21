@@ -35,12 +35,12 @@ typedef struct _GimpPencilToolClass GimpPencilToolClass;
 
 struct _GimpPencilTool
 {
-  GimpPaintbrushTool parent_instance;
+    GimpPaintbrushTool parent_instance;
 };
 
 struct _GimpPencilToolClass
 {
-  GimpPaintbrushToolClass parent_class;
+    GimpPaintbrushToolClass parent_class;
 };
 
 

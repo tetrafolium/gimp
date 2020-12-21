@@ -36,21 +36,21 @@ typedef struct _GimpForegroundSelectOptionsClass GimpForegroundSelectOptionsClas
 
 struct _GimpForegroundSelectOptions
 {
-  GimpSelectionOptions  parent_instance;
+    GimpSelectionOptions  parent_instance;
 
-  GimpMattingDrawMode    draw_mode;
-  GimpMattingPreviewMode preview_mode;
-  gint                   stroke_width;
-  GimpRGB                mask_color;
-  GimpMattingEngine      engine;
-  gint                   levels;
-  gint                   active_levels;
-  gint                   iterations;
+    GimpMattingDrawMode    draw_mode;
+    GimpMattingPreviewMode preview_mode;
+    gint                   stroke_width;
+    GimpRGB                mask_color;
+    GimpMattingEngine      engine;
+    gint                   levels;
+    gint                   active_levels;
+    gint                   iterations;
 };
 
 struct _GimpForegroundSelectOptionsClass
 {
-  GimpSelectionOptionsClass  parent_class;
+    GimpSelectionOptionsClass  parent_class;
 };
 
 

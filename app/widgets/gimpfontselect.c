@@ -44,9 +44,9 @@
 static void             gimp_font_select_constructed  (GObject        *object);
 
 static GimpValueArray * gimp_font_select_run_callback (GimpPdbDialog  *dialog,
-                                                       GimpObject     *object,
-                                                       gboolean        closing,
-                                                       GError        **error);
+        GimpObject     *object,
+        gboolean        closing,
+        GError        **error);
 
 
 G_DEFINE_TYPE (GimpFontSelect, gimp_font_select, GIMP_TYPE_PDB_DIALOG)
@@ -57,12 +57,12 @@ G_DEFINE_TYPE (GimpFontSelect, gimp_font_select, GIMP_TYPE_PDB_DIALOG)
 static void
 gimp_font_select_class_init (GimpFontSelectClass *klass)
 {
-  GObjectClass       *object_class = G_OBJECT_CLASS (klass);
-  GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
+    GObjectClass       *object_class = G_OBJECT_CLASS (klass);
+    GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
 
-  object_class->constructed = gimp_font_select_constructed;
+    object_class->constructed = gimp_font_select_constructed;
 
-  pdb_class->run_callback   = gimp_font_select_run_callback;
+    pdb_class->run_callback   = gimp_font_select_run_callback;
 }
 
 static void
@@ -73,27 +73,27 @@ gimp_font_select_init (GimpFontSelect *select)
 static void
 gimp_font_select_constructed (GObject *object)
 {
-  GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
-  GtkWidget     *content_area;
+    GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
+    GtkWidget     *content_area;
 
-  G_OBJECT_CLASS (parent_class)->constructed (object);
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  dialog->view =
-    gimp_font_factory_view_new (GIMP_VIEW_TYPE_LIST,
-                                dialog->context->gimp->font_factory,
-                                dialog->context,
-                                GIMP_VIEW_SIZE_MEDIUM, 1,
-                                dialog->menu_factory);
+    dialog->view =
+        gimp_font_factory_view_new (GIMP_VIEW_TYPE_LIST,
+                                    dialog->context->gimp->font_factory,
+                                    dialog->context,
+                                    GIMP_VIEW_SIZE_MEDIUM, 1,
+                                    dialog->menu_factory);
 
-  gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),
-                                       6 * (GIMP_VIEW_SIZE_MEDIUM + 2),
-                                       6 * (GIMP_VIEW_SIZE_MEDIUM + 2));
+    gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),
+                                         6 * (GIMP_VIEW_SIZE_MEDIUM + 2),
+                                         6 * (GIMP_VIEW_SIZE_MEDIUM + 2));
 
-  gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
+    gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
 
-  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
-  gtk_widget_show (dialog->view);
+    content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+    gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
+    gtk_widget_show (dialog->view);
 }
 
 static GimpValueArray *
@@ -102,11 +102,11 @@ gimp_font_select_run_callback (GimpPdbDialog  *dialog,
                                gboolean        closing,
                                GError        **error)
 {
-  return gimp_pdb_execute_procedure_by_name (dialog->pdb,
-                                             dialog->caller_context,
-                                             NULL, error,
-                                             dialog->callback_name,
-                                             G_TYPE_STRING,  gimp_object_get_name (object),
-                                             G_TYPE_BOOLEAN, closing,
-                                             G_TYPE_NONE);
+    return gimp_pdb_execute_procedure_by_name (dialog->pdb,
+            dialog->caller_context,
+            NULL, error,
+            dialog->callback_name,
+            G_TYPE_STRING,  gimp_object_get_name (object),
+            G_TYPE_BOOLEAN, closing,
+            G_TYPE_NONE);
 }

@@ -36,17 +36,17 @@ typedef struct _GimpErrorDialogClass  GimpErrorDialogClass;
 
 struct _GimpErrorDialog
 {
-  GimpDialog       parent_instance;
+    GimpDialog       parent_instance;
 
-  GtkWidget       *vbox;
+    GtkWidget       *vbox;
 
-  GList           *messages;
-  gboolean         overflow;
+    GList           *messages;
+    gboolean         overflow;
 };
 
 struct _GimpErrorDialogClass
 {
-  GimpDialogClass  parent_class;
+    GimpDialogClass  parent_class;
 };
 
 

@@ -39,19 +39,19 @@
 
 enum
 {
-  PROP_0,
-  PROP_MAX_REFINE_SCALE,
+    PROP_0,
+    PROP_MAX_REFINE_SCALE,
 };
 
 
 static void   gimp_seamless_clone_options_set_property (GObject      *object,
-                                                        guint         property_id,
-                                                        const GValue *value,
-                                                        GParamSpec   *pspec);
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec);
 static void   gimp_seamless_clone_options_get_property (GObject      *object,
-                                                        guint         property_id,
-                                                        GValue       *value,
-                                                        GParamSpec   *pspec);
+        guint         property_id,
+        GValue       *value,
+        GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpSeamlessCloneOptions, gimp_seamless_clone_options,
@@ -63,18 +63,18 @@ G_DEFINE_TYPE (GimpSeamlessCloneOptions, gimp_seamless_clone_options,
 static void
 gimp_seamless_clone_options_class_init (GimpSeamlessCloneOptionsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_seamless_clone_options_set_property;
-  object_class->get_property = gimp_seamless_clone_options_get_property;
+    object_class->set_property = gimp_seamless_clone_options_set_property;
+    object_class->get_property = gimp_seamless_clone_options_get_property;
 
-  GIMP_CONFIG_PROP_INT  (object_class, PROP_MAX_REFINE_SCALE,
-                         "max-refine-scale",
-                         _("Refinement scale"),
-                         _("Maximal scale of refinement points to be "
-                           "used for the interpolation mesh"),
-                         0, 50, 5,
-                         GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_INT  (object_class, PROP_MAX_REFINE_SCALE,
+                           "max-refine-scale",
+                           _("Refinement scale"),
+                           _("Maximal scale of refinement points to be "
+                             "used for the interpolation mesh"),
+                           0, 50, 5,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -84,55 +84,55 @@ gimp_seamless_clone_options_init (GimpSeamlessCloneOptions *options)
 
 static void
 gimp_seamless_clone_options_set_property (GObject      *object,
-                                          guint         property_id,
-                                          const GValue *value,
-                                          GParamSpec   *pspec)
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec)
 {
-  GimpSeamlessCloneOptions *options = GIMP_SEAMLESS_CLONE_OPTIONS (object);
+    GimpSeamlessCloneOptions *options = GIMP_SEAMLESS_CLONE_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_MAX_REFINE_SCALE:
-      options->max_refine_scale = g_value_get_int (value);
-      break;
+        options->max_refine_scale = g_value_get_int (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
 static void
 gimp_seamless_clone_options_get_property (GObject    *object,
-                                          guint       property_id,
-                                          GValue     *value,
-                                          GParamSpec *pspec)
+        guint       property_id,
+        GValue     *value,
+        GParamSpec *pspec)
 {
-  GimpSeamlessCloneOptions *options = GIMP_SEAMLESS_CLONE_OPTIONS (object);
+    GimpSeamlessCloneOptions *options = GIMP_SEAMLESS_CLONE_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_MAX_REFINE_SCALE:
-      g_value_set_int (value, options->max_refine_scale);
-      break;
+        g_value_set_int (value, options->max_refine_scale);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
 GtkWidget *
 gimp_seamless_clone_options_gui (GimpToolOptions *tool_options)
 {
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_tool_options_gui (tool_options);
-  GtkWidget *scale;
+    GObject   *config = G_OBJECT (tool_options);
+    GtkWidget *vbox   = gimp_tool_options_gui (tool_options);
+    GtkWidget *scale;
 
-  scale = gimp_prop_spin_scale_new (config, "max-refine-scale", NULL,
-                                    1.0, 10.0, 0);
-  gimp_spin_scale_set_scale_limits (GIMP_SPIN_SCALE (scale), 0.0, 50.0);
-  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+    scale = gimp_prop_spin_scale_new (config, "max-refine-scale", NULL,
+                                      1.0, 10.0, 0);
+    gimp_spin_scale_set_scale_limits (GIMP_SPIN_SCALE (scale), 0.0, 50.0);
+    gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
 
-  return vbox;
+    return vbox;
 }

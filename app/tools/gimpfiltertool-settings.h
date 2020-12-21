@@ -27,11 +27,11 @@ GtkWidget * gimp_filter_tool_get_settings_box     (GimpFilterTool  *filter_tool)
 /*  virtual functions of GimpSettingsTool, don't call directly  */
 
 gboolean    gimp_filter_tool_real_settings_import (GimpFilterTool  *filter_tool,
-                                                   GInputStream    *input,
-                                                   GError         **error);
+        GInputStream    *input,
+        GError         **error);
 gboolean    gimp_filter_tool_real_settings_export (GimpFilterTool  *filter_tool,
-                                                   GOutputStream   *output,
-                                                   GError         **error);
+        GOutputStream   *output,
+        GError         **error);
 
 
 #endif /* __GIMP_FILTER_TOOL_SETTINGS_H__ */

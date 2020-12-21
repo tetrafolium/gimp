@@ -34,16 +34,16 @@ typedef struct _GimpColorOptionsClass GimpColorOptionsClass;
 
 struct _GimpColorOptions
 {
-  GimpToolOptions  parent_instance;
+    GimpToolOptions  parent_instance;
 
-  gboolean         sample_merged;
-  gboolean         sample_average;
-  gdouble          average_radius;
+    gboolean         sample_merged;
+    gboolean         sample_average;
+    gdouble          average_radius;
 };
 
 struct _GimpColorOptionsClass
 {
-  GimpToolOptionsClass  parent_instance;
+    GimpToolOptionsClass  parent_instance;
 };
 
 

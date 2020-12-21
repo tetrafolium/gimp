@@ -35,12 +35,12 @@ typedef struct _GimpCompressionComboBoxClass  GimpCompressionComboBoxClass;
 
 struct _GimpCompressionComboBox
 {
-  GimpStringComboBox  parent_instance;
+    GimpStringComboBox  parent_instance;
 };
 
 struct _GimpCompressionComboBoxClass
 {
-  GimpStringComboBoxClass  parent_instance;
+    GimpStringComboBoxClass  parent_instance;
 };
 
 
@@ -49,7 +49,7 @@ GType       gimp_compression_combo_box_get_type        (void) G_GNUC_CONST;
 GtkWidget * gimp_compression_combo_box_new             (void);
 
 void        gimp_compression_combo_box_set_compression (GimpCompressionComboBox *combo_box,
-                                                        const gchar             *compression);
+        const gchar             *compression);
 gchar     * gimp_compression_combo_box_get_compression (GimpCompressionComboBox *combo_box);
 
 #endif  /* __GIMP_COMPRESSION_COMBO_BOX_H__ */

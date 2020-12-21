@@ -36,25 +36,25 @@ typedef struct _GimpToggleActionClass GimpToggleActionClass;
 
 struct _GimpToggleAction
 {
-  GtkToggleAction  parent_instance;
+    GtkToggleAction  parent_instance;
 };
 
 struct _GimpToggleActionClass
 {
-  GtkToggleActionClass  parent_class;
+    GtkToggleActionClass  parent_class;
 };
 
 
 GType             gimp_toggle_action_get_type  (void) G_GNUC_CONST;
 
 GtkToggleAction * gimp_toggle_action_new       (const gchar *name,
-                                                const gchar *label,
-                                                const gchar *tooltip,
-                                                const gchar *icon_name,
-                                                const gchar *help_id);
+        const gchar *label,
+        const gchar *tooltip,
+        const gchar *icon_name,
+        const gchar *help_id);
 
 void              gimp_toggle_action_set_active (GimpToggleAction *action,
-                                                 gboolean          active);
+        gboolean          active);
 gboolean          gimp_toggle_action_get_active (GimpToggleAction *action);
 
 

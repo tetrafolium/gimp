@@ -37,22 +37,22 @@ typedef struct _GimpColorPickerToolClass GimpColorPickerToolClass;
 
 struct _GimpColorPickerTool
 {
-  GimpColorTool  parent_instance;
+    GimpColorTool  parent_instance;
 
-  GimpToolGui   *gui;
-  GtkWidget     *color_area;
-  GtkWidget     *color_frame1;
-  GtkWidget     *color_frame2;
+    GimpToolGui   *gui;
+    GtkWidget     *color_area;
+    GtkWidget     *color_frame1;
+    GtkWidget     *color_frame2;
 };
 
 struct _GimpColorPickerToolClass
 {
-  GimpColorToolClass  parent_class;
+    GimpColorToolClass  parent_class;
 };
 
 
 void    gimp_color_picker_tool_register (GimpToolRegisterCallback  callback,
-                                         gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_color_picker_tool_get_type (void) G_GNUC_CONST;
 

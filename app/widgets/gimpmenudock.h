@@ -37,14 +37,14 @@ typedef struct _GimpMenuDockClass   GimpMenuDockClass;
 
 struct _GimpMenuDock
 {
-  GimpDock             parent_instance;
+    GimpDock             parent_instance;
 
-  GimpMenuDockPrivate *p;
+    GimpMenuDockPrivate *p;
 };
 
 struct _GimpMenuDockClass
 {
-  GimpDockClass  parent_class;
+    GimpDockClass  parent_class;
 };
 
 

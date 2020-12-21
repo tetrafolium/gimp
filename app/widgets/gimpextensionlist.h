@@ -35,17 +35,17 @@ typedef struct _GimpExtensionListPrivate  GimpExtensionListPrivate;
 
 struct _GimpExtensionList
 {
-  GtkListBox                parent_instance;
+    GtkListBox                parent_instance;
 
-  GimpExtensionListPrivate *p;
+    GimpExtensionListPrivate *p;
 };
 
 struct _GimpExtensionListClass
 {
-  GtkListBoxClass           parent_class;
+    GtkListBoxClass           parent_class;
 
-  void         (* extension_activated) (GimpExtensionList *list,
-                                        GimpExtension     *extension);
+    void         (* extension_activated) (GimpExtensionList *list,
+                                          GimpExtension     *extension);
 };
 
 
@@ -56,6 +56,6 @@ GtkWidget  * gimp_extension_list_new          (GimpExtensionManager *manager);
 void         gimp_extension_list_show_system  (GimpExtensionList *list);
 void         gimp_extension_list_show_user    (GimpExtensionList *list);
 void         gimp_extension_list_show_search  (GimpExtensionList *list,
-                                               const gchar       *search_terms);
+        const gchar       *search_terms);
 
 #endif /* __GIMP_EXTENSION_LIST_H__ */

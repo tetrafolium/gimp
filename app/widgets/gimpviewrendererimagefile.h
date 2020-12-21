@@ -37,12 +37,12 @@ typedef struct _GimpViewRendererImagefileClass  GimpViewRendererImagefileClass;
 
 struct _GimpViewRendererImagefile
 {
-  GimpViewRenderer parent_instance;
+    GimpViewRenderer parent_instance;
 };
 
 struct _GimpViewRendererImagefileClass
 {
-  GimpViewRendererClass parent_class;
+    GimpViewRendererClass parent_class;
 };
 
 

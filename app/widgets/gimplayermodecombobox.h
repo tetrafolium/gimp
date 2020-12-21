@@ -35,14 +35,14 @@ typedef struct _GimpLayerModeComboBoxClass   GimpLayerModeComboBoxClass;
 
 struct _GimpLayerModeComboBox
 {
-  GimpEnumComboBox              parent_instance;
+    GimpEnumComboBox              parent_instance;
 
-  GimpLayerModeComboBoxPrivate *priv;
+    GimpLayerModeComboBoxPrivate *priv;
 };
 
 struct _GimpLayerModeComboBoxClass
 {
-  GimpEnumComboBoxClass  parent_class;
+    GimpEnumComboBoxClass  parent_class;
 };
 
 
@@ -51,15 +51,15 @@ GType                  gimp_layer_mode_combo_box_get_type    (void) G_GNUC_CONST
 GtkWidget            * gimp_layer_mode_combo_box_new         (GimpLayerModeContext   context);
 
 void                   gimp_layer_mode_combo_box_set_context (GimpLayerModeComboBox *combo,
-                                                              GimpLayerModeContext   context);
+        GimpLayerModeContext   context);
 GimpLayerModeContext   gimp_layer_mode_combo_box_get_context (GimpLayerModeComboBox *combo);
 
 void                   gimp_layer_mode_combo_box_set_mode    (GimpLayerModeComboBox *combo,
-                                                              GimpLayerMode          mode);
+        GimpLayerMode          mode);
 GimpLayerMode          gimp_layer_mode_combo_box_get_mode    (GimpLayerModeComboBox *combo);
 
 void                   gimp_layer_mode_combo_box_set_group   (GimpLayerModeComboBox *combo,
-                                                              GimpLayerModeGroup     group);
+        GimpLayerModeGroup     group);
 GimpLayerModeGroup     gimp_layer_mode_combo_box_get_group   (GimpLayerModeComboBox *combo);
 
 

@@ -37,12 +37,12 @@ typedef struct _GimpDrawableTreeViewClass  GimpDrawableTreeViewClass;
 
 struct _GimpDrawableTreeView
 {
-  GimpItemTreeView  parent_instance;
+    GimpItemTreeView  parent_instance;
 };
 
 struct _GimpDrawableTreeViewClass
 {
-  GimpItemTreeViewClass  parent_class;
+    GimpItemTreeViewClass  parent_class;
 };
 
 

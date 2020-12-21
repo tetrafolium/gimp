@@ -20,8 +20,8 @@
 
 
 GtkWidget * gimp_toolbox_image_area_create (GimpToolbox *toolbox,
-                                            gint         width,
-                                            gint         height);
+        gint         width,
+        gint         height);
 
 
 #endif  /*  __GIMP_TOOLBOX_IMAGE_AREA_H__  */

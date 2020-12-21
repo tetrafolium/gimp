@@ -28,22 +28,22 @@ G_DECLARE_INTERFACE (GimpWindowStrategy, gimp_window_strategy, GIMP, WINDOW_STRA
 
 struct _GimpWindowStrategyInterface
 {
-  GTypeInterface base_iface;
+    GTypeInterface base_iface;
 
-  /*  virtual functions  */
-  GtkWidget * (* show_dockable_dialog) (GimpWindowStrategy *strategy,
-                                        Gimp               *gimp,
-                                        GimpDialogFactory  *factory,
-                                        GdkMonitor         *monitor,
-                                        const gchar        *identifiers);
+    /*  virtual functions  */
+    GtkWidget * (* show_dockable_dialog) (GimpWindowStrategy *strategy,
+                                          Gimp               *gimp,
+                                          GimpDialogFactory  *factory,
+                                          GdkMonitor         *monitor,
+                                          const gchar        *identifiers);
 };
 
 
 GtkWidget * gimp_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
-                                                       Gimp               *gimp,
-                                                       GimpDialogFactory  *factory,
-                                                       GdkMonitor         *monitor,
-                                                       const gchar        *identifiers);
+        Gimp               *gimp,
+        GimpDialogFactory  *factory,
+        GdkMonitor         *monitor,
+        const gchar        *identifiers);
 
 
 #endif  /*  __GIMP_WINDOW_STRATEGY_H__  */

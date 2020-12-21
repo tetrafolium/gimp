@@ -37,17 +37,17 @@ typedef struct _GimpByColorSelectToolClass GimpByColorSelectToolClass;
 
 struct _GimpByColorSelectTool
 {
-  GimpRegionSelectTool  parent_instance;
+    GimpRegionSelectTool  parent_instance;
 };
 
 struct _GimpByColorSelectToolClass
 {
-  GimpRegionSelectToolClass  parent_class;
+    GimpRegionSelectToolClass  parent_class;
 };
 
 
 void    gimp_by_color_select_tool_register (GimpToolRegisterCallback  callback,
-                                            gpointer                  data);
+        gpointer                  data);
 
 GType   gimp_by_color_select_tool_get_type (void) G_GNUC_CONST;
 

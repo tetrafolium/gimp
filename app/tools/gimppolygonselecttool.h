@@ -36,20 +36,20 @@ typedef struct _GimpPolygonSelectToolClass   GimpPolygonSelectToolClass;
 
 struct _GimpPolygonSelectTool
 {
-  GimpSelectionTool             parent_instance;
+    GimpSelectionTool             parent_instance;
 
-  GimpPolygonSelectToolPrivate *priv;
+    GimpPolygonSelectToolPrivate *priv;
 };
 
 struct _GimpPolygonSelectToolClass
 {
-  GimpSelectionToolClass  parent_class;
+    GimpSelectionToolClass  parent_class;
 
-  /*  virtual functions  */
-  void (* change_complete) (GimpPolygonSelectTool *poly_sel,
-                            GimpDisplay           *display);
-  void (* confirm)         (GimpPolygonSelectTool *poly_sel,
-                            GimpDisplay           *display);
+    /*  virtual functions  */
+    void (* change_complete) (GimpPolygonSelectTool *poly_sel,
+                              GimpDisplay           *display);
+    void (* confirm)         (GimpPolygonSelectTool *poly_sel,
+                              GimpDisplay           *display);
 };
 
 
@@ -57,8 +57,8 @@ GType      gimp_polygon_select_tool_get_type   (void) G_GNUC_CONST;
 
 gboolean   gimp_polygon_select_tool_is_closed  (GimpPolygonSelectTool  *poly_sel);
 void       gimp_polygon_select_tool_get_points (GimpPolygonSelectTool  *poly_sel,
-                                                const GimpVector2     **points,
-                                                gint                   *n_points);
+        const GimpVector2     **points,
+        gint                   *n_points);
 
 /*  protected functions */
 gboolean   gimp_polygon_select_tool_is_grabbed (GimpPolygonSelectTool  *poly_sel);

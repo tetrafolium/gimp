@@ -35,14 +35,14 @@ typedef struct _GimpHistogramOptionsClass GimpHistogramOptionsClass;
 
 struct _GimpHistogramOptions
 {
-  GimpFilterOptions    parent_instance;
+    GimpFilterOptions    parent_instance;
 
-  GimpHistogramScale  scale;
+    GimpHistogramScale  scale;
 };
 
 struct _GimpHistogramOptionsClass
 {
-  GimpFilterOptionsClass  parent_class;
+    GimpFilterOptionsClass  parent_class;
 };
 
 

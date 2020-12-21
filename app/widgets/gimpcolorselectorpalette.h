@@ -35,15 +35,15 @@ typedef struct _GimpColorSelectorPaletteClass GimpColorSelectorPaletteClass;
 
 struct _GimpColorSelectorPalette
 {
-  GimpColorSelector  parent_instance;
+    GimpColorSelector  parent_instance;
 
-  GimpContext       *context;
-  GtkWidget         *view;
+    GimpContext       *context;
+    GtkWidget         *view;
 };
 
 struct _GimpColorSelectorPaletteClass
 {
-  GimpColorSelectorClass  parent_class;
+    GimpColorSelectorClass  parent_class;
 };
 
 

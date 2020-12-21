@@ -35,22 +35,22 @@ typedef struct _GimpOffsetToolClass GimpOffsetToolClass;
 
 struct _GimpOffsetTool
 {
-  GimpFilterTool  parent_instance;
+    GimpFilterTool  parent_instance;
 
-  gboolean        dragging;
-  gdouble         x;
-  gdouble         y;
-  gint            offset_x;
-  gint            offset_y;
+    gboolean        dragging;
+    gdouble         x;
+    gdouble         y;
+    gint            offset_x;
+    gint            offset_y;
 
-  /* dialog */
-  GtkWidget      *offset_se;
-  GtkWidget      *transparent_radio;
+    /* dialog */
+    GtkWidget      *offset_se;
+    GtkWidget      *transparent_radio;
 };
 
 struct _GimpOffsetToolClass
 {
-  GimpFilterToolClass  parent_class;
+    GimpFilterToolClass  parent_class;
 };
 
 

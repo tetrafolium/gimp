@@ -41,38 +41,38 @@ typedef struct _GimpDockColumnsPrivate  GimpDockColumnsPrivate;
  */
 struct _GimpDockColumns
 {
-  GtkBox parent_instance;
+    GtkBox parent_instance;
 
-  GimpDockColumnsPrivate *p;
+    GimpDockColumnsPrivate *p;
 };
 
 struct _GimpDockColumnsClass
 {
-  GtkBoxClass parent_class;
+    GtkBoxClass parent_class;
 
-  void (* dock_added)   (GimpDockColumns *dock_columns,
-                         GimpDock        *dock);
-  void (* dock_removed) (GimpDockColumns *dock_columns,
-                         GimpDock        *dock);
+    void (* dock_added)   (GimpDockColumns *dock_columns,
+                           GimpDock        *dock);
+    void (* dock_removed) (GimpDockColumns *dock_columns,
+                           GimpDock        *dock);
 };
 
 
 GType               gimp_dock_columns_get_type           (void) G_GNUC_CONST;
 GtkWidget         * gimp_dock_columns_new                (GimpContext       *context,
-                                                          GimpDialogFactory *dialog_factory,
-                                                          GimpUIManager     *ui_manager);
+        GimpDialogFactory *dialog_factory,
+        GimpUIManager     *ui_manager);
 void                gimp_dock_columns_add_dock           (GimpDockColumns   *dock_columns,
-                                                          GimpDock          *dock,
-                                                          gint               index);
+        GimpDock          *dock,
+        gint               index);
 void                gimp_dock_columns_prepare_dockbook   (GimpDockColumns   *dock_columns,
-                                                          gint               dock_index,
-                                                          GtkWidget        **dockbook_p);
+        gint               dock_index,
+        GtkWidget        **dockbook_p);
 void                gimp_dock_columns_remove_dock        (GimpDockColumns   *dock_columns,
-                                                          GimpDock          *dock);
+        GimpDock          *dock);
 GList             * gimp_dock_columns_get_docks          (GimpDockColumns   *dock_columns);
 GimpContext       * gimp_dock_columns_get_context        (GimpDockColumns   *dock_columns);
 void                gimp_dock_columns_set_context        (GimpDockColumns   *dock_columns,
-                                                          GimpContext       *context);
+        GimpContext       *context);
 GimpDialogFactory * gimp_dock_columns_get_dialog_factory (GimpDockColumns   *dock_columns);
 GimpUIManager     * gimp_dock_columns_get_ui_manager     (GimpDockColumns   *dock_columns);
 

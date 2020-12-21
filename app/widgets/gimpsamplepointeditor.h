@@ -37,23 +37,23 @@ typedef struct _GimpSamplePointEditorClass GimpSamplePointEditorClass;
 
 struct _GimpSamplePointEditor
 {
-  GimpImageEditor  parent_instance;
+    GimpImageEditor  parent_instance;
 
-  GtkWidget       *empty_icon;
-  GtkWidget       *empty_label;
+    GtkWidget       *empty_icon;
+    GtkWidget       *empty_label;
 
-  GtkWidget       *grid;
-  GtkWidget      **color_frames;
-  gint             n_color_frames;
+    GtkWidget       *grid;
+    GtkWidget      **color_frames;
+    gint             n_color_frames;
 
-  guint            dirty_idle_id;
+    guint            dirty_idle_id;
 
-  gboolean         sample_merged;
+    gboolean         sample_merged;
 };
 
 struct _GimpSamplePointEditorClass
 {
-  GimpImageEditorClass  parent_class;
+    GimpImageEditorClass  parent_class;
 };
 
 
@@ -62,7 +62,7 @@ GType       gimp_sample_point_editor_get_type          (void) G_GNUC_CONST;
 GtkWidget * gimp_sample_point_editor_new               (GimpMenuFactory *menu_factory);
 
 void        gimp_sample_point_editor_set_sample_merged (GimpSamplePointEditor *editor,
-                                                        gboolean               sample_merged);
+        gboolean               sample_merged);
 gboolean    gimp_sample_point_editor_get_sample_merged (GimpSamplePointEditor *editor);
 
 

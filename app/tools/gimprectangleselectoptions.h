@@ -35,10 +35,10 @@ typedef struct _GimpToolOptionsClass       GimpRectangleSelectOptionsClass;
 
 struct _GimpRectangleSelectOptions
 {
-  GimpSelectionOptions  parent_instance;
+    GimpSelectionOptions  parent_instance;
 
-  gboolean              round_corners;
-  gdouble               corner_radius;
+    gboolean              round_corners;
+    gdouble               corner_radius;
 };
 
 
