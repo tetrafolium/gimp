@@ -18,35 +18,36 @@
 #ifndef __GIMP_SOURCE_OPTIONS_H__
 #define __GIMP_SOURCE_OPTIONS_H__
 
-
 #include "gimppaintoptions.h"
 
-
-#define GIMP_TYPE_SOURCE_OPTIONS            (gimp_source_options_get_type ())
-#define GIMP_SOURCE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SOURCE_OPTIONS, GimpSourceOptions))
-#define GIMP_SOURCE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SOURCE_OPTIONS, GimpSourceOptionsClass))
-#define GIMP_IS_SOURCE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SOURCE_OPTIONS))
-#define GIMP_IS_SOURCE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SOURCE_OPTIONS))
-#define GIMP_SOURCE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SOURCE_OPTIONS, GimpSourceOptionsClass))
-
+#define GIMP_TYPE_SOURCE_OPTIONS (gimp_source_options_get_type())
+#define GIMP_SOURCE_OPTIONS(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SOURCE_OPTIONS,                 \
+                              GimpSourceOptions))
+#define GIMP_SOURCE_OPTIONS_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SOURCE_OPTIONS,                  \
+                           GimpSourceOptionsClass))
+#define GIMP_IS_SOURCE_OPTIONS(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SOURCE_OPTIONS))
+#define GIMP_IS_SOURCE_OPTIONS_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SOURCE_OPTIONS))
+#define GIMP_SOURCE_OPTIONS_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SOURCE_OPTIONS,                  \
+                             GimpSourceOptionsClass))
 
 typedef struct _GimpSourceOptionsClass GimpSourceOptionsClass;
 
-struct _GimpSourceOptions
-{
-	GimpPaintOptions parent_instance;
+struct _GimpSourceOptions {
+  GimpPaintOptions parent_instance;
 
-	GimpSourceAlignMode align_mode;
-	gboolean sample_merged;
+  GimpSourceAlignMode align_mode;
+  gboolean sample_merged;
 };
 
-struct _GimpSourceOptionsClass
-{
-	GimpPaintOptionsClass parent_class;
+struct _GimpSourceOptionsClass {
+  GimpPaintOptionsClass parent_class;
 };
 
+GType gimp_source_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_source_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_SOURCE_OPTIONS_H__  */
+#endif /*  __GIMP_SOURCE_OPTIONS_H__  */

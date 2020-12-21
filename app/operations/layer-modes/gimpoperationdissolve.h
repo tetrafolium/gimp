@@ -21,33 +21,34 @@
 #ifndef __GIMP_OPERATION_DISSOLVE_H__
 #define __GIMP_OPERATION_DISSOLVE_H__
 
-
 #include "gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_DISSOLVE            (gimp_operation_dissolve_get_type ())
-#define GIMP_OPERATION_DISSOLVE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_DISSOLVE, GimpOperationDissolve))
-#define GIMP_OPERATION_DISSOLVE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_DISSOLVE, GimpOperationDissolveClass))
-#define GIMP_IS_OPERATION_DISSOLVE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_DISSOLVE))
-#define GIMP_IS_OPERATION_DISSOLVE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_DISSOLVE))
-#define GIMP_OPERATION_DISSOLVE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_DISSOLVE, GimpOperationDissolveClass))
-
+#define GIMP_TYPE_OPERATION_DISSOLVE (gimp_operation_dissolve_get_type())
+#define GIMP_OPERATION_DISSOLVE(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_DISSOLVE,             \
+                              GimpOperationDissolve))
+#define GIMP_OPERATION_DISSOLVE_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_DISSOLVE,              \
+                           GimpOperationDissolveClass))
+#define GIMP_IS_OPERATION_DISSOLVE(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_DISSOLVE))
+#define GIMP_IS_OPERATION_DISSOLVE_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_DISSOLVE))
+#define GIMP_OPERATION_DISSOLVE_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_DISSOLVE,              \
+                             GimpOperationDissolveClass))
 
 typedef struct _GimpOperationDissolve GimpOperationDissolve;
 typedef struct _GimpOperationDissolveClass GimpOperationDissolveClass;
 
-struct _GimpOperationDissolveClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationDissolveClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-struct _GimpOperationDissolve
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationDissolve {
+  GimpOperationLayerMode parent_instance;
 };
 
-
-GType   gimp_operation_dissolve_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_dissolve_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_DISSOLVE_H__ */

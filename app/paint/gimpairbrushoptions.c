@@ -29,128 +29,98 @@
 
 #include "gimp-intl.h"
 
-
-#define AIRBRUSH_DEFAULT_RATE        50.0
-#define AIRBRUSH_DEFAULT_FLOW        10.0
+#define AIRBRUSH_DEFAULT_RATE 50.0
+#define AIRBRUSH_DEFAULT_FLOW 10.0
 #define AIRBRUSH_DEFAULT_MOTION_ONLY FALSE
 
-enum
-{
-	PROP_0,
-	PROP_RATE,
-	PROP_MOTION_ONLY,
-	PROP_FLOW,
-	PROP_PRESSURE /*for backwards copatibility of tool options*/
+enum {
+  PROP_0,
+  PROP_RATE,
+  PROP_MOTION_ONLY,
+  PROP_FLOW,
+  PROP_PRESSURE /*for backwards copatibility of tool options*/
 };
 
+static void gimp_airbrush_options_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec);
+static void gimp_airbrush_options_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec);
 
-static void   gimp_airbrush_options_set_property (GObject      *object,
-                                                  guint property_id,
-                                                  const GValue *value,
-                                                  GParamSpec   *pspec);
-static void   gimp_airbrush_options_get_property (GObject      *object,
-                                                  guint property_id,
-                                                  GValue       *value,
-                                                  GParamSpec   *pspec);
+G_DEFINE_TYPE(GimpAirbrushOptions, gimp_airbrush_options,
+              GIMP_TYPE_PAINT_OPTIONS)
 
+static void gimp_airbrush_options_class_init(GimpAirbrushOptionsClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-G_DEFINE_TYPE (GimpAirbrushOptions, gimp_airbrush_options,
-               GIMP_TYPE_PAINT_OPTIONS)
+  object_class->set_property = gimp_airbrush_options_set_property;
+  object_class->get_property = gimp_airbrush_options_get_property;
 
+  GIMP_CONFIG_PROP_DOUBLE(object_class, PROP_RATE, "rate",
+                          C_("airbrush-tool", "Rate"), NULL, 0.0, 100.0,
+                          AIRBRUSH_DEFAULT_RATE, GIMP_PARAM_STATIC_STRINGS);
 
-static void
-gimp_airbrush_options_class_init (GimpAirbrushOptionsClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GIMP_CONFIG_PROP_BOOLEAN(object_class, PROP_MOTION_ONLY, "motion-only",
+                           _("Motion only"), NULL, AIRBRUSH_DEFAULT_MOTION_ONLY,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-	object_class->set_property = gimp_airbrush_options_set_property;
-	object_class->get_property = gimp_airbrush_options_get_property;
+  GIMP_CONFIG_PROP_DOUBLE(object_class, PROP_FLOW, "flow", _("Flow"), NULL, 0.0,
+                          100.0, AIRBRUSH_DEFAULT_FLOW,
+                          GIMP_PARAM_STATIC_STRINGS);
 
-	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_RATE,
-	                         "rate",
-	                         C_("airbrush-tool", "Rate"),
-	                         NULL,
-	                         0.0, 100.0, AIRBRUSH_DEFAULT_RATE,
-	                         GIMP_PARAM_STATIC_STRINGS);
-
-
-	GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_MOTION_ONLY,
-	                          "motion-only",
-	                          _("Motion only"),
-	                          NULL,
-	                          AIRBRUSH_DEFAULT_MOTION_ONLY,
-	                          GIMP_PARAM_STATIC_STRINGS);
-
-	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_FLOW,
-	                         "flow",
-	                         _("Flow"),
-	                         NULL,
-	                         0.0, 100.0, AIRBRUSH_DEFAULT_FLOW,
-	                         GIMP_PARAM_STATIC_STRINGS);
-
-	/* backwads-compadibility prop for flow fomerly known as pressure */
-	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_PRESSURE,
-	                         "pressure",
-	                         NULL, NULL,
-	                         0.0, 100.0, AIRBRUSH_DEFAULT_FLOW,
-	                         GIMP_CONFIG_PARAM_IGNORE);
+  /* backwads-compadibility prop for flow fomerly known as pressure */
+  GIMP_CONFIG_PROP_DOUBLE(object_class, PROP_PRESSURE, "pressure", NULL, NULL,
+                          0.0, 100.0, AIRBRUSH_DEFAULT_FLOW,
+                          GIMP_CONFIG_PARAM_IGNORE);
 }
 
-static void
-gimp_airbrush_options_init (GimpAirbrushOptions *options)
-{
+static void gimp_airbrush_options_init(GimpAirbrushOptions *options) {}
+
+static void gimp_airbrush_options_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec) {
+  GimpAirbrushOptions *options = GIMP_AIRBRUSH_OPTIONS(object);
+
+  switch (property_id) {
+  case PROP_RATE:
+    options->rate = g_value_get_double(value);
+    break;
+  case PROP_MOTION_ONLY:
+    options->motion_only = g_value_get_boolean(value);
+    break;
+  case PROP_PRESSURE:
+  case PROP_FLOW:
+    options->flow = g_value_get_double(value);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_airbrush_options_set_property (GObject      *object,
-                                    guint property_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
-{
-	GimpAirbrushOptions *options = GIMP_AIRBRUSH_OPTIONS (object);
+static void gimp_airbrush_options_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec) {
+  GimpAirbrushOptions *options = GIMP_AIRBRUSH_OPTIONS(object);
 
-	switch (property_id)
-	{
-	case PROP_RATE:
-		options->rate = g_value_get_double (value);
-		break;
-	case PROP_MOTION_ONLY:
-		options->motion_only = g_value_get_boolean (value);
-		break;
-	case PROP_PRESSURE:
-	case PROP_FLOW:
-		options->flow = g_value_get_double (value);
-		break;
+  switch (property_id) {
+  case PROP_RATE:
+    g_value_set_double(value, options->rate);
+    break;
+  case PROP_MOTION_ONLY:
+    g_value_set_boolean(value, options->motion_only);
+    break;
+  case PROP_PRESSURE:
+  case PROP_FLOW:
+    g_value_set_double(value, options->flow);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gimp_airbrush_options_get_property (GObject    *object,
-                                    guint property_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
-{
-	GimpAirbrushOptions *options = GIMP_AIRBRUSH_OPTIONS (object);
-
-	switch (property_id)
-	{
-	case PROP_RATE:
-		g_value_set_double (value, options->rate);
-		break;
-	case PROP_MOTION_ONLY:
-		g_value_set_boolean (value, options->motion_only);
-		break;
-	case PROP_PRESSURE:
-	case PROP_FLOW:
-		g_value_set_double (value, options->flow);
-		break;
-
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }

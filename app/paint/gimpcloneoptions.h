@@ -18,34 +18,34 @@
 #ifndef __GIMP_CLONE_OPTIONS_H__
 #define __GIMP_CLONE_OPTIONS_H__
 
-
 #include "gimpsourceoptions.h"
 
-
-#define GIMP_TYPE_CLONE_OPTIONS            (gimp_clone_options_get_type ())
-#define GIMP_CLONE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CLONE_OPTIONS, GimpCloneOptions))
-#define GIMP_CLONE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CLONE_OPTIONS, GimpCloneOptionsClass))
-#define GIMP_IS_CLONE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CLONE_OPTIONS))
-#define GIMP_IS_CLONE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CLONE_OPTIONS))
-#define GIMP_CLONE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CLONE_OPTIONS, GimpCloneOptionsClass))
-
+#define GIMP_TYPE_CLONE_OPTIONS (gimp_clone_options_get_type())
+#define GIMP_CLONE_OPTIONS(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CLONE_OPTIONS, GimpCloneOptions))
+#define GIMP_CLONE_OPTIONS_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CLONE_OPTIONS,                   \
+                           GimpCloneOptionsClass))
+#define GIMP_IS_CLONE_OPTIONS(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CLONE_OPTIONS))
+#define GIMP_IS_CLONE_OPTIONS_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CLONE_OPTIONS))
+#define GIMP_CLONE_OPTIONS_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CLONE_OPTIONS,                   \
+                             GimpCloneOptionsClass))
 
 typedef struct _GimpCloneOptionsClass GimpCloneOptionsClass;
 
-struct _GimpCloneOptions
-{
-	GimpSourceOptions parent_instance;
+struct _GimpCloneOptions {
+  GimpSourceOptions parent_instance;
 
-	GimpCloneType clone_type;
+  GimpCloneType clone_type;
 };
 
-struct _GimpCloneOptionsClass
-{
-	GimpSourceOptionsClass parent_class;
+struct _GimpCloneOptionsClass {
+  GimpSourceOptionsClass parent_class;
 };
 
+GType gimp_clone_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_clone_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_CLONE_OPTIONS_H__  */
+#endif /*  __GIMP_CLONE_OPTIONS_H__  */

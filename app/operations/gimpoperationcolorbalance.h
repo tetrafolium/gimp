@@ -21,33 +21,35 @@
 #ifndef __GIMP_OPERATION_COLOR_BALANCE_H__
 #define __GIMP_OPERATION_COLOR_BALANCE_H__
 
-
 #include "gimpoperationpointfilter.h"
 
-
-#define GIMP_TYPE_OPERATION_COLOR_BALANCE            (gimp_operation_color_balance_get_type ())
-#define GIMP_OPERATION_COLOR_BALANCE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_COLOR_BALANCE, GimpOperationColorBalance))
-#define GIMP_OPERATION_COLOR_BALANCE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_COLOR_BALANCE, GimpOperationColorBalanceClass))
-#define GIMP_IS_OPERATION_COLOR_BALANCE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_COLOR_BALANCE))
-#define GIMP_IS_OPERATION_COLOR_BALANCE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_COLOR_BALANCE))
-#define GIMP_OPERATION_COLOR_BALANCE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_COLOR_BALANCE, GimpOperationColorBalanceClass))
-
+#define GIMP_TYPE_OPERATION_COLOR_BALANCE                                      \
+  (gimp_operation_color_balance_get_type())
+#define GIMP_OPERATION_COLOR_BALANCE(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_COLOR_BALANCE,        \
+                              GimpOperationColorBalance))
+#define GIMP_OPERATION_COLOR_BALANCE_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_COLOR_BALANCE,         \
+                           GimpOperationColorBalanceClass))
+#define GIMP_IS_OPERATION_COLOR_BALANCE(obj)                                   \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_COLOR_BALANCE))
+#define GIMP_IS_OPERATION_COLOR_BALANCE_CLASS(klass)                           \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_COLOR_BALANCE))
+#define GIMP_OPERATION_COLOR_BALANCE_GET_CLASS(obj)                            \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_COLOR_BALANCE,         \
+                             GimpOperationColorBalanceClass))
 
 typedef struct _GimpOperationColorBalance GimpOperationColorBalance;
 typedef struct _GimpOperationColorBalanceClass GimpOperationColorBalanceClass;
 
-struct _GimpOperationColorBalance
-{
-	GimpOperationPointFilter parent_instance;
+struct _GimpOperationColorBalance {
+  GimpOperationPointFilter parent_instance;
 };
 
-struct _GimpOperationColorBalanceClass
-{
-	GimpOperationPointFilterClass parent_class;
+struct _GimpOperationColorBalanceClass {
+  GimpOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_color_balance_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_color_balance_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_COLOR_BALANCE_H__ */

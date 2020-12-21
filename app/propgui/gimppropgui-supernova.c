@@ -35,110 +35,77 @@
 
 #include "gimp-intl.h"
 
+static void line_callback(GObject *config, GeglRectangle *area, gdouble x1,
+                          gdouble y1, gdouble x2, gdouble y2) {
+  gdouble x, y;
+  gint radius;
 
-static void
-line_callback (GObject       *config,
-               GeglRectangle *area,
-               gdouble x1,
-               gdouble y1,
-               gdouble x2,
-               gdouble y2)
-{
-	gdouble x, y;
-	gint radius;
+  g_object_set_data_full(G_OBJECT(config), "area",
+                         g_memdup(area, sizeof(GeglRectangle)),
+                         (GDestroyNotify)g_free);
 
-	g_object_set_data_full (G_OBJECT (config), "area",
-	                        g_memdup (area, sizeof (GeglRectangle)),
-	                        (GDestroyNotify) g_free);
+  x = x1 / area->width;
+  y = y1 / area->height;
+  radius = sqrt(SQR(x2 - x1) + SQR(y2 - y1));
 
-	x      = x1 / area->width;
-	y      = y1 / area->height;
-	radius = sqrt (SQR (x2 - x1) + SQR (y2 - y1));
-
-	g_object_set (config,
-	              "center-x", x,
-	              "center-y", y,
-	              "radius",   radius,
-	              NULL);
+  g_object_set(config, "center-x", x, "center-y", y, "radius", radius, NULL);
 }
 
-static void
-config_notify (GObject          *config,
-               const GParamSpec *pspec,
-               gpointer set_data)
-{
-	GimpControllerLineCallback set_func;
-	GeglRectangle              *area;
-	gdouble x, y;
-	gint radius;
-	gdouble x1, y1, x2, y2;
+static void config_notify(GObject *config, const GParamSpec *pspec,
+                          gpointer set_data) {
+  GimpControllerLineCallback set_func;
+  GeglRectangle *area;
+  gdouble x, y;
+  gint radius;
+  gdouble x1, y1, x2, y2;
 
-	set_func = g_object_get_data (G_OBJECT (config), "set-func");
-	area     = g_object_get_data (G_OBJECT (config), "area");
+  set_func = g_object_get_data(G_OBJECT(config), "set-func");
+  area = g_object_get_data(G_OBJECT(config), "area");
 
-	g_object_get (config,
-	              "center-x", &x,
-	              "center-y", &y,
-	              "radius",   &radius,
-	              NULL);
+  g_object_get(config, "center-x", &x, "center-y", &y, "radius", &radius, NULL);
 
-	x1 = x * area->width;
-	y1 = y * area->height;
-	x2 = x1 + radius;
-	y2 = y1;
+  x1 = x * area->width;
+  y1 = y * area->height;
+  x2 = x1 + radius;
+  y2 = y1;
 
-	set_func (set_data, area, x1, y1, x2, y2);
+  set_func(set_data, area, x1, y1, x2, y2);
 }
 
-GtkWidget *
-_gimp_prop_gui_new_supernova (GObject                  *config,
-                              GParamSpec              **param_specs,
-                              guint n_param_specs,
-                              GeglRectangle            *area,
-                              GimpContext              *context,
-                              GimpCreatePickerFunc create_picker_func,
-                              GimpCreateControllerFunc create_controller_func,
-                              gpointer creator)
-{
-	GtkWidget *vbox;
+GtkWidget *_gimp_prop_gui_new_supernova(
+    GObject *config, GParamSpec **param_specs, guint n_param_specs,
+    GeglRectangle *area, GimpContext *context,
+    GimpCreatePickerFunc create_picker_func,
+    GimpCreateControllerFunc create_controller_func, gpointer creator) {
+  GtkWidget *vbox;
 
-	g_return_val_if_fail (G_IS_OBJECT (config), NULL);
-	g_return_val_if_fail (param_specs != NULL, NULL);
-	g_return_val_if_fail (n_param_specs > 0, NULL);
-	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail(G_IS_OBJECT(config), NULL);
+  g_return_val_if_fail(param_specs != NULL, NULL);
+  g_return_val_if_fail(n_param_specs > 0, NULL);
+  g_return_val_if_fail(GIMP_IS_CONTEXT(context), NULL);
 
-	vbox = _gimp_prop_gui_new_generic (config,
-	                                   param_specs, n_param_specs,
-	                                   area, context,
-	                                   create_picker_func,
-	                                   create_controller_func,
-	                                   creator);
+  vbox = _gimp_prop_gui_new_generic(config, param_specs, n_param_specs, area,
+                                    context, create_picker_func,
+                                    create_controller_func, creator);
 
+  if (create_controller_func) {
+    GCallback set_func;
+    gpointer set_data;
 
-	if (create_controller_func)
-	{
-		GCallback set_func;
-		gpointer set_data;
+    set_func = create_controller_func(
+        creator, GIMP_CONTROLLER_TYPE_LINE, _("Supernova: "),
+        (GCallback)line_callback, config, &set_data);
 
-		set_func = create_controller_func (creator,
-		                                   GIMP_CONTROLLER_TYPE_LINE,
-		                                   _("Supernova: "),
-		                                   (GCallback) line_callback,
-		                                   config,
-		                                   &set_data);
+    g_object_set_data(G_OBJECT(config), "set-func", set_func);
 
-		g_object_set_data (G_OBJECT (config), "set-func", set_func);
+    g_object_set_data_full(G_OBJECT(config), "area",
+                           g_memdup(area, sizeof(GeglRectangle)),
+                           (GDestroyNotify)g_free);
 
-		g_object_set_data_full (G_OBJECT (config), "area",
-		                        g_memdup (area, sizeof (GeglRectangle)),
-		                        (GDestroyNotify) g_free);
+    config_notify(config, NULL, set_data);
 
-		config_notify (config, NULL, set_data);
+    g_signal_connect(config, "notify", G_CALLBACK(config_notify), set_data);
+  }
 
-		g_signal_connect (config, "notify",
-		                  G_CALLBACK (config_notify),
-		                  set_data);
-	}
-
-	return vbox;
+  return vbox;
 }

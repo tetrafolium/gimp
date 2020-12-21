@@ -32,264 +32,215 @@
 #include "widgets/gimpsessioninfo.h"
 
 #include "gimpcanvascursor.h"
-#include "gimpdisplay.h"
 #include "gimpcursorview.h"
-#include "gimpdisplayshell.h"
+#include "gimpdisplay.h"
 #include "gimpdisplayshell-cursor.h"
 #include "gimpdisplayshell-transform.h"
+#include "gimpdisplayshell.h"
 #include "gimpstatusbar.h"
 
-
-static void  gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
-                                                 GimpCursorType cursor_type,
-                                                 GimpToolCursorType tool_cursor,
-                                                 GimpCursorModifier modifier,
-                                                 gboolean always_install);
-
+static void gimp_display_shell_real_set_cursor(GimpDisplayShell *shell,
+                                               GimpCursorType cursor_type,
+                                               GimpToolCursorType tool_cursor,
+                                               GimpCursorModifier modifier,
+                                               gboolean always_install);
 
 /*  public functions  */
 
-void
-gimp_display_shell_set_cursor (GimpDisplayShell   *shell,
-                               GimpCursorType cursor_type,
-                               GimpToolCursorType tool_cursor,
-                               GimpCursorModifier modifier)
-{
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+void gimp_display_shell_set_cursor(GimpDisplayShell *shell,
+                                   GimpCursorType cursor_type,
+                                   GimpToolCursorType tool_cursor,
+                                   GimpCursorModifier modifier) {
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	if (!shell->using_override_cursor)
-	{
-		gimp_display_shell_real_set_cursor (shell,
-		                                    cursor_type,
-		                                    tool_cursor,
-		                                    modifier,
-		                                    FALSE);
-	}
+  if (!shell->using_override_cursor) {
+    gimp_display_shell_real_set_cursor(shell, cursor_type, tool_cursor,
+                                       modifier, FALSE);
+  }
 }
 
-void
-gimp_display_shell_unset_cursor (GimpDisplayShell *shell)
-{
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+void gimp_display_shell_unset_cursor(GimpDisplayShell *shell) {
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	if (!shell->using_override_cursor)
-	{
-		gimp_display_shell_real_set_cursor (shell,
-		                                    (GimpCursorType) -1, 0, 0, FALSE);
-	}
+  if (!shell->using_override_cursor) {
+    gimp_display_shell_real_set_cursor(shell, (GimpCursorType)-1, 0, 0, FALSE);
+  }
 }
 
-void
-gimp_display_shell_set_override_cursor (GimpDisplayShell *shell,
-                                        GimpCursorType cursor_type)
-{
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+void gimp_display_shell_set_override_cursor(GimpDisplayShell *shell,
+                                            GimpCursorType cursor_type) {
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	if (!shell->using_override_cursor ||
-	    (shell->using_override_cursor &&
-	     shell->override_cursor != cursor_type))
-	{
-		shell->override_cursor       = cursor_type;
-		shell->using_override_cursor = TRUE;
+  if (!shell->using_override_cursor ||
+      (shell->using_override_cursor && shell->override_cursor != cursor_type)) {
+    shell->override_cursor = cursor_type;
+    shell->using_override_cursor = TRUE;
 
-		gimp_cursor_set (shell->canvas,
-		                 shell->cursor_handedness,
-		                 cursor_type,
-		                 GIMP_TOOL_CURSOR_NONE,
-		                 GIMP_CURSOR_MODIFIER_NONE);
-	}
+    gimp_cursor_set(shell->canvas, shell->cursor_handedness, cursor_type,
+                    GIMP_TOOL_CURSOR_NONE, GIMP_CURSOR_MODIFIER_NONE);
+  }
 }
 
-void
-gimp_display_shell_unset_override_cursor (GimpDisplayShell *shell)
-{
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+void gimp_display_shell_unset_override_cursor(GimpDisplayShell *shell) {
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	if (shell->using_override_cursor)
-	{
-		shell->using_override_cursor = FALSE;
+  if (shell->using_override_cursor) {
+    shell->using_override_cursor = FALSE;
 
-		gimp_display_shell_real_set_cursor (shell,
-		                                    shell->current_cursor,
-		                                    shell->tool_cursor,
-		                                    shell->cursor_modifier,
-		                                    TRUE);
-	}
+    gimp_display_shell_real_set_cursor(shell, shell->current_cursor,
+                                       shell->tool_cursor,
+                                       shell->cursor_modifier, TRUE);
+  }
 }
 
-void
-gimp_display_shell_update_software_cursor (GimpDisplayShell    *shell,
-                                           GimpCursorPrecision precision,
-                                           gint display_x,
-                                           gint display_y,
-                                           gdouble image_x,
-                                           gdouble image_y)
-{
-	GimpImageWindow   *image_window;
-	GimpDialogFactory *factory;
-	GimpStatusbar     *statusbar;
-	GtkWidget         *widget;
-	GimpImage         *image;
+void gimp_display_shell_update_software_cursor(GimpDisplayShell *shell,
+                                               GimpCursorPrecision precision,
+                                               gint display_x, gint display_y,
+                                               gdouble image_x,
+                                               gdouble image_y) {
+  GimpImageWindow *image_window;
+  GimpDialogFactory *factory;
+  GimpStatusbar *statusbar;
+  GtkWidget *widget;
+  GimpImage *image;
 
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	image = gimp_display_get_image (shell->display);
+  image = gimp_display_get_image(shell->display);
 
-	if (shell->draw_cursor &&
-	    shell->proximity   &&
-	    display_x >= 0     &&
-	    display_y >= 0)
-	{
-		gimp_canvas_item_begin_change (shell->cursor);
+  if (shell->draw_cursor && shell->proximity && display_x >= 0 &&
+      display_y >= 0) {
+    gimp_canvas_item_begin_change(shell->cursor);
 
-		gimp_canvas_cursor_set (shell->cursor,
-		                        display_x,
-		                        display_y);
-		gimp_canvas_item_set_visible (shell->cursor, TRUE);
+    gimp_canvas_cursor_set(shell->cursor, display_x, display_y);
+    gimp_canvas_item_set_visible(shell->cursor, TRUE);
 
-		gimp_canvas_item_end_change (shell->cursor);
-	}
-	else
-	{
-		gimp_canvas_item_set_visible (shell->cursor, FALSE);
-	}
+    gimp_canvas_item_end_change(shell->cursor);
+  } else {
+    gimp_canvas_item_set_visible(shell->cursor, FALSE);
+  }
 
-	/*  use the passed image_coords for the statusbar because they are
-	 *  possibly snapped...
-	 */
-	statusbar = gimp_display_shell_get_statusbar (shell);
+  /*  use the passed image_coords for the statusbar because they are
+   *  possibly snapped...
+   */
+  statusbar = gimp_display_shell_get_statusbar(shell);
 
-	gimp_statusbar_update_cursor (statusbar, precision, image_x, image_y);
+  gimp_statusbar_update_cursor(statusbar, precision, image_x, image_y);
 
-	image_window = gimp_display_shell_get_window (shell);
-	factory = gimp_dock_container_get_dialog_factory (GIMP_DOCK_CONTAINER (image_window));
+  image_window = gimp_display_shell_get_window(shell);
+  factory =
+      gimp_dock_container_get_dialog_factory(GIMP_DOCK_CONTAINER(image_window));
 
-	widget = gimp_dialog_factory_find_widget (factory, "gimp-cursor-view");
+  widget = gimp_dialog_factory_find_widget(factory, "gimp-cursor-view");
 
-	if (widget)
-	{
-		GtkWidget *cursor_view = gtk_bin_get_child (GTK_BIN (widget));
+  if (widget) {
+    GtkWidget *cursor_view = gtk_bin_get_child(GTK_BIN(widget));
 
-		if (cursor_view)
-		{
-			gint t_x = -1;
-			gint t_y = -1;
+    if (cursor_view) {
+      gint t_x = -1;
+      gint t_y = -1;
 
-			/*  ...but use the unsnapped display_coords for the info window  */
-			if (display_x >= 0 && display_y >= 0)
-				gimp_display_shell_untransform_xy (shell, display_x, display_y,
-				                                   &t_x, &t_y, FALSE);
+      /*  ...but use the unsnapped display_coords for the info window  */
+      if (display_x >= 0 && display_y >= 0)
+        gimp_display_shell_untransform_xy(shell, display_x, display_y, &t_x,
+                                          &t_y, FALSE);
 
-			gimp_cursor_view_update_cursor (GIMP_CURSOR_VIEW (cursor_view),
-			                                image, shell->unit,
-			                                t_x, t_y);
-		}
-	}
+      gimp_cursor_view_update_cursor(GIMP_CURSOR_VIEW(cursor_view), image,
+                                     shell->unit, t_x, t_y);
+    }
+  }
 }
 
-void
-gimp_display_shell_clear_software_cursor (GimpDisplayShell *shell)
-{
-	GimpImageWindow   *image_window;
-	GimpDialogFactory *factory;
-	GimpStatusbar     *statusbar;
-	GtkWidget         *widget;
+void gimp_display_shell_clear_software_cursor(GimpDisplayShell *shell) {
+  GimpImageWindow *image_window;
+  GimpDialogFactory *factory;
+  GimpStatusbar *statusbar;
+  GtkWidget *widget;
 
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	gimp_canvas_item_set_visible (shell->cursor, FALSE);
+  gimp_canvas_item_set_visible(shell->cursor, FALSE);
 
-	statusbar = gimp_display_shell_get_statusbar (shell);
+  statusbar = gimp_display_shell_get_statusbar(shell);
 
-	gimp_statusbar_clear_cursor (statusbar);
+  gimp_statusbar_clear_cursor(statusbar);
 
-	image_window = gimp_display_shell_get_window (shell);
-	factory = gimp_dock_container_get_dialog_factory (GIMP_DOCK_CONTAINER (image_window));
+  image_window = gimp_display_shell_get_window(shell);
+  factory =
+      gimp_dock_container_get_dialog_factory(GIMP_DOCK_CONTAINER(image_window));
 
-	widget = gimp_dialog_factory_find_widget (factory, "gimp-cursor-view");
+  widget = gimp_dialog_factory_find_widget(factory, "gimp-cursor-view");
 
-	if (widget)
-	{
-		GtkWidget *cursor_view = gtk_bin_get_child (GTK_BIN (widget));
+  if (widget) {
+    GtkWidget *cursor_view = gtk_bin_get_child(GTK_BIN(widget));
 
-		if (cursor_view)
-			gimp_cursor_view_clear_cursor (GIMP_CURSOR_VIEW (cursor_view));
-	}
+    if (cursor_view)
+      gimp_cursor_view_clear_cursor(GIMP_CURSOR_VIEW(cursor_view));
+  }
 }
-
 
 /*  private functions  */
 
-static void
-gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
-                                    GimpCursorType cursor_type,
-                                    GimpToolCursorType tool_cursor,
-                                    GimpCursorModifier modifier,
-                                    gboolean always_install)
-{
-	GimpHandedness cursor_handedness;
+static void gimp_display_shell_real_set_cursor(GimpDisplayShell *shell,
+                                               GimpCursorType cursor_type,
+                                               GimpToolCursorType tool_cursor,
+                                               GimpCursorModifier modifier,
+                                               gboolean always_install) {
+  GimpHandedness cursor_handedness;
 
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
 
-	if (cursor_type == (GimpCursorType) -1)
-	{
-		shell->current_cursor = cursor_type;
+  if (cursor_type == (GimpCursorType)-1) {
+    shell->current_cursor = cursor_type;
 
-		if (gtk_widget_is_drawable (shell->canvas))
-			gdk_window_set_cursor (gtk_widget_get_window (shell->canvas), NULL);
+    if (gtk_widget_is_drawable(shell->canvas))
+      gdk_window_set_cursor(gtk_widget_get_window(shell->canvas), NULL);
 
-		return;
-	}
+    return;
+  }
 
-	if (cursor_type != GIMP_CURSOR_NONE &&
-	    cursor_type != GIMP_CURSOR_BAD)
-	{
-		switch (shell->display->config->cursor_mode)
-		{
-		case GIMP_CURSOR_MODE_TOOL_ICON:
-			break;
+  if (cursor_type != GIMP_CURSOR_NONE && cursor_type != GIMP_CURSOR_BAD) {
+    switch (shell->display->config->cursor_mode) {
+    case GIMP_CURSOR_MODE_TOOL_ICON:
+      break;
 
-		case GIMP_CURSOR_MODE_TOOL_CROSSHAIR:
-			if (cursor_type < GIMP_CURSOR_CORNER_TOP ||
-			    cursor_type > GIMP_CURSOR_SIDE_TOP_LEFT)
-			{
-				/* the corner and side cursors count as crosshair, so leave
-				 * them and override everything else
-				 */
-				cursor_type = GIMP_CURSOR_CROSSHAIR_SMALL;
-			}
-			break;
+    case GIMP_CURSOR_MODE_TOOL_CROSSHAIR:
+      if (cursor_type < GIMP_CURSOR_CORNER_TOP ||
+          cursor_type > GIMP_CURSOR_SIDE_TOP_LEFT) {
+        /* the corner and side cursors count as crosshair, so leave
+         * them and override everything else
+         */
+        cursor_type = GIMP_CURSOR_CROSSHAIR_SMALL;
+      }
+      break;
 
-		case GIMP_CURSOR_MODE_CROSSHAIR:
-			cursor_type = GIMP_CURSOR_CROSSHAIR;
-			tool_cursor = GIMP_TOOL_CURSOR_NONE;
+    case GIMP_CURSOR_MODE_CROSSHAIR:
+      cursor_type = GIMP_CURSOR_CROSSHAIR;
+      tool_cursor = GIMP_TOOL_CURSOR_NONE;
 
-			if (modifier != GIMP_CURSOR_MODIFIER_BAD)
-			{
-				/* the bad modifier is always shown */
-				modifier = GIMP_CURSOR_MODIFIER_NONE;
-			}
-			break;
-		}
-	}
+      if (modifier != GIMP_CURSOR_MODIFIER_BAD) {
+        /* the bad modifier is always shown */
+        modifier = GIMP_CURSOR_MODIFIER_NONE;
+      }
+      break;
+    }
+  }
 
-	cursor_type = gimp_cursor_rotate (cursor_type, shell->rotate_angle);
+  cursor_type = gimp_cursor_rotate(cursor_type, shell->rotate_angle);
 
-	cursor_handedness = GIMP_GUI_CONFIG (shell->display->config)->cursor_handedness;
+  cursor_handedness =
+      GIMP_GUI_CONFIG(shell->display->config)->cursor_handedness;
 
-	if (shell->cursor_handedness != cursor_handedness ||
-	    shell->current_cursor    != cursor_type       ||
-	    shell->tool_cursor       != tool_cursor       ||
-	    shell->cursor_modifier   != modifier          ||
-	    always_install)
-	{
-		shell->cursor_handedness = cursor_handedness;
-		shell->current_cursor    = cursor_type;
-		shell->tool_cursor       = tool_cursor;
-		shell->cursor_modifier   = modifier;
+  if (shell->cursor_handedness != cursor_handedness ||
+      shell->current_cursor != cursor_type ||
+      shell->tool_cursor != tool_cursor || shell->cursor_modifier != modifier ||
+      always_install) {
+    shell->cursor_handedness = cursor_handedness;
+    shell->current_cursor = cursor_type;
+    shell->tool_cursor = tool_cursor;
+    shell->cursor_modifier = modifier;
 
-		gimp_cursor_set (shell->canvas,
-		                 cursor_handedness,
-		                 cursor_type, tool_cursor, modifier);
-	}
+    gimp_cursor_set(shell->canvas, cursor_handedness, cursor_type, tool_cursor,
+                    modifier);
+  }
 }

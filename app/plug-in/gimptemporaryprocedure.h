@@ -20,36 +20,37 @@
 #ifndef __GIMP_TEMPORARY_PROCEDURE_H__
 #define __GIMP_TEMPORARY_PROCEDURE_H__
 
-
 #include "gimppluginprocedure.h"
 
-
-#define GIMP_TYPE_TEMPORARY_PROCEDURE            (gimp_temporary_procedure_get_type ())
-#define GIMP_TEMPORARY_PROCEDURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEMPORARY_PROCEDURE, GimpTemporaryProcedure))
-#define GIMP_TEMPORARY_PROCEDURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TEMPORARY_PROCEDURE, GimpTemporaryProcedureClass))
-#define GIMP_IS_TEMPORARY_PROCEDURE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEMPORARY_PROCEDURE))
-#define GIMP_IS_TEMPORARY_PROCEDURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TEMPORARY_PROCEDURE))
-#define GIMP_TEMPORARY_PROCEDURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TEMPORARY_PROCEDURE, GimpTemporaryProcedureClass))
-
+#define GIMP_TYPE_TEMPORARY_PROCEDURE (gimp_temporary_procedure_get_type())
+#define GIMP_TEMPORARY_PROCEDURE(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEMPORARY_PROCEDURE,            \
+                              GimpTemporaryProcedure))
+#define GIMP_TEMPORARY_PROCEDURE_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TEMPORARY_PROCEDURE,             \
+                           GimpTemporaryProcedureClass))
+#define GIMP_IS_TEMPORARY_PROCEDURE(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEMPORARY_PROCEDURE))
+#define GIMP_IS_TEMPORARY_PROCEDURE_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TEMPORARY_PROCEDURE))
+#define GIMP_TEMPORARY_PROCEDURE_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TEMPORARY_PROCEDURE,             \
+                             GimpTemporaryProcedureClass))
 
 typedef struct _GimpTemporaryProcedureClass GimpTemporaryProcedureClass;
 
-struct _GimpTemporaryProcedure
-{
-	GimpPlugInProcedure parent_instance;
+struct _GimpTemporaryProcedure {
+  GimpPlugInProcedure parent_instance;
 
-	GimpPlugIn          *plug_in;
+  GimpPlugIn *plug_in;
 };
 
-struct _GimpTemporaryProcedureClass
-{
-	GimpPlugInProcedureClass parent_class;
+struct _GimpTemporaryProcedureClass {
+  GimpPlugInProcedureClass parent_class;
 };
 
+GType gimp_temporary_procedure_get_type(void) G_GNUC_CONST;
 
-GType           gimp_temporary_procedure_get_type (void) G_GNUC_CONST;
-
-GimpProcedure * gimp_temporary_procedure_new      (GimpPlugIn *plug_in);
-
+GimpProcedure *gimp_temporary_procedure_new(GimpPlugIn *plug_in);
 
 #endif /* __GIMP_TEMPORARY_PROCEDURE_H__ */

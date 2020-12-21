@@ -21,16 +21,10 @@
 #ifndef __GIMP_PROP_GUI_FOCUS_BLUR_H__
 #define __GIMP_PROP_GUI_FOCUS_BLUR_H__
 
-
-GtkWidget *
-_gimp_prop_gui_new_focus_blur (GObject                  *config,
-                               GParamSpec              **param_specs,
-                               guint n_param_specs,
-                               GeglRectangle            *area,
-                               GimpContext              *context,
-                               GimpCreatePickerFunc create_picker_func,
-                               GimpCreateControllerFunc create_controller_func,
-                               gpointer creator);
-
+GtkWidget *_gimp_prop_gui_new_focus_blur(
+    GObject *config, GParamSpec **param_specs, guint n_param_specs,
+    GeglRectangle *area, GimpContext *context,
+    GimpCreatePickerFunc create_picker_func,
+    GimpCreateControllerFunc create_controller_func, gpointer creator);
 
 #endif /* __GIMP_PROP_GUI_FOCUS_BLUR_H__ */

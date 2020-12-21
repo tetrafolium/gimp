@@ -18,9 +18,6 @@
 #ifndef __GIMP_DISPLAY_SHELL_CLOSE_H__
 #define __GIMP_DISPLAY_SHELL_CLOSE_H__
 
-
-void   gimp_display_shell_close (GimpDisplayShell *shell,
-                                 gboolean kill_it);
-
+void gimp_display_shell_close(GimpDisplayShell *shell, gboolean kill_it);
 
 #endif /* __GIMP_DISPLAY_SHELL_CLOSE_H__ */

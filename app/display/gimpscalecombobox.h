@@ -21,40 +21,42 @@
 #ifndef __GIMP_SCALE_COMBO_BOX_H__
 #define __GIMP_SCALE_COMBO_BOX_H__
 
-
-#define GIMP_TYPE_SCALE_COMBO_BOX            (gimp_scale_combo_box_get_type ())
-#define GIMP_SCALE_COMBO_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SCALE_COMBO_BOX, GimpScaleComboBox))
-#define GIMP_SCALE_COMBO_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SCALE_COMBO_BOX, GimpScaleComboBoxClass))
-#define GIMP_IS_SCALE_COMBO_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SCALE_COMBO_BOX))
-#define GIMP_IS_SCALE_COMBO_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SCALE_COMBO_BOX))
-#define GIMP_SCALE_COMBO_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SCALE_COMBO_BOX, GimpScaleComboBoxClass))
-
+#define GIMP_TYPE_SCALE_COMBO_BOX (gimp_scale_combo_box_get_type())
+#define GIMP_SCALE_COMBO_BOX(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SCALE_COMBO_BOX,                \
+                              GimpScaleComboBox))
+#define GIMP_SCALE_COMBO_BOX_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SCALE_COMBO_BOX,                 \
+                           GimpScaleComboBoxClass))
+#define GIMP_IS_SCALE_COMBO_BOX(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SCALE_COMBO_BOX))
+#define GIMP_IS_SCALE_COMBO_BOX_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SCALE_COMBO_BOX))
+#define GIMP_SCALE_COMBO_BOX_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SCALE_COMBO_BOX,                 \
+                             GimpScaleComboBoxClass))
 
 typedef struct _GimpScaleComboBoxClass GimpScaleComboBoxClass;
 
-struct _GimpScaleComboBox
-{
-	GtkComboBox parent_instance;
+struct _GimpScaleComboBox {
+  GtkComboBox parent_instance;
 
-	gdouble scale;
-	GtkTreePath *last_path;
-	GList       *mru;
+  gdouble scale;
+  GtkTreePath *last_path;
+  GList *mru;
 };
 
-struct _GimpScaleComboBoxClass
-{
-	GtkComboBoxClass parent_instance;
+struct _GimpScaleComboBoxClass {
+  GtkComboBoxClass parent_instance;
 
-	void (* entry_activated) (GimpScaleComboBox *combo_box);
+  void (*entry_activated)(GimpScaleComboBox *combo_box);
 };
 
+GType gimp_scale_combo_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_scale_combo_box_get_type   (void) G_GNUC_CONST;
+GtkWidget *gimp_scale_combo_box_new(void);
+void gimp_scale_combo_box_set_scale(GimpScaleComboBox *combo_box,
+                                    gdouble scale);
+gdouble gimp_scale_combo_box_get_scale(GimpScaleComboBox *combo_box);
 
-GtkWidget * gimp_scale_combo_box_new        (void);
-void        gimp_scale_combo_box_set_scale  (GimpScaleComboBox *combo_box,
-                                             gdouble scale);
-gdouble     gimp_scale_combo_box_get_scale  (GimpScaleComboBox *combo_box);
-
-
-#endif  /* __GIMP_SCALE_COMBO_BOX_H__ */
+#endif /* __GIMP_SCALE_COMBO_BOX_H__ */

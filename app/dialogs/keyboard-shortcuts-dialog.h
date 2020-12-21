@@ -18,8 +18,6 @@
 #ifndef __KEYBOARD_SHORTCUTS_DIALOG_H__
 #define __KEYBOARD_SHORTCUTS_DIALOG_H__
 
-
-GtkWidget * keyboard_shortcuts_dialog_new (Gimp *gimp);
-
+GtkWidget *keyboard_shortcuts_dialog_new(Gimp *gimp);
 
 #endif /* __KEYBOARD_SHORTCUTS_DIALOG_H__ */

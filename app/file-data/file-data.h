@@ -18,9 +18,7 @@
 #ifndef __FILE_DATA_H__
 #define __FILE_DATA_H__
 
-
-void   file_data_init (Gimp *gimp);
-void   file_data_exit (Gimp *gimp);
-
+void file_data_init(Gimp *gimp);
+void file_data_exit(Gimp *gimp);
 
 #endif /* __FILE_DATA_H__ */

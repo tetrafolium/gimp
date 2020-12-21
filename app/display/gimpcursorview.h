@@ -21,48 +21,43 @@
 #ifndef __GIMP_CURSOR_VIEW_H__
 #define __GIMP_CURSOR_VIEW_H__
 
-
 #include "widgets/gimpeditor.h"
 
-
-#define GIMP_TYPE_CURSOR_VIEW            (gimp_cursor_view_get_type ())
-#define GIMP_CURSOR_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CURSOR_VIEW, GimpCursorView))
-#define GIMP_CURSOR_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CURSOR_VIEW, GimpCursorViewClass))
-#define GIMP_IS_CURSOR_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CURSOR_VIEW))
-#define GIMP_IS_CURSOR_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CURSOR_VIEW))
-#define GIMP_CURSOR_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CURSOR_VIEW, GimpCursorViewClass))
-
+#define GIMP_TYPE_CURSOR_VIEW (gimp_cursor_view_get_type())
+#define GIMP_CURSOR_VIEW(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CURSOR_VIEW, GimpCursorView))
+#define GIMP_CURSOR_VIEW_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CURSOR_VIEW, GimpCursorViewClass))
+#define GIMP_IS_CURSOR_VIEW(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CURSOR_VIEW))
+#define GIMP_IS_CURSOR_VIEW_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CURSOR_VIEW))
+#define GIMP_CURSOR_VIEW_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CURSOR_VIEW, GimpCursorViewClass))
 
 typedef struct _GimpCursorViewClass GimpCursorViewClass;
 typedef struct _GimpCursorViewPrivate GimpCursorViewPrivate;
 
-struct _GimpCursorView
-{
-	GimpEditor parent_instance;
+struct _GimpCursorView {
+  GimpEditor parent_instance;
 
-	GimpCursorViewPrivate *priv;
+  GimpCursorViewPrivate *priv;
 };
 
-struct _GimpCursorViewClass
-{
-	GimpEditorClass parent_class;
+struct _GimpCursorViewClass {
+  GimpEditorClass parent_class;
 };
 
+GType gimp_cursor_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_cursor_view_get_type          (void) G_GNUC_CONST;
+GtkWidget *gimp_cursor_view_new(GimpMenuFactory *menu_factory);
 
-GtkWidget * gimp_cursor_view_new               (GimpMenuFactory *menu_factory);
+void gimp_cursor_view_set_sample_merged(GimpCursorView *view,
+                                        gboolean sample_merged);
+gboolean gimp_cursor_view_get_sample_merged(GimpCursorView *view);
 
-void        gimp_cursor_view_set_sample_merged (GimpCursorView  *view,
-                                                gboolean sample_merged);
-gboolean    gimp_cursor_view_get_sample_merged (GimpCursorView  *view);
-
-void        gimp_cursor_view_update_cursor     (GimpCursorView  *view,
-                                                GimpImage       *image,
-                                                GimpUnit shell_unit,
-                                                gdouble x,
-                                                gdouble y);
-void        gimp_cursor_view_clear_cursor      (GimpCursorView  *view);
-
+void gimp_cursor_view_update_cursor(GimpCursorView *view, GimpImage *image,
+                                    GimpUnit shell_unit, gdouble x, gdouble y);
+void gimp_cursor_view_clear_cursor(GimpCursorView *view);
 
 #endif /* __GIMP_CURSOR_VIEW_H__ */

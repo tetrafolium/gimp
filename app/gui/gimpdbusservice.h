@@ -22,48 +22,48 @@
 #ifndef __GIMP_DBUS_SERVICE_H__
 #define __GIMP_DBUS_SERVICE_H__
 
-
 #include "gimpdbusservice-generated.h"
 
 /* service name and path should really be org.gimp.GIMP and
  * /org/gimp/GIMP and only the interface be called UI.
  */
-#define GIMP_DBUS_SERVICE_NAME   "org.gimp.GIMP.UI"
-#define GIMP_DBUS_SERVICE_PATH   "/org/gimp/GIMP/UI"
+#define GIMP_DBUS_SERVICE_NAME "org.gimp.GIMP.UI"
+#define GIMP_DBUS_SERVICE_PATH "/org/gimp/GIMP/UI"
 #define GIMP_DBUS_INTERFACE_NAME "org.gimp.GIMP.UI"
 #define GIMP_DBUS_INTERFACE_PATH "/org/gimp/GIMP/UI"
 
-
-#define GIMP_TYPE_DBUS_SERVICE            (gimp_dbus_service_get_type ())
-#define GIMP_DBUS_SERVICE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DBUS_SERVICE, GimpDBusService))
-#define GIMP_DBUS_SERVICE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DBUS_SERVICE, GimpDBusServiceClass))
-#define GIMP_IS_DBUS_SERVICE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DBUS_SERVICE))
-#define GIMP_IS_DBUS_SERVICE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DBUS_SERVICE))
-#define GIMP_DBUS_SERVICE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DBUS_SERVICE, GimpDBusServiceClass))
-
+#define GIMP_TYPE_DBUS_SERVICE (gimp_dbus_service_get_type())
+#define GIMP_DBUS_SERVICE(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DBUS_SERVICE, GimpDBusService))
+#define GIMP_DBUS_SERVICE_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DBUS_SERVICE,                    \
+                           GimpDBusServiceClass))
+#define GIMP_IS_DBUS_SERVICE(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DBUS_SERVICE))
+#define GIMP_IS_DBUS_SERVICE_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DBUS_SERVICE))
+#define GIMP_DBUS_SERVICE_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DBUS_SERVICE,                    \
+                             GimpDBusServiceClass))
 
 typedef struct _GimpDBusService GimpDBusService;
 typedef struct _GimpDBusServiceClass GimpDBusServiceClass;
 
-struct _GimpDBusService
-{
-	GimpDBusServiceUISkeleton parent_instance;
+struct _GimpDBusService {
+  GimpDBusServiceUISkeleton parent_instance;
 
-	Gimp     *gimp;
-	GQueue   *queue;
-	GSource  *source;
-	gboolean timeout_source;
+  Gimp *gimp;
+  GQueue *queue;
+  GSource *source;
+  gboolean timeout_source;
 };
 
-struct _GimpDBusServiceClass
-{
-	GimpDBusServiceUISkeletonClass parent_class;
+struct _GimpDBusServiceClass {
+  GimpDBusServiceUISkeletonClass parent_class;
 };
 
+GType gimp_dbus_service_get_type(void) G_GNUC_CONST;
 
-GType     gimp_dbus_service_get_type (void) G_GNUC_CONST;
-
-GObject * gimp_dbus_service_new      (Gimp *gimp);
-
+GObject *gimp_dbus_service_new(Gimp *gimp);
 
 #endif /* __GIMP_DBUS_SERVICE_H__ */

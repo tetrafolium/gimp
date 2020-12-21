@@ -18,8 +18,6 @@
 #ifndef __GIMP_DISPLAY_SHELL_DND_H__
 #define __GIMP_DISPLAY_SHELL_DND_H__
 
-
-void   gimp_display_shell_dnd_init (GimpDisplayShell *shell);
-
+void gimp_display_shell_dnd_init(GimpDisplayShell *shell);
 
 #endif /* __GIMP_DISPLAY_SHELL_DND_H__ */

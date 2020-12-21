@@ -21,20 +21,13 @@
 #ifndef __GIMP_GEGL_LOOPS_SSE2_H__
 #define __GIMP_GEGL_LOOPS_SSE2_H__
 
-
 #if COMPILE_SSE2_INTRINISICS
 
-void   gimp_gegl_smudge_with_paint_process_sse2 (gfloat       *accum,
-                                                 const gfloat *canvas,
-                                                 gfloat       *paint,
-                                                 gint count,
-                                                 const gfloat *brush_color,
-                                                 gfloat brush_a,
-                                                 gboolean no_erasing,
-                                                 gfloat flow,
-                                                 gfloat rate);
+void gimp_gegl_smudge_with_paint_process_sse2(
+    gfloat *accum, const gfloat *canvas, gfloat *paint, gint count,
+    const gfloat *brush_color, gfloat brush_a, gboolean no_erasing, gfloat flow,
+    gfloat rate);
 
 #endif /* COMPILE_SSE2_INTRINISICS */
-
 
 #endif /* __GIMP_GEGL_LOOPS_SSE2_H__ */

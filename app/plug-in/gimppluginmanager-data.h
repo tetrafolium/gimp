@@ -20,16 +20,13 @@
 #ifndef __GIMP_PLUG_IN_MANAGER_DATA_H__
 #define __GIMP_PLUG_IN_MANAGER_DATA_H__
 
+void gimp_plug_in_manager_data_free(GimpPlugInManager *manager);
 
-void           gimp_plug_in_manager_data_free (GimpPlugInManager *manager);
+void gimp_plug_in_manager_set_data(GimpPlugInManager *manager,
+                                   const gchar *identifier, gint32 bytes,
+                                   const guint8 *data);
+const guint8 *gimp_plug_in_manager_get_data(GimpPlugInManager *manager,
+                                            const gchar *identifier,
+                                            gint32 *bytes);
 
-void           gimp_plug_in_manager_set_data  (GimpPlugInManager *manager,
-                                               const gchar       *identifier,
-                                               gint32 bytes,
-                                               const guint8      *data);
-const guint8 * gimp_plug_in_manager_get_data  (GimpPlugInManager *manager,
-                                               const gchar       *identifier,
-                                               gint32            *bytes);
-
-
-#endif  /*  __GIMP_PLUG_IN_MANAGER_DATA_H__  */
+#endif /*  __GIMP_PLUG_IN_MANAGER_DATA_H__  */

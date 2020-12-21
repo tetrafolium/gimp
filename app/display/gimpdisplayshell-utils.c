@@ -30,83 +30,65 @@
 #include "core/gimpunit.h"
 
 #include "gimpdisplay.h"
-#include "gimpdisplayshell.h"
 #include "gimpdisplayshell-utils.h"
+#include "gimpdisplayshell.h"
 
 #include "gimp-intl.h"
 
-void
-gimp_display_shell_get_constrained_line_params (GimpDisplayShell *shell,
-                                                gdouble          *offset_angle,
-                                                gdouble          *xres,
-                                                gdouble          *yres)
-{
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-	g_return_if_fail (offset_angle != NULL);
-	g_return_if_fail (xres != NULL);
-	g_return_if_fail (yres != NULL);
+void gimp_display_shell_get_constrained_line_params(GimpDisplayShell *shell,
+                                                    gdouble *offset_angle,
+                                                    gdouble *xres,
+                                                    gdouble *yres) {
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
+  g_return_if_fail(offset_angle != NULL);
+  g_return_if_fail(xres != NULL);
+  g_return_if_fail(yres != NULL);
 
-	if (shell->flip_horizontally ^ shell->flip_vertically)
-		*offset_angle = +shell->rotate_angle;
-	else
-		*offset_angle = -shell->rotate_angle;
+  if (shell->flip_horizontally ^ shell->flip_vertically)
+    *offset_angle = +shell->rotate_angle;
+  else
+    *offset_angle = -shell->rotate_angle;
 
-	*xres = 1.0;
-	*yres = 1.0;
+  *xres = 1.0;
+  *yres = 1.0;
 
-	if (!shell->dot_for_dot)
-	{
-		GimpImage *image = gimp_display_get_image (shell->display);
+  if (!shell->dot_for_dot) {
+    GimpImage *image = gimp_display_get_image(shell->display);
 
-		if (image)
-			gimp_image_get_resolution (image, xres, yres);
-	}
+    if (image)
+      gimp_image_get_resolution(image, xres, yres);
+  }
 }
 
-void
-gimp_display_shell_constrain_line (GimpDisplayShell *shell,
-                                   gdouble start_x,
-                                   gdouble start_y,
-                                   gdouble          *end_x,
-                                   gdouble          *end_y,
-                                   gint n_snap_lines)
-{
-	gdouble offset_angle;
-	gdouble xres, yres;
+void gimp_display_shell_constrain_line(GimpDisplayShell *shell, gdouble start_x,
+                                       gdouble start_y, gdouble *end_x,
+                                       gdouble *end_y, gint n_snap_lines) {
+  gdouble offset_angle;
+  gdouble xres, yres;
 
-	g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-	g_return_if_fail (end_x != NULL);
-	g_return_if_fail (end_y != NULL);
+  g_return_if_fail(GIMP_IS_DISPLAY_SHELL(shell));
+  g_return_if_fail(end_x != NULL);
+  g_return_if_fail(end_y != NULL);
 
-	gimp_display_shell_get_constrained_line_params (shell,
-	                                                &offset_angle,
-	                                                &xres, &yres);
+  gimp_display_shell_get_constrained_line_params(shell, &offset_angle, &xres,
+                                                 &yres);
 
-	gimp_constrain_line (start_x, start_y,
-	                     end_x,   end_y,
-	                     n_snap_lines,
-	                     offset_angle,
-	                     xres, yres);
+  gimp_constrain_line(start_x, start_y, end_x, end_y, n_snap_lines,
+                      offset_angle, xres, yres);
 }
 
-gdouble
-gimp_display_shell_constrain_angle (GimpDisplayShell *shell,
-                                    gdouble angle,
-                                    gint n_snap_lines)
-{
-	gdouble x, y;
+gdouble gimp_display_shell_constrain_angle(GimpDisplayShell *shell,
+                                           gdouble angle, gint n_snap_lines) {
+  gdouble x, y;
 
-	g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), 0.0);
+  g_return_val_if_fail(GIMP_IS_DISPLAY_SHELL(shell), 0.0);
 
-	x = cos (angle);
-	y = sin (angle);
+  x = cos(angle);
+  y = sin(angle);
 
-	gimp_display_shell_constrain_line (shell,
-	                                   0.0, 0.0,
-	                                   &x,  &y,
-	                                   n_snap_lines);
+  gimp_display_shell_constrain_line(shell, 0.0, 0.0, &x, &y, n_snap_lines);
 
-	return atan2 (y, x);
+  return atan2(y, x);
 }
 
 /**
@@ -131,90 +113,69 @@ gimp_display_shell_constrain_angle (GimpDisplayShell *shell,
  *
  * Returns: a newly allocated string containing the enhanced status.
  **/
-gchar *
-gimp_display_shell_get_line_status (GimpDisplayShell *shell,
-                                    const gchar      *status,
-                                    const gchar      *separator,
-                                    gdouble x1,
-                                    gdouble y1,
-                                    gdouble x2,
-                                    gdouble y2)
-{
-	GimpImage *image;
-	gchar     *enhanced_status;
-	gdouble xres;
-	gdouble yres;
-	gdouble dx, dy, pixel_dist;
-	gdouble angle;
+gchar *gimp_display_shell_get_line_status(GimpDisplayShell *shell,
+                                          const gchar *status,
+                                          const gchar *separator, gdouble x1,
+                                          gdouble y1, gdouble x2, gdouble y2) {
+  GimpImage *image;
+  gchar *enhanced_status;
+  gdouble xres;
+  gdouble yres;
+  gdouble dx, dy, pixel_dist;
+  gdouble angle;
 
-	image = gimp_display_get_image (shell->display);
-	if (!image)
-	{
-		/* This makes no sense to add line information when no image is
-		 * attached to the display. */
-		return g_strdup (status);
-	}
+  image = gimp_display_get_image(shell->display);
+  if (!image) {
+    /* This makes no sense to add line information when no image is
+     * attached to the display. */
+    return g_strdup(status);
+  }
 
-	if (shell->unit == GIMP_UNIT_PIXEL)
-		xres = yres = 1.0;
-	else
-		gimp_image_get_resolution (image, &xres, &yres);
+  if (shell->unit == GIMP_UNIT_PIXEL)
+    xres = yres = 1.0;
+  else
+    gimp_image_get_resolution(image, &xres, &yres);
 
-	dx = x2 - x1;
-	dy = y2 - y1;
-	pixel_dist = sqrt (SQR (dx) + SQR (dy));
+  dx = x2 - x1;
+  dy = y2 - y1;
+  pixel_dist = sqrt(SQR(dx) + SQR(dy));
 
-	if (dx)
-	{
-		angle = gimp_rad_to_deg (atan ((dy/yres) / (dx/xres)));
-		if (dx > 0)
-		{
-			if (dy > 0)
-				angle = 360.0 - angle;
-			else if (dy < 0)
-				angle = -angle;
-		}
-		else
-		{
-			angle = 180.0 - angle;
-		}
-	}
-	else if (dy)
-	{
-		angle = dy > 0 ? 270.0 : 90.0;
-	}
-	else
-	{
-		angle = 0.0;
-	}
+  if (dx) {
+    angle = gimp_rad_to_deg(atan((dy / yres) / (dx / xres)));
+    if (dx > 0) {
+      if (dy > 0)
+        angle = 360.0 - angle;
+      else if (dy < 0)
+        angle = -angle;
+    } else {
+      angle = 180.0 - angle;
+    }
+  } else if (dy) {
+    angle = dy > 0 ? 270.0 : 90.0;
+  } else {
+    angle = 0.0;
+  }
 
-	if (shell->unit == GIMP_UNIT_PIXEL)
-	{
-		enhanced_status = g_strdup_printf ("%.1f %s, %.2f\302\260%s%s",
-		                                   pixel_dist, _("pixels"), angle,
-		                                   separator, status);
-	}
-	else
-	{
-		gdouble inch_dist;
-		gdouble unit_dist;
-		gint digits = 0;
+  if (shell->unit == GIMP_UNIT_PIXEL) {
+    enhanced_status = g_strdup_printf("%.1f %s, %.2f\302\260%s%s", pixel_dist,
+                                      _("pixels"), angle, separator, status);
+  } else {
+    gdouble inch_dist;
+    gdouble unit_dist;
+    gint digits = 0;
 
-		/* The distance in unit. */
-		inch_dist = sqrt (SQR (dx / xres) + SQR (dy / yres));
-		unit_dist = gimp_unit_get_factor (shell->unit) * inch_dist;
+    /* The distance in unit. */
+    inch_dist = sqrt(SQR(dx / xres) + SQR(dy / yres));
+    unit_dist = gimp_unit_get_factor(shell->unit) * inch_dist;
 
-		/* The ideal digit precision for unit in current resolution. */
-		if (inch_dist)
-			digits = gimp_unit_get_scaled_digits (shell->unit,
-			                                      pixel_dist / inch_dist);
+    /* The ideal digit precision for unit in current resolution. */
+    if (inch_dist)
+      digits = gimp_unit_get_scaled_digits(shell->unit, pixel_dist / inch_dist);
 
-		enhanced_status = g_strdup_printf ("%.*f %s, %.2f\302\260%s%s",
-		                                   digits, unit_dist,
-		                                   gimp_unit_get_symbol (shell->unit),
-		                                   angle, separator, status);
+    enhanced_status = g_strdup_printf(
+        "%.*f %s, %.2f\302\260%s%s", digits, unit_dist,
+        gimp_unit_get_symbol(shell->unit), angle, separator, status);
+  }
 
-	}
-
-	return enhanced_status;
+  return enhanced_status;
 }

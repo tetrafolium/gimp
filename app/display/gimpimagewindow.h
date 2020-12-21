@@ -18,82 +18,80 @@
 #ifndef __GIMP_IMAGE_WINDOW_H__
 #define __GIMP_IMAGE_WINDOW_H__
 
-
 #include "widgets/gimpwindow.h"
 
-
-#define GIMP_TYPE_IMAGE_WINDOW            (gimp_image_window_get_type ())
-#define GIMP_IMAGE_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_IMAGE_WINDOW, GimpImageWindow))
-#define GIMP_IMAGE_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_IMAGE_WINDOW, GimpImageWindowClass))
-#define GIMP_IS_IMAGE_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_IMAGE_WINDOW))
-#define GIMP_IS_IMAGE_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_IMAGE_WINDOW))
-#define GIMP_IMAGE_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE_WINDOW, GimpImageWindowClass))
-
+#define GIMP_TYPE_IMAGE_WINDOW (gimp_image_window_get_type())
+#define GIMP_IMAGE_WINDOW(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_IMAGE_WINDOW, GimpImageWindow))
+#define GIMP_IMAGE_WINDOW_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_IMAGE_WINDOW,                    \
+                           GimpImageWindowClass))
+#define GIMP_IS_IMAGE_WINDOW(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_IMAGE_WINDOW))
+#define GIMP_IS_IMAGE_WINDOW_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_IMAGE_WINDOW))
+#define GIMP_IMAGE_WINDOW_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_IMAGE_WINDOW,                    \
+                             GimpImageWindowClass))
 
 typedef struct _GimpImageWindowClass GimpImageWindowClass;
 
-struct _GimpImageWindow
-{
-	GimpWindow parent_instance;
+struct _GimpImageWindow {
+  GimpWindow parent_instance;
 };
 
-struct _GimpImageWindowClass
-{
-	GimpWindowClass parent_class;
+struct _GimpImageWindowClass {
+  GimpWindowClass parent_class;
 };
 
+GType gimp_image_window_get_type(void) G_GNUC_CONST;
 
-GType              gimp_image_window_get_type             (void) G_GNUC_CONST;
+GimpImageWindow *gimp_image_window_new(Gimp *gimp, GimpImage *image,
+                                       GimpDialogFactory *dialog_factory,
+                                       GdkMonitor *monitor);
+void gimp_image_window_destroy(GimpImageWindow *window);
 
-GimpImageWindow  * gimp_image_window_new                  (Gimp              *gimp,
-                                                           GimpImage         *image,
-                                                           GimpDialogFactory *dialog_factory,
-                                                           GdkMonitor        *monitor);
-void               gimp_image_window_destroy              (GimpImageWindow   *window);
+GimpUIManager *gimp_image_window_get_ui_manager(GimpImageWindow *window);
+GimpDockColumns *gimp_image_window_get_left_docks(GimpImageWindow *window);
+GimpDockColumns *gimp_image_window_get_right_docks(GimpImageWindow *window);
 
-GimpUIManager    * gimp_image_window_get_ui_manager       (GimpImageWindow  *window);
-GimpDockColumns  * gimp_image_window_get_left_docks       (GimpImageWindow  *window);
-GimpDockColumns  * gimp_image_window_get_right_docks      (GimpImageWindow  *window);
+void gimp_image_window_add_shell(GimpImageWindow *window,
+                                 GimpDisplayShell *shell);
+GimpDisplayShell *gimp_image_window_get_shell(GimpImageWindow *window,
+                                              gint index);
+void gimp_image_window_remove_shell(GimpImageWindow *window,
+                                    GimpDisplayShell *shell);
 
-void               gimp_image_window_add_shell            (GimpImageWindow  *window,
-                                                           GimpDisplayShell *shell);
-GimpDisplayShell * gimp_image_window_get_shell            (GimpImageWindow  *window,
-                                                           gint index);
-void               gimp_image_window_remove_shell         (GimpImageWindow  *window,
-                                                           GimpDisplayShell *shell);
+gint gimp_image_window_get_n_shells(GimpImageWindow *window);
 
-gint               gimp_image_window_get_n_shells         (GimpImageWindow  *window);
+void gimp_image_window_set_active_shell(GimpImageWindow *window,
+                                        GimpDisplayShell *shell);
+GimpDisplayShell *gimp_image_window_get_active_shell(GimpImageWindow *window);
 
-void               gimp_image_window_set_active_shell     (GimpImageWindow  *window,
-                                                           GimpDisplayShell *shell);
-GimpDisplayShell * gimp_image_window_get_active_shell     (GimpImageWindow  *window);
+void gimp_image_window_set_fullscreen(GimpImageWindow *window,
+                                      gboolean fullscreen);
+gboolean gimp_image_window_get_fullscreen(GimpImageWindow *window);
 
-void               gimp_image_window_set_fullscreen       (GimpImageWindow  *window,
-                                                           gboolean fullscreen);
-gboolean           gimp_image_window_get_fullscreen       (GimpImageWindow  *window);
+void gimp_image_window_set_show_menubar(GimpImageWindow *window, gboolean show);
+gboolean gimp_image_window_get_show_menubar(GimpImageWindow *window);
 
-void               gimp_image_window_set_show_menubar     (GimpImageWindow  *window,
-                                                           gboolean show);
-gboolean           gimp_image_window_get_show_menubar     (GimpImageWindow  *window);
+void gimp_image_window_set_show_statusbar(GimpImageWindow *window,
+                                          gboolean show);
+gboolean gimp_image_window_get_show_statusbar(GimpImageWindow *window);
 
-void               gimp_image_window_set_show_statusbar   (GimpImageWindow  *window,
-                                                           gboolean show);
-gboolean           gimp_image_window_get_show_statusbar   (GimpImageWindow  *window);
+gboolean gimp_image_window_is_iconified(GimpImageWindow *window);
+gboolean gimp_image_window_is_maximized(GimpImageWindow *window);
 
-gboolean           gimp_image_window_is_iconified         (GimpImageWindow  *window);
-gboolean           gimp_image_window_is_maximized         (GimpImageWindow  *window);
+gboolean gimp_image_window_has_toolbox(GimpImageWindow *window);
 
-gboolean           gimp_image_window_has_toolbox          (GimpImageWindow  *window);
+void gimp_image_window_shrink_wrap(GimpImageWindow *window, gboolean grow_only);
 
-void               gimp_image_window_shrink_wrap          (GimpImageWindow  *window,
-                                                           gboolean grow_only);
+GtkWidget *gimp_image_window_get_default_dockbook(GimpImageWindow *window);
 
-GtkWidget        * gimp_image_window_get_default_dockbook (GimpImageWindow  *window);
+void gimp_image_window_keep_canvas_pos(GimpImageWindow *window);
+void gimp_image_window_suspend_keep_pos(GimpImageWindow *window);
+void gimp_image_window_resume_keep_pos(GimpImageWindow *window);
 
-void               gimp_image_window_keep_canvas_pos      (GimpImageWindow  *window);
-void               gimp_image_window_suspend_keep_pos     (GimpImageWindow  *window);
-void               gimp_image_window_resume_keep_pos      (GimpImageWindow  *window);
-
-void               gimp_image_window_update_tabs          (GimpImageWindow  *window);
+void gimp_image_window_update_tabs(GimpImageWindow *window);
 
 #endif /* __GIMP_IMAGE_WINDOW_H__ */

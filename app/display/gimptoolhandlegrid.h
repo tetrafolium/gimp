@@ -21,42 +21,40 @@
 #ifndef __GIMP_TOOL_HANDLE_GRID_H__
 #define __GIMP_TOOL_HANDLE_GRID_H__
 
-
 #include "gimptooltransformgrid.h"
 
-
-#define GIMP_TYPE_TOOL_HANDLE_GRID            (gimp_tool_handle_grid_get_type ())
-#define GIMP_TOOL_HANDLE_GRID(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_HANDLE_GRID, GimpToolHandleGrid))
-#define GIMP_TOOL_HANDLE_GRID_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_HANDLE_GRID, GimpToolHandleGridClass))
-#define GIMP_IS_TOOL_HANDLE_GRID(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_HANDLE_GRID))
-#define GIMP_IS_TOOL_HANDLE_GRID_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_HANDLE_GRID))
-#define GIMP_TOOL_HANDLE_GRID_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_HANDLE_GRID, GimpToolHandleGridClass))
-
+#define GIMP_TYPE_TOOL_HANDLE_GRID (gimp_tool_handle_grid_get_type())
+#define GIMP_TOOL_HANDLE_GRID(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_HANDLE_GRID,               \
+                              GimpToolHandleGrid))
+#define GIMP_TOOL_HANDLE_GRID_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_HANDLE_GRID,                \
+                           GimpToolHandleGridClass))
+#define GIMP_IS_TOOL_HANDLE_GRID(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_HANDLE_GRID))
+#define GIMP_IS_TOOL_HANDLE_GRID_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_HANDLE_GRID))
+#define GIMP_TOOL_HANDLE_GRID_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_HANDLE_GRID,                \
+                             GimpToolHandleGridClass))
 
 typedef struct _GimpToolHandleGrid GimpToolHandleGrid;
 typedef struct _GimpToolHandleGridPrivate GimpToolHandleGridPrivate;
 typedef struct _GimpToolHandleGridClass GimpToolHandleGridClass;
 
-struct _GimpToolHandleGrid
-{
-	GimpToolTransformGrid parent_instance;
+struct _GimpToolHandleGrid {
+  GimpToolTransformGrid parent_instance;
 
-	GimpToolHandleGridPrivate *private;
+  GimpToolHandleGridPrivate *private;
 };
 
-struct _GimpToolHandleGridClass
-{
-	GimpToolTransformGridClass parent_class;
+struct _GimpToolHandleGridClass {
+  GimpToolTransformGridClass parent_class;
 };
 
+GType gimp_tool_handle_grid_get_type(void) G_GNUC_CONST;
 
-GType            gimp_tool_handle_grid_get_type (void) G_GNUC_CONST;
-
-GimpToolWidget * gimp_tool_handle_grid_new      (GimpDisplayShell  *shell,
-                                                 gdouble x1,
-                                                 gdouble y1,
-                                                 gdouble x2,
-                                                 gdouble y2);
-
+GimpToolWidget *gimp_tool_handle_grid_new(GimpDisplayShell *shell, gdouble x1,
+                                          gdouble y1, gdouble x2, gdouble y2);
 
 #endif /* __GIMP_TOOL_HANDLE_GRID_H__ */

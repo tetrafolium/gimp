@@ -22,33 +22,35 @@
 #ifndef __GIMP_OPERATION_PASS_THROUGH_H__
 #define __GIMP_OPERATION_PASS_THROUGH_H__
 
-
 #include "gimpoperationreplace.h"
 
-
-#define GIMP_TYPE_OPERATION_PASS_THROUGH            (gimp_operation_pass_through_get_type ())
-#define GIMP_OPERATION_PASS_THROUGH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_PASS_THROUGH, GimpOperationPassThrough))
-#define GIMP_OPERATION_PASS_THROUGH_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_PASS_THROUGH, GimpOperationPassThroughClass))
-#define GIMP_IS_OPERATION_PASS_THROUGH(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_PASS_THROUGH))
-#define GIMP_IS_OPERATION_PASS_THROUGH_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_PASS_THROUGH))
-#define GIMP_OPERATION_PASS_THROUGH_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_PASS_THROUGH, GimpOperationPassThroughClass))
-
+#define GIMP_TYPE_OPERATION_PASS_THROUGH                                       \
+  (gimp_operation_pass_through_get_type())
+#define GIMP_OPERATION_PASS_THROUGH(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_PASS_THROUGH,         \
+                              GimpOperationPassThrough))
+#define GIMP_OPERATION_PASS_THROUGH_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_PASS_THROUGH,          \
+                           GimpOperationPassThroughClass))
+#define GIMP_IS_OPERATION_PASS_THROUGH(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_PASS_THROUGH))
+#define GIMP_IS_OPERATION_PASS_THROUGH_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_PASS_THROUGH))
+#define GIMP_OPERATION_PASS_THROUGH_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_PASS_THROUGH,          \
+                             GimpOperationPassThroughClass))
 
 typedef struct _GimpOperationPassThrough GimpOperationPassThrough;
 typedef struct _GimpOperationPassThroughClass GimpOperationPassThroughClass;
 
-struct _GimpOperationPassThrough
-{
-	GimpOperationReplace parent_instance;
+struct _GimpOperationPassThrough {
+  GimpOperationReplace parent_instance;
 };
 
-struct _GimpOperationPassThroughClass
-{
-	GimpOperationReplaceClass parent_class;
+struct _GimpOperationPassThroughClass {
+  GimpOperationReplaceClass parent_class;
 };
 
-
-GType   gimp_operation_pass_through_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_pass_through_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_PASS_THROUGH_H__ */

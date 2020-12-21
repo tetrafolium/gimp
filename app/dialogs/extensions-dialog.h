@@ -21,8 +21,6 @@
 #ifndef __EXTENSIONS_DIALOG_H__
 #define __EXTENSIONS_DIALOG_H__
 
-
-GtkWidget * extensions_dialog_new (Gimp *gimp);
-
+GtkWidget *extensions_dialog_new(Gimp *gimp);
 
 #endif /* __EXTENSIONS_DIALOG_H__ */

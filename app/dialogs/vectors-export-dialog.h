@@ -18,21 +18,14 @@
 #ifndef __VECTORS_EXPORT_DIALOG_H__
 #define __VECTORS_EXPORT_DIALOG_H__
 
+typedef void (*GimpVectorsExportCallback)(GtkWidget *dialog, GimpImage *image,
+                                          GFile *file, GFile *export_folder,
+                                          gboolean active_only,
+                                          gpointer user_data);
 
-typedef void (* GimpVectorsExportCallback) (GtkWidget *dialog,
-                                            GimpImage *image,
-                                            GFile     *file,
-                                            GFile     *export_folder,
-                                            gboolean active_only,
-                                            gpointer user_data);
-
-
-GtkWidget * vectors_export_dialog_new (GimpImage                 *image,
-                                       GtkWidget                 *parent,
-                                       GFile                     *export_folder,
-                                       gboolean active_only,
-                                       GimpVectorsExportCallback callback,
-                                       gpointer user_data);
-
+GtkWidget *vectors_export_dialog_new(GimpImage *image, GtkWidget *parent,
+                                     GFile *export_folder, gboolean active_only,
+                                     GimpVectorsExportCallback callback,
+                                     gpointer user_data);
 
 #endif /* __VECTORS_EXPORT_DIALOG_H__ */

@@ -21,10 +21,7 @@
 #ifndef __IMAGE_PROPERTIES_DIALOG_H__
 #define __IMAGE_PROPERTIES_DIALOG_H__
 
+GtkWidget *image_properties_dialog_new(GimpImage *image, GimpContext *context,
+                                       GtkWidget *parent);
 
-GtkWidget * image_properties_dialog_new (GimpImage   *image,
-                                         GimpContext *context,
-                                         GtkWidget   *parent);
-
-
-#endif  /*  __IMAGE_PROPERTIES_DIALOG_H__  */
+#endif /*  __IMAGE_PROPERTIES_DIALOG_H__  */

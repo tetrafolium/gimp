@@ -18,57 +18,56 @@
 #ifndef __GIMP_PERSPECTIVE_CLONE_H__
 #define __GIMP_PERSPECTIVE_CLONE_H__
 
-
 #include "gimpclone.h"
 
-
-#define GIMP_TYPE_PERSPECTIVE_CLONE            (gimp_perspective_clone_get_type ())
-#define GIMP_PERSPECTIVE_CLONE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PERSPECTIVE_CLONE, GimpPerspectiveClone))
-#define GIMP_PERSPECTIVE_CLONE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PERSPECTIVE_CLONE, GimpPerspectiveCloneClass))
-#define GIMP_IS_PERSPECTIVE_CLONE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PERSPECTIVE_CLONE))
-#define GIMP_IS_PERSPECTIVE_CLONE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PERSPECTIVE_CLONE))
-#define GIMP_PERSPECTIVE_CLONE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PERSPECTIVE_CLONE, GimpPerspectiveCloneClass))
-
+#define GIMP_TYPE_PERSPECTIVE_CLONE (gimp_perspective_clone_get_type())
+#define GIMP_PERSPECTIVE_CLONE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PERSPECTIVE_CLONE,              \
+                              GimpPerspectiveClone))
+#define GIMP_PERSPECTIVE_CLONE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PERSPECTIVE_CLONE,               \
+                           GimpPerspectiveCloneClass))
+#define GIMP_IS_PERSPECTIVE_CLONE(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PERSPECTIVE_CLONE))
+#define GIMP_IS_PERSPECTIVE_CLONE_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PERSPECTIVE_CLONE))
+#define GIMP_PERSPECTIVE_CLONE_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PERSPECTIVE_CLONE,               \
+                             GimpPerspectiveCloneClass))
 
 typedef struct _GimpPerspectiveCloneClass GimpPerspectiveCloneClass;
 
-struct _GimpPerspectiveClone
-{
-	GimpClone parent_instance;
+struct _GimpPerspectiveClone {
+  GimpClone parent_instance;
 
-	gdouble src_x_fv;        /* source coords in front_view perspective */
-	gdouble src_y_fv;
+  gdouble src_x_fv; /* source coords in front_view perspective */
+  gdouble src_y_fv;
 
-	gdouble dest_x_fv;       /* destination coords in front_view perspective */
-	gdouble dest_y_fv;
+  gdouble dest_x_fv; /* destination coords in front_view perspective */
+  gdouble dest_y_fv;
 
-	GimpMatrix3 transform;
-	GimpMatrix3 transform_inv;
+  GimpMatrix3 transform;
+  GimpMatrix3 transform_inv;
 
-	GeglNode      *node;
-	GeglNode      *crop;
-	GeglNode      *transform_node;
-	GeglNode      *dest_node;
+  GeglNode *node;
+  GeglNode *crop;
+  GeglNode *transform_node;
+  GeglNode *dest_node;
 };
 
-struct _GimpPerspectiveCloneClass
-{
-	GimpCloneClass parent_class;
+struct _GimpPerspectiveCloneClass {
+  GimpCloneClass parent_class;
 };
 
+void gimp_perspective_clone_register(Gimp *gimp,
+                                     GimpPaintRegisterCallback callback);
 
-void    gimp_perspective_clone_register      (Gimp                      *gimp,
-                                              GimpPaintRegisterCallback callback);
+GType gimp_perspective_clone_get_type(void) G_GNUC_CONST;
 
-GType   gimp_perspective_clone_get_type         (void) G_GNUC_CONST;
+void gimp_perspective_clone_set_transform(GimpPerspectiveClone *clone,
+                                          GimpMatrix3 *transform);
+void gimp_perspective_clone_get_source_point(GimpPerspectiveClone *clone,
+                                             gdouble x, gdouble y,
+                                             gdouble *newx, gdouble *newy);
 
-void    gimp_perspective_clone_set_transform    (GimpPerspectiveClone   *clone,
-                                                 GimpMatrix3            *transform);
-void    gimp_perspective_clone_get_source_point (GimpPerspectiveClone   *clone,
-                                                 gdouble x,
-                                                 gdouble y,
-                                                 gdouble                *newx,
-                                                 gdouble                *newy);
-
-
-#endif  /*  __GIMP_PERSPECTIVE_CLONE_H__  */
+#endif /*  __GIMP_PERSPECTIVE_CLONE_H__  */

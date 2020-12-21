@@ -35,189 +35,155 @@
 #include "gimpprocedure.h"
 #include "internal-procs.h"
 
+static GimpValueArray *palettes_popup_invoker(GimpProcedure *procedure,
+                                              Gimp *gimp, GimpContext *context,
+                                              GimpProgress *progress,
+                                              const GimpValueArray *args,
+                                              GError **error) {
+  gboolean success = TRUE;
+  const gchar *palette_callback;
+  const gchar *popup_title;
+  const gchar *initial_palette;
 
-static GimpValueArray *
-palettes_popup_invoker (GimpProcedure         *procedure,
-                        Gimp                  *gimp,
-                        GimpContext           *context,
-                        GimpProgress          *progress,
-                        const GimpValueArray  *args,
-                        GError               **error)
-{
-	gboolean success = TRUE;
-	const gchar *palette_callback;
-	const gchar *popup_title;
-	const gchar *initial_palette;
+  palette_callback = g_value_get_string(gimp_value_array_index(args, 0));
+  popup_title = g_value_get_string(gimp_value_array_index(args, 1));
+  initial_palette = g_value_get_string(gimp_value_array_index(args, 2));
 
-	palette_callback = g_value_get_string (gimp_value_array_index (args, 0));
-	popup_title = g_value_get_string (gimp_value_array_index (args, 1));
-	initial_palette = g_value_get_string (gimp_value_array_index (args, 2));
+  if (success) {
+    if (gimp->no_interface ||
+        !gimp_pdb_lookup_procedure(gimp->pdb, palette_callback) ||
+        !gimp_pdb_dialog_new(
+            gimp, context, progress,
+            gimp_data_factory_get_container(gimp->palette_factory), popup_title,
+            palette_callback, initial_palette, NULL))
+      success = FALSE;
+  }
 
-	if (success)
-	{
-		if (gimp->no_interface ||
-		    !gimp_pdb_lookup_procedure (gimp->pdb, palette_callback) ||
-		    !gimp_pdb_dialog_new (gimp, context, progress,
-		                          gimp_data_factory_get_container (gimp->palette_factory),
-		                          popup_title, palette_callback, initial_palette,
-		                          NULL))
-			success = FALSE;
-	}
-
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
 static GimpValueArray *
-palettes_close_popup_invoker (GimpProcedure         *procedure,
-                              Gimp                  *gimp,
-                              GimpContext           *context,
-                              GimpProgress          *progress,
-                              const GimpValueArray  *args,
-                              GError               **error)
-{
-	gboolean success = TRUE;
-	const gchar *palette_callback;
+palettes_close_popup_invoker(GimpProcedure *procedure, Gimp *gimp,
+                             GimpContext *context, GimpProgress *progress,
+                             const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  const gchar *palette_callback;
 
-	palette_callback = g_value_get_string (gimp_value_array_index (args, 0));
+  palette_callback = g_value_get_string(gimp_value_array_index(args, 0));
 
-	if (success)
-	{
-		if (gimp->no_interface ||
-		    !gimp_pdb_lookup_procedure (gimp->pdb, palette_callback) ||
-		    !gimp_pdb_dialog_close (gimp, gimp_data_factory_get_container (gimp->palette_factory),
-		                            palette_callback))
-			success = FALSE;
-	}
+  if (success) {
+    if (gimp->no_interface ||
+        !gimp_pdb_lookup_procedure(gimp->pdb, palette_callback) ||
+        !gimp_pdb_dialog_close(
+            gimp, gimp_data_factory_get_container(gimp->palette_factory),
+            palette_callback))
+      success = FALSE;
+  }
 
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
 static GimpValueArray *
-palettes_set_popup_invoker (GimpProcedure         *procedure,
-                            Gimp                  *gimp,
-                            GimpContext           *context,
-                            GimpProgress          *progress,
-                            const GimpValueArray  *args,
-                            GError               **error)
-{
-	gboolean success = TRUE;
-	const gchar *palette_callback;
-	const gchar *palette_name;
+palettes_set_popup_invoker(GimpProcedure *procedure, Gimp *gimp,
+                           GimpContext *context, GimpProgress *progress,
+                           const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  const gchar *palette_callback;
+  const gchar *palette_name;
 
-	palette_callback = g_value_get_string (gimp_value_array_index (args, 0));
-	palette_name = g_value_get_string (gimp_value_array_index (args, 1));
+  palette_callback = g_value_get_string(gimp_value_array_index(args, 0));
+  palette_name = g_value_get_string(gimp_value_array_index(args, 1));
 
-	if (success)
-	{
-		if (gimp->no_interface ||
-		    !gimp_pdb_lookup_procedure (gimp->pdb, palette_callback) ||
-		    !gimp_pdb_dialog_set (gimp, gimp_data_factory_get_container (gimp->palette_factory),
-		                          palette_callback, palette_name,
-		                          NULL))
-			success = FALSE;
-	}
+  if (success) {
+    if (gimp->no_interface ||
+        !gimp_pdb_lookup_procedure(gimp->pdb, palette_callback) ||
+        !gimp_pdb_dialog_set(
+            gimp, gimp_data_factory_get_container(gimp->palette_factory),
+            palette_callback, palette_name, NULL))
+      success = FALSE;
+  }
 
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
-void
-register_palette_select_procs (GimpPDB *pdb)
-{
-	GimpProcedure *procedure;
+void register_palette_select_procs(GimpPDB *pdb) {
+  GimpProcedure *procedure;
 
-	/*
-	 * gimp-palettes-popup
-	 */
-	procedure = gimp_procedure_new (palettes_popup_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-palettes-popup");
-	gimp_procedure_set_static_help (procedure,
-	                                "Invokes the Gimp palette selection.",
-	                                "This procedure opens the palette selection dialog.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2002");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("palette-callback",
-	                                                     "palette callback",
-	                                                     "The callback PDB proc to call when palette selection is made",
-	                                                     FALSE, FALSE, TRUE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("popup-title",
-	                                                     "popup title",
-	                                                     "Title of the palette selection dialog",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("initial-palette",
-	                                                     "initial palette",
-	                                                     "The name of the palette to set as the first selected",
-	                                                     FALSE, TRUE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-palettes-popup
+   */
+  procedure = gimp_procedure_new(palettes_popup_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-palettes-popup");
+  gimp_procedure_set_static_help(
+      procedure, "Invokes the Gimp palette selection.",
+      "This procedure opens the palette selection dialog.", NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2002");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string(
+          "palette-callback", "palette callback",
+          "The callback PDB proc to call when palette selection is made", FALSE,
+          FALSE, TRUE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("popup-title", "popup title",
+                             "Title of the palette selection dialog", FALSE,
+                             FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_string(
+                     "initial-palette", "initial palette",
+                     "The name of the palette to set as the first selected",
+                     FALSE, TRUE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-palettes-close-popup
-	 */
-	procedure = gimp_procedure_new (palettes_close_popup_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-palettes-close-popup");
-	gimp_procedure_set_static_help (procedure,
-	                                "Close the palette selection dialog.",
-	                                "This procedure closes an opened palette selection dialog.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2002");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("palette-callback",
-	                                                     "palette callback",
-	                                                     "The name of the callback registered for this pop-up",
-	                                                     FALSE, FALSE, TRUE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-palettes-close-popup
+   */
+  procedure = gimp_procedure_new(palettes_close_popup_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-palettes-close-popup");
+  gimp_procedure_set_static_help(
+      procedure, "Close the palette selection dialog.",
+      "This procedure closes an opened palette selection dialog.", NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2002");
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_string(
+                     "palette-callback", "palette callback",
+                     "The name of the callback registered for this pop-up",
+                     FALSE, FALSE, TRUE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-palettes-set-popup
-	 */
-	procedure = gimp_procedure_new (palettes_set_popup_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-palettes-set-popup");
-	gimp_procedure_set_static_help (procedure,
-	                                "Sets the current palette in a palette selection dialog.",
-	                                "Sets the current palette in a palette selection dialog.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2002");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("palette-callback",
-	                                                     "palette callback",
-	                                                     "The name of the callback registered for this pop-up",
-	                                                     FALSE, FALSE, TRUE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("palette-name",
-	                                                     "palette name",
-	                                                     "The name of the palette to set as selected",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-palettes-set-popup
+   */
+  procedure = gimp_procedure_new(palettes_set_popup_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-palettes-set-popup");
+  gimp_procedure_set_static_help(
+      procedure, "Sets the current palette in a palette selection dialog.",
+      "Sets the current palette in a palette selection dialog.", NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2002");
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_string(
+                     "palette-callback", "palette callback",
+                     "The name of the callback registered for this pop-up",
+                     FALSE, FALSE, TRUE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("palette-name", "palette name",
+                             "The name of the palette to set as selected",
+                             FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 }

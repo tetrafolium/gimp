@@ -20,23 +20,18 @@
 #ifndef __GIMP_PLUG_IN_MANAGER_MENU_BRANCH_H__
 #define __GIMP_PLUG_IN_MANAGER_MENU_BRANCH_H__
 
-
-struct _GimpPlugInMenuBranch
-{
-	GFile *file;
-	gchar *menu_path;
-	gchar *menu_label;
+struct _GimpPlugInMenuBranch {
+  GFile *file;
+  gchar *menu_path;
+  gchar *menu_label;
 };
 
-
-void     gimp_plug_in_manager_menu_branch_exit  (GimpPlugInManager *manager);
+void gimp_plug_in_manager_menu_branch_exit(GimpPlugInManager *manager);
 
 /* Add a menu branch */
-void     gimp_plug_in_manager_add_menu_branch   (GimpPlugInManager *manager,
-                                                 GFile             *file,
-                                                 const gchar       *menu_path,
-                                                 const gchar       *menu_label);
-GSList * gimp_plug_in_manager_get_menu_branches (GimpPlugInManager *manager);
-
+void gimp_plug_in_manager_add_menu_branch(GimpPlugInManager *manager,
+                                          GFile *file, const gchar *menu_path,
+                                          const gchar *menu_label);
+GSList *gimp_plug_in_manager_get_menu_branches(GimpPlugInManager *manager);
 
 #endif /* __GIMP_PLUG_IN_MANAGER_MENU_BRANCH_H__ */

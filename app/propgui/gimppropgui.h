@@ -21,40 +21,28 @@
 #ifndef __GIMP_PROP_GUI_H__
 #define __GIMP_PROP_GUI_H__
 
-
 /*  A view on all of an object's properties  */
 
-GtkWidget * gimp_prop_widget_new            (GObject                 *config,
-                                             const gchar             *property_name,
-                                             GeglRectangle           *area,
-                                             GimpContext             *context,
-                                             GimpCreatePickerFunc create_picker,
-                                             GimpCreateControllerFunc create_controller,
-                                             gpointer creator,
-                                             const gchar            **label);
-GtkWidget * gimp_prop_widget_new_from_pspec (GObject                 *config,
-                                             GParamSpec              *pspec,
-                                             GeglRectangle           *area,
-                                             GimpContext             *context,
-                                             GimpCreatePickerFunc create_picker,
-                                             GimpCreateControllerFunc create_controller,
-                                             gpointer creator,
-                                             const gchar            **label);
-GtkWidget * gimp_prop_gui_new               (GObject                 *config,
-                                             GType owner_type,
-                                             GParamFlags flags,
-                                             GeglRectangle           *area,
-                                             GimpContext             *context,
-                                             GimpCreatePickerFunc create_picker,
-                                             GimpCreateControllerFunc create_controller,
-                                             gpointer creator);
+GtkWidget *gimp_prop_widget_new(GObject *config, const gchar *property_name,
+                                GeglRectangle *area, GimpContext *context,
+                                GimpCreatePickerFunc create_picker,
+                                GimpCreateControllerFunc create_controller,
+                                gpointer creator, const gchar **label);
+GtkWidget *
+gimp_prop_widget_new_from_pspec(GObject *config, GParamSpec *pspec,
+                                GeglRectangle *area, GimpContext *context,
+                                GimpCreatePickerFunc create_picker,
+                                GimpCreateControllerFunc create_controller,
+                                gpointer creator, const gchar **label);
+GtkWidget *gimp_prop_gui_new(GObject *config, GType owner_type,
+                             GParamFlags flags, GeglRectangle *area,
+                             GimpContext *context,
+                             GimpCreatePickerFunc create_picker,
+                             GimpCreateControllerFunc create_controller,
+                             gpointer creator);
 
-void        gimp_prop_gui_bind_container    (GtkWidget               *source,
-                                             GtkWidget               *target);
-void        gimp_prop_gui_bind_label        (GtkWidget               *source,
-                                             GtkWidget               *target);
-void        gimp_prop_gui_bind_tooltip      (GtkWidget               *source,
-                                             GtkWidget               *target);
-
+void gimp_prop_gui_bind_container(GtkWidget *source, GtkWidget *target);
+void gimp_prop_gui_bind_label(GtkWidget *source, GtkWidget *target);
+void gimp_prop_gui_bind_tooltip(GtkWidget *source, GtkWidget *target);
 
 #endif /* __GIMP_PROP_GUI_H__ */

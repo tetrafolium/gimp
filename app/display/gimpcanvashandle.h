@@ -21,72 +21,61 @@
 #ifndef __GIMP_CANVAS_HANDLE_H__
 #define __GIMP_CANVAS_HANDLE_H__
 
-
 #include "gimpcanvasitem.h"
 
-
-#define GIMP_CANVAS_HANDLE_SIZE_CIRCLE    13
-#define GIMP_CANVAS_HANDLE_SIZE_CROSS     15
+#define GIMP_CANVAS_HANDLE_SIZE_CIRCLE 13
+#define GIMP_CANVAS_HANDLE_SIZE_CROSS 15
 #define GIMP_CANVAS_HANDLE_SIZE_CROSSHAIR 43
-#define GIMP_CANVAS_HANDLE_SIZE_LARGE     25
-#define GIMP_CANVAS_HANDLE_SIZE_SMALL     7
+#define GIMP_CANVAS_HANDLE_SIZE_LARGE 25
+#define GIMP_CANVAS_HANDLE_SIZE_SMALL 7
 
-
-#define GIMP_TYPE_CANVAS_HANDLE            (gimp_canvas_handle_get_type ())
-#define GIMP_CANVAS_HANDLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CANVAS_HANDLE, GimpCanvasHandle))
-#define GIMP_CANVAS_HANDLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CANVAS_HANDLE, GimpCanvasHandleClass))
-#define GIMP_IS_CANVAS_HANDLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CANVAS_HANDLE))
-#define GIMP_IS_CANVAS_HANDLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CANVAS_HANDLE))
-#define GIMP_CANVAS_HANDLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_HANDLE, GimpCanvasHandleClass))
-
+#define GIMP_TYPE_CANVAS_HANDLE (gimp_canvas_handle_get_type())
+#define GIMP_CANVAS_HANDLE(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CANVAS_HANDLE, GimpCanvasHandle))
+#define GIMP_CANVAS_HANDLE_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CANVAS_HANDLE,                   \
+                           GimpCanvasHandleClass))
+#define GIMP_IS_CANVAS_HANDLE(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CANVAS_HANDLE))
+#define GIMP_IS_CANVAS_HANDLE_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CANVAS_HANDLE))
+#define GIMP_CANVAS_HANDLE_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CANVAS_HANDLE,                   \
+                             GimpCanvasHandleClass))
 
 typedef struct _GimpCanvasHandle GimpCanvasHandle;
 typedef struct _GimpCanvasHandleClass GimpCanvasHandleClass;
 
-struct _GimpCanvasHandle
-{
-	GimpCanvasItem parent_instance;
+struct _GimpCanvasHandle {
+  GimpCanvasItem parent_instance;
 };
 
-struct _GimpCanvasHandleClass
-{
-	GimpCanvasItemClass parent_class;
+struct _GimpCanvasHandleClass {
+  GimpCanvasItemClass parent_class;
 };
 
+GType gimp_canvas_handle_get_type(void) G_GNUC_CONST;
 
-GType            gimp_canvas_handle_get_type     (void) G_GNUC_CONST;
+GimpCanvasItem *gimp_canvas_handle_new(GimpDisplayShell *shell,
+                                       GimpHandleType type,
+                                       GimpHandleAnchor anchor, gdouble x,
+                                       gdouble y, gint width, gint height);
 
-GimpCanvasItem * gimp_canvas_handle_new          (GimpDisplayShell *shell,
-                                                  GimpHandleType type,
-                                                  GimpHandleAnchor anchor,
-                                                  gdouble x,
-                                                  gdouble y,
-                                                  gint width,
-                                                  gint height);
+void gimp_canvas_handle_get_position(GimpCanvasItem *handle, gdouble *x,
+                                     gdouble *y);
+void gimp_canvas_handle_set_position(GimpCanvasItem *handle, gdouble x,
+                                     gdouble y);
 
-void             gimp_canvas_handle_get_position (GimpCanvasItem   *handle,
-                                                  gdouble          *x,
-                                                  gdouble          *y);
-void             gimp_canvas_handle_set_position (GimpCanvasItem   *handle,
-                                                  gdouble x,
-                                                  gdouble y);
+gint gimp_canvas_handle_calc_size(GimpCanvasItem *item, gdouble mouse_x,
+                                  gdouble mouse_y, gint normal_size,
+                                  gint hover_size);
 
-gint             gimp_canvas_handle_calc_size    (GimpCanvasItem   *item,
-                                                  gdouble mouse_x,
-                                                  gdouble mouse_y,
-                                                  gint normal_size,
-                                                  gint hover_size);
+void gimp_canvas_handle_get_size(GimpCanvasItem *handle, gint *width,
+                                 gint *height);
+void gimp_canvas_handle_set_size(GimpCanvasItem *handle, gint width,
+                                 gint height);
 
-void             gimp_canvas_handle_get_size     (GimpCanvasItem   *handle,
-                                                  gint             *width,
-                                                  gint             *height);
-void             gimp_canvas_handle_set_size     (GimpCanvasItem   *handle,
-                                                  gint width,
-                                                  gint height);
-
-void             gimp_canvas_handle_set_angles   (GimpCanvasItem   *handle,
-                                                  gdouble start_handle,
-                                                  gdouble slice_handle);
-
+void gimp_canvas_handle_set_angles(GimpCanvasItem *handle, gdouble start_handle,
+                                   gdouble slice_handle);
 
 #endif /* __GIMP_CANVAS_HANDLE_H__ */

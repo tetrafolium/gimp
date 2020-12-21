@@ -21,50 +21,51 @@
 #ifndef __GIMP_INTERPRETER_DB_H__
 #define __GIMP_INTERPRETER_DB_H__
 
-
-#define GIMP_TYPE_INTERPRETER_DB            (gimp_interpreter_db_get_type ())
-#define GIMP_INTERPRETER_DB(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_INTERPRETER_DB, GimpInterpreterDB))
-#define GIMP_INTERPRETER_DB_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_INTERPRETER_DB, GimpInterpreterDBClass))
-#define GIMP_IS_INTERPRETER_DB(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_INTERPRETER_DB))
-#define GIMP_IS_INTERPRETER_DB_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_INTERPRETER_DB))
-#define GIMP_INTERPRETER_DB_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_INTERPRETER_DB, GimpInterpreterDBClass))
-
+#define GIMP_TYPE_INTERPRETER_DB (gimp_interpreter_db_get_type())
+#define GIMP_INTERPRETER_DB(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_INTERPRETER_DB,                 \
+                              GimpInterpreterDB))
+#define GIMP_INTERPRETER_DB_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_INTERPRETER_DB,                  \
+                           GimpInterpreterDBClass))
+#define GIMP_IS_INTERPRETER_DB(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_INTERPRETER_DB))
+#define GIMP_IS_INTERPRETER_DB_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_INTERPRETER_DB))
+#define GIMP_INTERPRETER_DB_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_INTERPRETER_DB,                  \
+                             GimpInterpreterDBClass))
 
 typedef struct _GimpInterpreterDBClass GimpInterpreterDBClass;
 
-struct _GimpInterpreterDB
-{
-	GObject parent_instance;
+struct _GimpInterpreterDB {
+  GObject parent_instance;
 
-	gboolean verbose;
+  gboolean verbose;
 
-	GHashTable *programs;
+  GHashTable *programs;
 
-	GSList     *magics;
-	GHashTable *magic_names;
+  GSList *magics;
+  GHashTable *magic_names;
 
-	GHashTable *extensions;
-	GHashTable *extension_names;
+  GHashTable *extensions;
+  GHashTable *extension_names;
 };
 
-struct _GimpInterpreterDBClass
-{
-	GObjectClass parent_class;
+struct _GimpInterpreterDBClass {
+  GObjectClass parent_class;
 };
 
+GType gimp_interpreter_db_get_type(void) G_GNUC_CONST;
+GimpInterpreterDB *gimp_interpreter_db_new(gboolean verbose);
 
-GType               gimp_interpreter_db_get_type (void) G_GNUC_CONST;
-GimpInterpreterDB * gimp_interpreter_db_new      (gboolean verbose);
+void gimp_interpreter_db_load(GimpInterpreterDB *db, GList *path);
 
-void                gimp_interpreter_db_load     (GimpInterpreterDB  *db,
-                                                  GList              *path);
+void gimp_interpreter_db_clear(GimpInterpreterDB *db);
 
-void                gimp_interpreter_db_clear    (GimpInterpreterDB  *db);
-
-gchar             * gimp_interpreter_db_resolve  (GimpInterpreterDB  *db,
-                                                  const gchar        *program_path,
-                                                  gchar             **interp_arg);
-gchar       * gimp_interpreter_db_get_extensions (GimpInterpreterDB  *db);
-
+gchar *gimp_interpreter_db_resolve(GimpInterpreterDB *db,
+                                   const gchar *program_path,
+                                   gchar **interp_arg);
+gchar *gimp_interpreter_db_get_extensions(GimpInterpreterDB *db);
 
 #endif /* __GIMP_INTERPRETER_DB_H__ */

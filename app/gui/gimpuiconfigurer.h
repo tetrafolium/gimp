@@ -21,37 +21,37 @@
 #ifndef __GIMP_UI_CONFIGURER_H__
 #define __GIMP_UI_CONFIGURER_H__
 
-
 #include "core/gimpobject.h"
 
-
-#define GIMP_TYPE_UI_CONFIGURER              (gimp_ui_configurer_get_type ())
-#define GIMP_UI_CONFIGURER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_UI_CONFIGURER, GimpUIConfigurer))
-#define GIMP_UI_CONFIGURER_CLASS(vtable)     (G_TYPE_CHECK_CLASS_CAST ((vtable), GIMP_TYPE_UI_CONFIGURER, GimpUIConfigurerClass))
-#define GIMP_IS_UI_CONFIGURER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_UI_CONFIGURER))
-#define GIMP_IS_UI_CONFIGURER_CLASS(vtable)  (G_TYPE_CHECK_CLASS_TYPE ((vtable), GIMP_TYPE_UI_CONFIGURER))
-#define GIMP_UI_CONFIGURER_GET_CLASS(inst)   (G_TYPE_INSTANCE_GET_CLASS ((inst), GIMP_TYPE_UI_CONFIGURER, GimpUIConfigurerClass))
-
+#define GIMP_TYPE_UI_CONFIGURER (gimp_ui_configurer_get_type())
+#define GIMP_UI_CONFIGURER(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_UI_CONFIGURER, GimpUIConfigurer))
+#define GIMP_UI_CONFIGURER_CLASS(vtable)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((vtable), GIMP_TYPE_UI_CONFIGURER,                  \
+                           GimpUIConfigurerClass))
+#define GIMP_IS_UI_CONFIGURER(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_UI_CONFIGURER))
+#define GIMP_IS_UI_CONFIGURER_CLASS(vtable)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((vtable), GIMP_TYPE_UI_CONFIGURER))
+#define GIMP_UI_CONFIGURER_GET_CLASS(inst)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((inst), GIMP_TYPE_UI_CONFIGURER,                  \
+                             GimpUIConfigurerClass))
 
 typedef struct _GimpUIConfigurerClass GimpUIConfigurerClass;
 typedef struct _GimpUIConfigurerPrivate GimpUIConfigurerPrivate;
 
-struct _GimpUIConfigurer
-{
-	GimpObject parent_instance;
+struct _GimpUIConfigurer {
+  GimpObject parent_instance;
 
-	GimpUIConfigurerPrivate *p;
+  GimpUIConfigurerPrivate *p;
 };
 
-struct _GimpUIConfigurerClass
-{
-	GimpObjectClass parent_class;
+struct _GimpUIConfigurerClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_ui_configurer_get_type(void) G_GNUC_CONST;
+void gimp_ui_configurer_configure(GimpUIConfigurer *ui_configurer,
+                                  gboolean single_window_mode);
 
-GType         gimp_ui_configurer_get_type  (void) G_GNUC_CONST;
-void          gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
-                                            gboolean single_window_mode);
-
-
-#endif  /* __GIMP_UI_CONFIGURER_H__ */
+#endif /* __GIMP_UI_CONFIGURER_H__ */

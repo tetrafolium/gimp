@@ -21,16 +21,10 @@
 #ifndef __GIMP_PROP_GUI_EVAL_H__
 #define __GIMP_PROP_GUI_EVAL_H__
 
+gboolean gimp_prop_eval_boolean(GObject *config, GParamSpec *pspec,
+                                const gchar *key, gboolean default_value);
 
-gboolean   gimp_prop_eval_boolean (GObject     *config,
-                                   GParamSpec  *pspec,
-                                   const gchar *key,
-                                   gboolean default_value);
-
-gchar    * gimp_prop_eval_string  (GObject     *config,
-                                   GParamSpec  *pspec,
-                                   const gchar *key,
-                                   const gchar *default_value);
-
+gchar *gimp_prop_eval_string(GObject *config, GParamSpec *pspec,
+                             const gchar *key, const gchar *default_value);
 
 #endif /* __GIMP_PROP_GUI_EVAL_H__ */

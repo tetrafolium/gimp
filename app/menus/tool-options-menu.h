@@ -18,9 +18,6 @@
 #ifndef __TOOL_OPTIONS_MENU_H__
 #define __TOOL_OPTIONS_MENU_H__
 
-
-void   tool_options_menu_setup (GimpUIManager *manager,
-                                const gchar   *ui_path);
-
+void tool_options_menu_setup(GimpUIManager *manager, const gchar *ui_path);
 
 #endif /* __TOOL_OPTIONS_MENU_H__ */

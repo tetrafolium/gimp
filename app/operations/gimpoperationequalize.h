@@ -21,37 +21,38 @@
 #ifndef __GIMP_OPERATION_EQUALIZE_H__
 #define __GIMP_OPERATION_EQUALIZE_H__
 
-
 #include "gimpoperationpointfilter.h"
 
-
-#define GIMP_TYPE_OPERATION_EQUALIZE            (gimp_operation_equalize_get_type ())
-#define GIMP_OPERATION_EQUALIZE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_EQUALIZE, GimpOperationEqualize))
-#define GIMP_OPERATION_EQUALIZE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_EQUALIZE, GimpOperationEqualizeClass))
-#define GIMP_IS_OPERATION_EQUALIZE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_EQUALIZE))
-#define GIMP_IS_OPERATION_EQUALIZE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_EQUALIZE))
-#define GIMP_OPERATION_EQUALIZE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_EQUALIZE, GimpOperationEqualizeClass))
-
+#define GIMP_TYPE_OPERATION_EQUALIZE (gimp_operation_equalize_get_type())
+#define GIMP_OPERATION_EQUALIZE(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_EQUALIZE,             \
+                              GimpOperationEqualize))
+#define GIMP_OPERATION_EQUALIZE_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_EQUALIZE,              \
+                           GimpOperationEqualizeClass))
+#define GIMP_IS_OPERATION_EQUALIZE(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_EQUALIZE))
+#define GIMP_IS_OPERATION_EQUALIZE_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_EQUALIZE))
+#define GIMP_OPERATION_EQUALIZE_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_EQUALIZE,              \
+                             GimpOperationEqualizeClass))
 
 typedef struct _GimpOperationEqualize GimpOperationEqualize;
 typedef struct _GimpOperationEqualizeClass GimpOperationEqualizeClass;
 
-struct _GimpOperationEqualize
-{
-	GimpOperationPointFilter parent_instance;
+struct _GimpOperationEqualize {
+  GimpOperationPointFilter parent_instance;
 
-	GimpHistogram            *histogram;
-	gdouble                  *values;
-	gint n_bins;
+  GimpHistogram *histogram;
+  gdouble *values;
+  gint n_bins;
 };
 
-struct _GimpOperationEqualizeClass
-{
-	GimpOperationPointFilterClass parent_class;
+struct _GimpOperationEqualizeClass {
+  GimpOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_equalize_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_equalize_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_EQUALIZE_H__ */

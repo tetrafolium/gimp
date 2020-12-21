@@ -18,18 +18,14 @@
 #ifndef __GIMP_PLUG_IN_ERROR_H__
 #define __GIMP_PLUG_IN_ERROR_H__
 
-
-typedef enum
-{
-	GIMP_PLUG_IN_FAILED, /* generic error condition */
-	GIMP_PLUG_IN_EXECUTION_FAILED,
-	GIMP_PLUG_IN_NOT_FOUND
+typedef enum {
+  GIMP_PLUG_IN_FAILED, /* generic error condition */
+  GIMP_PLUG_IN_EXECUTION_FAILED,
+  GIMP_PLUG_IN_NOT_FOUND
 } GimpPlugInErrorCode;
 
+#define GIMP_PLUG_IN_ERROR (gimp_plug_in_error_quark())
 
-#define GIMP_PLUG_IN_ERROR (gimp_plug_in_error_quark ())
-
-GQuark  gimp_plug_in_error_quark (void) G_GNUC_CONST;
-
+GQuark gimp_plug_in_error_quark(void) G_GNUC_CONST;
 
 #endif /* __GIMP_PLUG_IN_ERROR_H__ */

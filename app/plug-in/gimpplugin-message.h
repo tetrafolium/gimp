@@ -20,9 +20,6 @@
 #ifndef __GIMP_PLUG_IN_MESSAGE_H__
 #define __GIMP_PLUG_IN_MESSAGE_H__
 
-
-void   gimp_plug_in_handle_message (GimpPlugIn      *plug_in,
-                                    GimpWireMessage *msg);
-
+void gimp_plug_in_handle_message(GimpPlugIn *plug_in, GimpWireMessage *msg);
 
 #endif /* __GIMP_PLUG_IN_MESSAGE_H__ */

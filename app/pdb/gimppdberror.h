@@ -18,21 +18,17 @@
 #ifndef __GIMP_PDB_ERROR_H__
 #define __GIMP_PDB_ERROR_H__
 
-
-typedef enum
-{
-	GIMP_PDB_ERROR_FAILED, /* generic error condition */
-	GIMP_PDB_ERROR_CANCELLED,
-	GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-	GIMP_PDB_ERROR_INVALID_ARGUMENT,
-	GIMP_PDB_ERROR_INVALID_RETURN_VALUE,
-	GIMP_PDB_ERROR_INTERNAL_ERROR
+typedef enum {
+  GIMP_PDB_ERROR_FAILED, /* generic error condition */
+  GIMP_PDB_ERROR_CANCELLED,
+  GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+  GIMP_PDB_ERROR_INVALID_ARGUMENT,
+  GIMP_PDB_ERROR_INVALID_RETURN_VALUE,
+  GIMP_PDB_ERROR_INTERNAL_ERROR
 } GimpPdbErrorCode;
 
+#define GIMP_PDB_ERROR (gimp_pdb_error_quark())
 
-#define GIMP_PDB_ERROR (gimp_pdb_error_quark ())
-
-GQuark  gimp_pdb_error_quark (void) G_GNUC_CONST;
-
+GQuark gimp_pdb_error_quark(void) G_GNUC_CONST;
 
 #endif /* __GIMP_PDB_ERROR_H__ */

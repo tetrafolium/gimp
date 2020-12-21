@@ -18,42 +18,33 @@
 #ifndef __GIMP_DISPLAY_SHELL_SCROLL_H__
 #define __GIMP_DISPLAY_SHELL_SCROLL_H__
 
+void gimp_display_shell_scroll(GimpDisplayShell *shell, gint x_offset,
+                               gint y_offset);
+void gimp_display_shell_scroll_set_offset(GimpDisplayShell *shell,
+                                          gint offset_x, gint offset_y);
 
-void   gimp_display_shell_scroll                     (GimpDisplayShell *shell,
-                                                      gint x_offset,
-                                                      gint y_offset);
-void   gimp_display_shell_scroll_set_offset          (GimpDisplayShell *shell,
-                                                      gint offset_x,
-                                                      gint offset_y);
+void gimp_display_shell_scroll_clamp_and_update(GimpDisplayShell *shell);
 
-void   gimp_display_shell_scroll_clamp_and_update    (GimpDisplayShell *shell);
+void gimp_display_shell_scroll_unoverscrollify(GimpDisplayShell *shell,
+                                               gint in_offset_x,
+                                               gint in_offset_y,
+                                               gint *out_offset_x,
+                                               gint *out_offset_y);
 
-void   gimp_display_shell_scroll_unoverscrollify     (GimpDisplayShell *shell,
-                                                      gint in_offset_x,
-                                                      gint in_offset_y,
-                                                      gint             *out_offset_x,
-                                                      gint             *out_offset_y);
+void gimp_display_shell_scroll_center_image_xy(GimpDisplayShell *shell,
+                                               gdouble image_x,
+                                               gdouble image_y);
+void gimp_display_shell_scroll_center_image(GimpDisplayShell *shell,
+                                            gboolean horizontally,
+                                            gboolean vertically);
+void gimp_display_shell_scroll_center_content(GimpDisplayShell *shell,
+                                              gboolean horizontally,
+                                              gboolean vertically);
 
-void   gimp_display_shell_scroll_center_image_xy     (GimpDisplayShell *shell,
-                                                      gdouble image_x,
-                                                      gdouble image_y);
-void   gimp_display_shell_scroll_center_image        (GimpDisplayShell *shell,
-                                                      gboolean horizontally,
-                                                      gboolean vertically);
-void   gimp_display_shell_scroll_center_content      (GimpDisplayShell *shell,
-                                                      gboolean horizontally,
-                                                      gboolean vertically);
+void gimp_display_shell_scroll_get_scaled_viewport(GimpDisplayShell *shell,
+                                                   gint *x, gint *y, gint *w,
+                                                   gint *h);
+void gimp_display_shell_scroll_get_viewport(GimpDisplayShell *shell, gdouble *x,
+                                            gdouble *y, gdouble *w, gdouble *h);
 
-void   gimp_display_shell_scroll_get_scaled_viewport (GimpDisplayShell *shell,
-                                                      gint             *x,
-                                                      gint             *y,
-                                                      gint             *w,
-                                                      gint             *h);
-void   gimp_display_shell_scroll_get_viewport        (GimpDisplayShell *shell,
-                                                      gdouble          *x,
-                                                      gdouble          *y,
-                                                      gdouble          *w,
-                                                      gdouble          *h);
-
-
-#endif  /*  __GIMP_DISPLAY_SHELL_SCROLL_H__  */
+#endif /*  __GIMP_DISPLAY_SHELL_SCROLL_H__  */

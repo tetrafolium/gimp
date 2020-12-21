@@ -21,36 +21,37 @@
 #ifndef __GIMP_CANVAS_BUFFER_PREVIEW_H__
 #define __GIMP_CANVAS_BUFFER_PREVIEW_H__
 
-
 #include "gimpcanvasitem.h"
 
-
-#define GIMP_TYPE_CANVAS_BUFFER_PREVIEW            (gimp_canvas_buffer_preview_get_type ())
-#define GIMP_CANVAS_BUFFER_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CANVAS_BUFFER_PREVIEW, GimpCanvasBufferPreview))
-#define GIMP_CANVAS_BUFFER_PREVIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CANVAS_BUFFER_PREVIEW, GimpCanvasBufferPreviewClass))
-#define GIMP_IS_CANVAS_BUFFER_PREVIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CANVAS_BUFFER_PREVIEW))
-#define GIMP_IS_CANVAS_BUFFER_PREVIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CANVAS_BUFFER_PREVIEW))
-#define GIMP_CANVAS_BUFFER_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_BUFFER_PREVIEW, GimpCanvasBufferPreviewClass))
-
+#define GIMP_TYPE_CANVAS_BUFFER_PREVIEW (gimp_canvas_buffer_preview_get_type())
+#define GIMP_CANVAS_BUFFER_PREVIEW(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CANVAS_BUFFER_PREVIEW,          \
+                              GimpCanvasBufferPreview))
+#define GIMP_CANVAS_BUFFER_PREVIEW_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CANVAS_BUFFER_PREVIEW,           \
+                           GimpCanvasBufferPreviewClass))
+#define GIMP_IS_CANVAS_BUFFER_PREVIEW(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CANVAS_BUFFER_PREVIEW))
+#define GIMP_IS_CANVAS_BUFFER_PREVIEW_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CANVAS_BUFFER_PREVIEW))
+#define GIMP_CANVAS_BUFFER_PREVIEW_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CANVAS_BUFFER_PREVIEW,           \
+                             GimpCanvasBufferPreviewClass))
 
 typedef struct _GimpCanvasBufferPreview GimpCanvasBufferPreview;
 typedef struct _GimpCanvasBufferPreviewClass GimpCanvasBufferPreviewClass;
 
-struct _GimpCanvasBufferPreview
-{
-	GimpCanvasItem parent_instance;
+struct _GimpCanvasBufferPreview {
+  GimpCanvasItem parent_instance;
 };
 
-struct _GimpCanvasBufferPreviewClass
-{
-	GimpCanvasItemClass parent_class;
+struct _GimpCanvasBufferPreviewClass {
+  GimpCanvasItemClass parent_class;
 };
 
+GType gimp_canvas_buffer_preview_get_type(void) G_GNUC_CONST;
 
-GType            gimp_canvas_buffer_preview_get_type (void) G_GNUC_CONST;
-
-GimpCanvasItem * gimp_canvas_buffer_preview_new      (GimpDisplayShell  *shell,
-                                                      GeglBuffer        *buffer);
-
+GimpCanvasItem *gimp_canvas_buffer_preview_new(GimpDisplayShell *shell,
+                                               GeglBuffer *buffer);
 
 #endif /* __GIMP_CANVAS_BUFFER_PREVIEW_H__ */

@@ -21,35 +21,37 @@
 #ifndef __GIMP_OPERATION_OFFSET_H__
 #define __GIMP_OPERATION_OFFSET_H__
 
-
-#define GIMP_TYPE_OPERATION_OFFSET            (gimp_operation_offset_get_type ())
-#define GIMP_OPERATION_OFFSET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_OFFSET, GimpOperationOffset))
-#define GIMP_OPERATION_OFFSET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_OFFSET, GimpOperationOffsetClass))
-#define GIMP_IS_OPERATION_OFFSET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_OFFSET))
-#define GIMP_IS_OPERATION_OFFSET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_OFFSET))
-#define GIMP_OPERATION_OFFSET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_OFFSET, GimpOperationOffsetClass))
-
+#define GIMP_TYPE_OPERATION_OFFSET (gimp_operation_offset_get_type())
+#define GIMP_OPERATION_OFFSET(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_OFFSET,               \
+                              GimpOperationOffset))
+#define GIMP_OPERATION_OFFSET_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_OFFSET,                \
+                           GimpOperationOffsetClass))
+#define GIMP_IS_OPERATION_OFFSET(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_OFFSET))
+#define GIMP_IS_OPERATION_OFFSET_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_OFFSET))
+#define GIMP_OPERATION_OFFSET_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_OFFSET,                \
+                             GimpOperationOffsetClass))
 
 typedef struct _GimpOperationOffset GimpOperationOffset;
 typedef struct _GimpOperationOffsetClass GimpOperationOffsetClass;
 
-struct _GimpOperationOffset
-{
-	GeglOperationFilter parent_instance;
+struct _GimpOperationOffset {
+  GeglOperationFilter parent_instance;
 
-	GimpContext         *context;
-	GimpOffsetType type;
-	gint x;
-	gint y;
+  GimpContext *context;
+  GimpOffsetType type;
+  gint x;
+  gint y;
 };
 
-struct _GimpOperationOffsetClass
-{
-	GeglOperationFilterClass parent_class;
+struct _GimpOperationOffsetClass {
+  GeglOperationFilterClass parent_class;
 };
 
-
-GType   gimp_operation_offset_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_offset_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_OFFSET_H__ */

@@ -21,35 +21,36 @@
 #ifndef __GIMP_OPERATION_POSTERIZE_H__
 #define __GIMP_OPERATION_POSTERIZE_H__
 
-
 #include "gimpoperationpointfilter.h"
 
-
-#define GIMP_TYPE_OPERATION_POSTERIZE            (gimp_operation_posterize_get_type ())
-#define GIMP_OPERATION_POSTERIZE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_POSTERIZE, GimpOperationPosterize))
-#define GIMP_OPERATION_POSTERIZE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_POSTERIZE, GimpOperationPosterizeClass))
-#define GIMP_IS_OPERATION_POSTERIZE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_POSTERIZE))
-#define GIMP_IS_OPERATION_POSTERIZE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_POSTERIZE))
-#define GIMP_OPERATION_POSTERIZE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_POSTERIZE, GimpOperationPosterizeClass))
-
+#define GIMP_TYPE_OPERATION_POSTERIZE (gimp_operation_posterize_get_type())
+#define GIMP_OPERATION_POSTERIZE(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_POSTERIZE,            \
+                              GimpOperationPosterize))
+#define GIMP_OPERATION_POSTERIZE_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_POSTERIZE,             \
+                           GimpOperationPosterizeClass))
+#define GIMP_IS_OPERATION_POSTERIZE(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_POSTERIZE))
+#define GIMP_IS_OPERATION_POSTERIZE_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_POSTERIZE))
+#define GIMP_OPERATION_POSTERIZE_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_POSTERIZE,             \
+                             GimpOperationPosterizeClass))
 
 typedef struct _GimpOperationPosterize GimpOperationPosterize;
 typedef struct _GimpOperationPosterizeClass GimpOperationPosterizeClass;
 
-struct _GimpOperationPosterize
-{
-	GimpOperationPointFilter parent_instance;
+struct _GimpOperationPosterize {
+  GimpOperationPointFilter parent_instance;
 
-	gint levels;
+  gint levels;
 };
 
-struct _GimpOperationPosterizeClass
-{
-	GimpOperationPointFilterClass parent_class;
+struct _GimpOperationPosterizeClass {
+  GimpOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_posterize_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_posterize_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_POSTERIZE_H__ */

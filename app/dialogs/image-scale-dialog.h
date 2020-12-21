@@ -18,14 +18,10 @@
 #ifndef __IMAGE_SCALE_DIALOG_H__
 #define __IMAGE_SCALE_DIALOG_H__
 
-
-GtkWidget * image_scale_dialog_new (GimpImage             *image,
-                                    GimpContext           *context,
-                                    GtkWidget             *parent,
-                                    GimpUnit unit,
-                                    GimpInterpolationType interpolation,
-                                    GimpScaleCallback callback,
-                                    gpointer user_data);
-
+GtkWidget *image_scale_dialog_new(GimpImage *image, GimpContext *context,
+                                  GtkWidget *parent, GimpUnit unit,
+                                  GimpInterpolationType interpolation,
+                                  GimpScaleCallback callback,
+                                  gpointer user_data);
 
 #endif /* __IMAGE_SCALE_DIALOG_H__ */

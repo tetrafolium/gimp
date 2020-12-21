@@ -22,9 +22,8 @@
 #define __GIMP_FILE_H__
 
 /* Data keys for Gimp */
-#define GIMP_FILE_OPEN_LAST_FILE_KEY     "gimp-file-open-last-file"
-#define GIMP_FILE_SAVE_LAST_FILE_KEY     "gimp-file-save-last-file"
-#define GIMP_FILE_EXPORT_LAST_FILE_KEY   "gimp-file-export-last-file"
-
+#define GIMP_FILE_OPEN_LAST_FILE_KEY "gimp-file-open-last-file"
+#define GIMP_FILE_SAVE_LAST_FILE_KEY "gimp-file-save-last-file"
+#define GIMP_FILE_EXPORT_LAST_FILE_KEY "gimp-file-export-last-file"
 
 #endif /* __GIMP_FILE_H__ */

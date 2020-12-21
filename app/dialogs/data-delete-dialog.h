@@ -18,11 +18,7 @@
 #ifndef __DATA_DELETE_DIALOG_H__
 #define __DATA_DELETE_DIALOG_H__
 
-
-GtkWidget * data_delete_dialog_new (GimpDataFactory *factory,
-                                    GimpData        *data,
-                                    GimpContext     *context,
-                                    GtkWidget       *parent);
-
+GtkWidget *data_delete_dialog_new(GimpDataFactory *factory, GimpData *data,
+                                  GimpContext *context, GtkWidget *parent);
 
 #endif /* __DATA_DELETE_DIALOG_H__ */

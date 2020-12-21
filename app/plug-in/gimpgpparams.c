@@ -25,8 +25,8 @@
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
-#include "libgimpcolor/gimpcolor.h"
 #include "libgimpbase/gimpprotocol.h"
+#include "libgimpcolor/gimpcolor.h"
 
 #include "plug-in-types.h"
 
@@ -35,13 +35,12 @@
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
-#include "core/gimpselection.h"
 #include "core/gimpparamspecs.h"
+#include "core/gimpselection.h"
 
 #include "vectors/gimpvectors.h"
 
 #include "libgimp/gimpgpparams.h"
-
 
 /*  include the implementation, they are shared between app/ and
  *  libgimp/ but need different headers.

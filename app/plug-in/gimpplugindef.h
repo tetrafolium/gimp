@@ -20,63 +20,59 @@
 #ifndef __GIMP_PLUG_IN_DEF_H__
 #define __GIMP_PLUG_IN_DEF_H__
 
-
 #include "core/gimpobject.h"
 
-
-#define GIMP_TYPE_PLUG_IN_DEF            (gimp_plug_in_def_get_type ())
-#define GIMP_PLUG_IN_DEF(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PLUG_IN_DEF, GimpPlugInDef))
-#define GIMP_PLUG_IN_DEF_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PLUG_IN_DEF, GimpPlugInDefClass))
-#define GIMP_IS_PLUG_IN_DEF(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PLUG_IN_DEF))
-#define GIMP_IS_PLUG_IN_DEF_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PLUG_IN_DEF))
-
+#define GIMP_TYPE_PLUG_IN_DEF (gimp_plug_in_def_get_type())
+#define GIMP_PLUG_IN_DEF(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PLUG_IN_DEF, GimpPlugInDef))
+#define GIMP_PLUG_IN_DEF_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PLUG_IN_DEF, GimpPlugInDefClass))
+#define GIMP_IS_PLUG_IN_DEF(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PLUG_IN_DEF))
+#define GIMP_IS_PLUG_IN_DEF_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PLUG_IN_DEF))
 
 typedef struct _GimpPlugInDefClass GimpPlugInDefClass;
 
-struct _GimpPlugInDef
-{
-	GimpObject parent_instance;
+struct _GimpPlugInDef {
+  GimpObject parent_instance;
 
-	GFile      *file;
-	GSList     *procedures;
-	gchar      *locale_domain_name;
-	gchar      *locale_domain_path;
-	gchar      *help_domain_name;
-	gchar      *help_domain_uri;
-	gint64 mtime;
-	gboolean needs_query; /* Does the plug-in need to be queried ?     */
-	gboolean has_init;    /* Does the plug-in need to be initialized ? */
+  GFile *file;
+  GSList *procedures;
+  gchar *locale_domain_name;
+  gchar *locale_domain_path;
+  gchar *help_domain_name;
+  gchar *help_domain_uri;
+  gint64 mtime;
+  gboolean needs_query; /* Does the plug-in need to be queried ?     */
+  gboolean has_init;    /* Does the plug-in need to be initialized ? */
 };
 
-struct _GimpPlugInDefClass
-{
-	GimpObjectClass parent_class;
+struct _GimpPlugInDefClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_plug_in_def_get_type(void) G_GNUC_CONST;
 
-GType           gimp_plug_in_def_get_type (void) G_GNUC_CONST;
+GimpPlugInDef *gimp_plug_in_def_new(GFile *file);
 
-GimpPlugInDef * gimp_plug_in_def_new      (GFile               *file);
+void gimp_plug_in_def_add_procedure(GimpPlugInDef *plug_in_def,
+                                    GimpPlugInProcedure *proc);
+void gimp_plug_in_def_remove_procedure(GimpPlugInDef *plug_in_def,
+                                       GimpPlugInProcedure *proc);
 
-void   gimp_plug_in_def_add_procedure     (GimpPlugInDef       *plug_in_def,
-                                           GimpPlugInProcedure *proc);
-void   gimp_plug_in_def_remove_procedure  (GimpPlugInDef       *plug_in_def,
-                                           GimpPlugInProcedure *proc);
+void gimp_plug_in_def_set_locale_domain(GimpPlugInDef *plug_in_def,
+                                        const gchar *domain_name,
+                                        const gchar *domain_path);
 
-void   gimp_plug_in_def_set_locale_domain (GimpPlugInDef       *plug_in_def,
-                                           const gchar         *domain_name,
-                                           const gchar         *domain_path);
+void gimp_plug_in_def_set_help_domain(GimpPlugInDef *plug_in_def,
+                                      const gchar *domain_name,
+                                      const gchar *domain_uri);
 
-void   gimp_plug_in_def_set_help_domain   (GimpPlugInDef       *plug_in_def,
-                                           const gchar         *domain_name,
-                                           const gchar         *domain_uri);
-
-void   gimp_plug_in_def_set_mtime         (GimpPlugInDef       *plug_in_def,
-                                           gint64 mtime);
-void   gimp_plug_in_def_set_needs_query   (GimpPlugInDef       *plug_in_def,
-                                           gboolean needs_query);
-void   gimp_plug_in_def_set_has_init      (GimpPlugInDef       *plug_in_def,
-                                           gboolean has_init);
-
+void gimp_plug_in_def_set_mtime(GimpPlugInDef *plug_in_def, gint64 mtime);
+void gimp_plug_in_def_set_needs_query(GimpPlugInDef *plug_in_def,
+                                      gboolean needs_query);
+void gimp_plug_in_def_set_has_init(GimpPlugInDef *plug_in_def,
+                                   gboolean has_init);
 
 #endif /* __GIMP_PLUG_IN_DEF_H__ */

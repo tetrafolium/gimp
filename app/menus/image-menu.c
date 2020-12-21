@@ -31,22 +31,18 @@
 #include "window-menu.h"
 #include "windows-menu.h"
 
+void image_menu_setup(GimpUIManager *manager, const gchar *ui_path) {
+  gchar *path;
 
-void
-image_menu_setup (GimpUIManager *manager,
-                  const gchar   *ui_path)
-{
-	gchar *path;
+  if (!strcmp(ui_path, "/dummy-menubar"))
+    ui_path = "/dummy-menubar/image-popup";
 
-	if (!strcmp (ui_path, "/dummy-menubar"))
-		ui_path = "/dummy-menubar/image-popup";
+  file_menu_setup(manager, ui_path);
+  windows_menu_setup(manager, ui_path);
+  plug_in_menus_setup(manager, ui_path);
+  filters_menu_setup(manager, ui_path);
 
-	file_menu_setup (manager, ui_path);
-	windows_menu_setup (manager, ui_path);
-	plug_in_menus_setup (manager, ui_path);
-	filters_menu_setup (manager, ui_path);
-
-	path = g_strconcat (ui_path, "/View", NULL);
-	window_menu_setup (manager, "view", path);
-	g_free (path);
+  path = g_strconcat(ui_path, "/View", NULL);
+  window_menu_setup(manager, "view", path);
+  g_free(path);
 }

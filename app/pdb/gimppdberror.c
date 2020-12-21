@@ -21,7 +21,6 @@
 
 #include "gimppdberror.h"
 
-
 /**
  * gimp_pdb_error_quark:
  *
@@ -29,8 +28,6 @@
  *
  * Returns: the #GQuark that defines the GimpPlugIn error domain.
  **/
-GQuark
-gimp_pdb_error_quark (void)
-{
-	return g_quark_from_static_string ("gimp-pdb-error-quark");
+GQuark gimp_pdb_error_quark(void) {
+  return g_quark_from_static_string("gimp-pdb-error-quark");
 }

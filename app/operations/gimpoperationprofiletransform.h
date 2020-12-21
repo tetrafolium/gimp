@@ -21,45 +21,48 @@
 #ifndef __GIMP_OPERATION_PROFILE_TRANSFORM_H__
 #define __GIMP_OPERATION_PROFILE_TRANSFORM_H__
 
-
 #include <gegl-plugin.h>
 #include <operation/gegl-operation-point-filter.h>
 
-
-#define GIMP_TYPE_OPERATION_PROFILE_TRANSFORM            (gimp_operation_profile_transform_get_type ())
-#define GIMP_OPERATION_PROFILE_TRANSFORM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM, GimpOperationProfileTransform))
-#define GIMP_OPERATION_PROFILE_TRANSFORM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_PROFILE_TRANSFORM, GimpOperationProfileTransformClass))
-#define GIMP_IS_OPERATION_PROFILE_TRANSFORM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM))
-#define GIMP_IS_OPERATION_PROFILE_TRANSFORM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_PROFILE_TRANSFORM))
-#define GIMP_OPERATION_PROFILE_TRANSFORM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_PROFILE_TRANSFORM, GimpOperationProfileTransformClass))
-
+#define GIMP_TYPE_OPERATION_PROFILE_TRANSFORM                                  \
+  (gimp_operation_profile_transform_get_type())
+#define GIMP_OPERATION_PROFILE_TRANSFORM(obj)                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM,    \
+                              GimpOperationProfileTransform))
+#define GIMP_OPERATION_PROFILE_TRANSFORM_CLASS(klass)                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM,     \
+                           GimpOperationProfileTransformClass))
+#define GIMP_IS_OPERATION_PROFILE_TRANSFORM(obj)                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM))
+#define GIMP_IS_OPERATION_PROFILE_TRANSFORM_CLASS(klass)                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM))
+#define GIMP_OPERATION_PROFILE_TRANSFORM_GET_CLASS(obj)                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_PROFILE_TRANSFORM,     \
+                             GimpOperationProfileTransformClass))
 
 typedef struct _GimpOperationProfileTransform GimpOperationProfileTransform;
-typedef struct _GimpOperationProfileTransformClass GimpOperationProfileTransformClass;
+typedef struct _GimpOperationProfileTransformClass
+    GimpOperationProfileTransformClass;
 
-struct _GimpOperationProfileTransform
-{
-	GeglOperationPointFilter parent_instance;
+struct _GimpOperationProfileTransform {
+  GeglOperationPointFilter parent_instance;
 
-	GimpColorProfile         *src_profile;
-	const Babl               *src_format;
+  GimpColorProfile *src_profile;
+  const Babl *src_format;
 
-	GimpColorProfile         *dest_profile;
-	const Babl               *dest_format;
+  GimpColorProfile *dest_profile;
+  const Babl *dest_format;
 
-	GimpColorRenderingIntent rendering_intent;
-	gboolean black_point_compensation;
+  GimpColorRenderingIntent rendering_intent;
+  gboolean black_point_compensation;
 
-	GimpColorTransform       *transform;
+  GimpColorTransform *transform;
 };
 
-struct _GimpOperationProfileTransformClass
-{
-	GeglOperationPointFilterClass parent_class;
+struct _GimpOperationProfileTransformClass {
+  GeglOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_profile_transform_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_profile_transform_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_PROFILE_TRANSFORM_H__ */

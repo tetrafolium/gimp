@@ -21,8 +21,8 @@
 #include "config.h"
 
 #include <cairo.h>
-#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
@@ -34,107 +34,86 @@
 
 #include "gimp-intl.h"
 
+static gboolean gimp_operation_brightness_contrast_process(
+    GeglOperation *operation, void *in_buf, void *out_buf, glong samples,
+    const GeglRectangle *roi, gint level);
 
-static gboolean gimp_operation_brightness_contrast_process (GeglOperation       *operation,
-                                                            void                *in_buf,
-                                                            void                *out_buf,
-                                                            glong samples,
-                                                            const GeglRectangle *roi,
-                                                            gint level);
-
-
-G_DEFINE_TYPE (GimpOperationBrightnessContrast, gimp_operation_brightness_contrast,
-               GIMP_TYPE_OPERATION_POINT_FILTER)
+G_DEFINE_TYPE(GimpOperationBrightnessContrast,
+              gimp_operation_brightness_contrast,
+              GIMP_TYPE_OPERATION_POINT_FILTER)
 
 #define parent_class gimp_operation_brightness_contrast_parent_class
 
+static void gimp_operation_brightness_contrast_class_init(
+    GimpOperationBrightnessContrastClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
+  GeglOperationPointFilterClass *point_class =
+      GEGL_OPERATION_POINT_FILTER_CLASS(klass);
 
-static void
-gimp_operation_brightness_contrast_class_init (GimpOperationBrightnessContrastClass *klass)
-{
-	GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
-	GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
-	GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
+  object_class->set_property = gimp_operation_point_filter_set_property;
+  object_class->get_property = gimp_operation_point_filter_get_property;
 
-	object_class->set_property   = gimp_operation_point_filter_set_property;
-	object_class->get_property   = gimp_operation_point_filter_get_property;
+  gegl_operation_class_set_keys(
+      operation_class, "name", "gimp:brightness-contrast", "categories",
+      "color", "description", _("Adjust brightness and contrast"), NULL);
 
-	gegl_operation_class_set_keys (operation_class,
-	                               "name",        "gimp:brightness-contrast",
-	                               "categories",  "color",
-	                               "description", _("Adjust brightness and contrast"),
-	                               NULL);
+  point_class->process = gimp_operation_brightness_contrast_process;
 
-	point_class->process         = gimp_operation_brightness_contrast_process;
-
-	g_object_class_install_property (object_class,
-	                                 GIMP_OPERATION_POINT_FILTER_PROP_CONFIG,
-	                                 g_param_spec_object ("config",
-	                                                      "Config",
-	                                                      "The config object",
-	                                                      GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,
-	                                                      G_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, GIMP_OPERATION_POINT_FILTER_PROP_CONFIG,
+      g_param_spec_object("config", "Config", "The config object",
+                          GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 }
 
 static void
-gimp_operation_brightness_contrast_init (GimpOperationBrightnessContrast *self)
-{
+gimp_operation_brightness_contrast_init(GimpOperationBrightnessContrast *self) {
 }
 
-static inline gfloat
-gimp_operation_brightness_contrast_map (gfloat value,
-                                        gdouble brightness,
-                                        gdouble slant)
-{
-	/* apply brightness */
-	if (brightness < 0.0)
-		value = value * (1.0 + brightness);
-	else
-		value = value + ((1.0 - value) * brightness);
+static inline gfloat gimp_operation_brightness_contrast_map(gfloat value,
+                                                            gdouble brightness,
+                                                            gdouble slant) {
+  /* apply brightness */
+  if (brightness < 0.0)
+    value = value * (1.0 + brightness);
+  else
+    value = value + ((1.0 - value) * brightness);
 
-	value = (value - 0.5) * slant + 0.5;
+  value = (value - 0.5) * slant + 0.5;
 
-	return value;
+  return value;
 }
 
-static gboolean
-gimp_operation_brightness_contrast_process (GeglOperation       *operation,
-                                            void                *in_buf,
-                                            void                *out_buf,
-                                            glong samples,
-                                            const GeglRectangle *roi,
-                                            gint level)
-{
-	GimpOperationPointFilter     *point  = GIMP_OPERATION_POINT_FILTER (operation);
-	GimpBrightnessContrastConfig *config = GIMP_BRIGHTNESS_CONTRAST_CONFIG (point->config);
-	gfloat                       *src    = in_buf;
-	gfloat                       *dest   = out_buf;
-	gdouble brightness;
-	gdouble slant;
+static gboolean gimp_operation_brightness_contrast_process(
+    GeglOperation *operation, void *in_buf, void *out_buf, glong samples,
+    const GeglRectangle *roi, gint level) {
+  GimpOperationPointFilter *point = GIMP_OPERATION_POINT_FILTER(operation);
+  GimpBrightnessContrastConfig *config =
+      GIMP_BRIGHTNESS_CONTRAST_CONFIG(point->config);
+  gfloat *src = in_buf;
+  gfloat *dest = out_buf;
+  gdouble brightness;
+  gdouble slant;
 
-	if (!config)
-		return FALSE;
+  if (!config)
+    return FALSE;
 
-	brightness = config->brightness / 2.0;
-	slant = tan ((config->contrast + 1) * G_PI_4);
+  brightness = config->brightness / 2.0;
+  slant = tan((config->contrast + 1) * G_PI_4);
 
-	while (samples--)
-	{
-		dest[RED] = gimp_operation_brightness_contrast_map (src[RED],
-		                                                    brightness,
-		                                                    slant);
-		dest[GREEN] = gimp_operation_brightness_contrast_map (src[GREEN],
-		                                                      brightness,
-		                                                      slant);
-		dest[BLUE] = gimp_operation_brightness_contrast_map (src[BLUE],
-		                                                     brightness,
-		                                                     slant);
-		dest[ALPHA] = src[ALPHA];
+  while (samples--) {
+    dest[RED] =
+        gimp_operation_brightness_contrast_map(src[RED], brightness, slant);
+    dest[GREEN] =
+        gimp_operation_brightness_contrast_map(src[GREEN], brightness, slant);
+    dest[BLUE] =
+        gimp_operation_brightness_contrast_map(src[BLUE], brightness, slant);
+    dest[ALPHA] = src[ALPHA];
 
-		src  += 4;
-		dest += 4;
-	}
+    src += 4;
+    dest += 4;
+  }
 
-	return TRUE;
+  return TRUE;
 }

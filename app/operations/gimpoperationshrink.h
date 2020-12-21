@@ -21,37 +21,38 @@
 #ifndef __GIMP_OPERATION_SHRINK_H__
 #define __GIMP_OPERATION_SHRINK_H__
 
-
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_SHRINK            (gimp_operation_shrink_get_type ())
-#define GIMP_OPERATION_SHRINK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_SHRINK, GimpOperationShrink))
-#define GIMP_OPERATION_SHRINK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_SHRINK, GimpOperationShrinkClass))
-#define GIMP_IS_OPERATION_SHRINK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_SHRINK))
-#define GIMP_IS_OPERATION_SHRINK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_SHRINK))
-#define GIMP_OPERATION_SHRINK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SHRINK, GimpOperationShrinkClass))
-
+#define GIMP_TYPE_OPERATION_SHRINK (gimp_operation_shrink_get_type())
+#define GIMP_OPERATION_SHRINK(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_SHRINK,               \
+                              GimpOperationShrink))
+#define GIMP_OPERATION_SHRINK_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_SHRINK,                \
+                           GimpOperationShrinkClass))
+#define GIMP_IS_OPERATION_SHRINK(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_SHRINK))
+#define GIMP_IS_OPERATION_SHRINK_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_SHRINK))
+#define GIMP_OPERATION_SHRINK_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_SHRINK,                \
+                             GimpOperationShrinkClass))
 
 typedef struct _GimpOperationShrink GimpOperationShrink;
 typedef struct _GimpOperationShrinkClass GimpOperationShrinkClass;
 
-struct _GimpOperationShrink
-{
-	GeglOperationFilter parent_instance;
+struct _GimpOperationShrink {
+  GeglOperationFilter parent_instance;
 
-	gint radius_x;
-	gint radius_y;
-	gboolean edge_lock;
+  gint radius_x;
+  gint radius_y;
+  gboolean edge_lock;
 };
 
-struct _GimpOperationShrinkClass
-{
-	GeglOperationFilterClass parent_class;
+struct _GimpOperationShrinkClass {
+  GeglOperationFilterClass parent_class;
 };
 
-
-GType   gimp_operation_shrink_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_shrink_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_SHRINK_H__ */

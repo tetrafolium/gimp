@@ -25,10 +25,6 @@
 #include "dockable-menu.h"
 #include "window-menu.h"
 
-
-void
-dockable_menu_setup (GimpUIManager *manager,
-                     const gchar   *ui_path)
-{
-	window_menu_setup (manager, "dock", ui_path);
+void dockable_menu_setup(GimpUIManager *manager, const gchar *ui_path) {
+  window_menu_setup(manager, "dock", ui_path);
 }

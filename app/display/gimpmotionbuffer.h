@@ -20,80 +20,73 @@
 #ifndef __GIMP_MOTION_BUFFER_H__
 #define __GIMP_MOTION_BUFFER_H__
 
-
 #include "core/gimpobject.h"
 
-
-#define GIMP_TYPE_MOTION_BUFFER            (gimp_motion_buffer_get_type ())
-#define GIMP_MOTION_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MOTION_BUFFER, GimpMotionBuffer))
-#define GIMP_MOTION_BUFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MOTION_BUFFER, GimpMotionBufferClass))
-#define GIMP_IS_MOTION_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MOTION_BUFFER))
-#define GIMP_IS_MOTION_BUFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MOTION_BUFFER))
-#define GIMP_MOTION_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MOTION_BUFFER, GimpMotionBufferClass))
-
+#define GIMP_TYPE_MOTION_BUFFER (gimp_motion_buffer_get_type())
+#define GIMP_MOTION_BUFFER(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MOTION_BUFFER, GimpMotionBuffer))
+#define GIMP_MOTION_BUFFER_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MOTION_BUFFER,                   \
+                           GimpMotionBufferClass))
+#define GIMP_IS_MOTION_BUFFER(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MOTION_BUFFER))
+#define GIMP_IS_MOTION_BUFFER_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MOTION_BUFFER))
+#define GIMP_MOTION_BUFFER_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MOTION_BUFFER,                   \
+                             GimpMotionBufferClass))
 
 typedef struct _GimpMotionBufferClass GimpMotionBufferClass;
 
-struct _GimpMotionBuffer
-{
-	GimpObject parent_instance;
+struct _GimpMotionBuffer {
+  GimpObject parent_instance;
 
-	guint32 last_read_motion_time;
+  guint32 last_read_motion_time;
 
-	guint32 last_motion_time; /*  previous time of a forwarded motion event  */
-	gdouble last_motion_delta_time;
-	gdouble last_motion_delta_x;
-	gdouble last_motion_delta_y;
-	gdouble last_motion_distance;
+  guint32 last_motion_time; /*  previous time of a forwarded motion event  */
+  gdouble last_motion_delta_time;
+  gdouble last_motion_delta_x;
+  gdouble last_motion_delta_y;
+  gdouble last_motion_distance;
 
-	GimpCoords last_coords;   /* last motion event                   */
+  GimpCoords last_coords; /* last motion event                   */
 
-	GArray     *event_history;
-	GArray     *event_queue;
-	gboolean event_delay;     /* TRUE if there's an unsent event in
-	                           *  the history buffer
-	                           */
+  GArray *event_history;
+  GArray *event_queue;
+  gboolean event_delay; /* TRUE if there's an unsent event in
+                         *  the history buffer
+                         */
 
-	gint event_delay_timeout;
-	GdkModifierType last_active_state;
+  gint event_delay_timeout;
+  GdkModifierType last_active_state;
 };
 
-struct _GimpMotionBufferClass
-{
-	GimpObjectClass parent_class;
+struct _GimpMotionBufferClass {
+  GimpObjectClass parent_class;
 
-	void (* stroke) (GimpMotionBuffer *buffer,
-	                 const GimpCoords *coords,
-	                 guint32 time,
-	                 GdkModifierType state);
-	void (* hover)  (GimpMotionBuffer *buffer,
-	                 const GimpCoords *coords,
-	                 GdkModifierType state,
-	                 gboolean proximity);
+  void (*stroke)(GimpMotionBuffer *buffer, const GimpCoords *coords,
+                 guint32 time, GdkModifierType state);
+  void (*hover)(GimpMotionBuffer *buffer, const GimpCoords *coords,
+                GdkModifierType state, gboolean proximity);
 };
 
+GType gimp_motion_buffer_get_type(void) G_GNUC_CONST;
 
-GType              gimp_motion_buffer_get_type     (void) G_GNUC_CONST;
+GimpMotionBuffer *gimp_motion_buffer_new(void);
 
-GimpMotionBuffer * gimp_motion_buffer_new          (void);
+void gimp_motion_buffer_begin_stroke(GimpMotionBuffer *buffer, guint32 time,
+                                     GimpCoords *last_motion);
+void gimp_motion_buffer_end_stroke(GimpMotionBuffer *buffer);
 
-void       gimp_motion_buffer_begin_stroke         (GimpMotionBuffer *buffer,
-                                                    guint32 time,
-                                                    GimpCoords       *last_motion);
-void       gimp_motion_buffer_end_stroke           (GimpMotionBuffer *buffer);
+gboolean gimp_motion_buffer_motion_event(GimpMotionBuffer *buffer,
+                                         GimpCoords *coords, guint32 time,
+                                         gboolean event_fill);
+guint32 gimp_motion_buffer_get_last_motion_time(GimpMotionBuffer *buffer);
 
-gboolean   gimp_motion_buffer_motion_event         (GimpMotionBuffer *buffer,
-                                                    GimpCoords       *coords,
-                                                    guint32 time,
-                                                    gboolean event_fill);
-guint32    gimp_motion_buffer_get_last_motion_time (GimpMotionBuffer *buffer);
-
-void       gimp_motion_buffer_request_stroke       (GimpMotionBuffer *buffer,
-                                                    GdkModifierType state,
-                                                    guint32 time);
-void       gimp_motion_buffer_request_hover        (GimpMotionBuffer *buffer,
-                                                    GdkModifierType state,
-                                                    gboolean proximity);
-
+void gimp_motion_buffer_request_stroke(GimpMotionBuffer *buffer,
+                                       GdkModifierType state, guint32 time);
+void gimp_motion_buffer_request_hover(GimpMotionBuffer *buffer,
+                                      GdkModifierType state,
+                                      gboolean proximity);
 
 #endif /* __GIMP_MOTION_BUFFER_H__ */

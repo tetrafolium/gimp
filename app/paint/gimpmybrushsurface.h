@@ -15,19 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_MYBRUSH_SURFACE_H__
-#define  __GIMP_MYBRUSH_SURFACE_H__
-
+#ifndef __GIMP_MYBRUSH_SURFACE_H__
+#define __GIMP_MYBRUSH_SURFACE_H__
 
 typedef struct _GimpMybrushSurface GimpMybrushSurface;
 
 GimpMybrushSurface *
-gimp_mypaint_surface_new (GeglBuffer         *buffer,
-                          GimpComponentMask component_mask,
-                          GeglBuffer         *paint_mask,
-                          gint paint_mask_x,
-                          gint paint_mask_y,
-                          GimpMybrushOptions *options);
+gimp_mypaint_surface_new(GeglBuffer *buffer, GimpComponentMask component_mask,
+                         GeglBuffer *paint_mask, gint paint_mask_x,
+                         gint paint_mask_y, GimpMybrushOptions *options);
 
-
-#endif  /*  __GIMP_MYBRUSH_SURFACE_H__  */
+#endif /*  __GIMP_MYBRUSH_SURFACE_H__  */

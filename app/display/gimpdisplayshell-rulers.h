@@ -18,8 +18,6 @@
 #ifndef __GIMP_DISPLAY_SHELL_RULERS_H__
 #define __GIMP_DISPLAY_SHELL_RULERS_H__
 
+void gimp_display_shell_rulers_update(GimpDisplayShell *shell);
 
-void   gimp_display_shell_rulers_update (GimpDisplayShell *shell);
-
-
-#endif  /*  __GIMP_DISPLAY_SHELL_RULERS_H__  */
+#endif /*  __GIMP_DISPLAY_SHELL_RULERS_H__  */

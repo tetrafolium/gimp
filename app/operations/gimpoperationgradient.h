@@ -21,53 +21,54 @@
 #ifndef __GIMP_OPERATION_GRADIENT_H__
 #define __GIMP_OPERATION_GRADIENT_H__
 
-
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_GRADIENT            (gimp_operation_gradient_get_type ())
-#define GIMP_OPERATION_GRADIENT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_GRADIENT, GimpOperationGradient))
-#define GIMP_OPERATION_GRADIENT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_GRADIENT, GimpOperationGradientClass))
-#define GIMP_IS_OPERATION_GRADIENT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_GRADIENT))
-#define GIMP_IS_OPERATION_GRADIENT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_GRADIENT))
-#define GIMP_OPERATION_GRADIENT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_GRADIENT, GimpOperationGradientClass))
-
+#define GIMP_TYPE_OPERATION_GRADIENT (gimp_operation_gradient_get_type())
+#define GIMP_OPERATION_GRADIENT(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_GRADIENT,             \
+                              GimpOperationGradient))
+#define GIMP_OPERATION_GRADIENT_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_GRADIENT,              \
+                           GimpOperationGradientClass))
+#define GIMP_IS_OPERATION_GRADIENT(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_GRADIENT))
+#define GIMP_IS_OPERATION_GRADIENT_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_GRADIENT))
+#define GIMP_OPERATION_GRADIENT_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_GRADIENT,              \
+                             GimpOperationGradientClass))
 
 typedef struct _GimpOperationGradient GimpOperationGradient;
 typedef struct _GimpOperationGradientClass GimpOperationGradientClass;
 
-struct _GimpOperationGradient
-{
-	GeglOperationFilter parent_instance;
+struct _GimpOperationGradient {
+  GeglOperationFilter parent_instance;
 
-	GimpContext                 *context;
+  GimpContext *context;
 
-	GimpGradient                *gradient;
-	gdouble start_x, start_y, end_x, end_y;
-	GimpGradientType gradient_type;
-	GimpRepeatMode gradient_repeat;
-	gdouble offset;
-	gboolean gradient_reverse;
-	GimpGradientBlendColorSpace gradient_blend_color_space;
+  GimpGradient *gradient;
+  gdouble start_x, start_y, end_x, end_y;
+  GimpGradientType gradient_type;
+  GimpRepeatMode gradient_repeat;
+  gdouble offset;
+  gboolean gradient_reverse;
+  GimpGradientBlendColorSpace gradient_blend_color_space;
 
-	gboolean supersample;
-	gint supersample_depth;
-	gdouble supersample_threshold;
+  gboolean supersample;
+  gint supersample_depth;
+  gdouble supersample_threshold;
 
-	gboolean dither;
+  gboolean dither;
 
-	GimpRGB                     *gradient_cache;
-	gint gradient_cache_size;
-	GMutex gradient_cache_mutex;
+  GimpRGB *gradient_cache;
+  gint gradient_cache_size;
+  GMutex gradient_cache_mutex;
 };
 
-struct _GimpOperationGradientClass
-{
-	GeglOperationFilterClass parent_class;
+struct _GimpOperationGradientClass {
+  GeglOperationFilterClass parent_class;
 };
 
-
-GType   gimp_operation_gradient_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_gradient_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_GRADIENT_H__ */

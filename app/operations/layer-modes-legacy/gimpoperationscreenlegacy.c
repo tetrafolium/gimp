@@ -27,98 +27,75 @@
 
 #include "gimpoperationscreenlegacy.h"
 
-
-static gboolean   gimp_operation_screen_legacy_process (GeglOperation       *op,
-                                                        void                *in,
-                                                        void                *layer,
-                                                        void                *mask,
-                                                        void                *out,
-                                                        glong samples,
-                                                        const GeglRectangle *roi,
-                                                        gint level);
-
-
-G_DEFINE_TYPE (GimpOperationScreenLegacy, gimp_operation_screen_legacy,
-               GIMP_TYPE_OPERATION_LAYER_MODE)
-
-
-static void
-gimp_operation_screen_legacy_class_init (GimpOperationScreenLegacyClass *klass)
-{
-	GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-	GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
-
-	gegl_operation_class_set_keys (operation_class,
-	                               "name",        "gimp:screen-legacy",
-	                               "description", "GIMP screen mode operation",
-	                               NULL);
-
-	layer_mode_class->process = gimp_operation_screen_legacy_process;
-}
-
-static void
-gimp_operation_screen_legacy_init (GimpOperationScreenLegacy *self)
-{
-}
-
 static gboolean
-gimp_operation_screen_legacy_process (GeglOperation       *op,
-                                      void                *in_p,
-                                      void                *layer_p,
-                                      void                *mask_p,
-                                      void                *out_p,
-                                      glong samples,
-                                      const GeglRectangle *roi,
-                                      gint level)
-{
-	GimpOperationLayerMode *layer_mode = (gpointer) op;
-	gfloat                 *in         = in_p;
-	gfloat                 *out        = out_p;
-	gfloat                 *layer      = layer_p;
-	gfloat                 *mask       = mask_p;
-	gfloat opacity    = layer_mode->opacity;
+gimp_operation_screen_legacy_process(GeglOperation *op, void *in, void *layer,
+                                     void *mask, void *out, glong samples,
+                                     const GeglRectangle *roi, gint level);
 
-	while (samples--)
-	{
-		gfloat comp_alpha, new_alpha;
+G_DEFINE_TYPE(GimpOperationScreenLegacy, gimp_operation_screen_legacy,
+              GIMP_TYPE_OPERATION_LAYER_MODE)
 
-		comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
-		if (mask)
-			comp_alpha *= *mask;
+static void
+gimp_operation_screen_legacy_class_init(GimpOperationScreenLegacyClass *klass) {
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
+  GimpOperationLayerModeClass *layer_mode_class =
+      GIMP_OPERATION_LAYER_MODE_CLASS(klass);
 
-		new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
+  gegl_operation_class_set_keys(operation_class, "name", "gimp:screen-legacy",
+                                "description", "GIMP screen mode operation",
+                                NULL);
 
-		if (comp_alpha && new_alpha)
-		{
-			gfloat ratio = comp_alpha / new_alpha;
-			gint b;
+  layer_mode_class->process = gimp_operation_screen_legacy_process;
+}
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				gfloat comp = 1.0f - (1.0f - in[b]) * (1.0f - layer[b]);
+static void gimp_operation_screen_legacy_init(GimpOperationScreenLegacy *self) {
+}
 
-				out[b] = comp * ratio + in[b] * (1.0f - ratio);
-			}
-		}
-		else
-		{
-			gint b;
+static gboolean gimp_operation_screen_legacy_process(
+    GeglOperation *op, void *in_p, void *layer_p, void *mask_p, void *out_p,
+    glong samples, const GeglRectangle *roi, gint level) {
+  GimpOperationLayerMode *layer_mode = (gpointer)op;
+  gfloat *in = in_p;
+  gfloat *out = out_p;
+  gfloat *layer = layer_p;
+  gfloat *mask = mask_p;
+  gfloat opacity = layer_mode->opacity;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = in[b];
-			}
-		}
+  while (samples--) {
+    gfloat comp_alpha, new_alpha;
 
-		out[ALPHA] = in[ALPHA];
+    comp_alpha = MIN(in[ALPHA], layer[ALPHA]) * opacity;
+    if (mask)
+      comp_alpha *= *mask;
 
-		in    += 4;
-		layer += 4;
-		out   += 4;
+    new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
 
-		if (mask)
-			mask++;
-	}
+    if (comp_alpha && new_alpha) {
+      gfloat ratio = comp_alpha / new_alpha;
+      gint b;
 
-	return TRUE;
+      for (b = RED; b < ALPHA; b++) {
+        gfloat comp = 1.0f - (1.0f - in[b]) * (1.0f - layer[b]);
+
+        out[b] = comp * ratio + in[b] * (1.0f - ratio);
+      }
+    } else {
+      gint b;
+
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = in[b];
+      }
+    }
+
+    out[ALPHA] = in[ALPHA];
+
+    in += 4;
+    layer += 4;
+    out += 4;
+
+    if (mask)
+      mask++;
+  }
+
+  return TRUE;
 }

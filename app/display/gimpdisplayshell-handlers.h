@@ -18,9 +18,7 @@
 #ifndef __GIMP_DISPLAY_SHELL_HANDLERS_H__
 #define __GIMP_DISPLAY_SHELL_HANDLERS_H__
 
-
-void   gimp_display_shell_connect    (GimpDisplayShell *shell);
-void   gimp_display_shell_disconnect (GimpDisplayShell *shell);
-
+void gimp_display_shell_connect(GimpDisplayShell *shell);
+void gimp_display_shell_disconnect(GimpDisplayShell *shell);
 
 #endif /*  __GIMP_DISPLAY_SHELL_HANDLERS_H__  */

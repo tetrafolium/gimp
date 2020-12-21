@@ -18,34 +18,37 @@
 #ifndef __GIMP_PERSPECTIVE_CLONE_OPTIONS_H__
 #define __GIMP_PERSPECTIVE_CLONE_OPTIONS_H__
 
-
 #include "gimpcloneoptions.h"
 
+#define GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS                                    \
+  (gimp_perspective_clone_options_get_type())
+#define GIMP_PERSPECTIVE_CLONE_OPTIONS(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS,      \
+                              GimpPerspectiveCloneOptions))
+#define GIMP_PERSPECTIVE_CLONE_OPTIONS_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS,       \
+                           GimpPerspectiveCloneOptionsClass))
+#define GIMP_IS_PERSPECTIVE_CLONE_OPTIONS(obj)                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS))
+#define GIMP_IS_PERSPECTIVE_CLONE_OPTIONS_CLASS(klass)                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS))
+#define GIMP_PERSPECTIVE_CLONE_OPTIONS_GET_CLASS(obj)                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS,       \
+                             GimpPerspectiveCloneOptionsClass))
 
-#define GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS            (gimp_perspective_clone_options_get_type ())
-#define GIMP_PERSPECTIVE_CLONE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS, GimpPerspectiveCloneOptions))
-#define GIMP_PERSPECTIVE_CLONE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS, GimpPerspectiveCloneOptionsClass))
-#define GIMP_IS_PERSPECTIVE_CLONE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS))
-#define GIMP_IS_PERSPECTIVE_CLONE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS))
-#define GIMP_PERSPECTIVE_CLONE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PERSPECTIVE_CLONE_OPTIONS, GimpPerspectiveCloneOptionsClass))
+typedef struct _GimpPerspectiveCloneOptionsClass
+    GimpPerspectiveCloneOptionsClass;
 
+struct _GimpPerspectiveCloneOptions {
+  GimpCloneOptions paint_instance;
 
-typedef struct _GimpPerspectiveCloneOptionsClass GimpPerspectiveCloneOptionsClass;
-
-struct _GimpPerspectiveCloneOptions
-{
-	GimpCloneOptions paint_instance;
-
-	GimpPerspectiveCloneMode clone_mode;
+  GimpPerspectiveCloneMode clone_mode;
 };
 
-struct _GimpPerspectiveCloneOptionsClass
-{
-	GimpCloneOptionsClass parent_class;
+struct _GimpPerspectiveCloneOptionsClass {
+  GimpCloneOptionsClass parent_class;
 };
 
+GType gimp_perspective_clone_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_perspective_clone_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_PERSPECTIVE_CLONE_OPTIONS_H__  */
+#endif /*  __GIMP_PERSPECTIVE_CLONE_OPTIONS_H__  */

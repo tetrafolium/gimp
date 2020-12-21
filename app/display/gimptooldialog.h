@@ -23,35 +23,32 @@
 
 #include "widgets/gimpviewabledialog.h"
 
-
-#define GIMP_TYPE_TOOL_DIALOG            (gimp_tool_dialog_get_type ())
-#define GIMP_TOOL_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_DIALOG, GimpToolDialog))
-#define GIMP_TOOL_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_DIALOG, GimpToolDialogClass))
-#define GIMP_IS_TOOL_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_DIALOG))
-#define GIMP_IS_TOOL_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_DIALOG))
-#define GIMP_TOOL_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_DIALOG, GimpToolDialogClass))
-
+#define GIMP_TYPE_TOOL_DIALOG (gimp_tool_dialog_get_type())
+#define GIMP_TOOL_DIALOG(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_DIALOG, GimpToolDialog))
+#define GIMP_TOOL_DIALOG_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_DIALOG, GimpToolDialogClass))
+#define GIMP_IS_TOOL_DIALOG(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_DIALOG))
+#define GIMP_IS_TOOL_DIALOG_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_DIALOG))
+#define GIMP_TOOL_DIALOG_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_DIALOG, GimpToolDialogClass))
 
 typedef struct _GimpViewableDialogClass GimpToolDialogClass;
 
-struct _GimpToolDialog
-{
-	GimpViewableDialog parent_instance;
+struct _GimpToolDialog {
+  GimpViewableDialog parent_instance;
 };
 
+GType gimp_tool_dialog_get_type(void) G_GNUC_CONST;
 
-GType       gimp_tool_dialog_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_tool_dialog_new(GimpToolInfo *tool_info, GdkMonitor *monitor,
+                                const gchar *title, const gchar *description,
+                                const gchar *icon_name, const gchar *help_id,
+                                ...) G_GNUC_NULL_TERMINATED;
 
-GtkWidget * gimp_tool_dialog_new       (GimpToolInfo     *tool_info,
-                                        GdkMonitor       *monitor,
-                                        const gchar      *title,
-                                        const gchar      *description,
-                                        const gchar      *icon_name,
-                                        const gchar      *help_id,
-                                        ...) G_GNUC_NULL_TERMINATED;
-
-void        gimp_tool_dialog_set_shell (GimpToolDialog   *tool_dialog,
-                                        GimpDisplayShell *shell);
-
+void gimp_tool_dialog_set_shell(GimpToolDialog *tool_dialog,
+                                GimpDisplayShell *shell);
 
 #endif /* __GIMP_TOOL_DIALOG_H__ */

@@ -29,102 +29,72 @@
 
 #include "gimp-intl.h"
 
+#define DEFAULT_CONVOLVE_TYPE GIMP_CONVOLVE_BLUR
+#define DEFAULT_CONVOLVE_RATE 50.0
 
-#define DEFAULT_CONVOLVE_TYPE  GIMP_CONVOLVE_BLUR
-#define DEFAULT_CONVOLVE_RATE  50.0
+enum { PROP_0, PROP_TYPE, PROP_RATE };
 
+static void gimp_convolve_options_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec);
+static void gimp_convolve_options_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec);
 
-enum
-{
-	PROP_0,
-	PROP_TYPE,
-	PROP_RATE
-};
+G_DEFINE_TYPE(GimpConvolveOptions, gimp_convolve_options,
+              GIMP_TYPE_PAINT_OPTIONS)
 
+static void gimp_convolve_options_class_init(GimpConvolveOptionsClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-static void   gimp_convolve_options_set_property (GObject      *object,
-                                                  guint property_id,
-                                                  const GValue *value,
-                                                  GParamSpec   *pspec);
-static void   gimp_convolve_options_get_property (GObject      *object,
-                                                  guint property_id,
-                                                  GValue       *value,
-                                                  GParamSpec   *pspec);
+  object_class->set_property = gimp_convolve_options_set_property;
+  object_class->get_property = gimp_convolve_options_get_property;
 
+  GIMP_CONFIG_PROP_ENUM(object_class, PROP_TYPE, "type", _("Convolve Type"),
+                        NULL, GIMP_TYPE_CONVOLVE_TYPE, DEFAULT_CONVOLVE_TYPE,
+                        GIMP_PARAM_STATIC_STRINGS);
 
-G_DEFINE_TYPE (GimpConvolveOptions, gimp_convolve_options,
-               GIMP_TYPE_PAINT_OPTIONS)
-
-
-static void
-gimp_convolve_options_class_init (GimpConvolveOptionsClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->set_property = gimp_convolve_options_set_property;
-	object_class->get_property = gimp_convolve_options_get_property;
-
-	GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
-	                       "type",
-	                       _("Convolve Type"),
-	                       NULL,
-	                       GIMP_TYPE_CONVOLVE_TYPE,
-	                       DEFAULT_CONVOLVE_TYPE,
-	                       GIMP_PARAM_STATIC_STRINGS);
-
-	GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_RATE,
-	                         "rate",
-	                         C_("convolve-tool", "Rate"),
-	                         NULL,
-	                         0.0, 100.0, DEFAULT_CONVOLVE_RATE,
-	                         GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE(object_class, PROP_RATE, "rate",
+                          C_("convolve-tool", "Rate"), NULL, 0.0, 100.0,
+                          DEFAULT_CONVOLVE_RATE, GIMP_PARAM_STATIC_STRINGS);
 }
 
-static void
-gimp_convolve_options_init (GimpConvolveOptions *options)
-{
+static void gimp_convolve_options_init(GimpConvolveOptions *options) {}
+
+static void gimp_convolve_options_set_property(GObject *object,
+                                               guint property_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec) {
+  GimpConvolveOptions *options = GIMP_CONVOLVE_OPTIONS(object);
+
+  switch (property_id) {
+  case PROP_TYPE:
+    options->type = g_value_get_enum(value);
+    break;
+  case PROP_RATE:
+    options->rate = g_value_get_double(value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_convolve_options_set_property (GObject      *object,
-                                    guint property_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
-{
-	GimpConvolveOptions *options = GIMP_CONVOLVE_OPTIONS (object);
+static void gimp_convolve_options_get_property(GObject *object,
+                                               guint property_id, GValue *value,
+                                               GParamSpec *pspec) {
+  GimpConvolveOptions *options = GIMP_CONVOLVE_OPTIONS(object);
 
-	switch (property_id)
-	{
-	case PROP_TYPE:
-		options->type = g_value_get_enum (value);
-		break;
-	case PROP_RATE:
-		options->rate = g_value_get_double (value);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gimp_convolve_options_get_property (GObject    *object,
-                                    guint property_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
-{
-	GimpConvolveOptions *options = GIMP_CONVOLVE_OPTIONS (object);
-
-	switch (property_id)
-	{
-	case PROP_TYPE:
-		g_value_set_enum (value, options->type);
-		break;
-	case PROP_RATE:
-		g_value_set_double (value, options->rate);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch (property_id) {
+  case PROP_TYPE:
+    g_value_set_enum(value, options->type);
+    break;
+  case PROP_RATE:
+    g_value_set_double(value, options->rate);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }

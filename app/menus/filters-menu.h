@@ -18,9 +18,6 @@
 #ifndef __FILTERS_MENU_H__
 #define __FILTERS_MENU_H__
 
-
-void   filters_menu_setup (GimpUIManager *manager,
-                           const gchar   *ui_path);
-
+void filters_menu_setup(GimpUIManager *manager, const gchar *ui_path);
 
 #endif /* __FILTERS_MENU_H__ */

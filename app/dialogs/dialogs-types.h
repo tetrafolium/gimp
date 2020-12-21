@@ -18,20 +18,12 @@
 #ifndef __DIALOGS_TYPES_H__
 #define __DIALOGS_TYPES_H__
 
-
 #include "display/display-types.h"
 
-
-typedef void (* GimpScaleCallback) (GtkWidget             *dialog,
-                                    GimpViewable          *viewable,
-                                    gint width,
-                                    gint height,
-                                    GimpUnit unit,
-                                    GimpInterpolationType interpolation,
-                                    gdouble xresolution,
-                                    gdouble yresolution,
-                                    GimpUnit resolution_unit,
-                                    gpointer user_data);
-
+typedef void (*GimpScaleCallback)(GtkWidget *dialog, GimpViewable *viewable,
+                                  gint width, gint height, GimpUnit unit,
+                                  GimpInterpolationType interpolation,
+                                  gdouble xresolution, gdouble yresolution,
+                                  GimpUnit resolution_unit, gpointer user_data);
 
 #endif /* __DIALOGS_TYPES_H__ */

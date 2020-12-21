@@ -21,45 +21,42 @@
 #ifndef __GIMP_TOOL_ROTATE_GRID_H__
 #define __GIMP_TOOL_ROTATE_GRID_H__
 
-
 #include "gimptooltransformgrid.h"
 
-
-#define GIMP_TYPE_TOOL_ROTATE_GRID            (gimp_tool_rotate_grid_get_type ())
-#define GIMP_TOOL_ROTATE_GRID(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_ROTATE_GRID, GimpToolRotateGrid))
-#define GIMP_TOOL_ROTATE_GRID_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_ROTATE_GRID, GimpToolRotateGridClass))
-#define GIMP_IS_TOOL_ROTATE_GRID(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_ROTATE_GRID))
-#define GIMP_IS_TOOL_ROTATE_GRID_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_ROTATE_GRID))
-#define GIMP_TOOL_ROTATE_GRID_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_ROTATE_GRID, GimpToolRotateGridClass))
-
+#define GIMP_TYPE_TOOL_ROTATE_GRID (gimp_tool_rotate_grid_get_type())
+#define GIMP_TOOL_ROTATE_GRID(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_ROTATE_GRID,               \
+                              GimpToolRotateGrid))
+#define GIMP_TOOL_ROTATE_GRID_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_ROTATE_GRID,                \
+                           GimpToolRotateGridClass))
+#define GIMP_IS_TOOL_ROTATE_GRID(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_ROTATE_GRID))
+#define GIMP_IS_TOOL_ROTATE_GRID_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_ROTATE_GRID))
+#define GIMP_TOOL_ROTATE_GRID_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_ROTATE_GRID,                \
+                             GimpToolRotateGridClass))
 
 typedef struct _GimpToolRotateGrid GimpToolRotateGrid;
 typedef struct _GimpToolRotateGridPrivate GimpToolRotateGridPrivate;
 typedef struct _GimpToolRotateGridClass GimpToolRotateGridClass;
 
-struct _GimpToolRotateGrid
-{
-	GimpToolTransformGrid parent_instance;
+struct _GimpToolRotateGrid {
+  GimpToolTransformGrid parent_instance;
 
-	GimpToolRotateGridPrivate *private;
+  GimpToolRotateGridPrivate *private;
 };
 
-struct _GimpToolRotateGridClass
-{
-	GimpToolTransformGridClass parent_class;
+struct _GimpToolRotateGridClass {
+  GimpToolTransformGridClass parent_class;
 };
 
+GType gimp_tool_rotate_grid_get_type(void) G_GNUC_CONST;
 
-GType            gimp_tool_rotate_grid_get_type (void) G_GNUC_CONST;
-
-GimpToolWidget * gimp_tool_rotate_grid_new      (GimpDisplayShell  *shell,
-                                                 gdouble x1,
-                                                 gdouble y1,
-                                                 gdouble x2,
-                                                 gdouble y2,
-                                                 gdouble pivot_x,
-                                                 gdouble pivot_y,
-                                                 gdouble angle);
-
+GimpToolWidget *gimp_tool_rotate_grid_new(GimpDisplayShell *shell, gdouble x1,
+                                          gdouble y1, gdouble x2, gdouble y2,
+                                          gdouble pivot_x, gdouble pivot_y,
+                                          gdouble angle);
 
 #endif /* __GIMP_TOOL_ROTATE_GRID_H__ */

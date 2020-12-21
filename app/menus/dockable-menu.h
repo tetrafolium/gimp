@@ -18,9 +18,6 @@
 #ifndef __DOCKABLE_MENU_H__
 #define __DOCKABLE_MENU_H__
 
-
-void   dockable_menu_setup (GimpUIManager *manager,
-                            const gchar   *ui_path);
-
+void dockable_menu_setup(GimpUIManager *manager, const gchar *ui_path);
 
 #endif /* __DOCKABLE_MENU_H__ */

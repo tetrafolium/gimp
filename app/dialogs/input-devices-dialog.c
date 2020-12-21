@@ -37,114 +37,92 @@
 
 #include "gimp-intl.h"
 
-
 /*  local function prototypes  */
 
-static void   input_devices_dialog_response (GtkWidget *dialog,
-                                             guint response_id,
-                                             Gimp      *gimp);
-
+static void input_devices_dialog_response(GtkWidget *dialog, guint response_id,
+                                          Gimp *gimp);
 
 /*  public functions  */
 
-GtkWidget *
-input_devices_dialog_new (Gimp *gimp)
-{
-	GtkWidget *dialog;
-	GtkWidget *content_area;
-	GtkWidget *editor;
+GtkWidget *input_devices_dialog_new(Gimp *gimp) {
+  GtkWidget *dialog;
+  GtkWidget *content_area;
+  GtkWidget *editor;
 
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	dialog = gimp_dialog_new (_("Configure Input Devices"),
-	                          "gimp-input-devices-dialog",
-	                          NULL, 0,
-	                          gimp_standard_help_func,
-	                          GIMP_HELP_INPUT_DEVICES,
+  dialog =
+      gimp_dialog_new(_("Configure Input Devices"), "gimp-input-devices-dialog",
+                      NULL, 0, gimp_standard_help_func, GIMP_HELP_INPUT_DEVICES,
 
-	                          _("_Reset"),  GTK_RESPONSE_REJECT,
-	                          _("_Cancel"), GTK_RESPONSE_CANCEL,
-	                          _("_OK"),     GTK_RESPONSE_OK,
+                      _("_Reset"), GTK_RESPONSE_REJECT, _("_Cancel"),
+                      GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK,
 
-	                          NULL);
+                      NULL);
 
-	gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-	                                          GTK_RESPONSE_REJECT,
-	                                          GTK_RESPONSE_OK,
-	                                          GTK_RESPONSE_CANCEL,
-	                                          -1);
+  gimp_dialog_set_alternative_button_order(GTK_DIALOG(dialog),
+                                           GTK_RESPONSE_REJECT, GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL, -1);
 
-	g_signal_connect (dialog, "response",
-	                  G_CALLBACK (input_devices_dialog_response),
-	                  gimp);
+  g_signal_connect(dialog, "response",
+                   G_CALLBACK(input_devices_dialog_response), gimp);
 
-	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	editor = gimp_device_editor_new (gimp);
-	gtk_container_set_border_width (GTK_CONTAINER (editor), 12);
-	gtk_box_pack_start (GTK_BOX (content_area), editor, TRUE, TRUE, 0);
-	gtk_widget_show (editor);
+  editor = gimp_device_editor_new(gimp);
+  gtk_container_set_border_width(GTK_CONTAINER(editor), 12);
+  gtk_box_pack_start(GTK_BOX(content_area), editor, TRUE, TRUE, 0);
+  gtk_widget_show(editor);
 
-	return dialog;
+  return dialog;
 }
-
 
 /*  private functions  */
 
-static void
-input_devices_dialog_response (GtkWidget *dialog,
-                               guint response_id,
-                               Gimp      *gimp)
-{
-	switch (response_id)
-	{
-	case GTK_RESPONSE_OK:
-		gimp_devices_save (gimp, TRUE);
-		break;
+static void input_devices_dialog_response(GtkWidget *dialog, guint response_id,
+                                          Gimp *gimp) {
+  switch (response_id) {
+  case GTK_RESPONSE_OK:
+    gimp_devices_save(gimp, TRUE);
+    break;
 
-	case GTK_RESPONSE_DELETE_EVENT:
-	case GTK_RESPONSE_CANCEL:
-		gimp_devices_restore (gimp);
-		break;
+  case GTK_RESPONSE_DELETE_EVENT:
+  case GTK_RESPONSE_CANCEL:
+    gimp_devices_restore(gimp);
+    break;
 
-	case GTK_RESPONSE_REJECT:
-	{
-		GtkWidget *confirm;
+  case GTK_RESPONSE_REJECT: {
+    GtkWidget *confirm;
 
-		confirm = gimp_message_dialog_new (_("Reset Input Device Configuration"),
-		                                   GIMP_ICON_DIALOG_QUESTION,
-		                                   dialog,
-		                                   GTK_DIALOG_MODAL |
-		                                   GTK_DIALOG_DESTROY_WITH_PARENT,
-		                                   gimp_standard_help_func, NULL,
+    confirm = gimp_message_dialog_new(
+        _("Reset Input Device Configuration"), GIMP_ICON_DIALOG_QUESTION,
+        dialog, GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        gimp_standard_help_func, NULL,
 
-		                                   _("_Cancel"), GTK_RESPONSE_CANCEL,
-		                                   _("_Reset"),  GTK_RESPONSE_OK,
+        _("_Cancel"), GTK_RESPONSE_CANCEL, _("_Reset"), GTK_RESPONSE_OK,
 
-		                                   NULL);
+        NULL);
 
-		gimp_dialog_set_alternative_button_order (GTK_DIALOG (confirm),
-		                                          GTK_RESPONSE_OK,
-		                                          GTK_RESPONSE_CANCEL,
-		                                          -1);
+    gimp_dialog_set_alternative_button_order(
+        GTK_DIALOG(confirm), GTK_RESPONSE_OK, GTK_RESPONSE_CANCEL, -1);
 
-		gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (confirm)->box,
-		                                   _("Do you really want to reset all "
-		                                     "input devices to default configuration?"));
+    gimp_message_box_set_primary_text(
+        GIMP_MESSAGE_DIALOG(confirm)->box,
+        _("Do you really want to reset all "
+          "input devices to default configuration?"));
 
-		if (gimp_dialog_run (GIMP_DIALOG (confirm)) == GTK_RESPONSE_OK)
-		{
-			gimp_device_manager_reset (gimp_devices_get_manager (gimp));
-			gimp_devices_save (gimp, TRUE);
-			gimp_devices_restore (gimp);
-		}
-		gtk_widget_destroy (confirm);
-	}
-		return;
+    if (gimp_dialog_run(GIMP_DIALOG(confirm)) == GTK_RESPONSE_OK) {
+      gimp_device_manager_reset(gimp_devices_get_manager(gimp));
+      gimp_devices_save(gimp, TRUE);
+      gimp_devices_restore(gimp);
+    }
+    gtk_widget_destroy(confirm);
+  }
+    return;
 
-	default:
-		break;
-	}
+  default:
+    break;
+  }
 
-	gtk_widget_destroy (dialog);
+  gtk_widget_destroy(dialog);
 }

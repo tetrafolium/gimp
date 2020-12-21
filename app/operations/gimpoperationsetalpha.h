@@ -21,35 +21,36 @@
 #ifndef __GIMP_OPERATION_SET_ALPHA_H__
 #define __GIMP_OPERATION_SET_ALPHA_H__
 
-
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_SET_ALPHA            (gimp_operation_set_alpha_get_type ())
-#define GIMP_OPERATION_SET_ALPHA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_SET_ALPHA, GimpOperationSetAlpha))
-#define GIMP_OPERATION_SET_ALPHA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_SET_ALPHA, GimpOperationSetAlphaClass))
-#define GIMP_IS_OPERATION_SET_ALPHA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_SET_ALPHA))
-#define GIMP_IS_OPERATION_SET_ALPHA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_SET_ALPHA))
-#define GIMP_OPERATION_SET_ALPHA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SET_ALPHA, GimpOperationSetAlphaClass))
-
+#define GIMP_TYPE_OPERATION_SET_ALPHA (gimp_operation_set_alpha_get_type())
+#define GIMP_OPERATION_SET_ALPHA(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_SET_ALPHA,            \
+                              GimpOperationSetAlpha))
+#define GIMP_OPERATION_SET_ALPHA_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_SET_ALPHA,             \
+                           GimpOperationSetAlphaClass))
+#define GIMP_IS_OPERATION_SET_ALPHA(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_SET_ALPHA))
+#define GIMP_IS_OPERATION_SET_ALPHA_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_SET_ALPHA))
+#define GIMP_OPERATION_SET_ALPHA_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_SET_ALPHA,             \
+                             GimpOperationSetAlphaClass))
 
 typedef struct _GimpOperationSetAlpha GimpOperationSetAlpha;
 typedef struct _GimpOperationSetAlphaClass GimpOperationSetAlphaClass;
 
-struct _GimpOperationSetAlpha
-{
-	GeglOperationPointComposer parent_instance;
+struct _GimpOperationSetAlpha {
+  GeglOperationPointComposer parent_instance;
 
-	gdouble value;
+  gdouble value;
 };
 
-struct _GimpOperationSetAlphaClass
-{
-	GeglOperationPointComposerClass parent_class;
+struct _GimpOperationSetAlphaClass {
+  GeglOperationPointComposerClass parent_class;
 };
 
-
-GType   gimp_operation_set_alpha_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_set_alpha_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_SET_ALPHA_H__ */

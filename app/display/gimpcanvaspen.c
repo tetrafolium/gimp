@@ -36,196 +36,154 @@
 #include "gimpcanvaspen.h"
 #include "gimpdisplayshell.h"
 
-
-enum
-{
-	PROP_0,
-	PROP_COLOR,
-	PROP_WIDTH
-};
-
+enum { PROP_0, PROP_COLOR, PROP_WIDTH };
 
 typedef struct _GimpCanvasPenPrivate GimpCanvasPenPrivate;
 
-struct _GimpCanvasPenPrivate
-{
-	GimpRGB color;
-	gint width;
+struct _GimpCanvasPenPrivate {
+  GimpRGB color;
+  gint width;
 };
 
-#define GET_PRIVATE(pen) \
-	((GimpCanvasPenPrivate *) gimp_canvas_pen_get_instance_private ((GimpCanvasPen *) (pen)))
-
+#define GET_PRIVATE(pen)                                                       \
+  ((GimpCanvasPenPrivate *)gimp_canvas_pen_get_instance_private(               \
+      (GimpCanvasPen *)(pen)))
 
 /*  local function prototypes  */
 
-static void             gimp_canvas_pen_set_property (GObject        *object,
-                                                      guint property_id,
-                                                      const GValue   *value,
-                                                      GParamSpec     *pspec);
-static void             gimp_canvas_pen_get_property (GObject        *object,
-                                                      guint property_id,
-                                                      GValue         *value,
-                                                      GParamSpec     *pspec);
-static cairo_region_t * gimp_canvas_pen_get_extents  (GimpCanvasItem *item);
-static void             gimp_canvas_pen_stroke       (GimpCanvasItem *item,
-                                                      cairo_t        *cr);
+static void gimp_canvas_pen_set_property(GObject *object, guint property_id,
+                                         const GValue *value,
+                                         GParamSpec *pspec);
+static void gimp_canvas_pen_get_property(GObject *object, guint property_id,
+                                         GValue *value, GParamSpec *pspec);
+static cairo_region_t *gimp_canvas_pen_get_extents(GimpCanvasItem *item);
+static void gimp_canvas_pen_stroke(GimpCanvasItem *item, cairo_t *cr);
 
-
-G_DEFINE_TYPE_WITH_PRIVATE (GimpCanvasPen, gimp_canvas_pen,
-                            GIMP_TYPE_CANVAS_POLYGON)
+G_DEFINE_TYPE_WITH_PRIVATE(GimpCanvasPen, gimp_canvas_pen,
+                           GIMP_TYPE_CANVAS_POLYGON)
 
 #define parent_class gimp_canvas_pen_parent_class
 
+static void gimp_canvas_pen_class_init(GimpCanvasPenClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GimpCanvasItemClass *item_class = GIMP_CANVAS_ITEM_CLASS(klass);
 
-static void
-gimp_canvas_pen_class_init (GimpCanvasPenClass *klass)
-{
-	GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-	GimpCanvasItemClass *item_class   = GIMP_CANVAS_ITEM_CLASS (klass);
+  object_class->set_property = gimp_canvas_pen_set_property;
+  object_class->get_property = gimp_canvas_pen_get_property;
 
-	object_class->set_property = gimp_canvas_pen_set_property;
-	object_class->get_property = gimp_canvas_pen_get_property;
+  item_class->get_extents = gimp_canvas_pen_get_extents;
+  item_class->stroke = gimp_canvas_pen_stroke;
 
-	item_class->get_extents    = gimp_canvas_pen_get_extents;
-	item_class->stroke         = gimp_canvas_pen_stroke;
+  g_object_class_install_property(object_class, PROP_COLOR,
+                                  gimp_param_spec_rgb("color", NULL, NULL,
+                                                      FALSE, NULL,
+                                                      GIMP_PARAM_READWRITE));
 
-	g_object_class_install_property (object_class, PROP_COLOR,
-	                                 gimp_param_spec_rgb ("color", NULL, NULL,
-	                                                      FALSE, NULL,
-	                                                      GIMP_PARAM_READWRITE));
-
-	g_object_class_install_property (object_class, PROP_WIDTH,
-	                                 g_param_spec_int ("width", NULL, NULL,
-	                                                   1, G_MAXINT, 1,
-	                                                   GIMP_PARAM_READWRITE));
+  g_object_class_install_property(object_class, PROP_WIDTH,
+                                  g_param_spec_int("width", NULL, NULL, 1,
+                                                   G_MAXINT, 1,
+                                                   GIMP_PARAM_READWRITE));
 }
 
-static void
-gimp_canvas_pen_init (GimpCanvasPen *pen)
-{
+static void gimp_canvas_pen_init(GimpCanvasPen *pen) {}
+
+static void gimp_canvas_pen_set_property(GObject *object, guint property_id,
+                                         const GValue *value,
+                                         GParamSpec *pspec) {
+  GimpCanvasPenPrivate *private = GET_PRIVATE(object);
+
+  switch (property_id) {
+  case PROP_COLOR:
+    gimp_value_get_rgb(value, &private->color);
+    break;
+  case PROP_WIDTH:
+  private
+    ->width = g_value_get_int(value);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_canvas_pen_set_property (GObject      *object,
-                              guint property_id,
-                              const GValue *value,
-                              GParamSpec   *pspec)
-{
-	GimpCanvasPenPrivate *private = GET_PRIVATE (object);
+static void gimp_canvas_pen_get_property(GObject *object, guint property_id,
+                                         GValue *value, GParamSpec *pspec) {
+  GimpCanvasPenPrivate *private = GET_PRIVATE(object);
 
-	switch (property_id)
-	{
-	case PROP_COLOR:
-		gimp_value_get_rgb (value, &private->color);
-		break;
-	case PROP_WIDTH:
-		private->width = g_value_get_int (value);
-		break;
+  switch (property_id) {
+  case PROP_COLOR:
+    gimp_value_set_rgb(value, &private->color);
+    break;
+  case PROP_WIDTH:
+    g_value_set_int(value, private->width);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_canvas_pen_get_property (GObject    *object,
-                              guint property_id,
-                              GValue     *value,
-                              GParamSpec *pspec)
-{
-	GimpCanvasPenPrivate *private = GET_PRIVATE (object);
+static cairo_region_t *gimp_canvas_pen_get_extents(GimpCanvasItem *item) {
+  GimpCanvasPenPrivate *private = GET_PRIVATE(item);
+  cairo_region_t *region;
 
-	switch (property_id)
-	{
-	case PROP_COLOR:
-		gimp_value_set_rgb (value, &private->color);
-		break;
-	case PROP_WIDTH:
-		g_value_set_int (value, private->width);
-		break;
+  region = GIMP_CANVAS_ITEM_CLASS(parent_class)->get_extents(item);
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  if (region) {
+    cairo_rectangle_int_t rectangle;
+
+    cairo_region_get_extents(region, &rectangle);
+
+    rectangle.x -= ceil(private->width / 2.0);
+    rectangle.y -= ceil(private->width / 2.0);
+    rectangle.width += private->width + 1;
+    rectangle.height += private->width + 1;
+
+    cairo_region_union_rectangle(region, &rectangle);
+  }
+
+  return region;
 }
 
-static cairo_region_t *
-gimp_canvas_pen_get_extents (GimpCanvasItem *item)
-{
-	GimpCanvasPenPrivate *private = GET_PRIVATE (item);
-	cairo_region_t       *region;
+static void gimp_canvas_pen_stroke(GimpCanvasItem *item, cairo_t *cr) {
+  GimpCanvasPenPrivate *private = GET_PRIVATE(item);
 
-	region = GIMP_CANVAS_ITEM_CLASS (parent_class)->get_extents (item);
-
-	if (region)
-	{
-		cairo_rectangle_int_t rectangle;
-
-		cairo_region_get_extents (region, &rectangle);
-
-		rectangle.x      -= ceil (private->width / 2.0);
-		rectangle.y      -= ceil (private->width / 2.0);
-		rectangle.width  += private->width + 1;
-		rectangle.height += private->width + 1;
-
-		cairo_region_union_rectangle (region, &rectangle);
-	}
-
-	return region;
+  gimp_canvas_set_pen_style(gimp_canvas_item_get_canvas(item), cr,
+                            &private->color, private->width);
+  cairo_stroke(cr);
 }
 
-static void
-gimp_canvas_pen_stroke (GimpCanvasItem *item,
-                        cairo_t        *cr)
-{
-	GimpCanvasPenPrivate *private = GET_PRIVATE (item);
+GimpCanvasItem *gimp_canvas_pen_new(GimpDisplayShell *shell,
+                                    const GimpVector2 *points, gint n_points,
+                                    GimpContext *context, GimpActiveColor color,
+                                    gint width) {
+  GimpCanvasItem *item;
+  GimpArray *array;
+  GimpRGB rgb;
 
-	gimp_canvas_set_pen_style (gimp_canvas_item_get_canvas (item), cr,
-	                           &private->color, private->width);
-	cairo_stroke (cr);
-}
+  g_return_val_if_fail(GIMP_IS_DISPLAY_SHELL(shell), NULL);
+  g_return_val_if_fail(points != NULL && n_points > 1, NULL);
+  g_return_val_if_fail(GIMP_IS_CONTEXT(context), NULL);
 
-GimpCanvasItem *
-gimp_canvas_pen_new (GimpDisplayShell  *shell,
-                     const GimpVector2 *points,
-                     gint n_points,
-                     GimpContext       *context,
-                     GimpActiveColor color,
-                     gint width)
-{
-	GimpCanvasItem *item;
-	GimpArray      *array;
-	GimpRGB rgb;
+  array = gimp_array_new((const guint8 *)points, n_points * sizeof(GimpVector2),
+                         TRUE);
 
-	g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
-	g_return_val_if_fail (points != NULL && n_points > 1, NULL);
-	g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  switch (color) {
+  case GIMP_ACTIVE_COLOR_FOREGROUND:
+    gimp_context_get_foreground(context, &rgb);
+    break;
 
-	array = gimp_array_new ((const guint8 *) points,
-	                        n_points * sizeof (GimpVector2), TRUE);
+  case GIMP_ACTIVE_COLOR_BACKGROUND:
+    gimp_context_get_background(context, &rgb);
+    break;
+  }
 
-	switch (color)
-	{
-	case GIMP_ACTIVE_COLOR_FOREGROUND:
-		gimp_context_get_foreground (context, &rgb);
-		break;
+  item = g_object_new(GIMP_TYPE_CANVAS_PEN, "shell", shell, "points", array,
+                      "color", &rgb, "width", width, NULL);
 
-	case GIMP_ACTIVE_COLOR_BACKGROUND:
-		gimp_context_get_background (context, &rgb);
-		break;
-	}
+  gimp_array_free(array);
 
-	item = g_object_new (GIMP_TYPE_CANVAS_PEN,
-	                     "shell",  shell,
-	                     "points", array,
-	                     "color",  &rgb,
-	                     "width",  width,
-	                     NULL);
-
-	gimp_array_free (array);
-
-	return item;
+  return item;
 }

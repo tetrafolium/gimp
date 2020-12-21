@@ -21,43 +21,38 @@
 #ifndef __GIMP_CANVAS_PATH_H__
 #define __GIMP_CANVAS_PATH_H__
 
-
 #include "gimpcanvasitem.h"
 
-
-#define GIMP_TYPE_CANVAS_PATH            (gimp_canvas_path_get_type ())
-#define GIMP_CANVAS_PATH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CANVAS_PATH, GimpCanvasPath))
-#define GIMP_CANVAS_PATH_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CANVAS_PATH, GimpCanvasPathClass))
-#define GIMP_IS_CANVAS_PATH(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CANVAS_PATH))
-#define GIMP_IS_CANVAS_PATH_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CANVAS_PATH))
-#define GIMP_CANVAS_PATH_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_PATH, GimpCanvasPathClass))
-
+#define GIMP_TYPE_CANVAS_PATH (gimp_canvas_path_get_type())
+#define GIMP_CANVAS_PATH(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CANVAS_PATH, GimpCanvasPath))
+#define GIMP_CANVAS_PATH_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CANVAS_PATH, GimpCanvasPathClass))
+#define GIMP_IS_CANVAS_PATH(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CANVAS_PATH))
+#define GIMP_IS_CANVAS_PATH_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CANVAS_PATH))
+#define GIMP_CANVAS_PATH_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CANVAS_PATH, GimpCanvasPathClass))
 
 typedef struct _GimpCanvasPath GimpCanvasPath;
 typedef struct _GimpCanvasPathClass GimpCanvasPathClass;
 
-struct _GimpCanvasPath
-{
-	GimpCanvasItem parent_instance;
+struct _GimpCanvasPath {
+  GimpCanvasItem parent_instance;
 };
 
-struct _GimpCanvasPathClass
-{
-	GimpCanvasItemClass parent_class;
+struct _GimpCanvasPathClass {
+  GimpCanvasItemClass parent_class;
 };
 
+GType gimp_canvas_path_get_type(void) G_GNUC_CONST;
 
-GType            gimp_canvas_path_get_type (void) G_GNUC_CONST;
+GimpCanvasItem *gimp_canvas_path_new(GimpDisplayShell *shell,
+                                     const GimpBezierDesc *bezier, gdouble x,
+                                     gdouble y, gboolean filled,
+                                     GimpPathStyle style);
 
-GimpCanvasItem * gimp_canvas_path_new      (GimpDisplayShell     *shell,
-                                            const GimpBezierDesc *bezier,
-                                            gdouble x,
-                                            gdouble y,
-                                            gboolean filled,
-                                            GimpPathStyle style);
-
-void             gimp_canvas_path_set      (GimpCanvasItem       *path,
-                                            const GimpBezierDesc *bezier);
-
+void gimp_canvas_path_set(GimpCanvasItem *path, const GimpBezierDesc *bezier);
 
 #endif /* __GIMP_CANVAS_PATH_H__ */

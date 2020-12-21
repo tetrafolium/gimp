@@ -18,10 +18,8 @@
 #ifndef __PAINT_TYPES_H__
 #define __PAINT_TYPES_H__
 
-
 #include "core/core-types.h"
 #include "paint/paint-enums.h"
-
 
 /*  paint cores  */
 
@@ -42,7 +40,6 @@ typedef struct _GimpPencil GimpPencil;
 typedef struct _GimpPerspectiveClone GimpPerspectiveClone;
 typedef struct _GimpSmudge GimpSmudge;
 
-
 /*  paint options  */
 
 typedef struct _GimpPaintOptions GimpPaintOptions;
@@ -59,18 +56,15 @@ typedef struct _GimpPencilOptions GimpPencilOptions;
 typedef struct _GimpPerspectiveCloneOptions GimpPerspectiveCloneOptions;
 typedef struct _GimpSmudgeOptions GimpSmudgeOptions;
 
-
 /*  functions  */
 
-typedef void (* GimpPaintRegisterCallback) (Gimp        *gimp,
-                                            GType paint_type,
-                                            GType paint_options_type,
-                                            const gchar *identifier,
-                                            const gchar *blurb,
-                                            const gchar *icon_name);
+typedef void (*GimpPaintRegisterCallback)(Gimp *gimp, GType paint_type,
+                                          GType paint_options_type,
+                                          const gchar *identifier,
+                                          const gchar *blurb,
+                                          const gchar *icon_name);
 
-typedef void (* GimpPaintRegisterFunc)     (Gimp                      *gimp,
-                                            GimpPaintRegisterCallback callback);
-
+typedef void (*GimpPaintRegisterFunc)(Gimp *gimp,
+                                      GimpPaintRegisterCallback callback);
 
 #endif /* __PAINT_TYPES_H__ */

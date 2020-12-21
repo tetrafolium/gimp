@@ -21,33 +21,34 @@
 #ifndef __GIMP_OPERATION_BURN_LEGACY_H__
 #define __GIMP_OPERATION_BURN_LEGACY_H__
 
-
 #include "operations/layer-modes/gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_BURN_LEGACY            (gimp_operation_burn_legacy_get_type ())
-#define GIMP_OPERATION_BURN_LEGACY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_BURN_LEGACY, GimpOperationBurnLegacy))
-#define GIMP_OPERATION_BURN_LEGACY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_BURN_LEGACY, GimpOperationBurnLegacyClass))
-#define GIMP_IS_OPERATION_BURN_LEGACY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_BURN_LEGACY))
-#define GIMP_IS_OPERATION_BURN_LEGACY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_BURN_LEGACY))
-#define GIMP_OPERATION_BURN_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BURN_LEGACY, GimpOperationBurnLegacyClass))
-
+#define GIMP_TYPE_OPERATION_BURN_LEGACY (gimp_operation_burn_legacy_get_type())
+#define GIMP_OPERATION_BURN_LEGACY(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_BURN_LEGACY,          \
+                              GimpOperationBurnLegacy))
+#define GIMP_OPERATION_BURN_LEGACY_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_BURN_LEGACY,           \
+                           GimpOperationBurnLegacyClass))
+#define GIMP_IS_OPERATION_BURN_LEGACY(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_BURN_LEGACY))
+#define GIMP_IS_OPERATION_BURN_LEGACY_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_BURN_LEGACY))
+#define GIMP_OPERATION_BURN_LEGACY_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_BURN_LEGACY,           \
+                             GimpOperationBurnLegacyClass))
 
 typedef struct _GimpOperationBurnLegacy GimpOperationBurnLegacy;
 typedef struct _GimpOperationBurnLegacyClass GimpOperationBurnLegacyClass;
 
-struct _GimpOperationBurnLegacy
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationBurnLegacy {
+  GimpOperationLayerMode parent_instance;
 };
 
-struct _GimpOperationBurnLegacyClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationBurnLegacyClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-
-GType   gimp_operation_burn_legacy_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_burn_legacy_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_BURN_LEGACY_H__ */

@@ -21,38 +21,41 @@
 #ifndef __GIMP_BRIGHTNESS_CONTRAST_CONFIG_H__
 #define __GIMP_BRIGHTNESS_CONTRAST_CONFIG_H__
 
-
 #include "gimpoperationsettings.h"
 
+#define GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG                                   \
+  (gimp_brightness_contrast_config_get_type())
+#define GIMP_BRIGHTNESS_CONTRAST_CONFIG(obj)                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,     \
+                              GimpBrightnessContrastConfig))
+#define GIMP_BRIGHTNESS_CONTRAST_CONFIG_CLASS(klass)                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,      \
+                           GimpBrightnessContrastConfigClass))
+#define GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG(obj)                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG))
+#define GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG_CLASS(klass)                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG))
+#define GIMP_BRIGHTNESS_CONTRAST_CONFIG_GET_CLASS(obj)                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG,      \
+                             GimpBrightnessContrastConfigClass))
 
-#define GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG            (gimp_brightness_contrast_config_get_type ())
-#define GIMP_BRIGHTNESS_CONTRAST_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG, GimpBrightnessContrastConfig))
-#define GIMP_BRIGHTNESS_CONTRAST_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG, GimpBrightnessContrastConfigClass))
-#define GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG))
-#define GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG))
-#define GIMP_BRIGHTNESS_CONTRAST_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_BRIGHTNESS_CONTRAST_CONFIG, GimpBrightnessContrastConfigClass))
+typedef struct _GimpBrightnessContrastConfigClass
+    GimpBrightnessContrastConfigClass;
 
+struct _GimpBrightnessContrastConfig {
+  GimpOperationSettings parent_instance;
 
-typedef struct _GimpBrightnessContrastConfigClass GimpBrightnessContrastConfigClass;
-
-struct _GimpBrightnessContrastConfig
-{
-	GimpOperationSettings parent_instance;
-
-	gdouble brightness;
-	gdouble contrast;
+  gdouble brightness;
+  gdouble contrast;
 };
 
-struct _GimpBrightnessContrastConfigClass
-{
-	GimpOperationSettingsClass parent_class;
+struct _GimpBrightnessContrastConfigClass {
+  GimpOperationSettingsClass parent_class;
 };
 
+GType gimp_brightness_contrast_config_get_type(void) G_GNUC_CONST;
 
-GType   gimp_brightness_contrast_config_get_type (void) G_GNUC_CONST;
-
-GimpLevelsConfig *
-gimp_brightness_contrast_config_to_levels_config (GimpBrightnessContrastConfig *config);
-
+GimpLevelsConfig *gimp_brightness_contrast_config_to_levels_config(
+    GimpBrightnessContrastConfig *config);
 
 #endif /* __GIMP_BRIGHTNESS_CONTRAST_CONFIG_H__ */

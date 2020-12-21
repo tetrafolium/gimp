@@ -21,35 +21,37 @@
 #ifndef __GIMP_OPERATION_FILL_SOURCE_H__
 #define __GIMP_OPERATION_FILL_SOURCE_H__
 
-
-#define GIMP_TYPE_OPERATION_FILL_SOURCE            (gimp_operation_fill_source_get_type ())
-#define GIMP_OPERATION_FILL_SOURCE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_FILL_SOURCE, GimpOperationFillSource))
-#define GIMP_OPERATION_FILL_SOURCE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_FILL_SOURCE, GimpOperationFillSourceClass))
-#define GIMP_IS_OPERATION_FILL_SOURCE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_FILL_SOURCE))
-#define GIMP_IS_OPERATION_FILL_SOURCE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_FILL_SOURCE))
-#define GIMP_OPERATION_FILL_SOURCE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_FILL_SOURCE, GimpOperationFillSourceClass))
-
+#define GIMP_TYPE_OPERATION_FILL_SOURCE (gimp_operation_fill_source_get_type())
+#define GIMP_OPERATION_FILL_SOURCE(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_FILL_SOURCE,          \
+                              GimpOperationFillSource))
+#define GIMP_OPERATION_FILL_SOURCE_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_FILL_SOURCE,           \
+                           GimpOperationFillSourceClass))
+#define GIMP_IS_OPERATION_FILL_SOURCE(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_FILL_SOURCE))
+#define GIMP_IS_OPERATION_FILL_SOURCE_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_FILL_SOURCE))
+#define GIMP_OPERATION_FILL_SOURCE_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_FILL_SOURCE,           \
+                             GimpOperationFillSourceClass))
 
 typedef struct _GimpOperationFillSource GimpOperationFillSource;
 typedef struct _GimpOperationFillSourceClass GimpOperationFillSourceClass;
 
-struct _GimpOperationFillSource
-{
-	GeglOperationSource parent_instance;
+struct _GimpOperationFillSource {
+  GeglOperationSource parent_instance;
 
-	GimpFillOptions     *options;
-	GimpDrawable        *drawable;
-	gint pattern_offset_x;
-	gint pattern_offset_y;
+  GimpFillOptions *options;
+  GimpDrawable *drawable;
+  gint pattern_offset_x;
+  gint pattern_offset_y;
 };
 
-struct _GimpOperationFillSourceClass
-{
-	GeglOperationSourceClass parent_class;
+struct _GimpOperationFillSourceClass {
+  GeglOperationSourceClass parent_class;
 };
 
-
-GType   gimp_operation_fill_source_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_fill_source_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_FILL_SOURCE_H__ */

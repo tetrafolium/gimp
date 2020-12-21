@@ -18,23 +18,17 @@
 #ifndef __VECTORS_IMPORT_DIALOG_H__
 #define __VECTORS_IMPORT_DIALOG_H__
 
+typedef void (*GimpVectorsImportCallback)(GtkWidget *dialog, GimpImage *image,
+                                          GFile *file, GFile *import_folder,
+                                          gboolean merge_vectors,
+                                          gboolean scale_vectors,
+                                          gpointer user_data);
 
-typedef void (* GimpVectorsImportCallback) (GtkWidget *dialog,
-                                            GimpImage *image,
-                                            GFile     *file,
-                                            GFile     *import_folder,
-                                            gboolean merge_vectors,
-                                            gboolean scale_vectors,
-                                            gpointer user_data);
-
-
-GtkWidget * vectors_import_dialog_new (GimpImage                 *image,
-                                       GtkWidget                 *parent,
-                                       GFile                     *import_folder,
-                                       gboolean merge_vectors,
-                                       gboolean scale_vectors,
-                                       GimpVectorsImportCallback callback,
-                                       gpointer user_data);
-
+GtkWidget *vectors_import_dialog_new(GimpImage *image, GtkWidget *parent,
+                                     GFile *import_folder,
+                                     gboolean merge_vectors,
+                                     gboolean scale_vectors,
+                                     GimpVectorsImportCallback callback,
+                                     gpointer user_data);
 
 #endif /* __VECTORS_IMPORT_DIALOG_H__ */

@@ -18,33 +18,24 @@
 #ifndef __DIALOGS_H__
 #define __DIALOGS_H__
 
-
 extern GimpDialogFactory *global_dialog_factory;
-extern GimpContainer     *global_recent_docks;
+extern GimpContainer *global_recent_docks;
 
+void dialogs_init(Gimp *gimp, GimpMenuFactory *menu_factory);
+void dialogs_exit(Gimp *gimp);
 
-void        dialogs_init              (Gimp            *gimp,
-                                       GimpMenuFactory *menu_factory);
-void        dialogs_exit              (Gimp            *gimp);
+void dialogs_load_recent_docks(Gimp *gimp);
+void dialogs_save_recent_docks(Gimp *gimp);
 
-void        dialogs_load_recent_docks (Gimp            *gimp);
-void        dialogs_save_recent_docks (Gimp            *gimp);
-
-GtkWidget * dialogs_get_toolbox       (void);
-
+GtkWidget *dialogs_get_toolbox(void);
 
 /* attaching dialogs to arbitrary objects, and detaching them
  * automatically upon destruction
  */
-GtkWidget * dialogs_get_dialog        (GObject         *attach_object,
-                                       const gchar     *attach_key);
-void        dialogs_attach_dialog     (GObject         *attach_object,
-                                       const gchar     *attach_key,
-                                       GtkWidget       *dialog);
-void        dialogs_detach_dialog     (GObject         *attach_object,
-                                       GtkWidget       *dialog);
-void        dialogs_destroy_dialog    (GObject         *attach_object,
-                                       const gchar     *attach_key);
-
+GtkWidget *dialogs_get_dialog(GObject *attach_object, const gchar *attach_key);
+void dialogs_attach_dialog(GObject *attach_object, const gchar *attach_key,
+                           GtkWidget *dialog);
+void dialogs_detach_dialog(GObject *attach_object, GtkWidget *dialog);
+void dialogs_destroy_dialog(GObject *attach_object, const gchar *attach_key);
 
 #endif /* __DIALOGS_H__ */

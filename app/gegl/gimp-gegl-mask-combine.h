@@ -18,34 +18,17 @@
 #ifndef __GIMP_GEGL_MASK_COMBINE_H__
 #define __GIMP_GEGL_MASK_COMBINE_H__
 
-
-gboolean   gimp_gegl_mask_combine_rect         (GeglBuffer     *mask,
-                                                GimpChannelOps op,
-                                                gint x,
-                                                gint y,
-                                                gint w,
-                                                gint h);
-gboolean   gimp_gegl_mask_combine_ellipse      (GeglBuffer     *mask,
-                                                GimpChannelOps op,
-                                                gint x,
-                                                gint y,
-                                                gint w,
-                                                gint h,
-                                                gboolean antialias);
-gboolean   gimp_gegl_mask_combine_ellipse_rect (GeglBuffer     *mask,
-                                                GimpChannelOps op,
-                                                gint x,
-                                                gint y,
-                                                gint w,
-                                                gint h,
-                                                gdouble rx,
-                                                gdouble ry,
-                                                gboolean antialias);
-gboolean   gimp_gegl_mask_combine_buffer       (GeglBuffer     *mask,
-                                                GeglBuffer     *add_on,
-                                                GimpChannelOps op,
-                                                gint off_x,
-                                                gint off_y);
-
+gboolean gimp_gegl_mask_combine_rect(GeglBuffer *mask, GimpChannelOps op,
+                                     gint x, gint y, gint w, gint h);
+gboolean gimp_gegl_mask_combine_ellipse(GeglBuffer *mask, GimpChannelOps op,
+                                        gint x, gint y, gint w, gint h,
+                                        gboolean antialias);
+gboolean gimp_gegl_mask_combine_ellipse_rect(GeglBuffer *mask,
+                                             GimpChannelOps op, gint x, gint y,
+                                             gint w, gint h, gdouble rx,
+                                             gdouble ry, gboolean antialias);
+gboolean gimp_gegl_mask_combine_buffer(GeglBuffer *mask, GeglBuffer *add_on,
+                                       GimpChannelOps op, gint off_x,
+                                       gint off_y);
 
 #endif /* __GIMP_GEGL_MASK_COMBINE_H__ */

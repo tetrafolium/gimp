@@ -27,188 +27,159 @@
 
 #include "gimpoperationerase.h"
 
+static gboolean gimp_operation_erase_process(GeglOperation *op, void *in,
+                                             void *layer, void *mask, void *out,
+                                             glong samples,
+                                             const GeglRectangle *roi,
+                                             gint level);
 
-static gboolean   gimp_operation_erase_process (GeglOperation       *op,
-                                                void                *in,
-                                                void                *layer,
-                                                void                *mask,
-                                                void                *out,
-                                                glong samples,
-                                                const GeglRectangle *roi,
-                                                gint level);
+G_DEFINE_TYPE(GimpOperationErase, gimp_operation_erase,
+              GIMP_TYPE_OPERATION_LAYER_MODE)
 
+static void gimp_operation_erase_class_init(GimpOperationEraseClass *klass) {
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
+  GimpOperationLayerModeClass *layer_mode_class =
+      GIMP_OPERATION_LAYER_MODE_CLASS(klass);
 
-G_DEFINE_TYPE (GimpOperationErase, gimp_operation_erase,
-               GIMP_TYPE_OPERATION_LAYER_MODE)
+  gegl_operation_class_set_keys(operation_class, "name", "gimp:erase",
+                                "description", "GIMP erase mode operation",
+                                NULL);
 
-
-static void
-gimp_operation_erase_class_init (GimpOperationEraseClass *klass)
-{
-	GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-	GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
-
-	gegl_operation_class_set_keys (operation_class,
-	                               "name",        "gimp:erase",
-	                               "description", "GIMP erase mode operation",
-	                               NULL);
-
-	layer_mode_class->process = gimp_operation_erase_process;
+  layer_mode_class->process = gimp_operation_erase_process;
 }
 
-static void
-gimp_operation_erase_init (GimpOperationErase *self)
-{
-}
+static void gimp_operation_erase_init(GimpOperationErase *self) {}
 
-static gboolean
-gimp_operation_erase_process (GeglOperation       *op,
-                              void                *in_p,
-                              void                *layer_p,
-                              void                *mask_p,
-                              void                *out_p,
-                              glong samples,
-                              const GeglRectangle *roi,
-                              gint level)
-{
-	GimpOperationLayerMode *layer_mode = (gpointer) op;
-	gfloat                 *in         = in_p;
-	gfloat                 *out        = out_p;
-	gfloat                 *layer      = layer_p;
-	gfloat                 *mask       = mask_p;
-	gfloat opacity    = layer_mode->opacity;
-	const gboolean has_mask   = mask != NULL;
+static gboolean gimp_operation_erase_process(GeglOperation *op, void *in_p,
+                                             void *layer_p, void *mask_p,
+                                             void *out_p, glong samples,
+                                             const GeglRectangle *roi,
+                                             gint level) {
+  GimpOperationLayerMode *layer_mode = (gpointer)op;
+  gfloat *in = in_p;
+  gfloat *out = out_p;
+  gfloat *layer = layer_p;
+  gfloat *mask = mask_p;
+  gfloat opacity = layer_mode->opacity;
+  const gboolean has_mask = mask != NULL;
 
-	switch (layer_mode->composite_mode)
-	{
-	case GIMP_LAYER_COMPOSITE_UNION:
-		while (samples--)
-		{
-			gfloat layer_alpha;
-			gfloat new_alpha;
-			gint b;
+  switch (layer_mode->composite_mode) {
+  case GIMP_LAYER_COMPOSITE_UNION:
+    while (samples--) {
+      gfloat layer_alpha;
+      gfloat new_alpha;
+      gint b;
 
-			layer_alpha = layer[ALPHA] * opacity;
+      layer_alpha = layer[ALPHA] * opacity;
 
-			if (has_mask)
-				layer_alpha *= (*mask);
+      if (has_mask)
+        layer_alpha *= (*mask);
 
-			new_alpha = in[ALPHA] + layer_alpha - 2.0f * in[ALPHA] * layer_alpha;
+      new_alpha = in[ALPHA] + layer_alpha - 2.0f * in[ALPHA] * layer_alpha;
 
-			if (new_alpha != 0.0f)
-			{
-				gfloat ratio;
+      if (new_alpha != 0.0f) {
+        gfloat ratio;
 
-				ratio = (1.0f - in[ALPHA]) * layer_alpha / new_alpha;
+        ratio = (1.0f - in[ALPHA]) * layer_alpha / new_alpha;
 
-				for (b = RED; b < ALPHA; b++)
-				{
-					out[b] = ratio * layer[b] + (1.0f - ratio) * in[b];
-				}
-			}
-			else
-			{
-				for (b = RED; b < ALPHA; b++)
-				{
-					out[b] = in[b];
-				}
-			}
+        for (b = RED; b < ALPHA; b++) {
+          out[b] = ratio * layer[b] + (1.0f - ratio) * in[b];
+        }
+      } else {
+        for (b = RED; b < ALPHA; b++) {
+          out[b] = in[b];
+        }
+      }
 
-			out[ALPHA] = new_alpha;
+      out[ALPHA] = new_alpha;
 
-			in    += 4;
-			layer += 4;
-			out   += 4;
+      in += 4;
+      layer += 4;
+      out += 4;
 
-			if (has_mask)
-				mask++;
-		}
-		break;
+      if (has_mask)
+        mask++;
+    }
+    break;
 
-	case GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP:
-	case GIMP_LAYER_COMPOSITE_AUTO:
-		while (samples--)
-		{
-			gfloat layer_alpha;
-			gfloat new_alpha;
-			gint b;
+  case GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP:
+  case GIMP_LAYER_COMPOSITE_AUTO:
+    while (samples--) {
+      gfloat layer_alpha;
+      gfloat new_alpha;
+      gint b;
 
-			layer_alpha = layer[ALPHA] * opacity;
+      layer_alpha = layer[ALPHA] * opacity;
 
-			if (has_mask)
-				layer_alpha *= (*mask);
+      if (has_mask)
+        layer_alpha *= (*mask);
 
-			new_alpha = (1.0f - layer_alpha) * in[ALPHA];
+      new_alpha = (1.0f - layer_alpha) * in[ALPHA];
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = in[b];
-			}
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = in[b];
+      }
 
-			out[ALPHA] = new_alpha;
+      out[ALPHA] = new_alpha;
 
-			in    += 4;
-			layer += 4;
-			out   += 4;
+      in += 4;
+      layer += 4;
+      out += 4;
 
-			if (has_mask)
-				mask++;
-		}
-		break;
+      if (has_mask)
+        mask++;
+    }
+    break;
 
-	case GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER:
-		while (samples--)
-		{
-			gfloat layer_alpha;
-			gfloat new_alpha;
-			const gfloat *src;
-			gint b;
+  case GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER:
+    while (samples--) {
+      gfloat layer_alpha;
+      gfloat new_alpha;
+      const gfloat *src;
+      gint b;
 
-			layer_alpha = layer[ALPHA] * opacity;
+      layer_alpha = layer[ALPHA] * opacity;
 
-			if (has_mask)
-				layer_alpha *= (*mask);
+      if (has_mask)
+        layer_alpha *= (*mask);
 
-			new_alpha = (1.0f - in[ALPHA]) * layer_alpha;
+      new_alpha = (1.0f - in[ALPHA]) * layer_alpha;
 
-			src = layer;
+      src = layer;
 
-			if (new_alpha == 0.0f)
-				src = in;
+      if (new_alpha == 0.0f)
+        src = in;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = src[b];
-			}
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = src[b];
+      }
 
-			out[ALPHA] = new_alpha;
+      out[ALPHA] = new_alpha;
 
-			in    += 4;
-			layer += 4;
-			out   += 4;
+      in += 4;
+      layer += 4;
+      out += 4;
 
-			if (has_mask)
-				mask++;
-		}
-		break;
+      if (has_mask)
+        mask++;
+    }
+    break;
 
-	case GIMP_LAYER_COMPOSITE_INTERSECTION:
-		while (samples--)
-		{
-			gint b;
+  case GIMP_LAYER_COMPOSITE_INTERSECTION:
+    while (samples--) {
+      gint b;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = in[b];
-			}
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = in[b];
+      }
 
-			out[ALPHA] = 0.0f;
+      out[ALPHA] = 0.0f;
 
-			in    += 4;
-			out   += 4;
-		}
-		break;
-	}
+      in += 4;
+      out += 4;
+    }
+    break;
+  }
 
-	return TRUE;
+  return TRUE;
 }

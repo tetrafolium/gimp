@@ -23,46 +23,48 @@
 
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_MASK_COMPONENTS            (gimp_operation_mask_components_get_type ())
-#define GIMP_OPERATION_MASK_COMPONENTS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_MASK_COMPONENTS, GimpOperationMaskComponents))
-#define GIMP_OPERATION_MASK_COMPONENTS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_MASK_COMPONENTS, GimpOperationMaskComponentsClass))
-#define GIMP_IS_OPERATION_MASK_COMPONENTS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_MASK_COMPONENTS))
-#define GIMP_IS_OPERATION_MASK_COMPONENTS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_MASK_COMPONENTS))
-#define GIMP_OPERATION_MASK_COMPONENTS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_MASK_COMPONENTS, GimpOperationMaskComponentsClass))
-
+#define GIMP_TYPE_OPERATION_MASK_COMPONENTS                                    \
+  (gimp_operation_mask_components_get_type())
+#define GIMP_OPERATION_MASK_COMPONENTS(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_MASK_COMPONENTS,      \
+                              GimpOperationMaskComponents))
+#define GIMP_OPERATION_MASK_COMPONENTS_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_MASK_COMPONENTS,       \
+                           GimpOperationMaskComponentsClass))
+#define GIMP_IS_OPERATION_MASK_COMPONENTS(obj)                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_MASK_COMPONENTS))
+#define GIMP_IS_OPERATION_MASK_COMPONENTS_CLASS(klass)                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_MASK_COMPONENTS))
+#define GIMP_OPERATION_MASK_COMPONENTS_GET_CLASS(obj)                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_MASK_COMPONENTS,       \
+                             GimpOperationMaskComponentsClass))
 
 typedef struct _GimpOperationMaskComponents GimpOperationMaskComponents;
-typedef struct _GimpOperationMaskComponentsClass GimpOperationMaskComponentsClass;
+typedef struct _GimpOperationMaskComponentsClass
+    GimpOperationMaskComponentsClass;
 
-struct _GimpOperationMaskComponents
-{
-	GeglOperationPointComposer parent_instance;
+struct _GimpOperationMaskComponents {
+  GeglOperationPointComposer parent_instance;
 
-	GimpComponentMask mask;
-	gdouble alpha;
+  GimpComponentMask mask;
+  gdouble alpha;
 
-	guint32 alpha_value;
-	gpointer process;
-	const Babl                 *format;
+  guint32 alpha_value;
+  gpointer process;
+  const Babl *format;
 };
 
-struct _GimpOperationMaskComponentsClass
-{
-	GeglOperationPointComposerClass parent_class;
+struct _GimpOperationMaskComponentsClass {
+  GeglOperationPointComposerClass parent_class;
 };
 
+GType gimp_operation_mask_components_get_type(void) G_GNUC_CONST;
 
-GType        gimp_operation_mask_components_get_type   (void) G_GNUC_CONST;
+const Babl *gimp_operation_mask_components_get_format(const Babl *input_format);
 
-const Babl * gimp_operation_mask_components_get_format (const Babl        *input_format);
-
-void gimp_operation_mask_components_process    (const Babl        *format,
-                                                gconstpointer      in,
-                                                gconstpointer aux,
-                                                gpointer out,
-                                                gint n,
-                                                GimpComponentMask mask);
-
+void gimp_operation_mask_components_process(const Babl *format,
+                                            gconstpointer in, gconstpointer aux,
+                                            gpointer out, gint n,
+                                            GimpComponentMask mask);
 
 #endif /* __GIMP_OPERATION_MASK_COMPONENTS_H__ */

@@ -18,11 +18,9 @@
 #ifndef __GIMP_DISPLAY_SHELL_FILTER_H__
 #define __GIMP_DISPLAY_SHELL_FILTER_H__
 
+void gimp_display_shell_filter_set(GimpDisplayShell *shell,
+                                   GimpColorDisplayStack *stack);
 
-void       gimp_display_shell_filter_set (GimpDisplayShell      *shell,
-                                          GimpColorDisplayStack *stack);
-
-gboolean   gimp_display_shell_has_filter (GimpDisplayShell      *shell);
-
+gboolean gimp_display_shell_has_filter(GimpDisplayShell *shell);
 
 #endif /* __GIMP_DISPLAY_SHELL_FILTER_H__ */

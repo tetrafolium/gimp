@@ -21,42 +21,43 @@
 #ifndef __GIMP_HUE_SATURATION_CONFIG_H__
 #define __GIMP_HUE_SATURATION_CONFIG_H__
 
-
 #include "gimpoperationsettings.h"
 
-
-#define GIMP_TYPE_HUE_SATURATION_CONFIG            (gimp_hue_saturation_config_get_type ())
-#define GIMP_HUE_SATURATION_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HUE_SATURATION_CONFIG, GimpHueSaturationConfig))
-#define GIMP_HUE_SATURATION_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_HUE_SATURATION_CONFIG, GimpHueSaturationConfigClass))
-#define GIMP_IS_HUE_SATURATION_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_HUE_SATURATION_CONFIG))
-#define GIMP_IS_HUE_SATURATION_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_HUE_SATURATION_CONFIG))
-#define GIMP_HUE_SATURATION_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_HUE_SATURATION_CONFIG, GimpHueSaturationConfigClass))
-
+#define GIMP_TYPE_HUE_SATURATION_CONFIG (gimp_hue_saturation_config_get_type())
+#define GIMP_HUE_SATURATION_CONFIG(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_HUE_SATURATION_CONFIG,          \
+                              GimpHueSaturationConfig))
+#define GIMP_HUE_SATURATION_CONFIG_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_HUE_SATURATION_CONFIG,           \
+                           GimpHueSaturationConfigClass))
+#define GIMP_IS_HUE_SATURATION_CONFIG(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_HUE_SATURATION_CONFIG))
+#define GIMP_IS_HUE_SATURATION_CONFIG_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_HUE_SATURATION_CONFIG))
+#define GIMP_HUE_SATURATION_CONFIG_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_HUE_SATURATION_CONFIG,           \
+                             GimpHueSaturationConfigClass))
 
 typedef struct _GimpHueSaturationConfigClass GimpHueSaturationConfigClass;
 
-struct _GimpHueSaturationConfig
-{
-	GimpOperationSettings parent_instance;
+struct _GimpHueSaturationConfig {
+  GimpOperationSettings parent_instance;
 
-	GimpHueRange range;
+  GimpHueRange range;
 
-	gdouble hue[7];
-	gdouble saturation[7];
-	gdouble lightness[7];
+  gdouble hue[7];
+  gdouble saturation[7];
+  gdouble lightness[7];
 
-	gdouble overlap;
+  gdouble overlap;
 };
 
-struct _GimpHueSaturationConfigClass
-{
-	GimpOperationSettingsClass parent_class;
+struct _GimpHueSaturationConfigClass {
+  GimpOperationSettingsClass parent_class;
 };
 
+GType gimp_hue_saturation_config_get_type(void) G_GNUC_CONST;
 
-GType   gimp_hue_saturation_config_get_type    (void) G_GNUC_CONST;
-
-void    gimp_hue_saturation_config_reset_range (GimpHueSaturationConfig *config);
-
+void gimp_hue_saturation_config_reset_range(GimpHueSaturationConfig *config);
 
 #endif /* __GIMP_HUE_SATURATION_CONFIG_H__ */

@@ -18,37 +18,20 @@
 #ifndef __VECTORS_OPTIONS_DIALOG_H__
 #define __VECTORS_OPTIONS_DIALOG_H__
 
+typedef void (*GimpVectorsOptionsCallback)(
+    GtkWidget *dialog, GimpImage *image, GimpVectors *vectors,
+    GimpContext *context, const gchar *vectors_name, gboolean vectors_visible,
+    gboolean vectors_linked, GimpColorTag vectors_color_tag,
+    gboolean vectors_lock_content, gboolean vectors_lock_position,
+    gpointer user_data);
 
-typedef void (* GimpVectorsOptionsCallback) (GtkWidget    *dialog,
-                                             GimpImage    *image,
-                                             GimpVectors  *vectors,
-                                             GimpContext  *context,
-                                             const gchar  *vectors_name,
-                                             gboolean vectors_visible,
-                                             gboolean vectors_linked,
-                                             GimpColorTag vectors_color_tag,
-                                             gboolean vectors_lock_content,
-                                             gboolean vectors_lock_position,
-                                             gpointer user_data);
-
-
-GtkWidget * vectors_options_dialog_new (GimpImage                  *image,
-                                        GimpVectors                *vectors,
-                                        GimpContext                *context,
-                                        GtkWidget                  *parent,
-                                        const gchar                *title,
-                                        const gchar                *role,
-                                        const gchar                *icon_name,
-                                        const gchar                *desc,
-                                        const gchar                *help_id,
-                                        const gchar                *vectors_name,
-                                        gboolean vectors_visible,
-                                        gboolean vectors_linked,
-                                        GimpColorTag vectors_color_tag,
-                                        gboolean vectors_lock_content,
-                                        gboolean vectors_lock_position,
-                                        GimpVectorsOptionsCallback callback,
-                                        gpointer user_data);
-
+GtkWidget *vectors_options_dialog_new(
+    GimpImage *image, GimpVectors *vectors, GimpContext *context,
+    GtkWidget *parent, const gchar *title, const gchar *role,
+    const gchar *icon_name, const gchar *desc, const gchar *help_id,
+    const gchar *vectors_name, gboolean vectors_visible,
+    gboolean vectors_linked, GimpColorTag vectors_color_tag,
+    gboolean vectors_lock_content, gboolean vectors_lock_position,
+    GimpVectorsOptionsCallback callback, gpointer user_data);
 
 #endif /* __VECTORS_OPTIONS_DIALOG_H__ */

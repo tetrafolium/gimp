@@ -18,8 +18,6 @@
 #ifndef __MENUS_TYPES_H__
 #define __MENUS_TYPES_H__
 
-
 #include "actions/actions-types.h"
-
 
 #endif /* __MENUS_TYPES_H__ */

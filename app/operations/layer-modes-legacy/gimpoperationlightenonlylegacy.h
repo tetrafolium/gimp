@@ -21,33 +21,36 @@
 #ifndef __GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_H__
 #define __GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_H__
 
-
 #include "operations/layer-modes/gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY            (gimp_operation_lighten_only_legacy_get_type ())
-#define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY, GimpOperationLightenOnlyLegacy))
-#define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY, GimpOperationLightenOnlyLegacyClass))
-#define GIMP_IS_OPERATION_LIGHTEN_ONLY_LEGACY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY))
-#define GIMP_IS_OPERATION_LIGHTEN_ONLY_LEGACY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY))
-#define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY, GimpOperationLightenOnlyLegacyClass))
-
+#define GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY                                \
+  (gimp_operation_lighten_only_legacy_get_type())
+#define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY(obj)                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY,  \
+                              GimpOperationLightenOnlyLegacy))
+#define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_CLASS(klass)                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY,   \
+                           GimpOperationLightenOnlyLegacyClass))
+#define GIMP_IS_OPERATION_LIGHTEN_ONLY_LEGACY(obj)                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY))
+#define GIMP_IS_OPERATION_LIGHTEN_ONLY_LEGACY_CLASS(klass)                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY))
+#define GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_GET_CLASS(obj)                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_LIGHTEN_ONLY_LEGACY,   \
+                             GimpOperationLightenOnlyLegacyClass))
 
 typedef struct _GimpOperationLightenOnlyLegacy GimpOperationLightenOnlyLegacy;
-typedef struct _GimpOperationLightenOnlyLegacyClass GimpOperationLightenOnlyLegacyClass;
+typedef struct _GimpOperationLightenOnlyLegacyClass
+    GimpOperationLightenOnlyLegacyClass;
 
-struct _GimpOperationLightenOnlyLegacy
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationLightenOnlyLegacy {
+  GimpOperationLayerMode parent_instance;
 };
 
-struct _GimpOperationLightenOnlyLegacyClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationLightenOnlyLegacyClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-
-GType   gimp_operation_lighten_only_legacy_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_lighten_only_legacy_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_LIGHTEN_ONLY_LEGACY_H__ */

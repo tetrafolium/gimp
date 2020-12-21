@@ -21,38 +21,38 @@
 #ifndef __GIMP_CANVAS_PROGRESS_H__
 #define __GIMP_CANVAS_PROGRESS_H__
 
-
 #include "gimpcanvasitem.h"
 
-
-#define GIMP_TYPE_CANVAS_PROGRESS            (gimp_canvas_progress_get_type ())
-#define GIMP_CANVAS_PROGRESS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CANVAS_PROGRESS, GimpCanvasProgress))
-#define GIMP_CANVAS_PROGRESS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CANVAS_PROGRESS, GimpCanvasProgressClass))
-#define GIMP_IS_CANVAS_PROGRESS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CANVAS_PROGRESS))
-#define GIMP_IS_CANVAS_PROGRESS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CANVAS_PROGRESS))
-#define GIMP_CANVAS_PROGRESS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_PROGRESS, GimpCanvasProgressClass))
-
+#define GIMP_TYPE_CANVAS_PROGRESS (gimp_canvas_progress_get_type())
+#define GIMP_CANVAS_PROGRESS(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CANVAS_PROGRESS,                \
+                              GimpCanvasProgress))
+#define GIMP_CANVAS_PROGRESS_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CANVAS_PROGRESS,                 \
+                           GimpCanvasProgressClass))
+#define GIMP_IS_CANVAS_PROGRESS(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CANVAS_PROGRESS))
+#define GIMP_IS_CANVAS_PROGRESS_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CANVAS_PROGRESS))
+#define GIMP_CANVAS_PROGRESS_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CANVAS_PROGRESS,                 \
+                             GimpCanvasProgressClass))
 
 typedef struct _GimpCanvasProgress GimpCanvasProgress;
 typedef struct _GimpCanvasProgressClass GimpCanvasProgressClass;
 
-struct _GimpCanvasProgress
-{
-	GimpCanvasItem parent_instance;
+struct _GimpCanvasProgress {
+  GimpCanvasItem parent_instance;
 };
 
-struct _GimpCanvasProgressClass
-{
-	GimpCanvasItemClass parent_class;
+struct _GimpCanvasProgressClass {
+  GimpCanvasItemClass parent_class;
 };
 
+GType gimp_canvas_progress_get_type(void) G_GNUC_CONST;
 
-GType            gimp_canvas_progress_get_type (void) G_GNUC_CONST;
-
-GimpCanvasItem * gimp_canvas_progress_new      (GimpDisplayShell *shell,
-                                                GimpHandleAnchor anchor,
-                                                gdouble x,
-                                                gdouble y);
-
+GimpCanvasItem *gimp_canvas_progress_new(GimpDisplayShell *shell,
+                                         GimpHandleAnchor anchor, gdouble x,
+                                         gdouble y);
 
 #endif /* __GIMP_CANVAS_PROGRESS_H__ */

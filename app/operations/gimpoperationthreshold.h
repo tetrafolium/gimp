@@ -21,37 +21,38 @@
 #ifndef __GIMP_OPERATION_THRESHOLD_H__
 #define __GIMP_OPERATION_THRESHOLD_H__
 
-
 #include "gimpoperationpointfilter.h"
 
-
-#define GIMP_TYPE_OPERATION_THRESHOLD            (gimp_operation_threshold_get_type ())
-#define GIMP_OPERATION_THRESHOLD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_THRESHOLD, GimpOperationThreshold))
-#define GIMP_OPERATION_THRESHOLD_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_THRESHOLD, GimpOperationThresholdClass))
-#define GIMP_IS_OPERATION_THRESHOLD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_THRESHOLD))
-#define GIMP_IS_OPERATION_THRESHOLD_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_THRESHOLD))
-#define GIMP_OPERATION_THRESHOLD_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_THRESHOLD, GimpOperationThresholdClass))
-
+#define GIMP_TYPE_OPERATION_THRESHOLD (gimp_operation_threshold_get_type())
+#define GIMP_OPERATION_THRESHOLD(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_THRESHOLD,            \
+                              GimpOperationThreshold))
+#define GIMP_OPERATION_THRESHOLD_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_THRESHOLD,             \
+                           GimpOperationThresholdClass))
+#define GIMP_IS_OPERATION_THRESHOLD(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_THRESHOLD))
+#define GIMP_IS_OPERATION_THRESHOLD_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_THRESHOLD))
+#define GIMP_OPERATION_THRESHOLD_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_THRESHOLD,             \
+                             GimpOperationThresholdClass))
 
 typedef struct _GimpOperationThreshold GimpOperationThreshold;
 typedef struct _GimpOperationThresholdClass GimpOperationThresholdClass;
 
-struct _GimpOperationThreshold
-{
-	GimpOperationPointFilter parent_instance;
+struct _GimpOperationThreshold {
+  GimpOperationPointFilter parent_instance;
 
-	GimpHistogramChannel channel;
-	gdouble low;
-	gdouble high;
+  GimpHistogramChannel channel;
+  gdouble low;
+  gdouble high;
 };
 
-struct _GimpOperationThresholdClass
-{
-	GimpOperationPointFilterClass parent_class;
+struct _GimpOperationThresholdClass {
+  GimpOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_threshold_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_threshold_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_THRESHOLD_H__ */

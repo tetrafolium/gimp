@@ -21,71 +21,68 @@
 #ifndef __GIMP_OPERATION_LAYER_MODE_H__
 #define __GIMP_OPERATION_LAYER_MODE_H__
 
-
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_LAYER_MODE            (gimp_operation_layer_mode_get_type ())
-#define GIMP_OPERATION_LAYER_MODE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_LAYER_MODE, GimpOperationLayerMode))
-#define GIMP_OPERATION_LAYER_MODE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_LAYER_MODE, GimpOperationLayerModeClass))
-#define GIMP_IS_OPERATION_LAYER_MODE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_LAYER_MODE))
-#define GIMP_IS_OPERATION_LAYER_MODE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_LAYER_MODE))
-#define GIMP_OPERATION_LAYER_MODE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_LAYER_MODE, GimpOperationLayerModeClass))
-
+#define GIMP_TYPE_OPERATION_LAYER_MODE (gimp_operation_layer_mode_get_type())
+#define GIMP_OPERATION_LAYER_MODE(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_LAYER_MODE,           \
+                              GimpOperationLayerMode))
+#define GIMP_OPERATION_LAYER_MODE_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_LAYER_MODE,            \
+                           GimpOperationLayerModeClass))
+#define GIMP_IS_OPERATION_LAYER_MODE(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_LAYER_MODE))
+#define GIMP_IS_OPERATION_LAYER_MODE_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_LAYER_MODE))
+#define GIMP_OPERATION_LAYER_MODE_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_LAYER_MODE,            \
+                             GimpOperationLayerModeClass))
 
 typedef struct _GimpOperationLayerModeClass GimpOperationLayerModeClass;
 
-struct _GimpOperationLayerMode
-{
-	GeglOperationPointComposer3 parent_instance;
+struct _GimpOperationLayerMode {
+  GeglOperationPointComposer3 parent_instance;
 
-	GimpLayerMode layer_mode;
-	gdouble opacity;
-	GimpLayerColorSpace blend_space;
-	GimpLayerColorSpace composite_space;
-	GimpLayerCompositeMode composite_mode;
-	const Babl                  *cached_fish_format;
-	const Babl                  *space_fish[3 /* from */][3 /* to */];
+  GimpLayerMode layer_mode;
+  gdouble opacity;
+  GimpLayerColorSpace blend_space;
+  GimpLayerColorSpace composite_space;
+  GimpLayerCompositeMode composite_mode;
+  const Babl *cached_fish_format;
+  const Babl *space_fish[3 /* from */][3 /* to */];
 
-	gdouble prop_opacity;
-	GimpLayerCompositeMode prop_composite_mode;
+  gdouble prop_opacity;
+  GimpLayerCompositeMode prop_composite_mode;
 
-	GimpLayerModeFunc function;
-	GimpLayerModeBlendFunc blend_function;
-	gboolean is_last_node;
-	gboolean has_mask;
+  GimpLayerModeFunc function;
+  GimpLayerModeBlendFunc blend_function;
+  gboolean is_last_node;
+  gboolean has_mask;
 };
 
-struct _GimpOperationLayerModeClass
-{
-	GeglOperationPointComposer3Class parent_class;
+struct _GimpOperationLayerModeClass {
+  GeglOperationPointComposer3Class parent_class;
 
-	/*  virtual functions  */
-	gboolean (* parent_process)      (GeglOperation          *operation,
-	                                  GeglOperationContext   *context,
-	                                  const gchar            *output_prop,
-	                                  const GeglRectangle    *result,
-	                                  gint level);
-	gboolean (* process)             (GeglOperation          *operation,
-	                                  void                   *in,
-	                                  void                   *aux,
-	                                  void                   *mask,
-	                                  void                   *out,
-	                                  glong samples,
-	                                  const GeglRectangle    *roi,
-	                                  gint level);
+  /*  virtual functions  */
+  gboolean (*parent_process)(GeglOperation *operation,
+                             GeglOperationContext *context,
+                             const gchar *output_prop,
+                             const GeglRectangle *result, gint level);
+  gboolean (*process)(GeglOperation *operation, void *in, void *aux, void *mask,
+                      void *out, glong samples, const GeglRectangle *roi,
+                      gint level);
 
-	/* Returns the composite region (any combination of the layer and the
-	 * backdrop) that the layer mode affects.  Most modes only affect the
-	 * overlapping region, and don't need to override this function.
-	 */
-	GimpLayerCompositeRegion (* get_affected_region) (GimpOperationLayerMode *layer_mode);
+  /* Returns the composite region (any combination of the layer and the
+   * backdrop) that the layer mode affects.  Most modes only affect the
+   * overlapping region, and don't need to override this function.
+   */
+  GimpLayerCompositeRegion (*get_affected_region)(
+      GimpOperationLayerMode *layer_mode);
 };
 
+GType gimp_operation_layer_mode_get_type(void) G_GNUC_CONST;
 
-GType                    gimp_operation_layer_mode_get_type            (void) G_GNUC_CONST;
-
-GimpLayerCompositeRegion gimp_operation_layer_mode_get_affected_region (GimpOperationLayerMode *layer_mode);
-
+GimpLayerCompositeRegion gimp_operation_layer_mode_get_affected_region(
+    GimpOperationLayerMode *layer_mode);
 
 #endif /* __GIMP_OPERATION_LAYER_MODE_H__ */

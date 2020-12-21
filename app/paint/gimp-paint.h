@@ -18,9 +18,7 @@
 #ifndef __GIMP_PAINT_H__
 #define __GIMP_PAINT_H__
 
+void gimp_paint_init(Gimp *gimp);
+void gimp_paint_exit(Gimp *gimp);
 
-void   gimp_paint_init (Gimp *gimp);
-void   gimp_paint_exit (Gimp *gimp);
-
-
-#endif  /* __GIMP_PAINT_H__ */
+#endif /* __GIMP_PAINT_H__ */

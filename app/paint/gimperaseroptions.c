@@ -29,86 +29,56 @@
 
 #include "gimp-intl.h"
 
-
 #define ERASER_DEFAULT_ANTI_ERASE FALSE
 
+enum { PROP_0, PROP_ANTI_ERASE };
 
-enum
-{
-	PROP_0,
-	PROP_ANTI_ERASE
-};
+static void gimp_eraser_options_set_property(GObject *object, guint property_id,
+                                             const GValue *value,
+                                             GParamSpec *pspec);
+static void gimp_eraser_options_get_property(GObject *object, guint property_id,
+                                             GValue *value, GParamSpec *pspec);
 
+G_DEFINE_TYPE(GimpEraserOptions, gimp_eraser_options, GIMP_TYPE_PAINT_OPTIONS)
 
-static void   gimp_eraser_options_set_property (GObject         *object,
-                                                guint property_id,
-                                                const GValue    *value,
-                                                GParamSpec      *pspec);
-static void   gimp_eraser_options_get_property (GObject         *object,
-                                                guint property_id,
-                                                GValue          *value,
-                                                GParamSpec      *pspec);
+static void gimp_eraser_options_class_init(GimpEraserOptionsClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
+  object_class->set_property = gimp_eraser_options_set_property;
+  object_class->get_property = gimp_eraser_options_get_property;
 
-G_DEFINE_TYPE (GimpEraserOptions, gimp_eraser_options,
-               GIMP_TYPE_PAINT_OPTIONS)
-
-
-static void
-gimp_eraser_options_class_init (GimpEraserOptionsClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->set_property = gimp_eraser_options_set_property;
-	object_class->get_property = gimp_eraser_options_get_property;
-
-	GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_ANTI_ERASE,
-	                          "anti-erase",
-	                          _("Anti erase"),
-	                          NULL,
-	                          ERASER_DEFAULT_ANTI_ERASE,
-	                          GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN(object_class, PROP_ANTI_ERASE, "anti-erase",
+                           _("Anti erase"), NULL, ERASER_DEFAULT_ANTI_ERASE,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
-static void
-gimp_eraser_options_init (GimpEraserOptions *options)
-{
+static void gimp_eraser_options_init(GimpEraserOptions *options) {}
+
+static void gimp_eraser_options_set_property(GObject *object, guint property_id,
+                                             const GValue *value,
+                                             GParamSpec *pspec) {
+  GimpEraserOptions *options = GIMP_ERASER_OPTIONS(object);
+
+  switch (property_id) {
+  case PROP_ANTI_ERASE:
+    options->anti_erase = g_value_get_boolean(value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_eraser_options_set_property (GObject      *object,
-                                  guint property_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
-{
-	GimpEraserOptions *options = GIMP_ERASER_OPTIONS (object);
+static void gimp_eraser_options_get_property(GObject *object, guint property_id,
+                                             GValue *value, GParamSpec *pspec) {
+  GimpEraserOptions *options = GIMP_ERASER_OPTIONS(object);
 
-	switch (property_id)
-	{
-	case PROP_ANTI_ERASE:
-		options->anti_erase = g_value_get_boolean (value);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gimp_eraser_options_get_property (GObject    *object,
-                                  guint property_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
-{
-	GimpEraserOptions *options = GIMP_ERASER_OPTIONS (object);
-
-	switch (property_id)
-	{
-	case PROP_ANTI_ERASE:
-		g_value_set_boolean (value, options->anti_erase);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch (property_id) {
+  case PROP_ANTI_ERASE:
+    g_value_set_boolean(value, options->anti_erase);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }

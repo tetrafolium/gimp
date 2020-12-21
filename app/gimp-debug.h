@@ -21,14 +21,11 @@
 #ifndef __GIMP_DEBUG_H__
 #define __GIMP_DEBUG_H__
 
+void gimp_debug_enable_instances(void);
 
-void  gimp_debug_enable_instances (void);
+void gimp_debug_add_instance(GObject *instance, GObjectClass *klass);
+void gimp_debug_remove_instance(GObject *instance);
 
-void  gimp_debug_add_instance     (GObject      *instance,
-                                   GObjectClass *klass);
-void  gimp_debug_remove_instance  (GObject      *instance);
-
-void  gimp_debug_instances        (void);
-
+void gimp_debug_instances(void);
 
 #endif /* __GIMP_DEBUG_H__ */

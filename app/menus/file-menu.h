@@ -18,9 +18,6 @@
 #ifndef __FILE_MENU_H__
 #define __FILE_MENU_H__
 
-
-void   file_menu_setup (GimpUIManager *manager,
-                        const gchar   *ui_path);
-
+void file_menu_setup(GimpUIManager *manager, const gchar *ui_path);
 
 #endif /* __FILE_MENU_H__ */

@@ -24,32 +24,35 @@
 
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_COMPOSE_CROP            (gimp_operation_compose_crop_get_type ())
-#define GIMP_OPERATION_COMPOSE_CROP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_COMPOSE_CROP, GimpOperationComposeCrop))
-#define GIMP_OPERATION_COMPOSE_CROP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_COMPOSE_CROP, GimpOperationComposeCropClass))
-#define GIMP_IS_OPERATION_COMPOSE_CROP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_COMPOSE_CROP))
-#define GIMP_IS_OPERATION_COMPOSE_CROP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_COMPOSE_CROP))
-#define GIMP_OPERATION_COMPOSE_CROP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_COMPOSE_CROP, GimpOperationComposeCropClass))
-
+#define GIMP_TYPE_OPERATION_COMPOSE_CROP                                       \
+  (gimp_operation_compose_crop_get_type())
+#define GIMP_OPERATION_COMPOSE_CROP(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_COMPOSE_CROP,         \
+                              GimpOperationComposeCrop))
+#define GIMP_OPERATION_COMPOSE_CROP_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_COMPOSE_CROP,          \
+                           GimpOperationComposeCropClass))
+#define GIMP_IS_OPERATION_COMPOSE_CROP(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_COMPOSE_CROP))
+#define GIMP_IS_OPERATION_COMPOSE_CROP_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_COMPOSE_CROP))
+#define GIMP_OPERATION_COMPOSE_CROP_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_COMPOSE_CROP,          \
+                             GimpOperationComposeCropClass))
 
 typedef struct _GimpOperationComposeCrop GimpOperationComposeCrop;
 typedef struct _GimpOperationComposeCropClass GimpOperationComposeCropClass;
 
-struct _GimpOperationComposeCrop
-{
-	GeglOperationPointComposer parent_instance;
+struct _GimpOperationComposeCrop {
+  GeglOperationPointComposer parent_instance;
 
-	GeglRectangle rect;
+  GeglRectangle rect;
 };
 
-struct _GimpOperationComposeCropClass
-{
-	GeglOperationPointComposerClass parent_class;
+struct _GimpOperationComposeCropClass {
+  GeglOperationPointComposerClass parent_class;
 };
 
-
-GType   gimp_operation_compose_crop_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_compose_crop_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_COMPOSE_CROP_H__ */

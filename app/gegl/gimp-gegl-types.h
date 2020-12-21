@@ -20,15 +20,12 @@
 #ifndef __GIMP_GEGL_TYPES_H__
 #define __GIMP_GEGL_TYPES_H__
 
-
 #include "core/core-types.h"
 
 #include "gegl/gimp-gegl-enums.h"
 
 #include "operations/operations-types.h"
 
-
 typedef struct _GimpApplicator GimpApplicator;
-
 
 #endif /* __GIMP_GEGL_TYPES_H__ */

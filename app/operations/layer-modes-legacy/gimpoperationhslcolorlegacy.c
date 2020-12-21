@@ -21,9 +21,9 @@
 
 #include "config.h"
 
-#include <gegl-plugin.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl-plugin.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -31,111 +31,87 @@
 
 #include "gimpoperationhslcolorlegacy.h"
 
+static gboolean gimp_operation_hsl_color_legacy_process(
+    GeglOperation *op, void *in, void *layer, void *mask, void *out,
+    glong samples, const GeglRectangle *roi, gint level);
 
-static gboolean   gimp_operation_hsl_color_legacy_process (GeglOperation       *op,
-                                                           void                *in,
-                                                           void                *layer,
-                                                           void                *mask,
-                                                           void                *out,
-                                                           glong samples,
-                                                           const GeglRectangle *roi,
-                                                           gint level);
+G_DEFINE_TYPE(GimpOperationHslColorLegacy, gimp_operation_hsl_color_legacy,
+              GIMP_TYPE_OPERATION_LAYER_MODE)
 
+static void gimp_operation_hsl_color_legacy_class_init(
+    GimpOperationHslColorLegacyClass *klass) {
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
+  GimpOperationLayerModeClass *layer_mode_class =
+      GIMP_OPERATION_LAYER_MODE_CLASS(klass);
 
-G_DEFINE_TYPE (GimpOperationHslColorLegacy, gimp_operation_hsl_color_legacy,
-               GIMP_TYPE_OPERATION_LAYER_MODE)
+  gegl_operation_class_set_keys(operation_class, "name",
+                                "gimp:hsl-color-legacy", "description",
+                                "GIMP color mode operation", NULL);
 
-
-static void
-gimp_operation_hsl_color_legacy_class_init (GimpOperationHslColorLegacyClass *klass)
-{
-	GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-	GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
-
-	gegl_operation_class_set_keys (operation_class,
-	                               "name",        "gimp:hsl-color-legacy",
-	                               "description", "GIMP color mode operation",
-	                               NULL);
-
-	layer_mode_class->process = gimp_operation_hsl_color_legacy_process;
+  layer_mode_class->process = gimp_operation_hsl_color_legacy_process;
 }
 
 static void
-gimp_operation_hsl_color_legacy_init (GimpOperationHslColorLegacy *self)
-{
-}
+gimp_operation_hsl_color_legacy_init(GimpOperationHslColorLegacy *self) {}
 
-static gboolean
-gimp_operation_hsl_color_legacy_process (GeglOperation       *op,
-                                         void                *in_p,
-                                         void                *layer_p,
-                                         void                *mask_p,
-                                         void                *out_p,
-                                         glong samples,
-                                         const GeglRectangle *roi,
-                                         gint level)
-{
-	GimpOperationLayerMode *layer_mode = (gpointer) op;
-	gfloat                 *in         = in_p;
-	gfloat                 *out        = out_p;
-	gfloat                 *layer      = layer_p;
-	gfloat                 *mask       = mask_p;
-	gfloat opacity    = layer_mode->opacity;
+static gboolean gimp_operation_hsl_color_legacy_process(
+    GeglOperation *op, void *in_p, void *layer_p, void *mask_p, void *out_p,
+    glong samples, const GeglRectangle *roi, gint level) {
+  GimpOperationLayerMode *layer_mode = (gpointer)op;
+  gfloat *in = in_p;
+  gfloat *out = out_p;
+  gfloat *layer = layer_p;
+  gfloat *mask = mask_p;
+  gfloat opacity = layer_mode->opacity;
 
-	while (samples--)
-	{
-		GimpHSL layer_hsl, out_hsl;
-		GimpRGB layer_rgb = {layer[0], layer[1], layer[2]};
-		GimpRGB out_rgb   = {in[0], in[1], in[2]};
-		gfloat comp_alpha, new_alpha;
+  while (samples--) {
+    GimpHSL layer_hsl, out_hsl;
+    GimpRGB layer_rgb = {layer[0], layer[1], layer[2]};
+    GimpRGB out_rgb = {in[0], in[1], in[2]};
+    gfloat comp_alpha, new_alpha;
 
-		comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
-		if (mask)
-			comp_alpha *= *mask;
+    comp_alpha = MIN(in[ALPHA], layer[ALPHA]) * opacity;
+    if (mask)
+      comp_alpha *= *mask;
 
-		new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
+    new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
 
-		if (comp_alpha && new_alpha)
-		{
-			gint b;
-			gfloat out_tmp[3];
-			gfloat ratio = comp_alpha / new_alpha;
+    if (comp_alpha && new_alpha) {
+      gint b;
+      gfloat out_tmp[3];
+      gfloat ratio = comp_alpha / new_alpha;
 
-			gimp_rgb_to_hsl (&layer_rgb, &layer_hsl);
-			gimp_rgb_to_hsl (&out_rgb, &out_hsl);
+      gimp_rgb_to_hsl(&layer_rgb, &layer_hsl);
+      gimp_rgb_to_hsl(&out_rgb, &out_hsl);
 
-			out_hsl.h = layer_hsl.h;
-			out_hsl.s = layer_hsl.s;
-			gimp_hsl_to_rgb (&out_hsl, &out_rgb);
+      out_hsl.h = layer_hsl.h;
+      out_hsl.s = layer_hsl.s;
+      gimp_hsl_to_rgb(&out_hsl, &out_rgb);
 
-			out_tmp[0] = out_rgb.r;
-			out_tmp[1] = out_rgb.g;
-			out_tmp[2] = out_rgb.b;
+      out_tmp[0] = out_rgb.r;
+      out_tmp[1] = out_rgb.g;
+      out_tmp[2] = out_rgb.b;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = out_tmp[b] * ratio + in[b] * (1.0f - ratio);
-			}
-		}
-		else
-		{
-			gint b;
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = out_tmp[b] * ratio + in[b] * (1.0f - ratio);
+      }
+    } else {
+      gint b;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = in[b];
-			}
-		}
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = in[b];
+      }
+    }
 
-		out[ALPHA] = in[ALPHA];
+    out[ALPHA] = in[ALPHA];
 
-		in    += 4;
-		layer += 4;
-		out   += 4;
+    in += 4;
+    layer += 4;
+    out += 4;
 
-		if (mask)
-			mask++;
-	}
+    if (mask)
+      mask++;
+  }
 
-	return TRUE;
+  return TRUE;
 }

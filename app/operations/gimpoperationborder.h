@@ -21,38 +21,39 @@
 #ifndef __GIMP_OPERATION_BORDER_H__
 #define __GIMP_OPERATION_BORDER_H__
 
-
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_BORDER            (gimp_operation_border_get_type ())
-#define GIMP_OPERATION_BORDER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_BORDER, GimpOperationBorder))
-#define GIMP_OPERATION_BORDER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_BORDER, GimpOperationBorderClass))
-#define GIMP_IS_OPERATION_BORDER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_BORDER))
-#define GIMP_IS_OPERATION_BORDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_BORDER))
-#define GIMP_OPERATION_BORDER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BORDER, GimpOperationBorderClass))
-
+#define GIMP_TYPE_OPERATION_BORDER (gimp_operation_border_get_type())
+#define GIMP_OPERATION_BORDER(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_BORDER,               \
+                              GimpOperationBorder))
+#define GIMP_OPERATION_BORDER_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_BORDER,                \
+                           GimpOperationBorderClass))
+#define GIMP_IS_OPERATION_BORDER(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_BORDER))
+#define GIMP_IS_OPERATION_BORDER_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_BORDER))
+#define GIMP_OPERATION_BORDER_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_BORDER,                \
+                             GimpOperationBorderClass))
 
 typedef struct _GimpOperationBorder GimpOperationBorder;
 typedef struct _GimpOperationBorderClass GimpOperationBorderClass;
 
-struct _GimpOperationBorder
-{
-	GeglOperationFilter parent_instance;
+struct _GimpOperationBorder {
+  GeglOperationFilter parent_instance;
 
-	gint radius_x;
-	gint radius_y;
-	gboolean feather;
-	gboolean edge_lock;
+  gint radius_x;
+  gint radius_y;
+  gboolean feather;
+  gboolean edge_lock;
 };
 
-struct _GimpOperationBorderClass
-{
-	GeglOperationFilterClass parent_class;
+struct _GimpOperationBorderClass {
+  GeglOperationFilterClass parent_class;
 };
 
-
-GType   gimp_operation_border_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_border_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_BORDER_H__ */

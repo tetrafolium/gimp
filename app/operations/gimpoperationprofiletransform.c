@@ -24,284 +24,241 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
-#include "libgimpconfig/gimpconfig.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "operations-types.h"
 
 #include "gimpoperationprofiletransform.h"
 
-
-enum
-{
-	PROP_0,
-	PROP_SRC_PROFILE,
-	PROP_SRC_FORMAT,
-	PROP_DEST_PROFILE,
-	PROP_DEST_FORMAT,
-	PROP_RENDERING_INTENT,
-	PROP_BLACK_POINT_COMPENSATION
+enum {
+  PROP_0,
+  PROP_SRC_PROFILE,
+  PROP_SRC_FORMAT,
+  PROP_DEST_PROFILE,
+  PROP_DEST_FORMAT,
+  PROP_RENDERING_INTENT,
+  PROP_BLACK_POINT_COMPENSATION
 };
 
+static void gimp_operation_profile_transform_finalize(GObject *object);
 
-static void       gimp_operation_profile_transform_finalize     (GObject             *object);
+static void gimp_operation_profile_transform_get_property(GObject *object,
+                                                          guint property_id,
+                                                          GValue *value,
+                                                          GParamSpec *pspec);
+static void gimp_operation_profile_transform_set_property(GObject *object,
+                                                          guint property_id,
+                                                          const GValue *value,
+                                                          GParamSpec *pspec);
 
-static void       gimp_operation_profile_transform_get_property (GObject             *object,
-                                                                 guint property_id,
-                                                                 GValue              *value,
-                                                                 GParamSpec          *pspec);
-static void       gimp_operation_profile_transform_set_property (GObject             *object,
-                                                                 guint property_id,
-                                                                 const GValue        *value,
-                                                                 GParamSpec          *pspec);
+static void gimp_operation_profile_transform_prepare(GeglOperation *operation);
+static gboolean
+gimp_operation_profile_transform_process(GeglOperation *operation, void *in_buf,
+                                         void *out_buf, glong samples,
+                                         const GeglRectangle *roi, gint level);
 
-static void       gimp_operation_profile_transform_prepare      (GeglOperation       *operation);
-static gboolean   gimp_operation_profile_transform_process      (GeglOperation       *operation,
-                                                                 void                *in_buf,
-                                                                 void                *out_buf,
-                                                                 glong samples,
-                                                                 const GeglRectangle *roi,
-                                                                 gint level);
-
-
-G_DEFINE_TYPE (GimpOperationProfileTransform, gimp_operation_profile_transform,
-               GEGL_TYPE_OPERATION_POINT_FILTER)
+G_DEFINE_TYPE(GimpOperationProfileTransform, gimp_operation_profile_transform,
+              GEGL_TYPE_OPERATION_POINT_FILTER)
 
 #define parent_class gimp_operation_profile_transform_parent_class
 
+static void gimp_operation_profile_transform_class_init(
+    GimpOperationProfileTransformClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
+  GeglOperationPointFilterClass *point_class =
+      GEGL_OPERATION_POINT_FILTER_CLASS(klass);
 
-static void
-gimp_operation_profile_transform_class_init (GimpOperationProfileTransformClass *klass)
-{
-	GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
-	GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
-	GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
+  object_class->finalize = gimp_operation_profile_transform_finalize;
+  object_class->set_property = gimp_operation_profile_transform_set_property;
+  object_class->get_property = gimp_operation_profile_transform_get_property;
 
-	object_class->finalize     = gimp_operation_profile_transform_finalize;
-	object_class->set_property = gimp_operation_profile_transform_set_property;
-	object_class->get_property = gimp_operation_profile_transform_get_property;
+  gegl_operation_class_set_keys(
+      operation_class, "name", "gimp:profile-transform", "categories", "color",
+      "description", "Transform between two color profiles", NULL);
 
-	gegl_operation_class_set_keys (operation_class,
-	                               "name",        "gimp:profile-transform",
-	                               "categories",  "color",
-	                               "description",
-	                               "Transform between two color profiles",
-	                               NULL);
+  operation_class->prepare = gimp_operation_profile_transform_prepare;
 
-	operation_class->prepare = gimp_operation_profile_transform_prepare;
+  point_class->process = gimp_operation_profile_transform_process;
 
-	point_class->process     = gimp_operation_profile_transform_process;
+  g_object_class_install_property(
+      object_class, PROP_SRC_PROFILE,
+      g_param_spec_object("src-profile", "Source Profile", "Source Profile",
+                          GIMP_TYPE_COLOR_PROFILE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_SRC_PROFILE,
-	                                 g_param_spec_object ("src-profile",
-	                                                      "Source Profile",
-	                                                      "Source Profile",
-	                                                      GIMP_TYPE_COLOR_PROFILE,
-	                                                      G_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, PROP_SRC_FORMAT,
+      g_param_spec_pointer("src-format", "Source Format", "Source Format",
+                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_SRC_FORMAT,
-	                                 g_param_spec_pointer ("src-format",
-	                                                       "Source Format",
-	                                                       "Source Format",
-	                                                       G_PARAM_READWRITE |
-	                                                       G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, PROP_DEST_PROFILE,
+      g_param_spec_object("dest-profile", "Destination Profile",
+                          "Destination Profile", GIMP_TYPE_COLOR_PROFILE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_DEST_PROFILE,
-	                                 g_param_spec_object ("dest-profile",
-	                                                      "Destination Profile",
-	                                                      "Destination Profile",
-	                                                      GIMP_TYPE_COLOR_PROFILE,
-	                                                      G_PARAM_READWRITE |
-	                                                      G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, PROP_DEST_FORMAT,
+      g_param_spec_pointer("dest-format", "Destination Format",
+                           "Destination Format",
+                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_DEST_FORMAT,
-	                                 g_param_spec_pointer ("dest-format",
-	                                                       "Destination Format",
-	                                                       "Destination Format",
-	                                                       G_PARAM_READWRITE |
-	                                                       G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, PROP_RENDERING_INTENT,
+      g_param_spec_enum("rendering-intent", "Rendering Intent",
+                        "Rendering Intent", GIMP_TYPE_COLOR_RENDERING_INTENT,
+                        GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_RENDERING_INTENT,
-	                                 g_param_spec_enum ("rendering-intent",
-	                                                    "Rendering Intent",
-	                                                    "Rendering Intent",
-	                                                    GIMP_TYPE_COLOR_RENDERING_INTENT,
-	                                                    GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
-	                                                    G_PARAM_READWRITE |
-	                                                    G_PARAM_CONSTRUCT));
-
-	g_object_class_install_property (object_class, PROP_BLACK_POINT_COMPENSATION,
-	                                 g_param_spec_boolean ("black-point-compensation",
-	                                                       "Black Point Compensation",
-	                                                       "Black Point Compensation",
-	                                                       TRUE,
-	                                                       G_PARAM_READWRITE |
-	                                                       G_PARAM_CONSTRUCT));
+  g_object_class_install_property(
+      object_class, PROP_BLACK_POINT_COMPENSATION,
+      g_param_spec_boolean("black-point-compensation",
+                           "Black Point Compensation",
+                           "Black Point Compensation", TRUE,
+                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 }
 
 static void
-gimp_operation_profile_transform_init (GimpOperationProfileTransform *self)
-{
+gimp_operation_profile_transform_init(GimpOperationProfileTransform *self) {}
+
+static void gimp_operation_profile_transform_finalize(GObject *object) {
+  GimpOperationProfileTransform *self =
+      GIMP_OPERATION_PROFILE_TRANSFORM(object);
+
+  g_clear_object(&self->src_profile);
+  g_clear_object(&self->dest_profile);
+  g_clear_object(&self->transform);
+
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-static void
-gimp_operation_profile_transform_finalize (GObject *object)
-{
-	GimpOperationProfileTransform *self = GIMP_OPERATION_PROFILE_TRANSFORM (object);
+static void gimp_operation_profile_transform_get_property(GObject *object,
+                                                          guint property_id,
+                                                          GValue *value,
+                                                          GParamSpec *pspec) {
+  GimpOperationProfileTransform *self =
+      GIMP_OPERATION_PROFILE_TRANSFORM(object);
 
-	g_clear_object (&self->src_profile);
-	g_clear_object (&self->dest_profile);
-	g_clear_object (&self->transform);
+  switch (property_id) {
+  case PROP_SRC_PROFILE:
+    g_value_set_object(value, self->src_profile);
+    break;
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+  case PROP_SRC_FORMAT:
+    g_value_set_pointer(value, (gpointer)self->src_format);
+    break;
+
+  case PROP_DEST_PROFILE:
+    g_value_set_object(value, self->dest_profile);
+    break;
+
+  case PROP_DEST_FORMAT:
+    g_value_set_pointer(value, (gpointer)self->dest_format);
+    break;
+
+  case PROP_RENDERING_INTENT:
+    g_value_set_enum(value, self->rendering_intent);
+    break;
+
+  case PROP_BLACK_POINT_COMPENSATION:
+    g_value_set_boolean(value, self->black_point_compensation);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_operation_profile_transform_get_property (GObject    *object,
-                                               guint property_id,
-                                               GValue     *value,
-                                               GParamSpec *pspec)
-{
-	GimpOperationProfileTransform *self = GIMP_OPERATION_PROFILE_TRANSFORM (object);
+static void gimp_operation_profile_transform_set_property(GObject *object,
+                                                          guint property_id,
+                                                          const GValue *value,
+                                                          GParamSpec *pspec) {
+  GimpOperationProfileTransform *self =
+      GIMP_OPERATION_PROFILE_TRANSFORM(object);
 
-	switch (property_id)
-	{
-	case PROP_SRC_PROFILE:
-		g_value_set_object (value, self->src_profile);
-		break;
+  switch (property_id) {
+  case PROP_SRC_PROFILE:
+    if (self->src_profile)
+      g_object_unref(self->src_profile);
+    self->src_profile = g_value_dup_object(value);
+    break;
 
-	case PROP_SRC_FORMAT:
-		g_value_set_pointer (value, (gpointer) self->src_format);
-		break;
+  case PROP_SRC_FORMAT:
+    self->src_format = g_value_get_pointer(value);
+    break;
 
-	case PROP_DEST_PROFILE:
-		g_value_set_object (value, self->dest_profile);
-		break;
+  case PROP_DEST_PROFILE:
+    if (self->dest_profile)
+      g_object_unref(self->dest_profile);
+    self->dest_profile = g_value_dup_object(value);
+    break;
 
-	case PROP_DEST_FORMAT:
-		g_value_set_pointer (value, (gpointer) self->dest_format);
-		break;
+  case PROP_DEST_FORMAT:
+    self->dest_format = g_value_get_pointer(value);
+    break;
 
-	case PROP_RENDERING_INTENT:
-		g_value_set_enum (value, self->rendering_intent);
-		break;
+  case PROP_RENDERING_INTENT:
+    self->rendering_intent = g_value_get_enum(value);
+    break;
 
-	case PROP_BLACK_POINT_COMPENSATION:
-		g_value_set_boolean (value, self->black_point_compensation);
-		break;
+  case PROP_BLACK_POINT_COMPENSATION:
+    self->black_point_compensation = g_value_get_boolean(value);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_operation_profile_transform_set_property (GObject      *object,
-                                               guint property_id,
-                                               const GValue *value,
-                                               GParamSpec   *pspec)
-{
-	GimpOperationProfileTransform *self = GIMP_OPERATION_PROFILE_TRANSFORM (object);
+static void gimp_operation_profile_transform_prepare(GeglOperation *operation) {
+  GimpOperationProfileTransform *self =
+      GIMP_OPERATION_PROFILE_TRANSFORM(operation);
 
-	switch (property_id)
-	{
-	case PROP_SRC_PROFILE:
-		if (self->src_profile)
-			g_object_unref (self->src_profile);
-		self->src_profile = g_value_dup_object (value);
-		break;
+  g_clear_object(&self->transform);
 
-	case PROP_SRC_FORMAT:
-		self->src_format = g_value_get_pointer (value);
-		break;
+  if (!self->src_format)
+    self->src_format = babl_format("RGBA float");
 
-	case PROP_DEST_PROFILE:
-		if (self->dest_profile)
-			g_object_unref (self->dest_profile);
-		self->dest_profile = g_value_dup_object (value);
-		break;
+  if (!self->dest_format)
+    self->dest_format = babl_format("RGBA float");
 
-	case PROP_DEST_FORMAT:
-		self->dest_format = g_value_get_pointer (value);
-		break;
+  if (self->src_profile && self->dest_profile) {
+    GimpColorTransformFlags flags = 0;
 
-	case PROP_RENDERING_INTENT:
-		self->rendering_intent = g_value_get_enum (value);
-		break;
+    if (self->black_point_compensation)
+      flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
 
-	case PROP_BLACK_POINT_COMPENSATION:
-		self->black_point_compensation = g_value_get_boolean (value);
-		break;
+    flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
+    self->transform = gimp_color_transform_new(
+        self->src_profile, self->src_format, self->dest_profile,
+        self->dest_format, self->rendering_intent, flags);
+  }
 
-static void
-gimp_operation_profile_transform_prepare (GeglOperation *operation)
-{
-	GimpOperationProfileTransform *self = GIMP_OPERATION_PROFILE_TRANSFORM (operation);
-
-	g_clear_object (&self->transform);
-
-	if (!self->src_format)
-		self->src_format = babl_format ("RGBA float");
-
-	if (!self->dest_format)
-		self->dest_format = babl_format ("RGBA float");
-
-	if (self->src_profile && self->dest_profile)
-	{
-		GimpColorTransformFlags flags = 0;
-
-		if (self->black_point_compensation)
-			flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
-
-		flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
-
-		self->transform = gimp_color_transform_new (self->src_profile,
-		                                            self->src_format,
-		                                            self->dest_profile,
-		                                            self->dest_format,
-		                                            self->rendering_intent,
-		                                            flags);
-	}
-
-	gegl_operation_set_format (operation, "input",  self->src_format);
-	gegl_operation_set_format (operation, "output", self->dest_format);
+  gegl_operation_set_format(operation, "input", self->src_format);
+  gegl_operation_set_format(operation, "output", self->dest_format);
 }
 
 static gboolean
-gimp_operation_profile_transform_process (GeglOperation       *operation,
-                                          void                *in_buf,
-                                          void                *out_buf,
-                                          glong samples,
-                                          const GeglRectangle *roi,
-                                          gint level)
-{
-	GimpOperationProfileTransform *self = GIMP_OPERATION_PROFILE_TRANSFORM (operation);
-	gpointer                      *src  = in_buf;
-	gpointer                      *dest = out_buf;
+gimp_operation_profile_transform_process(GeglOperation *operation, void *in_buf,
+                                         void *out_buf, glong samples,
+                                         const GeglRectangle *roi, gint level) {
+  GimpOperationProfileTransform *self =
+      GIMP_OPERATION_PROFILE_TRANSFORM(operation);
+  gpointer *src = in_buf;
+  gpointer *dest = out_buf;
 
-	if (self->transform)
-	{
-		gimp_color_transform_process_pixels (self->transform,
-		                                     self->src_format,
-		                                     src,
-		                                     self->dest_format,
-		                                     dest,
-		                                     samples);
-	}
-	else
-	{
-		babl_process (babl_fish (self->src_format,
-		                         self->dest_format),
-		              src, dest, samples);
-	}
+  if (self->transform) {
+    gimp_color_transform_process_pixels(self->transform, self->src_format, src,
+                                        self->dest_format, dest, samples);
+  } else {
+    babl_process(babl_fish(self->src_format, self->dest_format), src, dest,
+                 samples);
+  }
 
-	return TRUE;
+  return TRUE;
 }

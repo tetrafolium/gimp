@@ -27,28 +27,13 @@
 
 #include "gimp-intl.h"
 
+G_DEFINE_TYPE(GimpPencil, gimp_pencil, GIMP_TYPE_PAINTBRUSH)
 
-G_DEFINE_TYPE (GimpPencil, gimp_pencil, GIMP_TYPE_PAINTBRUSH)
-
-
-void
-gimp_pencil_register (Gimp                      *gimp,
-                      GimpPaintRegisterCallback callback)
-{
-	(*callback)(gimp,
-	            GIMP_TYPE_PENCIL,
-	            GIMP_TYPE_PENCIL_OPTIONS,
-	            "gimp-pencil",
-	            _("Pencil"),
-	            "gimp-tool-pencil");
+void gimp_pencil_register(Gimp *gimp, GimpPaintRegisterCallback callback) {
+  (*callback)(gimp, GIMP_TYPE_PENCIL, GIMP_TYPE_PENCIL_OPTIONS, "gimp-pencil",
+              _("Pencil"), "gimp-tool-pencil");
 }
 
-static void
-gimp_pencil_class_init (GimpPencilClass *klass)
-{
-}
+static void gimp_pencil_class_init(GimpPencilClass *klass) {}
 
-static void
-gimp_pencil_init (GimpPencil *pencil)
-{
-}
+static void gimp_pencil_init(GimpPencil *pencil) {}

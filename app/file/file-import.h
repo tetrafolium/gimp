@@ -20,12 +20,7 @@
 #ifndef __FILE_IMPORT_H__
 #define __FILE_IMPORT_H__
 
-
-void   file_import_image (GimpImage    *image,
-                          GimpContext  *context,
-                          GFile        *file,
-                          gboolean interactive,
-                          GimpProgress *progress);
-
+void file_import_image(GimpImage *image, GimpContext *context, GFile *file,
+                       gboolean interactive, GimpProgress *progress);
 
 #endif /* __FILE_IMPORT_H__ */

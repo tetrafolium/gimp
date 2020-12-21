@@ -21,42 +21,43 @@
 #ifndef __GIMP_COLOR_BALANCE_CONFIG_H__
 #define __GIMP_COLOR_BALANCE_CONFIG_H__
 
-
 #include "gimpoperationsettings.h"
 
-
-#define GIMP_TYPE_COLOR_BALANCE_CONFIG            (gimp_color_balance_config_get_type ())
-#define GIMP_COLOR_BALANCE_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_BALANCE_CONFIG, GimpColorBalanceConfig))
-#define GIMP_COLOR_BALANCE_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_COLOR_BALANCE_CONFIG, GimpColorBalanceConfigClass))
-#define GIMP_IS_COLOR_BALANCE_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_BALANCE_CONFIG))
-#define GIMP_IS_COLOR_BALANCE_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_COLOR_BALANCE_CONFIG))
-#define GIMP_COLOR_BALANCE_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_COLOR_BALANCE_CONFIG, GimpColorBalanceConfigClass))
-
+#define GIMP_TYPE_COLOR_BALANCE_CONFIG (gimp_color_balance_config_get_type())
+#define GIMP_COLOR_BALANCE_CONFIG(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_BALANCE_CONFIG,           \
+                              GimpColorBalanceConfig))
+#define GIMP_COLOR_BALANCE_CONFIG_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_BALANCE_CONFIG,            \
+                           GimpColorBalanceConfigClass))
+#define GIMP_IS_COLOR_BALANCE_CONFIG(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_BALANCE_CONFIG))
+#define GIMP_IS_COLOR_BALANCE_CONFIG_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_BALANCE_CONFIG))
+#define GIMP_COLOR_BALANCE_CONFIG_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_BALANCE_CONFIG,            \
+                             GimpColorBalanceConfigClass))
 
 typedef struct _GimpColorBalanceConfigClass GimpColorBalanceConfigClass;
 
-struct _GimpColorBalanceConfig
-{
-	GimpOperationSettings parent_instance;
+struct _GimpColorBalanceConfig {
+  GimpOperationSettings parent_instance;
 
-	GimpTransferMode range;
+  GimpTransferMode range;
 
-	gdouble cyan_red[3];
-	gdouble magenta_green[3];
-	gdouble yellow_blue[3];
+  gdouble cyan_red[3];
+  gdouble magenta_green[3];
+  gdouble yellow_blue[3];
 
-	gboolean preserve_luminosity;
+  gboolean preserve_luminosity;
 };
 
-struct _GimpColorBalanceConfigClass
-{
-	GimpOperationSettingsClass parent_class;
+struct _GimpColorBalanceConfigClass {
+  GimpOperationSettingsClass parent_class;
 };
 
+GType gimp_color_balance_config_get_type(void) G_GNUC_CONST;
 
-GType   gimp_color_balance_config_get_type    (void) G_GNUC_CONST;
-
-void    gimp_color_balance_config_reset_range (GimpColorBalanceConfig *config);
-
+void gimp_color_balance_config_reset_range(GimpColorBalanceConfig *config);
 
 #endif /* __GIMP_COLOR_BALANCE_CONFIG_H__ */

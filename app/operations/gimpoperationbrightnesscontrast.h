@@ -21,33 +21,36 @@
 #ifndef __GIMP_OPERATION_BRIGHTNESS_CONTRAST_H__
 #define __GIMP_OPERATION_BRIGHTNESS_CONTRAST_H__
 
-
 #include "gimpoperationpointfilter.h"
 
-
-#define GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST            (gimp_operation_brightness_contrast_get_type ())
-#define GIMP_OPERATION_BRIGHTNESS_CONTRAST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST, GimpOperationBrightnessContrast))
-#define GIMP_OPERATION_BRIGHTNESS_CONTRAST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST, GimpOperationBrightnessContrastClass))
-#define GIMP_IS_OPERATION_BRIGHTNESS_CONTRAST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST))
-#define GIMP_IS_OPERATION_BRIGHTNESS_CONTRAST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST))
-#define GIMP_OPERATION_BRIGHTNESS_CONTRAST_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST, GimpOperationBrightnessContrastClass))
-
+#define GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST                                \
+  (gimp_operation_brightness_contrast_get_type())
+#define GIMP_OPERATION_BRIGHTNESS_CONTRAST(obj)                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST,  \
+                              GimpOperationBrightnessContrast))
+#define GIMP_OPERATION_BRIGHTNESS_CONTRAST_CLASS(klass)                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST,   \
+                           GimpOperationBrightnessContrastClass))
+#define GIMP_IS_OPERATION_BRIGHTNESS_CONTRAST(obj)                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST))
+#define GIMP_IS_OPERATION_BRIGHTNESS_CONTRAST_CLASS(klass)                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST))
+#define GIMP_OPERATION_BRIGHTNESS_CONTRAST_GET_CLASS(obj)                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST,   \
+                             GimpOperationBrightnessContrastClass))
 
 typedef struct _GimpOperationBrightnessContrast GimpOperationBrightnessContrast;
-typedef struct _GimpOperationBrightnessContrastClass GimpOperationBrightnessContrastClass;
+typedef struct _GimpOperationBrightnessContrastClass
+    GimpOperationBrightnessContrastClass;
 
-struct _GimpOperationBrightnessContrast
-{
-	GimpOperationPointFilter parent_instance;
+struct _GimpOperationBrightnessContrast {
+  GimpOperationPointFilter parent_instance;
 };
 
-struct _GimpOperationBrightnessContrastClass
-{
-	GimpOperationPointFilterClass parent_class;
+struct _GimpOperationBrightnessContrastClass {
+  GimpOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_brightness_contrast_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_brightness_contrast_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_BRIGHTNESS_CONTRAST_H__ */

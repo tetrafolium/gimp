@@ -18,13 +18,8 @@
 #ifndef __GIMP_GEGL_MASK_H__
 #define __GIMP_GEGL_MASK_H__
 
-
-gboolean   gimp_gegl_mask_bounds   (GeglBuffer *buffer,
-                                    gint        *x1,
-                                    gint        *y1,
-                                    gint        *x2,
-                                    gint        *y2);
-gboolean   gimp_gegl_mask_is_empty (GeglBuffer *buffer);
-
+gboolean gimp_gegl_mask_bounds(GeglBuffer *buffer, gint *x1, gint *y1, gint *x2,
+                               gint *y2);
+gboolean gimp_gegl_mask_is_empty(GeglBuffer *buffer);
 
 #endif /* __GIMP_GEGL_MASK_H__ */

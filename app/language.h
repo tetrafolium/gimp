@@ -22,8 +22,6 @@
 #error You must not #include "language.h" from a subdir
 #endif
 
-
-void language_init (const gchar *language);
-
+void language_init(const gchar *language);
 
 #endif /* __LANGUAGE_H__ */

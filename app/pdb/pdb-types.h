@@ -18,37 +18,28 @@
 #ifndef __PDB_TYPES_H__
 #define __PDB_TYPES_H__
 
-
 #include "core/core-types.h"
-
 
 typedef struct _GimpPDB GimpPDB;
 typedef struct _GimpProcedure GimpProcedure;
 typedef struct _GimpPlugInProcedure GimpPlugInProcedure;
 typedef struct _GimpTemporaryProcedure GimpTemporaryProcedure;
 
-
-typedef enum
-{
-	GIMP_PDB_COMPAT_OFF,
-	GIMP_PDB_COMPAT_ON,
-	GIMP_PDB_COMPAT_WARN
+typedef enum {
+  GIMP_PDB_COMPAT_OFF,
+  GIMP_PDB_COMPAT_ON,
+  GIMP_PDB_COMPAT_WARN
 } GimpPDBCompatMode;
 
-
-typedef enum
-{
-	GIMP_PDB_ITEM_CONTENT  = 1 << 0,
-	GIMP_PDB_ITEM_POSITION = 1 << 1
+typedef enum {
+  GIMP_PDB_ITEM_CONTENT = 1 << 0,
+  GIMP_PDB_ITEM_POSITION = 1 << 1
 } GimpPDBItemModify;
 
-
-typedef enum
-{
-	GIMP_PDB_DATA_ACCESS_READ   = 0,
-	GIMP_PDB_DATA_ACCESS_WRITE  = 1 << 0,
-	GIMP_PDB_DATA_ACCESS_RENAME = 1 << 1
+typedef enum {
+  GIMP_PDB_DATA_ACCESS_READ = 0,
+  GIMP_PDB_DATA_ACCESS_WRITE = 1 << 0,
+  GIMP_PDB_DATA_ACCESS_RENAME = 1 << 1
 } GimpPDBDataAccess;
-
 
 #endif /* __PDB_TYPES_H__ */

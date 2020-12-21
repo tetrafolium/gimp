@@ -18,21 +18,11 @@
 #ifndef __GIMP_PDB_QUERY_H__
 #define __GIMP_PDB_QUERY_H__
 
-
-gboolean   gimp_pdb_dump  (GimpPDB       *pdb,
-                           GFile         *file,
-                           GError       **error);
-gboolean   gimp_pdb_query (GimpPDB       *pdb,
-                           const gchar   *name,
-                           const gchar   *blurb,
-                           const gchar   *help,
-                           const gchar   *authors,
-                           const gchar   *copyright,
-                           const gchar   *date,
-                           const gchar   *proc_type,
-                           gint          *num_procs,
-                           gchar       ***procs,
-                           GError       **error);
-
+gboolean gimp_pdb_dump(GimpPDB *pdb, GFile *file, GError **error);
+gboolean gimp_pdb_query(GimpPDB *pdb, const gchar *name, const gchar *blurb,
+                        const gchar *help, const gchar *authors,
+                        const gchar *copyright, const gchar *date,
+                        const gchar *proc_type, gint *num_procs, gchar ***procs,
+                        GError **error);
 
 #endif /* __GIMP_PDB_QUERY_H__ */

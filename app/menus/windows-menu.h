@@ -18,9 +18,6 @@
 #ifndef __WINDOWS_MENU_H__
 #define __WINDOWS_MENU_H__
 
-
-void   windows_menu_setup (GimpUIManager *manager,
-                           const gchar   *ui_path);
-
+void windows_menu_setup(GimpUIManager *manager, const gchar *ui_path);
 
 #endif /* __WINDOWS_MENU_H__ */

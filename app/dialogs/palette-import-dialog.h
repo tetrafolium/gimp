@@ -18,8 +18,6 @@
 #ifndef __PALETTE_IMPORT_DIALOG_H__
 #define __PALETTE_IMPORT_DIALOG_H__
 
-
-GtkWidget * palette_import_dialog_new (GimpContext *context);
-
+GtkWidget *palette_import_dialog_new(GimpContext *context);
 
 #endif /* __PALETTE_IMPORT_DIALOG_H__ */

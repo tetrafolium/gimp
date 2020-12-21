@@ -18,37 +18,38 @@
 #ifndef __GIMP_SMUDGE_OPTIONS_H__
 #define __GIMP_SMUDGE_OPTIONS_H__
 
-
 #include "gimppaintoptions.h"
 
-
-#define GIMP_TYPE_SMUDGE_OPTIONS            (gimp_smudge_options_get_type ())
-#define GIMP_SMUDGE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SMUDGE_OPTIONS, GimpSmudgeOptions))
-#define GIMP_SMUDGE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SMUDGE_OPTIONS, GimpSmudgeOptionsClass))
-#define GIMP_IS_SMUDGE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SMUDGE_OPTIONS))
-#define GIMP_IS_SMUDGE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SMUDGE_OPTIONS))
-#define GIMP_SMUDGE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SMUDGE_OPTIONS, GimpSmudgeOptionsClass))
-
+#define GIMP_TYPE_SMUDGE_OPTIONS (gimp_smudge_options_get_type())
+#define GIMP_SMUDGE_OPTIONS(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SMUDGE_OPTIONS,                 \
+                              GimpSmudgeOptions))
+#define GIMP_SMUDGE_OPTIONS_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SMUDGE_OPTIONS,                  \
+                           GimpSmudgeOptionsClass))
+#define GIMP_IS_SMUDGE_OPTIONS(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SMUDGE_OPTIONS))
+#define GIMP_IS_SMUDGE_OPTIONS_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SMUDGE_OPTIONS))
+#define GIMP_SMUDGE_OPTIONS_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SMUDGE_OPTIONS,                  \
+                             GimpSmudgeOptionsClass))
 
 typedef struct _GimpSmudgeOptionsClass GimpSmudgeOptionsClass;
 
-struct _GimpSmudgeOptions
-{
-	GimpPaintOptions parent_instance;
+struct _GimpSmudgeOptions {
+  GimpPaintOptions parent_instance;
 
-	gdouble rate;
-	gdouble flow;
-	gboolean no_erasing;
-	gboolean sample_merged;
+  gdouble rate;
+  gdouble flow;
+  gboolean no_erasing;
+  gboolean sample_merged;
 };
 
-struct _GimpSmudgeOptionsClass
-{
-	GimpPaintOptionsClass parent_class;
+struct _GimpSmudgeOptionsClass {
+  GimpPaintOptionsClass parent_class;
 };
 
+GType gimp_smudge_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_smudge_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_SMUDGE_OPTIONS_H__  */
+#endif /*  __GIMP_SMUDGE_OPTIONS_H__  */

@@ -20,16 +20,13 @@
 #ifndef __GIMP_GEGL_ENUMS_H__
 #define __GIMP_GEGL_ENUMS_H__
 
+#define GIMP_TYPE_CAGE_MODE (gimp_cage_mode_get_type())
 
-#define GIMP_TYPE_CAGE_MODE (gimp_cage_mode_get_type ())
+GType gimp_cage_mode_get_type(void) G_GNUC_CONST;
 
-GType gimp_cage_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-	GIMP_CAGE_MODE_CAGE_CHANGE, /*< desc="Create or adjust the cage"            >*/
-	GIMP_CAGE_MODE_DEFORM   /*< desc="Deform the cage\nto deform the image" >*/
+typedef enum {
+  GIMP_CAGE_MODE_CAGE_CHANGE, /*< desc="Create or adjust the cage" >*/
+  GIMP_CAGE_MODE_DEFORM /*< desc="Deform the cage\nto deform the image" >*/
 } GimpCageMode;
-
 
 #endif /* __GIMP_GEGL_ENUMS_H__ */

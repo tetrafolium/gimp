@@ -18,11 +18,9 @@
 #ifndef __DISPLAY_TYPES_H__
 #define __DISPLAY_TYPES_H__
 
-
 #include "propgui/propgui-types.h"
 
 #include "display/display-enums.h"
-
 
 typedef struct _GimpCanvas GimpCanvas;
 typedef struct _GimpCanvasGroup GimpCanvasGroup;
@@ -47,6 +45,5 @@ typedef struct _GimpToolWidgetGroup GimpToolWidgetGroup;
 
 typedef struct _GimpDisplayXfer GimpDisplayXfer;
 typedef struct _Selection Selection;
-
 
 #endif /* __DISPLAY_TYPES_H__ */

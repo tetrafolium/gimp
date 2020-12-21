@@ -18,8 +18,6 @@
 #ifndef __INPUT_DEVICES_DIALOG_H__
 #define __INPUT_DEVICES_DIALOG_H__
 
-
-GtkWidget * input_devices_dialog_new (Gimp *gimp);
-
+GtkWidget *input_devices_dialog_new(Gimp *gimp);
 
 #endif /* __INPUT_DEVICES_DIALOG_H__ */

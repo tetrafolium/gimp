@@ -21,10 +21,8 @@
 #ifndef __APP_GIMP_UPDATE_H__
 #define __APP_GIMP_UPDATE_H__
 
-
-gboolean gimp_update_auto_check (GimpCoreConfig *config);
-void     gimp_update_check      (GimpCoreConfig *config);
-void     gimp_update_refresh    (GimpCoreConfig *config);
-
+gboolean gimp_update_auto_check(GimpCoreConfig *config);
+void gimp_update_check(GimpCoreConfig *config);
+void gimp_update_refresh(GimpCoreConfig *config);
 
 #endif /* __APP_GIMP_UPDATE_H__ */

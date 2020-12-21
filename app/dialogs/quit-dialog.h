@@ -20,9 +20,7 @@
 #ifndef __QUIT_DIALOG_H__
 #define __QUIT_DIALOG_H__
 
+GtkWidget *quit_dialog_new(Gimp *gimp);
+GtkWidget *close_all_dialog_new(Gimp *gimp);
 
-GtkWidget * quit_dialog_new      (Gimp *gimp);
-GtkWidget * close_all_dialog_new (Gimp *gimp);
-
-
-#endif  /*  __QUIT_DIALOG_H__  */
+#endif /*  __QUIT_DIALOG_H__  */

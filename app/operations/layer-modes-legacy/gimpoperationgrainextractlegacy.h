@@ -21,33 +21,36 @@
 #ifndef __GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_H__
 #define __GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_H__
 
-
 #include "operations/layer-modes/gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY            (gimp_operation_grain_extract_legacy_get_type ())
-#define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY, GimpOperationGrainExtractLegacy))
-#define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY, GimpOperationGrainExtractLegacyClass))
-#define GIMP_IS_OPERATION_GRAIN_EXTRACT_LEGACY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY))
-#define GIMP_IS_OPERATION_GRAIN_EXTRACT_LEGACY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY))
-#define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY, GimpOperationGrainExtractLegacyClass))
-
+#define GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY                               \
+  (gimp_operation_grain_extract_legacy_get_type())
+#define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY(obj)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY, \
+                              GimpOperationGrainExtractLegacy))
+#define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_CLASS(klass)                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY,  \
+                           GimpOperationGrainExtractLegacyClass))
+#define GIMP_IS_OPERATION_GRAIN_EXTRACT_LEGACY(obj)                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY))
+#define GIMP_IS_OPERATION_GRAIN_EXTRACT_LEGACY_CLASS(klass)                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY))
+#define GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_GET_CLASS(obj)                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_GRAIN_EXTRACT_LEGACY,  \
+                             GimpOperationGrainExtractLegacyClass))
 
 typedef struct _GimpOperationGrainExtractLegacy GimpOperationGrainExtractLegacy;
-typedef struct _GimpOperationGrainExtractLegacyClass GimpOperationGrainExtractLegacyClass;
+typedef struct _GimpOperationGrainExtractLegacyClass
+    GimpOperationGrainExtractLegacyClass;
 
-struct _GimpOperationGrainExtractLegacy
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationGrainExtractLegacy {
+  GimpOperationLayerMode parent_instance;
 };
 
-struct _GimpOperationGrainExtractLegacyClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationGrainExtractLegacyClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-
-GType   gimp_operation_grain_extract_legacy_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_grain_extract_legacy_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_GRAIN_EXTRACT_LEGACY_H__ */

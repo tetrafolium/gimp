@@ -20,17 +20,11 @@
 #ifndef __FILE_SAVE_H__
 #define __FILE_SAVE_H__
 
-
-GimpPDBStatusType   file_save (Gimp                 *gimp,
-                               GimpImage            *image,
-                               GimpProgress         *progress,
-                               GFile                *file,
-                               GimpPlugInProcedure  *file_proc,
-                               GimpRunMode run_mode,
-                               gboolean change_saved_state,
-                               gboolean export_backward,
-                               gboolean export_forward,
-                               GError              **error);
-
+GimpPDBStatusType file_save(Gimp *gimp, GimpImage *image,
+                            GimpProgress *progress, GFile *file,
+                            GimpPlugInProcedure *file_proc,
+                            GimpRunMode run_mode, gboolean change_saved_state,
+                            gboolean export_backward, gboolean export_forward,
+                            GError **error);
 
 #endif /* __FILE_SAVE_H__ */

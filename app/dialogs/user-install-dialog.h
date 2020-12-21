@@ -18,8 +18,6 @@
 #ifndef __USER_INSTALL_DIALOG_H__
 #define __USER_INSTALL_DIALOG_H__
 
-
-gboolean  user_install_dialog_run (GimpUserInstall *install);
-
+gboolean user_install_dialog_run(GimpUserInstall *install);
 
 #endif /* __USER_INSTALL_DIALOG_H__ */

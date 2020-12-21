@@ -18,37 +18,34 @@
 #ifndef __GIMP_CONVOLVE_H__
 #define __GIMP_CONVOLVE_H__
 
-
 #include "gimpbrushcore.h"
 
-
-#define GIMP_TYPE_CONVOLVE            (gimp_convolve_get_type ())
-#define GIMP_CONVOLVE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONVOLVE, GimpConvolve))
-#define GIMP_CONVOLVE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CONVOLVE, GimpConvolveClass))
-#define GIMP_IS_CONVOLVE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CONVOLVE))
-#define GIMP_IS_CONVOLVE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CONVOLVE))
-#define GIMP_CONVOLVE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONVOLVE, GimpConvolveClass))
-
+#define GIMP_TYPE_CONVOLVE (gimp_convolve_get_type())
+#define GIMP_CONVOLVE(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CONVOLVE, GimpConvolve))
+#define GIMP_CONVOLVE_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CONVOLVE, GimpConvolveClass))
+#define GIMP_IS_CONVOLVE(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CONVOLVE))
+#define GIMP_IS_CONVOLVE_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CONVOLVE))
+#define GIMP_CONVOLVE_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CONVOLVE, GimpConvolveClass))
 
 typedef struct _GimpConvolveClass GimpConvolveClass;
 
-struct _GimpConvolve
-{
-	GimpBrushCore parent_instance;
-	gfloat matrix[9];
-	gfloat matrix_divisor;
+struct _GimpConvolve {
+  GimpBrushCore parent_instance;
+  gfloat matrix[9];
+  gfloat matrix_divisor;
 };
 
-struct _GimpConvolveClass
-{
-	GimpBrushCoreClass parent_class;
+struct _GimpConvolveClass {
+  GimpBrushCoreClass parent_class;
 };
 
+void gimp_convolve_register(Gimp *gimp, GimpPaintRegisterCallback callback);
 
-void    gimp_convolve_register (Gimp                      *gimp,
-                                GimpPaintRegisterCallback callback);
+GType gimp_convolve_get_type(void) G_GNUC_CONST;
 
-GType   gimp_convolve_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_CONVOLVE_H__  */
+#endif /*  __GIMP_CONVOLVE_H__  */

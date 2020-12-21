@@ -21,11 +21,8 @@
 #ifndef __METADATA_ROTATION_IMPORT_DIALOG_H__
 #define __METADATA_ROTATION_IMPORT_DIALOG_H__
 
+GimpMetadataRotationPolicy
+metadata_rotation_import_dialog_run(GimpImage *image, GimpContext *context,
+                                    GtkWidget *parent, gboolean *dont_ask);
 
-GimpMetadataRotationPolicy metadata_rotation_import_dialog_run (GimpImage   *image,
-                                                                GimpContext *context,
-                                                                GtkWidget   *parent,
-                                                                gboolean    *dont_ask);
-
-
-#endif  /*  __METADATA_ROTATION_IMPORT_DIALOG_H__*/
+#endif /*  __METADATA_ROTATION_IMPORT_DIALOG_H__*/

@@ -32,56 +32,43 @@
 
 #include "gimpmultiwindowstrategy.h"
 
+static void gimp_multi_window_strategy_window_strategy_iface_init(
+    GimpWindowStrategyInterface *iface);
+static GtkWidget *gimp_multi_window_strategy_show_dockable_dialog(
+    GimpWindowStrategy *strategy, Gimp *gimp, GimpDialogFactory *factory,
+    GdkMonitor *monitor, const gchar *identifiers);
 
-static void        gimp_multi_window_strategy_window_strategy_iface_init (GimpWindowStrategyInterface *iface);
-static GtkWidget * gimp_multi_window_strategy_show_dockable_dialog       (GimpWindowStrategy          *strategy,
-                                                                          Gimp                        *gimp,
-                                                                          GimpDialogFactory           *factory,
-                                                                          GdkMonitor                  *monitor,
-                                                                          const gchar                 *identifiers);
-
-
-G_DEFINE_TYPE_WITH_CODE (GimpMultiWindowStrategy, gimp_multi_window_strategy, GIMP_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_WINDOW_STRATEGY,
-                                                gimp_multi_window_strategy_window_strategy_iface_init))
+G_DEFINE_TYPE_WITH_CODE(
+    GimpMultiWindowStrategy, gimp_multi_window_strategy, GIMP_TYPE_OBJECT,
+    G_IMPLEMENT_INTERFACE(
+        GIMP_TYPE_WINDOW_STRATEGY,
+        gimp_multi_window_strategy_window_strategy_iface_init))
 
 #define parent_class gimp_multi_window_strategy_parent_class
 
-
 static void
-gimp_multi_window_strategy_class_init (GimpMultiWindowStrategyClass *klass)
-{
+gimp_multi_window_strategy_class_init(GimpMultiWindowStrategyClass *klass) {}
+
+static void gimp_multi_window_strategy_init(GimpMultiWindowStrategy *strategy) {
 }
 
-static void
-gimp_multi_window_strategy_init (GimpMultiWindowStrategy *strategy)
-{
+static void gimp_multi_window_strategy_window_strategy_iface_init(
+    GimpWindowStrategyInterface *iface) {
+  iface->show_dockable_dialog = gimp_multi_window_strategy_show_dockable_dialog;
 }
 
-static void
-gimp_multi_window_strategy_window_strategy_iface_init (GimpWindowStrategyInterface *iface)
-{
-	iface->show_dockable_dialog = gimp_multi_window_strategy_show_dockable_dialog;
+static GtkWidget *gimp_multi_window_strategy_show_dockable_dialog(
+    GimpWindowStrategy *strategy, Gimp *gimp, GimpDialogFactory *factory,
+    GdkMonitor *monitor, const gchar *identifiers) {
+  return gimp_dialog_factory_dialog_raise(factory, monitor, NULL, identifiers,
+                                          -1);
 }
 
-static GtkWidget *
-gimp_multi_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
-                                                 Gimp               *gimp,
-                                                 GimpDialogFactory  *factory,
-                                                 GdkMonitor         *monitor,
-                                                 const gchar        *identifiers)
-{
-	return gimp_dialog_factory_dialog_raise (factory, monitor, NULL,
-	                                         identifiers, -1);
-}
+GimpObject *gimp_multi_window_strategy_get_singleton(void) {
+  static GimpObject *singleton = NULL;
 
-GimpObject *
-gimp_multi_window_strategy_get_singleton (void)
-{
-	static GimpObject *singleton = NULL;
+  if (!singleton)
+    singleton = g_object_new(GIMP_TYPE_MULTI_WINDOW_STRATEGY, NULL);
 
-	if (!singleton)
-		singleton = g_object_new (GIMP_TYPE_MULTI_WINDOW_STRATEGY, NULL);
-
-	return singleton;
+  return singleton;
 }

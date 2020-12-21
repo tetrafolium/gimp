@@ -18,34 +18,35 @@
 #ifndef __GIMP_ERASER_OPTIONS_H__
 #define __GIMP_ERASER_OPTIONS_H__
 
-
 #include "gimppaintoptions.h"
 
-
-#define GIMP_TYPE_ERASER_OPTIONS            (gimp_eraser_options_get_type ())
-#define GIMP_ERASER_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ERASER_OPTIONS, GimpEraserOptions))
-#define GIMP_ERASER_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ERASER_OPTIONS, GimpEraserOptionsClass))
-#define GIMP_IS_ERASER_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ERASER_OPTIONS))
-#define GIMP_IS_ERASER_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ERASER_OPTIONS))
-#define GIMP_ERASER_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ERASER_OPTIONS, GimpEraserOptionsClass))
-
+#define GIMP_TYPE_ERASER_OPTIONS (gimp_eraser_options_get_type())
+#define GIMP_ERASER_OPTIONS(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ERASER_OPTIONS,                 \
+                              GimpEraserOptions))
+#define GIMP_ERASER_OPTIONS_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ERASER_OPTIONS,                  \
+                           GimpEraserOptionsClass))
+#define GIMP_IS_ERASER_OPTIONS(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ERASER_OPTIONS))
+#define GIMP_IS_ERASER_OPTIONS_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ERASER_OPTIONS))
+#define GIMP_ERASER_OPTIONS_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ERASER_OPTIONS,                  \
+                             GimpEraserOptionsClass))
 
 typedef struct _GimpEraserOptionsClass GimpEraserOptionsClass;
 
-struct _GimpEraserOptions
-{
-	GimpPaintOptions parent_instance;
+struct _GimpEraserOptions {
+  GimpPaintOptions parent_instance;
 
-	gboolean anti_erase;
+  gboolean anti_erase;
 };
 
-struct _GimpEraserOptionsClass
-{
-	GimpPaintOptionsClass parent_class;
+struct _GimpEraserOptionsClass {
+  GimpPaintOptionsClass parent_class;
 };
 
+GType gimp_eraser_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_eraser_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_ERASER_OPTIONS_H__  */
+#endif /*  __GIMP_ERASER_OPTIONS_H__  */

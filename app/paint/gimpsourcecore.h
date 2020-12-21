@@ -18,93 +18,75 @@
 #ifndef __GIMP_SOURCE_CORE_H__
 #define __GIMP_SOURCE_CORE_H__
 
-
 #include "gimpbrushcore.h"
 
-
-#define GIMP_TYPE_SOURCE_CORE            (gimp_source_core_get_type ())
-#define GIMP_SOURCE_CORE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SOURCE_CORE, GimpSourceCore))
-#define GIMP_SOURCE_CORE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SOURCE_CORE, GimpSourceCoreClass))
-#define GIMP_IS_SOURCE_CORE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SOURCE_CORE))
-#define GIMP_IS_SOURCE_CORE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SOURCE_CORE))
-#define GIMP_SOURCE_CORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SOURCE_CORE, GimpSourceCoreClass))
-
+#define GIMP_TYPE_SOURCE_CORE (gimp_source_core_get_type())
+#define GIMP_SOURCE_CORE(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SOURCE_CORE, GimpSourceCore))
+#define GIMP_SOURCE_CORE_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SOURCE_CORE, GimpSourceCoreClass))
+#define GIMP_IS_SOURCE_CORE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SOURCE_CORE))
+#define GIMP_IS_SOURCE_CORE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SOURCE_CORE))
+#define GIMP_SOURCE_CORE_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SOURCE_CORE, GimpSourceCoreClass))
 
 typedef struct _GimpSourceCoreClass GimpSourceCoreClass;
 
-struct _GimpSourceCore
-{
-	GimpBrushCore parent_instance;
+struct _GimpSourceCore {
+  GimpBrushCore parent_instance;
 
-	gboolean set_source;
+  gboolean set_source;
 
-	GimpDrawable  *src_drawable;
-	gint src_x;
-	gint src_y;
+  GimpDrawable *src_drawable;
+  gint src_x;
+  gint src_y;
 
-	gint orig_src_x;
-	gint orig_src_y;
+  gint orig_src_x;
+  gint orig_src_y;
 
-	gint offset_x;
-	gint offset_y;
-	gboolean first_stroke;
+  gint offset_x;
+  gint offset_y;
+  gboolean first_stroke;
 };
 
-struct _GimpSourceCoreClass
-{
-	GimpBrushCoreClass parent_class;
+struct _GimpSourceCoreClass {
+  GimpBrushCoreClass parent_class;
 
-	gboolean (* use_source) (GimpSourceCore    *source_core,
-	                         GimpSourceOptions *options);
+  gboolean (*use_source)(GimpSourceCore *source_core,
+                         GimpSourceOptions *options);
 
-	GeglBuffer * (* get_source) (GimpSourceCore    *source_core,
-	                             GimpDrawable      *drawable,
-	                             GimpPaintOptions  *paint_options,
-	                             GimpPickable      *src_pickable,
-	                             gint src_offset_x,
-	                             gint src_offset_y,
-	                             GeglBuffer        *paint_buffer,
-	                             gint paint_buffer_x,
-	                             gint paint_buffer_y,
-	                             /* offsets *into* the paint_buffer: */
-	                             gint              *paint_area_offset_x,
-	                             gint              *paint_area_offset_y,
-	                             gint              *paint_area_width,
-	                             gint              *paint_area_height,
-	                             GeglRectangle     *src_rect);
+  GeglBuffer *(*get_source)(GimpSourceCore *source_core, GimpDrawable *drawable,
+                            GimpPaintOptions *paint_options,
+                            GimpPickable *src_pickable, gint src_offset_x,
+                            gint src_offset_y, GeglBuffer *paint_buffer,
+                            gint paint_buffer_x, gint paint_buffer_y,
+                            /* offsets *into* the paint_buffer: */
+                            gint *paint_area_offset_x,
+                            gint *paint_area_offset_y, gint *paint_area_width,
+                            gint *paint_area_height, GeglRectangle *src_rect);
 
-	void (*  motion)    (GimpSourceCore    *source_core,
-	                     GimpDrawable      *drawable,
-	                     GimpPaintOptions  *paint_options,
-	                     const GimpCoords  *coords,
-	                     GeglNode          *op,
-	                     gdouble opacity,
-	                     GimpPickable      *src_pickable,
-	                     GeglBuffer        *src_buffer,
-	                     GeglRectangle     *src_rect,
-	                     gint src_offset_x,
-	                     gint src_offset_y,
-	                     GeglBuffer        *paint_buffer,
-	                     gint paint_buffer_x,
-	                     gint paint_buffer_y,
-	                     /* offsets *into* the paint_buffer: */
-	                     gint paint_area_offset_x,
-	                     gint paint_area_offset_y,
-	                     gint paint_area_width,
-	                     gint paint_area_height);
+  void (*motion)(GimpSourceCore *source_core, GimpDrawable *drawable,
+                 GimpPaintOptions *paint_options, const GimpCoords *coords,
+                 GeglNode *op, gdouble opacity, GimpPickable *src_pickable,
+                 GeglBuffer *src_buffer, GeglRectangle *src_rect,
+                 gint src_offset_x, gint src_offset_y, GeglBuffer *paint_buffer,
+                 gint paint_buffer_x, gint paint_buffer_y,
+                 /* offsets *into* the paint_buffer: */
+                 gint paint_area_offset_x, gint paint_area_offset_y,
+                 gint paint_area_width, gint paint_area_height);
 };
 
+GType gimp_source_core_get_type(void) G_GNUC_CONST;
 
-GType    gimp_source_core_get_type   (void) G_GNUC_CONST;
-
-gboolean gimp_source_core_use_source (GimpSourceCore    *source_core,
-                                      GimpSourceOptions *options);
+gboolean gimp_source_core_use_source(GimpSourceCore *source_core,
+                                     GimpSourceOptions *options);
 
 /* TEMP HACK */
-void     gimp_source_core_motion     (GimpSourceCore    *source_core,
-                                      GimpDrawable      *drawable,
-                                      GimpPaintOptions  *paint_options,
-                                      GimpSymmetry      *sym);
+void gimp_source_core_motion(GimpSourceCore *source_core,
+                             GimpDrawable *drawable,
+                             GimpPaintOptions *paint_options,
+                             GimpSymmetry *sym);
 
-
-#endif  /*  __GIMP_SOURCE_CORE_H__  */
+#endif /*  __GIMP_SOURCE_CORE_H__  */

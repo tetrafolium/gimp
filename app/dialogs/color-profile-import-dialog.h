@@ -21,15 +21,9 @@
 #ifndef __COLOR_PROFILE_IMPORT_DIALOG_H__
 #define __COLOR_PROFILE_IMPORT_DIALOG_H__
 
+GimpColorProfilePolicy color_profile_import_dialog_run(
+    GimpImage *image, GimpContext *context, GtkWidget *parent,
+    GimpColorProfile **dest_profile, GimpColorRenderingIntent *intent,
+    gboolean *bpc, gboolean *dont_ask);
 
-GimpColorProfilePolicy
-color_profile_import_dialog_run (GimpImage                 *image,
-                                 GimpContext               *context,
-                                 GtkWidget                 *parent,
-                                 GimpColorProfile         **dest_profile,
-                                 GimpColorRenderingIntent  *intent,
-                                 gboolean                  *bpc,
-                                 gboolean                  *dont_ask);
-
-
-#endif  /*  __COLOR_PROFILE_IMPORT_DIALOG_H__  */
+#endif /*  __COLOR_PROFILE_IMPORT_DIALOG_H__  */

@@ -18,35 +18,32 @@
 #ifndef __GIMP_PENCIL_H__
 #define __GIMP_PENCIL_H__
 
-
 #include "gimppaintbrush.h"
 
-
-#define GIMP_TYPE_PENCIL            (gimp_pencil_get_type ())
-#define GIMP_PENCIL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PENCIL, GimpPencil))
-#define GIMP_PENCIL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PENCIL, GimpPencilClass))
-#define GIMP_IS_PENCIL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PENCIL))
-#define GIMP_IS_PENCIL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PENCIL))
-#define GIMP_PENCIL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PENCIL, GimpPencilClass))
-
+#define GIMP_TYPE_PENCIL (gimp_pencil_get_type())
+#define GIMP_PENCIL(obj)                                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PENCIL, GimpPencil))
+#define GIMP_PENCIL_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PENCIL, GimpPencilClass))
+#define GIMP_IS_PENCIL(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PENCIL))
+#define GIMP_IS_PENCIL_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PENCIL))
+#define GIMP_PENCIL_GET_CLASS(obj)                                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PENCIL, GimpPencilClass))
 
 typedef struct _GimpPencilClass GimpPencilClass;
 
-struct _GimpPencil
-{
-	GimpPaintbrush parent_instance;
+struct _GimpPencil {
+  GimpPaintbrush parent_instance;
 };
 
-struct _GimpPencilClass
-{
-	GimpPaintbrushClass parent_class;
+struct _GimpPencilClass {
+  GimpPaintbrushClass parent_class;
 };
 
+void gimp_pencil_register(Gimp *gimp, GimpPaintRegisterCallback callback);
 
-void    gimp_pencil_register (Gimp                      *gimp,
-                              GimpPaintRegisterCallback callback);
+GType gimp_pencil_get_type(void) G_GNUC_CONST;
 
-GType   gimp_pencil_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_PENCIL_H__  */
+#endif /*  __GIMP_PENCIL_H__  */

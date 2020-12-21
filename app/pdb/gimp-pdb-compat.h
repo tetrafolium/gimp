@@ -18,9 +18,7 @@
 #ifndef __GIMP_PDB_COMPAT_H__
 #define __GIMP_PDB_COMPAT_H__
 
+void gimp_pdb_compat_procs_register(GimpPDB *pdb,
+                                    GimpPDBCompatMode compat_mode);
 
-void   gimp_pdb_compat_procs_register (GimpPDB           *pdb,
-                                       GimpPDBCompatMode compat_mode);
-
-
-#endif  /*  __GIMP_PDB_COMPAT_H__  */
+#endif /*  __GIMP_PDB_COMPAT_H__  */

@@ -21,32 +21,41 @@
 #ifndef __GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_H__
 #define __GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_H__
 
+#define GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE                             \
+  (gimp_operation_buffer_source_validate_get_type())
+#define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE(obj)                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj),                                           \
+                              GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE,      \
+                              GimpOperationBufferSourceValidate))
+#define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_CLASS(klass)                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass),                                            \
+                           GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE,         \
+                           GimpOperationBufferSourceValidateClass))
+#define GIMP_IS_OPERATION_BUFFER_SOURCE_VALIDATE(obj)                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj),                                           \
+                              GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE))
+#define GIMP_IS_OPERATION_BUFFER_SOURCE_VALIDATE_CLASS(klass)                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE))
+#define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_GET_CLASS(obj)                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj),                                            \
+                             GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE,       \
+                             GimpOperationBufferSourceValidateClass))
 
-#define GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE            (gimp_operation_buffer_source_validate_get_type ())
-#define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE, GimpOperationBufferSourceValidate))
-#define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE, GimpOperationBufferSourceValidateClass))
-#define GIMP_IS_OPERATION_BUFFER_SOURCE_VALIDATE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE))
-#define GIMP_IS_OPERATION_BUFFER_SOURCE_VALIDATE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE))
-#define GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_BUFFER_SOURCE_VALIDATE, GimpOperationBufferSourceValidateClass))
+typedef struct _GimpOperationBufferSourceValidate
+    GimpOperationBufferSourceValidate;
+typedef struct _GimpOperationBufferSourceValidateClass
+    GimpOperationBufferSourceValidateClass;
 
+struct _GimpOperationBufferSourceValidate {
+  GeglOperationSource parent_instance;
 
-typedef struct _GimpOperationBufferSourceValidate GimpOperationBufferSourceValidate;
-typedef struct _GimpOperationBufferSourceValidateClass GimpOperationBufferSourceValidateClass;
-
-struct _GimpOperationBufferSourceValidate
-{
-	GeglOperationSource parent_instance;
-
-	GeglBuffer          *buffer;
+  GeglBuffer *buffer;
 };
 
-struct _GimpOperationBufferSourceValidateClass
-{
-	GeglOperationSourceClass parent_class;
+struct _GimpOperationBufferSourceValidateClass {
+  GeglOperationSourceClass parent_class;
 };
 
-
-GType   gimp_operation_buffer_source_validate_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_buffer_source_validate_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_BUFFER_SOURCE_VALIDATE_H__ */

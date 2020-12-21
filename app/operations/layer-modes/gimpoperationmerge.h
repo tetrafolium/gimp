@@ -22,33 +22,34 @@
 #ifndef __GIMP_OPERATION_MERGE_H__
 #define __GIMP_OPERATION_MERGE_H__
 
-
 #include "gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_MERGE            (gimp_operation_merge_get_type ())
-#define GIMP_OPERATION_MERGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_MERGE, GimpOperationMerge))
-#define GIMP_OPERATION_MERGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_MERGE, GimpOperationMergeClass))
-#define GIMP_IS_OPERATION_MERGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_MERGE))
-#define GIMP_IS_OPERATION_MERGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_MERGE))
-#define GIMP_OPERATION_MERGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_MERGE, GimpOperationMergeClass))
-
+#define GIMP_TYPE_OPERATION_MERGE (gimp_operation_merge_get_type())
+#define GIMP_OPERATION_MERGE(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_MERGE,                \
+                              GimpOperationMerge))
+#define GIMP_OPERATION_MERGE_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_MERGE,                 \
+                           GimpOperationMergeClass))
+#define GIMP_IS_OPERATION_MERGE(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_MERGE))
+#define GIMP_IS_OPERATION_MERGE_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_MERGE))
+#define GIMP_OPERATION_MERGE_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_MERGE,                 \
+                             GimpOperationMergeClass))
 
 typedef struct _GimpOperationMerge GimpOperationMerge;
 typedef struct _GimpOperationMergeClass GimpOperationMergeClass;
 
-struct _GimpOperationMerge
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationMerge {
+  GimpOperationLayerMode parent_instance;
 };
 
-struct _GimpOperationMergeClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationMergeClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-
-GType   gimp_operation_merge_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_merge_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_MERGE_H__ */

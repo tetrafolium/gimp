@@ -20,13 +20,9 @@
 #ifndef __GIMP_PLUG_IN_MANAGER_QUERY_H__
 #define __GIMP_PLUG_IN_MANAGER_QUERY_H__
 
-
-gint   gimp_plug_in_manager_query (GimpPlugInManager   *manager,
-                                   const gchar         *search_str,
-                                   gchar             ***procedure_strs,
-                                   gchar             ***accel_strs,
-                                   gchar             ***prog_strs,
-                                   gint32             **time_ints);
-
+gint gimp_plug_in_manager_query(GimpPlugInManager *manager,
+                                const gchar *search_str,
+                                gchar ***procedure_strs, gchar ***accel_strs,
+                                gchar ***prog_strs, gint32 **time_ints);
 
 #endif /* __GIMP_PLUG_IN_MANAGER_QUERY_H__ */

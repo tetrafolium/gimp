@@ -27,64 +27,61 @@
 
 #include "internal-procs.h"
 
-
 /* 755 procedures registered total */
 
-void
-internal_procs_init (GimpPDB *pdb)
-{
-	g_return_if_fail (GIMP_IS_PDB (pdb));
+void internal_procs_init(GimpPDB *pdb) {
+  g_return_if_fail(GIMP_IS_PDB(pdb));
 
-	register_brush_procs (pdb);
-	register_brush_select_procs (pdb);
-	register_brushes_procs (pdb);
-	register_buffer_procs (pdb);
-	register_channel_procs (pdb);
-	register_context_procs (pdb);
-	register_debug_procs (pdb);
-	register_display_procs (pdb);
-	register_drawable_procs (pdb);
-	register_drawable_color_procs (pdb);
-	register_drawable_edit_procs (pdb);
-	register_dynamics_procs (pdb);
-	register_edit_procs (pdb);
-	register_file_procs (pdb);
-	register_floating_sel_procs (pdb);
-	register_font_select_procs (pdb);
-	register_fonts_procs (pdb);
-	register_gimp_procs (pdb);
-	register_gimprc_procs (pdb);
-	register_gradient_procs (pdb);
-	register_gradient_select_procs (pdb);
-	register_gradients_procs (pdb);
-	register_help_procs (pdb);
-	register_image_procs (pdb);
-	register_image_color_profile_procs (pdb);
-	register_image_convert_procs (pdb);
-	register_image_grid_procs (pdb);
-	register_image_guides_procs (pdb);
-	register_image_sample_points_procs (pdb);
-	register_image_select_procs (pdb);
-	register_image_transform_procs (pdb);
-	register_image_undo_procs (pdb);
-	register_item_procs (pdb);
-	register_item_transform_procs (pdb);
-	register_layer_procs (pdb);
-	register_message_procs (pdb);
-	register_paint_tools_procs (pdb);
-	register_palette_procs (pdb);
-	register_palette_select_procs (pdb);
-	register_palettes_procs (pdb);
-	register_pattern_procs (pdb);
-	register_pattern_select_procs (pdb);
-	register_patterns_procs (pdb);
-	register_pdb_procs (pdb);
-	register_plug_in_procs (pdb);
-	register_plug_in_compat_procs (pdb);
-	register_progress_procs (pdb);
-	register_selection_procs (pdb);
-	register_text_layer_procs (pdb);
-	register_text_tool_procs (pdb);
-	register_unit_procs (pdb);
-	register_vectors_procs (pdb);
+  register_brush_procs(pdb);
+  register_brush_select_procs(pdb);
+  register_brushes_procs(pdb);
+  register_buffer_procs(pdb);
+  register_channel_procs(pdb);
+  register_context_procs(pdb);
+  register_debug_procs(pdb);
+  register_display_procs(pdb);
+  register_drawable_procs(pdb);
+  register_drawable_color_procs(pdb);
+  register_drawable_edit_procs(pdb);
+  register_dynamics_procs(pdb);
+  register_edit_procs(pdb);
+  register_file_procs(pdb);
+  register_floating_sel_procs(pdb);
+  register_font_select_procs(pdb);
+  register_fonts_procs(pdb);
+  register_gimp_procs(pdb);
+  register_gimprc_procs(pdb);
+  register_gradient_procs(pdb);
+  register_gradient_select_procs(pdb);
+  register_gradients_procs(pdb);
+  register_help_procs(pdb);
+  register_image_procs(pdb);
+  register_image_color_profile_procs(pdb);
+  register_image_convert_procs(pdb);
+  register_image_grid_procs(pdb);
+  register_image_guides_procs(pdb);
+  register_image_sample_points_procs(pdb);
+  register_image_select_procs(pdb);
+  register_image_transform_procs(pdb);
+  register_image_undo_procs(pdb);
+  register_item_procs(pdb);
+  register_item_transform_procs(pdb);
+  register_layer_procs(pdb);
+  register_message_procs(pdb);
+  register_paint_tools_procs(pdb);
+  register_palette_procs(pdb);
+  register_palette_select_procs(pdb);
+  register_palettes_procs(pdb);
+  register_pattern_procs(pdb);
+  register_pattern_select_procs(pdb);
+  register_patterns_procs(pdb);
+  register_pdb_procs(pdb);
+  register_plug_in_procs(pdb);
+  register_plug_in_compat_procs(pdb);
+  register_progress_procs(pdb);
+  register_selection_procs(pdb);
+  register_text_layer_procs(pdb);
+  register_text_tool_procs(pdb);
+  register_unit_procs(pdb);
+  register_vectors_procs(pdb);
 }

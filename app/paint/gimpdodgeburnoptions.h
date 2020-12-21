@@ -18,36 +18,37 @@
 #ifndef __GIMP_DODGE_BURN_OPTIONS_H__
 #define __GIMP_DODGE_BURN_OPTIONS_H__
 
-
 #include "gimppaintoptions.h"
 
-
-#define GIMP_TYPE_DODGE_BURN_OPTIONS            (gimp_dodge_burn_options_get_type ())
-#define GIMP_DODGE_BURN_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DODGE_BURN_OPTIONS, GimpDodgeBurnOptions))
-#define GIMP_DODGE_BURN_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DODGE_BURN_OPTIONS, GimpDodgeBurnOptionsClass))
-#define GIMP_IS_DODGE_BURN_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DODGE_BURN_OPTIONS))
-#define GIMP_IS_DODGE_BURN_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DODGE_BURN_OPTIONS))
-#define GIMP_DODGE_BURN_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DODGE_BURN_OPTIONS, GimpDodgeBurnOptionsClass))
-
+#define GIMP_TYPE_DODGE_BURN_OPTIONS (gimp_dodge_burn_options_get_type())
+#define GIMP_DODGE_BURN_OPTIONS(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DODGE_BURN_OPTIONS,             \
+                              GimpDodgeBurnOptions))
+#define GIMP_DODGE_BURN_OPTIONS_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DODGE_BURN_OPTIONS,              \
+                           GimpDodgeBurnOptionsClass))
+#define GIMP_IS_DODGE_BURN_OPTIONS(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DODGE_BURN_OPTIONS))
+#define GIMP_IS_DODGE_BURN_OPTIONS_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DODGE_BURN_OPTIONS))
+#define GIMP_DODGE_BURN_OPTIONS_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DODGE_BURN_OPTIONS,              \
+                             GimpDodgeBurnOptionsClass))
 
 typedef struct _GimpDodgeBurnOptionsClass GimpDodgeBurnOptionsClass;
 
-struct _GimpDodgeBurnOptions
-{
-	GimpPaintOptions parent_instance;
+struct _GimpDodgeBurnOptions {
+  GimpPaintOptions parent_instance;
 
-	GimpDodgeBurnType type;
-	GimpTransferMode mode;   /*highlights, midtones, shadows*/
-	gdouble exposure;
+  GimpDodgeBurnType type;
+  GimpTransferMode mode; /*highlights, midtones, shadows*/
+  gdouble exposure;
 };
 
-struct _GimpDodgeBurnOptionsClass
-{
-	GimpPaintOptionsClass parent_class;
+struct _GimpDodgeBurnOptionsClass {
+  GimpPaintOptionsClass parent_class;
 };
 
+GType gimp_dodge_burn_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_dodge_burn_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_DODGE_BURN_OPTIONS_H__  */
+#endif /*  __GIMP_DODGE_BURN_OPTIONS_H__  */

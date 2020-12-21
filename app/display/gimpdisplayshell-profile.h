@@ -18,13 +18,11 @@
 #ifndef __GIMP_DISPLAY_SHELL_PROFILE_H__
 #define __GIMP_DISPLAY_SHELL_PROFILE_H__
 
+void gimp_display_shell_profile_init(GimpDisplayShell *shell);
+void gimp_display_shell_profile_finalize(GimpDisplayShell *shell);
 
-void     gimp_display_shell_profile_init              (GimpDisplayShell *shell);
-void     gimp_display_shell_profile_finalize          (GimpDisplayShell *shell);
+void gimp_display_shell_profile_update(GimpDisplayShell *shell);
 
-void     gimp_display_shell_profile_update            (GimpDisplayShell *shell);
-
-gboolean gimp_display_shell_profile_can_convert_to_u8 (GimpDisplayShell *shell);
-
+gboolean gimp_display_shell_profile_can_convert_to_u8(GimpDisplayShell *shell);
 
 #endif /*  __GIMP_DISPLAY_SHELL_PROFILE_H__  */

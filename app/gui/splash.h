@@ -18,15 +18,10 @@
 #ifndef __SPLASH_H__
 #define __SPLASH_H__
 
+void splash_create(Gimp *gimp, gboolean be_verbose, GdkMonitor *mointor);
+void splash_destroy(void);
 
-void   splash_create    (Gimp        *gimp,
-                         gboolean be_verbose,
-                         GdkMonitor  *mointor);
-void   splash_destroy   (void);
-
-void   splash_update    (const gchar *label1,
-                         const gchar *label2,
-                         gdouble percentage);
-
+void splash_update(const gchar *label1, const gchar *label2,
+                   gdouble percentage);
 
 #endif /* __SPLASH_H__ */

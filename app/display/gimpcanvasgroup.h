@@ -21,48 +21,46 @@
 #ifndef __GIMP_CANVAS_GROUP_H__
 #define __GIMP_CANVAS_GROUP_H__
 
-
 #include "gimpcanvasitem.h"
 
-
-#define GIMP_TYPE_CANVAS_GROUP            (gimp_canvas_group_get_type ())
-#define GIMP_CANVAS_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CANVAS_GROUP, GimpCanvasGroup))
-#define GIMP_CANVAS_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CANVAS_GROUP, GimpCanvasGroupClass))
-#define GIMP_IS_CANVAS_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CANVAS_GROUP))
-#define GIMP_IS_CANVAS_GROUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CANVAS_GROUP))
-#define GIMP_CANVAS_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_GROUP, GimpCanvasGroupClass))
-
+#define GIMP_TYPE_CANVAS_GROUP (gimp_canvas_group_get_type())
+#define GIMP_CANVAS_GROUP(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CANVAS_GROUP, GimpCanvasGroup))
+#define GIMP_CANVAS_GROUP_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CANVAS_GROUP,                    \
+                           GimpCanvasGroupClass))
+#define GIMP_IS_CANVAS_GROUP(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CANVAS_GROUP))
+#define GIMP_IS_CANVAS_GROUP_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CANVAS_GROUP))
+#define GIMP_CANVAS_GROUP_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CANVAS_GROUP,                    \
+                             GimpCanvasGroupClass))
 
 typedef struct _GimpCanvasGroupPrivate GimpCanvasGroupPrivate;
 typedef struct _GimpCanvasGroupClass GimpCanvasGroupClass;
 
-struct _GimpCanvasGroup
-{
-	GimpCanvasItem parent_instance;
+struct _GimpCanvasGroup {
+  GimpCanvasItem parent_instance;
 
-	GimpCanvasGroupPrivate *priv;
-
+  GimpCanvasGroupPrivate *priv;
 };
 
-struct _GimpCanvasGroupClass
-{
-	GimpCanvasItemClass parent_class;
+struct _GimpCanvasGroupClass {
+  GimpCanvasItemClass parent_class;
 };
 
+GType gimp_canvas_group_get_type(void) G_GNUC_CONST;
 
-GType            gimp_canvas_group_get_type           (void) G_GNUC_CONST;
+GimpCanvasItem *gimp_canvas_group_new(GimpDisplayShell *shell);
 
-GimpCanvasItem * gimp_canvas_group_new                (GimpDisplayShell *shell);
+void gimp_canvas_group_add_item(GimpCanvasGroup *group, GimpCanvasItem *item);
+void gimp_canvas_group_remove_item(GimpCanvasGroup *group,
+                                   GimpCanvasItem *item);
 
-void             gimp_canvas_group_add_item           (GimpCanvasGroup  *group,
-                                                       GimpCanvasItem   *item);
-void             gimp_canvas_group_remove_item        (GimpCanvasGroup  *group,
-                                                       GimpCanvasItem   *item);
-
-void             gimp_canvas_group_set_group_stroking (GimpCanvasGroup  *group,
-                                                       gboolean group_stroking);
-void             gimp_canvas_group_set_group_filling  (GimpCanvasGroup  *group,
-                                                       gboolean group_filling);
-
+void gimp_canvas_group_set_group_stroking(GimpCanvasGroup *group,
+                                          gboolean group_stroking);
+void gimp_canvas_group_set_group_filling(GimpCanvasGroup *group,
+                                         gboolean group_filling);
 
 #endif /* __GIMP_CANVAS_GROUP_H__ */

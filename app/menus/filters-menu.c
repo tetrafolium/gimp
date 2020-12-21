@@ -22,43 +22,35 @@
 
 #include "menus-types.h"
 
-#include "core/gimp.h"
 #include "core/gimp-filter-history.h"
+#include "core/gimp.h"
 
 #include "widgets/gimpuimanager.h"
 
 #include "filters-menu.h"
 
-
 /*  public functions  */
 
-void
-filters_menu_setup (GimpUIManager *manager,
-                    const gchar   *ui_path)
-{
-	guint merge_id;
-	gint i;
+void filters_menu_setup(GimpUIManager *manager, const gchar *ui_path) {
+  guint merge_id;
+  gint i;
 
-	g_return_if_fail (GIMP_IS_UI_MANAGER (manager));
-	g_return_if_fail (ui_path != NULL);
+  g_return_if_fail(GIMP_IS_UI_MANAGER(manager));
+  g_return_if_fail(ui_path != NULL);
 
-	merge_id = gimp_ui_manager_new_merge_id (manager);
+  merge_id = gimp_ui_manager_new_merge_id(manager);
 
-	for (i = 0; i < gimp_filter_history_size (manager->gimp); i++)
-	{
-		gchar *action_name;
-		gchar *action_path;
+  for (i = 0; i < gimp_filter_history_size(manager->gimp); i++) {
+    gchar *action_name;
+    gchar *action_path;
 
-		action_name = g_strdup_printf ("filters-recent-%02d", i + 1);
-		action_path = g_strdup_printf ("%s/Filters/Recently Used/Filters",
-		                               ui_path);
+    action_name = g_strdup_printf("filters-recent-%02d", i + 1);
+    action_path = g_strdup_printf("%s/Filters/Recently Used/Filters", ui_path);
 
-		gimp_ui_manager_add_ui (manager, merge_id,
-		                        action_path, action_name, action_name,
-		                        GTK_UI_MANAGER_MENUITEM,
-		                        FALSE);
+    gimp_ui_manager_add_ui(manager, merge_id, action_path, action_name,
+                           action_name, GTK_UI_MANAGER_MENUITEM, FALSE);
 
-		g_free (action_name);
-		g_free (action_path);
-	}
+    g_free(action_name);
+    g_free(action_path);
+  }
 }

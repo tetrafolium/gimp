@@ -23,151 +23,98 @@
 #ifndef __GIMP_GEGL_APPLY_OPERATION_H__
 #define __GIMP_GEGL_APPLY_OPERATION_H__
 
-
 /*  generic functions, also used by the specific ones below  */
 
-void       gimp_gegl_apply_operation        (GeglBuffer          *src_buffer,
-                                             GimpProgress        *progress,
-                                             const gchar         *undo_desc,
-                                             GeglNode            *operation,
-                                             GeglBuffer          *dest_buffer,
-                                             const GeglRectangle *dest_rect,
-                                             gboolean crop_input);
+void gimp_gegl_apply_operation(GeglBuffer *src_buffer, GimpProgress *progress,
+                               const gchar *undo_desc, GeglNode *operation,
+                               GeglBuffer *dest_buffer,
+                               const GeglRectangle *dest_rect,
+                               gboolean crop_input);
 
-gboolean   gimp_gegl_apply_cached_operation (GeglBuffer          *src_buffer,
-                                             GimpProgress        *progress,
-                                             const gchar         *undo_desc,
-                                             GeglNode            *operation,
-                                             gboolean connect_src_buffer,
-                                             GeglBuffer          *dest_buffer,
-                                             const GeglRectangle *dest_rect,
-                                             gboolean crop_input,
-                                             GeglBuffer          *cache,
-                                             const GeglRectangle *valid_rects,
-                                             gint n_valid_rects,
-                                             gboolean cancelable);
-
+gboolean gimp_gegl_apply_cached_operation(
+    GeglBuffer *src_buffer, GimpProgress *progress, const gchar *undo_desc,
+    GeglNode *operation, gboolean connect_src_buffer, GeglBuffer *dest_buffer,
+    const GeglRectangle *dest_rect, gboolean crop_input, GeglBuffer *cache,
+    const GeglRectangle *valid_rects, gint n_valid_rects, gboolean cancelable);
 
 /*  apply specific operations  */
 
-void   gimp_gegl_apply_dither          (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        gint levels,
-                                        gint dither_type);
+void gimp_gegl_apply_dither(GeglBuffer *src_buffer, GimpProgress *progress,
+                            const gchar *undo_desc, GeglBuffer *dest_buffer,
+                            gint levels, gint dither_type);
 
-void   gimp_gegl_apply_flatten         (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GimpRGB          *background,
-                                        const Babl             *space,
-                                        GimpLayerColorSpace composite_space);
+void gimp_gegl_apply_flatten(GeglBuffer *src_buffer, GimpProgress *progress,
+                             const gchar *undo_desc, GeglBuffer *dest_buffer,
+                             const GimpRGB *background, const Babl *space,
+                             GimpLayerColorSpace composite_space);
 
-void   gimp_gegl_apply_feather         (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GeglRectangle    *dest_rect,
-                                        gdouble radius_x,
-                                        gdouble radius_y,
-                                        gboolean edge_lock);
+void gimp_gegl_apply_feather(GeglBuffer *src_buffer, GimpProgress *progress,
+                             const gchar *undo_desc, GeglBuffer *dest_buffer,
+                             const GeglRectangle *dest_rect, gdouble radius_x,
+                             gdouble radius_y, gboolean edge_lock);
 
-void   gimp_gegl_apply_border          (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GeglRectangle    *dest_rect,
-                                        gint radius_x,
-                                        gint radius_y,
-                                        GimpChannelBorderStyle style,
-                                        gboolean edge_lock);
+void gimp_gegl_apply_border(GeglBuffer *src_buffer, GimpProgress *progress,
+                            const gchar *undo_desc, GeglBuffer *dest_buffer,
+                            const GeglRectangle *dest_rect, gint radius_x,
+                            gint radius_y, GimpChannelBorderStyle style,
+                            gboolean edge_lock);
 
-void   gimp_gegl_apply_grow            (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GeglRectangle    *dest_rect,
-                                        gint radius_x,
-                                        gint radius_y);
+void gimp_gegl_apply_grow(GeglBuffer *src_buffer, GimpProgress *progress,
+                          const gchar *undo_desc, GeglBuffer *dest_buffer,
+                          const GeglRectangle *dest_rect, gint radius_x,
+                          gint radius_y);
 
-void   gimp_gegl_apply_shrink          (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GeglRectangle    *dest_rect,
-                                        gint radius_x,
-                                        gint radius_y,
-                                        gboolean edge_lock);
+void gimp_gegl_apply_shrink(GeglBuffer *src_buffer, GimpProgress *progress,
+                            const gchar *undo_desc, GeglBuffer *dest_buffer,
+                            const GeglRectangle *dest_rect, gint radius_x,
+                            gint radius_y, gboolean edge_lock);
 
-void   gimp_gegl_apply_flood           (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GeglRectangle    *dest_rect);
+void gimp_gegl_apply_flood(GeglBuffer *src_buffer, GimpProgress *progress,
+                           const gchar *undo_desc, GeglBuffer *dest_buffer,
+                           const GeglRectangle *dest_rect);
 
 /* UGLY: private enum of gegl:gaussian-blur */
-typedef enum
-{
-	GAUSSIAN_BLUR_ABYSS_NONE,
-	GAUSSIAN_BLUR_ABYSS_CLAMP
+typedef enum {
+  GAUSSIAN_BLUR_ABYSS_NONE,
+  GAUSSIAN_BLUR_ABYSS_CLAMP
 } GaussianBlurAbyssPolicy;
 
-void   gimp_gegl_apply_gaussian_blur   (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        const GeglRectangle    *dest_rect,
-                                        gdouble std_dev_x,
-                                        gdouble std_dev_y,
-                                        GaussianBlurAbyssPolicy abyss_policy);
+void gimp_gegl_apply_gaussian_blur(
+    GeglBuffer *src_buffer, GimpProgress *progress, const gchar *undo_desc,
+    GeglBuffer *dest_buffer, const GeglRectangle *dest_rect, gdouble std_dev_x,
+    gdouble std_dev_y, GaussianBlurAbyssPolicy abyss_policy);
 
-void   gimp_gegl_apply_invert_gamma    (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer);
+void gimp_gegl_apply_invert_gamma(GeglBuffer *src_buffer,
+                                  GimpProgress *progress,
+                                  const gchar *undo_desc,
+                                  GeglBuffer *dest_buffer);
 
-void   gimp_gegl_apply_invert_linear   (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer);
+void gimp_gegl_apply_invert_linear(GeglBuffer *src_buffer,
+                                   GimpProgress *progress,
+                                   const gchar *undo_desc,
+                                   GeglBuffer *dest_buffer);
 
-void   gimp_gegl_apply_opacity         (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        GeglBuffer             *mask,
-                                        gint mask_offset_x,
-                                        gint mask_offset_y,
-                                        gdouble opacity);
+void gimp_gegl_apply_opacity(GeglBuffer *src_buffer, GimpProgress *progress,
+                             const gchar *undo_desc, GeglBuffer *dest_buffer,
+                             GeglBuffer *mask, gint mask_offset_x,
+                             gint mask_offset_y, gdouble opacity);
 
-void   gimp_gegl_apply_scale           (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        GimpInterpolationType interpolation_type,
-                                        gdouble x,
-                                        gdouble y);
+void gimp_gegl_apply_scale(GeglBuffer *src_buffer, GimpProgress *progress,
+                           const gchar *undo_desc, GeglBuffer *dest_buffer,
+                           GimpInterpolationType interpolation_type, gdouble x,
+                           gdouble y);
 
-void   gimp_gegl_apply_set_alpha       (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        gdouble value);
+void gimp_gegl_apply_set_alpha(GeglBuffer *src_buffer, GimpProgress *progress,
+                               const gchar *undo_desc, GeglBuffer *dest_buffer,
+                               gdouble value);
 
-void   gimp_gegl_apply_threshold       (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        gdouble value);
+void gimp_gegl_apply_threshold(GeglBuffer *src_buffer, GimpProgress *progress,
+                               const gchar *undo_desc, GeglBuffer *dest_buffer,
+                               gdouble value);
 
-void   gimp_gegl_apply_transform       (GeglBuffer             *src_buffer,
-                                        GimpProgress           *progress,
-                                        const gchar            *undo_desc,
-                                        GeglBuffer             *dest_buffer,
-                                        GimpInterpolationType interpolation_type,
-                                        GimpMatrix3            *transform);
-
+void gimp_gegl_apply_transform(GeglBuffer *src_buffer, GimpProgress *progress,
+                               const gchar *undo_desc, GeglBuffer *dest_buffer,
+                               GimpInterpolationType interpolation_type,
+                               GimpMatrix3 *transform);
 
 #endif /* __GIMP_GEGL_APPLY_OPERATION_H__ */

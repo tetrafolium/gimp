@@ -18,10 +18,8 @@
 #ifndef __GUI_TYPES_H__
 #define __GUI_TYPES_H__
 
-
-#include "tools/tools-types.h"
 #include "dialogs/dialogs-types.h"
 #include "menus/menus-types.h"
-
+#include "tools/tools-types.h"
 
 #endif /* __GUI_TYPES_H__ */

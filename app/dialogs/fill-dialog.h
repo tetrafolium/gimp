@@ -21,25 +21,14 @@
 #ifndef __FILL_DIALOG_H__
 #define __FILL_DIALOG_H__
 
+typedef void (*GimpFillCallback)(GtkWidget *dialog, GimpItem *item,
+                                 GList *drawables, GimpContext *context,
+                                 GimpFillOptions *options, gpointer user_data);
 
-typedef void (* GimpFillCallback) (GtkWidget       *dialog,
-                                   GimpItem        *item,
-                                   GList           *drawables,
-                                   GimpContext     *context,
-                                   GimpFillOptions *options,
-                                   gpointer user_data);
+GtkWidget *fill_dialog_new(GimpItem *item, GList *drawables,
+                           GimpContext *context, const gchar *title,
+                           const gchar *icon_name, const gchar *help_id,
+                           GtkWidget *parent, GimpFillOptions *options,
+                           GimpFillCallback callback, gpointer user_data);
 
-
-GtkWidget * fill_dialog_new (GimpItem         *item,
-                             GList            *drawables,
-                             GimpContext      *context,
-                             const gchar      *title,
-                             const gchar      *icon_name,
-                             const gchar      *help_id,
-                             GtkWidget        *parent,
-                             GimpFillOptions  *options,
-                             GimpFillCallback callback,
-                             gpointer user_data);
-
-
-#endif  /*  __FILL_DIALOG_H__  */
+#endif /*  __FILL_DIALOG_H__  */

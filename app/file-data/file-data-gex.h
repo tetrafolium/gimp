@@ -19,14 +19,10 @@
 #ifndef __FILE_DATA_GEX_H__
 #define __FILE_DATA_GEX_H__
 
-
-GimpValueArray * file_gex_load_invoker (GimpProcedure         *procedure,
-                                        Gimp                  *gimp,
-                                        GimpContext           *context,
-                                        GimpProgress          *progress,
-                                        const GimpValueArray  *args,
-                                        GError               **error);
-
+GimpValueArray *file_gex_load_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                      GimpContext *context,
+                                      GimpProgress *progress,
+                                      const GimpValueArray *args,
+                                      GError **error);
 
 #endif /* __FILE_DATA_GEX_H__ */
-

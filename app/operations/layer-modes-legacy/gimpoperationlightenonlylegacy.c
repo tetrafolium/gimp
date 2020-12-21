@@ -27,98 +27,75 @@
 
 #include "gimpoperationlightenonlylegacy.h"
 
+static gboolean gimp_operation_lighten_only_legacy_process(
+    GeglOperation *op, void *in, void *layer, void *mask, void *out,
+    glong samples, const GeglRectangle *roi, gint level);
 
-static gboolean   gimp_operation_lighten_only_legacy_process (GeglOperation       *op,
-                                                              void                *in,
-                                                              void                *layer,
-                                                              void                *mask,
-                                                              void                *out,
-                                                              glong samples,
-                                                              const GeglRectangle *roi,
-                                                              gint level);
+G_DEFINE_TYPE(GimpOperationLightenOnlyLegacy,
+              gimp_operation_lighten_only_legacy,
+              GIMP_TYPE_OPERATION_LAYER_MODE)
 
+static void gimp_operation_lighten_only_legacy_class_init(
+    GimpOperationLightenOnlyLegacyClass *klass) {
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
+  GimpOperationLayerModeClass *layer_mode_class =
+      GIMP_OPERATION_LAYER_MODE_CLASS(klass);
 
-G_DEFINE_TYPE (GimpOperationLightenOnlyLegacy, gimp_operation_lighten_only_legacy,
-               GIMP_TYPE_OPERATION_LAYER_MODE)
+  gegl_operation_class_set_keys(operation_class, "name",
+                                "gimp:lighten-only-legacy", "description",
+                                "GIMP lighten only legacy operation", NULL);
 
-
-static void
-gimp_operation_lighten_only_legacy_class_init (GimpOperationLightenOnlyLegacyClass *klass)
-{
-	GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-	GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
-
-	gegl_operation_class_set_keys (operation_class,
-	                               "name",        "gimp:lighten-only-legacy",
-	                               "description", "GIMP lighten only legacy operation",
-	                               NULL);
-
-	layer_mode_class->process = gimp_operation_lighten_only_legacy_process;
+  layer_mode_class->process = gimp_operation_lighten_only_legacy_process;
 }
 
 static void
-gimp_operation_lighten_only_legacy_init (GimpOperationLightenOnlyLegacy *self)
-{
-}
+gimp_operation_lighten_only_legacy_init(GimpOperationLightenOnlyLegacy *self) {}
 
-static gboolean
-gimp_operation_lighten_only_legacy_process (GeglOperation       *op,
-                                            void                *in_p,
-                                            void                *layer_p,
-                                            void                *mask_p,
-                                            void                *out_p,
-                                            glong samples,
-                                            const GeglRectangle *roi,
-                                            gint level)
-{
-	GimpOperationLayerMode *layer_mode = (gpointer) op;
-	gfloat                 *in         = in_p;
-	gfloat                 *out        = out_p;
-	gfloat                 *layer      = layer_p;
-	gfloat                 *mask       = mask_p;
-	gfloat opacity    = layer_mode->opacity;
+static gboolean gimp_operation_lighten_only_legacy_process(
+    GeglOperation *op, void *in_p, void *layer_p, void *mask_p, void *out_p,
+    glong samples, const GeglRectangle *roi, gint level) {
+  GimpOperationLayerMode *layer_mode = (gpointer)op;
+  gfloat *in = in_p;
+  gfloat *out = out_p;
+  gfloat *layer = layer_p;
+  gfloat *mask = mask_p;
+  gfloat opacity = layer_mode->opacity;
 
-	while (samples--)
-	{
-		gfloat comp_alpha, new_alpha;
+  while (samples--) {
+    gfloat comp_alpha, new_alpha;
 
-		comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
-		if (mask)
-			comp_alpha *= *mask;
+    comp_alpha = MIN(in[ALPHA], layer[ALPHA]) * opacity;
+    if (mask)
+      comp_alpha *= *mask;
 
-		new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
+    new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
 
-		if (comp_alpha && new_alpha)
-		{
-			gint b;
-			gfloat ratio = comp_alpha / new_alpha;
+    if (comp_alpha && new_alpha) {
+      gint b;
+      gfloat ratio = comp_alpha / new_alpha;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				gfloat comp = MAX (layer[b], in[b]);
+      for (b = RED; b < ALPHA; b++) {
+        gfloat comp = MAX(layer[b], in[b]);
 
-				out[b] = comp * ratio + in[b] * (1.0f - ratio);
-			}
-		}
-		else
-		{
-			gint b;
+        out[b] = comp * ratio + in[b] * (1.0f - ratio);
+      }
+    } else {
+      gint b;
 
-			for (b = RED; b < ALPHA; b++)
-			{
-				out[b] = in[b];
-			}
-		}
+      for (b = RED; b < ALPHA; b++) {
+        out[b] = in[b];
+      }
+    }
 
-		out[ALPHA] = in[ALPHA];
+    out[ALPHA] = in[ALPHA];
 
-		in    += 4;
-		layer += 4;
-		out   += 4;
+    in += 4;
+    layer += 4;
+    out += 4;
 
-		if (mask)
-			mask++;
-	}
+    if (mask)
+      mask++;
+  }
 
-	return TRUE;
+  return TRUE;
 }

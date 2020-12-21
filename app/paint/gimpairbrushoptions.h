@@ -18,36 +18,37 @@
 #ifndef __GIMP_AIRBRUSH_OPTIONS_H__
 #define __GIMP_AIRBRUSH_OPTIONS_H__
 
-
 #include "gimppaintoptions.h"
 
-
-#define GIMP_TYPE_AIRBRUSH_OPTIONS            (gimp_airbrush_options_get_type ())
-#define GIMP_AIRBRUSH_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_AIRBRUSH_OPTIONS, GimpAirbrushOptions))
-#define GIMP_AIRBRUSH_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_AIRBRUSH_OPTIONS, GimpAirbrushOptionsClass))
-#define GIMP_IS_AIRBRUSH_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_AIRBRUSH_OPTIONS))
-#define GIMP_IS_AIRBRUSH_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_AIRBRUSH_OPTIONS))
-#define GIMP_AIRBRUSH_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_AIRBRUSH_OPTIONS, GimpAirbrushOptionsClass))
-
+#define GIMP_TYPE_AIRBRUSH_OPTIONS (gimp_airbrush_options_get_type())
+#define GIMP_AIRBRUSH_OPTIONS(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_AIRBRUSH_OPTIONS,               \
+                              GimpAirbrushOptions))
+#define GIMP_AIRBRUSH_OPTIONS_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_AIRBRUSH_OPTIONS,                \
+                           GimpAirbrushOptionsClass))
+#define GIMP_IS_AIRBRUSH_OPTIONS(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_AIRBRUSH_OPTIONS))
+#define GIMP_IS_AIRBRUSH_OPTIONS_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_AIRBRUSH_OPTIONS))
+#define GIMP_AIRBRUSH_OPTIONS_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_AIRBRUSH_OPTIONS,                \
+                             GimpAirbrushOptionsClass))
 
 typedef struct _GimpAirbrushOptionsClass GimpAirbrushOptionsClass;
 
-struct _GimpAirbrushOptions
-{
-	GimpPaintOptions parent_instance;
+struct _GimpAirbrushOptions {
+  GimpPaintOptions parent_instance;
 
-	gdouble rate;
-	gboolean motion_only;
-	gdouble flow;
+  gdouble rate;
+  gboolean motion_only;
+  gdouble flow;
 };
 
-struct _GimpAirbrushOptionsClass
-{
-	GimpPaintOptionsClass parent_class;
+struct _GimpAirbrushOptionsClass {
+  GimpPaintOptionsClass parent_class;
 };
 
+GType gimp_airbrush_options_get_type(void) G_GNUC_CONST;
 
-GType   gimp_airbrush_options_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_AIRBRUSH_OPTIONS_H__  */
+#endif /*  __GIMP_AIRBRUSH_OPTIONS_H__  */

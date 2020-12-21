@@ -15,44 +15,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_INK_H__
-#define  __GIMP_INK_H__
+#ifndef __GIMP_INK_H__
+#define __GIMP_INK_H__
 
-
-#include "gimppaintcore.h"
 #include "gimpink-blob.h"
+#include "gimppaintcore.h"
 
-
-#define GIMP_TYPE_INK            (gimp_ink_get_type ())
-#define GIMP_INK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_INK, GimpInk))
-#define GIMP_INK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_INK, GimpInkClass))
-#define GIMP_IS_INK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_INK))
-#define GIMP_IS_INK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_INK))
-#define GIMP_INK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_INK, GimpInkClass))
-
+#define GIMP_TYPE_INK (gimp_ink_get_type())
+#define GIMP_INK(obj)                                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_INK, GimpInk))
+#define GIMP_INK_CLASS(klass)                                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_INK, GimpInkClass))
+#define GIMP_IS_INK(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_INK))
+#define GIMP_IS_INK_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_INK))
+#define GIMP_INK_GET_CLASS(obj)                                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_INK, GimpInkClass))
 
 typedef struct _GimpInkClass GimpInkClass;
 
-struct _GimpInk
-{
-	GimpPaintCore parent_instance;
+struct _GimpInk {
+  GimpPaintCore parent_instance;
 
-	GList         *start_blobs;/*  starting blobs per stroke (for undo) */
+  GList *start_blobs; /*  starting blobs per stroke (for undo) */
 
-	GimpBlob      *cur_blob; /*  current blob                         */
-	GList         *last_blobs;/*  blobs for last stroke positions      */
+  GimpBlob *cur_blob; /*  current blob                         */
+  GList *last_blobs;  /*  blobs for last stroke positions      */
 };
 
-struct _GimpInkClass
-{
-	GimpPaintCoreClass parent_class;
+struct _GimpInkClass {
+  GimpPaintCoreClass parent_class;
 };
 
+void gimp_ink_register(Gimp *gimp, GimpPaintRegisterCallback callback);
 
-void    gimp_ink_register (Gimp                      *gimp,
-                           GimpPaintRegisterCallback callback);
+GType gimp_ink_get_type(void) G_GNUC_CONST;
 
-GType   gimp_ink_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_INK_H__  */
+#endif /*  __GIMP_INK_H__  */

@@ -21,45 +21,47 @@
 #ifndef __GIMP_TOOL_WIDGET_GROUP_H__
 #define __GIMP_TOOL_WIDGET_GROUP_H__
 
-
 #include "gimptoolwidget.h"
 
-
-#define GIMP_TYPE_TOOL_WIDGET_GROUP            (gimp_tool_widget_group_get_type ())
-#define GIMP_TOOL_WIDGET_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_WIDGET_GROUP, GimpToolWidgetGroup))
-#define GIMP_TOOL_WIDGET_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_WIDGET_GROUP, GimpToolWidgetGroupClass))
-#define GIMP_IS_TOOL_WIDGET_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_WIDGET_GROUP))
-#define GIMP_IS_TOOL_WIDGET_GROUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_WIDGET_GROUP))
-#define GIMP_TOOL_WIDGET_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_WIDGET_GROUP, GimpToolWidgetGroupClass))
-
+#define GIMP_TYPE_TOOL_WIDGET_GROUP (gimp_tool_widget_group_get_type())
+#define GIMP_TOOL_WIDGET_GROUP(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_WIDGET_GROUP,              \
+                              GimpToolWidgetGroup))
+#define GIMP_TOOL_WIDGET_GROUP_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_WIDGET_GROUP,               \
+                           GimpToolWidgetGroupClass))
+#define GIMP_IS_TOOL_WIDGET_GROUP(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_WIDGET_GROUP))
+#define GIMP_IS_TOOL_WIDGET_GROUP_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_WIDGET_GROUP))
+#define GIMP_TOOL_WIDGET_GROUP_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_WIDGET_GROUP,               \
+                             GimpToolWidgetGroupClass))
 
 typedef struct _GimpToolWidgetGroupPrivate GimpToolWidgetGroupPrivate;
 typedef struct _GimpToolWidgetGroupClass GimpToolWidgetGroupClass;
 
-struct _GimpToolWidgetGroup
-{
-	GimpToolWidget parent_instance;
+struct _GimpToolWidgetGroup {
+  GimpToolWidget parent_instance;
 
-	GimpToolWidgetGroupPrivate *priv;
+  GimpToolWidgetGroupPrivate *priv;
 };
 
-struct _GimpToolWidgetGroupClass
-{
-	GimpToolWidgetClass parent_class;
+struct _GimpToolWidgetGroupClass {
+  GimpToolWidgetClass parent_class;
 };
 
+GType gimp_tool_widget_group_get_type(void) G_GNUC_CONST;
 
-GType            gimp_tool_widget_group_get_type         (void) G_GNUC_CONST;
+GimpToolWidget *gimp_tool_widget_group_new(GimpDisplayShell *shell);
 
-GimpToolWidget * gimp_tool_widget_group_new              (GimpDisplayShell    *shell);
+GimpContainer *gimp_tool_widget_group_get_children(GimpToolWidgetGroup *group);
 
-GimpContainer  * gimp_tool_widget_group_get_children     (GimpToolWidgetGroup *group);
+GimpToolWidget *
+gimp_tool_widget_group_get_focus_widget(GimpToolWidgetGroup *group);
 
-GimpToolWidget * gimp_tool_widget_group_get_focus_widget (GimpToolWidgetGroup *group);
-
-void             gimp_tool_widget_group_set_auto_raise   (GimpToolWidgetGroup *group,
-                                                          gboolean auto_raise);
-gboolean         gimp_tool_widget_group_get_auto_raise   (GimpToolWidgetGroup *group);
-
+void gimp_tool_widget_group_set_auto_raise(GimpToolWidgetGroup *group,
+                                           gboolean auto_raise);
+gboolean gimp_tool_widget_group_get_auto_raise(GimpToolWidgetGroup *group);
 
 #endif /* __GIMP_TOOL_WIDGET_GROUP_H__ */

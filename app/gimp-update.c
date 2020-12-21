@@ -42,31 +42,23 @@
 #include "gimp-update.h"
 #include "gimp-version.h"
 
-static gboolean gimp_update_known           (GimpCoreConfig   *config,
-                                             const gchar      *last_version,
-                                             gint64 release_timestamp,
-                                             gint build_revision,
-                                             const gchar      *comment);
-static gboolean gimp_update_get_highest     (JsonParser       *parser,
-                                             gchar           **highest_version,
-                                             gint64           *release_timestamp,
-                                             gint             *build_revision,
-                                             gchar           **build_comment,
-                                             gboolean unstable);
-static void     gimp_check_updates_callback (GObject          *source,
-                                             GAsyncResult     *result,
-                                             gpointer user_data);
-static void     gimp_update_about_dialog    (GimpCoreConfig   *config,
-                                             const GParamSpec *pspec,
-                                             gpointer user_data);
+static gboolean gimp_update_known(GimpCoreConfig *config,
+                                  const gchar *last_version,
+                                  gint64 release_timestamp, gint build_revision,
+                                  const gchar *comment);
+static gboolean
+gimp_update_get_highest(JsonParser *parser, gchar **highest_version,
+                        gint64 *release_timestamp, gint *build_revision,
+                        gchar **build_comment, gboolean unstable);
+static void gimp_check_updates_callback(GObject *source, GAsyncResult *result,
+                                        gpointer user_data);
+static void gimp_update_about_dialog(GimpCoreConfig *config,
+                                     const GParamSpec *pspec,
+                                     gpointer user_data);
 
-static gboolean gimp_version_break          (const gchar      *v,
-                                             gint             *major,
-                                             gint             *minor,
-                                             gint             *micro);
-static gint     gimp_version_cmp            (const gchar      *v1,
-                                             const gchar      *v2);
-
+static gboolean gimp_version_break(const gchar *v, gint *major, gint *minor,
+                                   gint *micro);
+static gint gimp_version_cmp(const gchar *v1, const gchar *v2);
 
 /* Private Functions */
 
@@ -90,362 +82,315 @@ static gint     gimp_version_cmp            (const gchar      *v1,
  * Returns: %TRUE is @last_version (or stored last known release if
  * @last_version was %NULL) is newer than running version.
  */
-static gboolean
-gimp_update_known (GimpCoreConfig *config,
-                   const gchar    *last_version,
-                   gint64 release_timestamp,
-                   gint build_revision,
-                   const gchar    *build_comment)
-{
-	gboolean new_check = (last_version != NULL);
+static gboolean gimp_update_known(GimpCoreConfig *config,
+                                  const gchar *last_version,
+                                  gint64 release_timestamp, gint build_revision,
+                                  const gchar *build_comment) {
+  gboolean new_check = (last_version != NULL);
 
-	if (last_version && release_timestamp == 0)
-	{
-		/* I don't exit with a g_return_val_if_fail() assert because this
-		 * is not necessarily a code bug. It may be data issues. So let's
-		 * just return with an error printed on stderr.
-		 */
-		g_printerr ("%s: version %s with no release dates.\n",
-		            G_STRFUNC, last_version);
-		return FALSE;
-	}
+  if (last_version && release_timestamp == 0) {
+    /* I don't exit with a g_return_val_if_fail() assert because this
+     * is not necessarily a code bug. It may be data issues. So let's
+     * just return with an error printed on stderr.
+     */
+    g_printerr("%s: version %s with no release dates.\n", G_STRFUNC,
+               last_version);
+    return FALSE;
+  }
 
-	if (last_version == NULL)
-	{
-		last_version      = config->last_known_release;
-		release_timestamp = config->last_release_timestamp;
-		build_revision    = config->last_revision;
-		build_comment     = config->last_release_comment;
-	}
+  if (last_version == NULL) {
+    last_version = config->last_known_release;
+    release_timestamp = config->last_release_timestamp;
+    build_revision = config->last_revision;
+    build_comment = config->last_release_comment;
+  }
 
-	if (last_version &&
-	    (/* We are using a newer version than last check. This could
-	      * happen if updating the config files without having
-	      * re-checked the remote JSON file.
-	      */
-		    gimp_version_cmp (last_version, NULL) < 0 ||
-		    /* Already using the last officially released
-		     * revision. */
-		    (gimp_version_cmp (last_version, NULL) == 0 &&
-		     build_revision <= gimp_version_get_revision ())))
-	{
-		last_version = NULL;
-	}
+  if (last_version && (/* We are using a newer version than last check. This
+                        * could happen if updating the config files without
+                        * having re-checked the remote JSON file.
+                        */
+                       gimp_version_cmp(last_version, NULL) < 0 ||
+                       /* Already using the last officially released
+                        * revision. */
+                       (gimp_version_cmp(last_version, NULL) == 0 &&
+                        build_revision <= gimp_version_get_revision()))) {
+    last_version = NULL;
+  }
 
-	if (last_version == NULL)
-	{
-		release_timestamp = 0;
-		build_revision    = 0;
-		build_comment     = NULL;
-	}
+  if (last_version == NULL) {
+    release_timestamp = 0;
+    build_revision = 0;
+    build_comment = NULL;
+  }
 
-	if (new_check)
-		g_object_set (config,
-		              "check-update-timestamp", g_get_real_time() / G_USEC_PER_SEC,
-		              NULL);
+  if (new_check)
+    g_object_set(config, "check-update-timestamp",
+                 g_get_real_time() / G_USEC_PER_SEC, NULL);
 
-	g_object_set (config,
-	              "last-release-timestamp", release_timestamp,
-	              "last-known-release",     last_version,
-	              "last-revision",          build_revision,
-	              "last-release-comment",   build_comment,
-	              NULL);
+  g_object_set(config, "last-release-timestamp", release_timestamp,
+               "last-known-release", last_version, "last-revision",
+               build_revision, "last-release-comment", build_comment, NULL);
 
-	/* Are we running an old GIMP? */
-	return (last_version != NULL);
+  /* Are we running an old GIMP? */
+  return (last_version != NULL);
 }
 
 static gboolean
-gimp_update_get_highest (JsonParser  *parser,
-                         gchar      **highest_version,
-                         gint64      *release_timestamp,
-                         gint        *build_revision,
-                         gchar      **build_comment,
-                         gboolean unstable)
-{
-	JsonPath    *path;
-	JsonNode    *result;
-	JsonArray   *versions;
-	const gchar *platform;
-	const gchar *path_str;
-	const gchar *release_date = NULL;
-	GError      *error        = NULL;
-	gint i;
+gimp_update_get_highest(JsonParser *parser, gchar **highest_version,
+                        gint64 *release_timestamp, gint *build_revision,
+                        gchar **build_comment, gboolean unstable) {
+  JsonPath *path;
+  JsonNode *result;
+  JsonArray *versions;
+  const gchar *platform;
+  const gchar *path_str;
+  const gchar *release_date = NULL;
+  GError *error = NULL;
+  gint i;
 
-	g_return_val_if_fail (highest_version   != NULL, FALSE);
-	g_return_val_if_fail (release_timestamp != NULL, FALSE);
-	g_return_val_if_fail (build_revision    != NULL, FALSE);
-	g_return_val_if_fail (build_comment     != NULL, FALSE);
+  g_return_val_if_fail(highest_version != NULL, FALSE);
+  g_return_val_if_fail(release_timestamp != NULL, FALSE);
+  g_return_val_if_fail(build_revision != NULL, FALSE);
+  g_return_val_if_fail(build_comment != NULL, FALSE);
 
-	*highest_version   = NULL;
-	*release_timestamp = 0;
-	*build_revision    = 0;
-	*build_comment     = NULL;
+  *highest_version = NULL;
+  *release_timestamp = 0;
+  *build_revision = 0;
+  *build_comment = NULL;
 
-	if (unstable)
-		path_str = "$['DEVELOPMENT'][*]";
-	else
-		path_str = "$['STABLE'][*]";
+  if (unstable)
+    path_str = "$['DEVELOPMENT'][*]";
+  else
+    path_str = "$['STABLE'][*]";
 
-	/* For Windows and macOS, let's look if installers are available.
-	 * For other platforms, let's just look for source release.
-	 */
-	if (g_strcmp0 (GIMP_BUILD_PLATFORM_FAMILY, "windows") == 0 ||
-	    g_strcmp0 (GIMP_BUILD_PLATFORM_FAMILY, "macos") == 0)
-		platform = GIMP_BUILD_PLATFORM_FAMILY;
-	else
-		platform = "source";
+  /* For Windows and macOS, let's look if installers are available.
+   * For other platforms, let's just look for source release.
+   */
+  if (g_strcmp0(GIMP_BUILD_PLATFORM_FAMILY, "windows") == 0 ||
+      g_strcmp0(GIMP_BUILD_PLATFORM_FAMILY, "macos") == 0)
+    platform = GIMP_BUILD_PLATFORM_FAMILY;
+  else
+    platform = "source";
 
-	path = json_path_new ();
-	/* Ideally we could just use Json path filters like this to
-	 * retrieve only released binaries for a given platform:
-	 * g_strdup_printf ("$['STABLE'][?(@.%s)]['version']", platform);
-	 * json_array_get_string_element (result, 0);
-	 * And that would be it! We'd have our last release for given
-	 * platform.
-	 * Unfortunately json-glib does not support filter syntax, so we
-	 * end up looping through releases.
-	 */
-	if (!json_path_compile (path, path_str, &error))
-	{
-		g_warning ("%s: path compilation failed: %s\n",
-		           G_STRFUNC, error->message);
-		g_clear_error (&error);
-		g_object_unref (path);
+  path = json_path_new();
+  /* Ideally we could just use Json path filters like this to
+   * retrieve only released binaries for a given platform:
+   * g_strdup_printf ("$['STABLE'][?(@.%s)]['version']", platform);
+   * json_array_get_string_element (result, 0);
+   * And that would be it! We'd have our last release for given
+   * platform.
+   * Unfortunately json-glib does not support filter syntax, so we
+   * end up looping through releases.
+   */
+  if (!json_path_compile(path, path_str, &error)) {
+    g_warning("%s: path compilation failed: %s\n", G_STRFUNC, error->message);
+    g_clear_error(&error);
+    g_object_unref(path);
 
-		return FALSE;
-	}
-	result = json_path_match (path, json_parser_get_root (parser));
-	if (!JSON_NODE_HOLDS_ARRAY (result))
-	{
-		g_printerr ("%s: match for \"%s\" is not a JSON array.\n",
-		            G_STRFUNC, path_str);
-		g_object_unref (path);
+    return FALSE;
+  }
+  result = json_path_match(path, json_parser_get_root(parser));
+  if (!JSON_NODE_HOLDS_ARRAY(result)) {
+    g_printerr("%s: match for \"%s\" is not a JSON array.\n", G_STRFUNC,
+               path_str);
+    g_object_unref(path);
 
-		return FALSE;
-	}
+    return FALSE;
+  }
 
-	versions = json_node_get_array (result);
-	for (i = 0; i < (gint) json_array_get_length (versions); i++)
-	{
-		JsonObject *version;
+  versions = json_node_get_array(result);
+  for (i = 0; i < (gint)json_array_get_length(versions); i++) {
+    JsonObject *version;
 
-		/* Note that we don't actually look for the highest version,
-		 * but for the highest version for which a build for your
-		 * platform (and optional build-id) is available.
-		 *
-		 * So we loop through the version list then the build array
-		 * and break at first compatible release, since JSON arrays
-		 * are ordered.
-		 */
-		version = json_array_get_object_element (versions, i);
-		if (json_object_has_member (version, platform))
-		{
-			JsonArray *builds;
-			gint j;
+    /* Note that we don't actually look for the highest version,
+     * but for the highest version for which a build for your
+     * platform (and optional build-id) is available.
+     *
+     * So we loop through the version list then the build array
+     * and break at first compatible release, since JSON arrays
+     * are ordered.
+     */
+    version = json_array_get_object_element(versions, i);
+    if (json_object_has_member(version, platform)) {
+      JsonArray *builds;
+      gint j;
 
-			builds = json_object_get_array_member (version, platform);
+      builds = json_object_get_array_member(version, platform);
 
-			for (j = 0; j < (gint) json_array_get_length (builds); j++)
-			{
-				const gchar *build_id = NULL;
-				JsonObject  *build;
+      for (j = 0; j < (gint)json_array_get_length(builds); j++) {
+        const gchar *build_id = NULL;
+        JsonObject *build;
 
-				build = json_array_get_object_element (builds, j);
-				if (json_object_has_member (build, "build-id"))
-					build_id = json_object_get_string_member (build, "build-id");
-				if (g_strcmp0 (build_id, GIMP_BUILD_ID) == 0 ||
-				    g_strcmp0 (platform, "source") == 0)
-				{
-					/* Release date is the build date if any set,
-					 * otherwise the main version release date.
-					 */
-					if (json_object_has_member (build, "date"))
-						release_date = json_object_get_string_member (build, "date");
-					else
-						release_date = json_object_get_string_member (version, "date");
+        build = json_array_get_object_element(builds, j);
+        if (json_object_has_member(build, "build-id"))
+          build_id = json_object_get_string_member(build, "build-id");
+        if (g_strcmp0(build_id, GIMP_BUILD_ID) == 0 ||
+            g_strcmp0(platform, "source") == 0) {
+          /* Release date is the build date if any set,
+           * otherwise the main version release date.
+           */
+          if (json_object_has_member(build, "date"))
+            release_date = json_object_get_string_member(build, "date");
+          else
+            release_date = json_object_get_string_member(version, "date");
 
-					/* These are optional data. */
-					if (json_object_has_member (build, "revision"))
-						*build_revision = json_object_get_int_member (build, "revision");
-					if (json_object_has_member (build, "comment"))
-						*build_comment = g_strdup (json_object_get_string_member (build, "comment"));
-					break;
-				}
-			}
+          /* These are optional data. */
+          if (json_object_has_member(build, "revision"))
+            *build_revision = json_object_get_int_member(build, "revision");
+          if (json_object_has_member(build, "comment"))
+            *build_comment =
+                g_strdup(json_object_get_string_member(build, "comment"));
+          break;
+        }
+      }
 
-			if (release_date)
-			{
-				*highest_version = g_strdup (json_object_get_string_member (version, "version"));
-				break;
-			}
-		}
-	}
+      if (release_date) {
+        *highest_version =
+            g_strdup(json_object_get_string_member(version, "version"));
+        break;
+      }
+    }
+  }
 
-	if (*highest_version && *release_date)
-	{
-		GDateTime *datetime;
-		gchar     *str;
+  if (*highest_version && *release_date) {
+    GDateTime *datetime;
+    gchar *str;
 
-		str = g_strdup_printf ("%s 00:00:00Z", release_date);
-		datetime = g_date_time_new_from_iso8601 (str, NULL);
-		g_free (str);
+    str = g_strdup_printf("%s 00:00:00Z", release_date);
+    datetime = g_date_time_new_from_iso8601(str, NULL);
+    g_free(str);
 
-		if (datetime)
-		{
-			*release_timestamp = g_date_time_to_unix (datetime);
-			g_date_time_unref (datetime);
-		}
-		else
-		{
-			/* JSON file data bug. */
-			g_printerr ("%s: release date for version %s not properly formatted: %s\n",
-			            G_STRFUNC, *highest_version, release_date);
+    if (datetime) {
+      *release_timestamp = g_date_time_to_unix(datetime);
+      g_date_time_unref(datetime);
+    } else {
+      /* JSON file data bug. */
+      g_printerr("%s: release date for version %s not properly formatted: %s\n",
+                 G_STRFUNC, *highest_version, release_date);
 
-			g_clear_pointer (highest_version, g_free);
-			g_clear_pointer (build_comment, g_free);
-			*build_revision = 0;
-		}
-	}
+      g_clear_pointer(highest_version, g_free);
+      g_clear_pointer(build_comment, g_free);
+      *build_revision = 0;
+    }
+  }
 
-	json_node_unref (result);
-	g_object_unref (path);
+  json_node_unref(result);
+  g_object_unref(path);
 
-	return (*highest_version != NULL);
+  return (*highest_version != NULL);
 }
 
-static void
-gimp_check_updates_callback (GObject      *source,
-                             GAsyncResult *result,
-                             gpointer user_data)
-{
-	GimpCoreConfig *config        = user_data;
-	char           *file_contents = NULL;
-	gsize file_length   = 0;
-	GError         *error         = NULL;
+static void gimp_check_updates_callback(GObject *source, GAsyncResult *result,
+                                        gpointer user_data) {
+  GimpCoreConfig *config = user_data;
+  char *file_contents = NULL;
+  gsize file_length = 0;
+  GError *error = NULL;
 
-	if (g_file_load_contents_finish (G_FILE (source), result,
-	                                 &file_contents, &file_length,
-	                                 NULL, &error))
-	{
-		JsonParser  *parser;
-		gchar       *last_version      = NULL;
-		gchar       *build_comment     = NULL;
-		gint64 release_timestamp = 0;
-		gint build_revision    = 0;
+  if (g_file_load_contents_finish(G_FILE(source), result, &file_contents,
+                                  &file_length, NULL, &error)) {
+    JsonParser *parser;
+    gchar *last_version = NULL;
+    gchar *build_comment = NULL;
+    gint64 release_timestamp = 0;
+    gint build_revision = 0;
 
-		parser = json_parser_new ();
-		if (!json_parser_load_from_data (parser, file_contents, file_length, &error))
-		{
-			g_printerr ("%s: parsing of %s failed: %s\n", G_STRFUNC,
-			            g_file_get_uri (G_FILE (source)), error->message);
-			g_free (file_contents);
-			g_clear_object (&parser);
-			g_clear_error (&error);
+    parser = json_parser_new();
+    if (!json_parser_load_from_data(parser, file_contents, file_length,
+                                    &error)) {
+      g_printerr("%s: parsing of %s failed: %s\n", G_STRFUNC,
+                 g_file_get_uri(G_FILE(source)), error->message);
+      g_free(file_contents);
+      g_clear_object(&parser);
+      g_clear_error(&error);
 
-			return;
-		}
+      return;
+    }
 
-		gimp_update_get_highest (parser, &last_version, &release_timestamp,
-		                         &build_revision, &build_comment, FALSE);
+    gimp_update_get_highest(parser, &last_version, &release_timestamp,
+                            &build_revision, &build_comment, FALSE);
 
 #ifdef GIMP_UNSTABLE
-		{
-			gchar  *dev_version = NULL;
-			gchar  *dev_comment      = NULL;
-			gint64 dev_timestamp    = 0;
-			gint dev_revision     = 0;
+    {
+      gchar *dev_version = NULL;
+      gchar *dev_comment = NULL;
+      gint64 dev_timestamp = 0;
+      gint dev_revision = 0;
 
-			gimp_update_get_highest (parser, &dev_version, &dev_timestamp,
-			                         &dev_revision, &dev_comment, TRUE);
-			if (dev_version)
-			{
-				if (!last_version || gimp_version_cmp (dev_version, last_version) > 0)
-				{
-					g_clear_pointer (&last_version, g_free);
-					g_clear_pointer (&build_comment, g_free);
-					last_version      = dev_version;
-					build_comment     = dev_comment;
-					release_timestamp = dev_timestamp;
-					build_revision    = dev_revision;
-				}
-				else
-				{
-					g_clear_pointer (&dev_version, g_free);
-					g_clear_pointer (&dev_comment, g_free);
-				}
-			}
-		}
+      gimp_update_get_highest(parser, &dev_version, &dev_timestamp,
+                              &dev_revision, &dev_comment, TRUE);
+      if (dev_version) {
+        if (!last_version || gimp_version_cmp(dev_version, last_version) > 0) {
+          g_clear_pointer(&last_version, g_free);
+          g_clear_pointer(&build_comment, g_free);
+          last_version = dev_version;
+          build_comment = dev_comment;
+          release_timestamp = dev_timestamp;
+          build_revision = dev_revision;
+        } else {
+          g_clear_pointer(&dev_version, g_free);
+          g_clear_pointer(&dev_comment, g_free);
+        }
+      }
+    }
 #endif
 
-		gimp_update_known (config, last_version, release_timestamp, build_revision, build_comment);
+    gimp_update_known(config, last_version, release_timestamp, build_revision,
+                      build_comment);
 
-		g_clear_pointer (&last_version, g_free);
-		g_clear_pointer (&build_comment, g_free);
-		g_object_unref (parser);
-		g_free (file_contents);
-	}
-	else
-	{
-		g_printerr("%s: loading of %s failed: %s\n", G_STRFUNC,
-		           g_file_get_uri (G_FILE (source)), error->message);
-		g_clear_error (&error);
-	}
+    g_clear_pointer(&last_version, g_free);
+    g_clear_pointer(&build_comment, g_free);
+    g_object_unref(parser);
+    g_free(file_contents);
+  } else {
+    g_printerr("%s: loading of %s failed: %s\n", G_STRFUNC,
+               g_file_get_uri(G_FILE(source)), error->message);
+    g_clear_error(&error);
+  }
 }
 
-static void
-gimp_update_about_dialog (GimpCoreConfig   *config,
-                          const GParamSpec *pspec,
-                          gpointer user_data)
-{
-	g_signal_handlers_disconnect_by_func (config,
-	                                      (GCallback) gimp_update_about_dialog,
-	                                      NULL);
+static void gimp_update_about_dialog(GimpCoreConfig *config,
+                                     const GParamSpec *pspec,
+                                     gpointer user_data) {
+  g_signal_handlers_disconnect_by_func(
+      config, (GCallback)gimp_update_about_dialog, NULL);
 
-	if (config->last_known_release != NULL)
-	{
+  if (config->last_known_release != NULL) {
 #ifndef GIMP_CONSOLE_COMPILATION
-		gtk_widget_show (about_dialog_create (config));
+    gtk_widget_show(about_dialog_create(config));
 #else
-		g_warning (_("A new version of GIMP (%s) was released.\n"
-		             "It is recommended to update."),
-		           config->last_known_release);
+    g_warning(_("A new version of GIMP (%s) was released.\n"
+                "It is recommended to update."),
+              config->last_known_release);
 #endif
-	}
+  }
 }
 
-static gboolean
-gimp_version_break (const gchar *v,
-                    gint        *major,
-                    gint        *minor,
-                    gint        *micro)
-{
-	gchar **versions;
+static gboolean gimp_version_break(const gchar *v, gint *major, gint *minor,
+                                   gint *micro) {
+  gchar **versions;
 
-	*major = 0;
-	*minor = 0;
-	*micro = 0;
+  *major = 0;
+  *minor = 0;
+  *micro = 0;
 
-	if (v == NULL)
-		return FALSE;
+  if (v == NULL)
+    return FALSE;
 
-	versions = g_strsplit_set (v, ".", 3);
-	if (versions[0] != NULL)
-	{
-		*major = g_ascii_strtoll (versions[0], NULL, 10);
-		if (versions[1] != NULL)
-		{
-			*minor = g_ascii_strtoll (versions[1], NULL, 10);
-			if (versions[2] != NULL)
-			{
-				*micro = g_ascii_strtoll (versions[2], NULL, 10);
-				return TRUE;
-			}
-		}
-	}
-	g_strfreev (versions);
+  versions = g_strsplit_set(v, ".", 3);
+  if (versions[0] != NULL) {
+    *major = g_ascii_strtoll(versions[0], NULL, 10);
+    if (versions[1] != NULL) {
+      *minor = g_ascii_strtoll(versions[1], NULL, 10);
+      if (versions[2] != NULL) {
+        *micro = g_ascii_strtoll(versions[2], NULL, 10);
+        return TRUE;
+      }
+    }
+  }
+  g_strfreev(versions);
 
-	return (*major > 0);
+  return (*major > 0);
 }
 
 /**
@@ -459,45 +404,37 @@ gimp_version_break (const gchar *v,
  *          is found to represent a version respectively, lower than,
  *          matching, or greater than @v2.
  */
-static gint
-gimp_version_cmp (const gchar *v1,
-                  const gchar *v2)
-{
-	gint major1;
-	gint minor1;
-	gint micro1;
-	gint major2 = GIMP_MAJOR_VERSION;
-	gint minor2 = GIMP_MINOR_VERSION;
-	gint micro2 = GIMP_MICRO_VERSION;
+static gint gimp_version_cmp(const gchar *v1, const gchar *v2) {
+  gint major1;
+  gint minor1;
+  gint micro1;
+  gint major2 = GIMP_MAJOR_VERSION;
+  gint minor2 = GIMP_MINOR_VERSION;
+  gint micro2 = GIMP_MICRO_VERSION;
 
-	g_return_val_if_fail (v1 != NULL, -1);
+  g_return_val_if_fail(v1 != NULL, -1);
 
-	if (!gimp_version_break (v1, &major1, &minor1, &micro1))
-	{
-		/* If version is not properly parsed, something is wrong with
-		 * upstream version number or parsing. This should not happen.
-		 */
-		g_printerr ("%s: version not properly formatted: %s\n",
-		            G_STRFUNC, v1);
+  if (!gimp_version_break(v1, &major1, &minor1, &micro1)) {
+    /* If version is not properly parsed, something is wrong with
+     * upstream version number or parsing. This should not happen.
+     */
+    g_printerr("%s: version not properly formatted: %s\n", G_STRFUNC, v1);
 
-		return -1;
-	}
-	if (v2 && !gimp_version_break (v2, &major2, &minor2, &micro2))
-	{
-		g_printerr ("%s: version not properly formatted: %s\n",
-		            G_STRFUNC, v2);
+    return -1;
+  }
+  if (v2 && !gimp_version_break(v2, &major2, &minor2, &micro2)) {
+    g_printerr("%s: version not properly formatted: %s\n", G_STRFUNC, v2);
 
-		return 1;
-	}
+    return 1;
+  }
 
-	if (major1 == major2 && minor1 == minor2 && micro1 == micro2)
-		return 0;
-	else if (major1 > major2 ||
-	         (major1 == major2 && minor1 > minor2) ||
-	         (major1 == major2 && minor1 == minor2 && micro1 > micro2))
-		return 1;
-	else
-		return -1;
+  if (major1 == major2 && minor1 == minor2 && micro1 == micro2)
+    return 0;
+  else if (major1 > major2 || (major1 == major2 && minor1 > minor2) ||
+           (major1 == major2 && minor1 == minor2 && micro1 > micro2))
+    return 1;
+  else
+    return -1;
 }
 
 /* Public Functions */
@@ -510,40 +447,35 @@ gimp_version_cmp (const gchar *v1,
  *
  * Returns: %TRUE if a check was actually run.
  */
-gboolean
-gimp_update_auto_check (GimpCoreConfig *config)
-{
-	gint64 prev_update_timestamp;
-	gint64 current_timestamp;
+gboolean gimp_update_auto_check(GimpCoreConfig *config) {
+  gint64 prev_update_timestamp;
+  gint64 current_timestamp;
 
-	/* Builds with update check deactivated just always return FALSE. */
+  /* Builds with update check deactivated just always return FALSE. */
 #ifdef CHECK_UPDATE
-	if (!config->check_updates)
+  if (!config->check_updates)
 #endif
-	return FALSE;
+    return FALSE;
 
-	g_object_get (config,
-	              "check-update-timestamp", &prev_update_timestamp,
-	              NULL);
-	current_timestamp = g_get_real_time() / G_USEC_PER_SEC;
+  g_object_get(config, "check-update-timestamp", &prev_update_timestamp, NULL);
+  current_timestamp = g_get_real_time() / G_USEC_PER_SEC;
 
-	/* Get rid of invalid saved timestamps. */
-	if (prev_update_timestamp > current_timestamp)
-		prev_update_timestamp = -1;
+  /* Get rid of invalid saved timestamps. */
+  if (prev_update_timestamp > current_timestamp)
+    prev_update_timestamp = -1;
 
 #ifndef GIMP_UNSTABLE
-	/* Do not check more than once a week. */
-	if (current_timestamp - prev_update_timestamp < 3600L * 24L * 7L)
-		return FALSE;
+  /* Do not check more than once a week. */
+  if (current_timestamp - prev_update_timestamp < 3600L * 24L * 7L)
+    return FALSE;
 #endif
 
-	g_signal_connect (config, "notify::last-known-release",
-	                  (GCallback) gimp_update_about_dialog,
-	                  NULL);
+  g_signal_connect(config, "notify::last-known-release",
+                   (GCallback)gimp_update_about_dialog, NULL);
 
-	gimp_update_check (config);
+  gimp_update_check(config);
 
-	return TRUE;
+  return TRUE;
 }
 
 /*
@@ -552,21 +484,21 @@ gimp_update_auto_check (GimpCoreConfig *config)
  *
  * Run the check for newer versions of GIMP inconditionnally.
  */
-void
-gimp_update_check (GimpCoreConfig *config)
-{
-	GFile *gimp_versions;
+void gimp_update_check(GimpCoreConfig *config) {
+  GFile *gimp_versions;
 
 #ifdef GIMP_UNSTABLE
-	if (g_getenv ("GIMP_DEV_VERSIONS_JSON"))
-		gimp_versions = g_file_new_for_path (g_getenv ("GIMP_DEV_VERSIONS_JSON"));
-	else
-		gimp_versions = g_file_new_for_uri ("https://testing.gimp.org/gimp_versions.json");
+  if (g_getenv("GIMP_DEV_VERSIONS_JSON"))
+    gimp_versions = g_file_new_for_path(g_getenv("GIMP_DEV_VERSIONS_JSON"));
+  else
+    gimp_versions =
+        g_file_new_for_uri("https://testing.gimp.org/gimp_versions.json");
 #else
-	gimp_versions = g_file_new_for_uri ("https://www.gimp.org/gimp_versions.json");
+  gimp_versions = g_file_new_for_uri("https://www.gimp.org/gimp_versions.json");
 #endif
-	g_file_load_contents_async (gimp_versions, NULL, gimp_check_updates_callback, config);
-	g_object_unref (gimp_versions);
+  g_file_load_contents_async(gimp_versions, NULL, gimp_check_updates_callback,
+                             config);
+  g_object_unref(gimp_versions);
 }
 
 /*
@@ -576,8 +508,6 @@ gimp_update_check (GimpCoreConfig *config)
  * Do not execute a remote check, but refresh the known release data as
  * it may be outdated.
  */
-void
-gimp_update_refresh (GimpCoreConfig *config)
-{
-	gimp_update_known (config, NULL, 0, 0, NULL);
+void gimp_update_refresh(GimpCoreConfig *config) {
+  gimp_update_known(config, NULL, 0, 0, NULL);
 }

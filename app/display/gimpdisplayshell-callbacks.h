@@ -18,29 +18,26 @@
 #ifndef __GIMP_DISPLAY_SHELL_CALLBACKS_H__
 #define __GIMP_DISPLAY_SHELL_CALLBACKS_H__
 
+void gimp_display_shell_canvas_realize(GtkWidget *widget,
+                                       GimpDisplayShell *shell);
+void gimp_display_shell_canvas_size_allocate(GtkWidget *widget,
+                                             GtkAllocation *alloc,
+                                             GimpDisplayShell *shell);
+gboolean gimp_display_shell_canvas_draw(GtkWidget *widget, cairo_t *cr,
+                                        GimpDisplayShell *shell);
 
-void       gimp_display_shell_canvas_realize          (GtkWidget        *widget,
-                                                       GimpDisplayShell *shell);
-void       gimp_display_shell_canvas_size_allocate    (GtkWidget        *widget,
-                                                       GtkAllocation    *alloc,
-                                                       GimpDisplayShell *shell);
-gboolean   gimp_display_shell_canvas_draw             (GtkWidget        *widget,
-                                                       cairo_t          *cr,
-                                                       GimpDisplayShell *shell);
+gboolean gimp_display_shell_origin_button_press(GtkWidget *widget,
+                                                GdkEventButton *bevent,
+                                                GimpDisplayShell *shell);
 
-gboolean   gimp_display_shell_origin_button_press     (GtkWidget        *widget,
-                                                       GdkEventButton   *bevent,
-                                                       GimpDisplayShell *shell);
+gboolean gimp_display_shell_quick_mask_button_press(GtkWidget *widget,
+                                                    GdkEventButton *bevent,
+                                                    GimpDisplayShell *shell);
+void gimp_display_shell_quick_mask_toggled(GtkWidget *widget,
+                                           GimpDisplayShell *shell);
 
-gboolean   gimp_display_shell_quick_mask_button_press (GtkWidget        *widget,
-                                                       GdkEventButton   *bevent,
-                                                       GimpDisplayShell *shell);
-void       gimp_display_shell_quick_mask_toggled      (GtkWidget        *widget,
-                                                       GimpDisplayShell *shell);
-
-gboolean   gimp_display_shell_navigation_button_press (GtkWidget        *widget,
-                                                       GdkEventButton   *bevent,
-                                                       GimpDisplayShell *shell);
-
+gboolean gimp_display_shell_navigation_button_press(GtkWidget *widget,
+                                                    GdkEventButton *bevent,
+                                                    GimpDisplayShell *shell);
 
 #endif /* __GIMP_DISPLAY_SHELL_CALLBACKS_H__ */

@@ -24,36 +24,29 @@
 #error Do not use gimp_plug_in_manager_call_run*(), use gimp_procedure_execute*() instead.
 #endif
 
-
 /*  Call the plug-in's query() function
  */
-void             gimp_plug_in_manager_call_query    (GimpPlugInManager      *manager,
-                                                     GimpContext            *context,
-                                                     GimpPlugInDef          *plug_in_def);
+void gimp_plug_in_manager_call_query(GimpPlugInManager *manager,
+                                     GimpContext *context,
+                                     GimpPlugInDef *plug_in_def);
 
 /*  Call the plug-in's init() function
  */
-void             gimp_plug_in_manager_call_init     (GimpPlugInManager      *manager,
-                                                     GimpContext            *context,
-                                                     GimpPlugInDef          *plug_in_def);
+void gimp_plug_in_manager_call_init(GimpPlugInManager *manager,
+                                    GimpContext *context,
+                                    GimpPlugInDef *plug_in_def);
 
 /*  Run a plug-in as if it were a procedure database procedure
  */
-GimpValueArray * gimp_plug_in_manager_call_run      (GimpPlugInManager      *manager,
-                                                     GimpContext            *context,
-                                                     GimpProgress           *progress,
-                                                     GimpPlugInProcedure    *procedure,
-                                                     GimpValueArray         *args,
-                                                     gboolean synchronous,
-                                                     GimpDisplay            *display);
+GimpValueArray *gimp_plug_in_manager_call_run(
+    GimpPlugInManager *manager, GimpContext *context, GimpProgress *progress,
+    GimpPlugInProcedure *procedure, GimpValueArray *args, gboolean synchronous,
+    GimpDisplay *display);
 
 /*  Run a temp plug-in proc as if it were a procedure database procedure
  */
-GimpValueArray * gimp_plug_in_manager_call_run_temp (GimpPlugInManager      *manager,
-                                                     GimpContext            *context,
-                                                     GimpProgress           *progress,
-                                                     GimpTemporaryProcedure *procedure,
-                                                     GimpValueArray         *args);
-
+GimpValueArray *gimp_plug_in_manager_call_run_temp(
+    GimpPlugInManager *manager, GimpContext *context, GimpProgress *progress,
+    GimpTemporaryProcedure *procedure, GimpValueArray *args);
 
 #endif /* __GIMP_PLUG_IN_MANAGER_CALL_H__ */

@@ -18,9 +18,6 @@
 #ifndef __PLUG_IN_MENUS_H__
 #define __PLUG_IN_MENUS_H__
 
-
-void   plug_in_menus_setup (GimpUIManager *manager,
-                            const gchar   *ui_path);
-
+void plug_in_menus_setup(GimpUIManager *manager, const gchar *ui_path);
 
 #endif /* __PLUG_IN_MENUS_H__ */

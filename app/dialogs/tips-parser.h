@@ -21,24 +21,18 @@
 #ifndef __TIPS_PARSER_H__
 #define __TIPS_PARSER_H__
 
-
 typedef struct _GimpTip GimpTip;
 
-struct _GimpTip
-{
-	gchar *text;
-	gchar *help_id;
+struct _GimpTip {
+  gchar *text;
+  gchar *help_id;
 };
 
+GimpTip *gimp_tip_new(const gchar *title, const gchar *format, ...)
+    G_GNUC_PRINTF(2, 3);
+void gimp_tip_free(GimpTip *tip);
 
-GimpTip * gimp_tip_new        (const gchar  *title,
-                               const gchar  *format,
-                               ...) G_GNUC_PRINTF(2, 3);
-void      gimp_tip_free       (GimpTip      *tip);
-
-GList   * gimp_tips_from_file (GFile        *file,
-                               GError      **error);
-void      gimp_tips_free      (GList        *tips);
-
+GList *gimp_tips_from_file(GFile *file, GError **error);
+void gimp_tips_free(GList *tips);
 
 #endif /* __TIPS_PARSER_H__ */

@@ -18,8 +18,6 @@
 #ifndef __GIMP_DISPLAY_SHELL_TITLE_H__
 #define __GIMP_DISPLAY_SHELL_TITLE_H__
 
-
-void  gimp_display_shell_title_update (GimpDisplayShell *shell);
-
+void gimp_display_shell_title_update(GimpDisplayShell *shell);
 
 #endif /* __GIMP_DISPLAY_SHELL_TITLE_H__ */

@@ -39,944 +39,817 @@
 #include "core/gimpparamspecs.h"
 #include "core/gimpprogress.h"
 
-#include "gimppdb.h"
 #include "gimppdb-utils.h"
+#include "gimppdb.h"
 #include "gimppdbcontext.h"
 #include "gimpprocedure.h"
 #include "internal-procs.h"
 
 #include "gimp-intl.h"
 
+static GimpValueArray *edit_cut_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                        GimpContext *context,
+                                        GimpProgress *progress,
+                                        const GimpValueArray *args,
+                                        GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  gint num_drawables;
+  const GimpItem **drawables;
+  gboolean non_empty = FALSE;
 
-static GimpValueArray *
-edit_cut_invoker (GimpProcedure         *procedure,
-                  Gimp                  *gimp,
-                  GimpContext           *context,
-                  GimpProgress          *progress,
-                  const GimpValueArray  *args,
-                  GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	gint num_drawables;
-	const GimpItem **drawables;
-	gboolean non_empty = FALSE;
+  num_drawables = g_value_get_int(gimp_value_array_index(args, 0));
+  drawables = (const GimpItem **)gimp_value_get_object_array(
+      gimp_value_array_index(args, 1));
 
-	num_drawables = g_value_get_int (gimp_value_array_index (args, 0));
-	drawables = (const GimpItem **) gimp_value_get_object_array (gimp_value_array_index (args, 1));
+  if (success) {
+    GimpImage *image = NULL;
+    GList *drawable_list = NULL;
+    gint i;
 
-	if (success)
-	{
-		GimpImage *image         = NULL;
-		GList     *drawable_list = NULL;
-		gint i;
+    for (i = 0; i < num_drawables; i++) {
+      if (!gimp_pdb_item_is_attached(GIMP_ITEM(drawables[i]), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) ||
+          gimp_pdb_item_is_group(GIMP_ITEM(drawables[i]), error)) {
+        success = FALSE;
+        break;
+      }
 
-		for (i = 0; i < num_drawables; i++)
-		{
-			if (!gimp_pdb_item_is_attached (GIMP_ITEM (drawables[i]), NULL,
-			                                GIMP_PDB_ITEM_CONTENT, error) ||
-			    gimp_pdb_item_is_group (GIMP_ITEM (drawables[i]), error))
-			{
-				success = FALSE;
-				break;
-			}
+      if (!image) {
+        image = gimp_item_get_image(GIMP_ITEM(drawables[i]));
+      } else if (image != gimp_item_get_image(GIMP_ITEM(drawables[i]))) {
+        success = FALSE;
+        gimp_message_literal(
+            gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+            _("All specified drawables must belong to the same image."));
+        break;
+      }
 
-			if (!image)
-			{
-				image = gimp_item_get_image (GIMP_ITEM (drawables[i]));
-			}
-			else if (image != gimp_item_get_image (GIMP_ITEM (drawables[i])))
-			{
-				success = FALSE;
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      _("All specified drawables must belong to the same image."));
-				break;
-			}
+      drawable_list = g_list_prepend(drawable_list, (gpointer)drawables[i]);
+    }
 
-			drawable_list = g_list_prepend (drawable_list, (gpointer) drawables[i]);
-		}
+    if (success && image) {
+      GError *my_error = NULL;
 
-		if (success && image)
-		{
-			GError *my_error = NULL;
+      non_empty =
+          gimp_edit_cut(image, drawable_list, context, &my_error) != NULL;
 
-			non_empty = gimp_edit_cut (image, drawable_list, context, &my_error) != NULL;
+      if (!non_empty) {
+        gimp_message_literal(gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+                             my_error->message);
+        g_clear_error(&my_error);
+      }
+    } else {
+      success = FALSE;
+    }
+    g_list_free(drawable_list);
+  }
 
-			if (!non_empty)
-			{
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      my_error->message);
-				g_clear_error (&my_error);
-			}
-		}
-		else
-		{
-			success = FALSE;
-		}
-		g_list_free (drawable_list);
-	}
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+  if (success)
+    g_value_set_boolean(gimp_value_array_index(return_vals, 1), non_empty);
 
-	if (success)
-		g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
+  return return_vals;
+}
 
-	return return_vals;
+static GimpValueArray *edit_copy_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                         GimpContext *context,
+                                         GimpProgress *progress,
+                                         const GimpValueArray *args,
+                                         GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  gint num_drawables;
+  const GimpItem **drawables;
+  gboolean non_empty = FALSE;
+
+  num_drawables = g_value_get_int(gimp_value_array_index(args, 0));
+  drawables = (const GimpItem **)gimp_value_get_object_array(
+      gimp_value_array_index(args, 1));
+
+  if (success) {
+    GimpImage *image = NULL;
+    GList *drawables_list = NULL;
+    gint i;
+
+    for (i = 0; i < num_drawables; i++) {
+      if (!gimp_pdb_item_is_attached(GIMP_ITEM(drawables[i]), NULL, 0, error)) {
+        success = FALSE;
+        break;
+      }
+      if (image == NULL) {
+        image = gimp_item_get_image(GIMP_ITEM(drawables[i]));
+      } else if (image != gimp_item_get_image(GIMP_ITEM(drawables[i]))) {
+        success = FALSE;
+        break;
+      }
+      drawables_list = g_list_prepend(drawables_list, (gpointer)drawables[i]);
+    }
+
+    if (success && num_drawables > 0) {
+      GError *my_error = NULL;
+
+      non_empty =
+          gimp_edit_copy(image, drawables_list, context, &my_error) != NULL;
+
+      if (!non_empty) {
+        gimp_message_literal(gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+                             my_error->message);
+        g_clear_error(&my_error);
+      }
+    } else
+      success = FALSE;
+
+    g_list_free(drawables_list);
+  }
+
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
+
+  if (success)
+    g_value_set_boolean(gimp_value_array_index(return_vals, 1), non_empty);
+
+  return return_vals;
 }
 
 static GimpValueArray *
-edit_copy_invoker (GimpProcedure         *procedure,
-                   Gimp                  *gimp,
-                   GimpContext           *context,
-                   GimpProgress          *progress,
-                   const GimpValueArray  *args,
-                   GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	gint num_drawables;
-	const GimpItem **drawables;
-	gboolean non_empty = FALSE;
+edit_copy_visible_invoker(GimpProcedure *procedure, Gimp *gimp,
+                          GimpContext *context, GimpProgress *progress,
+                          const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpImage *image;
+  gboolean non_empty = FALSE;
 
-	num_drawables = g_value_get_int (gimp_value_array_index (args, 0));
-	drawables = (const GimpItem **) gimp_value_get_object_array (gimp_value_array_index (args, 1));
+  image = g_value_get_object(gimp_value_array_index(args, 0));
 
-	if (success)
-	{
-		GimpImage *image          = NULL;
-		GList     *drawables_list = NULL;
-		gint i;
+  if (success) {
+    GError *my_error = NULL;
 
-		for (i = 0; i < num_drawables; i++)
-		{
-			if (!gimp_pdb_item_is_attached (GIMP_ITEM (drawables[i]), NULL, 0, error))
-			{
-				success = FALSE;
-				break;
-			}
-			if (image == NULL)
-			{
-				image = gimp_item_get_image (GIMP_ITEM (drawables[i]));
-			}
-			else if (image != gimp_item_get_image (GIMP_ITEM (drawables[i])))
-			{
-				success = FALSE;
-				break;
-			}
-			drawables_list = g_list_prepend (drawables_list, (gpointer) drawables[i]);
-		}
+    non_empty = gimp_edit_copy_visible(image, context, &my_error) != NULL;
 
-		if (success && num_drawables > 0)
-		{
-			GError *my_error = NULL;
+    if (!non_empty) {
+      gimp_message_literal(gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+                           my_error->message);
+      g_clear_error(&my_error);
+    }
+  }
 
-			non_empty = gimp_edit_copy (image, drawables_list, context, &my_error) != NULL;
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-			if (!non_empty)
-			{
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      my_error->message);
-				g_clear_error (&my_error);
-			}
-		}
-		else
-			success = FALSE;
+  if (success)
+    g_value_set_boolean(gimp_value_array_index(return_vals, 1), non_empty);
 
-		g_list_free (drawables_list);
-	}
+  return return_vals;
+}
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+static GimpValueArray *edit_paste_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                          GimpContext *context,
+                                          GimpProgress *progress,
+                                          const GimpValueArray *args,
+                                          GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpDrawable *drawable;
+  gboolean paste_into;
+  GimpLayer *floating_sel = NULL;
 
-	if (success)
-		g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
+  drawable = g_value_get_object(gimp_value_array_index(args, 0));
+  paste_into = g_value_get_boolean(gimp_value_array_index(args, 1));
 
-	return return_vals;
+  if (success) {
+    GimpObject *paste = gimp_get_clipboard_object(gimp);
+
+    if (paste &&
+        gimp_pdb_item_is_attached(GIMP_ITEM(drawable), NULL,
+                                  GIMP_PDB_ITEM_CONTENT, error) &&
+        gimp_pdb_item_is_not_group(GIMP_ITEM(drawable), error)) {
+      floating_sel = gimp_edit_paste(
+          gimp_item_get_image(GIMP_ITEM(drawable)), drawable, paste,
+          paste_into ? GIMP_PASTE_TYPE_FLOATING_INTO : GIMP_PASTE_TYPE_FLOATING,
+          -1, -1, -1, -1);
+
+      if (!floating_sel)
+        success = FALSE;
+    } else
+      success = FALSE;
+  }
+
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
+
+  if (success)
+    g_value_set_object(gimp_value_array_index(return_vals, 1), floating_sel);
+
+  return return_vals;
 }
 
 static GimpValueArray *
-edit_copy_visible_invoker (GimpProcedure         *procedure,
-                           Gimp                  *gimp,
-                           GimpContext           *context,
-                           GimpProgress          *progress,
-                           const GimpValueArray  *args,
-                           GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	GimpImage *image;
-	gboolean non_empty = FALSE;
+edit_paste_as_new_image_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                GimpContext *context, GimpProgress *progress,
+                                const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpImage *image = NULL;
 
-	image = g_value_get_object (gimp_value_array_index (args, 0));
+  GimpObject *paste = gimp_get_clipboard_object(gimp);
 
-	if (success)
-	{
-		GError *my_error = NULL;
+  if (paste) {
+    image = gimp_edit_paste_as_new_image(gimp, paste);
 
-		non_empty = gimp_edit_copy_visible (image, context, &my_error) != NULL;
+    if (!image)
+      success = FALSE;
+  }
 
-		if (!non_empty)
-		{
-			gimp_message_literal (gimp,
-			                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-			                      my_error->message);
-			g_clear_error (&my_error);
-		}
-	}
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+  if (success)
+    g_value_set_object(gimp_value_array_index(return_vals, 1), image);
 
-	if (success)
-		g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
+  return return_vals;
+}
 
-	return return_vals;
+static GimpValueArray *edit_named_cut_invoker(GimpProcedure *procedure,
+                                              Gimp *gimp, GimpContext *context,
+                                              GimpProgress *progress,
+                                              const GimpValueArray *args,
+                                              GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  gint num_drawables;
+  const GimpItem **drawables;
+  const gchar *buffer_name;
+  gchar *real_name = NULL;
+
+  num_drawables = g_value_get_int(gimp_value_array_index(args, 0));
+  drawables = (const GimpItem **)gimp_value_get_object_array(
+      gimp_value_array_index(args, 1));
+  buffer_name = g_value_get_string(gimp_value_array_index(args, 2));
+
+  if (success) {
+    GimpImage *image = NULL;
+    GList *drawable_list = NULL;
+    gint i;
+
+    for (i = 0; i < num_drawables; i++) {
+      if (!gimp_pdb_item_is_attached(GIMP_ITEM(drawables[i]), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) ||
+          gimp_pdb_item_is_group(GIMP_ITEM(drawables[i]), error)) {
+        success = FALSE;
+        break;
+      }
+
+      if (!image) {
+        image = gimp_item_get_image(GIMP_ITEM(drawables[i]));
+      } else if (image != gimp_item_get_image(GIMP_ITEM(drawables[i]))) {
+        success = FALSE;
+        gimp_message_literal(
+            gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+            _("All specified drawables must belong to the same image."));
+        break;
+      }
+
+      drawable_list = g_list_prepend(drawable_list, (gpointer)drawables[i]);
+    }
+
+    if (success && image) {
+      GError *my_error = NULL;
+
+      real_name = (gchar *)gimp_edit_named_cut(
+          image, buffer_name, drawable_list, context, &my_error);
+
+      if (real_name) {
+        real_name = g_strdup(real_name);
+      } else {
+        gimp_message_literal(gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+                             my_error->message);
+        g_clear_error(&my_error);
+      }
+    } else {
+      success = FALSE;
+    }
+    g_list_free(drawable_list);
+  }
+
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
+
+  if (success)
+    g_value_take_string(gimp_value_array_index(return_vals, 1), real_name);
+
+  return return_vals;
+}
+
+static GimpValueArray *edit_named_copy_invoker(GimpProcedure *procedure,
+                                               Gimp *gimp, GimpContext *context,
+                                               GimpProgress *progress,
+                                               const GimpValueArray *args,
+                                               GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  gint num_drawables;
+  const GimpItem **drawables;
+  const gchar *buffer_name;
+  gchar *real_name = NULL;
+
+  num_drawables = g_value_get_int(gimp_value_array_index(args, 0));
+  drawables = (const GimpItem **)gimp_value_get_object_array(
+      gimp_value_array_index(args, 1));
+  buffer_name = g_value_get_string(gimp_value_array_index(args, 2));
+
+  if (success) {
+    GimpImage *image = NULL;
+    GList *drawable_list = NULL;
+    gint i;
+
+    for (i = 0; i < num_drawables; i++) {
+      if (!gimp_pdb_item_is_attached(GIMP_ITEM(drawables[i]), NULL, 0, error)) {
+        success = FALSE;
+        break;
+      }
+
+      if (!image) {
+        image = gimp_item_get_image(GIMP_ITEM(drawables[i]));
+      } else if (image != gimp_item_get_image(GIMP_ITEM(drawables[i]))) {
+        success = FALSE;
+        gimp_message_literal(
+            gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+            _("All specified drawables must belong to the same image."));
+        break;
+      }
+
+      drawable_list = g_list_prepend(drawable_list, (gpointer)drawables[i]);
+    }
+
+    if (success && image) {
+      GError *my_error = NULL;
+
+      real_name = (gchar *)gimp_edit_named_copy(
+          image, buffer_name, drawable_list, context, &my_error);
+
+      if (real_name) {
+        real_name = g_strdup(real_name);
+      } else {
+        gimp_message_literal(gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+                             my_error->message);
+        g_clear_error(&my_error);
+      }
+    } else {
+      success = FALSE;
+    }
+    g_list_free(drawable_list);
+  }
+
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
+
+  if (success)
+    g_value_take_string(gimp_value_array_index(return_vals, 1), real_name);
+
+  return return_vals;
 }
 
 static GimpValueArray *
-edit_paste_invoker (GimpProcedure         *procedure,
-                    Gimp                  *gimp,
-                    GimpContext           *context,
-                    GimpProgress          *progress,
-                    const GimpValueArray  *args,
-                    GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	GimpDrawable *drawable;
-	gboolean paste_into;
-	GimpLayer *floating_sel = NULL;
+edit_named_copy_visible_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                GimpContext *context, GimpProgress *progress,
+                                const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpImage *image;
+  const gchar *buffer_name;
+  gchar *real_name = NULL;
 
-	drawable = g_value_get_object (gimp_value_array_index (args, 0));
-	paste_into = g_value_get_boolean (gimp_value_array_index (args, 1));
+  image = g_value_get_object(gimp_value_array_index(args, 0));
+  buffer_name = g_value_get_string(gimp_value_array_index(args, 1));
 
-	if (success)
-	{
-		GimpObject *paste = gimp_get_clipboard_object (gimp);
+  if (success) {
+    GError *my_error = NULL;
 
-		if (paste &&
-		    gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
-		                               GIMP_PDB_ITEM_CONTENT, error) &&
-		    gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
-		{
-			floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
-			                                drawable, paste,
-			                                paste_into ?
-			                                GIMP_PASTE_TYPE_FLOATING_INTO :
-			                                GIMP_PASTE_TYPE_FLOATING,
-			                                -1, -1, -1, -1);
+    real_name = (gchar *)gimp_edit_named_copy_visible(image, buffer_name,
+                                                      context, &my_error);
 
-			if (!floating_sel)
-				success = FALSE;
-		}
-		else
-			success = FALSE;
-	}
+    if (real_name) {
+      real_name = g_strdup(real_name);
+    } else {
+      gimp_message_literal(gimp, G_OBJECT(progress), GIMP_MESSAGE_WARNING,
+                           my_error->message);
+      g_clear_error(&my_error);
+    }
+  }
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-	if (success)
-		g_value_set_object (gimp_value_array_index (return_vals, 1), floating_sel);
+  if (success)
+    g_value_take_string(gimp_value_array_index(return_vals, 1), real_name);
 
-	return return_vals;
+  return return_vals;
 }
 
 static GimpValueArray *
-edit_paste_as_new_image_invoker (GimpProcedure         *procedure,
-                                 Gimp                  *gimp,
-                                 GimpContext           *context,
-                                 GimpProgress          *progress,
-                                 const GimpValueArray  *args,
-                                 GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	GimpImage *image = NULL;
+edit_named_paste_invoker(GimpProcedure *procedure, Gimp *gimp,
+                         GimpContext *context, GimpProgress *progress,
+                         const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpDrawable *drawable;
+  const gchar *buffer_name;
+  gboolean paste_into;
+  GimpLayer *floating_sel = NULL;
 
-	GimpObject *paste = gimp_get_clipboard_object (gimp);
+  drawable = g_value_get_object(gimp_value_array_index(args, 0));
+  buffer_name = g_value_get_string(gimp_value_array_index(args, 1));
+  paste_into = g_value_get_boolean(gimp_value_array_index(args, 2));
 
-	if (paste)
-	{
-		image = gimp_edit_paste_as_new_image (gimp, paste);
+  if (success) {
+    GimpBuffer *buffer = gimp_pdb_get_buffer(gimp, buffer_name, error);
 
-		if (!image)
-			success = FALSE;
-	}
+    if (buffer &&
+        gimp_pdb_item_is_attached(GIMP_ITEM(drawable), NULL,
+                                  GIMP_PDB_ITEM_CONTENT, error) &&
+        gimp_pdb_item_is_not_group(GIMP_ITEM(drawable), error)) {
+      floating_sel = gimp_edit_paste(gimp_item_get_image(GIMP_ITEM(drawable)),
+                                     drawable, GIMP_OBJECT(buffer),
+                                     paste_into ? GIMP_PASTE_TYPE_FLOATING_INTO
+                                                : GIMP_PASTE_TYPE_FLOATING,
+                                     -1, -1, -1, -1);
+      if (!floating_sel)
+        success = FALSE;
+    } else
+      success = FALSE;
+  }
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-	if (success)
-		g_value_set_object (gimp_value_array_index (return_vals, 1), image);
+  if (success)
+    g_value_set_object(gimp_value_array_index(return_vals, 1), floating_sel);
 
-	return return_vals;
+  return return_vals;
 }
 
-static GimpValueArray *
-edit_named_cut_invoker (GimpProcedure         *procedure,
-                        Gimp                  *gimp,
-                        GimpContext           *context,
-                        GimpProgress          *progress,
-                        const GimpValueArray  *args,
-                        GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	gint num_drawables;
-	const GimpItem **drawables;
-	const gchar *buffer_name;
-	gchar *real_name = NULL;
+static GimpValueArray *edit_named_paste_as_new_image_invoker(
+    GimpProcedure *procedure, Gimp *gimp, GimpContext *context,
+    GimpProgress *progress, const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  const gchar *buffer_name;
+  GimpImage *image = NULL;
 
-	num_drawables = g_value_get_int (gimp_value_array_index (args, 0));
-	drawables = (const GimpItem **) gimp_value_get_object_array (gimp_value_array_index (args, 1));
-	buffer_name = g_value_get_string (gimp_value_array_index (args, 2));
+  buffer_name = g_value_get_string(gimp_value_array_index(args, 0));
 
-	if (success)
-	{
-		GimpImage *image         = NULL;
-		GList     *drawable_list = NULL;
-		gint i;
+  if (success) {
+    GimpBuffer *buffer = gimp_pdb_get_buffer(gimp, buffer_name, error);
 
-		for (i = 0; i < num_drawables; i++)
-		{
-			if (!gimp_pdb_item_is_attached (GIMP_ITEM (drawables[i]), NULL,
-			                                GIMP_PDB_ITEM_CONTENT, error) ||
-			    gimp_pdb_item_is_group (GIMP_ITEM (drawables[i]), error))
-			{
-				success = FALSE;
-				break;
-			}
+    if (buffer) {
+      image = gimp_edit_paste_as_new_image(gimp, GIMP_OBJECT(buffer));
 
-			if (!image)
-			{
-				image = gimp_item_get_image (GIMP_ITEM (drawables[i]));
-			}
-			else if (image != gimp_item_get_image (GIMP_ITEM (drawables[i])))
-			{
-				success = FALSE;
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      _("All specified drawables must belong to the same image."));
-				break;
-			}
+      if (!image)
+        success = FALSE;
+    } else
+      success = FALSE;
+  }
 
-			drawable_list = g_list_prepend (drawable_list, (gpointer) drawables[i]);
-		}
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-		if (success && image)
-		{
-			GError *my_error = NULL;
+  if (success)
+    g_value_set_object(gimp_value_array_index(return_vals, 1), image);
 
-			real_name = (gchar *) gimp_edit_named_cut (image, buffer_name,
-			                                           drawable_list, context, &my_error);
-
-			if (real_name)
-			{
-				real_name = g_strdup (real_name);
-			}
-			else
-			{
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      my_error->message);
-				g_clear_error (&my_error);
-			}
-		}
-		else
-		{
-			success = FALSE;
-		}
-		g_list_free (drawable_list);
-	}
-
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
-
-	if (success)
-		g_value_take_string (gimp_value_array_index (return_vals, 1), real_name);
-
-	return return_vals;
+  return return_vals;
 }
 
-static GimpValueArray *
-edit_named_copy_invoker (GimpProcedure         *procedure,
-                         Gimp                  *gimp,
-                         GimpContext           *context,
-                         GimpProgress          *progress,
-                         const GimpValueArray  *args,
-                         GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	gint num_drawables;
-	const GimpItem **drawables;
-	const gchar *buffer_name;
-	gchar *real_name = NULL;
+void register_edit_procs(GimpPDB *pdb) {
+  GimpProcedure *procedure;
 
-	num_drawables = g_value_get_int (gimp_value_array_index (args, 0));
-	drawables = (const GimpItem **) gimp_value_get_object_array (gimp_value_array_index (args, 1));
-	buffer_name = g_value_get_string (gimp_value_array_index (args, 2));
+  /*
+   * gimp-edit-cut
+   */
+  procedure = gimp_procedure_new(edit_cut_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-cut");
+  gimp_procedure_set_static_help(
+      procedure, "Cut from the specified drawables.",
+      "If there is a selection in the image, then the area specified by the "
+      "selection is cut from the specified drawables and placed in an internal "
+      "GIMP edit buffer. It can subsequently be retrieved using the "
+      "'gimp-edit-paste' command. If there is no selection and only one "
+      "specified drawable, then the specified drawable will be removed and its "
+      "contents stored in the internal GIMP edit buffer. This procedure will "
+      "fail if the selected area lies completely outside the bounds of the "
+      "current drawables and there is nothing to cut from.",
+      NULL);
+  gimp_procedure_set_static_attribution(
+      procedure, "Spencer Kimball & Peter Mattis",
+      "Spencer Kimball & Peter Mattis", "1995-1996");
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_int("num-drawables", "num drawables",
+                                  "The number of drawables", 1, G_MAXINT32, 1,
+                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_object_array(
+          "drawables", "drawables", "The drawables to cut from", GIMP_TYPE_ITEM,
+          GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_boolean("non-empty", "non empty",
+                                      "TRUE if the cut was successful, FALSE "
+                                      "if there was nothing to copy from",
+                                      FALSE, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	if (success)
-	{
-		GimpImage *image         = NULL;
-		GList     *drawable_list = NULL;
-		gint i;
+  /*
+   * gimp-edit-copy
+   */
+  procedure = gimp_procedure_new(edit_copy_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-copy");
+  gimp_procedure_set_static_help(
+      procedure, "Copy from the specified drawables.",
+      "If there is a selection in the image, then the area specified by the "
+      "selection is copied from the specified drawables and placed in an "
+      "internal GIMP edit buffer. It can subsequently be retrieved using the "
+      "'gimp-edit-paste' command. If there is no selection, then the specified "
+      "drawables' contents will be stored in the internal GIMP edit buffer. "
+      "This procedure will fail if the selected area lies completely outside "
+      "the bounds of the current drawables and there is nothing to copy from. "
+      "All the drawables must belong to the same image.",
+      NULL);
+  gimp_procedure_set_static_attribution(
+      procedure, "Spencer Kimball & Peter Mattis",
+      "Spencer Kimball & Peter Mattis", "1995-1996");
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_int("num-drawables", "num drawables",
+                                  "The number of drawables to save", 1,
+                                  G_MAXINT32, 1, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_object_array(
+          "drawables", "drawables", "Drawables to copy from", GIMP_TYPE_ITEM,
+          GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_boolean("non-empty", "non empty",
+                                      "TRUE if the cut was successful, FALSE "
+                                      "if there was nothing to copy from",
+                                      FALSE, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-		for (i = 0; i < num_drawables; i++)
-		{
-			if (!gimp_pdb_item_is_attached (GIMP_ITEM (drawables[i]), NULL,
-			                                0, error))
-			{
-				success = FALSE;
-				break;
-			}
+  /*
+   * gimp-edit-copy-visible
+   */
+  procedure = gimp_procedure_new(edit_copy_visible_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-copy-visible");
+  gimp_procedure_set_static_help(
+      procedure, "Copy from the projection.",
+      "If there is a selection in the image, then the area specified by the "
+      "selection is copied from the projection and placed in an internal GIMP "
+      "edit buffer. It can subsequently be retrieved using the "
+      "'gimp-edit-paste' command. If there is no selection, then the "
+      "projection's contents will be stored in the internal GIMP edit buffer.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2004");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_image("image", "image", "The image to copy from", FALSE,
+                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_boolean("non-empty", "non empty",
+                                      "TRUE if the copy was successful", FALSE,
+                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-			if (!image)
-			{
-				image = gimp_item_get_image (GIMP_ITEM (drawables[i]));
-			}
-			else if (image != gimp_item_get_image (GIMP_ITEM (drawables[i])))
-			{
-				success = FALSE;
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      _("All specified drawables must belong to the same image."));
-				break;
-			}
+  /*
+   * gimp-edit-paste
+   */
+  procedure = gimp_procedure_new(edit_paste_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-paste");
+  gimp_procedure_set_static_help(
+      procedure, "Paste buffer to the specified drawable.",
+      "This procedure pastes a copy of the internal GIMP edit buffer to the "
+      "specified drawable. The GIMP edit buffer will be empty unless a call "
+      "was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. The "
+      "\"paste_into\" option specifies whether to clear the current image "
+      "selection, or to paste the buffer \"behind\" the selection. This allows "
+      "the selection to act as a mask for the pasted buffer. Anywhere that the "
+      "selection mask is non-zero, the pasted buffer will show through. The "
+      "pasted buffer will be a new layer in the image which is designated as "
+      "the image floating selection. If the image has a floating selection at "
+      "the time of pasting, the old floating selection will be anchored to its "
+      "drawable before the new floating selection is added. This procedure "
+      "returns the new floating layer. The resulting floating selection will "
+      "already be attached to the specified drawable, and a subsequent call to "
+      "floating_sel_attach is not needed.",
+      NULL);
+  gimp_procedure_set_static_attribution(
+      procedure, "Spencer Kimball & Peter Mattis",
+      "Spencer Kimball & Peter Mattis", "1995-1996");
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_drawable("drawable", "drawable",
+                                          "The drawable to paste to", FALSE,
+                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_boolean("paste-into", "paste into",
+                                      "Clear selection, or paste behind it?",
+                                      FALSE, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, gimp_param_spec_layer("floating-sel", "floating sel",
+                                       "The new floating selection", FALSE,
+                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-			drawable_list = g_list_prepend (drawable_list, (gpointer) drawables[i]);
-		}
+  /*
+   * gimp-edit-paste-as-new-image
+   */
+  procedure = gimp_procedure_new(edit_paste_as_new_image_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-edit-paste-as-new-image");
+  gimp_procedure_set_static_help(
+      procedure, "Paste buffer to a new image.",
+      "This procedure pastes a copy of the internal GIMP edit buffer to a new "
+      "image. The GIMP edit buffer will be empty unless a call was previously "
+      "made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure "
+      "returns the new image or -1 if the edit buffer was empty.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_return_value(
+      procedure, gimp_param_spec_image("image", "image", "The new image", FALSE,
+                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-		if (success && image)
-		{
-			GError *my_error = NULL;
+  /*
+   * gimp-edit-named-cut
+   */
+  procedure = gimp_procedure_new(edit_named_cut_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-named-cut");
+  gimp_procedure_set_static_help(
+      procedure, "Cut into a named buffer.",
+      "This procedure works like 'gimp-edit-cut', but additionally stores the "
+      "cut buffer into a named buffer that will stay available for later "
+      "pasting, regardless of any intermediate copy or cut operations.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_int("num-drawables", "num drawables",
+                                  "The number of drawables", 1, G_MAXINT32, 1,
+                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_object_array(
+          "drawables", "drawables", "The drawables to cut from", GIMP_TYPE_ITEM,
+          GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("buffer-name", "buffer name",
+                             "The name of the buffer to create", FALSE, FALSE,
+                             TRUE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure,
+      gimp_param_spec_string(
+          "real-name", "real name",
+          "The real name given to the buffer, or NULL if the cut failed", FALSE,
+          FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-			real_name = (gchar *) gimp_edit_named_copy (image, buffer_name,
-			                                            drawable_list, context, &my_error);
+  /*
+   * gimp-edit-named-copy
+   */
+  procedure = gimp_procedure_new(edit_named_copy_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-named-copy");
+  gimp_procedure_set_static_help(
+      procedure, "Copy into a named buffer.",
+      "This procedure works like 'gimp-edit-copy', but additionally stores the "
+      "copied buffer into a named buffer that will stay available for later "
+      "pasting, regardless of any intermediate copy or cut operations.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_int("num-drawables", "num drawables",
+                                  "The number of drawables", 1, G_MAXINT32, 1,
+                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_object_array(
+          "drawables", "drawables", "The drawables to copy from",
+          GIMP_TYPE_ITEM, GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("buffer-name", "buffer name",
+                             "The name of the buffer to create", FALSE, FALSE,
+                             TRUE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure,
+      gimp_param_spec_string(
+          "real-name", "real name",
+          "The real name given to the buffer, or NULL if the copy failed",
+          FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-			if (real_name)
-			{
-				real_name = g_strdup (real_name);
-			}
-			else
-			{
-				gimp_message_literal (gimp,
-				                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-				                      my_error->message);
-				g_clear_error (&my_error);
-			}
-		}
-		else
-		{
-			success = FALSE;
-		}
-		g_list_free (drawable_list);
-	}
+  /*
+   * gimp-edit-named-copy-visible
+   */
+  procedure = gimp_procedure_new(edit_named_copy_visible_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-edit-named-copy-visible");
+  gimp_procedure_set_static_help(
+      procedure, "Copy from the projection into a named buffer.",
+      "This procedure works like 'gimp-edit-copy-visible', but additionally "
+      "stores the copied buffer into a named buffer that will stay available "
+      "for later pasting, regardless of any intermediate copy or cut "
+      "operations.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_image("image", "image", "The image to copy from", FALSE,
+                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("buffer-name", "buffer name",
+                             "The name of the buffer to create", FALSE, FALSE,
+                             TRUE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure,
+      gimp_param_spec_string(
+          "real-name", "real name",
+          "The real name given to the buffer, or NULL if the copy failed",
+          FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+  /*
+   * gimp-edit-named-paste
+   */
+  procedure = gimp_procedure_new(edit_named_paste_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-edit-named-paste");
+  gimp_procedure_set_static_help(
+      procedure, "Paste named buffer to the specified drawable.",
+      "This procedure works like 'gimp-edit-paste' but pastes a named buffer "
+      "instead of the global buffer.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_drawable("drawable", "drawable",
+                                          "The drawable to paste to", FALSE,
+                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("buffer-name", "buffer name",
+                             "The name of the buffer to paste", FALSE, FALSE,
+                             FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_boolean("paste-into", "paste into",
+                                      "Clear selection, or paste behind it?",
+                                      FALSE, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, gimp_param_spec_layer("floating-sel", "floating sel",
+                                       "The new floating selection", FALSE,
+                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	if (success)
-		g_value_take_string (gimp_value_array_index (return_vals, 1), real_name);
-
-	return return_vals;
-}
-
-static GimpValueArray *
-edit_named_copy_visible_invoker (GimpProcedure         *procedure,
-                                 Gimp                  *gimp,
-                                 GimpContext           *context,
-                                 GimpProgress          *progress,
-                                 const GimpValueArray  *args,
-                                 GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	GimpImage *image;
-	const gchar *buffer_name;
-	gchar *real_name = NULL;
-
-	image = g_value_get_object (gimp_value_array_index (args, 0));
-	buffer_name = g_value_get_string (gimp_value_array_index (args, 1));
-
-	if (success)
-	{
-		GError *my_error = NULL;
-
-		real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
-		                                                    context, &my_error);
-
-		if (real_name)
-		{
-			real_name = g_strdup (real_name);
-		}
-		else
-		{
-			gimp_message_literal (gimp,
-			                      G_OBJECT (progress), GIMP_MESSAGE_WARNING,
-			                      my_error->message);
-			g_clear_error (&my_error);
-		}
-	}
-
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
-
-	if (success)
-		g_value_take_string (gimp_value_array_index (return_vals, 1), real_name);
-
-	return return_vals;
-}
-
-static GimpValueArray *
-edit_named_paste_invoker (GimpProcedure         *procedure,
-                          Gimp                  *gimp,
-                          GimpContext           *context,
-                          GimpProgress          *progress,
-                          const GimpValueArray  *args,
-                          GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	GimpDrawable *drawable;
-	const gchar *buffer_name;
-	gboolean paste_into;
-	GimpLayer *floating_sel = NULL;
-
-	drawable = g_value_get_object (gimp_value_array_index (args, 0));
-	buffer_name = g_value_get_string (gimp_value_array_index (args, 1));
-	paste_into = g_value_get_boolean (gimp_value_array_index (args, 2));
-
-	if (success)
-	{
-		GimpBuffer *buffer = gimp_pdb_get_buffer (gimp, buffer_name, error);
-
-		if (buffer &&
-		    gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
-		                               GIMP_PDB_ITEM_CONTENT, error) &&
-		    gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
-		{
-			floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
-			                                drawable, GIMP_OBJECT (buffer),
-			                                paste_into ?
-			                                GIMP_PASTE_TYPE_FLOATING_INTO :
-			                                GIMP_PASTE_TYPE_FLOATING,
-			                                -1, -1, -1, -1);
-			if (!floating_sel)
-				success = FALSE;
-		}
-		else
-			success = FALSE;
-	}
-
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
-
-	if (success)
-		g_value_set_object (gimp_value_array_index (return_vals, 1), floating_sel);
-
-	return return_vals;
-}
-
-static GimpValueArray *
-edit_named_paste_as_new_image_invoker (GimpProcedure         *procedure,
-                                       Gimp                  *gimp,
-                                       GimpContext           *context,
-                                       GimpProgress          *progress,
-                                       const GimpValueArray  *args,
-                                       GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	const gchar *buffer_name;
-	GimpImage *image = NULL;
-
-	buffer_name = g_value_get_string (gimp_value_array_index (args, 0));
-
-	if (success)
-	{
-		GimpBuffer *buffer = gimp_pdb_get_buffer (gimp, buffer_name, error);
-
-		if (buffer)
-		{
-			image = gimp_edit_paste_as_new_image (gimp, GIMP_OBJECT (buffer));
-
-			if (!image)
-				success = FALSE;
-		}
-		else
-			success = FALSE;
-	}
-
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
-
-	if (success)
-		g_value_set_object (gimp_value_array_index (return_vals, 1), image);
-
-	return return_vals;
-}
-
-void
-register_edit_procs (GimpPDB *pdb)
-{
-	GimpProcedure *procedure;
-
-	/*
-	 * gimp-edit-cut
-	 */
-	procedure = gimp_procedure_new (edit_cut_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-cut");
-	gimp_procedure_set_static_help (procedure,
-	                                "Cut from the specified drawables.",
-	                                "If there is a selection in the image, then the area specified by the selection is cut from the specified drawables and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection and only one specified drawable, then the specified drawable will be removed and its contents stored in the internal GIMP edit buffer. This procedure will fail if the selected area lies completely outside the bounds of the current drawables and there is nothing to cut from.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Spencer Kimball & Peter Mattis",
-	                                       "Spencer Kimball & Peter Mattis",
-	                                       "1995-1996");
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_int ("num-drawables",
-	                                               "num drawables",
-	                                               "The number of drawables",
-	                                               1, G_MAXINT32, 1,
-	                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_object_array ("drawables",
-	                                                           "drawables",
-	                                                           "The drawables to cut from",
-	                                                           GIMP_TYPE_ITEM,
-	                                                           GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_boolean ("non-empty",
-	                                                       "non empty",
-	                                                       "TRUE if the cut was successful, FALSE if there was nothing to copy from",
-	                                                       FALSE,
-	                                                       GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-copy
-	 */
-	procedure = gimp_procedure_new (edit_copy_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-copy");
-	gimp_procedure_set_static_help (procedure,
-	                                "Copy from the specified drawables.",
-	                                "If there is a selection in the image, then the area specified by the selection is copied from the specified drawables and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the specified drawables' contents will be stored in the internal GIMP edit buffer. This procedure will fail if the selected area lies completely outside the bounds of the current drawables and there is nothing to copy from. All the drawables must belong to the same image.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Spencer Kimball & Peter Mattis",
-	                                       "Spencer Kimball & Peter Mattis",
-	                                       "1995-1996");
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_int ("num-drawables",
-	                                               "num drawables",
-	                                               "The number of drawables to save",
-	                                               1, G_MAXINT32, 1,
-	                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_object_array ("drawables",
-	                                                           "drawables",
-	                                                           "Drawables to copy from",
-	                                                           GIMP_TYPE_ITEM,
-	                                                           GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_boolean ("non-empty",
-	                                                       "non empty",
-	                                                       "TRUE if the cut was successful, FALSE if there was nothing to copy from",
-	                                                       FALSE,
-	                                                       GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-copy-visible
-	 */
-	procedure = gimp_procedure_new (edit_copy_visible_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-copy-visible");
-	gimp_procedure_set_static_help (procedure,
-	                                "Copy from the projection.",
-	                                "If there is a selection in the image, then the area specified by the selection is copied from the projection and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the projection's contents will be stored in the internal GIMP edit buffer.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2004");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_image ("image",
-	                                                    "image",
-	                                                    "The image to copy from",
-	                                                    FALSE,
-	                                                    GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_boolean ("non-empty",
-	                                                       "non empty",
-	                                                       "TRUE if the copy was successful",
-	                                                       FALSE,
-	                                                       GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-paste
-	 */
-	procedure = gimp_procedure_new (edit_paste_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-paste");
-	gimp_procedure_set_static_help (procedure,
-	                                "Paste buffer to the specified drawable.",
-	                                "This procedure pastes a copy of the internal GIMP edit buffer to the specified drawable. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. The \"paste_into\" option specifies whether to clear the current image selection, or to paste the buffer \"behind\" the selection. This allows the selection to act as a mask for the pasted buffer. Anywhere that the selection mask is non-zero, the pasted buffer will show through. The pasted buffer will be a new layer in the image which is designated as the image floating selection. If the image has a floating selection at the time of pasting, the old floating selection will be anchored to its drawable before the new floating selection is added. This procedure returns the new floating layer. The resulting floating selection will already be attached to the specified drawable, and a subsequent call to floating_sel_attach is not needed.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Spencer Kimball & Peter Mattis",
-	                                       "Spencer Kimball & Peter Mattis",
-	                                       "1995-1996");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_drawable ("drawable",
-	                                                       "drawable",
-	                                                       "The drawable to paste to",
-	                                                       FALSE,
-	                                                       GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_boolean ("paste-into",
-	                                                   "paste into",
-	                                                   "Clear selection, or paste behind it?",
-	                                                   FALSE,
-	                                                   GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_layer ("floating-sel",
-	                                                        "floating sel",
-	                                                        "The new floating selection",
-	                                                        FALSE,
-	                                                        GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-paste-as-new-image
-	 */
-	procedure = gimp_procedure_new (edit_paste_as_new_image_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-paste-as-new-image");
-	gimp_procedure_set_static_help (procedure,
-	                                "Paste buffer to a new image.",
-	                                "This procedure pastes a copy of the internal GIMP edit buffer to a new image. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure returns the new image or -1 if the edit buffer was empty.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_image ("image",
-	                                                        "image",
-	                                                        "The new image",
-	                                                        FALSE,
-	                                                        GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-named-cut
-	 */
-	procedure = gimp_procedure_new (edit_named_cut_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-named-cut");
-	gimp_procedure_set_static_help (procedure,
-	                                "Cut into a named buffer.",
-	                                "This procedure works like 'gimp-edit-cut', but additionally stores the cut buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_int ("num-drawables",
-	                                               "num drawables",
-	                                               "The number of drawables",
-	                                               1, G_MAXINT32, 1,
-	                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_object_array ("drawables",
-	                                                           "drawables",
-	                                                           "The drawables to cut from",
-	                                                           GIMP_TYPE_ITEM,
-	                                                           GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("buffer-name",
-	                                                     "buffer name",
-	                                                     "The name of the buffer to create",
-	                                                     FALSE, FALSE, TRUE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_string ("real-name",
-	                                                         "real name",
-	                                                         "The real name given to the buffer, or NULL if the cut failed",
-	                                                         FALSE, FALSE, FALSE,
-	                                                         NULL,
-	                                                         GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-named-copy
-	 */
-	procedure = gimp_procedure_new (edit_named_copy_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-named-copy");
-	gimp_procedure_set_static_help (procedure,
-	                                "Copy into a named buffer.",
-	                                "This procedure works like 'gimp-edit-copy', but additionally stores the copied buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_int ("num-drawables",
-	                                               "num drawables",
-	                                               "The number of drawables",
-	                                               1, G_MAXINT32, 1,
-	                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_object_array ("drawables",
-	                                                           "drawables",
-	                                                           "The drawables to copy from",
-	                                                           GIMP_TYPE_ITEM,
-	                                                           GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("buffer-name",
-	                                                     "buffer name",
-	                                                     "The name of the buffer to create",
-	                                                     FALSE, FALSE, TRUE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_string ("real-name",
-	                                                         "real name",
-	                                                         "The real name given to the buffer, or NULL if the copy failed",
-	                                                         FALSE, FALSE, FALSE,
-	                                                         NULL,
-	                                                         GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-named-copy-visible
-	 */
-	procedure = gimp_procedure_new (edit_named_copy_visible_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-named-copy-visible");
-	gimp_procedure_set_static_help (procedure,
-	                                "Copy from the projection into a named buffer.",
-	                                "This procedure works like 'gimp-edit-copy-visible', but additionally stores the copied buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_image ("image",
-	                                                    "image",
-	                                                    "The image to copy from",
-	                                                    FALSE,
-	                                                    GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("buffer-name",
-	                                                     "buffer name",
-	                                                     "The name of the buffer to create",
-	                                                     FALSE, FALSE, TRUE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_string ("real-name",
-	                                                         "real name",
-	                                                         "The real name given to the buffer, or NULL if the copy failed",
-	                                                         FALSE, FALSE, FALSE,
-	                                                         NULL,
-	                                                         GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-named-paste
-	 */
-	procedure = gimp_procedure_new (edit_named_paste_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-named-paste");
-	gimp_procedure_set_static_help (procedure,
-	                                "Paste named buffer to the specified drawable.",
-	                                "This procedure works like 'gimp-edit-paste' but pastes a named buffer instead of the global buffer.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_drawable ("drawable",
-	                                                       "drawable",
-	                                                       "The drawable to paste to",
-	                                                       FALSE,
-	                                                       GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("buffer-name",
-	                                                     "buffer name",
-	                                                     "The name of the buffer to paste",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_boolean ("paste-into",
-	                                                   "paste into",
-	                                                   "Clear selection, or paste behind it?",
-	                                                   FALSE,
-	                                                   GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_layer ("floating-sel",
-	                                                        "floating sel",
-	                                                        "The new floating selection",
-	                                                        FALSE,
-	                                                        GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
-
-	/*
-	 * gimp-edit-named-paste-as-new-image
-	 */
-	procedure = gimp_procedure_new (edit_named_paste_as_new_image_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-edit-named-paste-as-new-image");
-	gimp_procedure_set_static_help (procedure,
-	                                "Paste named buffer to a new image.",
-	                                "This procedure works like 'gimp-edit-paste-as-new-image' but pastes a named buffer instead of the global buffer.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("buffer-name",
-	                                                     "buffer name",
-	                                                     "The name of the buffer to paste",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_image ("image",
-	                                                        "image",
-	                                                        "The new image",
-	                                                        FALSE,
-	                                                        GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-edit-named-paste-as-new-image
+   */
+  procedure = gimp_procedure_new(edit_named_paste_as_new_image_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-edit-named-paste-as-new-image");
+  gimp_procedure_set_static_help(
+      procedure, "Paste named buffer to a new image.",
+      "This procedure works like 'gimp-edit-paste-as-new-image' but pastes a "
+      "named buffer instead of the global buffer.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("buffer-name", "buffer name",
+                             "The name of the buffer to paste", FALSE, FALSE,
+                             FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, gimp_param_spec_image("image", "image", "The new image", FALSE,
+                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 }

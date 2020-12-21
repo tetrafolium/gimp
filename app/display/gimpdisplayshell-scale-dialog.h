@@ -18,8 +18,6 @@
 #ifndef __GIMP_DISPLAY_SHELL_SCALE_DIALOG_H__
 #define __GIMP_DISPLAY_SHELL_SCALE_DIALOG_H__
 
+void gimp_display_shell_scale_dialog(GimpDisplayShell *shell);
 
-void  gimp_display_shell_scale_dialog (GimpDisplayShell *shell);
-
-
-#endif  /*  __GIMP_DISPLAY_SHELL_SCALE_DIALOG_H__  */
+#endif /*  __GIMP_DISPLAY_SHELL_SCALE_DIALOG_H__  */

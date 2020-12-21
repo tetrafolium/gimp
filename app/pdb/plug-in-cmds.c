@@ -41,429 +41,373 @@
 #include "plug-in/gimppluginmanager.h"
 #include "plug-in/gimppluginprocedure.h"
 
-#include "gimppdb.h"
 #include "gimppdb-utils.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "internal-procs.h"
 
+static GimpValueArray *plug_ins_query_invoker(GimpProcedure *procedure,
+                                              Gimp *gimp, GimpContext *context,
+                                              GimpProgress *progress,
+                                              const GimpValueArray *args,
+                                              GError **error) {
+  GimpValueArray *return_vals;
+  const gchar *search_string;
+  gint num_procedures = 0;
+  gchar **procedures = NULL;
+  gint num_accelerators = 0;
+  gchar **accelerators = NULL;
+  gint num_locations = 0;
+  gchar **locations = NULL;
+  gint num_install_times = 0;
+  gint32 *install_times = NULL;
 
-static GimpValueArray *
-plug_ins_query_invoker (GimpProcedure         *procedure,
-                        Gimp                  *gimp,
-                        GimpContext           *context,
-                        GimpProgress          *progress,
-                        const GimpValueArray  *args,
-                        GError               **error)
-{
-	GimpValueArray *return_vals;
-	const gchar *search_string;
-	gint num_procedures = 0;
-	gchar **procedures = NULL;
-	gint num_accelerators = 0;
-	gchar **accelerators = NULL;
-	gint num_locations = 0;
-	gchar **locations = NULL;
-	gint num_install_times = 0;
-	gint32 *install_times = NULL;
+  search_string = g_value_get_string(gimp_value_array_index(args, 0));
 
-	search_string = g_value_get_string (gimp_value_array_index (args, 0));
+  num_procedures = gimp_plug_in_manager_query(
+      gimp->plug_in_manager, search_string, &procedures, &accelerators,
+      &locations, &install_times);
+  num_accelerators = num_procedures;
+  num_locations = num_procedures;
+  num_install_times = num_procedures;
 
-	num_procedures = gimp_plug_in_manager_query (gimp->plug_in_manager,
-	                                             search_string,
-	                                             &procedures,
-	                                             &accelerators,
-	                                             &locations,
-	                                             &install_times);
-	num_accelerators  = num_procedures;
-	num_locations     = num_procedures;
-	num_install_times = num_procedures;
+  return_vals = gimp_procedure_get_return_values(procedure, TRUE, NULL);
 
-	return_vals = gimp_procedure_get_return_values (procedure, TRUE, NULL);
+  g_value_set_int(gimp_value_array_index(return_vals, 1), num_procedures);
+  gimp_value_take_string_array(gimp_value_array_index(return_vals, 2),
+                               procedures, num_procedures);
+  g_value_set_int(gimp_value_array_index(return_vals, 3), num_accelerators);
+  gimp_value_take_string_array(gimp_value_array_index(return_vals, 4),
+                               accelerators, num_accelerators);
+  g_value_set_int(gimp_value_array_index(return_vals, 5), num_locations);
+  gimp_value_take_string_array(gimp_value_array_index(return_vals, 6),
+                               locations, num_locations);
+  g_value_set_int(gimp_value_array_index(return_vals, 7), num_install_times);
+  gimp_value_take_int32_array(gimp_value_array_index(return_vals, 8),
+                              install_times, num_install_times);
 
-	g_value_set_int (gimp_value_array_index (return_vals, 1), num_procedures);
-	gimp_value_take_string_array (gimp_value_array_index (return_vals, 2), procedures, num_procedures);
-	g_value_set_int (gimp_value_array_index (return_vals, 3), num_accelerators);
-	gimp_value_take_string_array (gimp_value_array_index (return_vals, 4), accelerators, num_accelerators);
-	g_value_set_int (gimp_value_array_index (return_vals, 5), num_locations);
-	gimp_value_take_string_array (gimp_value_array_index (return_vals, 6), locations, num_locations);
-	g_value_set_int (gimp_value_array_index (return_vals, 7), num_install_times);
-	gimp_value_take_int32_array (gimp_value_array_index (return_vals, 8), install_times, num_install_times);
-
-	return return_vals;
+  return return_vals;
 }
 
 static GimpValueArray *
-plug_in_domain_register_invoker (GimpProcedure         *procedure,
-                                 Gimp                  *gimp,
-                                 GimpContext           *context,
-                                 GimpProgress          *progress,
-                                 const GimpValueArray  *args,
-                                 GError               **error)
-{
-	gboolean success = TRUE;
-	const gchar *domain_name;
-	GFile *domain_file;
+plug_in_domain_register_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                GimpContext *context, GimpProgress *progress,
+                                const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  const gchar *domain_name;
+  GFile *domain_file;
 
-	domain_name = g_value_get_string (gimp_value_array_index (args, 0));
-	domain_file = g_value_get_object (gimp_value_array_index (args, 1));
+  domain_name = g_value_get_string(gimp_value_array_index(args, 0));
+  domain_file = g_value_get_object(gimp_value_array_index(args, 1));
 
-	if (success)
-	{
-		GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+  if (success) {
+    GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
 
-		if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY)
-		{
-			gchar *domain_path = domain_file ? g_file_get_path (domain_file) : NULL;
+    if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY) {
+      gchar *domain_path = domain_file ? g_file_get_path(domain_file) : NULL;
 
-			gimp_plug_in_def_set_locale_domain (plug_in->plug_in_def,
-			                                    domain_name, domain_path);
+      gimp_plug_in_def_set_locale_domain(plug_in->plug_in_def, domain_name,
+                                         domain_path);
 
-			g_free (domain_path);
-		}
-		else
-			success = FALSE;
-	}
+      g_free(domain_path);
+    } else
+      success = FALSE;
+  }
 
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
 static GimpValueArray *
-plug_in_help_register_invoker (GimpProcedure         *procedure,
-                               Gimp                  *gimp,
-                               GimpContext           *context,
-                               GimpProgress          *progress,
-                               const GimpValueArray  *args,
-                               GError               **error)
-{
-	gboolean success = TRUE;
-	const gchar *domain_name;
-	GFile *domain_file;
+plug_in_help_register_invoker(GimpProcedure *procedure, Gimp *gimp,
+                              GimpContext *context, GimpProgress *progress,
+                              const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  const gchar *domain_name;
+  GFile *domain_file;
 
-	domain_name = g_value_get_string (gimp_value_array_index (args, 0));
-	domain_file = g_value_get_object (gimp_value_array_index (args, 1));
+  domain_name = g_value_get_string(gimp_value_array_index(args, 0));
+  domain_file = g_value_get_object(gimp_value_array_index(args, 1));
 
-	if (success)
-	{
-		GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+  if (success) {
+    GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
 
-		if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY)
-		{
-			gchar *domain_uri = domain_file ? g_file_get_uri (domain_file) : NULL;
+    if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY) {
+      gchar *domain_uri = domain_file ? g_file_get_uri(domain_file) : NULL;
 
-			gimp_plug_in_def_set_help_domain (plug_in->plug_in_def,
-			                                  domain_name, domain_uri);
+      gimp_plug_in_def_set_help_domain(plug_in->plug_in_def, domain_name,
+                                       domain_uri);
 
-			g_free (domain_uri);
-		}
-		else
-			success = FALSE;
-	}
+      g_free(domain_uri);
+    } else
+      success = FALSE;
+  }
 
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
-static GimpValueArray *
-plug_in_menu_branch_register_invoker (GimpProcedure         *procedure,
-                                      Gimp                  *gimp,
-                                      GimpContext           *context,
-                                      GimpProgress          *progress,
-                                      const GimpValueArray  *args,
-                                      GError               **error)
-{
-	gboolean success = TRUE;
-	const gchar *menu_path;
-	const gchar *menu_name;
+static GimpValueArray *plug_in_menu_branch_register_invoker(
+    GimpProcedure *procedure, Gimp *gimp, GimpContext *context,
+    GimpProgress *progress, const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  const gchar *menu_path;
+  const gchar *menu_name;
 
-	menu_path = g_value_get_string (gimp_value_array_index (args, 0));
-	menu_name = g_value_get_string (gimp_value_array_index (args, 1));
+  menu_path = g_value_get_string(gimp_value_array_index(args, 0));
+  menu_name = g_value_get_string(gimp_value_array_index(args, 1));
 
-	if (success)
-	{
-		GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+  if (success) {
+    GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
 
-		if (plug_in)
-		{
-			gimp_plug_in_manager_add_menu_branch (gimp->plug_in_manager,
-			                                      plug_in->file, menu_path, menu_name);
-		}
-		else
-			success = FALSE;
-	}
+    if (plug_in) {
+      gimp_plug_in_manager_add_menu_branch(gimp->plug_in_manager, plug_in->file,
+                                           menu_path, menu_name);
+    } else
+      success = FALSE;
+  }
 
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
-static GimpValueArray *
-plug_in_set_pdb_error_handler_invoker (GimpProcedure         *procedure,
-                                       Gimp                  *gimp,
-                                       GimpContext           *context,
-                                       GimpProgress          *progress,
-                                       const GimpValueArray  *args,
-                                       GError               **error)
-{
-	gboolean success = TRUE;
-	gint handler;
+static GimpValueArray *plug_in_set_pdb_error_handler_invoker(
+    GimpProcedure *procedure, Gimp *gimp, GimpContext *context,
+    GimpProgress *progress, const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  gint handler;
 
-	handler = g_value_get_enum (gimp_value_array_index (args, 0));
+  handler = g_value_get_enum(gimp_value_array_index(args, 0));
 
-	if (success)
-	{
-		GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+  if (success) {
+    GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
 
-		if (plug_in)
-		{
-			gimp_plug_in_set_error_handler (plug_in, handler);
-		}
-		else
-			success = FALSE;
-	}
+    if (plug_in) {
+      gimp_plug_in_set_error_handler(plug_in, handler);
+    } else
+      success = FALSE;
+  }
 
-	return gimp_procedure_get_return_values (procedure, success,
-	                                         error ? *error : NULL);
+  return gimp_procedure_get_return_values(procedure, success,
+                                          error ? *error : NULL);
 }
 
-static GimpValueArray *
-plug_in_get_pdb_error_handler_invoker (GimpProcedure         *procedure,
-                                       Gimp                  *gimp,
-                                       GimpContext           *context,
-                                       GimpProgress          *progress,
-                                       const GimpValueArray  *args,
-                                       GError               **error)
-{
-	gboolean success = TRUE;
-	GimpValueArray *return_vals;
-	gint handler = 0;
+static GimpValueArray *plug_in_get_pdb_error_handler_invoker(
+    GimpProcedure *procedure, Gimp *gimp, GimpContext *context,
+    GimpProgress *progress, const GimpValueArray *args, GError **error) {
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  gint handler = 0;
 
-	GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+  GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
 
-	if (plug_in)
-	{
-		handler = gimp_plug_in_get_error_handler (plug_in);
-	}
-	else
-		success = FALSE;
+  if (plug_in) {
+    handler = gimp_plug_in_get_error_handler(plug_in);
+  } else
+    success = FALSE;
 
-	return_vals = gimp_procedure_get_return_values (procedure, success,
-	                                                error ? *error : NULL);
+  return_vals = gimp_procedure_get_return_values(procedure, success,
+                                                 error ? *error : NULL);
 
-	if (success)
-		g_value_set_enum (gimp_value_array_index (return_vals, 1), handler);
+  if (success)
+    g_value_set_enum(gimp_value_array_index(return_vals, 1), handler);
 
-	return return_vals;
+  return return_vals;
 }
 
-void
-register_plug_in_procs (GimpPDB *pdb)
-{
-	GimpProcedure *procedure;
+void register_plug_in_procs(GimpPDB *pdb) {
+  GimpProcedure *procedure;
 
-	/*
-	 * gimp-plug-ins-query
-	 */
-	procedure = gimp_procedure_new (plug_ins_query_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-plug-ins-query");
-	gimp_procedure_set_static_help (procedure,
-	                                "Queries the plug-in database for its contents.",
-	                                "This procedure queries the contents of the plug-in database.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Andy Thomas",
-	                                       "Andy Thomas",
-	                                       "1998");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("search-string",
-	                                                     "search string",
-	                                                     "If not an empty string then use this as a search pattern",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_int ("num-procedures",
-	                                                   "num procedures",
-	                                                   "The number of matching procedures",
-	                                                   0, G_MAXINT32, 0,
-	                                                   GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_string_array ("procedures",
-	                                                               "procedures",
-	                                                               "The plug-in procedure name",
-	                                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_int ("num-accelerators",
-	                                                   "num accelerators",
-	                                                   "The number of matching procedures",
-	                                                   0, G_MAXINT32, 0,
-	                                                   GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_string_array ("accelerators",
-	                                                               "accelerators",
-	                                                               "String representing keyboard accelerator (could be empty string)",
-	                                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_int ("num-locations",
-	                                                   "num locations",
-	                                                   "The number of matching procedures",
-	                                                   0, G_MAXINT32, 0,
-	                                                   GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_string_array ("locations",
-	                                                               "locations",
-	                                                               "Location of the plug-in program",
-	                                                               GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_int ("num-install-times",
-	                                                   "num install times",
-	                                                   "The number of matching procedures",
-	                                                   0, G_MAXINT32, 0,
-	                                                   GIMP_PARAM_READWRITE));
-	gimp_procedure_add_return_value (procedure,
-	                                 gimp_param_spec_int32_array ("install-times",
-	                                                              "install times",
-	                                                              "Time that the plug-in was installed",
-	                                                              GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-plug-ins-query
+   */
+  procedure = gimp_procedure_new(plug_ins_query_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure), "gimp-plug-ins-query");
+  gimp_procedure_set_static_help(
+      procedure, "Queries the plug-in database for its contents.",
+      "This procedure queries the contents of the plug-in database.", NULL);
+  gimp_procedure_set_static_attribution(procedure, "Andy Thomas", "Andy Thomas",
+                                        "1998");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string(
+          "search-string", "search string",
+          "If not an empty string then use this as a search pattern", FALSE,
+          FALSE, FALSE, NULL, GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_int("num-procedures", "num procedures",
+                                  "The number of matching procedures", 0,
+                                  G_MAXINT32, 0, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, gimp_param_spec_string_array("procedures", "procedures",
+                                              "The plug-in procedure name",
+                                              GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_int("num-accelerators", "num accelerators",
+                                  "The number of matching procedures", 0,
+                                  G_MAXINT32, 0, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure,
+      gimp_param_spec_string_array(
+          "accelerators", "accelerators",
+          "String representing keyboard accelerator (could be empty string)",
+          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_int("num-locations", "num locations",
+                                  "The number of matching procedures", 0,
+                                  G_MAXINT32, 0, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, gimp_param_spec_string_array("locations", "locations",
+                                              "Location of the plug-in program",
+                                              GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure, g_param_spec_int("num-install-times", "num install times",
+                                  "The number of matching procedures", 0,
+                                  G_MAXINT32, 0, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value(
+      procedure,
+      gimp_param_spec_int32_array("install-times", "install times",
+                                  "Time that the plug-in was installed",
+                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-plug-in-domain-register
-	 */
-	procedure = gimp_procedure_new (plug_in_domain_register_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-plug-in-domain-register");
-	gimp_procedure_set_static_help (procedure,
-	                                "Registers a textdomain for localisation.",
-	                                "This procedure adds a textdomain to the list of domains Gimp searches for strings when translating its menu entries. There is no need to call this function for plug-ins that have their strings included in the 'gimp-std-plugins' domain as that is used by default. If the compiled message catalog is not in the standard location, you may specify an absolute path to another location. This procedure can only be called in the query function of a plug-in and it has to be called before any procedure is installed.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Sven Neumann <sven@gimp.org>",
-	                                       "Sven Neumann",
-	                                       "2000");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("domain-name",
-	                                                     "domain name",
-	                                                     "The name of the textdomain (must be unique)",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_object ("domain-file",
-	                                                  "domain file",
-	                                                  "The path to the locally installed compiled message catalog (may be NULL)",
-	                                                  G_TYPE_FILE,
-	                                                  GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-plug-in-domain-register
+   */
+  procedure = gimp_procedure_new(plug_in_domain_register_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-plug-in-domain-register");
+  gimp_procedure_set_static_help(
+      procedure, "Registers a textdomain for localisation.",
+      "This procedure adds a textdomain to the list of domains Gimp searches "
+      "for strings when translating its menu entries. There is no need to call "
+      "this function for plug-ins that have their strings included in the "
+      "'gimp-std-plugins' domain as that is used by default. If the compiled "
+      "message catalog is not in the standard location, you may specify an "
+      "absolute path to another location. This procedure can only be called in "
+      "the query function of a plug-in and it has to be called before any "
+      "procedure is installed.",
+      NULL);
+  gimp_procedure_set_static_attribution(
+      procedure, "Sven Neumann <sven@gimp.org>", "Sven Neumann", "2000");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("domain-name", "domain name",
+                             "The name of the textdomain (must be unique)",
+                             FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_object("domain-file", "domain file",
+                                     "The path to the locally installed "
+                                     "compiled message catalog (may be NULL)",
+                                     G_TYPE_FILE, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-plug-in-help-register
-	 */
-	procedure = gimp_procedure_new (plug_in_help_register_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-plug-in-help-register");
-	gimp_procedure_set_static_help (procedure,
-	                                "Register a help path for a plug-in.",
-	                                "This procedure registers user documentation for the calling plug-in with the GIMP help system. The domain_uri parameter points to the root directory where the plug-in help is installed. For each supported language there should be a file called 'gimp-help.xml' that maps the help IDs to the actual help files.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2000");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("domain-name",
-	                                                     "domain name",
-	                                                     "The XML namespace of the plug-in's help pages",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_object ("domain-file",
-	                                                  "domain file",
-	                                                  "The root URI of the plug-in's help pages",
-	                                                  G_TYPE_FILE,
-	                                                  GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-plug-in-help-register
+   */
+  procedure = gimp_procedure_new(plug_in_help_register_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-plug-in-help-register");
+  gimp_procedure_set_static_help(
+      procedure, "Register a help path for a plug-in.",
+      "This procedure registers user documentation for the calling plug-in "
+      "with the GIMP help system. The domain_uri parameter points to the root "
+      "directory where the plug-in help is installed. For each supported "
+      "language there should be a file called 'gimp-help.xml' that maps the "
+      "help IDs to the actual help files.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2000");
+  gimp_procedure_add_argument(
+      procedure,
+      gimp_param_spec_string("domain-name", "domain name",
+                             "The XML namespace of the plug-in's help pages",
+                             FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure, g_param_spec_object("domain-file", "domain file",
+                                     "The root URI of the plug-in's help pages",
+                                     G_TYPE_FILE, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-plug-in-menu-branch-register
-	 */
-	procedure = gimp_procedure_new (plug_in_menu_branch_register_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-plug-in-menu-branch-register");
-	gimp_procedure_set_static_help (procedure,
-	                                "Register a sub-menu.",
-	                                "This procedure installs a sub-menu which does not belong to any procedure. The menu-name should be the untranslated menu label. GIMP will look up the translation in the textdomain registered for the plug-in.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Michael Natterer <mitch@gimp.org>",
-	                                       "Michael Natterer",
-	                                       "2005");
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("menu-path",
-	                                                     "menu path",
-	                                                     "The sub-menu's menu path",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_procedure_add_argument (procedure,
-	                             gimp_param_spec_string ("menu-name",
-	                                                     "menu name",
-	                                                     "The name of the sub-menu",
-	                                                     FALSE, FALSE, FALSE,
-	                                                     NULL,
-	                                                     GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-plug-in-menu-branch-register
+   */
+  procedure = gimp_procedure_new(plug_in_menu_branch_register_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-plug-in-menu-branch-register");
+  gimp_procedure_set_static_help(
+      procedure, "Register a sub-menu.",
+      "This procedure installs a sub-menu which does not belong to any "
+      "procedure. The menu-name should be the untranslated menu label. GIMP "
+      "will look up the translation in the textdomain registered for the "
+      "plug-in.",
+      NULL);
+  gimp_procedure_set_static_attribution(procedure,
+                                        "Michael Natterer <mitch@gimp.org>",
+                                        "Michael Natterer", "2005");
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_string(
+                     "menu-path", "menu path", "The sub-menu's menu path",
+                     FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument(
+      procedure, gimp_param_spec_string(
+                     "menu-name", "menu name", "The name of the sub-menu",
+                     FALSE, FALSE, FALSE, NULL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-plug-in-set-pdb-error-handler
-	 */
-	procedure = gimp_procedure_new (plug_in_set_pdb_error_handler_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-plug-in-set-pdb-error-handler");
-	gimp_procedure_set_static_help (procedure,
-	                                "Sets an error handler for procedure calls.",
-	                                "This procedure changes the way that errors in procedure calls are handled. By default GIMP will raise an error dialog if a procedure call made by a plug-in fails. Using this procedure the plug-in can change this behavior. If the error handler is set to %GIMP_PDB_ERROR_HANDLER_PLUGIN, then the plug-in is responsible for calling 'gimp-get-pdb-error' and handling the error whenever one if its procedure calls fails. It can do this by displaying the error message or by forwarding it in its own return values.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Sven Neumann <sven@gimp.org>",
-	                                       "Sven Neumann",
-	                                       "2008");
-	gimp_procedure_add_argument (procedure,
-	                             g_param_spec_enum ("handler",
-	                                                "handler",
-	                                                "Who is responsible for handling procedure call errors",
-	                                                GIMP_TYPE_PDB_ERROR_HANDLER,
-	                                                GIMP_PDB_ERROR_HANDLER_INTERNAL,
-	                                                GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-plug-in-set-pdb-error-handler
+   */
+  procedure = gimp_procedure_new(plug_in_set_pdb_error_handler_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-plug-in-set-pdb-error-handler");
+  gimp_procedure_set_static_help(
+      procedure, "Sets an error handler for procedure calls.",
+      "This procedure changes the way that errors in procedure calls are "
+      "handled. By default GIMP will raise an error dialog if a procedure call "
+      "made by a plug-in fails. Using this procedure the plug-in can change "
+      "this behavior. If the error handler is set to "
+      "%GIMP_PDB_ERROR_HANDLER_PLUGIN, then the plug-in is responsible for "
+      "calling 'gimp-get-pdb-error' and handling the error whenever one if its "
+      "procedure calls fails. It can do this by displaying the error message "
+      "or by forwarding it in its own return values.",
+      NULL);
+  gimp_procedure_set_static_attribution(
+      procedure, "Sven Neumann <sven@gimp.org>", "Sven Neumann", "2008");
+  gimp_procedure_add_argument(
+      procedure,
+      g_param_spec_enum("handler", "handler",
+                        "Who is responsible for handling procedure call errors",
+                        GIMP_TYPE_PDB_ERROR_HANDLER,
+                        GIMP_PDB_ERROR_HANDLER_INTERNAL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 
-	/*
-	 * gimp-plug-in-get-pdb-error-handler
-	 */
-	procedure = gimp_procedure_new (plug_in_get_pdb_error_handler_invoker);
-	gimp_object_set_static_name (GIMP_OBJECT (procedure),
-	                             "gimp-plug-in-get-pdb-error-handler");
-	gimp_procedure_set_static_help (procedure,
-	                                "Retrieves the active error handler for procedure calls.",
-	                                "This procedure retrieves the currently active error handler for procedure calls made by the calling plug-in. See 'gimp-plugin-set-pdb-error-handler' for details.",
-	                                NULL);
-	gimp_procedure_set_static_attribution (procedure,
-	                                       "Sven Neumann <sven@gimp.org>",
-	                                       "Sven Neumann",
-	                                       "2008");
-	gimp_procedure_add_return_value (procedure,
-	                                 g_param_spec_enum ("handler",
-	                                                    "handler",
-	                                                    "Who is responsible for handling procedure call errors",
-	                                                    GIMP_TYPE_PDB_ERROR_HANDLER,
-	                                                    GIMP_PDB_ERROR_HANDLER_INTERNAL,
-	                                                    GIMP_PARAM_READWRITE));
-	gimp_pdb_register_procedure (pdb, procedure);
-	g_object_unref (procedure);
+  /*
+   * gimp-plug-in-get-pdb-error-handler
+   */
+  procedure = gimp_procedure_new(plug_in_get_pdb_error_handler_invoker);
+  gimp_object_set_static_name(GIMP_OBJECT(procedure),
+                              "gimp-plug-in-get-pdb-error-handler");
+  gimp_procedure_set_static_help(
+      procedure, "Retrieves the active error handler for procedure calls.",
+      "This procedure retrieves the currently active error handler for "
+      "procedure calls made by the calling plug-in. See "
+      "'gimp-plugin-set-pdb-error-handler' for details.",
+      NULL);
+  gimp_procedure_set_static_attribution(
+      procedure, "Sven Neumann <sven@gimp.org>", "Sven Neumann", "2008");
+  gimp_procedure_add_return_value(
+      procedure,
+      g_param_spec_enum("handler", "handler",
+                        "Who is responsible for handling procedure call errors",
+                        GIMP_TYPE_PDB_ERROR_HANDLER,
+                        GIMP_PDB_ERROR_HANDLER_INTERNAL, GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure(pdb, procedure);
+  g_object_unref(procedure);
 }

@@ -21,52 +21,44 @@
 #ifndef __GIMP_TOOL_COMPASS_H__
 #define __GIMP_TOOL_COMPASS_H__
 
-
 #include "gimptoolwidget.h"
 
-
-#define GIMP_TYPE_TOOL_COMPASS            (gimp_tool_compass_get_type ())
-#define GIMP_TOOL_COMPASS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_COMPASS, GimpToolCompass))
-#define GIMP_TOOL_COMPASS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_COMPASS, GimpToolCompassClass))
-#define GIMP_IS_TOOL_COMPASS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_COMPASS))
-#define GIMP_IS_TOOL_COMPASS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_COMPASS))
-#define GIMP_TOOL_COMPASS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_COMPASS, GimpToolCompassClass))
-
+#define GIMP_TYPE_TOOL_COMPASS (gimp_tool_compass_get_type())
+#define GIMP_TOOL_COMPASS(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_COMPASS, GimpToolCompass))
+#define GIMP_TOOL_COMPASS_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_COMPASS,                    \
+                           GimpToolCompassClass))
+#define GIMP_IS_TOOL_COMPASS(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_COMPASS))
+#define GIMP_IS_TOOL_COMPASS_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_COMPASS))
+#define GIMP_TOOL_COMPASS_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_COMPASS,                    \
+                             GimpToolCompassClass))
 
 typedef struct _GimpToolCompass GimpToolCompass;
 typedef struct _GimpToolCompassPrivate GimpToolCompassPrivate;
 typedef struct _GimpToolCompassClass GimpToolCompassClass;
 
-struct _GimpToolCompass
-{
-	GimpToolWidget parent_instance;
+struct _GimpToolCompass {
+  GimpToolWidget parent_instance;
 
-	GimpToolCompassPrivate *private;
+  GimpToolCompassPrivate *private;
 };
 
-struct _GimpToolCompassClass
-{
-	GimpToolWidgetClass parent_class;
+struct _GimpToolCompassClass {
+  GimpToolWidgetClass parent_class;
 
-	void (* create_guides) (GimpToolCompass *compass,
-	                        gint x,
-	                        gint y,
-	                        gboolean horizontal,
-	                        gboolean vertical);
+  void (*create_guides)(GimpToolCompass *compass, gint x, gint y,
+                        gboolean horizontal, gboolean vertical);
 };
 
+GType gimp_tool_compass_get_type(void) G_GNUC_CONST;
 
-GType            gimp_tool_compass_get_type (void) G_GNUC_CONST;
-
-GimpToolWidget * gimp_tool_compass_new      (GimpDisplayShell       *shell,
-                                             GimpCompassOrientation orinetation,
-                                             gint n_points,
-                                             gint x1,
-                                             gint y1,
-                                             gint x2,
-                                             gint y2,
-                                             gint y3,
-                                             gint x3);
-
+GimpToolWidget *gimp_tool_compass_new(GimpDisplayShell *shell,
+                                      GimpCompassOrientation orinetation,
+                                      gint n_points, gint x1, gint y1, gint x2,
+                                      gint y2, gint y3, gint x3);
 
 #endif /* __GIMP_TOOL_COMPASS_H__ */

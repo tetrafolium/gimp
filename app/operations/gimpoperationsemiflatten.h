@@ -21,35 +21,37 @@
 #ifndef __GIMP_OPERATION_SEMI_FLATTEN_H__
 #define __GIMP_OPERATION_SEMI_FLATTEN_H__
 
-
 #include <gegl-plugin.h>
 
-
-#define GIMP_TYPE_OPERATION_SEMI_FLATTEN            (gimp_operation_semi_flatten_get_type ())
-#define GIMP_OPERATION_SEMI_FLATTEN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_SEMI_FLATTEN, GimpOperationSemiFlatten))
-#define GIMP_OPERATION_SEMI_FLATTEN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_SEMI_FLATTEN, GimpOperationSemiFlattenClass))
-#define GIMP_IS_OPERATION_SEMI_FLATTEN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_SEMI_FLATTEN))
-#define GIMP_IS_OPERATION_SEMI_FLATTEN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_SEMI_FLATTEN))
-#define GIMP_OPERATION_SEMI_FLATTEN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_SEMI_FLATTEN, GimpOperationSemiFlattenClass))
-
+#define GIMP_TYPE_OPERATION_SEMI_FLATTEN                                       \
+  (gimp_operation_semi_flatten_get_type())
+#define GIMP_OPERATION_SEMI_FLATTEN(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_SEMI_FLATTEN,         \
+                              GimpOperationSemiFlatten))
+#define GIMP_OPERATION_SEMI_FLATTEN_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_SEMI_FLATTEN,          \
+                           GimpOperationSemiFlattenClass))
+#define GIMP_IS_OPERATION_SEMI_FLATTEN(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_SEMI_FLATTEN))
+#define GIMP_IS_OPERATION_SEMI_FLATTEN_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_SEMI_FLATTEN))
+#define GIMP_OPERATION_SEMI_FLATTEN_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_SEMI_FLATTEN,          \
+                             GimpOperationSemiFlattenClass))
 
 typedef struct _GimpOperationSemiFlatten GimpOperationSemiFlatten;
 typedef struct _GimpOperationSemiFlattenClass GimpOperationSemiFlattenClass;
 
-struct _GimpOperationSemiFlatten
-{
-	GeglOperationPointFilter parent_instance;
+struct _GimpOperationSemiFlatten {
+  GeglOperationPointFilter parent_instance;
 
-	GimpRGB color;
+  GimpRGB color;
 };
 
-struct _GimpOperationSemiFlattenClass
-{
-	GeglOperationPointFilterClass parent_class;
+struct _GimpOperationSemiFlattenClass {
+  GeglOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_semi_flatten_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_semi_flatten_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_SEMI_FLATTEN_H__ */

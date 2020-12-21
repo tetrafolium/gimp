@@ -29,57 +29,50 @@ If you want the enum to be skipped by both scripts, you have to use
 The same syntax applies to enum values.
 #endif
 
-
 /*
  * enums that are registered with the type system
  */
 
-#define GIMP_TYPE_BRUSH_APPLICATION_MODE (gimp_brush_application_mode_get_type ())
+#define GIMP_TYPE_BRUSH_APPLICATION_MODE                                       \
+  (gimp_brush_application_mode_get_type())
 
-GType gimp_brush_application_mode_get_type (void) G_GNUC_CONST;
+GType gimp_brush_application_mode_get_type(void) G_GNUC_CONST;
 
-typedef enum
-{
-	GIMP_BRUSH_HARD,
-	GIMP_BRUSH_SOFT,
-	GIMP_BRUSH_PRESSURE /*< pdb-skip, skip >*/
+typedef enum {
+  GIMP_BRUSH_HARD,
+  GIMP_BRUSH_SOFT,
+  GIMP_BRUSH_PRESSURE /*< pdb-skip, skip >*/
 } GimpBrushApplicationMode;
 
+#define GIMP_TYPE_PERSPECTIVE_CLONE_MODE                                       \
+  (gimp_perspective_clone_mode_get_type())
 
-#define GIMP_TYPE_PERSPECTIVE_CLONE_MODE (gimp_perspective_clone_mode_get_type ())
+GType gimp_perspective_clone_mode_get_type(void) G_GNUC_CONST;
 
-GType gimp_perspective_clone_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum  /*< pdb-skip >*/
-{
-	GIMP_PERSPECTIVE_CLONE_MODE_ADJUST, /*< desc="Modify Perspective" >*/
-	GIMP_PERSPECTIVE_CLONE_MODE_PAINT /*< desc="Perspective Clone"  >*/
+typedef enum                          /*< pdb-skip >*/
+{ GIMP_PERSPECTIVE_CLONE_MODE_ADJUST, /*< desc="Modify Perspective" >*/
+  GIMP_PERSPECTIVE_CLONE_MODE_PAINT   /*< desc="Perspective Clone"  >*/
 } GimpPerspectiveCloneMode;
 
+#define GIMP_TYPE_SOURCE_ALIGN_MODE (gimp_source_align_mode_get_type())
 
-#define GIMP_TYPE_SOURCE_ALIGN_MODE (gimp_source_align_mode_get_type ())
+GType gimp_source_align_mode_get_type(void) G_GNUC_CONST;
 
-GType gimp_source_align_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum /*< pdb-skip >*/
-{
-	GIMP_SOURCE_ALIGN_NO,      /*< desc="None"        >*/
-	GIMP_SOURCE_ALIGN_YES,     /*< desc="Aligned"     >*/
-	GIMP_SOURCE_ALIGN_REGISTERED, /*< desc="Registered"  >*/
-	GIMP_SOURCE_ALIGN_FIXED    /*< desc="Fixed"       >*/
+typedef enum                    /*< pdb-skip >*/
+{ GIMP_SOURCE_ALIGN_NO,         /*< desc="None"        >*/
+  GIMP_SOURCE_ALIGN_YES,        /*< desc="Aligned"     >*/
+  GIMP_SOURCE_ALIGN_REGISTERED, /*< desc="Registered"  >*/
+  GIMP_SOURCE_ALIGN_FIXED       /*< desc="Fixed"       >*/
 } GimpSourceAlignMode;
-
 
 /*
  * non-registered enums; register them if needed
  */
 
-typedef enum  /*< skip, pdb-skip >*/
-{
-	GIMP_PAINT_STATE_INIT, /*  Setup PaintFunc internals                    */
-	GIMP_PAINT_STATE_MOTION, /*  PaintFunc performs motion-related rendering  */
-	GIMP_PAINT_STATE_FINISH /*  Cleanup and/or reset PaintFunc operation     */
+typedef enum               /*< skip, pdb-skip >*/
+{ GIMP_PAINT_STATE_INIT,   /*  Setup PaintFunc internals                    */
+  GIMP_PAINT_STATE_MOTION, /*  PaintFunc performs motion-related rendering  */
+  GIMP_PAINT_STATE_FINISH  /*  Cleanup and/or reset PaintFunc operation     */
 } GimpPaintState;
-
 
 #endif /* __PAINT_ENUMS_H__ */

@@ -18,7 +18,6 @@
 #ifndef __CONVERT_PRECISION_DIALOG_H__
 #define __CONVERT_PRECISION_DIALOG_H__
 
-
 /*  Don't offer dithering when converting down to more than this
  *  number of bits per component. Note that gegl:dither would
  *  do 16 bit, so this is a limitation of the GUI to values that make
@@ -26,25 +25,17 @@
  */
 #define CONVERT_PRECISION_DIALOG_MAX_DITHER_BITS 8
 
+typedef void (*GimpConvertPrecisionCallback)(
+    GtkWidget *dialog, GimpImage *image, GimpPrecision precision,
+    GeglDitherMethod layer_dither_method,
+    GeglDitherMethod text_layer_dither_method,
+    GeglDitherMethod channel_dither_method, gpointer user_data);
 
-typedef void (* GimpConvertPrecisionCallback) (GtkWidget        *dialog,
-                                               GimpImage        *image,
-                                               GimpPrecision precision,
-                                               GeglDitherMethod layer_dither_method,
-                                               GeglDitherMethod text_layer_dither_method,
-                                               GeglDitherMethod channel_dither_method,
-                                               gpointer user_data);
+GtkWidget *convert_precision_dialog_new(
+    GimpImage *image, GimpContext *context, GtkWidget *parent,
+    GimpComponentType component_type, GeglDitherMethod layer_dither_method,
+    GeglDitherMethod text_layer_dither_method,
+    GeglDitherMethod channel_dither_method,
+    GimpConvertPrecisionCallback callback, gpointer user_data);
 
-
-GtkWidget * convert_precision_dialog_new (GimpImage                    *image,
-                                          GimpContext                  *context,
-                                          GtkWidget                    *parent,
-                                          GimpComponentType component_type,
-                                          GeglDitherMethod layer_dither_method,
-                                          GeglDitherMethod text_layer_dither_method,
-                                          GeglDitherMethod channel_dither_method,
-                                          GimpConvertPrecisionCallback callback,
-                                          gpointer user_data);
-
-
-#endif  /*  __CONVERT_PRECISION_DIALOG_H__  */
+#endif /*  __CONVERT_PRECISION_DIALOG_H__  */

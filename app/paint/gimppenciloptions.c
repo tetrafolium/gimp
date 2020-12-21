@@ -27,85 +27,55 @@
 
 #include "gimppenciloptions.h"
 
-
 #define PENCIL_DEFAULT_HARD TRUE
 
+enum { PROP_0, PROP_HARD };
 
-enum
-{
-	PROP_0,
-	PROP_HARD
-};
+static void gimp_pencil_options_set_property(GObject *object, guint property_id,
+                                             const GValue *value,
+                                             GParamSpec *pspec);
+static void gimp_pencil_options_get_property(GObject *object, guint property_id,
+                                             GValue *value, GParamSpec *pspec);
 
+G_DEFINE_TYPE(GimpPencilOptions, gimp_pencil_options, GIMP_TYPE_PAINT_OPTIONS)
 
-static void   gimp_pencil_options_set_property (GObject      *object,
-                                                guint property_id,
-                                                const GValue *value,
-                                                GParamSpec   *pspec);
-static void   gimp_pencil_options_get_property (GObject      *object,
-                                                guint property_id,
-                                                GValue       *value,
-                                                GParamSpec   *pspec);
+static void gimp_pencil_options_class_init(GimpPencilOptionsClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
+  object_class->set_property = gimp_pencil_options_set_property;
+  object_class->get_property = gimp_pencil_options_get_property;
 
-G_DEFINE_TYPE (GimpPencilOptions, gimp_pencil_options,
-               GIMP_TYPE_PAINT_OPTIONS)
-
-
-static void
-gimp_pencil_options_class_init (GimpPencilOptionsClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->set_property = gimp_pencil_options_set_property;
-	object_class->get_property = gimp_pencil_options_get_property;
-
-	GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_HARD,
-	                          "hard",
-	                          NULL, NULL,
-	                          PENCIL_DEFAULT_HARD,
-	                          GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN(object_class, PROP_HARD, "hard", NULL, NULL,
+                           PENCIL_DEFAULT_HARD, GIMP_PARAM_STATIC_STRINGS);
 }
 
-static void
-gimp_pencil_options_init (GimpPencilOptions *options)
-{
+static void gimp_pencil_options_init(GimpPencilOptions *options) {}
+
+static void gimp_pencil_options_set_property(GObject *object, guint property_id,
+                                             const GValue *value,
+                                             GParamSpec *pspec) {
+  GimpPaintOptions *options = GIMP_PAINT_OPTIONS(object);
+
+  switch (property_id) {
+  case PROP_HARD:
+    options->hard = g_value_get_boolean(value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_pencil_options_set_property (GObject      *object,
-                                  guint property_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
-{
-	GimpPaintOptions *options = GIMP_PAINT_OPTIONS (object);
+static void gimp_pencil_options_get_property(GObject *object, guint property_id,
+                                             GValue *value, GParamSpec *pspec) {
+  GimpPaintOptions *options = GIMP_PAINT_OPTIONS(object);
 
-	switch (property_id)
-	{
-	case PROP_HARD:
-		options->hard = g_value_get_boolean (value);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gimp_pencil_options_get_property (GObject    *object,
-                                  guint property_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
-{
-	GimpPaintOptions *options = GIMP_PAINT_OPTIONS (object);
-
-	switch (property_id)
-	{
-	case PROP_HARD:
-		g_value_set_boolean (value, options->hard);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch (property_id) {
+  case PROP_HARD:
+    g_value_set_boolean(value, options->hard);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }

@@ -26,117 +26,97 @@
 
 #include "gimpoperationpointfilter.h"
 
+static void gimp_operation_point_filter_finalize(GObject *object);
+static void gimp_operation_point_filter_prepare(GeglOperation *operation);
 
-static void   gimp_operation_point_filter_finalize (GObject       *object);
-static void   gimp_operation_point_filter_prepare  (GeglOperation *operation);
-
-
-G_DEFINE_ABSTRACT_TYPE (GimpOperationPointFilter, gimp_operation_point_filter,
-                        GEGL_TYPE_OPERATION_POINT_FILTER)
+G_DEFINE_ABSTRACT_TYPE(GimpOperationPointFilter, gimp_operation_point_filter,
+                       GEGL_TYPE_OPERATION_POINT_FILTER)
 
 #define parent_class gimp_operation_point_filter_parent_class
 
-
 static void
-gimp_operation_point_filter_class_init (GimpOperationPointFilterClass *klass)
-{
-	GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-	GeglOperationClass  *operation_class = GEGL_OPERATION_CLASS (klass);
+gimp_operation_point_filter_class_init(GimpOperationPointFilterClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GeglOperationClass *operation_class = GEGL_OPERATION_CLASS(klass);
 
-	object_class->finalize = gimp_operation_point_filter_finalize;
+  object_class->finalize = gimp_operation_point_filter_finalize;
 
-	operation_class->prepare = gimp_operation_point_filter_prepare;
+  operation_class->prepare = gimp_operation_point_filter_prepare;
 }
 
-static void
-gimp_operation_point_filter_init (GimpOperationPointFilter *self)
-{
+static void gimp_operation_point_filter_init(GimpOperationPointFilter *self) {}
+
+static void gimp_operation_point_filter_finalize(GObject *object) {
+  GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER(object);
+
+  g_clear_object(&self->config);
+
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-static void
-gimp_operation_point_filter_finalize (GObject *object)
-{
-	GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER (object);
+void gimp_operation_point_filter_get_property(GObject *object,
+                                              guint property_id, GValue *value,
+                                              GParamSpec *pspec) {
+  GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER(object);
 
-	g_clear_object (&self->config);
+  switch (property_id) {
+  case GIMP_OPERATION_POINT_FILTER_PROP_TRC:
+    g_value_set_enum(value, self->trc);
+    break;
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+  case GIMP_OPERATION_POINT_FILTER_PROP_CONFIG:
+    g_value_set_object(value, self->config);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-void
-gimp_operation_point_filter_get_property (GObject    *object,
-                                          guint property_id,
-                                          GValue     *value,
-                                          GParamSpec *pspec)
-{
-	GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER (object);
+void gimp_operation_point_filter_set_property(GObject *object,
+                                              guint property_id,
+                                              const GValue *value,
+                                              GParamSpec *pspec) {
+  GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER(object);
 
-	switch (property_id)
-	{
-	case GIMP_OPERATION_POINT_FILTER_PROP_TRC:
-		g_value_set_enum (value, self->trc);
-		break;
+  switch (property_id) {
+  case GIMP_OPERATION_POINT_FILTER_PROP_TRC:
+    self->trc = g_value_get_enum(value);
+    break;
 
-	case GIMP_OPERATION_POINT_FILTER_PROP_CONFIG:
-		g_value_set_object (value, self->config);
-		break;
+  case GIMP_OPERATION_POINT_FILTER_PROP_CONFIG:
+    if (self->config)
+      g_object_unref(self->config);
+    self->config = g_value_dup_object(value);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    break;
+  }
 }
 
-void
-gimp_operation_point_filter_set_property (GObject      *object,
-                                          guint property_id,
-                                          const GValue *value,
-                                          GParamSpec   *pspec)
-{
-	GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER (object);
+static void gimp_operation_point_filter_prepare(GeglOperation *operation) {
+  GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER(operation);
+  const Babl *space = gegl_operation_get_source_space(operation, "input");
+  const Babl *format;
 
-	switch (property_id)
-	{
-	case GIMP_OPERATION_POINT_FILTER_PROP_TRC:
-		self->trc = g_value_get_enum (value);
-		break;
+  switch (self->trc) {
+  default:
+  case GIMP_TRC_LINEAR:
+    format = babl_format_with_space("RGBA float", space);
+    break;
 
-	case GIMP_OPERATION_POINT_FILTER_PROP_CONFIG:
-		if (self->config)
-			g_object_unref (self->config);
-		self->config = g_value_dup_object (value);
-		break;
+  case GIMP_TRC_NON_LINEAR:
+    format = babl_format_with_space("R'G'B'A float", space);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
+  case GIMP_TRC_PERCEPTUAL:
+    format = babl_format_with_space("R~G~B~A float", space);
+    break;
+  }
 
-static void
-gimp_operation_point_filter_prepare (GeglOperation *operation)
-{
-	GimpOperationPointFilter *self = GIMP_OPERATION_POINT_FILTER (operation);
-	const Babl               *space = gegl_operation_get_source_space (operation,
-	                                                                   "input");
-	const Babl               *format;
-
-	switch (self->trc)
-	{
-	default:
-	case GIMP_TRC_LINEAR:
-		format = babl_format_with_space ("RGBA float", space);
-		break;
-
-	case GIMP_TRC_NON_LINEAR:
-		format = babl_format_with_space ("R'G'B'A float", space);
-		break;
-
-	case GIMP_TRC_PERCEPTUAL:
-		format = babl_format_with_space ("R~G~B~A float", space);
-		break;
-	}
-
-	gegl_operation_set_format (operation, "input",  format);
-	gegl_operation_set_format (operation, "output", format);
+  gegl_operation_set_format(operation, "input", format);
+  gegl_operation_set_format(operation, "output", format);
 }

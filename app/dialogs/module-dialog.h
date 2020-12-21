@@ -20,8 +20,6 @@
 
 #ifndef __MODULE_DIALOG_H__
 
+GtkWidget *module_dialog_new(Gimp *gimp);
 
-GtkWidget * module_dialog_new (Gimp *gimp);
-
-
-#endif  /* __MODULE_DIALOG_H__ */
+#endif /* __MODULE_DIALOG_H__ */

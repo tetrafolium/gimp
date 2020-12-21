@@ -21,36 +21,39 @@
 #ifndef __GIMP_OPERATION_THRESHOLD_ALPHA_H__
 #define __GIMP_OPERATION_THRESHOLD_ALPHA_H__
 
-
 #include <gegl-plugin.h>
 #include <operation/gegl-operation-point-filter.h>
 
-
-#define GIMP_TYPE_OPERATION_THRESHOLD_ALPHA            (gimp_operation_threshold_alpha_get_type ())
-#define GIMP_OPERATION_THRESHOLD_ALPHA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA, GimpOperationThresholdAlpha))
-#define GIMP_OPERATION_THRESHOLD_ALPHA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_THRESHOLD_ALPHA, GimpOperationThresholdAlphaClass))
-#define GIMP_IS_OPERATION_THRESHOLD_ALPHA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA))
-#define GIMP_IS_OPERATION_THRESHOLD_ALPHA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_THRESHOLD_ALPHA))
-#define GIMP_OPERATION_THRESHOLD_ALPHA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_THRESHOLD_ALPHA, GimpOperationThresholdAlphaClass))
-
+#define GIMP_TYPE_OPERATION_THRESHOLD_ALPHA                                    \
+  (gimp_operation_threshold_alpha_get_type())
+#define GIMP_OPERATION_THRESHOLD_ALPHA(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA,      \
+                              GimpOperationThresholdAlpha))
+#define GIMP_OPERATION_THRESHOLD_ALPHA_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA,       \
+                           GimpOperationThresholdAlphaClass))
+#define GIMP_IS_OPERATION_THRESHOLD_ALPHA(obj)                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA))
+#define GIMP_IS_OPERATION_THRESHOLD_ALPHA_CLASS(klass)                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA))
+#define GIMP_OPERATION_THRESHOLD_ALPHA_GET_CLASS(obj)                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_THRESHOLD_ALPHA,       \
+                             GimpOperationThresholdAlphaClass))
 
 typedef struct _GimpOperationThresholdAlpha GimpOperationThresholdAlpha;
-typedef struct _GimpOperationThresholdAlphaClass GimpOperationThresholdAlphaClass;
+typedef struct _GimpOperationThresholdAlphaClass
+    GimpOperationThresholdAlphaClass;
 
-struct _GimpOperationThresholdAlpha
-{
-	GeglOperationPointFilter parent_instance;
+struct _GimpOperationThresholdAlpha {
+  GeglOperationPointFilter parent_instance;
 
-	gdouble value;
+  gdouble value;
 };
 
-struct _GimpOperationThresholdAlphaClass
-{
-	GeglOperationPointFilterClass parent_class;
+struct _GimpOperationThresholdAlphaClass {
+  GeglOperationPointFilterClass parent_class;
 };
 
-
-GType   gimp_operation_threshold_alpha_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_threshold_alpha_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_THRESHOLD_ALPHA_H__ */

@@ -21,41 +21,41 @@
 #ifndef __GIMP_CANVAS_TRANSFORM_PREVIEW_H__
 #define __GIMP_CANVAS_TRANSFORM_PREVIEW_H__
 
-
 #include "gimpcanvasitem.h"
 
-
-#define GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW            (gimp_canvas_transform_preview_get_type ())
-#define GIMP_CANVAS_TRANSFORM_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW, GimpCanvasTransformPreview))
-#define GIMP_CANVAS_TRANSFORM_PREVIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW, GimpCanvasTransformPreviewClass))
-#define GIMP_IS_CANVAS_TRANSFORM_PREVIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW))
-#define GIMP_IS_CANVAS_TRANSFORM_PREVIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW))
-#define GIMP_CANVAS_TRANSFORM_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW, GimpCanvasTransformPreviewClass))
-
+#define GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW                                     \
+  (gimp_canvas_transform_preview_get_type())
+#define GIMP_CANVAS_TRANSFORM_PREVIEW(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW,       \
+                              GimpCanvasTransformPreview))
+#define GIMP_CANVAS_TRANSFORM_PREVIEW_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW,        \
+                           GimpCanvasTransformPreviewClass))
+#define GIMP_IS_CANVAS_TRANSFORM_PREVIEW(obj)                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW))
+#define GIMP_IS_CANVAS_TRANSFORM_PREVIEW_CLASS(klass)                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW))
+#define GIMP_CANVAS_TRANSFORM_PREVIEW_GET_CLASS(obj)                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CANVAS_TRANSFORM_PREVIEW,        \
+                             GimpCanvasTransformPreviewClass))
 
 typedef struct _GimpCanvasTransformPreview GimpCanvasTransformPreview;
 typedef struct _GimpCanvasTransformPreviewClass GimpCanvasTransformPreviewClass;
 
-struct _GimpCanvasTransformPreview
-{
-	GimpCanvasItem parent_instance;
+struct _GimpCanvasTransformPreview {
+  GimpCanvasItem parent_instance;
 };
 
-struct _GimpCanvasTransformPreviewClass
-{
-	GimpCanvasItemClass parent_class;
+struct _GimpCanvasTransformPreviewClass {
+  GimpCanvasItemClass parent_class;
 };
 
+GType gimp_canvas_transform_preview_get_type(void) G_GNUC_CONST;
 
-GType            gimp_canvas_transform_preview_get_type (void) G_GNUC_CONST;
-
-GimpCanvasItem * gimp_canvas_transform_preview_new      (GimpDisplayShell  *shell,
-                                                         GimpPickable      *pickable,
-                                                         const GimpMatrix3 *transform,
-                                                         gdouble x1,
-                                                         gdouble y1,
-                                                         gdouble x2,
-                                                         gdouble y2);
-
+GimpCanvasItem *gimp_canvas_transform_preview_new(GimpDisplayShell *shell,
+                                                  GimpPickable *pickable,
+                                                  const GimpMatrix3 *transform,
+                                                  gdouble x1, gdouble y1,
+                                                  gdouble x2, gdouble y2);
 
 #endif /* __GIMP_CANVAS_TRANSFORM_PREVIEW_H__ */

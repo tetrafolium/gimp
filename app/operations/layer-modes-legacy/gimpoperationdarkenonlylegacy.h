@@ -21,33 +21,36 @@
 #ifndef __GIMP_OPERATION_DARKEN_ONLY_LEGACY_H__
 #define __GIMP_OPERATION_DARKEN_ONLY_LEGACY_H__
 
-
 #include "operations/layer-modes/gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_DARKEN_ONLY_LEGACY            (gimp_operation_darken_only_legacy_get_type ())
-#define GIMP_OPERATION_DARKEN_ONLY_LEGACY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE, GimpOperationDarkenOnlyLegacy))
-#define GIMP_OPERATION_DARKEN_ONLY_LEGACY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE, GimpOperationDarkenOnlyLegacyClass))
-#define GIMP_IS_OPERATION_DARKEN_ONLY_LEGACY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE))
-#define GIMP_IS_OPERATION_DARKEN_ONLY_LEGACY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE))
-#define GIMP_OPERATION_DARKEN_ONLY_LEGACY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE, GimpOperationDarkenOnlyLegacyClass))
-
+#define GIMP_TYPE_OPERATION_DARKEN_ONLY_LEGACY                                 \
+  (gimp_operation_darken_only_legacy_get_type())
+#define GIMP_OPERATION_DARKEN_ONLY_LEGACY(obj)                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE,     \
+                              GimpOperationDarkenOnlyLegacy))
+#define GIMP_OPERATION_DARKEN_ONLY_LEGACY_CLASS(klass)                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE,      \
+                           GimpOperationDarkenOnlyLegacyClass))
+#define GIMP_IS_OPERATION_DARKEN_ONLY_LEGACY(obj)                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE))
+#define GIMP_IS_OPERATION_DARKEN_ONLY_LEGACY_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE))
+#define GIMP_OPERATION_DARKEN_ONLY_LEGACY_GET_CLASS(obj)                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE,      \
+                             GimpOperationDarkenOnlyLegacyClass))
 
 typedef struct _GimpOperationDarkenOnlyLegacy GimpOperationDarkenOnlyLegacy;
-typedef struct _GimpOperationDarkenOnlyLegacyClass GimpOperationDarkenOnlyLegacyClass;
+typedef struct _GimpOperationDarkenOnlyLegacyClass
+    GimpOperationDarkenOnlyLegacyClass;
 
-struct _GimpOperationDarkenOnlyLegacy
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationDarkenOnlyLegacy {
+  GimpOperationLayerMode parent_instance;
 };
 
-struct _GimpOperationDarkenOnlyLegacyClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationDarkenOnlyLegacyClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-
-GType   gimp_operation_darken_only_legacy_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_darken_only_legacy_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_DARKEN_ONLY_LEGACY_H__ */

@@ -18,36 +18,37 @@
 #ifndef __GIMP_PAINT_CORE_UNDO_H__
 #define __GIMP_PAINT_CORE_UNDO_H__
 
-
 #include "core/gimpundo.h"
 
-
-#define GIMP_TYPE_PAINT_CORE_UNDO            (gimp_paint_core_undo_get_type ())
-#define GIMP_PAINT_CORE_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINT_CORE_UNDO, GimpPaintCoreUndo))
-#define GIMP_PAINT_CORE_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PAINT_CORE_UNDO, GimpPaintCoreUndoClass))
-#define GIMP_IS_PAINT_CORE_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PAINT_CORE_UNDO))
-#define GIMP_IS_PAINT_CORE_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINT_CORE_UNDO))
-#define GIMP_PAINT_CORE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_CORE_UNDO, GimpPaintCoreUndoClass))
-
+#define GIMP_TYPE_PAINT_CORE_UNDO (gimp_paint_core_undo_get_type())
+#define GIMP_PAINT_CORE_UNDO(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PAINT_CORE_UNDO,                \
+                              GimpPaintCoreUndo))
+#define GIMP_PAINT_CORE_UNDO_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PAINT_CORE_UNDO,                 \
+                           GimpPaintCoreUndoClass))
+#define GIMP_IS_PAINT_CORE_UNDO(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PAINT_CORE_UNDO))
+#define GIMP_IS_PAINT_CORE_UNDO_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PAINT_CORE_UNDO))
+#define GIMP_PAINT_CORE_UNDO_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PAINT_CORE_UNDO,                 \
+                             GimpPaintCoreUndoClass))
 
 typedef struct _GimpPaintCoreUndo GimpPaintCoreUndo;
 typedef struct _GimpPaintCoreUndoClass GimpPaintCoreUndoClass;
 
-struct _GimpPaintCoreUndo
-{
-	GimpUndo parent_instance;
+struct _GimpPaintCoreUndo {
+  GimpUndo parent_instance;
 
-	GimpPaintCore *paint_core;
-	GimpCoords last_coords;
+  GimpPaintCore *paint_core;
+  GimpCoords last_coords;
 };
 
-struct _GimpPaintCoreUndoClass
-{
-	GimpUndoClass parent_class;
+struct _GimpPaintCoreUndoClass {
+  GimpUndoClass parent_class;
 };
 
-
-GType   gimp_paint_core_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_paint_core_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_PAINT_CORE_UNDO_H__ */

@@ -20,19 +20,16 @@
 #ifndef __OPERATIONS_TYPES_H__
 #define __OPERATIONS_TYPES_H__
 
-
 #include <gegl-types.h>
 
 #include "gegl/gimp-gegl-types.h"
 
 #include "operations-enums.h"
 
-
 /*  operations  */
 
 typedef struct _GimpOperationPointFilter GimpOperationPointFilter;
 typedef struct _GimpOperationLayerMode GimpOperationLayerMode;
-
 
 /*  operation config objects  */
 
@@ -49,28 +46,19 @@ typedef struct _GimpLevelsConfig GimpLevelsConfig;
 typedef struct _GimpPosterizeConfig GimpPosterizeConfig;
 typedef struct _GimpThresholdConfig GimpThresholdConfig;
 
-
 /*  non-object types  */
 
 typedef struct _GimpCagePoint GimpCagePoint;
 
-
 /*  functions  */
 
-typedef gboolean (* GimpLayerModeFunc)      (GeglOperation          *operation,
-                                             void                   *in,
-                                             void                   *aux,
-                                             void                   *mask,
-                                             void                   *out,
-                                             glong samples,
-                                             const GeglRectangle    *roi,
-                                             gint level);
+typedef gboolean (*GimpLayerModeFunc)(GeglOperation *operation, void *in,
+                                      void *aux, void *mask, void *out,
+                                      glong samples, const GeglRectangle *roi,
+                                      gint level);
 
-typedef  void (* GimpLayerModeBlendFunc) (GeglOperation          *operation,
-                                          const gfloat           *in,
-                                          const gfloat           *layer,
-                                          gfloat                 *out,
-                                          gint samples);
-
+typedef void (*GimpLayerModeBlendFunc)(GeglOperation *operation,
+                                       const gfloat *in, const gfloat *layer,
+                                       gfloat *out, gint samples);
 
 #endif /* __OPERATIONS_TYPES_H__ */

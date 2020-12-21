@@ -20,12 +20,10 @@
 #ifndef __GIMP_PLUG_IN_SHM_H__
 #define __GIMP_PLUG_IN_SHM_H__
 
+GimpPlugInShm *gimp_plug_in_shm_new(void);
+void gimp_plug_in_shm_free(GimpPlugInShm *shm);
 
-GimpPlugInShm * gimp_plug_in_shm_new      (void);
-void            gimp_plug_in_shm_free     (GimpPlugInShm *shm);
-
-gint            gimp_plug_in_shm_get_id   (GimpPlugInShm *shm);
-guchar        * gimp_plug_in_shm_get_addr (GimpPlugInShm *shm);
-
+gint gimp_plug_in_shm_get_id(GimpPlugInShm *shm);
+guchar *gimp_plug_in_shm_get_addr(GimpPlugInShm *shm);
 
 #endif /* __GIMP_PLUG_IN_SHM_H__ */

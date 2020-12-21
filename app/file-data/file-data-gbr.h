@@ -18,27 +18,21 @@
 #ifndef __FILE_DATA_GBR_H__
 #define __FILE_DATA_GBR_H__
 
+GimpValueArray *file_gbr_load_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                      GimpContext *context,
+                                      GimpProgress *progress,
+                                      const GimpValueArray *args,
+                                      GError **error);
 
-GimpValueArray * file_gbr_load_invoker      (GimpProcedure         *procedure,
-                                             Gimp                  *gimp,
-                                             GimpContext           *context,
-                                             GimpProgress          *progress,
-                                             const GimpValueArray  *args,
-                                             GError               **error);
+GimpValueArray *file_gbr_save_invoker(GimpProcedure *procedure, Gimp *gimp,
+                                      GimpContext *context,
+                                      GimpProgress *progress,
+                                      const GimpValueArray *args,
+                                      GError **error);
 
-GimpValueArray * file_gbr_save_invoker      (GimpProcedure         *procedure,
-                                             Gimp                  *gimp,
-                                             GimpContext           *context,
-                                             GimpProgress          *progress,
-                                             const GimpValueArray  *args,
-                                             GError               **error);
-
-GimpLayer      * file_gbr_brush_to_layer    (GimpImage             *image,
-                                             GimpBrush             *brush);
-GimpBrush      * file_gbr_drawable_to_brush (GimpDrawable          *drawable,
-                                             const GeglRectangle   *rect,
-                                             const gchar           *name,
-                                             gdouble spacing);
-
+GimpLayer *file_gbr_brush_to_layer(GimpImage *image, GimpBrush *brush);
+GimpBrush *file_gbr_drawable_to_brush(GimpDrawable *drawable,
+                                      const GeglRectangle *rect,
+                                      const gchar *name, gdouble spacing);
 
 #endif /* __FILE_DATA_GBR_H__ */

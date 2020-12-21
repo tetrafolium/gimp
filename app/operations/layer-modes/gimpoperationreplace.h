@@ -21,33 +21,34 @@
 #ifndef __GIMP_OPERATION_REPLACE_H__
 #define __GIMP_OPERATION_REPLACE_H__
 
-
 #include "gimpoperationlayermode.h"
 
-
-#define GIMP_TYPE_OPERATION_REPLACE            (gimp_operation_replace_get_type ())
-#define GIMP_OPERATION_REPLACE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_REPLACE, GimpOperationReplace))
-#define GIMP_OPERATION_REPLACE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_OPERATION_REPLACE, GimpOperationReplaceClass))
-#define GIMP_IS_OPERATION_REPLACE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_REPLACE))
-#define GIMP_IS_OPERATION_REPLACE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_OPERATION_REPLACE))
-#define GIMP_OPERATION_REPLACE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_OPERATION_REPLACE, GimpOperationReplaceClass))
-
+#define GIMP_TYPE_OPERATION_REPLACE (gimp_operation_replace_get_type())
+#define GIMP_OPERATION_REPLACE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_REPLACE,              \
+                              GimpOperationReplace))
+#define GIMP_OPERATION_REPLACE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_REPLACE,               \
+                           GimpOperationReplaceClass))
+#define GIMP_IS_OPERATION_REPLACE(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_REPLACE))
+#define GIMP_IS_OPERATION_REPLACE_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_REPLACE))
+#define GIMP_OPERATION_REPLACE_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_REPLACE,               \
+                             GimpOperationReplaceClass))
 
 typedef struct _GimpOperationReplace GimpOperationReplace;
 typedef struct _GimpOperationReplaceClass GimpOperationReplaceClass;
 
-struct _GimpOperationReplace
-{
-	GimpOperationLayerMode parent_instance;
+struct _GimpOperationReplace {
+  GimpOperationLayerMode parent_instance;
 };
 
-struct _GimpOperationReplaceClass
-{
-	GimpOperationLayerModeClass parent_class;
+struct _GimpOperationReplaceClass {
+  GimpOperationLayerModeClass parent_class;
 };
 
-
-GType   gimp_operation_replace_get_type (void) G_GNUC_CONST;
-
+GType gimp_operation_replace_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_OPERATION_REPLACE_H__ */

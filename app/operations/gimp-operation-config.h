@@ -18,36 +18,27 @@
 #ifndef __GIMP_OPERATION_CONFIG_H__
 #define __GIMP_OPERATION_CONFIG_H__
 
+void gimp_operation_config_register(Gimp *gimp, const gchar *operation,
+                                    GType config_type);
 
-void            gimp_operation_config_register      (Gimp          *gimp,
-                                                     const gchar   *operation,
-                                                     GType config_type);
+GType gimp_operation_config_get_type(Gimp *gimp, const gchar *operation,
+                                     const gchar *icon_name, GType parent_type);
 
-GType           gimp_operation_config_get_type      (Gimp          *gimp,
-                                                     const gchar   *operation,
-                                                     const gchar   *icon_name,
-                                                     GType parent_type);
+GimpContainer *gimp_operation_config_get_container(Gimp *gimp,
+                                                   GType config_type,
+                                                   GCompareFunc sort_func);
 
-GimpContainer * gimp_operation_config_get_container (Gimp          *gimp,
-                                                     GType config_type,
-                                                     GCompareFunc sort_func);
+void gimp_operation_config_serialize(Gimp *gimp, GimpContainer *container,
+                                     GFile *file);
+void gimp_operation_config_deserialize(Gimp *gimp, GimpContainer *container,
+                                       GFile *file);
 
-void            gimp_operation_config_serialize     (Gimp          *gimp,
-                                                     GimpContainer *container,
-                                                     GFile         *file);
-void            gimp_operation_config_deserialize   (Gimp          *gimp,
-                                                     GimpContainer *container,
-                                                     GFile         *file);
+void gimp_operation_config_sync_node(GObject *config, GeglNode *node);
+void gimp_operation_config_connect_node(GObject *config, GeglNode *node);
 
-void            gimp_operation_config_sync_node     (GObject       *config,
-                                                     GeglNode      *node);
-void            gimp_operation_config_connect_node  (GObject       *config,
-                                                     GeglNode      *node);
-
-GParamSpec ** gimp_operation_config_list_properties (GObject      *config,
-                                                     GType owner_type,
-                                                     GParamFlags flags,
-                                                     guint        *n_pspecs);
-
+GParamSpec **gimp_operation_config_list_properties(GObject *config,
+                                                   GType owner_type,
+                                                   GParamFlags flags,
+                                                   guint *n_pspecs);
 
 #endif /* __GIMP_OPERATION_CONFIG_H__ */

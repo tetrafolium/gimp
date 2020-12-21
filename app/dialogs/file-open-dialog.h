@@ -18,8 +18,6 @@
 #ifndef __FILE_OPEN_DIALOG_H__
 #define __FILE_OPEN_DIALOG_H__
 
-
-GtkWidget * file_open_dialog_new (Gimp *gimp);
-
+GtkWidget *file_open_dialog_new(Gimp *gimp);
 
 #endif /* __FILE_OPEN_DIALOG_H__ */

@@ -21,34 +21,35 @@
 #ifndef __GIMP_MULTI_WINDOW_STRATEGY_H__
 #define __GIMP_MULTI_WINDOW_STRATEGY_H__
 
-
 #include "core/gimpobject.h"
 
-
-#define GIMP_TYPE_MULTI_WINDOW_STRATEGY            (gimp_multi_window_strategy_get_type ())
-#define GIMP_MULTI_WINDOW_STRATEGY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MULTI_WINDOW_STRATEGY, GimpMultiWindowStrategy))
-#define GIMP_MULTI_WINDOW_STRATEGY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MULTI_WINDOW_STRATEGY, GimpMultiWindowStrategyClass))
-#define GIMP_IS_MULTI_WINDOW_STRATEGY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MULTI_WINDOW_STRATEGY))
-#define GIMP_IS_MULTI_WINDOW_STRATEGY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MULTI_WINDOW_STRATEGY))
-#define GIMP_MULTI_WINDOW_STRATEGY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MULTI_WINDOW_STRATEGY, GimpMultiWindowStrategyClass))
-
+#define GIMP_TYPE_MULTI_WINDOW_STRATEGY (gimp_multi_window_strategy_get_type())
+#define GIMP_MULTI_WINDOW_STRATEGY(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MULTI_WINDOW_STRATEGY,          \
+                              GimpMultiWindowStrategy))
+#define GIMP_MULTI_WINDOW_STRATEGY_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MULTI_WINDOW_STRATEGY,           \
+                           GimpMultiWindowStrategyClass))
+#define GIMP_IS_MULTI_WINDOW_STRATEGY(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MULTI_WINDOW_STRATEGY))
+#define GIMP_IS_MULTI_WINDOW_STRATEGY_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MULTI_WINDOW_STRATEGY))
+#define GIMP_MULTI_WINDOW_STRATEGY_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MULTI_WINDOW_STRATEGY,           \
+                             GimpMultiWindowStrategyClass))
 
 typedef struct _GimpMultiWindowStrategyClass GimpMultiWindowStrategyClass;
 
-struct _GimpMultiWindowStrategy
-{
-	GimpObject parent_instance;
+struct _GimpMultiWindowStrategy {
+  GimpObject parent_instance;
 };
 
-struct _GimpMultiWindowStrategyClass
-{
-	GimpObjectClass parent_class;
+struct _GimpMultiWindowStrategyClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_multi_window_strategy_get_type(void) G_GNUC_CONST;
 
-GType        gimp_multi_window_strategy_get_type          (void) G_GNUC_CONST;
-
-GimpObject * gimp_multi_window_strategy_get_singleton     (void);
-
+GimpObject *gimp_multi_window_strategy_get_singleton(void);
 
 #endif /* __GIMP_MULTI_WINDOW_STRATEGY_H__ */
