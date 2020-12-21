@@ -446,7 +446,7 @@ GtkWidget *gimp_prop_pointer_combo_box_new(GObject *config,
  * @maximum:       Largest allowed value of enum.
  *
  * Creates a #GimpIntComboBox widget to display and set the specified
- * enum property.  The @mimimum_value and @maximum_value give the
+ * enum property.  The @minimum_value and @maximum_value give the
  * possibility of restricting the allowed range to a subset of the
  * enum.  If the two values are equal (e.g., 0, 0), then the full
  * range of the Enum is used.

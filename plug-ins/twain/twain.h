@@ -30,7 +30,7 @@
     version 1.7, July 1997       Added Capabilities and data structure for
                                  document imaging and digital cameras.
                                  KHL.
-    version 1.7, July 1997       Inserted Borland compatibile structure packing
+    version 1.7, July 1997       Inserted Borland compatible structure packing
                                  directives provided by Mentor.  JMH
     version 1.7, Aug 1997        Expanded file tabs to spaces.
                                  NOTE: future authors should be sure to have
@@ -65,8 +65,8 @@
 /****************************************************************************
  * TWAIN Version                                                            *
  ****************************************************************************/
-#define TWON_PROTOCOLMINOR 8 /* Changed for Version 1.8            */
-#define TWON_PROTOCOLMAJOR 1
+#define TOWN_PROTOCOLMINOR 8 /* Changed for Version 1.8            */
+#define TOWN_PROTOCOLMAJOR 1
 
 /****************************************************************************
  * Platform Dependent Definitions and Typedefs                              *
@@ -193,14 +193,14 @@ typedef struct {
   TW_STR32 Info;      /* e.g. "1.0b3 Beta release" */
 } TW_VERSION, FAR *pTW_VERSION;
 
-/* TWON_ARRAY. Container for array of values (a simplified TW_ENUMERATION) */
+/* TOWN_ARRAY. Container for array of values (a simplified TW_ENUMERATION) */
 typedef struct {
   TW_UINT16 ItemType;
   TW_UINT32 NumItems;   /* How many items in ItemList           */
   TW_UINT8 ItemList[1]; /* Array of ItemType values starts here */
 } TW_ARRAY, FAR *pTW_ARRAY;
 
-/* TWON_ENUMERATION. Container for a collection of values. */
+/* TOWN_ENUMERATION. Container for a collection of values. */
 typedef struct {
   TW_UINT16 ItemType;
   TW_UINT32 NumItems;     /* How many items in ItemList                 */
@@ -209,13 +209,13 @@ typedef struct {
   TW_UINT8 ItemList[1];   /* Array of ItemType values starts here       */
 } TW_ENUMERATION, FAR *pTW_ENUMERATION;
 
-/* TWON_ONEVALUE. Container for one value. */
+/* TOWN_ONEVALUE. Container for one value. */
 typedef struct {
   TW_UINT16 ItemType;
   TW_UINT32 Item;
 } TW_ONEVALUE, FAR *pTW_ONEVALUE;
 
-/* TWON_RANGE. Container for a range of values. */
+/* TOWN_RANGE. Container for a range of values. */
 typedef struct {
   TW_UINT16 ItemType;
   TW_UINT32 MinValue;     /* Starting value in the range.           */
@@ -229,7 +229,7 @@ typedef struct {
  * source. */
 typedef struct {
   TW_UINT16 Cap;     /* id of capability to set or get, e.g. CAP_BRIGHTNESS */
-  TW_UINT16 ConType; /* TWON_ONEVALUE, _RANGE, _ENUMERATION or _ARRAY   */
+  TW_UINT16 ConType; /* TOWN_ONEVALUE, _RANGE, _ENUMERATION or _ARRAY   */
   TW_HANDLE hContainer; /* Handle to container of type Dat              */
 } TW_CAPABILITY, FAR *pTW_CAPABILITY;
 
@@ -264,9 +264,9 @@ typedef struct {
   TW_UINT32 Id;       /* Unique number.  In Windows, application hWnd      */
   TW_VERSION Version; /* Identifies the piece of code              */
   TW_UINT16
-      ProtocolMajor; /* Application and DS must set to TWON_PROTOCOLMAJOR */
+      ProtocolMajor; /* Application and DS must set to TOWN_PROTOCOLMAJOR */
   TW_UINT16
-      ProtocolMinor; /* Application and DS must set to TWON_PROTOCOLMINOR */
+      ProtocolMinor; /* Application and DS must set to TOWN_PROTOCOLMINOR */
   TW_UINT32 SupportedGroups; /* Bit field OR combination of DG_ constants */
   TW_STR32 Manufacturer;     /* Manufacturer name, e.g. "Hewlett-Packard" */
   TW_STR32 ProductFamily;    /* Product family name, e.g. "ScanJet"       */
@@ -514,18 +514,18 @@ typedef struct {
  * Generic Constants                                                        *
  ****************************************************************************/
 
-#define TWON_ARRAY 3       /* indicates TW_ARRAY container       */
-#define TWON_ENUMERATION 4 /* indicates TW_ENUMERATION container */
-#define TWON_ONEVALUE 5    /* indicates TW_ONEVALUE container    */
-#define TWON_RANGE 6       /* indicates TW_RANGE container       */
+#define TOWN_ARRAY 3       /* indicates TW_ARRAY container       */
+#define TOWN_ENUMERATION 4 /* indicates TW_ENUMERATION container */
+#define TOWN_ONEVALUE 5    /* indicates TW_ONEVALUE container    */
+#define TOWN_RANGE 6       /* indicates TW_RANGE container       */
 
-#define TWON_ICONID 962   /* res Id of icon used in USERSELECT lbox */
-#define TWON_DSMID 461    /* res Id of the DSM version num resource */
-#define TWON_DSMCODEID 63 /* res Id of the Mac SM Code resource     */
+#define TOWN_ICONID 962   /* res Id of icon used in USERSELECT lbox */
+#define TOWN_DSMID 461    /* res Id of the DSM version num resource */
+#define TOWN_DSMCODEID 63 /* res Id of the Mac SM Code resource     */
 
-#define TWON_DONTCARE8 0xff
-#define TWON_DONTCARE16 0xffff
-#define TWON_DONTCARE32 0xffffffff
+#define TOWN_DONTCARE8 0xff
+#define TOWN_DONTCARE16 0xffff
+#define TOWN_DONTCARE32 0xffffffff
 
 /* Flags used in TW_MEMORY structure. */
 #define TWMF_APPOWNS 0x1
@@ -540,7 +540,7 @@ typedef struct {
 #define TWPA_CMY 2
 
 /* There are four containers used for capabilities negotiation:
- *    TWON_ONEVALUE, TWON_RANGE, TWON_ENUMERATION, TWON_ARRAY
+ *    TOWN_ONEVALUE, TOWN_RANGE, TOWN_ENUMERATION, TOWN_ARRAY
  * In each container structure ItemType can be TWTY_INT8, TWTY_INT16, etc.
  * The kind of data stored in the container can be determined by doing
  * DCItemSize[ItemType] where the following is defined in TWAIN glue code:
@@ -1080,7 +1080,7 @@ typedef struct {
 #define TWCY_PANAMA 507
 #define TWCY_PARAGUAY 595
 #define TWCY_PERU 51
-#define TWCY_PHILLIPPINES 63
+#define TWCY_PHILIPPINES 63
 #define TWCY_PITCAIRNIS 1030
 #define TWCY_PNEWGUINEA 675
 #define TWCY_POLAND 48
@@ -1249,7 +1249,7 @@ typedef struct {
 #define TWLG_SWEDISH TWLG_SWE
 #define TWLG_THAI 84
 #define TWLG_TURKISH 85
-#define TWLG_UKRANIAN 86
+#define TWLG_UKRAINIAN 86
 
 /****************************************************************************
  * Data Groups                                                              *

@@ -1915,7 +1915,7 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
 
           /* LOCATION SHOWN - SUB LOCATION */
           column = gtk_tree_view_get_column(GTK_TREE_VIEW(widget),
-                                            COL_REGSITRY_ORG_ID);
+                                            COL_REGISTRY_ORG_ID);
           rlist = gtk_cell_layout_get_cells(GTK_CELL_LAYOUT(column));
           for (r = rlist; r != NULL; r = r->next) {
             renderer = (GtkCellRenderer *)r->data;
@@ -1924,12 +1924,12 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
                              G_CALLBACK(reg_org_id_cell_edited_callback),
                              treemodel);
             g_object_set_data(G_OBJECT(renderer), "column",
-                              GINT_TO_POINTER(COL_REGSITRY_ORG_ID));
+                              GINT_TO_POINTER(COL_REGISTRY_ORG_ID));
           }
 
           /* LOCATION SHOWN - CITY */
           column = gtk_tree_view_get_column(GTK_TREE_VIEW(widget),
-                                            COL_REGSITRY_ITEM_ID);
+                                            COL_REGISTRY_ITEM_ID);
           rlist = gtk_cell_layout_get_cells(GTK_CELL_LAYOUT(column));
           for (r = rlist; r; r = r->next) {
             renderer = r->data;
@@ -1941,7 +1941,7 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
                              treemodel);
 
             g_object_set_data(G_OBJECT(renderer), "column",
-                              GINT_TO_POINTER(COL_REGSITRY_ITEM_ID));
+                              GINT_TO_POINTER(COL_REGISTRY_ITEM_ID));
           }
 
           store_index = 0;
@@ -1951,8 +1951,8 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
 
             for (item = 0; item < store_index; item++) {
               gtk_list_store_append(liststore, &iter);
-              gtk_list_store_set(liststore, &iter, COL_REGSITRY_ORG_ID,
-                                 &arr1[item], COL_REGSITRY_ITEM_ID, &arr2[item],
+              gtk_list_store_set(liststore, &iter, COL_REGISTRY_ORG_ID,
+                                 &arr1[item], COL_REGISTRY_ITEM_ID, &arr2[item],
                                  -1);
             }
           } else {
@@ -1960,8 +1960,8 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
 
             for (item = 0; item < 2; item++) {
               gtk_list_store_append(liststore, &iter);
-              gtk_list_store_set(liststore, &iter, COL_REGSITRY_ORG_ID, NULL,
-                                 COL_REGSITRY_ITEM_ID, NULL, -1);
+              gtk_list_store_set(liststore, &iter, COL_REGISTRY_ORG_ID, NULL,
+                                 COL_REGISTRY_ITEM_ID, NULL, -1);
             }
           }
         } else if (!strcmp("Xmp.iptcExt.OrganisationInImageName",
@@ -2968,7 +2968,7 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
 
           /* REGISTRY - ORGANIZATION ID */
           column = gtk_tree_view_get_column(GTK_TREE_VIEW(widget),
-                                            COL_REGSITRY_ORG_ID);
+                                            COL_REGISTRY_ORG_ID);
           rlist = gtk_cell_layout_get_cells(GTK_CELL_LAYOUT(column));
           for (r = rlist; r; r = r->next) {
             renderer = r->data;
@@ -2980,12 +2980,12 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
                              treemodel);
 
             g_object_set_data(G_OBJECT(renderer), "column",
-                              GINT_TO_POINTER(COL_REGSITRY_ORG_ID));
+                              GINT_TO_POINTER(COL_REGISTRY_ORG_ID));
           }
 
           /* REGISTRY - ITEM ID */
           column = gtk_tree_view_get_column(GTK_TREE_VIEW(widget),
-                                            COL_REGSITRY_ITEM_ID);
+                                            COL_REGISTRY_ITEM_ID);
           rlist = gtk_cell_layout_get_cells(GTK_CELL_LAYOUT(column));
           for (r = rlist; r; r = r->next) {
             renderer = r->data;
@@ -2997,7 +2997,7 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
                              treemodel);
 
             g_object_set_data(G_OBJECT(renderer), "column",
-                              GINT_TO_POINTER(COL_REGSITRY_ITEM_ID));
+                              GINT_TO_POINTER(COL_REGISTRY_ITEM_ID));
           }
 
           if (counter > 0) {
@@ -3005,8 +3005,8 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
 
             for (item = 0; item < counter; item++) {
               gtk_list_store_append(liststore, &iter);
-              gtk_list_store_set(liststore, &iter, COL_REGSITRY_ORG_ID,
-                                 tagdata[item][0], COL_REGSITRY_ITEM_ID,
+              gtk_list_store_set(liststore, &iter, COL_REGISTRY_ORG_ID,
+                                 tagdata[item][0], COL_REGISTRY_ITEM_ID,
                                  tagdata[item][1], -1);
             }
           } else {
@@ -3014,8 +3014,8 @@ static void metadata_dialog_editor_set_metadata(GExiv2Metadata *metadata,
 
             for (item = 0; item < 2; item++) {
               gtk_list_store_append(liststore, &iter);
-              gtk_list_store_set(liststore, &iter, COL_REGSITRY_ORG_ID, NULL,
-                                 COL_REGSITRY_ITEM_ID, NULL, -1);
+              gtk_list_store_set(liststore, &iter, COL_REGISTRY_ORG_ID, NULL,
+                                 COL_REGISTRY_ITEM_ID, NULL, -1);
             }
           }
         } else if (!strcmp("Xmp.iptcExt.LocationShown",
@@ -3863,7 +3863,7 @@ void metadata_editor_write_callback(GtkWidget *dialog, GtkBuilder *builder,
     if (gtk_tree_model_iter_nth_child(treemodel, &iter, NULL, row)) {
       gchar *tag_data;
 
-      gtk_tree_model_get(treemodel, &iter, COL_REGSITRY_ORG_ID, &tag_data, -1);
+      gtk_tree_model_get(treemodel, &iter, COL_REGISTRY_ORG_ID, &tag_data, -1);
 
       g_snprintf(tag, sizeof(tag), "%s[%d]%s", REGISTRYID_HEADER, counter,
                  registryid[0]);
@@ -3871,7 +3871,7 @@ void metadata_editor_write_callback(GtkWidget *dialog, GtkBuilder *builder,
       set_tag_string(g_metadata, tag, tag_data);
       g_free(tag_data);
 
-      gtk_tree_model_get(treemodel, &iter, COL_REGSITRY_ITEM_ID, &tag_data, -1);
+      gtk_tree_model_get(treemodel, &iter, COL_REGISTRY_ITEM_ID, &tag_data, -1);
 
       g_snprintf(tag, sizeof(tag), "%s[%d]%s", REGISTRYID_HEADER, counter,
                  registryid[1]);

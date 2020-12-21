@@ -267,8 +267,8 @@ static pTW_IDENTITY getAppIdentity(void) {
   appIdentity->Version.Language = TWLG_USA;
   appIdentity->Version.Country = TWCY_USA;
   strcpy(appIdentity->Version.Info, "GIMP TWAIN 0.6");
-  appIdentity->ProtocolMajor = TWON_PROTOCOLMAJOR;
-  appIdentity->ProtocolMinor = TWON_PROTOCOLMINOR;
+  appIdentity->ProtocolMajor = TOWN_PROTOCOLMAJOR;
+  appIdentity->ProtocolMinor = TOWN_PROTOCOLMINOR;
   appIdentity->SupportedGroups = DG_IMAGE;
   strcpy(appIdentity->Manufacturer, "Craig Setera");
   strcpy(appIdentity->ProductFamily, "GIMP");

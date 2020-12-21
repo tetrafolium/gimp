@@ -5771,7 +5771,7 @@ void register_plug_in_compat_procs(GimpPDB *pdb) {
       procedure,
       g_param_spec_int("gry-spotfn", "gry spotfn",
                        "Grey/black spot function { DOTS (0), LINES (1), "
-                       "DIAMONDS (2), EUCLIDIAN-DOT (3), PS-DIAMONDS (4) }",
+                       "DIAMONDS (2), EUCLIDEAN-DOT (3), PS-DIAMONDS (4) }",
                        0, 4, 0, GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument(
       procedure, g_param_spec_double("red-ang", "red ang",
@@ -5781,7 +5781,7 @@ void register_plug_in_compat_procs(GimpPDB *pdb) {
       procedure,
       g_param_spec_int("red-spotfn", "red spotfn",
                        "Red/cyan spot function { DOTS (0), LINES (1), DIAMONDS "
-                       "(2), EUCLIDIAN-DOT (3), PS-DIAMONDS (4) }",
+                       "(2), EUCLIDEAN-DOT (3), PS-DIAMONDS (4) }",
                        0, 4, 0, GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument(
       procedure, g_param_spec_double("grn-ang", "grn ang",
@@ -5791,7 +5791,7 @@ void register_plug_in_compat_procs(GimpPDB *pdb) {
       procedure,
       g_param_spec_int("grn-spotfn", "grn spotfn",
                        "Green/magenta spot function { DOTS (0), LINES (1), "
-                       "DIAMONDS (2), EUCLIDIAN-DOT (3), PS-DIAMONDS (4) }",
+                       "DIAMONDS (2), EUCLIDEAN-DOT (3), PS-DIAMONDS (4) }",
                        0, 4, 0, GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument(
       procedure, g_param_spec_double("blu-ang", "blu ang",
@@ -5801,7 +5801,7 @@ void register_plug_in_compat_procs(GimpPDB *pdb) {
       procedure,
       g_param_spec_int("blu-spotfn", "blu spotfn",
                        "Blue/yellow spot function { DOTS (0), LINES (1), "
-                       "DIAMONDS (2), EUCLIDIAN-DOT (3), PS-DIAMONDS (4) }",
+                       "DIAMONDS (2), EUCLIDEAN-DOT (3), PS-DIAMONDS (4) }",
                        0, 4, 0, GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument(
       procedure, g_param_spec_int("oversample", "oversample",

@@ -41,7 +41,7 @@ typedef struct {
 typedef enum { filter_uniform, filter_low, filter_high } FilterMode;
 
 /*
-   Definit comment sont repartis les
+   Definite comment sont repartis les
    differents filtres en fonction de
    l'echelle (~= ecart type de la gaussienne)
  */

@@ -387,7 +387,7 @@ typedef enum {
   keSCTCapFootball,       /* Football cap type */
   keSCTCapXr71Arrow,      /* Xr71 arrow cap type */
   keSCTCapLilly,          /* Lilly cap type */
-  keSCTCapPinapple,       /* Pinapple cap type */
+  keSCTCapPinapple,       /* Pineapple cap type */
   keSCTCapBall,           /* Ball cap type */
   keSCTCapTulip           /* Tulip cap type */
 } PSPStyleCapType;

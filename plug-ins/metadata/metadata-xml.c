@@ -252,8 +252,8 @@ void set_tag_ui(metadata_editor *args, gint index, gchar *name, gchar *value,
     } else if (!strcmp(REGISTRYID_HEADER, name)) {
       for (row = 1; row < row_count + 1; row++) {
         gtk_list_store_append(liststore, &iter);
-        gtk_list_store_set(liststore, &iter, COL_REGSITRY_ORG_ID,
-                           list_tag_data[row][1], COL_REGSITRY_ITEM_ID,
+        gtk_list_store_set(liststore, &iter, COL_REGISTRY_ORG_ID,
+                           list_tag_data[row][1], COL_REGISTRY_ITEM_ID,
                            list_tag_data[row][2], -1);
         for (item = 1; item < n_registryid + 1; item++) {
           if (list_tag_data[row][item]) {
@@ -266,8 +266,8 @@ void set_tag_ui(metadata_editor *args, gint index, gchar *name, gchar *value,
       if (row_count < 2) {
         for (row = 0; row < 2 - row_count; row++) {
           gtk_list_store_append(liststore, &iter);
-          gtk_list_store_set(liststore, &iter, COL_REGSITRY_ORG_ID, NULL,
-                             COL_REGSITRY_ITEM_ID, NULL, -1);
+          gtk_list_store_set(liststore, &iter, COL_REGISTRY_ORG_ID, NULL,
+                             COL_REGISTRY_ITEM_ID, NULL, -1);
         }
       }
     } else if (!strcmp(COPYRIGHTOWNER_HEADER, name)) {
@@ -532,8 +532,8 @@ gchar *get_tag_ui_list(metadata_editor *args, gchar *name, gchar *mode) {
           xmldata = g_strconcat(xmldata, "\t\t\t</list-element>\n", NULL);
         }
       } else if (!strcmp(REGISTRYID_HEADER, name)) {
-        gtk_tree_model_get(treemodel, &iter, COL_REGSITRY_ORG_ID,
-                           &tagdata[row][0], COL_REGSITRY_ITEM_ID,
+        gtk_tree_model_get(treemodel, &iter, COL_REGISTRY_ORG_ID,
+                           &tagdata[row][0], COL_REGISTRY_ITEM_ID,
                            &tagdata[row][1], -1);
 
         if ((tagdata[row][0] != NULL && strlen(tagdata[row][0]) > 0) ||

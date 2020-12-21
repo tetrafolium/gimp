@@ -136,7 +136,7 @@ static GimpProcedure *csource_create_procedure(GimpPlugIn *plug_in,
                               "Use C macros", FALSE, GIMP_PARAM_READWRITE);
 
     GIMP_PROC_AUX_ARG_BOOLEAN(procedure, "use-rle", "Use RLE",
-                              "Use run-lenght-encoding", FALSE,
+                              "Use run-length-encoding", FALSE,
                               GIMP_PARAM_READWRITE);
 
     GIMP_PROC_AUX_ARG_DOUBLE(procedure, "opacity", "Opacity", "Opacity", 0.0,

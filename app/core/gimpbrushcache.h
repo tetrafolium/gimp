@@ -54,7 +54,7 @@ struct _GimpBrushCacheClass {
 
 GType gimp_brush_cache_get_type(void) G_GNUC_CONST;
 
-GimpBrushCache *gimp_brush_cache_new(GDestroyNotify data_destory,
+GimpBrushCache *gimp_brush_cache_new(GDestroyNotify data_destroy,
                                      gchar debug_hit, gchar debug_miss);
 
 void gimp_brush_cache_clear(GimpBrushCache *cache);

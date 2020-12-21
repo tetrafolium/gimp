@@ -70,7 +70,7 @@ static void gimp_airbrush_options_class_init(GimpAirbrushOptionsClass *klass) {
                           100.0, AIRBRUSH_DEFAULT_FLOW,
                           GIMP_PARAM_STATIC_STRINGS);
 
-  /* backwads-compadibility prop for flow fomerly known as pressure */
+  /* backwads-compatibility prop for flow fomerly known as pressure */
   GIMP_CONFIG_PROP_DOUBLE(object_class, PROP_PRESSURE, "pressure", NULL, NULL,
                           0.0, 100.0, AIRBRUSH_DEFAULT_FLOW,
                           GIMP_CONFIG_PARAM_IGNORE);

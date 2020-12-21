@@ -61,7 +61,7 @@ static const GimpActionEntry select_actions[] = {
      NC_("select-action", "Create a floating selection"),
      select_float_cmd_callback, GIMP_HELP_SELECTION_FLOAT},
 
-    {"select-feather", NULL, NC_("select-action", "Fea_ther..."), NULL,
+    {"select-feather", NULL, NC_("select-action", "Fea_there..."), NULL,
      NC_("select-action",
          "Blur the selection border so that it fades out smoothly"),
      select_feather_cmd_callback, GIMP_HELP_SELECTION_FEATHER},

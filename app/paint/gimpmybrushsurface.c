@@ -271,7 +271,7 @@ static void gimp_mypaint_surface_get_color(MyPaintSurface *base_surface,
       sum_b /= sum_a;
 
       /* FIXME: Clamping is wrong because GEGL allows alpha > 1, this should
-       * probably re-multipy things */
+       * probably re-multiply things */
       *color_r = CLAMP(sum_r, 0.0f, 1.0f);
       *color_g = CLAMP(sum_g, 0.0f, 1.0f);
       *color_b = CLAMP(sum_b, 0.0f, 1.0f);
@@ -368,7 +368,7 @@ static int gimp_mypaint_surface_draw_dab(
 
         if (a > 0.0f) {
           /* By definition the ratio between each color[] and pixel[] component
-           * in a non-pre-multipled blend always sums to 1.0f. Originally this
+           * in a non-pre-multiplied blend always sums to 1.0f. Originally this
            * would have been "(color[n] * alpha * color_a + pixel[n] * dst_alpha
            * * (1.0f - alpha)) / a",
            * instead we only calculate the cheaper term. */

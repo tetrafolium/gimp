@@ -1748,7 +1748,7 @@ static void toggle_obj_type(GtkRadioAction *action, GtkRadioAction *current,
 /* Size is number of PAIRS of points */
 /* FP + int variants */
 
-static void scale_to_orginal_x(gdouble *list) { *list *= scale_x_factor; }
+static void scale_to_original_x(gdouble *list) { *list *= scale_x_factor; }
 
 gint gfig_scale_x(gint x) {
   if (!selvals.scaletoimage)
@@ -1757,7 +1757,7 @@ gint gfig_scale_x(gint x) {
     return x;
 }
 
-static void scale_to_orginal_y(gdouble *list) { *list *= scale_y_factor; }
+static void scale_to_original_y(gdouble *list) { *list *= scale_y_factor; }
 
 gint gfig_scale_y(gint y) {
   if (!selvals.scaletoimage)
@@ -1771,8 +1771,8 @@ void scale_to_original_xy(gdouble *list, gint size) {
   gint i;
 
   for (i = 0; i < size * 2; i += 2) {
-    scale_to_orginal_x(&list[i]);
-    scale_to_orginal_y(&list[i + 1]);
+    scale_to_original_x(&list[i]);
+    scale_to_original_y(&list[i + 1]);
   }
 }
 

@@ -490,7 +490,7 @@ gboolean gimp_display_shell_canvas_tool_events(GtkWidget *canvas,
         /* Use the last evaluated velocity&direction instead of the
          * button_press event's ones because the click is
          * usually at the same spot as the last motion event
-         * which would give us bogus derivate dynamics.
+         * which would give us bogus derivative dynamics.
          */
         gimp_motion_buffer_begin_stroke(shell->motion_buffer, time,
                                         &last_motion);

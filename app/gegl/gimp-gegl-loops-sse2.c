@@ -49,14 +49,14 @@ gimp_gegl_smudge_with_paint_blend_sse2(const gfloat *src1, gfloat src1_rate,
   __m128 v_src2 = _mm_loadu_ps(src2);
   __m128 *v_dest = (__v4sf *)dest;
 
-  gfloat orginal_src2_alpha;
+  gfloat original_src2_alpha;
   gfloat src1_alpha;
   gfloat src2_alpha;
   gfloat result_alpha;
 
-  orginal_src2_alpha = v_src2[3];
+  original_src2_alpha = v_src2[3];
   src1_alpha = src1_rate * v_src1[3];
-  src2_alpha = src2_rate * orginal_src2_alpha;
+  src2_alpha = src2_rate * original_src2_alpha;
   result_alpha = src1_alpha + src2_alpha;
 
   if (result_alpha == 0) {
@@ -69,7 +69,7 @@ gimp_gegl_smudge_with_paint_blend_sse2(const gfloat *src1, gfloat src1_rate,
       _mm_set1_ps(result_alpha);
 
   if (no_erasing_src2) {
-    result_alpha = MAX(result_alpha, orginal_src2_alpha);
+    result_alpha = MAX(result_alpha, original_src2_alpha);
   }
 
   dest[3] = result_alpha;

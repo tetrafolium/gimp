@@ -474,15 +474,15 @@ static inline void
 gimp_gegl_smudge_with_paint_blend(const gfloat *src1, gfloat src1_rate,
                                   const gfloat *src2, gfloat src2_rate,
                                   gfloat *dest, gboolean no_erasing_src2) {
-  gfloat orginal_src2_alpha;
+  gfloat original_src2_alpha;
   gfloat src1_alpha;
   gfloat src2_alpha;
   gfloat result_alpha;
   gint b;
 
-  orginal_src2_alpha = src2[3];
+  original_src2_alpha = src2[3];
   src1_alpha = src1_rate * src1[3];
-  src2_alpha = src2_rate * orginal_src2_alpha;
+  src2_alpha = src2_rate * original_src2_alpha;
   result_alpha = src1_alpha + src2_alpha;
 
   if (result_alpha == 0) {
@@ -494,7 +494,7 @@ gimp_gegl_smudge_with_paint_blend(const gfloat *src1, gfloat src1_rate,
     dest[b] = (src1[b] * src1_alpha + src2[b] * src2_alpha) / result_alpha;
 
   if (no_erasing_src2) {
-    result_alpha = MAX(result_alpha, orginal_src2_alpha);
+    result_alpha = MAX(result_alpha, original_src2_alpha);
   }
 
   dest[3] = result_alpha;

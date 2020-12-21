@@ -208,7 +208,7 @@ static void gimp_measure_tool_button_press(GimpTool *tool,
     gimp_tool_control(tool, GIMP_TOOL_ACTION_HALT, tool->display);
 
   if (!measure->widget) {
-    measure->supress_guides = TRUE;
+    measure->suppress_guides = TRUE;
 
     gimp_measure_tool_start(measure, display, coords);
 
@@ -256,7 +256,7 @@ static void gimp_measure_tool_button_release(GimpTool *tool,
     measure->grab_widget = NULL;
   }
 
-  measure->supress_guides = FALSE;
+  measure->suppress_guides = FALSE;
 }
 
 static void gimp_measure_tool_motion(GimpTool *tool, const GimpCoords *coords,
@@ -354,7 +354,7 @@ static void gimp_measure_tool_compass_create_guides(GimpToolWidget *widget,
   GimpDisplay *display = GIMP_TOOL(measure)->display;
   GimpImage *image = gimp_display_get_image(display);
 
-  if (measure->supress_guides)
+  if (measure->suppress_guides)
     return;
 
   if (x < 0 || x > gimp_image_get_width(image))

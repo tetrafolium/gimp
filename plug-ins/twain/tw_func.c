@@ -355,7 +355,7 @@ static int setBufferedXfer(pTW_SESSION twSession) {
 
   /* Create the capability information */
   bufXfer.Cap = ICAP_XFERMECH;
-  bufXfer.ConType = TWON_ONEVALUE;
+  bufXfer.ConType = TOWN_ONEVALUE;
   bufXfer.hContainer = twainAllocHandle(sizeof(TW_ONEVALUE));
 
   pvalOneValue = (pTW_ONEVALUE)twainLockHandle(bufXfer.hContainer);
@@ -589,13 +589,13 @@ static void transferImage(pTW_SESSION twSession, pTW_IMAGEINFO imageInfo) {
   /* Get the data */
   do {
     /* Setup for the memory transfer */
-    imageMemXfer.Compression = TWON_DONTCARE16;
-    imageMemXfer.BytesPerRow = TWON_DONTCARE32;
-    imageMemXfer.Columns = TWON_DONTCARE32;
-    imageMemXfer.Rows = TWON_DONTCARE32;
-    imageMemXfer.XOffset = TWON_DONTCARE32;
-    imageMemXfer.YOffset = TWON_DONTCARE32;
-    imageMemXfer.BytesWritten = TWON_DONTCARE32;
+    imageMemXfer.Compression = TOWN_DONTCARE16;
+    imageMemXfer.BytesPerRow = TOWN_DONTCARE32;
+    imageMemXfer.Columns = TOWN_DONTCARE32;
+    imageMemXfer.Rows = TOWN_DONTCARE32;
+    imageMemXfer.XOffset = TOWN_DONTCARE32;
+    imageMemXfer.YOffset = TOWN_DONTCARE32;
+    imageMemXfer.BytesWritten = TOWN_DONTCARE32;
 
     /* Get the next block of memory */
     twSession->twRC =
