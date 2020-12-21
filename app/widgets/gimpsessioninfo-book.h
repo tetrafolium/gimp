@@ -21,38 +21,31 @@
 #ifndef __GIMP_SESSION_INFO_BOOK_H__
 #define __GIMP_SESSION_INFO_BOOK_H__
 
-
 /**
  * GimpSessionInfoBook:
  *
  * Contains information about a book (a GtkNotebook of dockables) in
  * the interface.
  */
-struct _GimpSessionInfoBook
-{
-	gint position;
-	gint current_page;
+struct _GimpSessionInfoBook {
+  gint position;
+  gint current_page;
 
-	/*  list of GimpSessionInfoDockable  */
-	GList *dockables;
+  /*  list of GimpSessionInfoDockable  */
+  GList *dockables;
 };
 
+GimpSessionInfoBook *gimp_session_info_book_new(void);
+void gimp_session_info_book_free(GimpSessionInfoBook *info);
 
-GimpSessionInfoBook *
-gimp_session_info_book_new         (void);
-void         gimp_session_info_book_free        (GimpSessionInfoBook  *info);
+void gimp_session_info_book_serialize(GimpConfigWriter *writer,
+                                      GimpSessionInfoBook *book);
+GTokenType gimp_session_info_book_deserialize(GScanner *scanner, gint scope,
+                                              GimpSessionInfoBook **book);
 
-void         gimp_session_info_book_serialize   (GimpConfigWriter     *writer,
-                                                 GimpSessionInfoBook  *book);
-GTokenType   gimp_session_info_book_deserialize (GScanner             *scanner,
-                                                 gint scope,
-                                                 GimpSessionInfoBook **book);
+GimpSessionInfoBook *gimp_session_info_book_from_widget(GimpDockbook *dockbook);
 
-GimpSessionInfoBook *
-gimp_session_info_book_from_widget (GimpDockbook         *dockbook);
+GimpDockbook *gimp_session_info_book_restore(GimpSessionInfoBook *info,
+                                             GimpDock *dock);
 
-GimpDockbook * gimp_session_info_book_restore   (GimpSessionInfoBook  *info,
-                                                 GimpDock             *dock);
-
-
-#endif  /* __GIMP_SESSION_INFO_BOOK_H__ */
+#endif /* __GIMP_SESSION_INFO_BOOK_H__ */

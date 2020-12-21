@@ -21,53 +21,51 @@
 #ifndef __GIMP_ERROR_CONSOLE_H__
 #define __GIMP_ERROR_CONSOLE_H__
 
-
 #include "gimpeditor.h"
 
-
-#define GIMP_TYPE_ERROR_CONSOLE            (gimp_error_console_get_type ())
-#define GIMP_ERROR_CONSOLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ERROR_CONSOLE, GimpErrorConsole))
-#define GIMP_ERROR_CONSOLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ERROR_CONSOLE, GimpErrorConsoleClass))
-#define GIMP_IS_ERROR_CONSOLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ERROR_CONSOLE))
-#define GIMP_IS_ERROR_CONSOLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ERROR_CONSOLE))
-#define GIMP_ERROR_CONSOLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ERROR_CONSOLE, GimpErrorConsoleClass))
-
+#define GIMP_TYPE_ERROR_CONSOLE (gimp_error_console_get_type())
+#define GIMP_ERROR_CONSOLE(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ERROR_CONSOLE, GimpErrorConsole))
+#define GIMP_ERROR_CONSOLE_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ERROR_CONSOLE,                   \
+                           GimpErrorConsoleClass))
+#define GIMP_IS_ERROR_CONSOLE(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ERROR_CONSOLE))
+#define GIMP_IS_ERROR_CONSOLE_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ERROR_CONSOLE))
+#define GIMP_ERROR_CONSOLE_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ERROR_CONSOLE,                   \
+                             GimpErrorConsoleClass))
 
 typedef struct _GimpErrorConsoleClass GimpErrorConsoleClass;
 
-struct _GimpErrorConsole
-{
-	GimpEditor parent_instance;
+struct _GimpErrorConsole {
+  GimpEditor parent_instance;
 
-	Gimp          *gimp;
+  Gimp *gimp;
 
-	GtkTextBuffer *text_buffer;
-	GtkWidget     *text_view;
+  GtkTextBuffer *text_buffer;
+  GtkWidget *text_view;
 
-	GtkWidget     *clear_button;
-	GtkWidget     *save_button;
+  GtkWidget *clear_button;
+  GtkWidget *save_button;
 
-	GtkWidget     *file_dialog;
-	gboolean save_selection;
+  GtkWidget *file_dialog;
+  gboolean save_selection;
 
-	gboolean highlight[GIMP_MESSAGE_ERROR + 1];
+  gboolean highlight[GIMP_MESSAGE_ERROR + 1];
 };
 
-struct _GimpErrorConsoleClass
-{
-	GimpEditorClass parent_class;
+struct _GimpErrorConsoleClass {
+  GimpEditorClass parent_class;
 };
 
+GType gimp_error_console_get_type(void) G_GNUC_CONST;
 
-GType       gimp_error_console_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_error_console_new(Gimp *gimp, GimpMenuFactory *menu_factory);
 
-GtkWidget * gimp_error_console_new      (Gimp                *gimp,
-                                         GimpMenuFactory     *menu_factory);
+void gimp_error_console_add(GimpErrorConsole *console,
+                            GimpMessageSeverity severity, const gchar *domain,
+                            const gchar *message);
 
-void        gimp_error_console_add      (GimpErrorConsole    *console,
-                                         GimpMessageSeverity severity,
-                                         const gchar         *domain,
-                                         const gchar         *message);
-
-
-#endif  /*  __GIMP_ERROR_CONSOLE_H__  */
+#endif /*  __GIMP_ERROR_CONSOLE_H__  */

@@ -21,14 +21,10 @@
 #ifndef __GIMP_VIEW_RENDERER_FRAME_H__
 #define __GIMP_VIEW_RENDERER_FRAME_H__
 
+GdkPixbuf *gimp_view_renderer_get_frame_pixbuf(GimpViewRenderer *renderer,
+                                               GtkWidget *widget, gint width,
+                                               gint height);
 
-GdkPixbuf * gimp_view_renderer_get_frame_pixbuf (GimpViewRenderer *renderer,
-                                                 GtkWidget        *widget,
-                                                 gint width,
-                                                 gint height);
-
-void        gimp_view_renderer_get_frame_size   (gint             *width,
-                                                 gint             *height);
-
+void gimp_view_renderer_get_frame_size(gint *width, gint *height);
 
 #endif /* __GIMP_VIEW_RENDERER_FRAME_H__ */

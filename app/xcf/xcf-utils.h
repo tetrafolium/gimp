@@ -18,9 +18,6 @@
 #ifndef __XCF_UTILS_H__
 #define __XCF_UTILS_H__
 
+gboolean xcf_data_is_zero(const void *data, gint size);
 
-gboolean   xcf_data_is_zero (const void *data,
-                             gint size);
-
-
-#endif  /* __XCF_UTILS_H__ */
+#endif /* __XCF_UTILS_H__ */

@@ -25,37 +25,38 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_BRUSH_SELECT            (gimp_brush_select_get_type ())
-#define GIMP_BRUSH_SELECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_SELECT, GimpBrushSelect))
-#define GIMP_BRUSH_SELECT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_SELECT, GimpBrushSelectClass))
-#define GIMP_IS_BRUSH_SELECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_SELECT))
-#define GIMP_IS_BRUSH_SELECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_SELECT))
-#define GIMP_BRUSH_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_SELECT, GimpBrushSelectClass))
-
+#define GIMP_TYPE_BRUSH_SELECT (gimp_brush_select_get_type())
+#define GIMP_BRUSH_SELECT(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_SELECT, GimpBrushSelect))
+#define GIMP_BRUSH_SELECT_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_SELECT,                    \
+                           GimpBrushSelectClass))
+#define GIMP_IS_BRUSH_SELECT(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_SELECT))
+#define GIMP_IS_BRUSH_SELECT_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_SELECT))
+#define GIMP_BRUSH_SELECT_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_SELECT,                    \
+                             GimpBrushSelectClass))
 
 typedef struct _GimpBrushSelectClass GimpBrushSelectClass;
 
-struct _GimpBrushSelect
-{
-	GimpPdbDialog parent_instance;
+struct _GimpBrushSelect {
+  GimpPdbDialog parent_instance;
 
-	gdouble initial_opacity;
-	GimpLayerMode initial_mode;
+  gdouble initial_opacity;
+  GimpLayerMode initial_mode;
 
-	gint spacing;
-	GtkAdjustment *opacity_data;
-	GtkWidget     *layer_mode_box;
+  gint spacing;
+  GtkAdjustment *opacity_data;
+  GtkWidget *layer_mode_box;
 };
 
-struct _GimpBrushSelectClass
-{
-	GimpPdbDialogClass parent_class;
+struct _GimpBrushSelectClass {
+  GimpPdbDialogClass parent_class;
 };
 
-
-GType  gimp_brush_select_get_type (void) G_GNUC_CONST;
-
+GType gimp_brush_select_get_type(void) G_GNUC_CONST;
 
 G_END_DECLS
 

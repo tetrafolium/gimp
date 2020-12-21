@@ -21,33 +21,34 @@
 #ifndef __GIMP_SETTINGS_EDITOR_H__
 #define __GIMP_SETTINGS_EDITOR_H__
 
-
-#define GIMP_TYPE_SETTINGS_EDITOR            (gimp_settings_editor_get_type ())
-#define GIMP_SETTINGS_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SETTINGS_EDITOR, GimpSettingsEditor))
-#define GIMP_SETTINGS_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SETTINGS_EDITOR, GimpSettingsEditorClass))
-#define GIMP_IS_SETTINGS_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SETTINGS_EDITOR))
-#define GIMP_IS_SETTINGS_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SETTINGS_EDITOR))
-#define GIMP_SETTINGS_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SETTINGS_EDITOR, GimpSettingsEditorClass))
-
+#define GIMP_TYPE_SETTINGS_EDITOR (gimp_settings_editor_get_type())
+#define GIMP_SETTINGS_EDITOR(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SETTINGS_EDITOR,                \
+                              GimpSettingsEditor))
+#define GIMP_SETTINGS_EDITOR_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SETTINGS_EDITOR,                 \
+                           GimpSettingsEditorClass))
+#define GIMP_IS_SETTINGS_EDITOR(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SETTINGS_EDITOR))
+#define GIMP_IS_SETTINGS_EDITOR_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SETTINGS_EDITOR))
+#define GIMP_SETTINGS_EDITOR_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SETTINGS_EDITOR,                 \
+                             GimpSettingsEditorClass))
 
 typedef struct _GimpSettingsEditorClass GimpSettingsEditorClass;
 
-struct _GimpSettingsEditor
-{
-	GtkBox parent_instance;
+struct _GimpSettingsEditor {
+  GtkBox parent_instance;
 };
 
-struct _GimpSettingsEditorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpSettingsEditorClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_settings_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_settings_editor_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_settings_editor_new(Gimp *gimp, GObject *config,
+                                    GimpContainer *container);
 
-GtkWidget * gimp_settings_editor_new      (Gimp          *gimp,
-                                           GObject       *config,
-                                           GimpContainer *container);
-
-
-#endif  /*  __GIMP_SETTINGS_EDITOR_H__  */
+#endif /*  __GIMP_SETTINGS_EDITOR_H__  */

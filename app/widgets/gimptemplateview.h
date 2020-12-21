@@ -21,45 +21,44 @@
 #ifndef __GIMP_TEMPLATE_VIEW_H__
 #define __GIMP_TEMPLATE_VIEW_H__
 
-
 #include "gimpcontainereditor.h"
 
-
-#define GIMP_TYPE_TEMPLATE_VIEW            (gimp_template_view_get_type ())
-#define GIMP_TEMPLATE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEMPLATE_VIEW, GimpTemplateView))
-#define GIMP_TEMPLATE_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TEMPLATE_VIEW, GimpTemplateViewClass))
-#define GIMP_IS_TEMPLATE_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEMPLATE_VIEW))
-#define GIMP_IS_TEMPLATE_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TEMPLATE_VIEW))
-#define GIMP_TEMPLATE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TEMPLATE_VIEW, GimpTemplateViewClass))
-
+#define GIMP_TYPE_TEMPLATE_VIEW (gimp_template_view_get_type())
+#define GIMP_TEMPLATE_VIEW(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEMPLATE_VIEW, GimpTemplateView))
+#define GIMP_TEMPLATE_VIEW_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TEMPLATE_VIEW,                   \
+                           GimpTemplateViewClass))
+#define GIMP_IS_TEMPLATE_VIEW(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEMPLATE_VIEW))
+#define GIMP_IS_TEMPLATE_VIEW_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TEMPLATE_VIEW))
+#define GIMP_TEMPLATE_VIEW_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TEMPLATE_VIEW,                   \
+                             GimpTemplateViewClass))
 
 typedef struct _GimpTemplateViewClass GimpTemplateViewClass;
 
-struct _GimpTemplateView
-{
-	GimpContainerEditor parent_instance;
+struct _GimpTemplateView {
+  GimpContainerEditor parent_instance;
 
-	GtkWidget           *create_button;
-	GtkWidget           *new_button;
-	GtkWidget           *duplicate_button;
-	GtkWidget           *edit_button;
-	GtkWidget           *delete_button;
+  GtkWidget *create_button;
+  GtkWidget *new_button;
+  GtkWidget *duplicate_button;
+  GtkWidget *edit_button;
+  GtkWidget *delete_button;
 };
 
-struct _GimpTemplateViewClass
-{
-	GimpContainerEditorClass parent_class;
+struct _GimpTemplateViewClass {
+  GimpContainerEditorClass parent_class;
 };
 
+GType gimp_template_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_template_view_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_template_view_new(GimpViewType view_type,
+                                  GimpContainer *container,
+                                  GimpContext *context, gint view_size,
+                                  gint view_border_width,
+                                  GimpMenuFactory *menu_factory);
 
-GtkWidget * gimp_template_view_new      (GimpViewType view_type,
-                                         GimpContainer   *container,
-                                         GimpContext     *context,
-                                         gint view_size,
-                                         gint view_border_width,
-                                         GimpMenuFactory *menu_factory);
-
-
-#endif  /*  __GIMP_TEMPLATE_VIEW_H__  */
+#endif /*  __GIMP_TEMPLATE_VIEW_H__  */

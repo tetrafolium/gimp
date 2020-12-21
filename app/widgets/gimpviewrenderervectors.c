@@ -37,74 +37,62 @@
 
 #include "gimpviewrenderervectors.h"
 
+static void gimp_view_renderer_vectors_draw(GimpViewRenderer *renderer,
+                                            GtkWidget *widget, cairo_t *cr,
+                                            gint available_width,
+                                            gint available_height);
 
-static void   gimp_view_renderer_vectors_draw (GimpViewRenderer *renderer,
-                                               GtkWidget        *widget,
-                                               cairo_t          *cr,
-                                               gint available_width,
-                                               gint available_height);
-
-
-G_DEFINE_TYPE (GimpViewRendererVectors, gimp_view_renderer_vectors,
-               GIMP_TYPE_VIEW_RENDERER)
+G_DEFINE_TYPE(GimpViewRendererVectors, gimp_view_renderer_vectors,
+              GIMP_TYPE_VIEW_RENDERER)
 
 #define parent_class gimp_view_renderer_vectors_parent_class
 
-
 static void
-gimp_view_renderer_vectors_class_init (GimpViewRendererVectorsClass *klass)
-{
-	GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS (klass);
+gimp_view_renderer_vectors_class_init(GimpViewRendererVectorsClass *klass) {
+  GimpViewRendererClass *renderer_class = GIMP_VIEW_RENDERER_CLASS(klass);
 
-	renderer_class->draw = gimp_view_renderer_vectors_draw;
+  renderer_class->draw = gimp_view_renderer_vectors_draw;
 }
 
-static void
-gimp_view_renderer_vectors_init (GimpViewRendererVectors *renderer)
-{
+static void gimp_view_renderer_vectors_init(GimpViewRendererVectors *renderer) {
 }
 
-static void
-gimp_view_renderer_vectors_draw (GimpViewRenderer *renderer,
-                                 GtkWidget        *widget,
-                                 cairo_t          *cr,
-                                 gint available_width,
-                                 gint available_height)
-{
-	GimpVectors          *vectors = GIMP_VECTORS (renderer->viewable);
-	const GimpBezierDesc *desc;
+static void gimp_view_renderer_vectors_draw(GimpViewRenderer *renderer,
+                                            GtkWidget *widget, cairo_t *cr,
+                                            gint available_width,
+                                            gint available_height) {
+  GimpVectors *vectors = GIMP_VECTORS(renderer->viewable);
+  const GimpBezierDesc *desc;
 
-	cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+  cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
 
-	cairo_translate (cr,
-	                 (available_width  - renderer->width)  / 2,
-	                 (available_height - renderer->height) / 2);
-	cairo_rectangle (cr, 0, 0, renderer->width, renderer->height);
-	cairo_clip_preserve (cr);
-	cairo_fill (cr);
+  cairo_translate(cr, (available_width - renderer->width) / 2,
+                  (available_height - renderer->height) / 2);
+  cairo_rectangle(cr, 0, 0, renderer->width, renderer->height);
+  cairo_clip_preserve(cr);
+  cairo_fill(cr);
 
-	desc = gimp_vectors_get_bezier (vectors);
+  desc = gimp_vectors_get_bezier(vectors);
 
-	if (desc)
-	{
-		gdouble xscale;
-		gdouble yscale;
+  if (desc) {
+    gdouble xscale;
+    gdouble yscale;
 
-		xscale = ((gdouble) renderer->width /
-		          (gdouble) gimp_item_get_width  (GIMP_ITEM (vectors)));
-		yscale = ((gdouble) renderer->height /
-		          (gdouble) gimp_item_get_height (GIMP_ITEM (vectors)));
+    xscale = ((gdouble)renderer->width /
+              (gdouble)gimp_item_get_width(GIMP_ITEM(vectors)));
+    yscale = ((gdouble)renderer->height /
+              (gdouble)gimp_item_get_height(GIMP_ITEM(vectors)));
 
-		cairo_scale (cr, xscale, yscale);
+    cairo_scale(cr, xscale, yscale);
 
-		/* determine line width */
-		xscale = yscale = 0.5;
-		cairo_device_to_user_distance (cr, &xscale, &yscale);
+    /* determine line width */
+    xscale = yscale = 0.5;
+    cairo_device_to_user_distance(cr, &xscale, &yscale);
 
-		cairo_set_line_width (cr, MAX (xscale, yscale));
-		cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+    cairo_set_line_width(cr, MAX(xscale, yscale));
+    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
 
-		cairo_append_path (cr, (cairo_path_t *) desc);
-		cairo_stroke (cr);
-	}
+    cairo_append_path(cr, (cairo_path_t *)desc);
+    cairo_stroke(cr);
+  }
 }

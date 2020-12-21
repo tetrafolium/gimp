@@ -21,37 +21,39 @@
 #ifndef __GIMP_EXTENSION_DETAILS_H__
 #define __GIMP_EXTENSION_DETAILS_H__
 
-
-#define GIMP_TYPE_EXTENSION_DETAILS            (gimp_extension_details_get_type ())
-#define GIMP_EXTENSION_DETAILS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_EXTENSION_DETAILS, GimpExtensionDetails))
-#define GIMP_EXTENSION_DETAILS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_EXTENSION_DETAILS, GimpExtensionDetailsClass))
-#define GIMP_IS_EXTENSION_DETAILS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_EXTENSION_DETAILS))
-#define GIMP_IS_EXTENSION_DETAILS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_EXTENSION_DETAILS))
-#define GIMP_EXTENSION_DETAILS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_EXTENSION_DETAILS, GimpExtensionDetailsClass))
-
+#define GIMP_TYPE_EXTENSION_DETAILS (gimp_extension_details_get_type())
+#define GIMP_EXTENSION_DETAILS(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_EXTENSION_DETAILS,              \
+                              GimpExtensionDetails))
+#define GIMP_EXTENSION_DETAILS_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_EXTENSION_DETAILS,               \
+                           GimpExtensionDetailsClass))
+#define GIMP_IS_EXTENSION_DETAILS(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_EXTENSION_DETAILS))
+#define GIMP_IS_EXTENSION_DETAILS_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_EXTENSION_DETAILS))
+#define GIMP_EXTENSION_DETAILS_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_EXTENSION_DETAILS,               \
+                             GimpExtensionDetailsClass))
 
 typedef struct _GimpExtensionDetailsClass GimpExtensionDetailsClass;
 typedef struct _GimpExtensionDetailsPrivate GimpExtensionDetailsPrivate;
 
-struct _GimpExtensionDetails
-{
-	GtkFrame parent_instance;
+struct _GimpExtensionDetails {
+  GtkFrame parent_instance;
 
-	GimpExtensionDetailsPrivate *p;
+  GimpExtensionDetailsPrivate *p;
 };
 
-struct _GimpExtensionDetailsClass
-{
-	GtkFrameClass parent_class;
+struct _GimpExtensionDetailsClass {
+  GtkFrameClass parent_class;
 };
 
+GType gimp_extension_details_get_type(void) G_GNUC_CONST;
 
-GType        gimp_extension_details_get_type     (void) G_GNUC_CONST;
+GtkWidget *gimp_extension_details_new(void);
 
-GtkWidget  * gimp_extension_details_new          (void);
-
-void         gimp_extension_details_set          (GimpExtensionDetails *details,
-                                                  GimpExtension        *extension);
+void gimp_extension_details_set(GimpExtensionDetails *details,
+                                GimpExtension *extension);
 
 #endif /* __GIMP_EXTENSION_DETAILS_H__ */
-

@@ -21,25 +21,28 @@
 #ifndef __GIMP_TRANSLATION_STORE_H__
 #define __GIMP_TRANSLATION_STORE_H__
 
-
 #include "gimplanguagestore.h"
 
-
-#define GIMP_TYPE_TRANSLATION_STORE            (gimp_translation_store_get_type ())
-#define GIMP_TRANSLATION_STORE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TRANSLATION_STORE, GimpTranslationStore))
-#define GIMP_TRANSLATION_STORE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TRANSLATION_STORE, GimpTranslationStoreClass))
-#define GIMP_IS_TRANSLATION_STORE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TRANSLATION_STORE))
-#define GIMP_IS_TRANSLATION_STORE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TRANSLATION_STORE))
-#define GIMP_TRANSLATION_STORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSLATION_STORE, GimpTranslationStoreClass))
-
+#define GIMP_TYPE_TRANSLATION_STORE (gimp_translation_store_get_type())
+#define GIMP_TRANSLATION_STORE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TRANSLATION_STORE,              \
+                              GimpTranslationStore))
+#define GIMP_TRANSLATION_STORE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TRANSLATION_STORE,               \
+                           GimpTranslationStoreClass))
+#define GIMP_IS_TRANSLATION_STORE(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TRANSLATION_STORE))
+#define GIMP_IS_TRANSLATION_STORE_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TRANSLATION_STORE))
+#define GIMP_TRANSLATION_STORE_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TRANSLATION_STORE,               \
+                             GimpTranslationStoreClass))
 
 typedef struct _GimpTranslationStoreClass GimpTranslationStoreClass;
 
+GType gimp_translation_store_get_type(void) G_GNUC_CONST;
 
-GType          gimp_translation_store_get_type (void) G_GNUC_CONST;
+GtkListStore *gimp_translation_store_new(gboolean manual_l18n,
+                                         const gchar *empty_label);
 
-GtkListStore * gimp_translation_store_new      (gboolean manual_l18n,
-                                                const gchar *empty_label);
-
-
-#endif  /* __GIMP_TRANSLATION_STORE_H__ */
+#endif /* __GIMP_TRANSLATION_STORE_H__ */

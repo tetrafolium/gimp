@@ -35,214 +35,169 @@
 
 #include "gimpdnd.h"
 #include "gimphelp-ids.h"
-#include "gimptoolbox.h"
 #include "gimptoolbox-indicator-area.h"
+#include "gimptoolbox.h"
 #include "gimpview.h"
 #include "gimpwidgets-utils.h"
 #include "gimpwindowstrategy.h"
 
 #include "gimp-intl.h"
 
+#define CELL_SIZE 24        /*  The size of the previews                  */
+#define GRAD_CELL_WIDTH 52  /*  The width of the gradient preview         */
+#define GRAD_CELL_HEIGHT 12 /*  The height of the gradient preview        */
+#define CELL_SPACING 2      /*  How much between brush and pattern cells  */
 
-#define CELL_SIZE        24  /*  The size of the previews                  */
-#define GRAD_CELL_WIDTH  52  /*  The width of the gradient preview         */
-#define GRAD_CELL_HEIGHT 12  /*  The height of the gradient preview        */
-#define CELL_SPACING      2  /*  How much between brush and pattern cells  */
+static void brush_preview_clicked(GtkWidget *widget, GdkModifierType state,
+                                  GimpToolbox *toolbox) {
+  GimpContext *context = gimp_toolbox_get_context(toolbox);
 
-
-static void
-brush_preview_clicked (GtkWidget       *widget,
-                       GdkModifierType state,
-                       GimpToolbox     *toolbox)
-{
-	GimpContext *context = gimp_toolbox_get_context (toolbox);
-
-	gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
-	                                           context->gimp,
-	                                           gimp_dock_get_dialog_factory (GIMP_DOCK (toolbox)),
-	                                           gimp_widget_get_monitor (widget),
-	                                           "gimp-brush-grid|gimp-brush-list");
+  gimp_window_strategy_show_dockable_dialog(
+      GIMP_WINDOW_STRATEGY(gimp_get_window_strategy(context->gimp)),
+      context->gimp, gimp_dock_get_dialog_factory(GIMP_DOCK(toolbox)),
+      gimp_widget_get_monitor(widget), "gimp-brush-grid|gimp-brush-list");
 }
 
-static void
-brush_preview_drop_brush (GtkWidget    *widget,
-                          gint x,
-                          gint y,
-                          GimpViewable *viewable,
-                          gpointer data)
-{
-	GimpContext *context = GIMP_CONTEXT (data);
+static void brush_preview_drop_brush(GtkWidget *widget, gint x, gint y,
+                                     GimpViewable *viewable, gpointer data) {
+  GimpContext *context = GIMP_CONTEXT(data);
 
-	gimp_context_set_brush (context, GIMP_BRUSH (viewable));
+  gimp_context_set_brush(context, GIMP_BRUSH(viewable));
 }
 
-static void
-pattern_preview_clicked (GtkWidget       *widget,
-                         GdkModifierType state,
-                         GimpToolbox     *toolbox)
-{
-	GimpContext *context = gimp_toolbox_get_context (toolbox);
+static void pattern_preview_clicked(GtkWidget *widget, GdkModifierType state,
+                                    GimpToolbox *toolbox) {
+  GimpContext *context = gimp_toolbox_get_context(toolbox);
 
-	gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
-	                                           context->gimp,
-	                                           gimp_dock_get_dialog_factory (GIMP_DOCK (toolbox)),
-	                                           gimp_widget_get_monitor (widget),
-	                                           "gimp-pattern-grid|gimp-pattern-list");
+  gimp_window_strategy_show_dockable_dialog(
+      GIMP_WINDOW_STRATEGY(gimp_get_window_strategy(context->gimp)),
+      context->gimp, gimp_dock_get_dialog_factory(GIMP_DOCK(toolbox)),
+      gimp_widget_get_monitor(widget), "gimp-pattern-grid|gimp-pattern-list");
 }
 
-static void
-pattern_preview_drop_pattern (GtkWidget    *widget,
-                              gint x,
-                              gint y,
-                              GimpViewable *viewable,
-                              gpointer data)
-{
-	GimpContext *context = GIMP_CONTEXT (data);
+static void pattern_preview_drop_pattern(GtkWidget *widget, gint x, gint y,
+                                         GimpViewable *viewable,
+                                         gpointer data) {
+  GimpContext *context = GIMP_CONTEXT(data);
 
-	gimp_context_set_pattern (context, GIMP_PATTERN (viewable));
+  gimp_context_set_pattern(context, GIMP_PATTERN(viewable));
 }
 
-static void
-gradient_preview_clicked (GtkWidget       *widget,
-                          GdkModifierType state,
-                          GimpToolbox     *toolbox)
-{
-	GimpContext *context = gimp_toolbox_get_context (toolbox);
+static void gradient_preview_clicked(GtkWidget *widget, GdkModifierType state,
+                                     GimpToolbox *toolbox) {
+  GimpContext *context = gimp_toolbox_get_context(toolbox);
 
-	gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
-	                                           context->gimp,
-	                                           gimp_dock_get_dialog_factory (GIMP_DOCK (toolbox)),
-	                                           gimp_widget_get_monitor (widget),
-	                                           "gimp-gradient-list|gimp-gradient-grid");
+  gimp_window_strategy_show_dockable_dialog(
+      GIMP_WINDOW_STRATEGY(gimp_get_window_strategy(context->gimp)),
+      context->gimp, gimp_dock_get_dialog_factory(GIMP_DOCK(toolbox)),
+      gimp_widget_get_monitor(widget), "gimp-gradient-list|gimp-gradient-grid");
 }
 
-static void
-gradient_preview_drop_gradient (GtkWidget    *widget,
-                                gint x,
-                                gint y,
-                                GimpViewable *viewable,
-                                gpointer data)
-{
-	GimpContext *context = GIMP_CONTEXT (data);
+static void gradient_preview_drop_gradient(GtkWidget *widget, gint x, gint y,
+                                           GimpViewable *viewable,
+                                           gpointer data) {
+  GimpContext *context = GIMP_CONTEXT(data);
 
-	gimp_context_set_gradient (context, GIMP_GRADIENT (viewable));
+  gimp_context_set_gradient(context, GIMP_GRADIENT(viewable));
 }
-
 
 /*  public functions  */
 
-GtkWidget *
-gimp_toolbox_indicator_area_create (GimpToolbox *toolbox)
-{
-	GimpContext *context;
-	GtkWidget   *grid;
-	GtkWidget   *brush_view;
-	GtkWidget   *pattern_view;
-	GtkWidget   *gradient_view;
+GtkWidget *gimp_toolbox_indicator_area_create(GimpToolbox *toolbox) {
+  GimpContext *context;
+  GtkWidget *grid;
+  GtkWidget *brush_view;
+  GtkWidget *pattern_view;
+  GtkWidget *gradient_view;
 
-	g_return_val_if_fail (GIMP_IS_TOOLBOX (toolbox), NULL);
+  g_return_val_if_fail(GIMP_IS_TOOLBOX(toolbox), NULL);
 
-	context = gimp_toolbox_get_context (toolbox);
+  context = gimp_toolbox_get_context(toolbox);
 
-	grid = gtk_grid_new ();
-	gtk_grid_set_row_spacing (GTK_GRID (grid), CELL_SPACING);
-	gtk_grid_set_column_spacing (GTK_GRID (grid), CELL_SPACING);
+  grid = gtk_grid_new();
+  gtk_grid_set_row_spacing(GTK_GRID(grid), CELL_SPACING);
+  gtk_grid_set_column_spacing(GTK_GRID(grid), CELL_SPACING);
 
-	gimp_help_set_help_data (grid, NULL, GIMP_HELP_TOOLBOX_INDICATOR_AREA);
+  gimp_help_set_help_data(grid, NULL, GIMP_HELP_TOOLBOX_INDICATOR_AREA);
 
-	/*  brush view  */
+  /*  brush view  */
 
-	brush_view =
-		gimp_view_new_full_by_types (context,
-		                             GIMP_TYPE_VIEW, GIMP_TYPE_BRUSH,
-		                             CELL_SIZE, CELL_SIZE, 1,
-		                             FALSE, TRUE, TRUE);
-	gimp_view_set_viewable (GIMP_VIEW (brush_view),
-	                        GIMP_VIEWABLE (gimp_context_get_brush (context)));
-	gtk_grid_attach (GTK_GRID (grid), brush_view, 0, 0, 1, 1);
-	gtk_widget_show (brush_view);
+  brush_view =
+      gimp_view_new_full_by_types(context, GIMP_TYPE_VIEW, GIMP_TYPE_BRUSH,
+                                  CELL_SIZE, CELL_SIZE, 1, FALSE, TRUE, TRUE);
+  gimp_view_set_viewable(GIMP_VIEW(brush_view),
+                         GIMP_VIEWABLE(gimp_context_get_brush(context)));
+  gtk_grid_attach(GTK_GRID(grid), brush_view, 0, 0, 1, 1);
+  gtk_widget_show(brush_view);
 
-	gimp_help_set_help_data (brush_view,
-	                         _("The active brush.\n"
-	                           "Click to open the Brush Dialog."), NULL);
+  gimp_help_set_help_data(brush_view,
+                          _("The active brush.\n"
+                            "Click to open the Brush Dialog."),
+                          NULL);
 
-	g_signal_connect_object (context, "brush-changed",
-	                         G_CALLBACK (gimp_view_set_viewable),
-	                         brush_view,
-	                         G_CONNECT_SWAPPED);
+  g_signal_connect_object(context, "brush-changed",
+                          G_CALLBACK(gimp_view_set_viewable), brush_view,
+                          G_CONNECT_SWAPPED);
 
-	g_signal_connect (brush_view, "clicked",
-	                  G_CALLBACK (brush_preview_clicked),
-	                  toolbox);
+  g_signal_connect(brush_view, "clicked", G_CALLBACK(brush_preview_clicked),
+                   toolbox);
 
-	gimp_dnd_viewable_dest_add (brush_view,
-	                            GIMP_TYPE_BRUSH,
-	                            brush_preview_drop_brush,
-	                            context);
+  gimp_dnd_viewable_dest_add(brush_view, GIMP_TYPE_BRUSH,
+                             brush_preview_drop_brush, context);
 
-	/*  pattern view  */
+  /*  pattern view  */
 
-	pattern_view =
-		gimp_view_new_full_by_types (context,
-		                             GIMP_TYPE_VIEW, GIMP_TYPE_PATTERN,
-		                             CELL_SIZE, CELL_SIZE, 1,
-		                             FALSE, TRUE, TRUE);
-	gimp_view_set_viewable (GIMP_VIEW (pattern_view),
-	                        GIMP_VIEWABLE (gimp_context_get_pattern (context)));
+  pattern_view =
+      gimp_view_new_full_by_types(context, GIMP_TYPE_VIEW, GIMP_TYPE_PATTERN,
+                                  CELL_SIZE, CELL_SIZE, 1, FALSE, TRUE, TRUE);
+  gimp_view_set_viewable(GIMP_VIEW(pattern_view),
+                         GIMP_VIEWABLE(gimp_context_get_pattern(context)));
 
-	gtk_grid_attach (GTK_GRID (grid), pattern_view, 1, 0, 1, 1);
-	gtk_widget_show (pattern_view);
+  gtk_grid_attach(GTK_GRID(grid), pattern_view, 1, 0, 1, 1);
+  gtk_widget_show(pattern_view);
 
-	gimp_help_set_help_data (pattern_view,
-	                         _("The active pattern.\n"
-	                           "Click to open the Pattern Dialog."), NULL);
+  gimp_help_set_help_data(pattern_view,
+                          _("The active pattern.\n"
+                            "Click to open the Pattern Dialog."),
+                          NULL);
 
-	g_signal_connect_object (context, "pattern-changed",
-	                         G_CALLBACK (gimp_view_set_viewable),
-	                         pattern_view,
-	                         G_CONNECT_SWAPPED);
+  g_signal_connect_object(context, "pattern-changed",
+                          G_CALLBACK(gimp_view_set_viewable), pattern_view,
+                          G_CONNECT_SWAPPED);
 
-	g_signal_connect (pattern_view, "clicked",
-	                  G_CALLBACK (pattern_preview_clicked),
-	                  toolbox);
+  g_signal_connect(pattern_view, "clicked", G_CALLBACK(pattern_preview_clicked),
+                   toolbox);
 
-	gimp_dnd_viewable_dest_add (pattern_view,
-	                            GIMP_TYPE_PATTERN,
-	                            pattern_preview_drop_pattern,
-	                            context);
+  gimp_dnd_viewable_dest_add(pattern_view, GIMP_TYPE_PATTERN,
+                             pattern_preview_drop_pattern, context);
 
-	/*  gradient view  */
+  /*  gradient view  */
 
-	gradient_view =
-		gimp_view_new_full_by_types (context,
-		                             GIMP_TYPE_VIEW, GIMP_TYPE_GRADIENT,
-		                             GRAD_CELL_WIDTH, GRAD_CELL_HEIGHT, 1,
-		                             FALSE, TRUE, TRUE);
-	gimp_view_set_viewable (GIMP_VIEW (gradient_view),
-	                        GIMP_VIEWABLE (gimp_context_get_gradient (context)));
+  gradient_view = gimp_view_new_full_by_types(
+      context, GIMP_TYPE_VIEW, GIMP_TYPE_GRADIENT, GRAD_CELL_WIDTH,
+      GRAD_CELL_HEIGHT, 1, FALSE, TRUE, TRUE);
+  gimp_view_set_viewable(GIMP_VIEW(gradient_view),
+                         GIMP_VIEWABLE(gimp_context_get_gradient(context)));
 
-	gtk_grid_attach (GTK_GRID (grid), gradient_view, 0, 1, 2, 1);
-	gtk_widget_show (gradient_view);
+  gtk_grid_attach(GTK_GRID(grid), gradient_view, 0, 1, 2, 1);
+  gtk_widget_show(gradient_view);
 
-	gimp_help_set_help_data (gradient_view,
-	                         _("The active gradient.\n"
-	                           "Click to open the Gradient Dialog."), NULL);
+  gimp_help_set_help_data(gradient_view,
+                          _("The active gradient.\n"
+                            "Click to open the Gradient Dialog."),
+                          NULL);
 
-	g_signal_connect_object (context, "gradient-changed",
-	                         G_CALLBACK (gimp_view_set_viewable),
-	                         gradient_view,
-	                         G_CONNECT_SWAPPED);
+  g_signal_connect_object(context, "gradient-changed",
+                          G_CALLBACK(gimp_view_set_viewable), gradient_view,
+                          G_CONNECT_SWAPPED);
 
-	g_signal_connect (gradient_view, "clicked",
-	                  G_CALLBACK (gradient_preview_clicked),
-	                  toolbox);
+  g_signal_connect(gradient_view, "clicked",
+                   G_CALLBACK(gradient_preview_clicked), toolbox);
 
-	gimp_dnd_viewable_dest_add (gradient_view,
-	                            GIMP_TYPE_GRADIENT,
-	                            gradient_preview_drop_gradient,
-	                            context);
+  gimp_dnd_viewable_dest_add(gradient_view, GIMP_TYPE_GRADIENT,
+                             gradient_preview_drop_gradient, context);
 
-	gtk_widget_show (grid);
+  gtk_widget_show(grid);
 
-	return grid;
+  return grid;
 }

@@ -23,30 +23,33 @@
 
 #include "gimpviewrenderer.h"
 
-#define GIMP_TYPE_VIEW_RENDERER_IMAGE            (gimp_view_renderer_image_get_type ())
-#define GIMP_VIEW_RENDERER_IMAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEW_RENDERER_IMAGE, GimpViewRendererImage))
-#define GIMP_VIEW_RENDERER_IMAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEW_RENDERER_IMAGE, GimpViewRendererImageClass))
-#define GIMP_IS_VIEW_RENDERER_IMAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_VIEW_RENDERER_IMAGE))
-#define GIMP_IS_VIEW_RENDERER_IMAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEW_RENDERER_IMAGE))
-#define GIMP_VIEW_RENDERER_IMAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_IMAGE, GimpViewRendererImageClass))
-
+#define GIMP_TYPE_VIEW_RENDERER_IMAGE (gimp_view_renderer_image_get_type())
+#define GIMP_VIEW_RENDERER_IMAGE(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEW_RENDERER_IMAGE,            \
+                              GimpViewRendererImage))
+#define GIMP_VIEW_RENDERER_IMAGE_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEW_RENDERER_IMAGE,             \
+                           GimpViewRendererImageClass))
+#define GIMP_IS_VIEW_RENDERER_IMAGE(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_VIEW_RENDERER_IMAGE))
+#define GIMP_IS_VIEW_RENDERER_IMAGE_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEW_RENDERER_IMAGE))
+#define GIMP_VIEW_RENDERER_IMAGE_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEW_RENDERER_IMAGE,             \
+                             GimpViewRendererImageClass))
 
 typedef struct _GimpViewRendererImageClass GimpViewRendererImageClass;
 
-struct _GimpViewRendererImage
-{
-	GimpViewRenderer parent_instance;
+struct _GimpViewRendererImage {
+  GimpViewRenderer parent_instance;
 
-	GimpChannelType channel;
+  GimpChannelType channel;
 };
 
-struct _GimpViewRendererImageClass
-{
-	GimpViewRendererClass parent_class;
+struct _GimpViewRendererImageClass {
+  GimpViewRendererClass parent_class;
 };
 
-
-GType   gimp_view_renderer_image_get_type (void) G_GNUC_CONST;
-
+GType gimp_view_renderer_image_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_VIEW_RENDERER_IMAGE_H__ */

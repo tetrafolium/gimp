@@ -18,36 +18,38 @@
 #ifndef __GIMP_UNIFIED_TRANSFORM_TOOL_H__
 #define __GIMP_UNIFIED_TRANSFORM_TOOL_H__
 
-
 #include "gimpgenerictransformtool.h"
 
-
-#define GIMP_TYPE_UNIFIED_TRANSFORM_TOOL            (gimp_unified_transform_tool_get_type ())
-#define GIMP_UNIFIED_TRANSFORM_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL, GimpUnifiedTransformTool))
-#define GIMP_UNIFIED_TRANSFORM_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL, GimpUnifiedTransformToolClass))
-#define GIMP_IS_UNIFIED_TRANSFORM_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL))
-#define GIMP_IS_UNIFIED_TRANSFORM_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL))
-#define GIMP_UNIFIED_TRANSFORM_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL, GimpUnifiedTransformToolClass))
-
+#define GIMP_TYPE_UNIFIED_TRANSFORM_TOOL                                       \
+  (gimp_unified_transform_tool_get_type())
+#define GIMP_UNIFIED_TRANSFORM_TOOL(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL,         \
+                              GimpUnifiedTransformTool))
+#define GIMP_UNIFIED_TRANSFORM_TOOL_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL,          \
+                           GimpUnifiedTransformToolClass))
+#define GIMP_IS_UNIFIED_TRANSFORM_TOOL(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL))
+#define GIMP_IS_UNIFIED_TRANSFORM_TOOL_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL))
+#define GIMP_UNIFIED_TRANSFORM_TOOL_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_UNIFIED_TRANSFORM_TOOL,          \
+                             GimpUnifiedTransformToolClass))
 
 typedef struct _GimpUnifiedTransformTool GimpUnifiedTransformTool;
 typedef struct _GimpUnifiedTransformToolClass GimpUnifiedTransformToolClass;
 
-struct _GimpUnifiedTransformTool
-{
-	GimpGenericTransformTool parent_instance;
+struct _GimpUnifiedTransformTool {
+  GimpGenericTransformTool parent_instance;
 };
 
-struct _GimpUnifiedTransformToolClass
-{
-	GimpGenericTransformToolClass parent_class;
+struct _GimpUnifiedTransformToolClass {
+  GimpGenericTransformToolClass parent_class;
 };
 
+void gimp_unified_transform_tool_register(GimpToolRegisterCallback callback,
+                                          gpointer data);
 
-void    gimp_unified_transform_tool_register (GimpToolRegisterCallback callback,
-                                              gpointer data);
+GType gimp_unified_transform_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_unified_transform_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_UNIFIED_TRANSFORM_TOOL_H__  */
+#endif /*  __GIMP_UNIFIED_TRANSFORM_TOOL_H__  */

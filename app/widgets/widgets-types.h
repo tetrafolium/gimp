@@ -18,13 +18,11 @@
 #ifndef __WIDGETS_TYPES_H__
 #define __WIDGETS_TYPES_H__
 
-
 #include "libgimpwidgets/gimpwidgetstypes.h"
 
 #include "core/core-types.h"
 
 #include "widgets/widgets-enums.h"
-
 
 /*  input devices & controllers  */
 
@@ -35,20 +33,18 @@ typedef struct _GimpControllerWheel GimpControllerWheel;
 typedef struct _GimpDeviceInfo GimpDeviceInfo;
 typedef struct _GimpDeviceManager GimpDeviceManager;
 
-
 /*  docks  */
 
 typedef struct _GimpDock GimpDock;
 typedef struct _GimpDockColumns GimpDockColumns;
-typedef struct _GimpDockContainer GimpDockContainer;            /* dummy typedef */
+typedef struct _GimpDockContainer GimpDockContainer; /* dummy typedef */
 typedef struct _GimpDockWindow GimpDockWindow;
 typedef struct _GimpDockable GimpDockable;
 typedef struct _GimpDockbook GimpDockbook;
-typedef struct _GimpDocked GimpDocked;                   /* dummy typedef */
+typedef struct _GimpDocked GimpDocked; /* dummy typedef */
 typedef struct _GimpMenuDock GimpMenuDock;
 typedef struct _GimpPanedBox GimpPanedBox;
 typedef struct _GimpToolbox GimpToolbox;
-
 
 /*  GimpEditor widgets  */
 
@@ -59,7 +55,6 @@ typedef struct _GimpErrorConsole GimpErrorConsole;
 typedef struct _GimpToolOptionsEditor GimpToolOptionsEditor;
 typedef struct _GimpDashboard GimpDashboard;
 
-
 /*  GimpDataEditor widgets  */
 
 typedef struct _GimpBrushEditor GimpBrushEditor;
@@ -68,7 +63,6 @@ typedef struct _GimpDynamicsEditor GimpDynamicsEditor;
 typedef struct _GimpGradientEditor GimpGradientEditor;
 typedef struct _GimpPaletteEditor GimpPaletteEditor;
 typedef struct _GimpToolPresetEditor GimpToolPresetEditor;
-
 
 /*  GimpImageEditor widgets  */
 
@@ -81,7 +75,6 @@ typedef struct _GimpSelectionEditor GimpSelectionEditor;
 typedef struct _GimpSymmetryEditor GimpSymmetryEditor;
 typedef struct _GimpUndoEditor GimpUndoEditor;
 
-
 /*  GimpContainerView and its implementors  */
 
 typedef struct _GimpChannelTreeView GimpChannelTreeView;
@@ -91,7 +84,7 @@ typedef struct _GimpContainerEntry GimpContainerEntry;
 typedef struct _GimpContainerIconView GimpContainerIconView;
 typedef struct _GimpContainerTreeStore GimpContainerTreeStore;
 typedef struct _GimpContainerTreeView GimpContainerTreeView;
-typedef struct _GimpContainerView GimpContainerView;            /* dummy typedef */
+typedef struct _GimpContainerView GimpContainerView; /* dummy typedef */
 typedef struct _GimpDrawableTreeView GimpDrawableTreeView;
 typedef struct _GimpItemTreeView GimpItemTreeView;
 typedef struct _GimpLayerTreeView GimpLayerTreeView;
@@ -99,7 +92,6 @@ typedef struct _GimpVectorsTreeView GimpVectorsTreeView;
 
 typedef struct _GimpContainerPopup GimpContainerPopup;
 typedef struct _GimpViewableButton GimpViewableButton;
-
 
 /*  GimpContainerEditor widgets  */
 
@@ -111,7 +103,6 @@ typedef struct _GimpImageView GimpImageView;
 typedef struct _GimpTemplateView GimpTemplateView;
 typedef struct _GimpToolEditor GimpToolEditor;
 
-
 /*  GimpDataFactoryView widgets  */
 
 typedef struct _GimpBrushFactoryView GimpBrushFactoryView;
@@ -120,7 +111,6 @@ typedef struct _GimpDynamicsFactoryView GimpDynamicsFactoryView;
 typedef struct _GimpFontFactoryView GimpFontFactoryView;
 typedef struct _GimpPatternFactoryView GimpPatternFactoryView;
 typedef struct _GimpToolPresetFactoryView GimpToolPresetFactoryView;
-
 
 /*  menus  */
 
@@ -133,14 +123,12 @@ typedef struct _GimpProcedureAction GimpProcedureAction;
 typedef struct _GimpStringAction GimpStringAction;
 typedef struct _GimpUIManager GimpUIManager;
 
-
 /*  file dialogs  */
 
 typedef struct _GimpExportDialog GimpExportDialog;
 typedef struct _GimpFileDialog GimpFileDialog;
 typedef struct _GimpOpenDialog GimpOpenDialog;
 typedef struct _GimpSaveDialog GimpSaveDialog;
-
 
 /*  misc dialogs  */
 
@@ -152,7 +140,6 @@ typedef struct _GimpProgressDialog GimpProgressDialog;
 typedef struct _GimpTextEditor GimpTextEditor;
 typedef struct _GimpViewableDialog GimpViewableDialog;
 
-
 /*  GimpPdbDialog widgets  */
 
 typedef struct _GimpBrushSelect GimpBrushSelect;
@@ -161,7 +148,6 @@ typedef struct _GimpGradientSelect GimpGradientSelect;
 typedef struct _GimpPaletteSelect GimpPaletteSelect;
 typedef struct _GimpPatternSelect GimpPatternSelect;
 typedef struct _GimpPdbDialog GimpPdbDialog;
-
 
 /*  misc widgets  */
 
@@ -234,13 +220,11 @@ typedef struct _GimpToolPalette GimpToolPalette;
 typedef struct _GimpTranslationStore GimpTranslationStore;
 typedef struct _GimpWindow GimpWindow;
 
-
 /*  views  */
 
 typedef struct _GimpNavigationView GimpNavigationView;
 typedef struct _GimpPaletteView GimpPaletteView;
 typedef struct _GimpView GimpView;
-
 
 /*  view renderers  */
 
@@ -255,13 +239,11 @@ typedef struct _GimpViewRendererLayer GimpViewRendererLayer;
 typedef struct _GimpViewRendererPalette GimpViewRendererPalette;
 typedef struct _GimpViewRendererVectors GimpViewRendererVectors;
 
-
 /*  cell renderers  */
 
 typedef struct _GimpCellRendererButton GimpCellRendererButton;
 typedef struct _GimpCellRendererDashes GimpCellRendererDashes;
 typedef struct _GimpCellRendererViewable GimpCellRendererViewable;
-
 
 /*  misc objects  */
 
@@ -269,7 +251,6 @@ typedef struct _GimpDialogFactory GimpDialogFactory;
 typedef struct _GimpTextBuffer GimpTextBuffer;
 typedef struct _GimpUIConfigurer GimpUIConfigurer;
 typedef struct _GimpWindowStrategy GimpWindowStrategy;
-
 
 /*  session management objects and structs  */
 
@@ -279,7 +260,6 @@ typedef struct _GimpSessionInfoBook GimpSessionInfoBook;
 typedef struct _GimpSessionInfoDock GimpSessionInfoDock;
 typedef struct _GimpSessionInfoDockable GimpSessionInfoDockable;
 typedef struct _GimpSessionManaged GimpSessionManaged;
-
 
 /*  structs  */
 
@@ -294,29 +274,24 @@ typedef struct _GimpDialogFactoryEntry GimpDialogFactoryEntry;
 
 typedef struct _GimpDashboardLogParams GimpDashboardLogParams;
 
-
 /*  function types  */
 
-typedef GtkWidget * (* GimpDialogRestoreFunc)        (GimpDialogFactory *factory,
-                                                      GdkMonitor        *monitor,
-                                                      GimpSessionInfo   *info);
-typedef void (* GimpActionGroupSetupFunc)     (GimpActionGroup   *group);
-typedef void (* GimpActionGroupUpdateFunc)    (GimpActionGroup   *group,
-                                               gpointer data);
+typedef GtkWidget *(*GimpDialogRestoreFunc)(GimpDialogFactory *factory,
+                                            GdkMonitor *monitor,
+                                            GimpSessionInfo *info);
+typedef void (*GimpActionGroupSetupFunc)(GimpActionGroup *group);
+typedef void (*GimpActionGroupUpdateFunc)(GimpActionGroup *group,
+                                          gpointer data);
 
-typedef void (* GimpUIManagerSetupFunc)       (GimpUIManager     *manager,
-                                               const gchar       *ui_path);
+typedef void (*GimpUIManagerSetupFunc)(GimpUIManager *manager,
+                                       const gchar *ui_path);
 
-typedef void (* GimpMenuPositionFunc)         (GtkMenu           *menu,
-                                               gint              *x,
-                                               gint              *y,
-                                               gpointer data);
-typedef gboolean (* GimpPanedBoxDroppedFunc)      (GtkWidget         *notebook,
-                                                   GtkWidget         *child,
-                                                   gint insert_index,
-                                                   gpointer data);
+typedef void (*GimpMenuPositionFunc)(GtkMenu *menu, gint *x, gint *y,
+                                     gpointer data);
+typedef gboolean (*GimpPanedBoxDroppedFunc)(GtkWidget *notebook,
+                                            GtkWidget *child, gint insert_index,
+                                            gpointer data);
 
-typedef GtkWidget * (* GimpToolOptionsGUIFunc)       (GimpToolOptions   *tool_options);
-
+typedef GtkWidget *(*GimpToolOptionsGUIFunc)(GimpToolOptions *tool_options);
 
 #endif /* __WIDGETS_TYPES_H__ */

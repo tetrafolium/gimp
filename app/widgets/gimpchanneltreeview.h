@@ -21,35 +21,36 @@
 #ifndef __GIMP_CHANNEL_TREE_VIEW_H__
 #define __GIMP_CHANNEL_TREE_VIEW_H__
 
-
 #include "gimpdrawabletreeview.h"
 
-
-#define GIMP_TYPE_CHANNEL_TREE_VIEW            (gimp_channel_tree_view_get_type ())
-#define GIMP_CHANNEL_TREE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CHANNEL_TREE_VIEW, GimpChannelTreeView))
-#define GIMP_CHANNEL_TREE_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CHANNEL_TREE_VIEW, GimpChannelTreeViewClass))
-#define GIMP_IS_CHANNEL_TREE_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CHANNEL_TREE_VIEW))
-#define GIMP_IS_CHANNEL_TREE_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CHANNEL_TREE_VIEW))
-#define GIMP_CHANNEL_TREE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CHANNEL_TREE_VIEW, GimpChannelTreeViewClass))
-
+#define GIMP_TYPE_CHANNEL_TREE_VIEW (gimp_channel_tree_view_get_type())
+#define GIMP_CHANNEL_TREE_VIEW(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CHANNEL_TREE_VIEW,              \
+                              GimpChannelTreeView))
+#define GIMP_CHANNEL_TREE_VIEW_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CHANNEL_TREE_VIEW,               \
+                           GimpChannelTreeViewClass))
+#define GIMP_IS_CHANNEL_TREE_VIEW(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CHANNEL_TREE_VIEW))
+#define GIMP_IS_CHANNEL_TREE_VIEW_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CHANNEL_TREE_VIEW))
+#define GIMP_CHANNEL_TREE_VIEW_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CHANNEL_TREE_VIEW,               \
+                             GimpChannelTreeViewClass))
 
 typedef struct _GimpChannelTreeViewClass GimpChannelTreeViewClass;
 typedef struct _GimpChannelTreeViewPrivate GimpChannelTreeViewPrivate;
 
-struct _GimpChannelTreeView
-{
-	GimpDrawableTreeView parent_instance;
+struct _GimpChannelTreeView {
+  GimpDrawableTreeView parent_instance;
 
-	GimpChannelTreeViewPrivate *priv;
+  GimpChannelTreeViewPrivate *priv;
 };
 
-struct _GimpChannelTreeViewClass
-{
-	GimpDrawableTreeViewClass parent_class;
+struct _GimpChannelTreeViewClass {
+  GimpDrawableTreeViewClass parent_class;
 };
 
+GType gimp_channel_tree_view_get_type(void) G_GNUC_CONST;
 
-GType   gimp_channel_tree_view_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_CHANNEL_TREE_VIEW_H__  */
+#endif /*  __GIMP_CHANNEL_TREE_VIEW_H__  */

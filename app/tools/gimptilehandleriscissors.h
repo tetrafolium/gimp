@@ -18,42 +18,44 @@
 #ifndef __GIMP_TILE_HANDLER_ISCISSORS_H__
 #define __GIMP_TILE_HANDLER_ISCISSORS_H__
 
-
 #include "gegl/gimptilehandlervalidate.h"
-
 
 /***
  * GimpTileHandlerIscissors is a GeglTileHandler that renders the
  * Iscissors tool's gradmap.
  */
 
-#define GIMP_TYPE_TILE_HANDLER_ISCISSORS            (gimp_tile_handler_iscissors_get_type ())
-#define GIMP_TILE_HANDLER_ISCISSORS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TILE_HANDLER_ISCISSORS, GimpTileHandlerIscissors))
-#define GIMP_TILE_HANDLER_ISCISSORS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GIMP_TYPE_TILE_HANDLER_ISCISSORS, GimpTileHandlerIscissorsClass))
-#define GIMP_IS_TILE_HANDLER_ISCISSORS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TILE_HANDLER_ISCISSORS))
-#define GIMP_IS_TILE_HANDLER_ISCISSORS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GIMP_TYPE_TILE_HANDLER_ISCISSORS))
-#define GIMP_TILE_HANDLER_ISCISSORS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GIMP_TYPE_TILE_HANDLER_ISCISSORS, GimpTileHandlerIscissorsClass))
-
+#define GIMP_TYPE_TILE_HANDLER_ISCISSORS                                       \
+  (gimp_tile_handler_iscissors_get_type())
+#define GIMP_TILE_HANDLER_ISCISSORS(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TILE_HANDLER_ISCISSORS,         \
+                              GimpTileHandlerIscissors))
+#define GIMP_TILE_HANDLER_ISCISSORS_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TILE_HANDLER_ISCISSORS,          \
+                           GimpTileHandlerIscissorsClass))
+#define GIMP_IS_TILE_HANDLER_ISCISSORS(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TILE_HANDLER_ISCISSORS))
+#define GIMP_IS_TILE_HANDLER_ISCISSORS_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TILE_HANDLER_ISCISSORS))
+#define GIMP_TILE_HANDLER_ISCISSORS_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TILE_HANDLER_ISCISSORS,          \
+                             GimpTileHandlerIscissorsClass))
 
 typedef struct _GimpTileHandlerIscissors GimpTileHandlerIscissors;
 typedef struct _GimpTileHandlerIscissorsClass GimpTileHandlerIscissorsClass;
 
-struct _GimpTileHandlerIscissors
-{
-	GimpTileHandlerValidate parent_instance;
+struct _GimpTileHandlerIscissors {
+  GimpTileHandlerValidate parent_instance;
 
-	GimpPickable            *pickable;
+  GimpPickable *pickable;
 };
 
-struct _GimpTileHandlerIscissorsClass
-{
-	GimpTileHandlerValidateClass parent_class;
+struct _GimpTileHandlerIscissorsClass {
+  GimpTileHandlerValidateClass parent_class;
 };
 
+GType gimp_tile_handler_iscissors_get_type(void) G_GNUC_CONST;
 
-GType             gimp_tile_handler_iscissors_get_type (void) G_GNUC_CONST;
-
-GeglTileHandler * gimp_tile_handler_iscissors_new      (GimpPickable *pickable);
-
+GeglTileHandler *gimp_tile_handler_iscissors_new(GimpPickable *pickable);
 
 #endif /* __GIMP_TILE_HANDLER_ISCISSORS_H__ */

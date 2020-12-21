@@ -22,37 +22,36 @@
 #ifndef __GIMP_RADIO_ACTION_H__
 #define __GIMP_RADIO_ACTION_H__
 
-
-#define GIMP_TYPE_RADIO_ACTION            (gimp_radio_action_get_type ())
-#define GIMP_RADIO_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_RADIO_ACTION, GimpRadioAction))
-#define GIMP_RADIO_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_RADIO_ACTION, GimpRadioActionClass))
-#define GIMP_IS_RADIO_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_RADIO_ACTION))
-#define GIMP_IS_RADIO_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), GIMP_TYPE_ACTION))
-#define GIMP_RADIO_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_RADIO_ACTION, GimpRadioActionClass))
-
+#define GIMP_TYPE_RADIO_ACTION (gimp_radio_action_get_type())
+#define GIMP_RADIO_ACTION(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_RADIO_ACTION, GimpRadioAction))
+#define GIMP_RADIO_ACTION_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_RADIO_ACTION,                    \
+                           GimpRadioActionClass))
+#define GIMP_IS_RADIO_ACTION(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_RADIO_ACTION))
+#define GIMP_IS_RADIO_ACTION_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), GIMP_TYPE_ACTION))
+#define GIMP_RADIO_ACTION_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_RADIO_ACTION,                    \
+                             GimpRadioActionClass))
 
 typedef struct _GimpRadioAction GimpRadioAction;
 typedef struct _GimpRadioActionClass GimpRadioActionClass;
 
-struct _GimpRadioAction
-{
-	GtkRadioAction parent_instance;
+struct _GimpRadioAction {
+  GtkRadioAction parent_instance;
 };
 
-struct _GimpRadioActionClass
-{
-	GtkRadioActionClass parent_class;
+struct _GimpRadioActionClass {
+  GtkRadioActionClass parent_class;
 };
 
+GType gimp_radio_action_get_type(void) G_GNUC_CONST;
 
-GType            gimp_radio_action_get_type (void) G_GNUC_CONST;
+GtkRadioAction *gimp_radio_action_new(const gchar *name, const gchar *label,
+                                      const gchar *tooltip,
+                                      const gchar *icon_name,
+                                      const gchar *help_id, gint value);
 
-GtkRadioAction * gimp_radio_action_new      (const gchar *name,
-                                             const gchar *label,
-                                             const gchar *tooltip,
-                                             const gchar *icon_name,
-                                             const gchar *help_id,
-                                             gint value);
-
-
-#endif  /* __GIMP_RADIO_ACTION_H__ */
+#endif /* __GIMP_RADIO_ACTION_H__ */

@@ -21,24 +21,13 @@
 #ifndef __GIMP_VECTORS_IMPORT_H__
 #define __GIMP_VECTORS_IMPORT_H__
 
-
-gboolean  gimp_vectors_import_file   (GimpImage    *image,
-                                      GFile        *file,
-                                      gboolean merge,
-                                      gboolean scale,
-                                      GimpVectors  *parent,
-                                      gint position,
-                                      GList       **ret_vectors,
-                                      GError      **error);
-gboolean  gimp_vectors_import_buffer (GimpImage    *image,
-                                      const gchar  *buffer,
-                                      gsize len,
-                                      gboolean merge,
-                                      gboolean scale,
-                                      GimpVectors  *parent,
-                                      gint position,
-                                      GList       **ret_vectors,
-                                      GError      **error);
-
+gboolean gimp_vectors_import_file(GimpImage *image, GFile *file, gboolean merge,
+                                  gboolean scale, GimpVectors *parent,
+                                  gint position, GList **ret_vectors,
+                                  GError **error);
+gboolean gimp_vectors_import_buffer(GimpImage *image, const gchar *buffer,
+                                    gsize len, gboolean merge, gboolean scale,
+                                    GimpVectors *parent, gint position,
+                                    GList **ret_vectors, GError **error);
 
 #endif /* __GIMP_VECTORS_IMPORT_H__ */

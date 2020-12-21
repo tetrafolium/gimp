@@ -21,14 +21,11 @@
 #ifndef __GIMP_TEXT_PARASITE_H__
 #define __GIMP_TEXT_PARASITE_H__
 
+const gchar *gimp_text_parasite_name(void) G_GNUC_CONST;
+GimpParasite *gimp_text_to_parasite(GimpText *text);
+GimpText *gimp_text_from_parasite(const GimpParasite *parasite, GError **error);
 
-const gchar  * gimp_text_parasite_name          (void) G_GNUC_CONST;
-GimpParasite * gimp_text_to_parasite            (GimpText      *text);
-GimpText     * gimp_text_from_parasite          (const GimpParasite  *parasite,
-                                                 GError             **error);
-
-const gchar  * gimp_text_gdyntext_parasite_name (void) G_GNUC_CONST;
-GimpText     * gimp_text_from_gdyntext_parasite (const GimpParasite  *parasite);
-
+const gchar *gimp_text_gdyntext_parasite_name(void) G_GNUC_CONST;
+GimpText *gimp_text_from_gdyntext_parasite(const GimpParasite *parasite);
 
 #endif /* __GIMP_TEXT_PARASITE_H__ */

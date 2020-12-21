@@ -27,68 +27,52 @@
 #include "gimpvectors.h"
 #include "gimpvectorspropundo.h"
 
+static void gimp_vectors_prop_undo_constructed(GObject *object);
 
-static void   gimp_vectors_prop_undo_constructed (GObject             *object);
+static void gimp_vectors_prop_undo_pop(GimpUndo *undo, GimpUndoMode undo_mode,
+                                       GimpUndoAccumulator *accum);
 
-static void   gimp_vectors_prop_undo_pop         (GimpUndo            *undo,
-                                                  GimpUndoMode undo_mode,
-                                                  GimpUndoAccumulator *accum);
-
-
-G_DEFINE_TYPE (GimpVectorsPropUndo, gimp_vectors_prop_undo, GIMP_TYPE_ITEM_UNDO)
+G_DEFINE_TYPE(GimpVectorsPropUndo, gimp_vectors_prop_undo, GIMP_TYPE_ITEM_UNDO)
 
 #define parent_class gimp_vectors_prop_undo_parent_class
 
+static void gimp_vectors_prop_undo_class_init(GimpVectorsPropUndoClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GimpUndoClass *undo_class = GIMP_UNDO_CLASS(klass);
 
-static void
-gimp_vectors_prop_undo_class_init (GimpVectorsPropUndoClass *klass)
-{
-	GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-	GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
+  object_class->constructed = gimp_vectors_prop_undo_constructed;
 
-	object_class->constructed = gimp_vectors_prop_undo_constructed;
-
-	undo_class->pop           = gimp_vectors_prop_undo_pop;
+  undo_class->pop = gimp_vectors_prop_undo_pop;
 }
 
-static void
-gimp_vectors_prop_undo_init (GimpVectorsPropUndo *undo)
-{
+static void gimp_vectors_prop_undo_init(GimpVectorsPropUndo *undo) {}
+
+static void gimp_vectors_prop_undo_constructed(GObject *object) {
+  /* GimpVectors *vectors; */
+
+  G_OBJECT_CLASS(parent_class)->constructed(object);
+
+  gimp_assert(GIMP_IS_VECTORS(GIMP_ITEM_UNDO(object)->item));
+
+  /* vectors = GIMP_VECTORS (GIMP_ITEM_UNDO (object)->item); */
+
+  switch (GIMP_UNDO(object)->undo_type) {
+  default:
+    gimp_assert_not_reached();
+  }
 }
 
-static void
-gimp_vectors_prop_undo_constructed (GObject *object)
-{
-	/* GimpVectors *vectors; */
-
-	G_OBJECT_CLASS (parent_class)->constructed (object);
-
-	gimp_assert (GIMP_IS_VECTORS (GIMP_ITEM_UNDO (object)->item));
-
-	/* vectors = GIMP_VECTORS (GIMP_ITEM_UNDO (object)->item); */
-
-	switch (GIMP_UNDO (object)->undo_type)
-	{
-	default:
-		gimp_assert_not_reached ();
-	}
-}
-
-static void
-gimp_vectors_prop_undo_pop (GimpUndo            *undo,
-                            GimpUndoMode undo_mode,
-                            GimpUndoAccumulator *accum)
-{
+static void gimp_vectors_prop_undo_pop(GimpUndo *undo, GimpUndoMode undo_mode,
+                                       GimpUndoAccumulator *accum) {
 #if 0
 	GimpVectorsPropUndo *vectors_prop_undo = GIMP_VECTORS_PROP_UNDO (undo);
 	GimpVectors         *vectors           = GIMP_VECTORS (GIMP_ITEM_UNDO (undo)->item);
 #endif
 
-	GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
+  GIMP_UNDO_CLASS(parent_class)->pop(undo, undo_mode, accum);
 
-	switch (undo->undo_type)
-	{
-	default:
-		gimp_assert_not_reached ();
-	}
+  switch (undo->undo_type) {
+  default:
+    gimp_assert_not_reached();
+  }
 }

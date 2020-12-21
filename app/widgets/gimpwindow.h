@@ -20,39 +20,37 @@
 #ifndef __GIMP_WINDOW_H__
 #define __GIMP_WINDOW_H__
 
-
-#define GIMP_TYPE_WINDOW            (gimp_window_get_type ())
-#define GIMP_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_WINDOW, GimpWindow))
-#define GIMP_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_WINDOW, GimpWindowClass))
-#define GIMP_IS_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_WINDOW))
-#define GIMP_IS_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_WINDOW))
-#define GIMP_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_WINDOW, GimpWindowClass))
-
+#define GIMP_TYPE_WINDOW (gimp_window_get_type())
+#define GIMP_WINDOW(obj)                                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_WINDOW, GimpWindow))
+#define GIMP_WINDOW_CLASS(klass)                                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_WINDOW, GimpWindowClass))
+#define GIMP_IS_WINDOW(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_WINDOW))
+#define GIMP_IS_WINDOW_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_WINDOW))
+#define GIMP_WINDOW_GET_CLASS(obj)                                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_WINDOW, GimpWindowClass))
 
 typedef struct _GimpWindowClass GimpWindowClass;
 typedef struct _GimpWindowPrivate GimpWindowPrivate;
 
-struct _GimpWindow
-{
-	GtkWindow parent_instance;
+struct _GimpWindow {
+  GtkWindow parent_instance;
 
-	GimpWindowPrivate *private;
+  GimpWindowPrivate *private;
 };
 
-struct _GimpWindowClass
-{
-	GtkWindowClass parent_class;
+struct _GimpWindowClass {
+  GtkWindowClass parent_class;
 
-	void (* monitor_changed) (GimpWindow *window,
-	                          GdkMonitor *monitor);
+  void (*monitor_changed)(GimpWindow *window, GdkMonitor *monitor);
 };
 
+GType gimp_window_get_type(void) G_GNUC_CONST;
 
-GType       gimp_window_get_type                 (void) G_GNUC_CONST;
-
-void        gimp_window_set_primary_focus_widget (GimpWindow *window,
-                                                  GtkWidget  *primary_focus);
-GtkWidget * gimp_window_get_primary_focus_widget (GimpWindow *window);
-
+void gimp_window_set_primary_focus_widget(GimpWindow *window,
+                                          GtkWidget *primary_focus);
+GtkWidget *gimp_window_get_primary_focus_widget(GimpWindow *window);
 
 #endif /* __GIMP_WINDOW_H__ */

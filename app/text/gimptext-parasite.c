@@ -20,12 +20,12 @@
 
 #include "config.h"
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <cairo.h>
-#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -35,164 +35,137 @@
 
 #include "core/gimperror.h"
 
-#include "gimptext.h"
 #include "gimptext-parasite.h"
 #include "gimptext-xlfd.h"
+#include "gimptext.h"
 
 #include "gimp-intl.h"
-
 
 /****************************************/
 /*  The native GimpTextLayer parasite.  */
 /****************************************/
 
-const gchar *
-gimp_text_parasite_name (void)
-{
-	return "gimp-text-layer";
+const gchar *gimp_text_parasite_name(void) { return "gimp-text-layer"; }
+
+GimpParasite *gimp_text_to_parasite(GimpText *text) {
+  g_return_val_if_fail(GIMP_IS_TEXT(text), NULL);
+
+  return gimp_config_serialize_to_parasite(GIMP_CONFIG(text),
+                                           gimp_text_parasite_name(),
+                                           GIMP_PARASITE_PERSISTENT, NULL);
 }
 
-GimpParasite *
-gimp_text_to_parasite (GimpText *text)
-{
-	g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
+GimpText *gimp_text_from_parasite(const GimpParasite *parasite,
+                                  GError **error) {
+  GimpText *text;
 
-	return gimp_config_serialize_to_parasite (GIMP_CONFIG (text),
-	                                          gimp_text_parasite_name (),
-	                                          GIMP_PARASITE_PERSISTENT,
-	                                          NULL);
+  g_return_val_if_fail(parasite != NULL, NULL);
+  g_return_val_if_fail(
+      strcmp(gimp_parasite_name(parasite), gimp_text_parasite_name()) == 0,
+      NULL);
+  g_return_val_if_fail(error == NULL || *error == NULL, NULL);
+
+  text = g_object_new(GIMP_TYPE_TEXT, NULL);
+
+  if (gimp_parasite_data(parasite)) {
+    gimp_config_deserialize_parasite(GIMP_CONFIG(text), parasite, NULL, error);
+  } else {
+    g_set_error_literal(error, GIMP_ERROR, GIMP_FAILED,
+                        _("Empty text parasite"));
+  }
+
+  return text;
 }
-
-GimpText *
-gimp_text_from_parasite (const GimpParasite  *parasite,
-                         GError             **error)
-{
-	GimpText *text;
-
-	g_return_val_if_fail (parasite != NULL, NULL);
-	g_return_val_if_fail (strcmp (gimp_parasite_name (parasite),
-	                              gimp_text_parasite_name ()) == 0, NULL);
-	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-	text = g_object_new (GIMP_TYPE_TEXT, NULL);
-
-	if (gimp_parasite_data (parasite))
-	{
-		gimp_config_deserialize_parasite (GIMP_CONFIG (text),
-		                                  parasite,
-		                                  NULL,
-		                                  error);
-	}
-	else
-	{
-		g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-		                     _("Empty text parasite"));
-	}
-
-	return text;
-}
-
 
 /****************************************************************/
 /*  Compatibility to plug-in GDynText 1.4.4 and later versions  */
 /*  GDynText was written by Marco Lamberto <lm@geocities.com>   */
 /****************************************************************/
 
-const gchar *
-gimp_text_gdyntext_parasite_name (void)
-{
-	return "plug_in_gdyntext/data";
+const gchar *gimp_text_gdyntext_parasite_name(void) {
+  return "plug_in_gdyntext/data";
 }
 
-enum
-{
-	TEXT            = 0,
-	ANTIALIAS       = 1,
-	ALIGNMENT       = 2,
-	ROTATION        = 3,
-	LINE_SPACING    = 4,
-	COLOR           = 5,
-	LAYER_ALIGNMENT = 6,
-	XLFD            = 7,
-	NUM_PARAMS
+enum {
+  TEXT = 0,
+  ANTIALIAS = 1,
+  ALIGNMENT = 2,
+  ROTATION = 3,
+  LINE_SPACING = 4,
+  COLOR = 5,
+  LAYER_ALIGNMENT = 6,
+  XLFD = 7,
+  NUM_PARAMS
 };
 
-GimpText *
-gimp_text_from_gdyntext_parasite (const GimpParasite *parasite)
-{
-	GimpText               *retval = NULL;
-	GimpTextJustification justify;
-	const gchar            *str;
-	gchar                  *text = NULL;
-	gchar                 **params;
-	gboolean antialias;
-	gdouble spacing;
-	GimpRGB rgb;
-	glong color;
-	gint i;
+GimpText *gimp_text_from_gdyntext_parasite(const GimpParasite *parasite) {
+  GimpText *retval = NULL;
+  GimpTextJustification justify;
+  const gchar *str;
+  gchar *text = NULL;
+  gchar **params;
+  gboolean antialias;
+  gdouble spacing;
+  GimpRGB rgb;
+  glong color;
+  gint i;
 
-	g_return_val_if_fail (parasite != NULL, NULL);
-	g_return_val_if_fail (strcmp (gimp_parasite_name (parasite),
-	                              gimp_text_gdyntext_parasite_name ()) == 0,
-	                      NULL);
+  g_return_val_if_fail(parasite != NULL, NULL);
+  g_return_val_if_fail(strcmp(gimp_parasite_name(parasite),
+                              gimp_text_gdyntext_parasite_name()) == 0,
+                       NULL);
 
-	str = gimp_parasite_data (parasite);
-	g_return_val_if_fail (str != NULL, NULL);
+  str = gimp_parasite_data(parasite);
+  g_return_val_if_fail(str != NULL, NULL);
 
-	if (!g_str_has_prefix (str, "GDT10{")) /*  magic value  */
-		return NULL;
+  if (!g_str_has_prefix(str, "GDT10{")) /*  magic value  */
+    return NULL;
 
-	params = g_strsplit (str + strlen ("GDT10{"), "}{", -1);
+  params = g_strsplit(str + strlen("GDT10{"), "}{", -1);
 
-	/*  first check that we have the required number of parameters  */
-	for (i = 0; i < NUM_PARAMS; i++)
-		if (!params[i])
-			goto cleanup;
+  /*  first check that we have the required number of parameters  */
+  for (i = 0; i < NUM_PARAMS; i++)
+    if (!params[i])
+      goto cleanup;
 
-	text = g_strcompress (params[TEXT]);
+  text = g_strcompress(params[TEXT]);
 
-	if (!g_utf8_validate (text, -1, NULL))
-	{
-		gchar *tmp = gimp_any_to_utf8 (text, -1, NULL);
+  if (!g_utf8_validate(text, -1, NULL)) {
+    gchar *tmp = gimp_any_to_utf8(text, -1, NULL);
 
-		g_free (text);
-		text = tmp;
-	}
+    g_free(text);
+    text = tmp;
+  }
 
-	antialias = atoi (params[ANTIALIAS]) ? TRUE : FALSE;
+  antialias = atoi(params[ANTIALIAS]) ? TRUE : FALSE;
 
-	switch (atoi (params[ALIGNMENT]))
-	{
-	default:
-	case 0:
-		justify = GIMP_TEXT_JUSTIFY_LEFT;
-		break;
-	case 1:
-		justify = GIMP_TEXT_JUSTIFY_CENTER;
-		break;
-	case 2:
-		justify = GIMP_TEXT_JUSTIFY_RIGHT;
-		break;
-	}
+  switch (atoi(params[ALIGNMENT])) {
+  default:
+  case 0:
+    justify = GIMP_TEXT_JUSTIFY_LEFT;
+    break;
+  case 1:
+    justify = GIMP_TEXT_JUSTIFY_CENTER;
+    break;
+  case 2:
+    justify = GIMP_TEXT_JUSTIFY_RIGHT;
+    break;
+  }
 
-	spacing = g_strtod (params[LINE_SPACING], NULL);
+  spacing = g_strtod(params[LINE_SPACING], NULL);
 
-	color = strtol (params[COLOR], NULL, 16);
-	gimp_rgba_set_uchar (&rgb, color >> 16, color >> 8, color, 255);
+  color = strtol(params[COLOR], NULL, 16);
+  gimp_rgba_set_uchar(&rgb, color >> 16, color >> 8, color, 255);
 
-	retval = g_object_new (GIMP_TYPE_TEXT,
-	                       "text",         text,
-	                       "antialias",    antialias,
-	                       "justify",      justify,
-	                       "line-spacing", spacing,
-	                       "color",        &rgb,
-	                       NULL);
+  retval = g_object_new(GIMP_TYPE_TEXT, "text", text, "antialias", antialias,
+                        "justify", justify, "line-spacing", spacing, "color",
+                        &rgb, NULL);
 
-	gimp_text_set_font_from_xlfd (GIMP_TEXT (retval), params[XLFD]);
+  gimp_text_set_font_from_xlfd(GIMP_TEXT(retval), params[XLFD]);
 
 cleanup:
-	g_free (text);
-	g_strfreev (params);
+  g_free(text);
+  g_strfreev(params);
 
-	return retval;
+  return retval;
 }

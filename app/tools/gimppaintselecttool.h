@@ -18,52 +18,54 @@
 #ifndef __GIMP_PAINT_SELECT_TOOL_H__
 #define __GIMP_PAINT_SELECT_TOOL_H__
 
-
 #include "gimpdrawtool.h"
 
+#define GIMP_TYPE_PAINT_SELECT_TOOL (gimp_paint_select_tool_get_type())
+#define GIMP_PAINT_SELECT_TOOL(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PAINT_SELECT_TOOL,              \
+                              GimpPaintSelectTool))
+#define GIMP_PAINT_SELECT_TOOL_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PAINT_SELECT_TOOL,               \
+                           GimpPaintSelectToolClass))
+#define GIMP_IS_PAINT_SELECT_TOOL(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PAINT_SELECT_TOOL))
+#define GIMP_IS_PAINT_SELECT_TOOL_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PAINT_SELECT_TOOL))
+#define GIMP_PAINT_SELECT_TOOL_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PAINT_SELECT_TOOL,               \
+                             GimpPaintSelectToolClass))
 
-#define GIMP_TYPE_PAINT_SELECT_TOOL            (gimp_paint_select_tool_get_type ())
-#define GIMP_PAINT_SELECT_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINT_SELECT_TOOL, GimpPaintSelectTool))
-#define GIMP_PAINT_SELECT_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PAINT_SELECT_TOOL, GimpPaintSelectToolClass))
-#define GIMP_IS_PAINT_SELECT_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PAINT_SELECT_TOOL))
-#define GIMP_IS_PAINT_SELECT_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINT_SELECT_TOOL))
-#define GIMP_PAINT_SELECT_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_SELECT_TOOL, GimpPaintSelectToolClass))
-
-#define GIMP_PAINT_SELECT_TOOL_GET_OPTIONS(t)  (GIMP_PAINT_SELECT_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_PAINT_SELECT_TOOL_GET_OPTIONS(t)                                  \
+  (GIMP_PAINT_SELECT_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpPaintSelectTool GimpPaintSelectTool;
 typedef struct _GimpPaintSelectToolClass GimpPaintSelectToolClass;
 
-struct _GimpPaintSelectTool
-{
-	GimpDrawTool parent_instance;
+struct _GimpPaintSelectTool {
+  GimpDrawTool parent_instance;
 
-	GeglBuffer            *trimap;
-	GeglBuffer            *image_mask;
-	GeglBuffer            *drawable;
-	GeglBuffer            *scribble;
+  GeglBuffer *trimap;
+  GeglBuffer *image_mask;
+  GeglBuffer *drawable;
+  GeglBuffer *scribble;
 
-	gint drawable_off_x;
-	gint drawable_off_y;
+  gint drawable_off_x;
+  gint drawable_off_y;
 
-	GeglNode              *graph;
-	GeglNode              *ps_node;
-	GeglNode              *render_node;
+  GeglNode *graph;
+  GeglNode *ps_node;
+  GeglNode *render_node;
 
-	GimpVector2 last_pos;
+  GimpVector2 last_pos;
 };
 
-struct _GimpPaintSelectToolClass
-{
-	GimpDrawToolClass parent_class;
+struct _GimpPaintSelectToolClass {
+  GimpDrawToolClass parent_class;
 };
 
+void gimp_paint_select_tool_register(GimpToolRegisterCallback callback,
+                                     gpointer data);
 
-void    gimp_paint_select_tool_register (GimpToolRegisterCallback callback,
-                                         gpointer data);
+GType gimp_paint_select_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_paint_select_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_PAINT_SELECT_TOOL_H__  */
+#endif /*  __GIMP_PAINT_SELECT_TOOL_H__  */

@@ -21,35 +21,28 @@
 #ifndef __GIMP_SESSION_INFO_AUX_H__
 #define __GIMP_SESSION_INFO_AUX_H__
 
-
 /**
  * GimpSessionInfoAux:
  *
  * Contains arbitrary data in the session management system, used for
  * example by dockables to manage dockable-specific data.
  */
-struct _GimpSessionInfoAux
-{
-	gchar *name;
-	gchar *value;
+struct _GimpSessionInfoAux {
+  gchar *name;
+  gchar *value;
 };
 
+GimpSessionInfoAux *gimp_session_info_aux_new(const gchar *name,
+                                              const gchar *value);
+void gimp_session_info_aux_free(GimpSessionInfoAux *aux);
 
-GimpSessionInfoAux *
-gimp_session_info_aux_new            (const gchar         *name,
-                                      const gchar         *value);
-void         gimp_session_info_aux_free           (GimpSessionInfoAux  *aux);
+GList *gimp_session_info_aux_new_from_props(GObject *object,
+                                            ...) G_GNUC_NULL_TERMINATED;
+void gimp_session_info_aux_set_props(GObject *object, GList *aux,
+                                     ...) G_GNUC_NULL_TERMINATED;
 
-GList      * gimp_session_info_aux_new_from_props (GObject             *object,
-                                                   ...) G_GNUC_NULL_TERMINATED;
-void         gimp_session_info_aux_set_props      (GObject             *object,
-                                                   GList               *aux,
-                                                   ...) G_GNUC_NULL_TERMINATED;
+void gimp_session_info_aux_serialize(GimpConfigWriter *writer, GList *aux_info);
+GTokenType gimp_session_info_aux_deserialize(GScanner *scanner,
+                                             GList **aux_list);
 
-void         gimp_session_info_aux_serialize      (GimpConfigWriter    *writer,
-                                                   GList               *aux_info);
-GTokenType   gimp_session_info_aux_deserialize    (GScanner            *scanner,
-                                                   GList              **aux_list);
-
-
-#endif  /* __GIMP_SESSION_INFO_AUX_H__ */
+#endif /* __GIMP_SESSION_INFO_AUX_H__ */

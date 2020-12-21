@@ -21,55 +21,53 @@
 #ifndef __GIMP_MENU_FACTORY_H__
 #define __GIMP_MENU_FACTORY_H__
 
-
 #include "core/gimpobject.h"
-
 
 typedef struct _GimpMenuFactoryEntry GimpMenuFactoryEntry;
 
-struct _GimpMenuFactoryEntry
-{
-	gchar *identifier;
-	GList *action_groups;
-	GList *managed_uis;
+struct _GimpMenuFactoryEntry {
+  gchar *identifier;
+  GList *action_groups;
+  GList *managed_uis;
 };
 
-
-#define GIMP_TYPE_MENU_FACTORY            (gimp_menu_factory_get_type ())
-#define GIMP_MENU_FACTORY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MENU_FACTORY, GimpMenuFactory))
-#define GIMP_MENU_FACTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MENU_FACTORY, GimpMenuFactoryClass))
-#define GIMP_IS_MENU_FACTORY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MENU_FACTORY))
-#define GIMP_IS_MENU_FACTORY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MENU_FACTORY))
-#define GIMP_MENU_FACTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MENU_FACTORY, GimpMenuFactoryClass))
-
+#define GIMP_TYPE_MENU_FACTORY (gimp_menu_factory_get_type())
+#define GIMP_MENU_FACTORY(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MENU_FACTORY, GimpMenuFactory))
+#define GIMP_MENU_FACTORY_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MENU_FACTORY,                    \
+                           GimpMenuFactoryClass))
+#define GIMP_IS_MENU_FACTORY(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MENU_FACTORY))
+#define GIMP_IS_MENU_FACTORY_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MENU_FACTORY))
+#define GIMP_MENU_FACTORY_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MENU_FACTORY,                    \
+                             GimpMenuFactoryClass))
 
 typedef struct _GimpMenuFactoryPrivate GimpMenuFactoryPrivate;
 typedef struct _GimpMenuFactoryClass GimpMenuFactoryClass;
 
-struct _GimpMenuFactory
-{
-	GimpObject parent_instance;
+struct _GimpMenuFactory {
+  GimpObject parent_instance;
 
-	GimpMenuFactoryPrivate *p;
+  GimpMenuFactoryPrivate *p;
 };
 
-struct _GimpMenuFactoryClass
-{
-	GimpObjectClass parent_class;
+struct _GimpMenuFactoryClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_menu_factory_get_type(void) G_GNUC_CONST;
+GimpMenuFactory *gimp_menu_factory_new(Gimp *gimp,
+                                       GimpActionFactory *action_factory);
+void gimp_menu_factory_manager_register(GimpMenuFactory *factory,
+                                        const gchar *identifier,
+                                        const gchar *first_group,
+                                        ...) G_GNUC_NULL_TERMINATED;
+GList *gimp_menu_factory_get_registered_menus(GimpMenuFactory *factory);
+GimpUIManager *gimp_menu_factory_manager_new(GimpMenuFactory *factory,
+                                             const gchar *identifier,
+                                             gpointer callback_data);
 
-GType             gimp_menu_factory_get_type             (void) G_GNUC_CONST;
-GimpMenuFactory * gimp_menu_factory_new                  (Gimp              *gimp,
-                                                          GimpActionFactory *action_factory);
-void              gimp_menu_factory_manager_register     (GimpMenuFactory   *factory,
-                                                          const gchar       *identifier,
-                                                          const gchar       *first_group,
-                                                          ...)  G_GNUC_NULL_TERMINATED;
-GList           * gimp_menu_factory_get_registered_menus (GimpMenuFactory   *factory);
-GimpUIManager   * gimp_menu_factory_manager_new          (GimpMenuFactory   *factory,
-                                                          const gchar       *identifier,
-                                                          gpointer callback_data);
-
-
-#endif  /*  __GIMP_MENU_FACTORY_H__  */
+#endif /*  __GIMP_MENU_FACTORY_H__  */

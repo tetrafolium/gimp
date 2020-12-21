@@ -26,139 +26,101 @@
 
 #include "widgets-types.h"
 
-#include "gimpaction.h"
 #include "gimpaction-history.h"
+#include "gimpaction.h"
 #include "gimpstringaction.h"
 
+enum { PROP_0, PROP_VALUE };
 
-enum
-{
-	PROP_0,
-	PROP_VALUE
-};
+static void gimp_string_action_finalize(GObject *object);
+static void gimp_string_action_set_property(GObject *object, guint prop_id,
+                                            const GValue *value,
+                                            GParamSpec *pspec);
+static void gimp_string_action_get_property(GObject *object, guint prop_id,
+                                            GValue *value, GParamSpec *pspec);
 
+static void gimp_string_action_activate(GtkAction *action);
 
-static void   gimp_string_action_finalize     (GObject      *object);
-static void   gimp_string_action_set_property (GObject      *object,
-                                               guint prop_id,
-                                               const GValue *value,
-                                               GParamSpec   *pspec);
-static void   gimp_string_action_get_property (GObject      *object,
-                                               guint prop_id,
-                                               GValue       *value,
-                                               GParamSpec   *pspec);
-
-static void   gimp_string_action_activate     (GtkAction    *action);
-
-
-G_DEFINE_TYPE (GimpStringAction, gimp_string_action, GIMP_TYPE_ACTION_IMPL)
+G_DEFINE_TYPE(GimpStringAction, gimp_string_action, GIMP_TYPE_ACTION_IMPL)
 
 #define parent_class gimp_string_action_parent_class
 
+static void gimp_string_action_class_init(GimpStringActionClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GtkActionClass *action_class = GTK_ACTION_CLASS(klass);
 
-static void
-gimp_string_action_class_init (GimpStringActionClass *klass)
-{
-	GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-	GtkActionClass *action_class = GTK_ACTION_CLASS (klass);
+  object_class->finalize = gimp_string_action_finalize;
+  object_class->set_property = gimp_string_action_set_property;
+  object_class->get_property = gimp_string_action_get_property;
 
-	object_class->finalize     = gimp_string_action_finalize;
-	object_class->set_property = gimp_string_action_set_property;
-	object_class->get_property = gimp_string_action_get_property;
+  action_class->activate = gimp_string_action_activate;
 
-	action_class->activate = gimp_string_action_activate;
-
-	g_object_class_install_property (object_class, PROP_VALUE,
-	                                 g_param_spec_string ("value",
-	                                                      NULL, NULL,
-	                                                      NULL,
-	                                                      GIMP_PARAM_READWRITE));
+  g_object_class_install_property(
+      object_class, PROP_VALUE,
+      g_param_spec_string("value", NULL, NULL, NULL, GIMP_PARAM_READWRITE));
 }
 
-static void
-gimp_string_action_init (GimpStringAction *action)
-{
+static void gimp_string_action_init(GimpStringAction *action) {}
+
+static void gimp_string_action_finalize(GObject *object) {
+  GimpStringAction *action = GIMP_STRING_ACTION(object);
+
+  g_clear_pointer(&action->value, g_free);
+
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-static void
-gimp_string_action_finalize (GObject *object)
-{
-	GimpStringAction *action = GIMP_STRING_ACTION (object);
+static void gimp_string_action_get_property(GObject *object, guint prop_id,
+                                            GValue *value, GParamSpec *pspec) {
+  GimpStringAction *action = GIMP_STRING_ACTION(object);
 
-	g_clear_pointer (&action->value, g_free);
-
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+  switch (prop_id) {
+  case PROP_VALUE:
+    g_value_set_string(value, action->value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_string_action_get_property (GObject    *object,
-                                 guint prop_id,
-                                 GValue     *value,
-                                 GParamSpec *pspec)
-{
-	GimpStringAction *action = GIMP_STRING_ACTION (object);
+static void gimp_string_action_set_property(GObject *object, guint prop_id,
+                                            const GValue *value,
+                                            GParamSpec *pspec) {
+  GimpStringAction *action = GIMP_STRING_ACTION(object);
 
-	switch (prop_id)
-	{
-	case PROP_VALUE:
-		g_value_set_string (value, action->value);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
+  switch (prop_id) {
+  case PROP_VALUE:
+    g_free(action->value);
+    action->value = g_value_dup_string(value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_string_action_set_property (GObject      *object,
-                                 guint prop_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
-{
-	GimpStringAction *action = GIMP_STRING_ACTION (object);
+GimpStringAction *gimp_string_action_new(const gchar *name, const gchar *label,
+                                         const gchar *tooltip,
+                                         const gchar *icon_name,
+                                         const gchar *help_id,
+                                         const gchar *value) {
+  GimpStringAction *action;
 
-	switch (prop_id)
-	{
-	case PROP_VALUE:
-		g_free (action->value);
-		action->value = g_value_dup_string (value);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
+  action = g_object_new(GIMP_TYPE_STRING_ACTION, "name", name, "label", label,
+                        "tooltip", tooltip, "icon-name", icon_name, "value",
+                        value, NULL);
+
+  gimp_action_set_help_id(GIMP_ACTION(action), help_id);
+
+  return action;
 }
 
-GimpStringAction *
-gimp_string_action_new (const gchar *name,
-                        const gchar *label,
-                        const gchar *tooltip,
-                        const gchar *icon_name,
-                        const gchar *help_id,
-                        const gchar *value)
-{
-	GimpStringAction *action;
+static void gimp_string_action_activate(GtkAction *action) {
+  GimpStringAction *string_action = GIMP_STRING_ACTION(action);
 
-	action = g_object_new (GIMP_TYPE_STRING_ACTION,
-	                       "name",      name,
-	                       "label",     label,
-	                       "tooltip",   tooltip,
-	                       "icon-name", icon_name,
-	                       "value",     value,
-	                       NULL);
+  gimp_action_emit_activate(GIMP_ACTION(action),
+                            g_variant_new_string(string_action->value));
 
-	gimp_action_set_help_id (GIMP_ACTION (action), help_id);
-
-	return action;
-}
-
-static void
-gimp_string_action_activate (GtkAction *action)
-{
-	GimpStringAction *string_action = GIMP_STRING_ACTION (action);
-
-	gimp_action_emit_activate (GIMP_ACTION (action),
-	                           g_variant_new_string (string_action->value));
-
-	gimp_action_history_action_activated (GIMP_ACTION (action));
+  gimp_action_history_action_activated(GIMP_ACTION(action));
 }

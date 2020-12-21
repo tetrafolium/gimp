@@ -15,73 +15,65 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_COLOR_TOOL_H__
-#define  __GIMP_COLOR_TOOL_H__
-
+#ifndef __GIMP_COLOR_TOOL_H__
+#define __GIMP_COLOR_TOOL_H__
 
 #include "gimpdrawtool.h"
 
+#define GIMP_TYPE_COLOR_TOOL (gimp_color_tool_get_type())
+#define GIMP_COLOR_TOOL(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_TOOL, GimpColorTool))
+#define GIMP_COLOR_TOOL_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_TOOL, GimpColorToolClass))
+#define GIMP_IS_COLOR_TOOL(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_TOOL))
+#define GIMP_IS_COLOR_TOOL_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_TOOL))
+#define GIMP_COLOR_TOOL_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_TOOL, GimpColorToolClass))
 
-#define GIMP_TYPE_COLOR_TOOL            (gimp_color_tool_get_type ())
-#define GIMP_COLOR_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_TOOL, GimpColorTool))
-#define GIMP_COLOR_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_TOOL, GimpColorToolClass))
-#define GIMP_IS_COLOR_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_TOOL))
-#define GIMP_IS_COLOR_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_TOOL))
-#define GIMP_COLOR_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_TOOL, GimpColorToolClass))
-
-#define GIMP_COLOR_TOOL_GET_OPTIONS(t)  (GIMP_COLOR_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_COLOR_TOOL_GET_OPTIONS(t)                                         \
+  (GIMP_COLOR_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpColorToolClass GimpColorToolClass;
 
-struct _GimpColorTool
-{
-	GimpDrawTool parent_instance;
+struct _GimpColorTool {
+  GimpDrawTool parent_instance;
 
-	gboolean enabled;
-	GimpColorOptions    *options;
-	gboolean saved_snap_to;
+  gboolean enabled;
+  GimpColorOptions *options;
+  gboolean saved_snap_to;
 
-	GimpColorPickTarget pick_target;
+  GimpColorPickTarget pick_target;
 
-	gboolean can_pick;
-	gint center_x;
-	gint center_y;
-	GimpSamplePoint     *sample_point;
+  gboolean can_pick;
+  gint center_x;
+  gint center_y;
+  GimpSamplePoint *sample_point;
 };
 
-struct _GimpColorToolClass
-{
-	GimpDrawToolClass parent_class;
+struct _GimpColorToolClass {
+  GimpDrawToolClass parent_class;
 
-	/*  virtual functions  */
-	gboolean (* can_pick) (GimpColorTool      *tool,
-	                       const GimpCoords   *coords,
-	                       GimpDisplay        *display);
-	gboolean (* pick)     (GimpColorTool      *tool,
-	                       const GimpCoords   *coords,
-	                       GimpDisplay        *display,
-	                       const Babl        **sample_format,
-	                       gpointer pixel,
-	                       GimpRGB            *color);
+  /*  virtual functions  */
+  gboolean (*can_pick)(GimpColorTool *tool, const GimpCoords *coords,
+                       GimpDisplay *display);
+  gboolean (*pick)(GimpColorTool *tool, const GimpCoords *coords,
+                   GimpDisplay *display, const Babl **sample_format,
+                   gpointer pixel, GimpRGB *color);
 
-	/*  signals  */
-	void (* picked)   (GimpColorTool      *tool,
-	                   const GimpCoords   *coords,
-	                   GimpDisplay        *display,
-	                   GimpColorPickState pick_state,
-	                   const Babl         *sample_format,
-	                   gpointer pixel,
-	                   const GimpRGB      *color);
+  /*  signals  */
+  void (*picked)(GimpColorTool *tool, const GimpCoords *coords,
+                 GimpDisplay *display, GimpColorPickState pick_state,
+                 const Babl *sample_format, gpointer pixel,
+                 const GimpRGB *color);
 };
 
+GType gimp_color_tool_get_type(void) G_GNUC_CONST;
 
-GType      gimp_color_tool_get_type   (void) G_GNUC_CONST;
+void gimp_color_tool_enable(GimpColorTool *color_tool,
+                            GimpColorOptions *options);
+void gimp_color_tool_disable(GimpColorTool *color_tool);
+gboolean gimp_color_tool_is_enabled(GimpColorTool *color_tool);
 
-void       gimp_color_tool_enable     (GimpColorTool    *color_tool,
-                                       GimpColorOptions *options);
-void       gimp_color_tool_disable    (GimpColorTool    *color_tool);
-gboolean   gimp_color_tool_is_enabled (GimpColorTool    *color_tool);
-
-
-#endif  /*  __GIMP_COLOR_TOOL_H__  */
+#endif /*  __GIMP_COLOR_TOOL_H__  */

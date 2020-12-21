@@ -21,36 +21,37 @@
 #ifndef __GIMP_CONTROLLER_KEYBOARD_H__
 #define __GIMP_CONTROLLER_KEYBOARD_H__
 
-
 #define GIMP_ENABLE_CONTROLLER_UNDER_CONSTRUCTION
 #include "libgimpwidgets/gimpcontroller.h"
 
-
-#define GIMP_TYPE_CONTROLLER_KEYBOARD            (gimp_controller_keyboard_get_type ())
-#define GIMP_CONTROLLER_KEYBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTROLLER_KEYBOARD, GimpControllerKeyboard))
-#define GIMP_CONTROLLER_KEYBOARD_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CONTROLLER_KEYBOARD, GimpControllerKeyboardClass))
-#define GIMP_IS_CONTROLLER_KEYBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CONTROLLER_KEYBOARD))
-#define GIMP_IS_CONTROLLER_KEYBOARD_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CONTROLLER_KEYBOARD))
-#define GIMP_CONTROLLER_KEYBOARD_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONTROLLER_KEYBOARD, GimpControllerKeyboardClass))
-
+#define GIMP_TYPE_CONTROLLER_KEYBOARD (gimp_controller_keyboard_get_type())
+#define GIMP_CONTROLLER_KEYBOARD(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CONTROLLER_KEYBOARD,            \
+                              GimpControllerKeyboard))
+#define GIMP_CONTROLLER_KEYBOARD_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CONTROLLER_KEYBOARD,             \
+                           GimpControllerKeyboardClass))
+#define GIMP_IS_CONTROLLER_KEYBOARD(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CONTROLLER_KEYBOARD))
+#define GIMP_IS_CONTROLLER_KEYBOARD_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CONTROLLER_KEYBOARD))
+#define GIMP_CONTROLLER_KEYBOARD_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CONTROLLER_KEYBOARD,             \
+                             GimpControllerKeyboardClass))
 
 typedef struct _GimpControllerKeyboardClass GimpControllerKeyboardClass;
 
-struct _GimpControllerKeyboard
-{
-	GimpController parent_instance;
+struct _GimpControllerKeyboard {
+  GimpController parent_instance;
 };
 
-struct _GimpControllerKeyboardClass
-{
-	GimpControllerClass parent_class;
+struct _GimpControllerKeyboardClass {
+  GimpControllerClass parent_class;
 };
 
+GType gimp_controller_keyboard_get_type(void) G_GNUC_CONST;
 
-GType      gimp_controller_keyboard_get_type  (void) G_GNUC_CONST;
-
-gboolean   gimp_controller_keyboard_key_press (GimpControllerKeyboard *keyboard,
-                                               const GdkEventKey      *kevent);
-
+gboolean gimp_controller_keyboard_key_press(GimpControllerKeyboard *keyboard,
+                                            const GdkEventKey *kevent);
 
 #endif /* __GIMP_CONTROLLER_KEYBOARD_H__ */

@@ -21,41 +21,44 @@
 #ifndef __GIMP_EXTENSION_LIST_H__
 #define __GIMP_EXTENSION_LIST_H__
 
-
-#define GIMP_TYPE_EXTENSION_LIST            (gimp_extension_list_get_type ())
-#define GIMP_EXTENSION_LIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_EXTENSION_LIST, GimpExtensionList))
-#define GIMP_EXTENSION_LIST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_EXTENSION_LIST, GimpExtensionListClass))
-#define GIMP_IS_EXTENSION_LIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_EXTENSION_LIST))
-#define GIMP_IS_EXTENSION_LIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_EXTENSION_LIST))
-#define GIMP_EXTENSION_LIST_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_EXTENSION_LIST, GimpExtensionListClass))
-
+#define GIMP_TYPE_EXTENSION_LIST (gimp_extension_list_get_type())
+#define GIMP_EXTENSION_LIST(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_EXTENSION_LIST,                 \
+                              GimpExtensionList))
+#define GIMP_EXTENSION_LIST_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_EXTENSION_LIST,                  \
+                           GimpExtensionListClass))
+#define GIMP_IS_EXTENSION_LIST(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_EXTENSION_LIST))
+#define GIMP_IS_EXTENSION_LIST_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_EXTENSION_LIST))
+#define GIMP_EXTENSION_LIST_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_EXTENSION_LIST,                  \
+                             GimpExtensionListClass))
 
 typedef struct _GimpExtensionListClass GimpExtensionListClass;
 typedef struct _GimpExtensionListPrivate GimpExtensionListPrivate;
 
-struct _GimpExtensionList
-{
-	GtkListBox parent_instance;
+struct _GimpExtensionList {
+  GtkListBox parent_instance;
 
-	GimpExtensionListPrivate *p;
+  GimpExtensionListPrivate *p;
 };
 
-struct _GimpExtensionListClass
-{
-	GtkListBoxClass parent_class;
+struct _GimpExtensionListClass {
+  GtkListBoxClass parent_class;
 
-	void (* extension_activated) (GimpExtensionList *list,
-	                              GimpExtension     *extension);
+  void (*extension_activated)(GimpExtensionList *list,
+                              GimpExtension *extension);
 };
 
+GType gimp_extension_list_get_type(void) G_GNUC_CONST;
 
-GType        gimp_extension_list_get_type     (void) G_GNUC_CONST;
+GtkWidget *gimp_extension_list_new(GimpExtensionManager *manager);
 
-GtkWidget  * gimp_extension_list_new          (GimpExtensionManager *manager);
-
-void         gimp_extension_list_show_system  (GimpExtensionList *list);
-void         gimp_extension_list_show_user    (GimpExtensionList *list);
-void         gimp_extension_list_show_search  (GimpExtensionList *list,
-                                               const gchar       *search_terms);
+void gimp_extension_list_show_system(GimpExtensionList *list);
+void gimp_extension_list_show_user(GimpExtensionList *list);
+void gimp_extension_list_show_search(GimpExtensionList *list,
+                                     const gchar *search_terms);
 
 #endif /* __GIMP_EXTENSION_LIST_H__ */

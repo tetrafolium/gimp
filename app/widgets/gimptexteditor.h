@@ -21,59 +21,50 @@
 #ifndef __GIMP_TEXT_EDITOR_H__
 #define __GIMP_TEXT_EDITOR_H__
 
-
-#define GIMP_TYPE_TEXT_EDITOR    (gimp_text_editor_get_type ())
-#define GIMP_TEXT_EDITOR(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEXT_EDITOR, GimpTextEditor))
-#define GIMP_IS_TEXT_EDITOR(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEXT_EDITOR))
-
+#define GIMP_TYPE_TEXT_EDITOR (gimp_text_editor_get_type())
+#define GIMP_TEXT_EDITOR(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEXT_EDITOR, GimpTextEditor))
+#define GIMP_IS_TEXT_EDITOR(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEXT_EDITOR))
 
 typedef struct _GimpTextEditorClass GimpTextEditorClass;
 
-struct _GimpTextEditor
-{
-	GimpDialog parent_instance;
+struct _GimpTextEditor {
+  GimpDialog parent_instance;
 
-	/*<  private  >*/
-	GimpTextDirection base_dir;
-	gchar             *font_name;
+  /*<  private  >*/
+  GimpTextDirection base_dir;
+  gchar *font_name;
 
-	GtkWidget         *view;
-	GtkWidget         *font_toggle;
-	GtkWidget         *file_dialog;
-	GimpUIManager     *ui_manager;
+  GtkWidget *view;
+  GtkWidget *font_toggle;
+  GtkWidget *file_dialog;
+  GimpUIManager *ui_manager;
 };
 
-struct _GimpTextEditorClass
-{
-	GimpDialogClass parent_class;
+struct _GimpTextEditorClass {
+  GimpDialogClass parent_class;
 
-	void (* text_changed) (GimpTextEditor *editor);
-	void (* dir_changed)  (GimpTextEditor *editor);
+  void (*text_changed)(GimpTextEditor *editor);
+  void (*dir_changed)(GimpTextEditor *editor);
 };
 
+GType gimp_text_editor_get_type(void) G_GNUC_CONST;
+GtkWidget *gimp_text_editor_new(const gchar *title, GtkWindow *parent,
+                                Gimp *gimp, GimpMenuFactory *menu_factory,
+                                GimpText *text, GimpTextBuffer *text_buffer,
+                                gdouble xres, gdouble yres);
 
-GType               gimp_text_editor_get_type      (void) G_GNUC_CONST;
-GtkWidget         * gimp_text_editor_new           (const gchar       *title,
-                                                    GtkWindow         *parent,
-                                                    Gimp              *gimp,
-                                                    GimpMenuFactory   *menu_factory,
-                                                    GimpText          *text,
-                                                    GimpTextBuffer    *text_buffer,
-                                                    gdouble xres,
-                                                    gdouble yres);
+void gimp_text_editor_set_text(GimpTextEditor *editor, const gchar *text,
+                               gint len);
+gchar *gimp_text_editor_get_text(GimpTextEditor *editor);
 
-void                gimp_text_editor_set_text      (GimpTextEditor    *editor,
-                                                    const gchar       *text,
-                                                    gint len);
-gchar             * gimp_text_editor_get_text      (GimpTextEditor    *editor);
+void gimp_text_editor_set_direction(GimpTextEditor *editor,
+                                    GimpTextDirection base_dir);
+GimpTextDirection gimp_text_editor_get_direction(GimpTextEditor *editor);
 
-void                gimp_text_editor_set_direction (GimpTextEditor    *editor,
-                                                    GimpTextDirection base_dir);
-GimpTextDirection   gimp_text_editor_get_direction (GimpTextEditor    *editor);
+void gimp_text_editor_set_font_name(GimpTextEditor *editor,
+                                    const gchar *font_name);
+const gchar *gimp_text_editor_get_font_name(GimpTextEditor *editor);
 
-void                gimp_text_editor_set_font_name (GimpTextEditor    *editor,
-                                                    const gchar       *font_name);
-const gchar       * gimp_text_editor_get_font_name (GimpTextEditor    *editor);
-
-
-#endif  /* __GIMP_TEXT_EDITOR_H__ */
+#endif /* __GIMP_TEXT_EDITOR_H__ */

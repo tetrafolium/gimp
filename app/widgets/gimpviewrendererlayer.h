@@ -23,28 +23,31 @@
 
 #include "gimpviewrendererdrawable.h"
 
-#define GIMP_TYPE_VIEW_RENDERER_LAYER            (gimp_view_renderer_layer_get_type ())
-#define GIMP_VIEW_RENDERER_LAYER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEW_RENDERER_LAYER, GimpViewRendererLayer))
-#define GIMP_VIEW_RENDERER_LAYER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEW_RENDERER_LAYER, GimpViewRendererLayerClass))
-#define GIMP_IS_VIEW_RENDERER_LAYER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_VIEW_RENDERER_LAYER))
-#define GIMP_IS_VIEW_RENDERER_LAYER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEW_RENDERER_LAYER))
-#define GIMP_VIEW_RENDERER_LAYER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_LAYER, GimpViewRendererLayerClass))
-
+#define GIMP_TYPE_VIEW_RENDERER_LAYER (gimp_view_renderer_layer_get_type())
+#define GIMP_VIEW_RENDERER_LAYER(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEW_RENDERER_LAYER,            \
+                              GimpViewRendererLayer))
+#define GIMP_VIEW_RENDERER_LAYER_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEW_RENDERER_LAYER,             \
+                           GimpViewRendererLayerClass))
+#define GIMP_IS_VIEW_RENDERER_LAYER(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_VIEW_RENDERER_LAYER))
+#define GIMP_IS_VIEW_RENDERER_LAYER_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEW_RENDERER_LAYER))
+#define GIMP_VIEW_RENDERER_LAYER_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEW_RENDERER_LAYER,             \
+                             GimpViewRendererLayerClass))
 
 typedef struct _GimpViewRendererLayerClass GimpViewRendererLayerClass;
 
-struct _GimpViewRendererLayer
-{
-	GimpViewRendererDrawable parent_instance;
+struct _GimpViewRendererLayer {
+  GimpViewRendererDrawable parent_instance;
 };
 
-struct _GimpViewRendererLayerClass
-{
-	GimpViewRendererDrawableClass parent_class;
+struct _GimpViewRendererLayerClass {
+  GimpViewRendererDrawableClass parent_class;
 };
 
-
-GType   gimp_view_renderer_layer_get_type (void) G_GNUC_CONST;
-
+GType gimp_view_renderer_layer_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_VIEW_RENDERER_LAYER_H__ */

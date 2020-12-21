@@ -25,36 +25,36 @@
 
 G_BEGIN_DECLS
 
-#define GIMP_TYPE_OPEN_DIALOG            (gimp_open_dialog_get_type ())
-#define GIMP_OPEN_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPEN_DIALOG, GimpOpenDialog))
-#define GIMP_OPEN_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_OPEN_DIALOG, GimpOpenDialogClass))
-#define GIMP_IS_OPEN_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPEN_DIALOG))
-#define GIMP_IS_OPEN_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_OPEN_DIALOG))
-#define GIMP_OPEN_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OPEN_DIALOG, GimpOpenDialogClass))
-
+#define GIMP_TYPE_OPEN_DIALOG (gimp_open_dialog_get_type())
+#define GIMP_OPEN_DIALOG(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPEN_DIALOG, GimpOpenDialog))
+#define GIMP_OPEN_DIALOG_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPEN_DIALOG, GimpOpenDialogClass))
+#define GIMP_IS_OPEN_DIALOG(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPEN_DIALOG))
+#define GIMP_IS_OPEN_DIALOG_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPEN_DIALOG))
+#define GIMP_OPEN_DIALOG_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPEN_DIALOG, GimpOpenDialogClass))
 
 typedef struct _GimpOpenDialogClass GimpOpenDialogClass;
 
-struct _GimpOpenDialog
-{
-	GimpFileDialog parent_instance;
+struct _GimpOpenDialog {
+  GimpFileDialog parent_instance;
 
-	gboolean open_as_layers;
+  gboolean open_as_layers;
 };
 
-struct _GimpOpenDialogClass
-{
-	GimpFileDialogClass parent_class;
+struct _GimpOpenDialogClass {
+  GimpFileDialogClass parent_class;
 };
 
+GType gimp_open_dialog_get_type(void) G_GNUC_CONST;
 
-GType       gimp_open_dialog_get_type   (void) G_GNUC_CONST;
+GtkWidget *gimp_open_dialog_new(Gimp *gimp);
 
-GtkWidget * gimp_open_dialog_new        (Gimp           *gimp);
-
-void        gimp_open_dialog_set_image  (GimpOpenDialog *dialog,
-                                         GimpImage      *image,
-                                         gboolean open_as_layers);
+void gimp_open_dialog_set_image(GimpOpenDialog *dialog, GimpImage *image,
+                                gboolean open_as_layers);
 
 G_END_DECLS
 

@@ -18,10 +18,6 @@
 #ifndef __XCF_SAVE_H__
 #define __XCF_SAVE_H__
 
+gboolean xcf_save_image(XcfInfo *info, GimpImage *image, GError **error);
 
-gboolean   xcf_save_image (XcfInfo    *info,
-                           GimpImage  *image,
-                           GError    **error);
-
-
-#endif  /* __XCF_SAVE_H__ */
+#endif /* __XCF_SAVE_H__ */

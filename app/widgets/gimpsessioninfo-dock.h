@@ -21,44 +21,40 @@
 #ifndef __GIMP_SESSION_INFO_DOCK_H__
 #define __GIMP_SESSION_INFO_DOCK_H__
 
-
 /**
  * GimpSessionInfoDock:
  *
  * Contains information about a dock in the interface.
  */
-struct _GimpSessionInfoDock
-{
-	/* Type of dock, written to/read from sessionrc. E.g. 'gimp-dock' or
-	 * 'gimp-toolbox'
-	 */
-	gchar             *dock_type;
+struct _GimpSessionInfoDock {
+  /* Type of dock, written to/read from sessionrc. E.g. 'gimp-dock' or
+   * 'gimp-toolbox'
+   */
+  gchar *dock_type;
 
-	/* What side this dock is in in single-window mode. Either
-	 * GIMP_ARRANGE_LEFT, GIMP_ARRANGE_RIGHT or -1.
-	 */
-	GimpAlignmentType side;
+  /* What side this dock is in in single-window mode. Either
+   * GIMP_ARRANGE_LEFT, GIMP_ARRANGE_RIGHT or -1.
+   */
+  GimpAlignmentType side;
 
-	/* GtkPaned position of this dock */
-	gint position;
+  /* GtkPaned position of this dock */
+  gint position;
 
-	/*  list of GimpSessionInfoBook  */
-	GList             *books;
+  /*  list of GimpSessionInfoBook  */
+  GList *books;
 };
 
-GimpSessionInfoDock * gimp_session_info_dock_new         (const gchar          *dock_type);
-void                  gimp_session_info_dock_free        (GimpSessionInfoDock  *dock_info);
-void                  gimp_session_info_dock_serialize   (GimpConfigWriter     *writer,
-                                                          GimpSessionInfoDock  *dock);
-GTokenType            gimp_session_info_dock_deserialize (GScanner             *scanner,
-                                                          gint scope,
-                                                          GimpSessionInfoDock **info,
-                                                          const gchar          *dock_type);
-GimpSessionInfoDock * gimp_session_info_dock_from_widget (GimpDock             *dock);
-GimpDock            * gimp_session_info_dock_restore     (GimpSessionInfoDock  *dock_info,
-                                                          GimpDialogFactory    *factory,
-                                                          GdkMonitor           *monitor,
-                                                          GimpDockContainer    *dock_container);
+GimpSessionInfoDock *gimp_session_info_dock_new(const gchar *dock_type);
+void gimp_session_info_dock_free(GimpSessionInfoDock *dock_info);
+void gimp_session_info_dock_serialize(GimpConfigWriter *writer,
+                                      GimpSessionInfoDock *dock);
+GTokenType gimp_session_info_dock_deserialize(GScanner *scanner, gint scope,
+                                              GimpSessionInfoDock **info,
+                                              const gchar *dock_type);
+GimpSessionInfoDock *gimp_session_info_dock_from_widget(GimpDock *dock);
+GimpDock *gimp_session_info_dock_restore(GimpSessionInfoDock *dock_info,
+                                         GimpDialogFactory *factory,
+                                         GdkMonitor *monitor,
+                                         GimpDockContainer *dock_container);
 
-
-#endif  /* __GIMP_SESSION_INFO_DOCK_H__ */
+#endif /* __GIMP_SESSION_INFO_DOCK_H__ */

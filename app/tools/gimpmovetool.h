@@ -18,46 +18,44 @@
 #ifndef __GIMP_MOVE_TOOL_H__
 #define __GIMP_MOVE_TOOL_H__
 
-
 #include "gimpdrawtool.h"
 
+#define GIMP_TYPE_MOVE_TOOL (gimp_move_tool_get_type())
+#define GIMP_MOVE_TOOL(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MOVE_TOOL, GimpMoveTool))
+#define GIMP_MOVE_TOOL_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MOVE_TOOL, GimpMoveToolClass))
+#define GIMP_IS_MOVE_TOOL(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MOVE_TOOL))
+#define GIMP_IS_MOVE_TOOL_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MOVE_TOOL))
+#define GIMP_MOVE_TOOL_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MOVE_TOOL, GimpMoveToolClass))
 
-#define GIMP_TYPE_MOVE_TOOL            (gimp_move_tool_get_type ())
-#define GIMP_MOVE_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MOVE_TOOL, GimpMoveTool))
-#define GIMP_MOVE_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MOVE_TOOL, GimpMoveToolClass))
-#define GIMP_IS_MOVE_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MOVE_TOOL))
-#define GIMP_IS_MOVE_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MOVE_TOOL))
-#define GIMP_MOVE_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MOVE_TOOL, GimpMoveToolClass))
-
-#define GIMP_MOVE_TOOL_GET_OPTIONS(t)  (GIMP_MOVE_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_MOVE_TOOL_GET_OPTIONS(t)                                          \
+  (GIMP_MOVE_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpMoveTool GimpMoveTool;
 typedef struct _GimpMoveToolClass GimpMoveToolClass;
 
-struct _GimpMoveTool
-{
-	GimpDrawTool parent_instance;
+struct _GimpMoveTool {
+  GimpDrawTool parent_instance;
 
-	GimpLayer           *floating_layer;
-	GList               *guides;
+  GimpLayer *floating_layer;
+  GList *guides;
 
-	GimpTransformType saved_type;
+  GimpTransformType saved_type;
 
-	GList               *old_selected_layers;
-	GList               *old_selected_vectors;
+  GList *old_selected_layers;
+  GList *old_selected_vectors;
 };
 
-struct _GimpMoveToolClass
-{
-	GimpDrawToolClass parent_class;
+struct _GimpMoveToolClass {
+  GimpDrawToolClass parent_class;
 };
 
+void gimp_move_tool_register(GimpToolRegisterCallback callback, gpointer data);
 
-void    gimp_move_tool_register (GimpToolRegisterCallback callback,
-                                 gpointer data);
+GType gimp_move_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_move_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_MOVE_TOOL_H__  */
+#endif /*  __GIMP_MOVE_TOOL_H__  */

@@ -21,59 +21,46 @@
 #ifndef __GIMP_TEXT_LAYOUT_H__
 #define __GIMP_TEXT_LAYOUT_H__
 
-
-#define GIMP_TYPE_TEXT_LAYOUT    (gimp_text_layout_get_type ())
-#define GIMP_TEXT_LAYOUT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEXT_LAYOUT, GimpTextLayout))
-#define GIMP_IS_TEXT_LAYOUT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEXT_LAYOUT))
-
+#define GIMP_TYPE_TEXT_LAYOUT (gimp_text_layout_get_type())
+#define GIMP_TEXT_LAYOUT(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEXT_LAYOUT, GimpTextLayout))
+#define GIMP_IS_TEXT_LAYOUT(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEXT_LAYOUT))
 
 typedef struct _GimpTextLayoutClass GimpTextLayoutClass;
 
-struct _GimpTextLayoutClass
-{
-	GObjectClass parent_class;
+struct _GimpTextLayoutClass {
+  GObjectClass parent_class;
 };
 
+GType gimp_text_layout_get_type(void) G_GNUC_CONST;
 
-GType            gimp_text_layout_get_type             (void) G_GNUC_CONST;
+GimpTextLayout *gimp_text_layout_new(GimpText *text, gdouble xres, gdouble yres,
+                                     GError **error);
+gboolean gimp_text_layout_get_size(GimpTextLayout *layout, gint *width,
+                                   gint *height);
+void gimp_text_layout_get_offsets(GimpTextLayout *layout, gint *x, gint *y);
+void gimp_text_layout_get_resolution(GimpTextLayout *layout, gdouble *xres,
+                                     gdouble *yres);
 
-GimpTextLayout * gimp_text_layout_new                  (GimpText       *text,
-                                                        gdouble xres,
-                                                        gdouble yres,
-                                                        GError        **error);
-gboolean         gimp_text_layout_get_size             (GimpTextLayout *layout,
-                                                        gint           *width,
-                                                        gint           *height);
-void             gimp_text_layout_get_offsets          (GimpTextLayout *layout,
-                                                        gint           *x,
-                                                        gint           *y);
-void             gimp_text_layout_get_resolution       (GimpTextLayout *layout,
-                                                        gdouble        *xres,
-                                                        gdouble        *yres);
+GimpText *gimp_text_layout_get_text(GimpTextLayout *layout);
+PangoLayout *gimp_text_layout_get_pango_layout(GimpTextLayout *layout);
 
-GimpText       * gimp_text_layout_get_text             (GimpTextLayout *layout);
-PangoLayout    * gimp_text_layout_get_pango_layout     (GimpTextLayout *layout);
+void gimp_text_layout_get_transform(GimpTextLayout *layout,
+                                    cairo_matrix_t *matrix);
 
-void             gimp_text_layout_get_transform        (GimpTextLayout *layout,
-                                                        cairo_matrix_t *matrix);
+void gimp_text_layout_transform_rect(GimpTextLayout *layout,
+                                     PangoRectangle *rect);
+void gimp_text_layout_transform_point(GimpTextLayout *layout, gdouble *x,
+                                      gdouble *y);
+void gimp_text_layout_transform_distance(GimpTextLayout *layout, gdouble *x,
+                                         gdouble *y);
 
-void             gimp_text_layout_transform_rect       (GimpTextLayout *layout,
-                                                        PangoRectangle *rect);
-void             gimp_text_layout_transform_point      (GimpTextLayout *layout,
-                                                        gdouble        *x,
-                                                        gdouble        *y);
-void             gimp_text_layout_transform_distance   (GimpTextLayout *layout,
-                                                        gdouble        *x,
-                                                        gdouble        *y);
-
-void             gimp_text_layout_untransform_rect     (GimpTextLayout *layout,
-                                                        PangoRectangle *rect);
-void             gimp_text_layout_untransform_point    (GimpTextLayout *layout,
-                                                        gdouble        *x,
-                                                        gdouble        *y);
-void             gimp_text_layout_untransform_distance (GimpTextLayout *layout,
-                                                        gdouble        *x,
-                                                        gdouble        *y);
-
+void gimp_text_layout_untransform_rect(GimpTextLayout *layout,
+                                       PangoRectangle *rect);
+void gimp_text_layout_untransform_point(GimpTextLayout *layout, gdouble *x,
+                                        gdouble *y);
+void gimp_text_layout_untransform_distance(GimpTextLayout *layout, gdouble *x,
+                                           gdouble *y);
 
 #endif /* __GIMP_TEXT_LAYOUT_H__ */

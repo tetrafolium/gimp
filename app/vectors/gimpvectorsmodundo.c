@@ -25,117 +25,94 @@
 #include "gimpvectors.h"
 #include "gimpvectorsmodundo.h"
 
+static void gimp_vectors_mod_undo_constructed(GObject *object);
 
-static void     gimp_vectors_mod_undo_constructed (GObject             *object);
+static gint64 gimp_vectors_mod_undo_get_memsize(GimpObject *object,
+                                                gint64 *gui_size);
 
-static gint64   gimp_vectors_mod_undo_get_memsize (GimpObject          *object,
-                                                   gint64              *gui_size);
+static void gimp_vectors_mod_undo_pop(GimpUndo *undo, GimpUndoMode undo_mode,
+                                      GimpUndoAccumulator *accum);
+static void gimp_vectors_mod_undo_free(GimpUndo *undo, GimpUndoMode undo_mode);
 
-static void     gimp_vectors_mod_undo_pop         (GimpUndo            *undo,
-                                                   GimpUndoMode undo_mode,
-                                                   GimpUndoAccumulator *accum);
-static void     gimp_vectors_mod_undo_free        (GimpUndo            *undo,
-                                                   GimpUndoMode undo_mode);
-
-
-G_DEFINE_TYPE (GimpVectorsModUndo, gimp_vectors_mod_undo, GIMP_TYPE_ITEM_UNDO)
+G_DEFINE_TYPE(GimpVectorsModUndo, gimp_vectors_mod_undo, GIMP_TYPE_ITEM_UNDO)
 
 #define parent_class gimp_vectors_mod_undo_parent_class
 
+static void gimp_vectors_mod_undo_class_init(GimpVectorsModUndoClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS(klass);
+  GimpUndoClass *undo_class = GIMP_UNDO_CLASS(klass);
 
-static void
-gimp_vectors_mod_undo_class_init (GimpVectorsModUndoClass *klass)
-{
-	GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
-	GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
-	GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
+  object_class->constructed = gimp_vectors_mod_undo_constructed;
 
-	object_class->constructed      = gimp_vectors_mod_undo_constructed;
+  gimp_object_class->get_memsize = gimp_vectors_mod_undo_get_memsize;
 
-	gimp_object_class->get_memsize = gimp_vectors_mod_undo_get_memsize;
-
-	undo_class->pop                = gimp_vectors_mod_undo_pop;
-	undo_class->free               = gimp_vectors_mod_undo_free;
+  undo_class->pop = gimp_vectors_mod_undo_pop;
+  undo_class->free = gimp_vectors_mod_undo_free;
 }
 
-static void
-gimp_vectors_mod_undo_init (GimpVectorsModUndo *undo)
-{
+static void gimp_vectors_mod_undo_init(GimpVectorsModUndo *undo) {}
+
+static void gimp_vectors_mod_undo_constructed(GObject *object) {
+  GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO(object);
+  GimpVectors *vectors;
+
+  G_OBJECT_CLASS(parent_class)->constructed(object);
+
+  gimp_assert(GIMP_IS_VECTORS(GIMP_ITEM_UNDO(object)->item));
+
+  vectors = GIMP_VECTORS(GIMP_ITEM_UNDO(object)->item);
+
+  vectors_mod_undo->vectors = GIMP_VECTORS(
+      gimp_item_duplicate(GIMP_ITEM(vectors), G_TYPE_FROM_INSTANCE(vectors)));
 }
 
-static void
-gimp_vectors_mod_undo_constructed (GObject *object)
-{
-	GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (object);
-	GimpVectors        *vectors;
+static gint64 gimp_vectors_mod_undo_get_memsize(GimpObject *object,
+                                                gint64 *gui_size) {
+  GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO(object);
+  gint64 memsize = 0;
 
-	G_OBJECT_CLASS (parent_class)->constructed (object);
+  memsize +=
+      gimp_object_get_memsize(GIMP_OBJECT(vectors_mod_undo->vectors), gui_size);
 
-	gimp_assert (GIMP_IS_VECTORS (GIMP_ITEM_UNDO (object)->item));
-
-	vectors = GIMP_VECTORS (GIMP_ITEM_UNDO (object)->item);
-
-	vectors_mod_undo->vectors =
-		GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
-		                                   G_TYPE_FROM_INSTANCE (vectors)));
+  return memsize +
+         GIMP_OBJECT_CLASS(parent_class)->get_memsize(object, gui_size);
 }
 
-static gint64
-gimp_vectors_mod_undo_get_memsize (GimpObject *object,
-                                   gint64     *gui_size)
-{
-	GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (object);
-	gint64 memsize          = 0;
+static void gimp_vectors_mod_undo_pop(GimpUndo *undo, GimpUndoMode undo_mode,
+                                      GimpUndoAccumulator *accum) {
+  GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO(undo);
+  GimpVectors *vectors = GIMP_VECTORS(GIMP_ITEM_UNDO(undo)->item);
+  GimpVectors *temp;
+  gint offset_x;
+  gint offset_y;
 
-	memsize += gimp_object_get_memsize (GIMP_OBJECT (vectors_mod_undo->vectors),
-	                                    gui_size);
+  GIMP_UNDO_CLASS(parent_class)->pop(undo, undo_mode, accum);
 
-	return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
-	                                                                gui_size);
+  temp = vectors_mod_undo->vectors;
+
+  vectors_mod_undo->vectors = GIMP_VECTORS(
+      gimp_item_duplicate(GIMP_ITEM(vectors), G_TYPE_FROM_INSTANCE(vectors)));
+
+  gimp_vectors_freeze(vectors);
+
+  gimp_vectors_copy_strokes(temp, vectors);
+
+  gimp_item_get_offset(GIMP_ITEM(temp), &offset_x, &offset_y);
+  gimp_item_set_offset(GIMP_ITEM(vectors), offset_x, offset_y);
+
+  gimp_item_set_size(GIMP_ITEM(vectors), gimp_item_get_width(GIMP_ITEM(temp)),
+                     gimp_item_get_height(GIMP_ITEM(temp)));
+
+  g_object_unref(temp);
+
+  gimp_vectors_thaw(vectors);
 }
 
-static void
-gimp_vectors_mod_undo_pop (GimpUndo            *undo,
-                           GimpUndoMode undo_mode,
-                           GimpUndoAccumulator *accum)
-{
-	GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (undo);
-	GimpVectors        *vectors          = GIMP_VECTORS (GIMP_ITEM_UNDO (undo)->item);
-	GimpVectors        *temp;
-	gint offset_x;
-	gint offset_y;
+static void gimp_vectors_mod_undo_free(GimpUndo *undo, GimpUndoMode undo_mode) {
+  GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO(undo);
 
-	GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
+  g_clear_object(&vectors_mod_undo->vectors);
 
-	temp = vectors_mod_undo->vectors;
-
-	vectors_mod_undo->vectors =
-		GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
-		                                   G_TYPE_FROM_INSTANCE (vectors)));
-
-	gimp_vectors_freeze (vectors);
-
-	gimp_vectors_copy_strokes (temp, vectors);
-
-	gimp_item_get_offset (GIMP_ITEM (temp), &offset_x, &offset_y);
-	gimp_item_set_offset (GIMP_ITEM (vectors), offset_x, offset_y);
-
-	gimp_item_set_size (GIMP_ITEM (vectors),
-	                    gimp_item_get_width  (GIMP_ITEM (temp)),
-	                    gimp_item_get_height (GIMP_ITEM (temp)));
-
-	g_object_unref (temp);
-
-	gimp_vectors_thaw (vectors);
-}
-
-static void
-gimp_vectors_mod_undo_free (GimpUndo     *undo,
-                            GimpUndoMode undo_mode)
-{
-	GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (undo);
-
-	g_clear_object (&vectors_mod_undo->vectors);
-
-	GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
+  GIMP_UNDO_CLASS(parent_class)->free(undo, undo_mode);
 }

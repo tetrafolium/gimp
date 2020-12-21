@@ -18,12 +18,9 @@
 #ifndef __UNIQUE_H__
 #define __UNIQUE_H__
 
+gboolean gimp_unique_open(const gchar **filenames, gboolean as_new);
 
-gboolean gimp_unique_open (const gchar **filenames,
-                           gboolean as_new);
-
-gboolean gimp_unique_batch_run (const gchar  *batch_interpreter,
-                                const gchar **batch_commands);
-
+gboolean gimp_unique_batch_run(const gchar *batch_interpreter,
+                               const gchar **batch_commands);
 
 #endif /* __UNIQUE_H__ */

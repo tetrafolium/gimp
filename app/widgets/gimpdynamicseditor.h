@@ -18,40 +18,41 @@
 #ifndef __GIMP_DYNAMICS_EDITOR_H__
 #define __GIMP_DYNAMICS_EDITOR_H__
 
-
 #include "gimpdataeditor.h"
 
-
-#define GIMP_TYPE_DYNAMICS_EDITOR            (gimp_dynamics_editor_get_type ())
-#define GIMP_DYNAMICS_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DYNAMICS_EDITOR, GimpDynamicsEditor))
-#define GIMP_DYNAMICS_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DYNAMICS_EDITOR, GimpDynamicsEditorClass))
-#define GIMP_IS_DYNAMICS_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DYNAMICS_EDITOR))
-#define GIMP_IS_DYNAMICS_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DYNAMICS_EDITOR))
-#define GIMP_DYNAMICS_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DYNAMICS_EDITOR, GimpDynamicsEditorClass))
-
+#define GIMP_TYPE_DYNAMICS_EDITOR (gimp_dynamics_editor_get_type())
+#define GIMP_DYNAMICS_EDITOR(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DYNAMICS_EDITOR,                \
+                              GimpDynamicsEditor))
+#define GIMP_DYNAMICS_EDITOR_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DYNAMICS_EDITOR,                 \
+                           GimpDynamicsEditorClass))
+#define GIMP_IS_DYNAMICS_EDITOR(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DYNAMICS_EDITOR))
+#define GIMP_IS_DYNAMICS_EDITOR_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DYNAMICS_EDITOR))
+#define GIMP_DYNAMICS_EDITOR_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DYNAMICS_EDITOR,                 \
+                             GimpDynamicsEditorClass))
 
 typedef struct _GimpDynamicsEditorClass GimpDynamicsEditorClass;
 
-struct _GimpDynamicsEditor
-{
-	GimpDataEditor parent_instance;
+struct _GimpDynamicsEditor {
+  GimpDataEditor parent_instance;
 
-	GimpDynamics   *dynamics_model;
+  GimpDynamics *dynamics_model;
 
-	GtkWidget      *view_selector;
-	GtkWidget      *notebook;
+  GtkWidget *view_selector;
+  GtkWidget *notebook;
 };
 
-struct _GimpDynamicsEditorClass
-{
-	GimpDataEditorClass parent_class;
+struct _GimpDynamicsEditorClass {
+  GimpDataEditorClass parent_class;
 };
 
+GType gimp_dynamics_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_dynamics_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_dynamics_editor_new      (GimpContext      *context,
-                                           GimpMenuFactory  *menu_factory);
-
+GtkWidget *gimp_dynamics_editor_new(GimpContext *context,
+                                    GimpMenuFactory *menu_factory);
 
 #endif /* __GIMP_DYNAMICS_EDITOR_H__ */

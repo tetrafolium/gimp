@@ -21,45 +21,46 @@
 #ifndef __GIMP_CELL_RENDERER_VIEWABLE_H__
 #define __GIMP_CELL_RENDERER_VIEWABLE_H__
 
-
-#define GIMP_TYPE_CELL_RENDERER_VIEWABLE            (gimp_cell_renderer_viewable_get_type ())
-#define GIMP_CELL_RENDERER_VIEWABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CELL_RENDERER_VIEWABLE, GimpCellRendererViewable))
-#define GIMP_CELL_RENDERER_VIEWABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CELL_RENDERER_VIEWABLE, GimpCellRendererViewableClass))
-#define GIMP_IS_CELL_RENDERER_VIEWABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CELL_RENDERER_VIEWABLE))
-#define GIMP_IS_CELL_RENDERER_VIEWABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CELL_RENDERER_VIEWABLE))
-#define GIMP_CELL_RENDERER_VIEWABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CELL_RENDERER_VIEWABLE, GimpCellRendererViewableClass))
-
+#define GIMP_TYPE_CELL_RENDERER_VIEWABLE                                       \
+  (gimp_cell_renderer_viewable_get_type())
+#define GIMP_CELL_RENDERER_VIEWABLE(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CELL_RENDERER_VIEWABLE,         \
+                              GimpCellRendererViewable))
+#define GIMP_CELL_RENDERER_VIEWABLE_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CELL_RENDERER_VIEWABLE,          \
+                           GimpCellRendererViewableClass))
+#define GIMP_IS_CELL_RENDERER_VIEWABLE(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CELL_RENDERER_VIEWABLE))
+#define GIMP_IS_CELL_RENDERER_VIEWABLE_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CELL_RENDERER_VIEWABLE))
+#define GIMP_CELL_RENDERER_VIEWABLE_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CELL_RENDERER_VIEWABLE,          \
+                             GimpCellRendererViewableClass))
 
 typedef struct _GimpCellRendererViewableClass GimpCellRendererViewableClass;
 
-struct _GimpCellRendererViewable
-{
-	GtkCellRenderer parent_instance;
+struct _GimpCellRendererViewable {
+  GtkCellRenderer parent_instance;
 
-	GimpViewRenderer *renderer;
+  GimpViewRenderer *renderer;
 };
 
-struct _GimpCellRendererViewableClass
-{
-	GtkCellRendererClass parent_class;
+struct _GimpCellRendererViewableClass {
+  GtkCellRendererClass parent_class;
 
-	gboolean (* pre_clicked) (GimpCellRendererViewable *cell,
-	                          const gchar              *path,
-	                          GdkModifierType state);
-	void (* clicked)     (GimpCellRendererViewable *cell,
-	                      const gchar              *path,
-	                      GdkModifierType state);
+  gboolean (*pre_clicked)(GimpCellRendererViewable *cell, const gchar *path,
+                          GdkModifierType state);
+  void (*clicked)(GimpCellRendererViewable *cell, const gchar *path,
+                  GdkModifierType state);
 };
 
-
-GType             gimp_cell_renderer_viewable_get_type    (void) G_GNUC_CONST;
-GtkCellRenderer * gimp_cell_renderer_viewable_new         (void);
-gboolean          gimp_cell_renderer_viewable_pre_clicked (GimpCellRendererViewable *cell,
-                                                           const gchar              *path,
-                                                           GdkModifierType state);
-void              gimp_cell_renderer_viewable_clicked     (GimpCellRendererViewable *cell,
-                                                           const gchar              *path,
-                                                           GdkModifierType state);
-
+GType gimp_cell_renderer_viewable_get_type(void) G_GNUC_CONST;
+GtkCellRenderer *gimp_cell_renderer_viewable_new(void);
+gboolean gimp_cell_renderer_viewable_pre_clicked(GimpCellRendererViewable *cell,
+                                                 const gchar *path,
+                                                 GdkModifierType state);
+void gimp_cell_renderer_viewable_clicked(GimpCellRendererViewable *cell,
+                                         const gchar *path,
+                                         GdkModifierType state);
 
 #endif /* __GIMP_CELL_RENDERER_VIEWABLE_H__ */

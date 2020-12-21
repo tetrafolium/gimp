@@ -20,59 +20,57 @@
 #ifndef __GIMP_WARP_TOOL_H__
 #define __GIMP_WARP_TOOL_H__
 
-
 #include "gimpdrawtool.h"
 
+#define GIMP_TYPE_WARP_TOOL (gimp_warp_tool_get_type())
+#define GIMP_WARP_TOOL(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_WARP_TOOL, GimpWarpTool))
+#define GIMP_WARP_TOOL_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_WARP_TOOL, GimpWarpToolClass))
+#define GIMP_IS_WARP_TOOL(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_WARP_TOOL))
+#define GIMP_IS_WARP_TOOL_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_WARP_TOOL))
+#define GIMP_WARP_TOOL_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_WARP_TOOL, GimpWarpToolClass))
 
-#define GIMP_TYPE_WARP_TOOL            (gimp_warp_tool_get_type ())
-#define GIMP_WARP_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_WARP_TOOL, GimpWarpTool))
-#define GIMP_WARP_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_WARP_TOOL, GimpWarpToolClass))
-#define GIMP_IS_WARP_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_WARP_TOOL))
-#define GIMP_IS_WARP_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_WARP_TOOL))
-#define GIMP_WARP_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_WARP_TOOL, GimpWarpToolClass))
-
-#define GIMP_WARP_TOOL_GET_OPTIONS(t)  (GIMP_WARP_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_WARP_TOOL_GET_OPTIONS(t)                                          \
+  (GIMP_WARP_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpWarpTool GimpWarpTool;
 typedef struct _GimpWarpToolClass GimpWarpToolClass;
 
-struct _GimpWarpTool
-{
-	GimpDrawTool parent_instance;
+struct _GimpWarpTool {
+  GimpDrawTool parent_instance;
 
-	gboolean show_cursor;
-	gboolean draw_brush;
-	gboolean snap_brush;
+  gboolean show_cursor;
+  gboolean draw_brush;
+  gboolean snap_brush;
 
-	GimpVector2 cursor_pos;        /* Hold the cursor position */
+  GimpVector2 cursor_pos; /* Hold the cursor position */
 
-	GeglBuffer         *coords_buffer;/* Buffer where coordinates are stored */
+  GeglBuffer *coords_buffer; /* Buffer where coordinates are stored */
 
-	GeglNode           *graph;     /* Top level GeglNode */
-	GeglNode           *render_node;/* Node to render the transformation */
+  GeglNode *graph;       /* Top level GeglNode */
+  GeglNode *render_node; /* Node to render the transformation */
 
-	GeglPath           *current_stroke;
-	guint stroke_timer;
+  GeglPath *current_stroke;
+  guint stroke_timer;
 
-	GimpVector2 last_pos;
-	gdouble total_dist;
+  GimpVector2 last_pos;
+  gdouble total_dist;
 
-	GimpDrawableFilter *filter;
+  GimpDrawableFilter *filter;
 
-	GList              *redo_stack;
+  GList *redo_stack;
 };
 
-struct _GimpWarpToolClass
-{
-	GimpDrawToolClass parent_class;
+struct _GimpWarpToolClass {
+  GimpDrawToolClass parent_class;
 };
 
+void gimp_warp_tool_register(GimpToolRegisterCallback callback, gpointer data);
 
-void    gimp_warp_tool_register (GimpToolRegisterCallback callback,
-                                 gpointer data);
+GType gimp_warp_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_warp_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_WARP_TOOL_H__  */
+#endif /*  __GIMP_WARP_TOOL_H__  */

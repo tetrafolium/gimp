@@ -19,11 +19,9 @@
 #define __SIGNALS_H__
 
 #ifndef GIMP_APP_GLUE_COMPILATION
-#signal You must not #include "signals.h" from an app/ subdir
+#signal You must not #include "signals.h" from an app / subdir
 #endif
 
-
-void   gimp_init_signal_handlers (gchar **backtrace_file);
-
+void gimp_init_signal_handlers(gchar **backtrace_file);
 
 #endif /* __SIGNALS_H__ */

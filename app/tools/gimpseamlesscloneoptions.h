@@ -20,38 +20,40 @@
 #ifndef __GIMP_SEAMLESS_CLONE_OPTIONS_H__
 #define __GIMP_SEAMLESS_CLONE_OPTIONS_H__
 
-
 #include "core/gimptooloptions.h"
 
-
-#define GIMP_TYPE_SEAMLESS_CLONE_OPTIONS            (gimp_seamless_clone_options_get_type ())
-#define GIMP_SEAMLESS_CLONE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS, GimpSeamlessCloneOptions))
-#define GIMP_SEAMLESS_CLONE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS, GimpSeamlessCloneOptionsClass))
-#define GIMP_IS_SEAMLESS_CLONE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS))
-#define GIMP_IS_SEAMLESS_CLONE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS))
-#define GIMP_SEAMLESS_CLONE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS, GimpSeamlessCloneOptionsClass))
-
+#define GIMP_TYPE_SEAMLESS_CLONE_OPTIONS                                       \
+  (gimp_seamless_clone_options_get_type())
+#define GIMP_SEAMLESS_CLONE_OPTIONS(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS,         \
+                              GimpSeamlessCloneOptions))
+#define GIMP_SEAMLESS_CLONE_OPTIONS_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS,          \
+                           GimpSeamlessCloneOptionsClass))
+#define GIMP_IS_SEAMLESS_CLONE_OPTIONS(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS))
+#define GIMP_IS_SEAMLESS_CLONE_OPTIONS_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS))
+#define GIMP_SEAMLESS_CLONE_OPTIONS_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SEAMLESS_CLONE_OPTIONS,          \
+                             GimpSeamlessCloneOptionsClass))
 
 typedef struct _GimpSeamlessCloneOptions GimpSeamlessCloneOptions;
 typedef struct _GimpSeamlessCloneOptionsClass GimpSeamlessCloneOptionsClass;
 
-struct _GimpSeamlessCloneOptions
-{
-	GimpToolOptions parent_instance;
+struct _GimpSeamlessCloneOptions {
+  GimpToolOptions parent_instance;
 
-	gint max_refine_scale;
-	gboolean temp;
+  gint max_refine_scale;
+  gboolean temp;
 };
 
-struct _GimpSeamlessCloneOptionsClass
-{
-	GimpToolOptionsClass parent_class;
+struct _GimpSeamlessCloneOptionsClass {
+  GimpToolOptionsClass parent_class;
 };
 
+GType gimp_seamless_clone_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_seamless_clone_options_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_seamless_clone_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_seamless_clone_options_gui      (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_SEAMLESS_CLONE_OPTIONS_H__  */
+#endif /*  __GIMP_SEAMLESS_CLONE_OPTIONS_H__  */

@@ -21,9 +21,7 @@
 #ifndef __GIMP_TOOL_OPTIONS_MANAGER_H__
 #define __GIMP_TOOL_OPTIONS_MANAGER_H__
 
+void gimp_tool_options_manager_init(Gimp *gimp);
+void gimp_tool_options_manager_exit(Gimp *gimp);
 
-void   gimp_tool_options_manager_init (Gimp *gimp);
-void   gimp_tool_options_manager_exit (Gimp *gimp);
-
-
-#endif  /*  __GIMP_TOOL_OPTIONS_MANAGER_H__  */
+#endif /*  __GIMP_TOOL_OPTIONS_MANAGER_H__  */

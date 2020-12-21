@@ -21,54 +21,50 @@
 #ifndef __GIMP_PREFS_BOX_H__
 #define __GIMP_PREFS_BOX_H__
 
-
-#define GIMP_TYPE_PREFS_BOX            (gimp_prefs_box_get_type ())
-#define GIMP_PREFS_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PREFS_BOX, GimpPrefsBox))
-#define GIMP_PREFS_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PREFS_BOX, GimpPrefsBoxClass))
-#define GIMP_IS_PREFS_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PREFS_BOX))
-#define GIMP_IS_PREFS_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PREFS_BOX))
-#define GIMP_PREFS_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PREFS_BOX, GimpPrefsBoxClass))
-
+#define GIMP_TYPE_PREFS_BOX (gimp_prefs_box_get_type())
+#define GIMP_PREFS_BOX(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PREFS_BOX, GimpPrefsBox))
+#define GIMP_PREFS_BOX_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PREFS_BOX, GimpPrefsBoxClass))
+#define GIMP_IS_PREFS_BOX(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PREFS_BOX))
+#define GIMP_IS_PREFS_BOX_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PREFS_BOX))
+#define GIMP_PREFS_BOX_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PREFS_BOX, GimpPrefsBoxClass))
 
 typedef struct _GimpPrefsBoxPrivate GimpPrefsBoxPrivate;
 typedef struct _GimpPrefsBoxClass GimpPrefsBoxClass;
 
-struct _GimpPrefsBox
-{
-	GtkBox parent_instance;
+struct _GimpPrefsBox {
+  GtkBox parent_instance;
 
-	GimpPrefsBoxPrivate *priv;
+  GimpPrefsBoxPrivate *priv;
 };
 
-struct _GimpPrefsBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpPrefsBoxClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_prefs_box_get_type(void) G_GNUC_CONST;
 
-GType         gimp_prefs_box_get_type              (void) G_GNUC_CONST;
+GtkWidget *gimp_prefs_box_new(void);
 
-GtkWidget   * gimp_prefs_box_new                   (void);
+GtkWidget *gimp_prefs_box_add_page(GimpPrefsBox *box, const gchar *icon_name,
+                                   const gchar *page_title,
+                                   const gchar *tree_label,
+                                   const gchar *help_id, GtkTreeIter *parent,
+                                   GtkTreeIter *iter);
 
-GtkWidget   * gimp_prefs_box_add_page              (GimpPrefsBox *box,
-                                                    const gchar  *icon_name,
-                                                    const gchar  *page_title,
-                                                    const gchar  *tree_label,
-                                                    const gchar  *help_id,
-                                                    GtkTreeIter  *parent,
-                                                    GtkTreeIter  *iter);
+const gchar *gimp_prefs_box_get_current_icon_name(GimpPrefsBox *box);
+const gchar *gimp_prefs_box_get_current_help_id(GimpPrefsBox *box);
 
-const gchar * gimp_prefs_box_get_current_icon_name (GimpPrefsBox *box);
-const gchar * gimp_prefs_box_get_current_help_id   (GimpPrefsBox *box);
+void gimp_prefs_box_set_page_scrollable(GimpPrefsBox *box, GtkWidget *page,
+                                        gboolean scrollable);
+GtkWidget *gimp_prefs_box_set_page_resettable(GimpPrefsBox *box,
+                                              GtkWidget *page,
+                                              const gchar *label);
 
-void          gimp_prefs_box_set_page_scrollable   (GimpPrefsBox *box,
-                                                    GtkWidget    *page,
-                                                    gboolean scrollable);
-GtkWidget   * gimp_prefs_box_set_page_resettable   (GimpPrefsBox *box,
-                                                    GtkWidget    *page,
-                                                    const gchar  *label);
+GtkWidget *gimp_prefs_box_get_tree_view(GimpPrefsBox *box);
 
-GtkWidget   * gimp_prefs_box_get_tree_view         (GimpPrefsBox *box);
-
-
-#endif  /*  __GIMP_PREFS_BOX_H__  */
+#endif /*  __GIMP_PREFS_BOX_H__  */

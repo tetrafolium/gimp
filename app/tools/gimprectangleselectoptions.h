@@ -18,33 +18,36 @@
 #ifndef __GIMP_RECTANGLE_SELECT_OPTIONS_H__
 #define __GIMP_RECTANGLE_SELECT_OPTIONS_H__
 
-
 #include "gimpselectionoptions.h"
 
-
-#define GIMP_TYPE_RECTANGLE_SELECT_OPTIONS            (gimp_rectangle_select_options_get_type ())
-#define GIMP_RECTANGLE_SELECT_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS, GimpRectangleSelectOptions))
-#define GIMP_RECTANGLE_SELECT_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS, GimpRectangleSelectOptionsClass))
-#define GIMP_IS_RECTANGLE_SELECT_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS))
-#define GIMP_IS_RECTANGLE_SELECT_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS))
-#define GIMP_RECTANGLE_SELECT_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS, GimpRectangleSelectOptionsClass))
-
+#define GIMP_TYPE_RECTANGLE_SELECT_OPTIONS                                     \
+  (gimp_rectangle_select_options_get_type())
+#define GIMP_RECTANGLE_SELECT_OPTIONS(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS,       \
+                              GimpRectangleSelectOptions))
+#define GIMP_RECTANGLE_SELECT_OPTIONS_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS,        \
+                           GimpRectangleSelectOptionsClass))
+#define GIMP_IS_RECTANGLE_SELECT_OPTIONS(obj)                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS))
+#define GIMP_IS_RECTANGLE_SELECT_OPTIONS_CLASS(klass)                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS))
+#define GIMP_RECTANGLE_SELECT_OPTIONS_GET_CLASS(obj)                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_RECTANGLE_SELECT_OPTIONS,        \
+                             GimpRectangleSelectOptionsClass))
 
 typedef struct _GimpRectangleSelectOptions GimpRectangleSelectOptions;
 typedef struct _GimpToolOptionsClass GimpRectangleSelectOptionsClass;
 
-struct _GimpRectangleSelectOptions
-{
-	GimpSelectionOptions parent_instance;
+struct _GimpRectangleSelectOptions {
+  GimpSelectionOptions parent_instance;
 
-	gboolean round_corners;
-	gdouble corner_radius;
+  gboolean round_corners;
+  gdouble corner_radius;
 };
 
+GType gimp_rectangle_select_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_rectangle_select_options_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_rectangle_select_options_gui      (GimpToolOptions *tool_options);
-
+GtkWidget *gimp_rectangle_select_options_gui(GimpToolOptions *tool_options);
 
 #endif /* __GIMP_RECTANGLE_SELECT_OPTIONS_H__ */

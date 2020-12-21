@@ -21,37 +21,35 @@
 #ifndef __GIMP_MENU_DOCK_H__
 #define __GIMP_MENU_DOCK_H__
 
-
 #include "gimpdock.h"
 
-
-#define GIMP_TYPE_MENU_DOCK            (gimp_menu_dock_get_type ())
-#define GIMP_MENU_DOCK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MENU_DOCK, GimpMenuDock))
-#define GIMP_MENU_DOCK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MENU_DOCK, GimpMenuDockClass))
-#define GIMP_IS_MENU_DOCK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MENU_DOCK))
-#define GIMP_IS_MENU_DOCK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MENU_DOCK))
-#define GIMP_MENU_DOCK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MENU_DOCK, GimpMenuDockClass))
+#define GIMP_TYPE_MENU_DOCK (gimp_menu_dock_get_type())
+#define GIMP_MENU_DOCK(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MENU_DOCK, GimpMenuDock))
+#define GIMP_MENU_DOCK_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MENU_DOCK, GimpMenuDockClass))
+#define GIMP_IS_MENU_DOCK(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MENU_DOCK))
+#define GIMP_IS_MENU_DOCK_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MENU_DOCK))
+#define GIMP_MENU_DOCK_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MENU_DOCK, GimpMenuDockClass))
 
 typedef struct _GimpMenuDockPrivate GimpMenuDockPrivate;
 typedef struct _GimpMenuDockClass GimpMenuDockClass;
 
-struct _GimpMenuDock
-{
-	GimpDock parent_instance;
+struct _GimpMenuDock {
+  GimpDock parent_instance;
 
-	GimpMenuDockPrivate *p;
+  GimpMenuDockPrivate *p;
 };
 
-struct _GimpMenuDockClass
-{
-	GimpDockClass parent_class;
+struct _GimpMenuDockClass {
+  GimpDockClass parent_class;
 };
 
+GType gimp_menu_dock_get_type(void) G_GNUC_CONST;
 
-GType       gimp_menu_dock_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_menu_dock_new      (void);
-
-
+GtkWidget *gimp_menu_dock_new(void);
 
 #endif /* __GIMP_MENU_DOCK_H__ */

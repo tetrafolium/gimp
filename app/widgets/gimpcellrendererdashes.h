@@ -21,33 +21,35 @@
 #ifndef __GIMP_CELL_RENDERER_DASHES_H__
 #define __GIMP_CELL_RENDERER_DASHES_H__
 
-
-#define GIMP_TYPE_CELL_RENDERER_DASHES            (gimp_cell_renderer_dashes_get_type ())
-#define GIMP_CELL_RENDERER_DASHES(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CELL_RENDERER_DASHES, GimpCellRendererDashes))
-#define GIMP_CELL_RENDERER_DASHES_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CELL_RENDERER_DASHES, GimpCellRendererDashesClass))
-#define GIMP_IS_CELL_RENDERER_DASHES(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CELL_RENDERER_DASHES))
-#define GIMP_IS_CELL_RENDERER_DASHES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CELL_RENDERER_DASHES))
-#define GIMP_CELL_RENDERER_DASHES_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CELL_RENDERER_DASHES, GimpCellRendererDashesClass))
-
+#define GIMP_TYPE_CELL_RENDERER_DASHES (gimp_cell_renderer_dashes_get_type())
+#define GIMP_CELL_RENDERER_DASHES(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CELL_RENDERER_DASHES,           \
+                              GimpCellRendererDashes))
+#define GIMP_CELL_RENDERER_DASHES_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CELL_RENDERER_DASHES,            \
+                           GimpCellRendererDashesClass))
+#define GIMP_IS_CELL_RENDERER_DASHES(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CELL_RENDERER_DASHES))
+#define GIMP_IS_CELL_RENDERER_DASHES_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CELL_RENDERER_DASHES))
+#define GIMP_CELL_RENDERER_DASHES_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CELL_RENDERER_DASHES,            \
+                             GimpCellRendererDashesClass))
 
 typedef struct _GimpCellRendererDashesClass GimpCellRendererDashesClass;
 
-struct _GimpCellRendererDashes
-{
-	GtkCellRenderer parent_instance;
+struct _GimpCellRendererDashes {
+  GtkCellRenderer parent_instance;
 
-	gboolean         *segments;
+  gboolean *segments;
 };
 
-struct _GimpCellRendererDashesClass
-{
-	GtkCellRendererClass parent_class;
+struct _GimpCellRendererDashesClass {
+  GtkCellRendererClass parent_class;
 };
 
+GType gimp_cell_renderer_dashes_get_type(void) G_GNUC_CONST;
 
-GType             gimp_cell_renderer_dashes_get_type (void) G_GNUC_CONST;
-
-GtkCellRenderer * gimp_cell_renderer_dashes_new      (void);
-
+GtkCellRenderer *gimp_cell_renderer_dashes_new(void);
 
 #endif /* __GIMP_CELL_RENDERER_DASHES_H__ */

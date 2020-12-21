@@ -23,43 +23,46 @@
 
 #include "gimpviewrenderer.h"
 
-#define GIMP_TYPE_VIEW_RENDERER_GRADIENT            (gimp_view_renderer_gradient_get_type ())
-#define GIMP_VIEW_RENDERER_GRADIENT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEW_RENDERER_GRADIENT, GimpViewRendererGradient))
-#define GIMP_VIEW_RENDERER_GRADIENT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEW_RENDERER_GRADIENT, GimpViewRendererGradientClass))
-#define GIMP_IS_VIEW_RENDERER_GRADIENT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_VIEW_RENDERER_GRADIENT))
-#define GIMP_IS_VIEW_RENDERER_GRADIENT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEW_RENDERER_GRADIENT))
-#define GIMP_VIEW_RENDERER_GRADIENT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_GRADIENT, GimpViewRendererGradientClass))
-
+#define GIMP_TYPE_VIEW_RENDERER_GRADIENT                                       \
+  (gimp_view_renderer_gradient_get_type())
+#define GIMP_VIEW_RENDERER_GRADIENT(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEW_RENDERER_GRADIENT,         \
+                              GimpViewRendererGradient))
+#define GIMP_VIEW_RENDERER_GRADIENT_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEW_RENDERER_GRADIENT,          \
+                           GimpViewRendererGradientClass))
+#define GIMP_IS_VIEW_RENDERER_GRADIENT(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_VIEW_RENDERER_GRADIENT))
+#define GIMP_IS_VIEW_RENDERER_GRADIENT_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEW_RENDERER_GRADIENT))
+#define GIMP_VIEW_RENDERER_GRADIENT_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEW_RENDERER_GRADIENT,          \
+                             GimpViewRendererGradientClass))
 
 typedef struct _GimpViewRendererGradientClass GimpViewRendererGradientClass;
 
-struct _GimpViewRendererGradient
-{
-	GimpViewRenderer parent_instance;
+struct _GimpViewRendererGradient {
+  GimpViewRenderer parent_instance;
 
-	gdouble left;
-	gdouble right;
-	gboolean reverse;
-	GimpGradientBlendColorSpace blend_color_space;
-	gboolean has_fg_bg_segments;
+  gdouble left;
+  gdouble right;
+  gboolean reverse;
+  GimpGradientBlendColorSpace blend_color_space;
+  gboolean has_fg_bg_segments;
 };
 
-struct _GimpViewRendererGradientClass
-{
-	GimpViewRendererClass parent_class;
+struct _GimpViewRendererGradientClass {
+  GimpViewRendererClass parent_class;
 };
 
+GType gimp_view_renderer_gradient_get_type(void) G_GNUC_CONST;
 
-GType   gimp_view_renderer_gradient_get_type    (void) G_GNUC_CONST;
-
-void    gimp_view_renderer_gradient_set_offsets (GimpViewRendererGradient    *renderer,
-                                                 gdouble left,
-                                                 gdouble right);
-void    gimp_view_renderer_gradient_set_reverse (GimpViewRendererGradient    *renderer,
-                                                 gboolean reverse);
-void    gimp_view_renderer_gradient_set_blend_color_space
-        (GimpViewRendererGradient    *renderer,
-        GimpGradientBlendColorSpace blend_color_space);
-
+void gimp_view_renderer_gradient_set_offsets(GimpViewRendererGradient *renderer,
+                                             gdouble left, gdouble right);
+void gimp_view_renderer_gradient_set_reverse(GimpViewRendererGradient *renderer,
+                                             gboolean reverse);
+void gimp_view_renderer_gradient_set_blend_color_space(
+    GimpViewRendererGradient *renderer,
+    GimpGradientBlendColorSpace blend_color_space);
 
 #endif /* __GIMP_VIEW_RENDERER_GRADIENT_H__ */

@@ -36,90 +36,67 @@
 
 #include "gimp-intl.h"
 
-
 /*  local function prototypes  */
 
-static void   gimp_open_dialog_dispose (GObject *object);
+static void gimp_open_dialog_dispose(GObject *object);
 
-
-G_DEFINE_TYPE (GimpOpenDialog, gimp_open_dialog,
-               GIMP_TYPE_FILE_DIALOG)
+G_DEFINE_TYPE(GimpOpenDialog, gimp_open_dialog, GIMP_TYPE_FILE_DIALOG)
 
 #define parent_class gimp_open_dialog_parent_class
 
-
 /*  private functions  */
 
-static void
-gimp_open_dialog_class_init (GimpOpenDialogClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+static void gimp_open_dialog_class_init(GimpOpenDialogClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
-	object_class->dispose = gimp_open_dialog_dispose;
+  object_class->dispose = gimp_open_dialog_dispose;
 }
 
-static void
-gimp_open_dialog_init (GimpOpenDialog *dialog)
-{
+static void gimp_open_dialog_init(GimpOpenDialog *dialog) {}
+
+static void gimp_open_dialog_dispose(GObject *object) {
+  gimp_open_dialog_set_image(GIMP_OPEN_DIALOG(object), NULL, FALSE);
+
+  G_OBJECT_CLASS(parent_class)->dispose(object);
 }
-
-static void
-gimp_open_dialog_dispose (GObject *object)
-{
-	gimp_open_dialog_set_image (GIMP_OPEN_DIALOG (object), NULL, FALSE);
-
-	G_OBJECT_CLASS (parent_class)->dispose (object);
-}
-
 
 /*  public functions  */
 
-GtkWidget *
-gimp_open_dialog_new (Gimp *gimp)
-{
-	g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+GtkWidget *gimp_open_dialog_new(Gimp *gimp) {
+  g_return_val_if_fail(GIMP_IS_GIMP(gimp), NULL);
 
-	return g_object_new (GIMP_TYPE_OPEN_DIALOG,
-	                     "gimp",                  gimp,
-	                     "title",                 _("Open Image"),
-	                     "role",                  "gimp-file-open",
-	                     "help-id",               GIMP_HELP_FILE_OPEN,
-	                     "ok-button-label",       _("_Open"),
+  return g_object_new(GIMP_TYPE_OPEN_DIALOG, "gimp", gimp, "title",
+                      _("Open Image"), "role", "gimp-file-open", "help-id",
+                      GIMP_HELP_FILE_OPEN, "ok-button-label", _("_Open"),
 
-	                     "automatic-label",       _("Automatically Detected"),
-	                     "automatic-help-id",     GIMP_HELP_FILE_OPEN_BY_EXTENSION,
+                      "automatic-label", _("Automatically Detected"),
+                      "automatic-help-id", GIMP_HELP_FILE_OPEN_BY_EXTENSION,
 
-	                     "action",                GTK_FILE_CHOOSER_ACTION_OPEN,
-	                     "file-procs",            GIMP_FILE_PROCEDURE_GROUP_OPEN,
-	                     "file-procs-all-images", GIMP_FILE_PROCEDURE_GROUP_NONE,
-	                     "file-filter-label",     NULL,
-	                     NULL);
+                      "action", GTK_FILE_CHOOSER_ACTION_OPEN, "file-procs",
+                      GIMP_FILE_PROCEDURE_GROUP_OPEN, "file-procs-all-images",
+                      GIMP_FILE_PROCEDURE_GROUP_NONE, "file-filter-label", NULL,
+                      NULL);
 }
 
-void
-gimp_open_dialog_set_image (GimpOpenDialog *dialog,
-                            GimpImage      *image,
-                            gboolean open_as_layers)
-{
-	GimpFileDialog *file_dialog;
+void gimp_open_dialog_set_image(GimpOpenDialog *dialog, GimpImage *image,
+                                gboolean open_as_layers) {
+  GimpFileDialog *file_dialog;
 
-	g_return_if_fail (GIMP_IS_OPEN_DIALOG (dialog));
-	g_return_if_fail (image == NULL || GIMP_IS_IMAGE (image));
+  g_return_if_fail(GIMP_IS_OPEN_DIALOG(dialog));
+  g_return_if_fail(image == NULL || GIMP_IS_IMAGE(image));
 
-	file_dialog = GIMP_FILE_DIALOG (dialog);
+  file_dialog = GIMP_FILE_DIALOG(dialog);
 
-	if (file_dialog->image)
-	{
-		g_object_remove_weak_pointer (G_OBJECT (file_dialog->image),
-		                              (gpointer *) &file_dialog->image);
-	}
+  if (file_dialog->image) {
+    g_object_remove_weak_pointer(G_OBJECT(file_dialog->image),
+                                 (gpointer *)&file_dialog->image);
+  }
 
-	file_dialog->image     = image;
-	dialog->open_as_layers = open_as_layers;
+  file_dialog->image = image;
+  dialog->open_as_layers = open_as_layers;
 
-	if (file_dialog->image)
-	{
-		g_object_add_weak_pointer (G_OBJECT (file_dialog->image),
-		                           (gpointer *) &file_dialog->image);
-	}
+  if (file_dialog->image) {
+    g_object_add_weak_pointer(G_OBJECT(file_dialog->image),
+                              (gpointer *)&file_dialog->image);
+  }
 }

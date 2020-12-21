@@ -18,10 +18,6 @@
 #ifndef __XCF_LOAD_H__
 #define __XCF_LOAD_H__
 
+GimpImage *xcf_load_image(Gimp *gimp, XcfInfo *info, GError **error);
 
-GimpImage * xcf_load_image (Gimp     *gimp,
-                            XcfInfo  *info,
-                            GError  **error);
-
-
-#endif  /* __XCF_LOAD_H__ */
+#endif /* __XCF_LOAD_H__ */

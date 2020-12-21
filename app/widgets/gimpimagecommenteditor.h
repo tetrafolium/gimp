@@ -21,37 +21,38 @@
 #ifndef __GIMP_IMAGE_COMMENT_EDITOR_H__
 #define __GIMP_IMAGE_COMMENT_EDITOR_H__
 
-
 #include "gimpimageparasiteview.h"
 
-
-#define GIMP_TYPE_IMAGE_COMMENT_EDITOR            (gimp_image_comment_editor_get_type ())
-#define GIMP_IMAGE_COMMENT_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_IMAGE_COMMENT_EDITOR, GimpImageCommentEditor))
-#define GIMP_IMAGE_COMMENT_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_IMAGE_COMMENT_EDITOR, GimpImageCommentEditorClass))
-#define GIMP_IS_IMAGE_COMMENT_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_IMAGE_COMMENT_EDITOR))
-#define GIMP_IS_IMAGE_COMMENT_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_IMAGE_COMMENT_EDITOR))
-#define GIMP_IMAGE_COMMENT_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE_COMMENT_EDITOR, GimpImageCommentEditorClass))
-
+#define GIMP_TYPE_IMAGE_COMMENT_EDITOR (gimp_image_comment_editor_get_type())
+#define GIMP_IMAGE_COMMENT_EDITOR(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_IMAGE_COMMENT_EDITOR,           \
+                              GimpImageCommentEditor))
+#define GIMP_IMAGE_COMMENT_EDITOR_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_IMAGE_COMMENT_EDITOR,            \
+                           GimpImageCommentEditorClass))
+#define GIMP_IS_IMAGE_COMMENT_EDITOR(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_IMAGE_COMMENT_EDITOR))
+#define GIMP_IS_IMAGE_COMMENT_EDITOR_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_IMAGE_COMMENT_EDITOR))
+#define GIMP_IMAGE_COMMENT_EDITOR_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_IMAGE_COMMENT_EDITOR,            \
+                             GimpImageCommentEditorClass))
 
 typedef struct _GimpImageCommentEditorClass GimpImageCommentEditorClass;
 
-struct _GimpImageCommentEditor
-{
-	GimpImageParasiteView parent_instance;
+struct _GimpImageCommentEditor {
+  GimpImageParasiteView parent_instance;
 
-	GtkTextBuffer         *buffer;
-	gboolean recoursing;
+  GtkTextBuffer *buffer;
+  gboolean recoursing;
 };
 
-struct _GimpImageCommentEditorClass
-{
-	GimpImageParasiteViewClass parent_class;
+struct _GimpImageCommentEditorClass {
+  GimpImageParasiteViewClass parent_class;
 };
 
+GType gimp_image_comment_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_image_comment_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_image_comment_editor_new      (GimpImage *image);
-
+GtkWidget *gimp_image_comment_editor_new(GimpImage *image);
 
 #endif /*  __GIMP_IMAGE_COMMENT_EDITOR_H__  */

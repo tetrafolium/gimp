@@ -18,39 +18,39 @@
 #ifndef __GIMP_DODGE_BURN_TOOL_H__
 #define __GIMP_DODGE_BURN_TOOL_H__
 
-
 #include "gimpbrushtool.h"
 
+#define GIMP_TYPE_DODGE_BURN_TOOL (gimp_dodge_burn_tool_get_type())
+#define GIMP_DODGE_BURN_TOOL(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DODGE_BURN_TOOL,                \
+                              GimpDodgeBurnTool))
+#define GIMP_IS_DODGE_BURN_TOOL(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DODGE_BURN_TOOL))
+#define GIMP_DODGE_BURN_TOOL_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DODGE_BURN_TOOL,                 \
+                           GimpDodgeBurnToolClass))
+#define GIMP_IS_DODGE_BURN_TOOL_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DODGE_BURN_TOOL))
 
-#define GIMP_TYPE_DODGE_BURN_TOOL            (gimp_dodge_burn_tool_get_type ())
-#define GIMP_DODGE_BURN_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DODGE_BURN_TOOL, GimpDodgeBurnTool))
-#define GIMP_IS_DODGE_BURN_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DODGE_BURN_TOOL))
-#define GIMP_DODGE_BURN_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DODGE_BURN_TOOL, GimpDodgeBurnToolClass))
-#define GIMP_IS_DODGE_BURN_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DODGE_BURN_TOOL))
-
-#define GIMP_DODGE_BURN_TOOL_GET_OPTIONS(t)  (GIMP_DODGE_BURN_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_DODGE_BURN_TOOL_GET_OPTIONS(t)                                    \
+  (GIMP_DODGE_BURN_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpDodgeBurnTool GimpDodgeBurnTool;
 typedef struct _GimpDodgeBurnToolClass GimpDodgeBurnToolClass;
 
-struct _GimpDodgeBurnTool
-{
-	GimpBrushTool parent_instance;
+struct _GimpDodgeBurnTool {
+  GimpBrushTool parent_instance;
 
-	gboolean toggled;
+  gboolean toggled;
 };
 
-struct _GimpDodgeBurnToolClass
-{
-	GimpBrushToolClass parent_class;
+struct _GimpDodgeBurnToolClass {
+  GimpBrushToolClass parent_class;
 };
 
+void gimp_dodge_burn_tool_register(GimpToolRegisterCallback callback,
+                                   gpointer data);
 
-void    gimp_dodge_burn_tool_register (GimpToolRegisterCallback callback,
-                                       gpointer data);
+GType gimp_dodge_burn_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_dodge_burn_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_DODGEBURN_TOOL_H__  */
+#endif /*  __GIMP_DODGEBURN_TOOL_H__  */

@@ -22,17 +22,19 @@
 #ifndef __GIMP_DOCK_WINDOW_H__
 #define __GIMP_DOCK_WINDOW_H__
 
-
 #include "widgets/gimpwindow.h"
 
-
-#define GIMP_TYPE_DOCK_WINDOW            (gimp_dock_window_get_type ())
-#define GIMP_DOCK_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DOCK_WINDOW, GimpDockWindow))
-#define GIMP_DOCK_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DOCK_WINDOW, GimpDockWindowClass))
-#define GIMP_IS_DOCK_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DOCK_WINDOW))
-#define GIMP_IS_DOCK_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DOCK_WINDOW))
-#define GIMP_DOCK_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DOCK_WINDOW, GimpDockWindowClass))
-
+#define GIMP_TYPE_DOCK_WINDOW (gimp_dock_window_get_type())
+#define GIMP_DOCK_WINDOW(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DOCK_WINDOW, GimpDockWindow))
+#define GIMP_DOCK_WINDOW_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DOCK_WINDOW, GimpDockWindowClass))
+#define GIMP_IS_DOCK_WINDOW(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DOCK_WINDOW))
+#define GIMP_IS_DOCK_WINDOW_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DOCK_WINDOW))
+#define GIMP_DOCK_WINDOW_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DOCK_WINDOW, GimpDockWindowClass))
 
 typedef struct _GimpDockWindowClass GimpDockWindowClass;
 typedef struct _GimpDockWindowPrivate GimpDockWindowPrivate;
@@ -42,44 +44,36 @@ typedef struct _GimpDockWindowPrivate GimpDockWindowPrivate;
  *
  * A top-level window containing GimpDocks.
  */
-struct _GimpDockWindow
-{
-	GimpWindow parent_instance;
+struct _GimpDockWindow {
+  GimpWindow parent_instance;
 
-	GimpDockWindowPrivate *p;
+  GimpDockWindowPrivate *p;
 };
 
-struct _GimpDockWindowClass
-{
-	GimpWindowClass parent_class;
+struct _GimpDockWindowClass {
+  GimpWindowClass parent_class;
 };
 
+GType gimp_dock_window_get_type(void) G_GNUC_CONST;
+GtkWidget *gimp_dock_window_new(const gchar *role, const gchar *ui_manager_name,
+                                gboolean allow_dockbook_absence,
+                                GimpDialogFactory *factory,
+                                GimpContext *context);
+gint gimp_dock_window_get_id(GimpDockWindow *dock_window);
+void gimp_dock_window_add_dock(GimpDockWindow *dock_window, GimpDock *dock,
+                               gint index);
+void gimp_dock_window_remove_dock(GimpDockWindow *dock_window, GimpDock *dock);
+GimpContext *gimp_dock_window_get_context(GimpDockWindow *dock);
+gboolean gimp_dock_window_get_auto_follow_active(GimpDockWindow *menu_dock);
+void gimp_dock_window_set_auto_follow_active(GimpDockWindow *menu_dock,
+                                             gboolean show);
+gboolean gimp_dock_window_get_show_image_menu(GimpDockWindow *menu_dock);
+void gimp_dock_window_set_show_image_menu(GimpDockWindow *menu_dock,
+                                          gboolean show);
+void gimp_dock_window_setup(GimpDockWindow *dock_window,
+                            GimpDockWindow *template);
+gboolean gimp_dock_window_has_toolbox(GimpDockWindow *dock_window);
 
-GType               gimp_dock_window_get_type               (void) G_GNUC_CONST;
-GtkWidget         * gimp_dock_window_new                    (const gchar       *role,
-                                                             const gchar       *ui_manager_name,
-                                                             gboolean allow_dockbook_absence,
-                                                             GimpDialogFactory *factory,
-                                                             GimpContext       *context);
-gint                gimp_dock_window_get_id                 (GimpDockWindow    *dock_window);
-void                gimp_dock_window_add_dock               (GimpDockWindow    *dock_window,
-                                                             GimpDock          *dock,
-                                                             gint index);
-void                gimp_dock_window_remove_dock            (GimpDockWindow    *dock_window,
-                                                             GimpDock          *dock);
-GimpContext       * gimp_dock_window_get_context            (GimpDockWindow    *dock);
-gboolean            gimp_dock_window_get_auto_follow_active (GimpDockWindow    *menu_dock);
-void                gimp_dock_window_set_auto_follow_active (GimpDockWindow    *menu_dock,
-                                                             gboolean show);
-gboolean            gimp_dock_window_get_show_image_menu    (GimpDockWindow    *menu_dock);
-void                gimp_dock_window_set_show_image_menu    (GimpDockWindow    *menu_dock,
-                                                             gboolean show);
-void gimp_dock_window_setup                  (GimpDockWindow    *dock_window,
-                                              GimpDockWindow    *template);
-gboolean            gimp_dock_window_has_toolbox            (GimpDockWindow    *dock_window);
-
-GimpDockWindow    * gimp_dock_window_from_dock              (GimpDock          *dock);
-
-
+GimpDockWindow *gimp_dock_window_from_dock(GimpDock *dock);
 
 #endif /* __GIMP_DOCK_WINDOW_H__ */

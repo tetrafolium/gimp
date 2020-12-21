@@ -21,64 +21,61 @@
 #ifndef __GIMP_VIEWABLE_BUTTON_H__
 #define __GIMP_VIEWABLE_BUTTON_H__
 
-
-#define GIMP_TYPE_VIEWABLE_BUTTON            (gimp_viewable_button_get_type ())
-#define GIMP_VIEWABLE_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEWABLE_BUTTON, GimpViewableButton))
-#define GIMP_VIEWABLE_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEWABLE_BUTTON, GimpViewableButtonClass))
-#define GIMP_IS_VIEWABLE_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_VIEWABLE_BUTTON))
-#define GIMP_IS_VIEWABLE_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEWABLE_BUTTON))
-#define GIMP_VIEWABLE_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEWABLE_BUTTON, GimpViewableButtonClass))
-
+#define GIMP_TYPE_VIEWABLE_BUTTON (gimp_viewable_button_get_type())
+#define GIMP_VIEWABLE_BUTTON(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEWABLE_BUTTON,                \
+                              GimpViewableButton))
+#define GIMP_VIEWABLE_BUTTON_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEWABLE_BUTTON,                 \
+                           GimpViewableButtonClass))
+#define GIMP_IS_VIEWABLE_BUTTON(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_VIEWABLE_BUTTON))
+#define GIMP_IS_VIEWABLE_BUTTON_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEWABLE_BUTTON))
+#define GIMP_VIEWABLE_BUTTON_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEWABLE_BUTTON,                 \
+                             GimpViewableButtonClass))
 
 typedef struct _GimpViewableButtonClass GimpViewableButtonClass;
 
-struct _GimpViewableButton
-{
-	GimpButton parent_instance;
+struct _GimpViewableButton {
+  GimpButton parent_instance;
 
-	GimpContainer     *container;
-	GimpContext       *context;
+  GimpContainer *container;
+  GimpContext *context;
 
-	GimpViewType popup_view_type;
-	gint popup_view_size;
+  GimpViewType popup_view_type;
+  gint popup_view_size;
 
-	gint button_view_size;
-	gint view_border_width;
+  gint button_view_size;
+  gint view_border_width;
 
-	GimpDialogFactory *dialog_factory;
-	gchar             *dialog_identifier;
-	gchar             *dialog_icon_name;
-	gchar             *dialog_tooltip;
+  GimpDialogFactory *dialog_factory;
+  gchar *dialog_identifier;
+  gchar *dialog_icon_name;
+  gchar *dialog_tooltip;
 
-	GtkWidget         *view;
+  GtkWidget *view;
 };
 
-struct _GimpViewableButtonClass
-{
-	GimpButtonClass parent_class;
+struct _GimpViewableButtonClass {
+  GimpButtonClass parent_class;
 };
 
+GType gimp_viewable_button_get_type(void) G_GNUC_CONST;
 
-GType       gimp_viewable_button_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_viewable_button_new(
+    GimpContainer *container, GimpContext *context, GimpViewType view_type,
+    gint button_view_size, gint view_size, gint view_border_width,
+    GimpDialogFactory *dialog_factory, const gchar *dialog_identifier,
+    const gchar *dialog_icon_name, const gchar *dialog_tooltip);
 
-GtkWidget * gimp_viewable_button_new      (GimpContainer      *container,
-                                           GimpContext        *context,
-                                           GimpViewType view_type,
-                                           gint button_view_size,
-                                           gint view_size,
-                                           gint view_border_width,
-                                           GimpDialogFactory  *dialog_factory,
-                                           const gchar        *dialog_identifier,
-                                           const gchar        *dialog_icon_name,
-                                           const gchar        *dialog_tooltip);
+GimpViewType gimp_viewable_button_get_view_type(GimpViewableButton *button);
+void gimp_viewable_button_set_view_type(GimpViewableButton *button,
+                                        GimpViewType view_type);
 
-GimpViewType gimp_viewable_button_get_view_type (GimpViewableButton *button);
-void         gimp_viewable_button_set_view_type (GimpViewableButton *button,
-                                                 GimpViewType view_type);
-
-gint         gimp_viewable_button_get_view_size (GimpViewableButton *button);
-void         gimp_viewable_button_set_view_size (GimpViewableButton *button,
-                                                 gint view_size);
-
+gint gimp_viewable_button_get_view_size(GimpViewableButton *button);
+void gimp_viewable_button_set_view_size(GimpViewableButton *button,
+                                        gint view_size);
 
 #endif /* __GIMP_VIEWABLE_BUTTON_H__ */

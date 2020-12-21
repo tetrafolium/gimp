@@ -21,57 +21,53 @@
 #ifndef __GIMP_DATA_EDITOR_H__
 #define __GIMP_DATA_EDITOR_H__
 
-
 #include "gimpeditor.h"
 
-
-#define GIMP_TYPE_DATA_EDITOR            (gimp_data_editor_get_type ())
-#define GIMP_DATA_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DATA_EDITOR, GimpDataEditor))
-#define GIMP_DATA_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DATA_EDITOR, GimpDataEditorClass))
-#define GIMP_IS_DATA_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DATA_EDITOR))
-#define GIMP_IS_DATA_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DATA_EDITOR))
-#define GIMP_DATA_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DATA_EDITOR, GimpDataEditorClass))
-
+#define GIMP_TYPE_DATA_EDITOR (gimp_data_editor_get_type())
+#define GIMP_DATA_EDITOR(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DATA_EDITOR, GimpDataEditor))
+#define GIMP_DATA_EDITOR_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DATA_EDITOR, GimpDataEditorClass))
+#define GIMP_IS_DATA_EDITOR(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DATA_EDITOR))
+#define GIMP_IS_DATA_EDITOR_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DATA_EDITOR))
+#define GIMP_DATA_EDITOR_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DATA_EDITOR, GimpDataEditorClass))
 
 typedef struct _GimpDataEditorClass GimpDataEditorClass;
 
-struct _GimpDataEditor
-{
-	GimpEditor parent_instance;
+struct _GimpDataEditor {
+  GimpEditor parent_instance;
 
-	GimpDataFactory *data_factory;
-	GimpContext     *context;
-	gboolean edit_active;
+  GimpDataFactory *data_factory;
+  GimpContext *context;
+  gboolean edit_active;
 
-	GimpData        *data;
-	gboolean data_editable;
+  GimpData *data;
+  gboolean data_editable;
 
-	GtkWidget       *name_entry;
+  GtkWidget *name_entry;
 
-	GtkWidget       *view;/* filled by subclasses */
+  GtkWidget *view; /* filled by subclasses */
 };
 
-struct _GimpDataEditorClass
-{
-	GimpEditorClass parent_class;
+struct _GimpDataEditorClass {
+  GimpEditorClass parent_class;
 
-	/*  virtual functions  */
-	void (* set_data) (GimpDataEditor *editor,
-	                   GimpData       *data);
+  /*  virtual functions  */
+  void (*set_data)(GimpDataEditor *editor, GimpData *data);
 
-	const gchar *title;
+  const gchar *title;
 };
 
+GType gimp_data_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_data_editor_get_type        (void) G_GNUC_CONST;
+void gimp_data_editor_set_data(GimpDataEditor *editor, GimpData *data);
+GimpData *gimp_data_editor_get_data(GimpDataEditor *editor);
 
-void        gimp_data_editor_set_data        (GimpDataEditor *editor,
-                                              GimpData       *data);
-GimpData  * gimp_data_editor_get_data        (GimpDataEditor *editor);
+void gimp_data_editor_set_edit_active(GimpDataEditor *editor,
+                                      gboolean edit_active);
+gboolean gimp_data_editor_get_edit_active(GimpDataEditor *editor);
 
-void        gimp_data_editor_set_edit_active (GimpDataEditor *editor,
-                                              gboolean edit_active);
-gboolean    gimp_data_editor_get_edit_active (GimpDataEditor *editor);
-
-
-#endif  /*  __GIMP_DATA_EDITOR_H__  */
+#endif /*  __GIMP_DATA_EDITOR_H__  */

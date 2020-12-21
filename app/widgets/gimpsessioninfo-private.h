@@ -21,33 +21,30 @@
 #ifndef __GIMP_SESSION_INFO_PRIVATE_H__
 #define __GIMP_SESSION_INFO_PRIVATE_H__
 
+struct _GimpSessionInfoPrivate {
+  /*  the dialog factory entry for object we have session info for
+   *  note that pure "dock" entries don't have any factory entry
+   */
+  GimpDialogFactoryEntry *factory_entry;
 
-struct _GimpSessionInfoPrivate
-{
-	/*  the dialog factory entry for object we have session info for
-	 *  note that pure "dock" entries don't have any factory entry
-	 */
-	GimpDialogFactoryEntry *factory_entry;
+  gint x;
+  gint y;
+  gint width;
+  gint height;
+  gboolean right_align;
+  gboolean bottom_align;
+  GdkMonitor *monitor;
 
-	gint x;
-	gint y;
-	gint width;
-	gint height;
-	gboolean right_align;
-	gboolean bottom_align;
-	GdkMonitor             *monitor;
+  /*  only valid while restoring and saving the session  */
+  gboolean open;
 
-	/*  only valid while restoring and saving the session  */
-	gboolean open;
+  /*  dialog specific list of GimpSessionInfoAux  */
+  GList *aux_info;
 
-	/*  dialog specific list of GimpSessionInfoAux  */
-	GList                  *aux_info;
+  GtkWidget *widget;
 
-	GtkWidget              *widget;
-
-	/*  list of GimpSessionInfoDock  */
-	GList                  *docks;
+  /*  list of GimpSessionInfoDock  */
+  GList *docks;
 };
-
 
 #endif /* __GIMP_SESSION_INFO_PRIVATE_H__ */

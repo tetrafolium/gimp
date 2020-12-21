@@ -18,10 +18,6 @@
 #ifndef __XCF_SEEK_H__
 #define __XCF_SEEK_H__
 
+gboolean xcf_seek_pos(XcfInfo *info, goffset pos, GError **error);
 
-gboolean   xcf_seek_pos (XcfInfo  *info,
-                         goffset pos,
-                         GError  **error);
-
-
-#endif  /* __XCF_SEEK_H__ */
+#endif /* __XCF_SEEK_H__ */

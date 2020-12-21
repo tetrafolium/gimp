@@ -23,41 +23,44 @@
 
 #include "gimpviewrenderer.h"
 
-#define GIMP_TYPE_VIEW_RENDERER_PALETTE            (gimp_view_renderer_palette_get_type ())
-#define GIMP_VIEW_RENDERER_PALETTE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEW_RENDERER_PALETTE, GimpViewRendererPalette))
-#define GIMP_VIEW_RENDERER_PALETTE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEW_RENDERER_PALETTE, GimpViewRendererPaletteClass))
-#define GIMP_IS_VIEW_RENDERER_PALETTE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_VIEW_RENDERER_PALETTE))
-#define GIMP_IS_VIEW_RENDERER_PALETTE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEW_RENDERER_PALETTE))
-#define GIMP_VIEW_RENDERER_PALETTE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_PALETTE, GimpViewRendererPaletteClass))
-
+#define GIMP_TYPE_VIEW_RENDERER_PALETTE (gimp_view_renderer_palette_get_type())
+#define GIMP_VIEW_RENDERER_PALETTE(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEW_RENDERER_PALETTE,          \
+                              GimpViewRendererPalette))
+#define GIMP_VIEW_RENDERER_PALETTE_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEW_RENDERER_PALETTE,           \
+                           GimpViewRendererPaletteClass))
+#define GIMP_IS_VIEW_RENDERER_PALETTE(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_VIEW_RENDERER_PALETTE))
+#define GIMP_IS_VIEW_RENDERER_PALETTE_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEW_RENDERER_PALETTE))
+#define GIMP_VIEW_RENDERER_PALETTE_GET_CLASS(obj)                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEW_RENDERER_PALETTE,           \
+                             GimpViewRendererPaletteClass))
 
 typedef struct _GimpViewRendererPaletteClass GimpViewRendererPaletteClass;
 
-struct _GimpViewRendererPalette
-{
-	GimpViewRenderer parent_instance;
+struct _GimpViewRendererPalette {
+  GimpViewRenderer parent_instance;
 
-	gint cell_size;
-	gboolean draw_grid;
+  gint cell_size;
+  gboolean draw_grid;
 
-	gint cell_width;
-	gint cell_height;
-	gint columns;
-	gint rows;
+  gint cell_width;
+  gint cell_height;
+  gint columns;
+  gint rows;
 };
 
-struct _GimpViewRendererPaletteClass
-{
-	GimpViewRendererClass parent_class;
+struct _GimpViewRendererPaletteClass {
+  GimpViewRendererClass parent_class;
 };
 
+GType gimp_view_renderer_palette_get_type(void) G_GNUC_CONST;
 
-GType   gimp_view_renderer_palette_get_type    (void) G_GNUC_CONST;
-
-void    gimp_view_renderer_palette_set_cell_size (GimpViewRendererPalette *renderer,
-                                                  gint cell_size);
-void    gimp_view_renderer_palette_set_draw_grid (GimpViewRendererPalette *renderer,
-                                                  gboolean draw_grid);
-
+void gimp_view_renderer_palette_set_cell_size(GimpViewRendererPalette *renderer,
+                                              gint cell_size);
+void gimp_view_renderer_palette_set_draw_grid(GimpViewRendererPalette *renderer,
+                                              gboolean draw_grid);
 
 #endif /* __GIMP_VIEW_RENDERER_PALETTE_H__ */

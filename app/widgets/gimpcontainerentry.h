@@ -21,36 +21,37 @@
 #ifndef __GIMP_CONTAINER_ENTRY_H__
 #define __GIMP_CONTAINER_ENTRY_H__
 
-
-#define GIMP_TYPE_CONTAINER_ENTRY            (gimp_container_entry_get_type ())
-#define GIMP_CONTAINER_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTAINER_ENTRY, GimpContainerEntry))
-#define GIMP_CONTAINER_ENTRY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CONTAINER_ENTRY, GimpContainerEntryClass))
-#define GIMP_IS_CONTAINER_ENTRY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CONTAINER_ENTRY))
-#define GIMP_IS_CONTAINER_ENTRY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CONTAINER_ENTRY))
-#define GIMP_CONTAINER_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONTAINER_ENTRY, GimpContainerEntryClass))
-
+#define GIMP_TYPE_CONTAINER_ENTRY (gimp_container_entry_get_type())
+#define GIMP_CONTAINER_ENTRY(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CONTAINER_ENTRY,                \
+                              GimpContainerEntry))
+#define GIMP_CONTAINER_ENTRY_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CONTAINER_ENTRY,                 \
+                           GimpContainerEntryClass))
+#define GIMP_IS_CONTAINER_ENTRY(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CONTAINER_ENTRY))
+#define GIMP_IS_CONTAINER_ENTRY_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CONTAINER_ENTRY))
+#define GIMP_CONTAINER_ENTRY_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CONTAINER_ENTRY,                 \
+                             GimpContainerEntryClass))
 
 typedef struct _GimpContainerEntryClass GimpContainerEntryClass;
 
-struct _GimpContainerEntry
-{
-	GtkEntry parent_instance;
+struct _GimpContainerEntry {
+  GtkEntry parent_instance;
 
-	GimpViewable   *viewable;
+  GimpViewable *viewable;
 };
 
-struct _GimpContainerEntryClass
-{
-	GtkEntryClass parent_class;
+struct _GimpContainerEntryClass {
+  GtkEntryClass parent_class;
 };
 
+GType gimp_container_entry_get_type(void) G_GNUC_CONST;
 
-GType       gimp_container_entry_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_container_entry_new(GimpContainer *container,
+                                    GimpContext *context, gint view_size,
+                                    gint view_border_width);
 
-GtkWidget * gimp_container_entry_new      (GimpContainer *container,
-                                           GimpContext   *context,
-                                           gint view_size,
-                                           gint view_border_width);
-
-
-#endif  /*  __GIMP_CONTAINER_ENTRY_H__  */
+#endif /*  __GIMP_CONTAINER_ENTRY_H__  */

@@ -18,40 +18,38 @@
 #ifndef __GIMP_FLIP_TOOL_H__
 #define __GIMP_FLIP_TOOL_H__
 
-
 #include "gimptransformtool.h"
 
+#define GIMP_TYPE_FLIP_TOOL (gimp_flip_tool_get_type())
+#define GIMP_FLIP_TOOL(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FLIP_TOOL, GimpFlipTool))
+#define GIMP_FLIP_TOOL_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FLIP_TOOL, GimpFlipToolClass))
+#define GIMP_IS_FLIP_TOOL(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FLIP_TOOL))
+#define GIMP_IS_FLIP_TOOL_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FLIP_TOOL))
+#define GIMP_FLIP_TOOL_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FLIP_TOOL, GimpFlipToolClass))
 
-#define GIMP_TYPE_FLIP_TOOL            (gimp_flip_tool_get_type ())
-#define GIMP_FLIP_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FLIP_TOOL, GimpFlipTool))
-#define GIMP_FLIP_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FLIP_TOOL, GimpFlipToolClass))
-#define GIMP_IS_FLIP_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FLIP_TOOL))
-#define GIMP_IS_FLIP_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FLIP_TOOL))
-#define GIMP_FLIP_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FLIP_TOOL, GimpFlipToolClass))
-
-#define GIMP_FLIP_TOOL_GET_OPTIONS(t)  (GIMP_FLIP_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_FLIP_TOOL_GET_OPTIONS(t)                                          \
+  (GIMP_FLIP_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpFlipTool GimpFlipTool;
 typedef struct _GimpFlipToolClass GimpFlipToolClass;
 
-struct _GimpFlipTool
-{
-	GimpTransformTool parent_instance;
+struct _GimpFlipTool {
+  GimpTransformTool parent_instance;
 
-	GimpGuide         *guide;
+  GimpGuide *guide;
 };
 
-struct _GimpFlipToolClass
-{
-	GimpTransformToolClass parent_class;
+struct _GimpFlipToolClass {
+  GimpTransformToolClass parent_class;
 };
 
+void gimp_flip_tool_register(GimpToolRegisterCallback callback, gpointer data);
 
-void    gimp_flip_tool_register (GimpToolRegisterCallback callback,
-                                 gpointer data);
+GType gimp_flip_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_flip_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_FLIP_TOOL_H__  */
+#endif /*  __GIMP_FLIP_TOOL_H__  */

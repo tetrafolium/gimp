@@ -28,43 +28,28 @@
 
 #include "widgets/gimphelp-ids.h"
 
-#include "gimppenciltool.h"
 #include "gimppaintoptions-gui.h"
+#include "gimppenciltool.h"
 #include "gimptoolcontrol.h"
 
 #include "gimp-intl.h"
 
+G_DEFINE_TYPE(GimpPencilTool, gimp_pencil_tool, GIMP_TYPE_PAINTBRUSH_TOOL)
 
-G_DEFINE_TYPE (GimpPencilTool, gimp_pencil_tool, GIMP_TYPE_PAINTBRUSH_TOOL)
-
-
-void
-gimp_pencil_tool_register (GimpToolRegisterCallback callback,
-                           gpointer data)
-{
-	(*callback)(GIMP_TYPE_PENCIL_TOOL,
-	            GIMP_TYPE_PENCIL_OPTIONS,
-	            gimp_paint_options_gui,
-	            GIMP_PAINT_OPTIONS_CONTEXT_MASK |
-	            GIMP_CONTEXT_PROP_MASK_GRADIENT,
-	            "gimp-pencil-tool",
-	            _("Pencil"),
-	            _("Pencil Tool: Hard edge painting using a brush"),
-	            N_("Pe_ncil"), "N",
-	            NULL, GIMP_HELP_TOOL_PENCIL,
-	            GIMP_ICON_TOOL_PENCIL,
-	            data);
+void gimp_pencil_tool_register(GimpToolRegisterCallback callback,
+                               gpointer data) {
+  (*callback)(GIMP_TYPE_PENCIL_TOOL, GIMP_TYPE_PENCIL_OPTIONS,
+              gimp_paint_options_gui,
+              GIMP_PAINT_OPTIONS_CONTEXT_MASK | GIMP_CONTEXT_PROP_MASK_GRADIENT,
+              "gimp-pencil-tool", _("Pencil"),
+              _("Pencil Tool: Hard edge painting using a brush"), N_("Pe_ncil"),
+              "N", NULL, GIMP_HELP_TOOL_PENCIL, GIMP_ICON_TOOL_PENCIL, data);
 }
 
-static void
-gimp_pencil_tool_class_init (GimpPencilToolClass *klass)
-{
-}
+static void gimp_pencil_tool_class_init(GimpPencilToolClass *klass) {}
 
-static void
-gimp_pencil_tool_init (GimpPencilTool *pencil)
-{
-	GimpTool *tool = GIMP_TOOL (pencil);
+static void gimp_pencil_tool_init(GimpPencilTool *pencil) {
+  GimpTool *tool = GIMP_TOOL(pencil);
 
-	gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_PENCIL);
+  gimp_tool_control_set_tool_cursor(tool->control, GIMP_TOOL_CURSOR_PENCIL);
 }

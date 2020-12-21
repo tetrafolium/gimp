@@ -23,48 +23,44 @@
 
 #include "gimpview.h"
 
-
-#define GIMP_TYPE_PALETTE_VIEW            (gimp_palette_view_get_type ())
-#define GIMP_PALETTE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PALETTE_VIEW, GimpPaletteView))
-#define GIMP_PALETTE_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PALETTE_VIEW, GimpPaletteViewClass))
-#define GIMP_IS_PALETTE_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_PALETTE_VIEW))
-#define GIMP_IS_PALETTE_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PALETTE_VIEW))
-#define GIMP_PALETTE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PALETTE_VIEW, GimpPaletteViewClass))
-
+#define GIMP_TYPE_PALETTE_VIEW (gimp_palette_view_get_type())
+#define GIMP_PALETTE_VIEW(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PALETTE_VIEW, GimpPaletteView))
+#define GIMP_PALETTE_VIEW_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PALETTE_VIEW,                    \
+                           GimpPaletteViewClass))
+#define GIMP_IS_PALETTE_VIEW(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_PALETTE_VIEW))
+#define GIMP_IS_PALETTE_VIEW_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PALETTE_VIEW))
+#define GIMP_PALETTE_VIEW_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PALETTE_VIEW,                    \
+                             GimpPaletteViewClass))
 
 typedef struct _GimpPaletteViewClass GimpPaletteViewClass;
 
-struct _GimpPaletteView
-{
-	GimpView parent_instance;
+struct _GimpPaletteView {
+  GimpView parent_instance;
 
-	GimpPaletteEntry *selected;
-	GimpPaletteEntry *dnd_entry;
+  GimpPaletteEntry *selected;
+  GimpPaletteEntry *dnd_entry;
 };
 
-struct _GimpPaletteViewClass
-{
-	GimpViewClass parent_class;
+struct _GimpPaletteViewClass {
+  GimpViewClass parent_class;
 
-	void (* entry_clicked)   (GimpPaletteView  *view,
-	                          GimpPaletteEntry *entry,
-	                          GdkModifierType state);
-	void (* entry_selected)  (GimpPaletteView  *view,
-	                          GimpPaletteEntry *entry);
-	void (* entry_activated) (GimpPaletteView  *view,
-	                          GimpPaletteEntry *entry);
-	void (* entry_context)   (GimpPaletteView  *view,
-	                          GimpPaletteEntry *entry);
-	void (* color_dropped)   (GimpPaletteView  *view,
-	                          GimpPaletteEntry *entry,
-	                          const GimpRGB    *color);
+  void (*entry_clicked)(GimpPaletteView *view, GimpPaletteEntry *entry,
+                        GdkModifierType state);
+  void (*entry_selected)(GimpPaletteView *view, GimpPaletteEntry *entry);
+  void (*entry_activated)(GimpPaletteView *view, GimpPaletteEntry *entry);
+  void (*entry_context)(GimpPaletteView *view, GimpPaletteEntry *entry);
+  void (*color_dropped)(GimpPaletteView *view, GimpPaletteEntry *entry,
+                        const GimpRGB *color);
 };
 
+GType gimp_palette_view_get_type(void) G_GNUC_CONST;
 
-GType   gimp_palette_view_get_type     (void) G_GNUC_CONST;
-
-void    gimp_palette_view_select_entry (GimpPaletteView  *view,
-                                        GimpPaletteEntry *entry);
-
+void gimp_palette_view_select_entry(GimpPaletteView *view,
+                                    GimpPaletteEntry *entry);
 
 #endif /* __GIMP_PALETTE_VIEW_H__ */

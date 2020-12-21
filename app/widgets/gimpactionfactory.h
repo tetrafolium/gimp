@@ -21,60 +21,59 @@
 #ifndef __GIMP_ACTION_FACTORY_H__
 #define __GIMP_ACTION_FACTORY_H__
 
-
 #include "core/gimpobject.h"
-
 
 typedef struct _GimpActionFactoryEntry GimpActionFactoryEntry;
 
-struct _GimpActionFactoryEntry
-{
-	gchar                     *identifier;
-	gchar                     *label;
-	gchar                     *icon_name;
-	GimpActionGroupSetupFunc setup_func;
-	GimpActionGroupUpdateFunc update_func;
+struct _GimpActionFactoryEntry {
+  gchar *identifier;
+  gchar *label;
+  gchar *icon_name;
+  GimpActionGroupSetupFunc setup_func;
+  GimpActionGroupUpdateFunc update_func;
 };
 
-
-#define GIMP_TYPE_ACTION_FACTORY            (gimp_action_factory_get_type ())
-#define GIMP_ACTION_FACTORY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ACTION_FACTORY, GimpActionFactory))
-#define GIMP_ACTION_FACTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ACTION_FACTORY, GimpActionFactoryClass))
-#define GIMP_IS_ACTION_FACTORY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ACTION_FACTORY))
-#define GIMP_IS_ACTION_FACTORY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ACTION_FACTORY))
-#define GIMP_ACTION_FACTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ACTION_FACTORY, GimpActionFactoryClass))
-
+#define GIMP_TYPE_ACTION_FACTORY (gimp_action_factory_get_type())
+#define GIMP_ACTION_FACTORY(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ACTION_FACTORY,                 \
+                              GimpActionFactory))
+#define GIMP_ACTION_FACTORY_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ACTION_FACTORY,                  \
+                           GimpActionFactoryClass))
+#define GIMP_IS_ACTION_FACTORY(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ACTION_FACTORY))
+#define GIMP_IS_ACTION_FACTORY_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ACTION_FACTORY))
+#define GIMP_ACTION_FACTORY_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ACTION_FACTORY,                  \
+                             GimpActionFactoryClass))
 
 typedef struct _GimpActionFactoryClass GimpActionFactoryClass;
 
-struct _GimpActionFactory
-{
-	GimpObject parent_instance;
+struct _GimpActionFactory {
+  GimpObject parent_instance;
 
-	Gimp       *gimp;
-	GList      *registered_groups;
+  Gimp *gimp;
+  GList *registered_groups;
 };
 
-struct _GimpActionFactoryClass
-{
-	GimpObjectClass parent_class;
+struct _GimpActionFactoryClass {
+  GimpObjectClass parent_class;
 };
 
+GType gimp_action_factory_get_type(void) G_GNUC_CONST;
 
-GType               gimp_action_factory_get_type (void) G_GNUC_CONST;
+GimpActionFactory *gimp_action_factory_new(Gimp *gimp);
 
-GimpActionFactory * gimp_action_factory_new      (Gimp              *gimp);
+void gimp_action_factory_group_register(GimpActionFactory *factory,
+                                        const gchar *identifier,
+                                        const gchar *label,
+                                        const gchar *icon_name,
+                                        GimpActionGroupSetupFunc setup_func,
+                                        GimpActionGroupUpdateFunc update_func);
 
-void          gimp_action_factory_group_register (GimpActionFactory *factory,
-                                                  const gchar       *identifier,
-                                                  const gchar       *label,
-                                                  const gchar       *icon_name,
-                                                  GimpActionGroupSetupFunc setup_func,
-                                                  GimpActionGroupUpdateFunc update_func);
+GimpActionGroup *gimp_action_factory_group_new(GimpActionFactory *factory,
+                                               const gchar *identifier,
+                                               gpointer user_data);
 
-GimpActionGroup * gimp_action_factory_group_new  (GimpActionFactory *factory,
-                                                  const gchar       *identifier,
-                                                  gpointer user_data);
-
-
-#endif  /*  __GIMP_ACTION_FACTORY_H__  */
+#endif /*  __GIMP_ACTION_FACTORY_H__  */

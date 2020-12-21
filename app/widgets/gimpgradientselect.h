@@ -25,32 +25,34 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_GRADIENT_SELECT            (gimp_gradient_select_get_type ())
-#define GIMP_GRADIENT_SELECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GRADIENT_SELECT, GimpGradientSelect))
-#define GIMP_GRADIENT_SELECT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_GRADIENT_SELECT, GimpGradientSelectClass))
-#define GIMP_IS_GRADIENT_SELECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_GRADIENT_SELECT))
-#define GIMP_IS_GRADIENT_SELECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_GRADIENT_SELECT))
-#define GIMP_GRADIENT_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GRADIENT_SELECT, GimpGradientSelectClass))
-
+#define GIMP_TYPE_GRADIENT_SELECT (gimp_gradient_select_get_type())
+#define GIMP_GRADIENT_SELECT(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_GRADIENT_SELECT,                \
+                              GimpGradientSelect))
+#define GIMP_GRADIENT_SELECT_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_GRADIENT_SELECT,                 \
+                           GimpGradientSelectClass))
+#define GIMP_IS_GRADIENT_SELECT(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_GRADIENT_SELECT))
+#define GIMP_IS_GRADIENT_SELECT_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_GRADIENT_SELECT))
+#define GIMP_GRADIENT_SELECT_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_GRADIENT_SELECT,                 \
+                             GimpGradientSelectClass))
 
 typedef struct _GimpGradientSelectClass GimpGradientSelectClass;
 
-struct _GimpGradientSelect
-{
-	GimpPdbDialog parent_instance;
+struct _GimpGradientSelect {
+  GimpPdbDialog parent_instance;
 
-	gint sample_size;
+  gint sample_size;
 };
 
-struct _GimpGradientSelectClass
-{
-	GimpPdbDialogClass parent_class;
+struct _GimpGradientSelectClass {
+  GimpPdbDialogClass parent_class;
 };
 
-
-GType  gimp_gradient_select_get_type (void) G_GNUC_CONST;
-
+GType gimp_gradient_select_get_type(void) G_GNUC_CONST;
 
 G_END_DECLS
 

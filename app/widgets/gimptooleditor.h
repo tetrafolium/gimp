@@ -22,42 +22,38 @@
 #ifndef __GIMP_TOOL_EDITOR_H__
 #define __GIMP_TOOL_EDITOR_H__
 
-
 #include "gimpcontainertreeview.h"
 
-
-#define GIMP_TYPE_TOOL_EDITOR            (gimp_tool_editor_get_type ())
-#define GIMP_TOOL_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_EDITOR, GimpToolEditor))
-#define GIMP_TOOL_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_EDITOR, GimpToolEditorClass))
-#define GIMP_IS_TOOL_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_EDITOR))
-#define GIMP_IS_TOOL_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_EDITOR))
-#define GIMP_TOOL_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_EDITOR, GimpToolEditorClass))
-
+#define GIMP_TYPE_TOOL_EDITOR (gimp_tool_editor_get_type())
+#define GIMP_TOOL_EDITOR(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_EDITOR, GimpToolEditor))
+#define GIMP_TOOL_EDITOR_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_EDITOR, GimpToolEditorClass))
+#define GIMP_IS_TOOL_EDITOR(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_EDITOR))
+#define GIMP_IS_TOOL_EDITOR_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_EDITOR))
+#define GIMP_TOOL_EDITOR_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_EDITOR, GimpToolEditorClass))
 
 typedef struct _GimpToolEditorPrivate GimpToolEditorPrivate;
 typedef struct _GimpToolEditorClass GimpToolEditorClass;
 
-struct _GimpToolEditor
-{
-	GimpContainerTreeView parent_instance;
+struct _GimpToolEditor {
+  GimpContainerTreeView parent_instance;
 
-	GimpToolEditorPrivate *priv;
+  GimpToolEditorPrivate *priv;
 };
 
-struct _GimpToolEditorClass
-{
-	GimpContainerTreeViewClass parent_class;
+struct _GimpToolEditorClass {
+  GimpContainerTreeViewClass parent_class;
 };
 
+GType gimp_tool_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_tool_editor_get_type       (void) G_GNUC_CONST;
+GtkWidget *gimp_tool_editor_new(GimpContainer *container, GimpContext *context,
+                                gint view_size, gint view_border_width);
 
-GtkWidget * gimp_tool_editor_new            (GimpContainer  *container,
-                                             GimpContext    *context,
-                                             gint view_size,
-                                             gint view_border_width);
+void gimp_tool_editor_revert_changes(GimpToolEditor *tool_editor);
 
-void        gimp_tool_editor_revert_changes (GimpToolEditor *tool_editor);
-
-
-#endif  /*  __GIMP_TOOL_EDITOR_H__  */
+#endif /*  __GIMP_TOOL_EDITOR_H__  */

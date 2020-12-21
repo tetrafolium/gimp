@@ -21,41 +21,40 @@
 #ifndef __GIMP_PROCEDURE_ACTION_H__
 #define __GIMP_PROCEDURE_ACTION_H__
 
-
 #include "gimpactionimpl.h"
 
-
-#define GIMP_TYPE_PROCEDURE_ACTION            (gimp_procedure_action_get_type ())
-#define GIMP_PROCEDURE_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PROCEDURE_ACTION, GimpProcedureAction))
-#define GIMP_PROCEDURE_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PROCEDURE_ACTION, GimpProcedureActionClass))
-#define GIMP_IS_PROCEDURE_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PROCEDURE_ACTION))
-#define GIMP_IS_PROCEDURE_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), GIMP_TYPE_PROCEDURE_ACTION))
-#define GIMP_PROCEDURE_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PROCEDURE_ACTION, GimpProcedureActionClass))
-
+#define GIMP_TYPE_PROCEDURE_ACTION (gimp_procedure_action_get_type())
+#define GIMP_PROCEDURE_ACTION(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PROCEDURE_ACTION,               \
+                              GimpProcedureAction))
+#define GIMP_PROCEDURE_ACTION_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PROCEDURE_ACTION,                \
+                           GimpProcedureActionClass))
+#define GIMP_IS_PROCEDURE_ACTION(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PROCEDURE_ACTION))
+#define GIMP_IS_PROCEDURE_ACTION_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), GIMP_TYPE_PROCEDURE_ACTION))
+#define GIMP_PROCEDURE_ACTION_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PROCEDURE_ACTION,                \
+                             GimpProcedureActionClass))
 
 typedef struct _GimpProcedureActionClass GimpProcedureActionClass;
 
-struct _GimpProcedureAction
-{
-	GimpActionImpl parent_instance;
+struct _GimpProcedureAction {
+  GimpActionImpl parent_instance;
 
-	GimpProcedure  *procedure;
+  GimpProcedure *procedure;
 };
 
-struct _GimpProcedureActionClass
-{
-	GimpActionImplClass parent_class;
+struct _GimpProcedureActionClass {
+  GimpActionImplClass parent_class;
 };
 
+GType gimp_procedure_action_get_type(void) G_GNUC_CONST;
 
-GType                 gimp_procedure_action_get_type (void) G_GNUC_CONST;
+GimpProcedureAction *
+gimp_procedure_action_new(const gchar *name, const gchar *label,
+                          const gchar *tooltip, const gchar *icon_name,
+                          const gchar *help_id, GimpProcedure *procedure);
 
-GimpProcedureAction * gimp_procedure_action_new      (const gchar   *name,
-                                                      const gchar   *label,
-                                                      const gchar   *tooltip,
-                                                      const gchar   *icon_name,
-                                                      const gchar   *help_id,
-                                                      GimpProcedure *procedure);
-
-
-#endif  /* __GIMP_PROCEDURE_ACTION_H__ */
+#endif /* __GIMP_PROCEDURE_ACTION_H__ */

@@ -18,43 +18,44 @@
 #ifndef __GIMP_SELECTION_EDITOR_H__
 #define __GIMP_SELECTION_EDITOR_H__
 
-
 #include "gimpimageeditor.h"
 
-
-#define GIMP_TYPE_SELECTION_EDITOR            (gimp_selection_editor_get_type ())
-#define GIMP_SELECTION_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SELECTION_EDITOR, GimpSelectionEditor))
-#define GIMP_SELECTION_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SELECTION_EDITOR, GimpSelectionEditorClass))
-#define GIMP_IS_SELECTION_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SELECTION_EDITOR))
-#define GIMP_IS_SELECTION_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SELECTION_EDITOR))
-#define GIMP_SELECTION_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SELECTION_EDITOR, GimpSelectionEditorClass))
-
+#define GIMP_TYPE_SELECTION_EDITOR (gimp_selection_editor_get_type())
+#define GIMP_SELECTION_EDITOR(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SELECTION_EDITOR,               \
+                              GimpSelectionEditor))
+#define GIMP_SELECTION_EDITOR_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SELECTION_EDITOR,                \
+                           GimpSelectionEditorClass))
+#define GIMP_IS_SELECTION_EDITOR(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SELECTION_EDITOR))
+#define GIMP_IS_SELECTION_EDITOR_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SELECTION_EDITOR))
+#define GIMP_SELECTION_EDITOR_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SELECTION_EDITOR,                \
+                             GimpSelectionEditorClass))
 
 typedef struct _GimpSelectionEditorClass GimpSelectionEditorClass;
 
-struct _GimpSelectionEditor
-{
-	GimpImageEditor parent_instance;
+struct _GimpSelectionEditor {
+  GimpImageEditor parent_instance;
 
-	GtkWidget       *view;
+  GtkWidget *view;
 
-	GtkWidget       *all_button;
-	GtkWidget       *none_button;
-	GtkWidget       *invert_button;
-	GtkWidget       *save_button;
-	GtkWidget       *path_button;
-	GtkWidget       *stroke_button;
+  GtkWidget *all_button;
+  GtkWidget *none_button;
+  GtkWidget *invert_button;
+  GtkWidget *save_button;
+  GtkWidget *path_button;
+  GtkWidget *stroke_button;
 };
 
-struct _GimpSelectionEditorClass
-{
-	GimpImageEditorClass parent_class;
+struct _GimpSelectionEditorClass {
+  GimpImageEditorClass parent_class;
 };
 
+GType gimp_selection_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_selection_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_selection_editor_new      (GimpMenuFactory *menu_factory);
-
+GtkWidget *gimp_selection_editor_new(GimpMenuFactory *menu_factory);
 
 #endif /* __GIMP_SELECTION_EDITOR_H__ */

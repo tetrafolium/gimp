@@ -20,36 +20,37 @@
 #ifndef __GIMP_BY_COLOR_SELECT_TOOL_H__
 #define __GIMP_BY_COLOR_SELECT_TOOL_H__
 
-
 #include "gimpregionselecttool.h"
 
-
-#define GIMP_TYPE_BY_COLOR_SELECT_TOOL            (gimp_by_color_select_tool_get_type ())
-#define GIMP_BY_COLOR_SELECT_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL, GimpByColorSelectTool))
-#define GIMP_BY_COLOR_SELECT_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BY_COLOR_SELECT_TOOL, GimpByColorSelectToolClass))
-#define GIMP_IS_BY_COLOR_SELECT_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL))
-#define GIMP_IS_BY_COLOR_SELECT_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BY_COLOR_SELECT_TOOL))
-#define GIMP_BY_COLOR_SELECT_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL, GimpByColorSelectToolClass))
-
+#define GIMP_TYPE_BY_COLOR_SELECT_TOOL (gimp_by_color_select_tool_get_type())
+#define GIMP_BY_COLOR_SELECT_TOOL(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL,           \
+                              GimpByColorSelectTool))
+#define GIMP_BY_COLOR_SELECT_TOOL_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BY_COLOR_SELECT_TOOL,            \
+                           GimpByColorSelectToolClass))
+#define GIMP_IS_BY_COLOR_SELECT_TOOL(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL))
+#define GIMP_IS_BY_COLOR_SELECT_TOOL_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BY_COLOR_SELECT_TOOL))
+#define GIMP_BY_COLOR_SELECT_TOOL_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BY_COLOR_SELECT_TOOL,            \
+                             GimpByColorSelectToolClass))
 
 typedef struct _GimpByColorSelectTool GimpByColorSelectTool;
 typedef struct _GimpByColorSelectToolClass GimpByColorSelectToolClass;
 
-struct _GimpByColorSelectTool
-{
-	GimpRegionSelectTool parent_instance;
+struct _GimpByColorSelectTool {
+  GimpRegionSelectTool parent_instance;
 };
 
-struct _GimpByColorSelectToolClass
-{
-	GimpRegionSelectToolClass parent_class;
+struct _GimpByColorSelectToolClass {
+  GimpRegionSelectToolClass parent_class;
 };
 
+void gimp_by_color_select_tool_register(GimpToolRegisterCallback callback,
+                                        gpointer data);
 
-void    gimp_by_color_select_tool_register (GimpToolRegisterCallback callback,
-                                            gpointer data);
+GType gimp_by_color_select_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_by_color_select_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_BY_COLOR_SELECT_TOOL_H__  */
+#endif /*  __GIMP_BY_COLOR_SELECT_TOOL_H__  */

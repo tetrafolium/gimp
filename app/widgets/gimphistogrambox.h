@@ -18,45 +18,46 @@
 #ifndef __GIMP_HISTOGRAM_BOX_H__
 #define __GIMP_HISTOGRAM_BOX_H__
 
-
-#define GIMP_TYPE_HISTOGRAM_BOX            (gimp_histogram_box_get_type ())
-#define GIMP_HISTOGRAM_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HISTOGRAM_BOX, GimpHistogramBox))
-#define GIMP_HISTOGRAM_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_HISTOGRAM_BOX, GimpHistogramBoxClass))
-#define GIMP_IS_HISTOGRAM_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_HISTOGRAM_BOX))
-#define GIMP_IS_HISTOGRAM_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_HISTOGRAM_BOX))
-#define GIMP_HISTOGRAM_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_HISTOGRAM_BOX, GimpHistogramBoxClass))
-
+#define GIMP_TYPE_HISTOGRAM_BOX (gimp_histogram_box_get_type())
+#define GIMP_HISTOGRAM_BOX(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_HISTOGRAM_BOX, GimpHistogramBox))
+#define GIMP_HISTOGRAM_BOX_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_HISTOGRAM_BOX,                   \
+                           GimpHistogramBoxClass))
+#define GIMP_IS_HISTOGRAM_BOX(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_HISTOGRAM_BOX))
+#define GIMP_IS_HISTOGRAM_BOX_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_HISTOGRAM_BOX))
+#define GIMP_HISTOGRAM_BOX_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_HISTOGRAM_BOX,                   \
+                             GimpHistogramBoxClass))
 
 typedef struct _GimpHistogramBoxClass GimpHistogramBoxClass;
 
-struct _GimpHistogramBox
-{
-	GtkBox parent_instance;
+struct _GimpHistogramBox {
+  GtkBox parent_instance;
 
-	GimpHistogramView *view;
-	GtkWidget         *color_bar;
-	GtkWidget         *slider_bar;
+  GimpHistogramView *view;
+  GtkWidget *color_bar;
+  GtkWidget *slider_bar;
 
-	gint n_bins;
+  gint n_bins;
 
-	GtkAdjustment     *low_adj;
-	GtkAdjustment     *high_adj;
+  GtkAdjustment *low_adj;
+  GtkAdjustment *high_adj;
 
-	GtkWidget         *low_spinbutton;
-	GtkWidget         *high_spinbutton;
+  GtkWidget *low_spinbutton;
+  GtkWidget *high_spinbutton;
 };
 
-struct _GimpHistogramBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpHistogramBoxClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_histogram_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_histogram_box_get_type    (void) G_GNUC_CONST;
+GtkWidget *gimp_histogram_box_new(void);
+void gimp_histogram_box_set_channel(GimpHistogramBox *box,
+                                    GimpHistogramChannel channel);
 
-GtkWidget * gimp_histogram_box_new         (void);
-void        gimp_histogram_box_set_channel (GimpHistogramBox     *box,
-                                            GimpHistogramChannel channel);
-
-
-#endif  /*  __GIMP_HISTOGRAM_BOX_H__  */
+#endif /*  __GIMP_HISTOGRAM_BOX_H__  */

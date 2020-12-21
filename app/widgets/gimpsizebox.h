@@ -23,41 +23,40 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_SIZE_BOX            (gimp_size_box_get_type ())
-#define GIMP_SIZE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SIZE_BOX, GimpSizeBox))
-#define GIMP_SIZE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SIZE_BOX, GimpSizeBoxClass))
-#define GIMP_IS_SIZE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SIZE_BOX))
-#define GIMP_IS_SIZE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SIZE_BOX))
-#define GIMP_SIZE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SIZE_BOX, GimpSizeBoxClass))
-
+#define GIMP_TYPE_SIZE_BOX (gimp_size_box_get_type())
+#define GIMP_SIZE_BOX(obj)                                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SIZE_BOX, GimpSizeBox))
+#define GIMP_SIZE_BOX_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SIZE_BOX, GimpSizeBoxClass))
+#define GIMP_IS_SIZE_BOX(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SIZE_BOX))
+#define GIMP_IS_SIZE_BOX_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SIZE_BOX))
+#define GIMP_SIZE_BOX_GET_CLASS(obj)                                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SIZE_BOX, GimpSizeBoxClass))
 
 typedef struct _GimpSizeBoxClass GimpSizeBoxClass;
 
-struct _GimpSizeBox
-{
-	GtkBox parent_instance;
+struct _GimpSizeBox {
+  GtkBox parent_instance;
 
-	GtkSizeGroup *size_group;
+  GtkSizeGroup *size_group;
 
-	gint width;
-	gint height;
-	GimpUnit unit;
-	gdouble xresolution;
-	gdouble yresolution;
-	GimpUnit resolution_unit;
+  gint width;
+  gint height;
+  GimpUnit unit;
+  gdouble xresolution;
+  gdouble yresolution;
+  GimpUnit resolution_unit;
 
-	gboolean edit_resolution;
+  gboolean edit_resolution;
 };
 
-struct _GimpSizeBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpSizeBoxClass {
+  GtkBoxClass parent_class;
 };
 
-
-GType       gimp_size_box_get_type (void) G_GNUC_CONST;
-
+GType gimp_size_box_get_type(void) G_GNUC_CONST;
 
 G_END_DECLS
 

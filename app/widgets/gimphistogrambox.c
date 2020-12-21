@@ -36,276 +36,233 @@
 
 #include "gimp-intl.h"
 
-
 /*  #define DEBUG_VIEW  */
 
-#define GRADIENT_HEIGHT  12
-#define CONTROL_HEIGHT   10
-
+#define GRADIENT_HEIGHT 12
+#define CONTROL_HEIGHT 10
 
 /*  local function prototypes  */
 
-static void   gimp_histogram_box_low_adj_update  (GtkAdjustment     *adj,
-                                                  GimpHistogramBox  *box);
-static void   gimp_histogram_box_high_adj_update (GtkAdjustment     *adj,
-                                                  GimpHistogramBox  *box);
-static void   gimp_histogram_box_histogram_range (GimpHistogramView *view,
-                                                  gint start,
-                                                  gint end,
-                                                  GimpHistogramBox  *box);
-static void   gimp_histogram_box_channel_notify  (GimpHistogramView *view,
-                                                  GParamSpec        *pspec,
-                                                  GimpHistogramBox  *box);
-static void   gimp_histogram_box_border_notify   (GimpHistogramView *view,
-                                                  GParamSpec        *pspec,
-                                                  GimpHistogramBox  *box);
+static void gimp_histogram_box_low_adj_update(GtkAdjustment *adj,
+                                              GimpHistogramBox *box);
+static void gimp_histogram_box_high_adj_update(GtkAdjustment *adj,
+                                               GimpHistogramBox *box);
+static void gimp_histogram_box_histogram_range(GimpHistogramView *view,
+                                               gint start, gint end,
+                                               GimpHistogramBox *box);
+static void gimp_histogram_box_channel_notify(GimpHistogramView *view,
+                                              GParamSpec *pspec,
+                                              GimpHistogramBox *box);
+static void gimp_histogram_box_border_notify(GimpHistogramView *view,
+                                             GParamSpec *pspec,
+                                             GimpHistogramBox *box);
 
+G_DEFINE_TYPE(GimpHistogramBox, gimp_histogram_box, GTK_TYPE_BOX)
 
-G_DEFINE_TYPE (GimpHistogramBox, gimp_histogram_box, GTK_TYPE_BOX)
+static void gimp_histogram_box_class_init(GimpHistogramBoxClass *klass) {}
 
+static void gimp_histogram_box_init(GimpHistogramBox *box) {
+  GtkWidget *hbox;
+  GtkWidget *vbox;
+  GtkWidget *vbox2;
+  GtkWidget *frame;
+  GtkWidget *view;
+  GtkWidget *bar;
 
-static void
-gimp_histogram_box_class_init (GimpHistogramBoxClass *klass)
-{
-}
+  box->n_bins = 256;
 
-static void
-gimp_histogram_box_init (GimpHistogramBox *box)
-{
-	GtkWidget *hbox;
-	GtkWidget *vbox;
-	GtkWidget *vbox2;
-	GtkWidget *frame;
-	GtkWidget *view;
-	GtkWidget *bar;
+  gtk_orientable_set_orientation(GTK_ORIENTABLE(box), GTK_ORIENTATION_VERTICAL);
 
-	box->n_bins = 256;
+  gtk_box_set_spacing(GTK_BOX(box), 2);
 
-	gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
-	                                GTK_ORIENTATION_VERTICAL);
+  frame = gtk_frame_new(NULL);
+  gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_IN);
+  gtk_box_pack_start(GTK_BOX(box), frame, TRUE, TRUE, 0);
+  gtk_widget_show(frame);
 
-	gtk_box_set_spacing (GTK_BOX (box), 2);
+  vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add(GTK_CONTAINER(frame), vbox);
+  gtk_widget_show(vbox);
 
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-	gtk_box_pack_start (GTK_BOX (box), frame, TRUE, TRUE, 0);
-	gtk_widget_show (frame);
+  /*  The histogram  */
+  view = gimp_histogram_view_new(TRUE);
+  gtk_box_pack_start(GTK_BOX(vbox), view, TRUE, TRUE, 0);
+  gtk_widget_show(view);
 
-	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_add (GTK_CONTAINER (frame), vbox);
-	gtk_widget_show (vbox);
+  g_signal_connect(view, "range-changed",
+                   G_CALLBACK(gimp_histogram_box_histogram_range), box);
 
-	/*  The histogram  */
-	view = gimp_histogram_view_new (TRUE);
-	gtk_box_pack_start (GTK_BOX (vbox), view, TRUE, TRUE, 0);
-	gtk_widget_show (view);
+  box->view = GIMP_HISTOGRAM_VIEW(view);
 
-	g_signal_connect (view, "range-changed",
-	                  G_CALLBACK (gimp_histogram_box_histogram_range),
-	                  box);
+  /*  The gradient below the histogram */
+  vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_set_border_width(GTK_CONTAINER(vbox2),
+                                 GIMP_HISTOGRAM_VIEW(view)->border_width);
+  gtk_box_pack_start(GTK_BOX(vbox), vbox2, FALSE, FALSE, 0);
+  gtk_widget_show(vbox2);
 
-	box->view = GIMP_HISTOGRAM_VIEW (view);
+  box->color_bar = bar = g_object_new(GIMP_TYPE_COLOR_BAR, "histogram-channel",
+                                      box->view->channel, NULL);
+  gtk_widget_set_size_request(bar, -1, GRADIENT_HEIGHT);
+  gtk_box_pack_start(GTK_BOX(vbox2), bar, FALSE, FALSE, 0);
+  gtk_widget_show(bar);
 
-	/*  The gradient below the histogram */
-	vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (vbox2),
-	                                GIMP_HISTOGRAM_VIEW (view)->border_width);
-	gtk_box_pack_start (GTK_BOX (vbox), vbox2, FALSE, FALSE, 0);
-	gtk_widget_show (vbox2);
+  g_signal_connect(view, "notify::histogram-channel",
+                   G_CALLBACK(gimp_histogram_box_channel_notify), box);
+  g_signal_connect(view, "notify::border-width",
+                   G_CALLBACK(gimp_histogram_box_border_notify), box);
 
-	box->color_bar = bar = g_object_new (GIMP_TYPE_COLOR_BAR,
-	                                     "histogram-channel", box->view->channel,
-	                                     NULL);
-	gtk_widget_set_size_request (bar, -1, GRADIENT_HEIGHT);
-	gtk_box_pack_start (GTK_BOX (vbox2), bar, FALSE, FALSE, 0);
-	gtk_widget_show (bar);
+  box->slider_bar = bar = g_object_new(GIMP_TYPE_HANDLE_BAR, NULL);
+  gtk_widget_set_size_request(bar, -1, CONTROL_HEIGHT);
+  gtk_box_pack_start(GTK_BOX(vbox2), bar, FALSE, FALSE, 0);
+  gtk_widget_show(bar);
 
-	g_signal_connect (view, "notify::histogram-channel",
-	                  G_CALLBACK (gimp_histogram_box_channel_notify),
-	                  box);
-	g_signal_connect (view, "notify::border-width",
-	                  G_CALLBACK (gimp_histogram_box_border_notify),
-	                  box);
+  gimp_handle_bar_connect_events(GIMP_HANDLE_BAR(box->slider_bar),
+                                 box->color_bar);
 
-	box->slider_bar = bar = g_object_new (GIMP_TYPE_HANDLE_BAR, NULL);
-	gtk_widget_set_size_request (bar, -1, CONTROL_HEIGHT);
-	gtk_box_pack_start (GTK_BOX (vbox2), bar, FALSE, FALSE, 0);
-	gtk_widget_show (bar);
+  /*  The range selection */
+  hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_pack_start(GTK_BOX(box), hbox, FALSE, FALSE, 0);
+  gtk_widget_show(hbox);
 
-	gimp_handle_bar_connect_events (GIMP_HANDLE_BAR (box->slider_bar),
-	                                box->color_bar);
+  /*  low spinbutton  */
+  box->low_adj = gtk_adjustment_new(0.0, 0.0, 255.0, 1.0, 16.0, 0.0);
+  box->low_spinbutton = gimp_spin_button_new(box->low_adj, 1.0, 0);
+  gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(box->low_spinbutton), TRUE);
+  gtk_box_pack_start(GTK_BOX(hbox), box->low_spinbutton, FALSE, FALSE, 0);
+  gtk_widget_show(box->low_spinbutton);
 
-	/*  The range selection */
-	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-	gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
-	gtk_widget_show (hbox);
+  g_signal_connect(box->low_adj, "value-changed",
+                   G_CALLBACK(gimp_histogram_box_low_adj_update), box);
 
-	/*  low spinbutton  */
-	box->low_adj = gtk_adjustment_new (0.0, 0.0, 255.0, 1.0, 16.0, 0.0);
-	box->low_spinbutton = gimp_spin_button_new (box->low_adj, 1.0, 0);
-	gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (box->low_spinbutton), TRUE);
-	gtk_box_pack_start (GTK_BOX (hbox), box->low_spinbutton, FALSE, FALSE, 0);
-	gtk_widget_show (box->low_spinbutton);
+  gimp_handle_bar_set_adjustment(GIMP_HANDLE_BAR(bar), 0, box->low_adj);
 
-	g_signal_connect (box->low_adj, "value-changed",
-	                  G_CALLBACK (gimp_histogram_box_low_adj_update),
-	                  box);
+  /*  high spinbutton  */
+  box->high_adj = gtk_adjustment_new(255.0, 0.0, 255.0, 1.0, 16.0, 0.0);
+  box->high_spinbutton = gimp_spin_button_new(box->high_adj, 1.0, 0);
+  gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(box->high_spinbutton), TRUE);
+  gtk_box_pack_end(GTK_BOX(hbox), box->high_spinbutton, FALSE, FALSE, 0);
+  gtk_widget_show(box->high_spinbutton);
 
-	gimp_handle_bar_set_adjustment (GIMP_HANDLE_BAR (bar), 0, box->low_adj);
+  g_signal_connect(box->high_adj, "value-changed",
+                   G_CALLBACK(gimp_histogram_box_high_adj_update), box);
 
-	/*  high spinbutton  */
-	box->high_adj = gtk_adjustment_new (255.0, 0.0, 255.0, 1.0, 16.0, 0.0);
-	box->high_spinbutton = gimp_spin_button_new (box->high_adj, 1.0, 0);
-	gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (box->high_spinbutton), TRUE);
-	gtk_box_pack_end (GTK_BOX (hbox), box->high_spinbutton, FALSE, FALSE, 0);
-	gtk_widget_show (box->high_spinbutton);
-
-	g_signal_connect (box->high_adj, "value-changed",
-	                  G_CALLBACK (gimp_histogram_box_high_adj_update),
-	                  box);
-
-	gimp_handle_bar_set_adjustment (GIMP_HANDLE_BAR (bar), 2, box->high_adj);
+  gimp_handle_bar_set_adjustment(GIMP_HANDLE_BAR(bar), 2, box->high_adj);
 
 #ifdef DEBUG_VIEW
-	spinbutton = gimp_prop_spin_button_new (G_OBJECT (box->view), "border-width",
-	                                        1, 5, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
+  spinbutton =
+      gimp_prop_spin_button_new(G_OBJECT(box->view), "border-width", 1, 5, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), spinbutton, FALSE, FALSE, 0);
 
-	spinbutton = gimp_prop_spin_button_new (G_OBJECT (box->view), "subdivisions",
-	                                        1, 5, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
+  spinbutton =
+      gimp_prop_spin_button_new(G_OBJECT(box->view), "subdivisions", 1, 5, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), spinbutton, FALSE, FALSE, 0);
 #endif
 }
 
-static void
-gimp_histogram_box_low_adj_update (GtkAdjustment    *adjustment,
-                                   GimpHistogramBox *box)
-{
-	gdouble value = gtk_adjustment_get_value (adjustment);
+static void gimp_histogram_box_low_adj_update(GtkAdjustment *adjustment,
+                                              GimpHistogramBox *box) {
+  gdouble value = gtk_adjustment_get_value(adjustment);
 
-	gtk_adjustment_set_lower (box->high_adj, value);
+  gtk_adjustment_set_lower(box->high_adj, value);
 
-	if (box->n_bins != 256)
-		value *= box->n_bins - 1;
+  if (box->n_bins != 256)
+    value *= box->n_bins - 1;
 
-	value = ROUND (value);
+  value = ROUND(value);
 
-	if (box->view->start != value)
-		gimp_histogram_view_set_range (box->view, value, box->view->end);
+  if (box->view->start != value)
+    gimp_histogram_view_set_range(box->view, value, box->view->end);
 }
 
-static void
-gimp_histogram_box_high_adj_update (GtkAdjustment    *adjustment,
-                                    GimpHistogramBox *box)
-{
-	gdouble value = gtk_adjustment_get_value (adjustment);
+static void gimp_histogram_box_high_adj_update(GtkAdjustment *adjustment,
+                                               GimpHistogramBox *box) {
+  gdouble value = gtk_adjustment_get_value(adjustment);
 
-	gtk_adjustment_set_upper (box->low_adj, value);
+  gtk_adjustment_set_upper(box->low_adj, value);
 
-	if (box->n_bins != 256)
-		value *= box->n_bins - 1;
+  if (box->n_bins != 256)
+    value *= box->n_bins - 1;
 
-	value = ROUND (value);
+  value = ROUND(value);
 
-	if (box->view->end != value)
-		gimp_histogram_view_set_range (box->view, box->view->start, value);
+  if (box->view->end != value)
+    gimp_histogram_view_set_range(box->view, box->view->start, value);
 }
 
-static void
-gimp_histogram_box_histogram_range (GimpHistogramView *view,
-                                    gint start,
-                                    gint end,
-                                    GimpHistogramBox  *box)
-{
-	gdouble s = start;
-	gdouble e = end;
+static void gimp_histogram_box_histogram_range(GimpHistogramView *view,
+                                               gint start, gint end,
+                                               GimpHistogramBox *box) {
+  gdouble s = start;
+  gdouble e = end;
 
-	if (box->n_bins != view->n_bins)
-	{
-		gdouble upper;
-		gdouble page_increment;
-		gdouble step_increment;
-		guint digits;
+  if (box->n_bins != view->n_bins) {
+    gdouble upper;
+    gdouble page_increment;
+    gdouble step_increment;
+    guint digits;
 
-		box->n_bins = view->n_bins;
+    box->n_bins = view->n_bins;
 
-		if (box->n_bins == 256)
-		{
-			digits         = 0;
-			upper          = 255.0;
-			step_increment = 1.0;
-			page_increment = 16.0;
-		}
-		else
-		{
-			digits         = 3;
-			upper          = 1.0;
-			step_increment = 0.01;
-			page_increment = 0.1;
-		}
+    if (box->n_bins == 256) {
+      digits = 0;
+      upper = 255.0;
+      step_increment = 1.0;
+      page_increment = 16.0;
+    } else {
+      digits = 3;
+      upper = 1.0;
+      step_increment = 0.01;
+      page_increment = 0.1;
+    }
 
-		g_object_set (G_OBJECT (box->high_adj),
-		              "upper", upper,
-		              "step-increment", step_increment,
-		              "page-increment", page_increment,
-		              NULL);
+    g_object_set(G_OBJECT(box->high_adj), "upper", upper, "step-increment",
+                 step_increment, "page-increment", page_increment, NULL);
 
-		gtk_spin_button_set_digits (GTK_SPIN_BUTTON (box->high_spinbutton), digits);
+    gtk_spin_button_set_digits(GTK_SPIN_BUTTON(box->high_spinbutton), digits);
 
-		g_object_set (G_OBJECT (box->low_adj),
-		              "step-increment", step_increment,
-		              "page-increment", page_increment,
-		              NULL);
+    g_object_set(G_OBJECT(box->low_adj), "step-increment", step_increment,
+                 "page-increment", page_increment, NULL);
 
-		gtk_spin_button_set_digits (GTK_SPIN_BUTTON (box->low_spinbutton), digits);
-	}
+    gtk_spin_button_set_digits(GTK_SPIN_BUTTON(box->low_spinbutton), digits);
+  }
 
-	if (box->n_bins != 256)
-	{
-		s /= box->n_bins - 1;
-		e /= box->n_bins - 1;
-	}
+  if (box->n_bins != 256) {
+    s /= box->n_bins - 1;
+    e /= box->n_bins - 1;
+  }
 
-	gtk_adjustment_set_lower (box->high_adj, s);
-	gtk_adjustment_set_upper (box->low_adj,  e);
+  gtk_adjustment_set_lower(box->high_adj, s);
+  gtk_adjustment_set_upper(box->low_adj, e);
 
-	gtk_adjustment_set_value (box->low_adj,  s);
-	gtk_adjustment_set_value (box->high_adj, e);
+  gtk_adjustment_set_value(box->low_adj, s);
+  gtk_adjustment_set_value(box->high_adj, e);
 }
 
-static void
-gimp_histogram_box_channel_notify (GimpHistogramView *view,
-                                   GParamSpec        *pspec,
-                                   GimpHistogramBox  *box)
-{
-	gimp_color_bar_set_channel (GIMP_COLOR_BAR (box->color_bar), view->channel);
+static void gimp_histogram_box_channel_notify(GimpHistogramView *view,
+                                              GParamSpec *pspec,
+                                              GimpHistogramBox *box) {
+  gimp_color_bar_set_channel(GIMP_COLOR_BAR(box->color_bar), view->channel);
 }
 
-static void
-gimp_histogram_box_border_notify (GimpHistogramView *view,
-                                  GParamSpec        *pspec,
-                                  GimpHistogramBox  *box)
-{
-	GtkWidget *vbox = gtk_widget_get_parent (box->color_bar);
+static void gimp_histogram_box_border_notify(GimpHistogramView *view,
+                                             GParamSpec *pspec,
+                                             GimpHistogramBox *box) {
+  GtkWidget *vbox = gtk_widget_get_parent(box->color_bar);
 
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), view->border_width);
+  gtk_container_set_border_width(GTK_CONTAINER(vbox), view->border_width);
 }
-
 
 /*  public functions  */
 
-GtkWidget *
-gimp_histogram_box_new (void)
-{
-	return g_object_new (GIMP_TYPE_HISTOGRAM_BOX, NULL);
+GtkWidget *gimp_histogram_box_new(void) {
+  return g_object_new(GIMP_TYPE_HISTOGRAM_BOX, NULL);
 }
 
-void
-gimp_histogram_box_set_channel (GimpHistogramBox     *box,
-                                GimpHistogramChannel channel)
-{
-	g_return_if_fail (GIMP_IS_HISTOGRAM_BOX (box));
+void gimp_histogram_box_set_channel(GimpHistogramBox *box,
+                                    GimpHistogramChannel channel) {
+  g_return_if_fail(GIMP_IS_HISTOGRAM_BOX(box));
 
-	if (box->view)
-		gimp_histogram_view_set_channel (box->view, channel);
+  if (box->view)
+    gimp_histogram_view_set_channel(box->view, channel);
 }

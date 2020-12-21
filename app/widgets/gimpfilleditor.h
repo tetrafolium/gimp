@@ -21,35 +21,34 @@
 #ifndef __GIMP_FILL_EDITOR_H__
 #define __GIMP_FILL_EDITOR_H__
 
-
-#define GIMP_TYPE_FILL_EDITOR            (gimp_fill_editor_get_type ())
-#define GIMP_FILL_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FILL_EDITOR, GimpFillEditor))
-#define GIMP_FILL_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FILL_EDITOR, GimpFillEditorClass))
-#define GIMP_IS_FILL_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FILL_EDITOR))
-#define GIMP_IS_FILL_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FILL_EDITOR))
-#define GIMP_FILL_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FILL_EDITOR, GimpFillEditorClass))
-
+#define GIMP_TYPE_FILL_EDITOR (gimp_fill_editor_get_type())
+#define GIMP_FILL_EDITOR(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FILL_EDITOR, GimpFillEditor))
+#define GIMP_FILL_EDITOR_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FILL_EDITOR, GimpFillEditorClass))
+#define GIMP_IS_FILL_EDITOR(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FILL_EDITOR))
+#define GIMP_IS_FILL_EDITOR_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FILL_EDITOR))
+#define GIMP_FILL_EDITOR_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FILL_EDITOR, GimpFillEditorClass))
 
 typedef struct _GimpFillEditorClass GimpFillEditorClass;
 
-struct _GimpFillEditor
-{
-	GtkBox parent_instance;
+struct _GimpFillEditor {
+  GtkBox parent_instance;
 
-	GimpFillOptions *options;
-	gboolean edit_context;
+  GimpFillOptions *options;
+  gboolean edit_context;
 };
 
-struct _GimpFillEditorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpFillEditorClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_fill_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_fill_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_fill_editor_new      (GimpFillOptions *options,
-                                       gboolean edit_context);
-
+GtkWidget *gimp_fill_editor_new(GimpFillOptions *options,
+                                gboolean edit_context);
 
 #endif /* __GIMP_FILL_EDITOR_H__ */

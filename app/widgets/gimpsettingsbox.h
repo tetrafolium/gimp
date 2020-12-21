@@ -21,56 +21,50 @@
 #ifndef __GIMP_SETTINGS_BOX_H__
 #define __GIMP_SETTINGS_BOX_H__
 
-
-#define GIMP_TYPE_SETTINGS_BOX            (gimp_settings_box_get_type ())
-#define GIMP_SETTINGS_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SETTINGS_BOX, GimpSettingsBox))
-#define GIMP_SETTINGS_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SETTINGS_BOX, GimpSettingsBoxClass))
-#define GIMP_IS_SETTINGS_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SETTINGS_BOX))
-#define GIMP_IS_SETTINGS_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SETTINGS_BOX))
-#define GIMP_SETTINGS_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SETTINGS_BOX, GimpSettingsBoxClass))
-
+#define GIMP_TYPE_SETTINGS_BOX (gimp_settings_box_get_type())
+#define GIMP_SETTINGS_BOX(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SETTINGS_BOX, GimpSettingsBox))
+#define GIMP_SETTINGS_BOX_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SETTINGS_BOX,                    \
+                           GimpSettingsBoxClass))
+#define GIMP_IS_SETTINGS_BOX(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SETTINGS_BOX))
+#define GIMP_IS_SETTINGS_BOX_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SETTINGS_BOX))
+#define GIMP_SETTINGS_BOX_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SETTINGS_BOX,                    \
+                             GimpSettingsBoxClass))
 
 typedef struct _GimpSettingsBoxClass GimpSettingsBoxClass;
 
-struct _GimpSettingsBox
-{
-	GtkBox parent_instance;
+struct _GimpSettingsBox {
+  GtkBox parent_instance;
 };
 
-struct _GimpSettingsBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpSettingsBoxClass {
+  GtkBoxClass parent_class;
 
-	/*  signals  */
-	void (* file_dialog_setup) (GimpSettingsBox      *box,
-	                            GtkFileChooserDialog *dialog,
-	                            gboolean export);
-	void (* import)            (GimpSettingsBox      *box,
-	                            GFile                *file);
-	void (*export)            (GimpSettingsBox      *box,
-	                           GFile                *file);
-	void (* selected)          (GimpSettingsBox      *box,
-	                            GObject              *config);
+  /*  signals  */
+  void (*file_dialog_setup)(GimpSettingsBox *box, GtkFileChooserDialog *dialog,
+                            gboolean export);
+  void (*import)(GimpSettingsBox *box, GFile *file);
+  void (*export)(GimpSettingsBox *box, GFile *file);
+  void (*selected)(GimpSettingsBox *box, GObject *config);
 };
 
+GType gimp_settings_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_settings_box_get_type    (void) G_GNUC_CONST;
+GtkWidget *gimp_settings_box_new(Gimp *gimp, GObject *config,
+                                 GimpContainer *container,
+                                 const gchar *import_dialog_title,
+                                 const gchar *export_dialog_title,
+                                 const gchar *file_dialog_help_id,
+                                 GFile *default_folder, GFile *last_file);
 
-GtkWidget * gimp_settings_box_new         (Gimp            *gimp,
-                                           GObject         *config,
-                                           GimpContainer   *container,
-                                           const gchar     *import_dialog_title,
-                                           const gchar     *export_dialog_title,
-                                           const gchar     *file_dialog_help_id,
-                                           GFile           *default_folder,
-                                           GFile           *last_file);
+GtkWidget *gimp_settings_box_get_combo(GimpSettingsBox *box);
 
-GtkWidget * gimp_settings_box_get_combo   (GimpSettingsBox *box);
+void gimp_settings_box_add_current(GimpSettingsBox *box, gint max_recent);
 
-void        gimp_settings_box_add_current (GimpSettingsBox *box,
-                                           gint max_recent);
+void gimp_settings_box_unset(GimpSettingsBox *box);
 
-void        gimp_settings_box_unset       (GimpSettingsBox *box);
-
-
-#endif  /*  __GIMP_SETTINGS_BOX_H__  */
+#endif /*  __GIMP_SETTINGS_BOX_H__  */

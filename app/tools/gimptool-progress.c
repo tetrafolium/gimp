@@ -20,9 +20,9 @@
 
 #include "config.h"
 
+#include <gdk/gdkkeysyms.h>
 #include <gegl.h>
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
 
 #include "tools-types.h"
 
@@ -33,216 +33,176 @@
 #include "display/gimpcanvasprogress.h"
 
 #include "display/gimpdisplay.h"
-#include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-items.h"
 #include "display/gimpdisplayshell-transform.h"
+#include "display/gimpdisplayshell.h"
 
-#include "gimptool.h"
 #include "gimptool-progress.h"
-
+#include "gimptool.h"
 
 /*  local function prototypes  */
 
-static GimpProgress * gimp_tool_progress_start     (GimpProgress        *progress,
-                                                    gboolean cancelable,
-                                                    const gchar         *message);
-static void           gimp_tool_progress_end       (GimpProgress        *progress);
-static gboolean       gimp_tool_progress_is_active (GimpProgress        *progress);
-static void           gimp_tool_progress_set_text  (GimpProgress        *progress,
-                                                    const gchar         *message);
-static void           gimp_tool_progress_set_value (GimpProgress        *progress,
-                                                    gdouble percentage);
-static gdouble        gimp_tool_progress_get_value (GimpProgress        *progress);
-static void           gimp_tool_progress_pulse     (GimpProgress        *progress);
-static gboolean       gimp_tool_progress_message   (GimpProgress        *progress,
-                                                    Gimp                *gimp,
-                                                    GimpMessageSeverity severity,
-                                                    const gchar         *domain,
-                                                    const gchar         *message);
-
+static GimpProgress *gimp_tool_progress_start(GimpProgress *progress,
+                                              gboolean cancelable,
+                                              const gchar *message);
+static void gimp_tool_progress_end(GimpProgress *progress);
+static gboolean gimp_tool_progress_is_active(GimpProgress *progress);
+static void gimp_tool_progress_set_text(GimpProgress *progress,
+                                        const gchar *message);
+static void gimp_tool_progress_set_value(GimpProgress *progress,
+                                         gdouble percentage);
+static gdouble gimp_tool_progress_get_value(GimpProgress *progress);
+static void gimp_tool_progress_pulse(GimpProgress *progress);
+static gboolean gimp_tool_progress_message(GimpProgress *progress, Gimp *gimp,
+                                           GimpMessageSeverity severity,
+                                           const gchar *domain,
+                                           const gchar *message);
 
 /*  public functions  */
 
-void
-gimp_tool_progress_iface_init (GimpProgressInterface *iface)
-{
-	iface->start     = gimp_tool_progress_start;
-	iface->end       = gimp_tool_progress_end;
-	iface->is_active = gimp_tool_progress_is_active;
-	iface->set_text  = gimp_tool_progress_set_text;
-	iface->set_value = gimp_tool_progress_set_value;
-	iface->get_value = gimp_tool_progress_get_value;
-	iface->pulse     = gimp_tool_progress_pulse;
-	iface->message   = gimp_tool_progress_message;
+void gimp_tool_progress_iface_init(GimpProgressInterface *iface) {
+  iface->start = gimp_tool_progress_start;
+  iface->end = gimp_tool_progress_end;
+  iface->is_active = gimp_tool_progress_is_active;
+  iface->set_text = gimp_tool_progress_set_text;
+  iface->set_value = gimp_tool_progress_set_value;
+  iface->get_value = gimp_tool_progress_get_value;
+  iface->pulse = gimp_tool_progress_pulse;
+  iface->message = gimp_tool_progress_message;
 }
-
 
 /*  private functions  */
 
-static gboolean
-gimp_tool_progress_button_press (GtkWidget            *widget,
-                                 const GdkEventButton *bevent,
-                                 GimpTool             *tool)
-{
-	if (tool->progress_cancelable          &&
-	    bevent->type   == GDK_BUTTON_PRESS &&
-	    bevent->button == 1)
-	{
-		GtkWidget        *event_widget;
-		GimpDisplayShell *shell;
+static gboolean gimp_tool_progress_button_press(GtkWidget *widget,
+                                                const GdkEventButton *bevent,
+                                                GimpTool *tool) {
+  if (tool->progress_cancelable && bevent->type == GDK_BUTTON_PRESS &&
+      bevent->button == 1) {
+    GtkWidget *event_widget;
+    GimpDisplayShell *shell;
 
-		event_widget = gtk_get_event_widget ((GdkEvent *) bevent);
-		shell        = gimp_display_get_shell (tool->progress_display);
+    event_widget = gtk_get_event_widget((GdkEvent *)bevent);
+    shell = gimp_display_get_shell(tool->progress_display);
 
-		if (shell->canvas == event_widget)
-		{
-			gint x, y;
+    if (shell->canvas == event_widget) {
+      gint x, y;
 
-			gimp_display_shell_unzoom_xy (shell, bevent->x, bevent->y,
-			                              &x, &y, FALSE);
+      gimp_display_shell_unzoom_xy(shell, bevent->x, bevent->y, &x, &y, FALSE);
 
-			if (gimp_canvas_item_hit (tool->progress, x, y))
-			{
-				gimp_progress_cancel (GIMP_PROGRESS (tool));
-			}
-		}
-	}
+      if (gimp_canvas_item_hit(tool->progress, x, y)) {
+        gimp_progress_cancel(GIMP_PROGRESS(tool));
+      }
+    }
+  }
 
-	return TRUE;
+  return TRUE;
 }
 
-static gboolean
-gimp_tool_progress_key_press (GtkWidget         *widget,
-                              const GdkEventKey *kevent,
-                              GimpTool          *tool)
-{
-	if (tool->progress_cancelable &&
-	    kevent->keyval == GDK_KEY_Escape)
-	{
-		gimp_progress_cancel (GIMP_PROGRESS (tool));
-	}
+static gboolean gimp_tool_progress_key_press(GtkWidget *widget,
+                                             const GdkEventKey *kevent,
+                                             GimpTool *tool) {
+  if (tool->progress_cancelable && kevent->keyval == GDK_KEY_Escape) {
+    gimp_progress_cancel(GIMP_PROGRESS(tool));
+  }
 
-	return TRUE;
+  return TRUE;
 }
 
-static GimpProgress *
-gimp_tool_progress_start (GimpProgress *progress,
-                          gboolean cancelable,
-                          const gchar  *message)
-{
-	GimpTool         *tool = GIMP_TOOL (progress);
-	GimpDisplayShell *shell;
-	gint x, y;
+static GimpProgress *gimp_tool_progress_start(GimpProgress *progress,
+                                              gboolean cancelable,
+                                              const gchar *message) {
+  GimpTool *tool = GIMP_TOOL(progress);
+  GimpDisplayShell *shell;
+  gint x, y;
 
-	g_return_val_if_fail (GIMP_IS_DISPLAY (tool->display), NULL);
-	g_return_val_if_fail (tool->progress == NULL, NULL);
+  g_return_val_if_fail(GIMP_IS_DISPLAY(tool->display), NULL);
+  g_return_val_if_fail(tool->progress == NULL, NULL);
 
-	shell = gimp_display_get_shell (tool->display);
+  shell = gimp_display_get_shell(tool->display);
 
-	x = shell->disp_width  / 2;
-	y = shell->disp_height / 2;
+  x = shell->disp_width / 2;
+  y = shell->disp_height / 2;
 
-	gimp_display_shell_unzoom_xy (shell, x, y, &x, &y, FALSE);
+  gimp_display_shell_unzoom_xy(shell, x, y, &x, &y, FALSE);
 
-	tool->progress = gimp_canvas_progress_new (shell,
-	                                           GIMP_HANDLE_ANCHOR_CENTER,
-	                                           x, y);
-	gimp_display_shell_add_unrotated_item (shell, tool->progress);
-	g_object_unref (tool->progress);
+  tool->progress =
+      gimp_canvas_progress_new(shell, GIMP_HANDLE_ANCHOR_CENTER, x, y);
+  gimp_display_shell_add_unrotated_item(shell, tool->progress);
+  g_object_unref(tool->progress);
 
-	gimp_progress_start (GIMP_PROGRESS (tool->progress), FALSE,
-	                     "%s", message);
+  gimp_progress_start(GIMP_PROGRESS(tool->progress), FALSE, "%s", message);
 
-	tool->progress_display = tool->display;
+  tool->progress_display = tool->display;
 
-	tool->progress_grab_widget = gtk_invisible_new ();
-	gtk_widget_show (tool->progress_grab_widget);
-	gtk_grab_add (tool->progress_grab_widget);
+  tool->progress_grab_widget = gtk_invisible_new();
+  gtk_widget_show(tool->progress_grab_widget);
+  gtk_grab_add(tool->progress_grab_widget);
 
-	g_signal_connect (tool->progress_grab_widget, "button-press-event",
-	                  G_CALLBACK (gimp_tool_progress_button_press),
-	                  tool);
-	g_signal_connect (tool->progress_grab_widget, "key-press-event",
-	                  G_CALLBACK (gimp_tool_progress_key_press),
-	                  tool);
+  g_signal_connect(tool->progress_grab_widget, "button-press-event",
+                   G_CALLBACK(gimp_tool_progress_button_press), tool);
+  g_signal_connect(tool->progress_grab_widget, "key-press-event",
+                   G_CALLBACK(gimp_tool_progress_key_press), tool);
 
-	tool->progress_cancelable = cancelable;
+  tool->progress_cancelable = cancelable;
 
-	return progress;
+  return progress;
 }
 
-static void
-gimp_tool_progress_end (GimpProgress *progress)
-{
-	GimpTool *tool = GIMP_TOOL (progress);
+static void gimp_tool_progress_end(GimpProgress *progress) {
+  GimpTool *tool = GIMP_TOOL(progress);
 
-	if (tool->progress)
-	{
-		GimpDisplayShell *shell = gimp_display_get_shell (tool->progress_display);
+  if (tool->progress) {
+    GimpDisplayShell *shell = gimp_display_get_shell(tool->progress_display);
 
-		gimp_progress_end (GIMP_PROGRESS (tool->progress));
-		gimp_display_shell_remove_unrotated_item (shell, tool->progress);
+    gimp_progress_end(GIMP_PROGRESS(tool->progress));
+    gimp_display_shell_remove_unrotated_item(shell, tool->progress);
 
-		gtk_grab_remove (tool->progress_grab_widget);
-		gtk_widget_destroy (tool->progress_grab_widget);
+    gtk_grab_remove(tool->progress_grab_widget);
+    gtk_widget_destroy(tool->progress_grab_widget);
 
-		tool->progress             = NULL;
-		tool->progress_display     = NULL;
-		tool->progress_grab_widget = NULL;
-		tool->progress_cancelable  = FALSE;
-	}
+    tool->progress = NULL;
+    tool->progress_display = NULL;
+    tool->progress_grab_widget = NULL;
+    tool->progress_cancelable = FALSE;
+  }
 }
 
-static gboolean
-gimp_tool_progress_is_active (GimpProgress *progress)
-{
-	GimpTool *tool = GIMP_TOOL (progress);
+static gboolean gimp_tool_progress_is_active(GimpProgress *progress) {
+  GimpTool *tool = GIMP_TOOL(progress);
 
-	return tool->progress != NULL;
+  return tool->progress != NULL;
 }
 
-static void
-gimp_tool_progress_set_text (GimpProgress *progress,
-                             const gchar  *message)
-{
-	GimpTool *tool = GIMP_TOOL (progress);
+static void gimp_tool_progress_set_text(GimpProgress *progress,
+                                        const gchar *message) {
+  GimpTool *tool = GIMP_TOOL(progress);
 
-	if (tool->progress)
-		gimp_progress_set_text_literal (GIMP_PROGRESS (tool->progress), message);
+  if (tool->progress)
+    gimp_progress_set_text_literal(GIMP_PROGRESS(tool->progress), message);
 }
 
-static void
-gimp_tool_progress_set_value (GimpProgress *progress,
-                              gdouble percentage)
-{
-	GimpTool *tool = GIMP_TOOL (progress);
+static void gimp_tool_progress_set_value(GimpProgress *progress,
+                                         gdouble percentage) {
+  GimpTool *tool = GIMP_TOOL(progress);
 
-	if (tool->progress)
-		gimp_progress_set_value (GIMP_PROGRESS (tool->progress), percentage);
+  if (tool->progress)
+    gimp_progress_set_value(GIMP_PROGRESS(tool->progress), percentage);
 }
 
-static gdouble
-gimp_tool_progress_get_value (GimpProgress *progress)
-{
-	GimpTool *tool = GIMP_TOOL (progress);
+static gdouble gimp_tool_progress_get_value(GimpProgress *progress) {
+  GimpTool *tool = GIMP_TOOL(progress);
 
-	if (tool->progress)
-		return gimp_progress_get_value (GIMP_PROGRESS (tool->progress));
+  if (tool->progress)
+    return gimp_progress_get_value(GIMP_PROGRESS(tool->progress));
 
-	return 0.0;
+  return 0.0;
 }
 
-static void
-gimp_tool_progress_pulse (GimpProgress *progress)
-{
-}
+static void gimp_tool_progress_pulse(GimpProgress *progress) {}
 
-static gboolean
-gimp_tool_progress_message (GimpProgress        *progress,
-                            Gimp                *gimp,
-                            GimpMessageSeverity severity,
-                            const gchar         *domain,
-                            const gchar         *message)
-{
-	return FALSE;
+static gboolean gimp_tool_progress_message(GimpProgress *progress, Gimp *gimp,
+                                           GimpMessageSeverity severity,
+                                           const gchar *domain,
+                                           const gchar *message) {
+  return FALSE;
 }

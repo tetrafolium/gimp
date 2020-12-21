@@ -21,8 +21,6 @@
 #ifndef __GIMP_TOOL_PROGRESS_H__
 #define __GIMP_TOOL_PROGRESS_H__
 
-
-void   gimp_tool_progress_iface_init (GimpProgressInterface *iface);
-
+void gimp_tool_progress_iface_init(GimpProgressInterface *iface);
 
 #endif /* __GIMP_TOOL_PROGRESS */

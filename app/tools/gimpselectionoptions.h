@@ -18,39 +18,41 @@
 #ifndef __GIMP_SELECTION_OPTIONS_H__
 #define __GIMP_SELECTION_OPTIONS_H__
 
-
 #include "core/gimptooloptions.h"
 
-
-#define GIMP_TYPE_SELECTION_OPTIONS            (gimp_selection_options_get_type ())
-#define GIMP_SELECTION_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SELECTION_OPTIONS, GimpSelectionOptions))
-#define GIMP_SELECTION_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SELECTION_OPTIONS, GimpSelectionOptionsClass))
-#define GIMP_IS_SELECTION_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SELECTION_OPTIONS))
-#define GIMP_IS_SELECTION_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SELECTION_OPTIONS))
-#define GIMP_SELECTION_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SELECTION_OPTIONS, GimpSelectionOptionsClass))
-
+#define GIMP_TYPE_SELECTION_OPTIONS (gimp_selection_options_get_type())
+#define GIMP_SELECTION_OPTIONS(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SELECTION_OPTIONS,              \
+                              GimpSelectionOptions))
+#define GIMP_SELECTION_OPTIONS_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SELECTION_OPTIONS,               \
+                           GimpSelectionOptionsClass))
+#define GIMP_IS_SELECTION_OPTIONS(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SELECTION_OPTIONS))
+#define GIMP_IS_SELECTION_OPTIONS_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SELECTION_OPTIONS))
+#define GIMP_SELECTION_OPTIONS_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SELECTION_OPTIONS,               \
+                             GimpSelectionOptionsClass))
 
 typedef struct _GimpSelectionOptions GimpSelectionOptions;
 typedef struct _GimpToolOptionsClass GimpSelectionOptionsClass;
 
-struct _GimpSelectionOptions
-{
-	GimpToolOptions parent_instance;
+struct _GimpSelectionOptions {
+  GimpToolOptions parent_instance;
 
-	GimpChannelOps operation;
-	gboolean antialias;
-	gboolean feather;
-	gdouble feather_radius;
+  GimpChannelOps operation;
+  gboolean antialias;
+  gboolean feather;
+  gdouble feather_radius;
 
-	/*  options gui  */
-	GtkWidget       *mode_box;
-	GtkWidget       *antialias_toggle;
+  /*  options gui  */
+  GtkWidget *mode_box;
+  GtkWidget *antialias_toggle;
 };
 
+GType gimp_selection_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_selection_options_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_selection_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_selection_options_gui      (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_SELECTION_OPTIONS_H__  */
+#endif /*  __GIMP_SELECTION_OPTIONS_H__  */

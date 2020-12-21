@@ -21,8 +21,6 @@
 #ifndef __GIMP_VIEW_RENDERER_UTILS_H__
 #define __GIMP_VIEW_RENDERER_UTILS_H__
 
-
-GType   gimp_view_renderer_type_from_viewable_type (GType viewable_type);
-
+GType gimp_view_renderer_type_from_viewable_type(GType viewable_type);
 
 #endif /* __GIMP_VIEW_RENDERER_UTILS_H__ */

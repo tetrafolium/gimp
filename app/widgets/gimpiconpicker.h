@@ -22,39 +22,37 @@
 #ifndef __GIMP_ICON_PICKER_H__
 #define __GIMP_ICON_PICKER_H__
 
-
-#define GIMP_TYPE_ICON_PICKER            (gimp_icon_picker_get_type ())
-#define GIMP_ICON_PICKER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ICON_PICKER, GimpIconPicker))
-#define GIMP_ICON_PICKER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ICON_PICKER, GimpIconPickerClass))
-#define GIMP_IS_ICON_PICKER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ICON_PICKER))
-#define GIMP_IS_ICON_PICKER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ICON_PICKER))
-#define GIMP_ICON_PICKER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ICON_PICKER, GimpIconPickerClass))
-
+#define GIMP_TYPE_ICON_PICKER (gimp_icon_picker_get_type())
+#define GIMP_ICON_PICKER(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ICON_PICKER, GimpIconPicker))
+#define GIMP_ICON_PICKER_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ICON_PICKER, GimpIconPickerClass))
+#define GIMP_IS_ICON_PICKER(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ICON_PICKER))
+#define GIMP_IS_ICON_PICKER_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ICON_PICKER))
+#define GIMP_ICON_PICKER_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ICON_PICKER, GimpIconPickerClass))
 
 typedef struct _GimpIconPickerClass GimpIconPickerClass;
 
-struct _GimpIconPicker
-{
-	GtkBox parent_instance;
+struct _GimpIconPicker {
+  GtkBox parent_instance;
 };
 
-struct _GimpIconPickerClass
-{
-	GtkBoxClass parent_class;
+struct _GimpIconPickerClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_icon_picker_get_type(void) G_GNUC_CONST;
 
-GType          gimp_icon_picker_get_type       (void) G_GNUC_CONST;
+GtkWidget *gimp_icon_picker_new(Gimp *gimp);
 
-GtkWidget   * gimp_icon_picker_new             (Gimp           *gimp);
+const gchar *gimp_icon_picker_get_icon_name(GimpIconPicker *picker);
+void gimp_icon_picker_set_icon_name(GimpIconPicker *picker,
+                                    const gchar *icon_name);
 
-const gchar * gimp_icon_picker_get_icon_name   (GimpIconPicker *picker);
-void          gimp_icon_picker_set_icon_name   (GimpIconPicker *picker,
-                                                const gchar    *icon_name);
+GdkPixbuf *gimp_icon_picker_get_icon_pixbuf(GimpIconPicker *picker);
+void gimp_icon_picker_set_icon_pixbuf(GimpIconPicker *picker, GdkPixbuf *value);
 
-GdkPixbuf   * gimp_icon_picker_get_icon_pixbuf (GimpIconPicker *picker);
-void          gimp_icon_picker_set_icon_pixbuf (GimpIconPicker *picker,
-                                                GdkPixbuf      *value);
-
-
-#endif  /*  __GIMP_ICON_PICKER_H__  */
+#endif /*  __GIMP_ICON_PICKER_H__  */

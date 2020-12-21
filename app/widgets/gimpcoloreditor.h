@@ -21,42 +21,42 @@
 #ifndef __GIMP_COLOR_EDITOR_H__
 #define __GIMP_COLOR_EDITOR_H__
 
-
 #include "gimpeditor.h"
 
-
-#define GIMP_TYPE_COLOR_EDITOR            (gimp_color_editor_get_type ())
-#define GIMP_COLOR_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_EDITOR, GimpColorEditor))
-#define GIMP_COLOR_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_EDITOR, GimpColorEditorClass))
-#define GIMP_IS_COLOR_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_EDITOR))
-#define GIMP_IS_COLOR_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_EDITOR))
-#define GIMP_COLOR_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_EDITOR, GimpColorEditorClass))
-
+#define GIMP_TYPE_COLOR_EDITOR (gimp_color_editor_get_type())
+#define GIMP_COLOR_EDITOR(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_EDITOR, GimpColorEditor))
+#define GIMP_COLOR_EDITOR_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_EDITOR,                    \
+                           GimpColorEditorClass))
+#define GIMP_IS_COLOR_EDITOR(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_EDITOR))
+#define GIMP_IS_COLOR_EDITOR_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_EDITOR))
+#define GIMP_COLOR_EDITOR_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_EDITOR,                    \
+                             GimpColorEditorClass))
 
 typedef struct _GimpColorEditorClass GimpColorEditorClass;
 
-struct _GimpColorEditor
-{
-	GimpEditor parent_instance;
+struct _GimpColorEditor {
+  GimpEditor parent_instance;
 
-	GimpContext *context;
-	gboolean edit_bg;
+  GimpContext *context;
+  gboolean edit_bg;
 
-	GtkWidget   *hbox;
-	GtkWidget   *notebook;
-	GtkWidget   *fg_bg;
-	GtkWidget   *hex_entry;
+  GtkWidget *hbox;
+  GtkWidget *notebook;
+  GtkWidget *fg_bg;
+  GtkWidget *hex_entry;
 };
 
-struct _GimpColorEditorClass
-{
-	GimpEditorClass parent_class;
+struct _GimpColorEditorClass {
+  GimpEditorClass parent_class;
 };
 
+GType gimp_color_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_color_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_color_editor_new      (GimpContext *context);
-
+GtkWidget *gimp_color_editor_new(GimpContext *context);
 
 #endif /* __GIMP_COLOR_EDITOR_H__ */

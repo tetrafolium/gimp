@@ -21,39 +21,40 @@
 #ifndef __GIMP_CELL_RENDERER_BUTTON_H__
 #define __GIMP_CELL_RENDERER_BUTTON_H__
 
-
-#define GIMP_TYPE_CELL_RENDERER_BUTTON            (gimp_cell_renderer_button_get_type ())
-#define GIMP_CELL_RENDERER_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CELL_RENDERER_BUTTON, GimpCellRendererButton))
-#define GIMP_CELL_RENDERER_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CELL_RENDERER_BUTTON, GimpCellRendererButtonClass))
-#define GIMP_IS_CELL_RENDERER_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CELL_RENDERER_BUTTON))
-#define GIMP_IS_CELL_RENDERER_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CELL_RENDERER_BUTTON))
-#define GIMP_CELL_RENDERER_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CELL_RENDERER_BUTTON, GimpCellRendererButtonClass))
-
+#define GIMP_TYPE_CELL_RENDERER_BUTTON (gimp_cell_renderer_button_get_type())
+#define GIMP_CELL_RENDERER_BUTTON(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CELL_RENDERER_BUTTON,           \
+                              GimpCellRendererButton))
+#define GIMP_CELL_RENDERER_BUTTON_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CELL_RENDERER_BUTTON,            \
+                           GimpCellRendererButtonClass))
+#define GIMP_IS_CELL_RENDERER_BUTTON(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CELL_RENDERER_BUTTON))
+#define GIMP_IS_CELL_RENDERER_BUTTON_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CELL_RENDERER_BUTTON))
+#define GIMP_CELL_RENDERER_BUTTON_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CELL_RENDERER_BUTTON,            \
+                             GimpCellRendererButtonClass))
 
 typedef struct _GimpCellRendererButtonClass GimpCellRendererButtonClass;
 
-struct _GimpCellRendererButton
-{
-	GtkCellRendererPixbuf parent_instance;
+struct _GimpCellRendererButton {
+  GtkCellRendererPixbuf parent_instance;
 };
 
-struct _GimpCellRendererButtonClass
-{
-	GtkCellRendererPixbufClass parent_class;
+struct _GimpCellRendererButtonClass {
+  GtkCellRendererPixbufClass parent_class;
 
-	void (* clicked) (GimpCellRendererButton *cell,
-	                  const gchar            *path,
-	                  GdkModifierType state);
+  void (*clicked)(GimpCellRendererButton *cell, const gchar *path,
+                  GdkModifierType state);
 };
 
+GType gimp_cell_renderer_button_get_type(void) G_GNUC_CONST;
 
-GType             gimp_cell_renderer_button_get_type (void) G_GNUC_CONST;
+GtkCellRenderer *gimp_cell_renderer_button_new(void);
 
-GtkCellRenderer * gimp_cell_renderer_button_new      (void);
-
-void              gimp_cell_renderer_button_clicked  (GimpCellRendererButton *cell,
-                                                      const gchar            *path,
-                                                      GdkModifierType state);
-
+void gimp_cell_renderer_button_clicked(GimpCellRendererButton *cell,
+                                       const gchar *path,
+                                       GdkModifierType state);
 
 #endif /* __GIMP_CELL_RENDERER_BUTTON_H__ */

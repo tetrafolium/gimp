@@ -37,142 +37,113 @@
 
 #include "gimp-intl.h"
 
+static void gimp_color_selector_palette_set_color(GimpColorSelector *selector,
+                                                  const GimpRGB *rgb,
+                                                  const GimpHSV *hsv);
+static void gimp_color_selector_palette_set_config(GimpColorSelector *selector,
+                                                   GimpColorConfig *config);
 
-static void   gimp_color_selector_palette_set_color  (GimpColorSelector *selector,
-                                                      const GimpRGB     *rgb,
-                                                      const GimpHSV     *hsv);
-static void   gimp_color_selector_palette_set_config (GimpColorSelector *selector,
-                                                      GimpColorConfig   *config);
-
-
-G_DEFINE_TYPE (GimpColorSelectorPalette, gimp_color_selector_palette,
-               GIMP_TYPE_COLOR_SELECTOR)
+G_DEFINE_TYPE(GimpColorSelectorPalette, gimp_color_selector_palette,
+              GIMP_TYPE_COLOR_SELECTOR)
 
 #define parent_class gimp_color_selector_palette_parent_class
 
-
 static void
-gimp_color_selector_palette_class_init (GimpColorSelectorPaletteClass *klass)
-{
-	GimpColorSelectorClass *selector_class = GIMP_COLOR_SELECTOR_CLASS (klass);
+gimp_color_selector_palette_class_init(GimpColorSelectorPaletteClass *klass) {
+  GimpColorSelectorClass *selector_class = GIMP_COLOR_SELECTOR_CLASS(klass);
 
-	selector_class->name       = _("Palette");
-	selector_class->help_id    = "gimp-colorselector-palette";
-	selector_class->icon_name  = GIMP_ICON_PALETTE;
-	selector_class->set_color  = gimp_color_selector_palette_set_color;
-	selector_class->set_config = gimp_color_selector_palette_set_config;
+  selector_class->name = _("Palette");
+  selector_class->help_id = "gimp-colorselector-palette";
+  selector_class->icon_name = GIMP_ICON_PALETTE;
+  selector_class->set_color = gimp_color_selector_palette_set_color;
+  selector_class->set_config = gimp_color_selector_palette_set_config;
 
-	gtk_widget_class_set_css_name (GTK_WIDGET_CLASS (klass),
-	                               "GimpColorSelectorPalette");
+  gtk_widget_class_set_css_name(GTK_WIDGET_CLASS(klass),
+                                "GimpColorSelectorPalette");
+}
+
+static void gimp_color_selector_palette_init(GimpColorSelectorPalette *select) {
+}
+
+static void gimp_color_selector_palette_set_color(GimpColorSelector *selector,
+                                                  const GimpRGB *rgb,
+                                                  const GimpHSV *hsv) {
+  GimpColorSelectorPalette *select = GIMP_COLOR_SELECTOR_PALETTE(selector);
+
+  if (select->context) {
+    GimpPalette *palette = gimp_context_get_palette(select->context);
+
+    if (palette && gimp_palette_get_n_colors(palette) > 0) {
+      GimpPaletteEntry *entry;
+
+      entry = gimp_palette_find_entry(
+          palette, rgb, GIMP_PALETTE_VIEW(select->view)->selected);
+
+      if (entry)
+        gimp_palette_view_select_entry(GIMP_PALETTE_VIEW(select->view), entry);
+    }
+  }
 }
 
 static void
-gimp_color_selector_palette_init (GimpColorSelectorPalette *select)
-{
+gimp_color_selector_palette_palette_changed(GimpContext *context,
+                                            GimpPalette *palette,
+                                            GimpColorSelectorPalette *select) {
+  gimp_view_set_viewable(GIMP_VIEW(select->view), GIMP_VIEWABLE(palette));
 }
 
-static void
-gimp_color_selector_palette_set_color (GimpColorSelector *selector,
-                                       const GimpRGB     *rgb,
-                                       const GimpHSV     *hsv)
-{
-	GimpColorSelectorPalette *select = GIMP_COLOR_SELECTOR_PALETTE (selector);
+static void gimp_color_selector_palette_entry_clicked(
+    GimpPaletteView *view, GimpPaletteEntry *entry, GdkModifierType state,
+    GimpColorSelector *selector) {
+  selector->rgb = entry->color;
+  gimp_rgb_to_hsv(&selector->rgb, &selector->hsv);
 
-	if (select->context)
-	{
-		GimpPalette *palette = gimp_context_get_palette (select->context);
-
-		if (palette && gimp_palette_get_n_colors (palette) > 0)
-		{
-			GimpPaletteEntry *entry;
-
-			entry = gimp_palette_find_entry (palette, rgb,
-			                                 GIMP_PALETTE_VIEW (select->view)->selected);
-
-			if (entry)
-				gimp_palette_view_select_entry (GIMP_PALETTE_VIEW (select->view),
-				                                entry);
-		}
-	}
+  gimp_color_selector_emit_color_changed(selector);
 }
 
-static void
-gimp_color_selector_palette_palette_changed (GimpContext              *context,
-                                             GimpPalette              *palette,
-                                             GimpColorSelectorPalette *select)
-{
-	gimp_view_set_viewable (GIMP_VIEW (select->view), GIMP_VIEWABLE (palette));
-}
+static void gimp_color_selector_palette_set_config(GimpColorSelector *selector,
+                                                   GimpColorConfig *config) {
+  GimpColorSelectorPalette *select = GIMP_COLOR_SELECTOR_PALETTE(selector);
 
-static void
-gimp_color_selector_palette_entry_clicked (GimpPaletteView   *view,
-                                           GimpPaletteEntry  *entry,
-                                           GdkModifierType state,
-                                           GimpColorSelector *selector)
-{
-	selector->rgb = entry->color;
-	gimp_rgb_to_hsv (&selector->rgb, &selector->hsv);
+  if (select->context) {
+    g_signal_handlers_disconnect_by_func(
+        select->context, gimp_color_selector_palette_palette_changed, select);
+    gimp_view_renderer_set_context(GIMP_VIEW(select->view)->renderer, NULL);
 
-	gimp_color_selector_emit_color_changed (selector);
-}
+    g_clear_object(&select->context);
+  }
 
-static void
-gimp_color_selector_palette_set_config (GimpColorSelector *selector,
-                                        GimpColorConfig   *config)
-{
-	GimpColorSelectorPalette *select = GIMP_COLOR_SELECTOR_PALETTE (selector);
+  if (config)
+    select->context = g_object_get_data(G_OBJECT(config), "gimp-context");
 
-	if (select->context)
-	{
-		g_signal_handlers_disconnect_by_func (select->context,
-		                                      gimp_color_selector_palette_palette_changed,
-		                                      select);
-		gimp_view_renderer_set_context (GIMP_VIEW (select->view)->renderer,
-		                                NULL);
+  if (select->context) {
+    g_object_ref(select->context);
 
-		g_clear_object (&select->context);
-	}
+    if (!select->view) {
+      select->view = gimp_view_new_full_by_types(
+          select->context, GIMP_TYPE_PALETTE_VIEW, GIMP_TYPE_PALETTE, 100, 100,
+          0, FALSE, TRUE, FALSE);
+      gimp_view_set_expand(GIMP_VIEW(select->view), TRUE);
+      gimp_view_renderer_palette_set_cell_size(
+          GIMP_VIEW_RENDERER_PALETTE(GIMP_VIEW(select->view)->renderer), -1);
+      gimp_view_renderer_palette_set_draw_grid(
+          GIMP_VIEW_RENDERER_PALETTE(GIMP_VIEW(select->view)->renderer), TRUE);
+      gtk_box_pack_start(GTK_BOX(select), select->view, TRUE, TRUE, 0);
+      gtk_widget_show(select->view);
 
-	if (config)
-		select->context = g_object_get_data (G_OBJECT (config), "gimp-context");
+      g_signal_connect(select->view, "entry-clicked",
+                       G_CALLBACK(gimp_color_selector_palette_entry_clicked),
+                       select);
+    } else {
+      gimp_view_renderer_set_context(GIMP_VIEW(select->view)->renderer,
+                                     select->context);
+    }
 
-	if (select->context)
-	{
-		g_object_ref (select->context);
+    g_signal_connect_object(
+        select->context, "palette-changed",
+        G_CALLBACK(gimp_color_selector_palette_palette_changed), select, 0);
 
-		if (!select->view)
-		{
-			select->view = gimp_view_new_full_by_types (select->context,
-			                                            GIMP_TYPE_PALETTE_VIEW,
-			                                            GIMP_TYPE_PALETTE,
-			                                            100, 100, 0,
-			                                            FALSE, TRUE, FALSE);
-			gimp_view_set_expand (GIMP_VIEW (select->view), TRUE);
-			gimp_view_renderer_palette_set_cell_size
-			        (GIMP_VIEW_RENDERER_PALETTE (GIMP_VIEW (select->view)->renderer),
-			        -1);
-			gimp_view_renderer_palette_set_draw_grid
-			        (GIMP_VIEW_RENDERER_PALETTE (GIMP_VIEW (select->view)->renderer),
-			        TRUE);
-			gtk_box_pack_start (GTK_BOX (select), select->view, TRUE, TRUE, 0);
-			gtk_widget_show (select->view);
-
-			g_signal_connect (select->view, "entry-clicked",
-			                  G_CALLBACK (gimp_color_selector_palette_entry_clicked),
-			                  select);
-		}
-		else
-		{
-			gimp_view_renderer_set_context (GIMP_VIEW (select->view)->renderer,
-			                                select->context);
-		}
-
-		g_signal_connect_object (select->context, "palette-changed",
-		                         G_CALLBACK (gimp_color_selector_palette_palette_changed),
-		                         select, 0);
-
-		gimp_color_selector_palette_palette_changed (select->context,
-		                                             gimp_context_get_palette (select->context),
-		                                             select);
-	}
+    gimp_color_selector_palette_palette_changed(
+        select->context, gimp_context_get_palette(select->context), select);
+  }
 }

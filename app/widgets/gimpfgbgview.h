@@ -21,38 +21,36 @@
 #ifndef __GIMP_FG_BG_VIEW_H__
 #define __GIMP_FG_BG_VIEW_H__
 
-
-#define GIMP_TYPE_FG_BG_VIEW            (gimp_fg_bg_view_get_type ())
-#define GIMP_FG_BG_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FG_BG_VIEW, GimpFgBgView))
-#define GIMP_FG_BG_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FG_BG_VIEW, GimpFgBgViewClass))
-#define GIMP_IS_FG_BG_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FG_BG_VIEW))
-#define GIMP_IS_FG_BG_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FG_BG_VIEW))
-#define GIMP_FG_BG_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FG_BG_VIEW, GimpFgBgViewClass))
-
+#define GIMP_TYPE_FG_BG_VIEW (gimp_fg_bg_view_get_type())
+#define GIMP_FG_BG_VIEW(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FG_BG_VIEW, GimpFgBgView))
+#define GIMP_FG_BG_VIEW_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FG_BG_VIEW, GimpFgBgViewClass))
+#define GIMP_IS_FG_BG_VIEW(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FG_BG_VIEW))
+#define GIMP_IS_FG_BG_VIEW_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FG_BG_VIEW))
+#define GIMP_FG_BG_VIEW_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FG_BG_VIEW, GimpFgBgViewClass))
 
 typedef struct _GimpFgBgViewClass GimpFgBgViewClass;
 
-struct _GimpFgBgView
-{
-	GtkWidget parent_instance;
+struct _GimpFgBgView {
+  GtkWidget parent_instance;
 
-	GimpContext        *context;
-	GimpColorConfig    *color_config;
-	GimpColorTransform *transform;
+  GimpContext *context;
+  GimpColorConfig *color_config;
+  GimpColorTransform *transform;
 };
 
-struct _GimpFgBgViewClass
-{
-	GtkWidgetClass parent_class;
+struct _GimpFgBgViewClass {
+  GtkWidgetClass parent_class;
 };
 
+GType gimp_fg_bg_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_fg_bg_view_get_type    (void) G_GNUC_CONST;
+GtkWidget *gimp_fg_bg_view_new(GimpContext *context);
 
-GtkWidget * gimp_fg_bg_view_new         (GimpContext  *context);
+void gimp_fg_bg_view_set_context(GimpFgBgView *view, GimpContext *context);
 
-void        gimp_fg_bg_view_set_context (GimpFgBgView *view,
-                                         GimpContext  *context);
-
-
-#endif  /*  __GIMP_FG_BG_VIEW_H__  */
+#endif /*  __GIMP_FG_BG_VIEW_H__  */

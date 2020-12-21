@@ -21,17 +21,14 @@
 #ifndef __VECTORS_TYPES_H__
 #define __VECTORS_TYPES_H__
 
-
 #include "core/core-types.h"
 
 #include "vectors/vectors-enums.h"
-
 
 typedef struct _GimpAnchor GimpAnchor;
 
 typedef struct _GimpVectors GimpVectors;
 typedef struct _GimpStroke GimpStroke;
 typedef struct _GimpBezierStroke GimpBezierStroke;
-
 
 #endif /* __VECTORS_TYPES_H__ */

@@ -25,7 +25,6 @@
 
 #include "text/text-enums.h"
 
-
 typedef struct _GimpFont GimpFont;
 typedef struct _GimpFontFactory GimpFontFactory;
 typedef struct _GimpFontList GimpFontList;
@@ -33,6 +32,5 @@ typedef struct _GimpText GimpText;
 typedef struct _GimpTextLayer GimpTextLayer;
 typedef struct _GimpTextLayout GimpTextLayout;
 typedef struct _GimpTextUndo GimpTextUndo;
-
 
 #endif /* __TEXT_TYPES_H__ */

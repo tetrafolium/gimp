@@ -21,43 +21,43 @@
 #ifndef __GIMP_TEMPLATE_EDITOR_H__
 #define __GIMP_TEMPLATE_EDITOR_H__
 
-
-#define GIMP_TYPE_TEMPLATE_EDITOR            (gimp_template_editor_get_type ())
-#define GIMP_TEMPLATE_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEMPLATE_EDITOR, GimpTemplateEditor))
-#define GIMP_TEMPLATE_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TEMPLATE_EDITOR, GimpTemplateEditorClass))
-#define GIMP_IS_TEMPLATE_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEMPLATE_EDITOR))
-#define GIMP_IS_TEMPLATE_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TEMPLATE_EDITOR))
-#define GIMP_TEMPLATE_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TEMPLATE_EDITOR, GimpTemplateEditorClass))
-
+#define GIMP_TYPE_TEMPLATE_EDITOR (gimp_template_editor_get_type())
+#define GIMP_TEMPLATE_EDITOR(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEMPLATE_EDITOR,                \
+                              GimpTemplateEditor))
+#define GIMP_TEMPLATE_EDITOR_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TEMPLATE_EDITOR,                 \
+                           GimpTemplateEditorClass))
+#define GIMP_IS_TEMPLATE_EDITOR(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEMPLATE_EDITOR))
+#define GIMP_IS_TEMPLATE_EDITOR_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TEMPLATE_EDITOR))
+#define GIMP_TEMPLATE_EDITOR_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TEMPLATE_EDITOR,                 \
+                             GimpTemplateEditorClass))
 
 typedef struct _GimpTemplateEditorClass GimpTemplateEditorClass;
 
-struct _GimpTemplateEditor
-{
-	GtkBox parent_instance;
+struct _GimpTemplateEditor {
+  GtkBox parent_instance;
 };
 
-struct _GimpTemplateEditorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpTemplateEditorClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_template_editor_get_type(void) G_GNUC_CONST;
 
-GType          gimp_template_editor_get_type      (void) G_GNUC_CONST;
+GtkWidget *gimp_template_editor_new(GimpTemplate *template, Gimp *gimp,
+                                    gboolean edit_template);
 
-GtkWidget    * gimp_template_editor_new           (GimpTemplate       *template,
-                                                   Gimp               *gimp,
-                                                   gboolean edit_template);
+GimpTemplate *gimp_template_editor_get_template(GimpTemplateEditor *editor);
 
-GimpTemplate * gimp_template_editor_get_template  (GimpTemplateEditor *editor);
+void gimp_template_editor_show_advanced(GimpTemplateEditor *editor,
+                                        gboolean expanded);
+GtkWidget *gimp_template_editor_get_size_se(GimpTemplateEditor *editor);
+GtkWidget *gimp_template_editor_get_resolution_se(GimpTemplateEditor *editor);
+GtkWidget *
+gimp_template_editor_get_resolution_chain(GimpTemplateEditor *editor);
 
-void           gimp_template_editor_show_advanced (GimpTemplateEditor *editor,
-                                                   gboolean expanded);
-GtkWidget    * gimp_template_editor_get_size_se   (GimpTemplateEditor *editor);
-GtkWidget    * gimp_template_editor_get_resolution_se
-        (GimpTemplateEditor *editor);
-GtkWidget    * gimp_template_editor_get_resolution_chain
-        (GimpTemplateEditor *editor);
-
-
-#endif  /*  __GIMP_TEMPLATE_EDITOR_H__  */
+#endif /*  __GIMP_TEMPLATE_EDITOR_H__  */

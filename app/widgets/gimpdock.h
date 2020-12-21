@@ -21,14 +21,16 @@
 #ifndef __GIMP_DOCK_H__
 #define __GIMP_DOCK_H__
 
-
-#define GIMP_TYPE_DOCK            (gimp_dock_get_type ())
-#define GIMP_DOCK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DOCK, GimpDock))
-#define GIMP_DOCK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DOCK, GimpDockClass))
-#define GIMP_IS_DOCK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DOCK))
-#define GIMP_IS_DOCK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DOCK))
-#define GIMP_DOCK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DOCK, GimpDockClass))
-
+#define GIMP_TYPE_DOCK (gimp_dock_get_type())
+#define GIMP_DOCK(obj)                                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DOCK, GimpDock))
+#define GIMP_DOCK_CLASS(klass)                                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DOCK, GimpDockClass))
+#define GIMP_IS_DOCK(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DOCK))
+#define GIMP_IS_DOCK_CLASS(klass)                                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DOCK))
+#define GIMP_DOCK_GET_CLASS(obj)                                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DOCK, GimpDockClass))
 
 /* String used to separate dockables, e.g. "Tool Options, Layers" */
 #define GIMP_DOCK_DOCKABLE_SEPARATOR C_("dock", ", ")
@@ -43,7 +45,6 @@
  */
 #define GIMP_DOCK_COLUMN_SEPARATOR C_("dock", " | ")
 
-
 typedef struct _GimpDockClass GimpDockClass;
 typedef struct _GimpDockPrivate GimpDockPrivate;
 
@@ -52,59 +53,44 @@ typedef struct _GimpDockPrivate GimpDockPrivate;
  *
  * Contains a column of GimpDockbooks.
  */
-struct _GimpDock
-{
-	GtkBox parent_instance;
+struct _GimpDock {
+  GtkBox parent_instance;
 
-	GimpDockPrivate *p;
+  GimpDockPrivate *p;
 };
 
-struct _GimpDockClass
-{
-	GtkBoxClass parent_class;
+struct _GimpDockClass {
+  GtkBoxClass parent_class;
 
-	/*  virtual functions  */
-	gchar * (* get_description)         (GimpDock       *dock,
-	                                     gboolean complete);
-	void (* set_host_geometry_hints) (GimpDock       *dock,
-	                                  GtkWindow      *window);
+  /*  virtual functions  */
+  gchar *(*get_description)(GimpDock *dock, gboolean complete);
+  void (*set_host_geometry_hints)(GimpDock *dock, GtkWindow *window);
 
-	/*  signals  */
-	void (* book_added)              (GimpDock       *dock,
-	                                  GimpDockbook   *dockbook);
-	void (* book_removed)            (GimpDock       *dock,
-	                                  GimpDockbook   *dockbook);
-	void (* description_invalidated) (GimpDock       *dock);
-	void (* geometry_invalidated)    (GimpDock       *dock);
+  /*  signals  */
+  void (*book_added)(GimpDock *dock, GimpDockbook *dockbook);
+  void (*book_removed)(GimpDock *dock, GimpDockbook *dockbook);
+  void (*description_invalidated)(GimpDock *dock);
+  void (*geometry_invalidated)(GimpDock *dock);
 };
 
+GType gimp_dock_get_type(void) G_GNUC_CONST;
 
-GType               gimp_dock_get_type                (void) G_GNUC_CONST;
+gchar *gimp_dock_get_description(GimpDock *dock, gboolean complete);
+void gimp_dock_set_host_geometry_hints(GimpDock *dock, GtkWindow *window);
+void gimp_dock_invalidate_geometry(GimpDock *dock);
+void gimp_dock_update_with_context(GimpDock *dock, GimpContext *context);
+GimpContext *gimp_dock_get_context(GimpDock *dock);
+GimpDialogFactory *gimp_dock_get_dialog_factory(GimpDock *dock);
+GimpUIManager *gimp_dock_get_ui_manager(GimpDock *dock);
+GList *gimp_dock_get_dockbooks(GimpDock *dock);
+gint gimp_dock_get_n_dockables(GimpDock *dock);
+GtkWidget *gimp_dock_get_main_vbox(GimpDock *dock);
+GtkWidget *gimp_dock_get_vbox(GimpDock *dock);
 
-gchar             * gimp_dock_get_description         (GimpDock       *dock,
-                                                       gboolean complete);
-void                gimp_dock_set_host_geometry_hints (GimpDock       *dock,
-                                                       GtkWindow      *window);
-void                gimp_dock_invalidate_geometry     (GimpDock       *dock);
-void                gimp_dock_update_with_context     (GimpDock       *dock,
-                                                       GimpContext    *context);
-GimpContext       * gimp_dock_get_context             (GimpDock       *dock);
-GimpDialogFactory * gimp_dock_get_dialog_factory      (GimpDock       *dock);
-GimpUIManager     * gimp_dock_get_ui_manager          (GimpDock       *dock);
-GList             * gimp_dock_get_dockbooks           (GimpDock       *dock);
-gint                gimp_dock_get_n_dockables         (GimpDock       *dock);
-GtkWidget         * gimp_dock_get_main_vbox           (GimpDock       *dock);
-GtkWidget         * gimp_dock_get_vbox                (GimpDock       *dock);
+void gimp_dock_set_id(GimpDock *dock, gint ID);
+gint gimp_dock_get_id(GimpDock *dock);
 
-void                gimp_dock_set_id                  (GimpDock       *dock,
-                                                       gint ID);
-gint                gimp_dock_get_id                  (GimpDock       *dock);
-
-void                gimp_dock_add_book                (GimpDock       *dock,
-                                                       GimpDockbook   *dockbook,
-                                                       gint index);
-void                gimp_dock_remove_book             (GimpDock       *dock,
-                                                       GimpDockbook   *dockbook);
-
+void gimp_dock_add_book(GimpDock *dock, GimpDockbook *dockbook, gint index);
+void gimp_dock_remove_book(GimpDock *dock, GimpDockbook *dockbook);
 
 #endif /* __GIMP_DOCK_H__ */

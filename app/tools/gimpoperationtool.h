@@ -18,54 +18,52 @@
 #ifndef __GIMP_OPERATION_TOOL_H__
 #define __GIMP_OPERATION_TOOL_H__
 
-
 #include "gimpfiltertool.h"
 
-
-#define GIMP_TYPE_OPERATION_TOOL            (gimp_operation_tool_get_type ())
-#define GIMP_OPERATION_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_TOOL, GimpOperationTool))
-#define GIMP_OPERATION_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_OPERATION_TOOL, GimpOperationToolClass))
-#define GIMP_IS_OPERATION_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_OPERATION_TOOL))
-#define GIMP_IS_OPERATION_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_OPERATION_TOOL))
-#define GIMP_OPERATION_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_OPERATION_TOOL, GimpOperationToolClass))
-
+#define GIMP_TYPE_OPERATION_TOOL (gimp_operation_tool_get_type())
+#define GIMP_OPERATION_TOOL(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_OPERATION_TOOL,                 \
+                              GimpOperationTool))
+#define GIMP_OPERATION_TOOL_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_OPERATION_TOOL,                  \
+                           GimpOperationToolClass))
+#define GIMP_IS_OPERATION_TOOL(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_OPERATION_TOOL))
+#define GIMP_IS_OPERATION_TOOL_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_OPERATION_TOOL))
+#define GIMP_OPERATION_TOOL_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_OPERATION_TOOL,                  \
+                             GimpOperationToolClass))
 
 typedef struct _GimpOperationTool GimpOperationTool;
 typedef struct _GimpOperationToolClass GimpOperationToolClass;
 
-struct _GimpOperationTool
-{
-	GimpFilterTool parent_instance;
+struct _GimpOperationTool {
+  GimpFilterTool parent_instance;
 
-	gchar          *operation;
-	gchar          *description;
+  gchar *operation;
+  gchar *description;
 
-	GList          *aux_inputs;
+  GList *aux_inputs;
 
-	/* dialog */
-	GWeakRef options_sw_ref;
-	GWeakRef options_box_ref;
-	GWeakRef options_gui_ref;
+  /* dialog */
+  GWeakRef options_sw_ref;
+  GWeakRef options_box_ref;
+  GWeakRef options_gui_ref;
 };
 
-struct _GimpOperationToolClass
-{
-	GimpFilterToolClass parent_class;
+struct _GimpOperationToolClass {
+  GimpFilterToolClass parent_class;
 };
 
+void gimp_operation_tool_register(GimpToolRegisterCallback callback,
+                                  gpointer data);
 
-void    gimp_operation_tool_register      (GimpToolRegisterCallback callback,
-                                           gpointer data);
+GType gimp_operation_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_operation_tool_get_type      (void) G_GNUC_CONST;
+void gimp_operation_tool_set_operation(
+    GimpOperationTool *op_tool, const gchar *operation, const gchar *title,
+    const gchar *description, const gchar *undo_desc, const gchar *icon_name,
+    const gchar *help_id);
 
-void    gimp_operation_tool_set_operation (GimpOperationTool        *op_tool,
-                                           const gchar              *operation,
-                                           const gchar              *title,
-                                           const gchar              *description,
-                                           const gchar              *undo_desc,
-                                           const gchar              *icon_name,
-                                           const gchar              *help_id);
-
-
-#endif  /*  __GIMP_OPERATION_TOOL_H__  */
+#endif /*  __GIMP_OPERATION_TOOL_H__  */

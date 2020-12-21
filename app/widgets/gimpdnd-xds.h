@@ -24,12 +24,8 @@
 #ifndef __GIMP_DND_XDS_H__
 #define __GIMP_DND_XDS_H__
 
-
-void  gimp_dnd_xds_source_set (GdkDragContext   *context,
-                               GimpImage        *image);
-void  gimp_dnd_xds_save_image (GdkDragContext   *context,
-                               GimpImage        *image,
-                               GtkSelectionData *selection);
-
+void gimp_dnd_xds_source_set(GdkDragContext *context, GimpImage *image);
+void gimp_dnd_xds_save_image(GdkDragContext *context, GimpImage *image,
+                             GtkSelectionData *selection);
 
 #endif /* __GIMP_DND_XDS_H__ */

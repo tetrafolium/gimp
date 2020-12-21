@@ -18,10 +18,7 @@
 #ifndef __GIMP_TOOLBOX_IMAGE_AREA_H__
 #define __GIMP_TOOLBOX_IMAGE_AREA_H__
 
+GtkWidget *gimp_toolbox_image_area_create(GimpToolbox *toolbox, gint width,
+                                          gint height);
 
-GtkWidget * gimp_toolbox_image_area_create (GimpToolbox *toolbox,
-                                            gint width,
-                                            gint height);
-
-
-#endif  /*  __GIMP_TOOLBOX_IMAGE_AREA_H__  */
+#endif /*  __GIMP_TOOLBOX_IMAGE_AREA_H__  */

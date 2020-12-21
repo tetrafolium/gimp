@@ -21,38 +21,39 @@
 #ifndef __GIMP_BUFFER_SOURCE_BOX_H__
 #define __GIMP_BUFFER_SOURCE_BOX_H__
 
-
-#define GIMP_TYPE_BUFFER_SOURCE_BOX            (gimp_buffer_source_box_get_type ())
-#define GIMP_BUFFER_SOURCE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BUFFER_SOURCE_BOX, GimpBufferSourceBox))
-#define GIMP_BUFFER_SOURCE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BUFFER_SOURCE_BOX, GimpBufferSourceBoxClass))
-#define GIMP_IS_BUFFER_SOURCE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BUFFER_SOURCE_BOX))
-#define GIMP_IS_BUFFER_SOURCE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BUFFER_SOURCE_BOX))
-#define GIMP_BUFFER_SOURCE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BUFFER_SOURCE_BOX, GimpBufferSourceBoxClass))
-
+#define GIMP_TYPE_BUFFER_SOURCE_BOX (gimp_buffer_source_box_get_type())
+#define GIMP_BUFFER_SOURCE_BOX(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BUFFER_SOURCE_BOX,              \
+                              GimpBufferSourceBox))
+#define GIMP_BUFFER_SOURCE_BOX_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BUFFER_SOURCE_BOX,               \
+                           GimpBufferSourceBoxClass))
+#define GIMP_IS_BUFFER_SOURCE_BOX(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BUFFER_SOURCE_BOX))
+#define GIMP_IS_BUFFER_SOURCE_BOX_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BUFFER_SOURCE_BOX))
+#define GIMP_BUFFER_SOURCE_BOX_GET_CLASS(obj)                                  \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BUFFER_SOURCE_BOX,               \
+                             GimpBufferSourceBoxClass))
 
 typedef struct _GimpBufferSourceBoxPrivate GimpBufferSourceBoxPrivate;
 typedef struct _GimpBufferSourceBoxClass GimpBufferSourceBoxClass;
 
-struct _GimpBufferSourceBox
-{
-	GtkBox parent_instance;
+struct _GimpBufferSourceBox {
+  GtkBox parent_instance;
 
-	GimpBufferSourceBoxPrivate *priv;
+  GimpBufferSourceBoxPrivate *priv;
 };
 
-struct _GimpBufferSourceBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpBufferSourceBoxClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_buffer_source_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_buffer_source_box_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_buffer_source_box_new(GimpContext *context,
+                                      GeglNode *source_node, const gchar *name);
 
-GtkWidget * gimp_buffer_source_box_new        (GimpContext         *context,
-                                               GeglNode            *source_node,
-                                               const gchar         *name);
+GtkWidget *gimp_buffer_source_box_get_toggle(GimpBufferSourceBox *box);
 
-GtkWidget * gimp_buffer_source_box_get_toggle (GimpBufferSourceBox *box);
-
-
-#endif  /*  __GIMP_BUFFER_SOURCE_BOX_H__  */
+#endif /*  __GIMP_BUFFER_SOURCE_BOX_H__  */

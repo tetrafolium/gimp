@@ -18,43 +18,39 @@
 #ifndef __GIMP_COLOR_BAR_H__
 #define __GIMP_COLOR_BAR_H__
 
-
-#define GIMP_TYPE_COLOR_BAR            (gimp_color_bar_get_type ())
-#define GIMP_COLOR_BAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_BAR, GimpColorBar))
-#define GIMP_COLOR_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_BAR, GimpColorBarClass))
-#define GIMP_IS_COLOR_BAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_BAR))
-#define GIMP_IS_COLOR_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_BAR))
-#define GIMP_COLOR_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_BAR, GimpColorBarClass))
-
+#define GIMP_TYPE_COLOR_BAR (gimp_color_bar_get_type())
+#define GIMP_COLOR_BAR(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_BAR, GimpColorBar))
+#define GIMP_COLOR_BAR_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_BAR, GimpColorBarClass))
+#define GIMP_IS_COLOR_BAR(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_BAR))
+#define GIMP_IS_COLOR_BAR_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_BAR))
+#define GIMP_COLOR_BAR_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_BAR, GimpColorBarClass))
 
 typedef struct _GimpColorBarClass GimpColorBarClass;
 
-struct _GimpColorBar
-{
-	GtkEventBox parent_class;
+struct _GimpColorBar {
+  GtkEventBox parent_class;
 
-	GtkOrientation orientation;
-	guchar buf[3 * 256];
+  GtkOrientation orientation;
+  guchar buf[3 * 256];
 };
 
-struct _GimpColorBarClass
-{
-	GtkEventBoxClass parent_class;
+struct _GimpColorBarClass {
+  GtkEventBoxClass parent_class;
 };
 
+GType gimp_color_bar_get_type(void) G_GNUC_CONST;
 
-GType       gimp_color_bar_get_type    (void) G_GNUC_CONST;
+GtkWidget *gimp_color_bar_new(GtkOrientation orientation);
 
-GtkWidget * gimp_color_bar_new         (GtkOrientation orientation);
+void gimp_color_bar_set_color(GimpColorBar *bar, const GimpRGB *color);
+void gimp_color_bar_set_channel(GimpColorBar *bar,
+                                GimpHistogramChannel channel);
+void gimp_color_bar_set_buffers(GimpColorBar *bar, const guchar *red,
+                                const guchar *green, const guchar *blue);
 
-void        gimp_color_bar_set_color   (GimpColorBar         *bar,
-                                        const GimpRGB        *color);
-void        gimp_color_bar_set_channel (GimpColorBar         *bar,
-                                        GimpHistogramChannel channel);
-void        gimp_color_bar_set_buffers (GimpColorBar         *bar,
-                                        const guchar         *red,
-                                        const guchar         *green,
-                                        const guchar         *blue);
-
-
-#endif  /*  __GIMP_COLOR_BAR_H__  */
+#endif /*  __GIMP_COLOR_BAR_H__  */

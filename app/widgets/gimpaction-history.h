@@ -21,26 +21,21 @@
 #ifndef __GIMP_ACTION_HISTORY_H__
 #define __GIMP_ACTION_HISTORY_H__
 
+typedef gboolean (*GimpActionMatchFunc)(GimpAction *action,
+                                        const gchar *keyword, gint *section,
+                                        Gimp *gimp);
 
-typedef gboolean (* GimpActionMatchFunc) (GimpAction  *action,
-                                          const gchar *keyword,
-                                          gint        *section,
-                                          Gimp        *gimp);
+void gimp_action_history_init(Gimp *gimp);
+void gimp_action_history_exit(Gimp *gimp);
 
+void gimp_action_history_clear(Gimp *gimp);
 
-void       gimp_action_history_init                  (Gimp                *gimp);
-void       gimp_action_history_exit                  (Gimp                *gimp);
+GList *gimp_action_history_search(Gimp *gimp, GimpActionMatchFunc match_func,
+                                  const gchar *keyword);
 
-void       gimp_action_history_clear                 (Gimp                *gimp);
+gboolean gimp_action_history_is_blacklisted_action(const gchar *action_name);
+gboolean gimp_action_history_is_excluded_action(const gchar *action_name);
 
-GList    * gimp_action_history_search                (Gimp                *gimp,
-                                                      GimpActionMatchFunc match_func,
-                                                      const gchar         *keyword);
+void gimp_action_history_action_activated(GimpAction *action);
 
-gboolean   gimp_action_history_is_blacklisted_action (const gchar         *action_name);
-gboolean   gimp_action_history_is_excluded_action    (const gchar         *action_name);
-
-void       gimp_action_history_action_activated      (GimpAction          *action);
-
-
-#endif  /* __GIMP_ACTION_HISTORY_H__ */
+#endif /* __GIMP_ACTION_HISTORY_H__ */

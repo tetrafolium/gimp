@@ -22,39 +22,39 @@
 #ifndef __GIMP_PLUG_IN_VIEW_H__
 #define __GIMP_PLUG_IN_VIEW_H__
 
-
-#define GIMP_TYPE_PLUG_IN_VIEW            (gimp_plug_in_view_get_type ())
-#define GIMP_PLUG_IN_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PLUG_IN_VIEW, GimpPlugInView))
-#define GIMP_PLUG_IN_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PLUG_IN_VIEW, GimpPlugInViewClass))
-#define GIMP_IS_PLUG_IN_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PLUG_IN_VIEW))
-#define GIMP_IS_PLUG_IN_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PLUG_IN_VIEW))
-#define GIMP_PLUG_IN_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PLUG_IN_VIEW, GimpPlugInViewClass))
-
+#define GIMP_TYPE_PLUG_IN_VIEW (gimp_plug_in_view_get_type())
+#define GIMP_PLUG_IN_VIEW(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PLUG_IN_VIEW, GimpPlugInView))
+#define GIMP_PLUG_IN_VIEW_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PLUG_IN_VIEW,                    \
+                           GimpPlugInViewClass))
+#define GIMP_IS_PLUG_IN_VIEW(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PLUG_IN_VIEW))
+#define GIMP_IS_PLUG_IN_VIEW_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PLUG_IN_VIEW))
+#define GIMP_PLUG_IN_VIEW_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PLUG_IN_VIEW,                    \
+                             GimpPlugInViewClass))
 
 typedef struct _GimpPlugInViewClass GimpPlugInViewClass;
 
-struct _GimpPlugInView
-{
-	GtkTreeView parent_instance;
+struct _GimpPlugInView {
+  GtkTreeView parent_instance;
 
-	GHashTable  *plug_in_hash;
+  GHashTable *plug_in_hash;
 };
 
-struct _GimpPlugInViewClass
-{
-	GtkTreeViewClass parent_class;
+struct _GimpPlugInViewClass {
+  GtkTreeViewClass parent_class;
 
-	void (* changed) (GimpPlugInView *view);
+  void (*changed)(GimpPlugInView *view);
 };
 
+GType gimp_plug_in_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_plug_in_view_get_type    (void) G_GNUC_CONST;
+GtkWidget *gimp_plug_in_view_new(GSList *procedures);
 
-GtkWidget * gimp_plug_in_view_new         (GSList         *procedures);
+gchar *gimp_plug_in_view_get_plug_in(GimpPlugInView *view);
+gboolean gimp_plug_in_view_set_plug_in(GimpPlugInView *view, const gchar *path);
 
-gchar     * gimp_plug_in_view_get_plug_in (GimpPlugInView *view);
-gboolean    gimp_plug_in_view_set_plug_in (GimpPlugInView *view,
-                                           const gchar    *path);
-
-
-#endif  /*  __GIMP_PLUG_IN_VIEW_H__  */
+#endif /*  __GIMP_PLUG_IN_VIEW_H__  */

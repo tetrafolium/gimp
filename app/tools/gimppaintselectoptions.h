@@ -15,44 +15,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef __GIMP_PAINT_SELECT_OPTIONS_H__
 #define __GIMP_PAINT_SELECT_OPTIONS_H__
 
-
 #include "core/gimptooloptions.h"
 
-
-#define GIMP_TYPE_PAINT_SELECT_OPTIONS            (gimp_paint_select_options_get_type ())
-#define GIMP_PAINT_SELECT_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS, GimpPaintSelectOptions))
-#define GIMP_PAINT_SELECT_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PAINT_SELECT_OPTIONS, GimpPaintSelectOptionsClass))
-#define GIMP_IS_PAINT_SELECT_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS))
-#define GIMP_IS_PAINT_SELECT_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINT_SELECT_OPTIONS))
-#define GIMP_PAINT_SELECT_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS, GimpPaintSelectOptionsClass))
-
+#define GIMP_TYPE_PAINT_SELECT_OPTIONS (gimp_paint_select_options_get_type())
+#define GIMP_PAINT_SELECT_OPTIONS(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS,           \
+                              GimpPaintSelectOptions))
+#define GIMP_PAINT_SELECT_OPTIONS_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PAINT_SELECT_OPTIONS,            \
+                           GimpPaintSelectOptionsClass))
+#define GIMP_IS_PAINT_SELECT_OPTIONS(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS))
+#define GIMP_IS_PAINT_SELECT_OPTIONS_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PAINT_SELECT_OPTIONS))
+#define GIMP_PAINT_SELECT_OPTIONS_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PAINT_SELECT_OPTIONS,            \
+                             GimpPaintSelectOptionsClass))
 
 typedef struct _GimpPaintSelectOptions GimpPaintSelectOptions;
 typedef struct _GimpPaintSelectOptionsClass GimpPaintSelectOptionsClass;
 
-struct _GimpPaintSelectOptions
-{
-	GimpToolOptions parent_instance;
+struct _GimpPaintSelectOptions {
+  GimpToolOptions parent_instance;
 
-	GimpPaintSelectMode mode;
-	gint stroke_width;
-	gboolean show_scribbles;
+  GimpPaintSelectMode mode;
+  gint stroke_width;
+  gboolean show_scribbles;
 };
 
-struct _GimpPaintSelectOptionsClass
-{
-	GimpToolOptionsClass parent_class;
+struct _GimpPaintSelectOptionsClass {
+  GimpToolOptionsClass parent_class;
 };
 
+GType gimp_paint_select_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_paint_select_options_get_type       (void) G_GNUC_CONST;
-
-GtkWidget * gimp_paint_select_options_gui            (GimpToolOptions             *tool_options);
-
-
+GtkWidget *gimp_paint_select_options_gui(GimpToolOptions *tool_options);
 
 #endif /* __GIMP_PAINT_SELECT_OPTIONS_H__ */

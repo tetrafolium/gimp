@@ -21,45 +21,40 @@
 #ifndef __GIMP_LANGUAGE_STORE_H__
 #define __GIMP_LANGUAGE_STORE_H__
 
+enum { GIMP_LANGUAGE_STORE_LABEL, GIMP_LANGUAGE_STORE_CODE };
 
-enum
-{
-	GIMP_LANGUAGE_STORE_LABEL,
-	GIMP_LANGUAGE_STORE_CODE
-};
-
-
-#define GIMP_TYPE_LANGUAGE_STORE            (gimp_language_store_get_type ())
-#define GIMP_LANGUAGE_STORE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LANGUAGE_STORE, GimpLanguageStore))
-#define GIMP_LANGUAGE_STORE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LANGUAGE_STORE, GimpLanguageStoreClass))
-#define GIMP_IS_LANGUAGE_STORE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LANGUAGE_STORE))
-#define GIMP_IS_LANGUAGE_STORE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LANGUAGE_STORE))
-#define GIMP_LANGUAGE_STORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LANGUAGE_STORE, GimpLanguageStoreClass))
-
+#define GIMP_TYPE_LANGUAGE_STORE (gimp_language_store_get_type())
+#define GIMP_LANGUAGE_STORE(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LANGUAGE_STORE,                 \
+                              GimpLanguageStore))
+#define GIMP_LANGUAGE_STORE_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LANGUAGE_STORE,                  \
+                           GimpLanguageStoreClass))
+#define GIMP_IS_LANGUAGE_STORE(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LANGUAGE_STORE))
+#define GIMP_IS_LANGUAGE_STORE_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LANGUAGE_STORE))
+#define GIMP_LANGUAGE_STORE_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LANGUAGE_STORE,                  \
+                             GimpLanguageStoreClass))
 
 typedef struct _GimpLanguageStoreClass GimpLanguageStoreClass;
 
-struct _GimpLanguageStoreClass
-{
-	GtkListStoreClass parent_class;
+struct _GimpLanguageStoreClass {
+  GtkListStoreClass parent_class;
 
-	void (* add) (GimpLanguageStore *store,
-	              const gchar       *label,
-	              const gchar       *code);
+  void (*add)(GimpLanguageStore *store, const gchar *label, const gchar *code);
 };
 
-struct _GimpLanguageStore
-{
-	GtkListStore parent_instance;
+struct _GimpLanguageStore {
+  GtkListStore parent_instance;
 };
 
+GType gimp_language_store_get_type(void) G_GNUC_CONST;
 
-GType          gimp_language_store_get_type (void) G_GNUC_CONST;
+GtkListStore *gimp_language_store_new(void);
 
-GtkListStore * gimp_language_store_new      (void);
+gboolean gimp_language_store_lookup(GimpLanguageStore *store, const gchar *code,
+                                    GtkTreeIter *iter);
 
-gboolean       gimp_language_store_lookup   (GimpLanguageStore *store,
-                                             const gchar       *code,
-                                             GtkTreeIter       *iter);
-
-#endif  /* __GIMP_LANGUAGE_STORE_H__ */
+#endif /* __GIMP_LANGUAGE_STORE_H__ */

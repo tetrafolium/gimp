@@ -18,37 +18,39 @@
 #ifndef __GIMP_HANDLE_TRANSFORM_OPTIONS_H__
 #define __GIMP_HANDLE_TRANSFORM_OPTIONS_H__
 
-
 #include "gimptransformgridoptions.h"
 
-
-#define GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS            (gimp_handle_transform_options_get_type ())
-#define GIMP_HANDLE_TRANSFORM_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS, GimpHandleTransformOptions))
-#define GIMP_HANDLE_TRANSFORM_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS, GimpHandleTransformOptionsClass))
-#define GIMP_IS_HANDLE_TRANSFORM_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS))
-#define GIMP_IS_HANDLE_TRANSFORM_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS))
-#define GIMP_HANDLE_TRANSFORM_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS, GimpHandleTransformOptionsClass))
-
+#define GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS                                     \
+  (gimp_handle_transform_options_get_type())
+#define GIMP_HANDLE_TRANSFORM_OPTIONS(obj)                                     \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS,       \
+                              GimpHandleTransformOptions))
+#define GIMP_HANDLE_TRANSFORM_OPTIONS_CLASS(klass)                             \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS,        \
+                           GimpHandleTransformOptionsClass))
+#define GIMP_IS_HANDLE_TRANSFORM_OPTIONS(obj)                                  \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS))
+#define GIMP_IS_HANDLE_TRANSFORM_OPTIONS_CLASS(klass)                          \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS))
+#define GIMP_HANDLE_TRANSFORM_OPTIONS_GET_CLASS(obj)                           \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS,        \
+                             GimpHandleTransformOptionsClass))
 
 typedef struct _GimpHandleTransformOptions GimpHandleTransformOptions;
 typedef struct _GimpHandleTransformOptionsClass GimpHandleTransformOptionsClass;
 
-struct _GimpHandleTransformOptions
-{
-	GimpTransformGridOptions parent_instance;
+struct _GimpHandleTransformOptions {
+  GimpTransformGridOptions parent_instance;
 
-	GimpTransformHandleMode handle_mode;
+  GimpTransformHandleMode handle_mode;
 };
 
-struct _GimpHandleTransformOptionsClass
-{
-	GimpTransformGridOptionsClass parent_class;
+struct _GimpHandleTransformOptionsClass {
+  GimpTransformGridOptionsClass parent_class;
 };
 
+GType gimp_handle_transform_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_handle_transform_options_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_handle_transform_options_gui      (GimpToolOptions *tool_options);
-
+GtkWidget *gimp_handle_transform_options_gui(GimpToolOptions *tool_options);
 
 #endif /* __GIMP_HANDLE_TRANSFORM_OPTIONS_H__ */

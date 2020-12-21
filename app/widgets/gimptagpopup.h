@@ -21,65 +21,63 @@
 #ifndef __GIMP_TAG_POPUP_H__
 #define __GIMP_TAG_POPUP_H__
 
-
-#define GIMP_TYPE_TAG_POPUP            (gimp_tag_popup_get_type ())
-#define GIMP_TAG_POPUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TAG_POPUP, GimpTagPopup))
-#define GIMP_TAG_POPUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TAG_POPUP, GimpTagPopupClass))
-#define GIMP_IS_TAG_POPUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TAG_POPUP))
-#define GIMP_IS_TAG_POPUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TAG_POPUP))
-#define GIMP_TAG_POPUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TAG_POPUP, GimpTagPopupClass))
-
+#define GIMP_TYPE_TAG_POPUP (gimp_tag_popup_get_type())
+#define GIMP_TAG_POPUP(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TAG_POPUP, GimpTagPopup))
+#define GIMP_TAG_POPUP_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TAG_POPUP, GimpTagPopupClass))
+#define GIMP_IS_TAG_POPUP(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TAG_POPUP))
+#define GIMP_IS_TAG_POPUP_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TAG_POPUP))
+#define GIMP_TAG_POPUP_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TAG_POPUP, GimpTagPopupClass))
 
 typedef struct _GimpTagPopupClass GimpTagPopupClass;
 
 typedef struct _PopupTagData PopupTagData;
 
-struct _GimpTagPopup
-{
-	GtkWindow parent_instance;
+struct _GimpTagPopup {
+  GtkWindow parent_instance;
 
-	GimpComboTagEntry *combo_entry;
+  GimpComboTagEntry *combo_entry;
 
-	GtkWidget         *frame;
-	GtkWidget         *border_area;
-	GtkWidget         *tag_area;
+  GtkWidget *frame;
+  GtkWidget *border_area;
+  GtkWidget *tag_area;
 
-	PangoLayout       *layout;
+  PangoLayout *layout;
 
-	PopupTagData      *tag_data;
-	gint tag_count;
+  PopupTagData *tag_data;
+  gint tag_count;
 
-	PopupTagData      *prelight;
+  PopupTagData *prelight;
 
-	gboolean single_select_disabled;
+  gboolean single_select_disabled;
 
-	guint scroll_timeout_id;
-	gint scroll_height;
-	gint scroll_y;
-	gint scroll_step;
-	gint scroll_arrow_height;
-	gboolean scroll_fast;
-	gboolean arrows_visible;
-	gboolean upper_arrow_prelight;
-	gboolean lower_arrow_prelight;
-	GtkStateType upper_arrow_state;
-	GtkStateType lower_arrow_state;
+  guint scroll_timeout_id;
+  gint scroll_height;
+  gint scroll_y;
+  gint scroll_step;
+  gint scroll_arrow_height;
+  gboolean scroll_fast;
+  gboolean arrows_visible;
+  gboolean upper_arrow_prelight;
+  gboolean lower_arrow_prelight;
+  GtkStateType upper_arrow_state;
+  GtkStateType lower_arrow_state;
 
-	gboolean smooth_scrolling;
+  gboolean smooth_scrolling;
 };
 
-struct _GimpTagPopupClass
-{
-	GtkWindowClass parent_class;
+struct _GimpTagPopupClass {
+  GtkWindowClass parent_class;
 };
 
+GType gimp_tag_popup_get_type(void) G_GNUC_CONST;
 
-GType       gimp_tag_popup_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_tag_popup_new(GimpComboTagEntry *entry);
 
-GtkWidget * gimp_tag_popup_new      (GimpComboTagEntry *entry);
+void gimp_tag_popup_show(GimpTagPopup *popup, GdkEvent *event);
 
-void        gimp_tag_popup_show     (GimpTagPopup      *popup,
-                                     GdkEvent          *event);
-
-
-#endif  /*  __GIMP_TAG_POPUP_H__  */
+#endif /*  __GIMP_TAG_POPUP_H__  */

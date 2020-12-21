@@ -18,59 +18,62 @@
 #ifndef __GIMP_TRANSFORM_GRID_OPTIONS_H__
 #define __GIMP_TRANSFORM_GRID_OPTIONS_H__
 
-
 #include "gimptransformoptions.h"
 
-
-#define GIMP_TYPE_TRANSFORM_GRID_OPTIONS            (gimp_transform_grid_options_get_type ())
-#define GIMP_TRANSFORM_GRID_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TRANSFORM_GRID_OPTIONS, GimpTransformGridOptions))
-#define GIMP_TRANSFORM_GRID_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TRANSFORM_GRID_OPTIONS, GimpTransformGridOptionsClass))
-#define GIMP_IS_TRANSFORM_GRID_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TRANSFORM_GRID_OPTIONS))
-#define GIMP_IS_TRANSFORM_GRID_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TRANSFORM_GRID_OPTIONS))
-#define GIMP_TRANSFORM_GRID_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSFORM_GRID_OPTIONS, GimpTransformGridOptionsClass))
-
+#define GIMP_TYPE_TRANSFORM_GRID_OPTIONS                                       \
+  (gimp_transform_grid_options_get_type())
+#define GIMP_TRANSFORM_GRID_OPTIONS(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TRANSFORM_GRID_OPTIONS,         \
+                              GimpTransformGridOptions))
+#define GIMP_TRANSFORM_GRID_OPTIONS_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TRANSFORM_GRID_OPTIONS,          \
+                           GimpTransformGridOptionsClass))
+#define GIMP_IS_TRANSFORM_GRID_OPTIONS(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TRANSFORM_GRID_OPTIONS))
+#define GIMP_IS_TRANSFORM_GRID_OPTIONS_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TRANSFORM_GRID_OPTIONS))
+#define GIMP_TRANSFORM_GRID_OPTIONS_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TRANSFORM_GRID_OPTIONS,          \
+                             GimpTransformGridOptionsClass))
 
 typedef struct _GimpTransformGridOptions GimpTransformGridOptions;
 typedef struct _GimpTransformGridOptionsClass GimpTransformGridOptionsClass;
 
-struct _GimpTransformGridOptions
-{
-	GimpTransformOptions parent_instance;
+struct _GimpTransformGridOptions {
+  GimpTransformOptions parent_instance;
 
-	gboolean direction_linked;
-	gboolean show_preview;
-	gboolean composited_preview;
-	gboolean preview_linked;
-	gboolean synchronous_preview;
-	gdouble preview_opacity;
-	GimpGuidesType grid_type;
-	gint grid_size;
-	gboolean constrain_move;
-	gboolean constrain_scale;
-	gboolean constrain_rotate;
-	gboolean constrain_shear;
-	gboolean constrain_perspective;
-	gboolean frompivot_scale;
-	gboolean frompivot_shear;
-	gboolean frompivot_perspective;
-	gboolean cornersnap;
-	gboolean fixedpivot;
+  gboolean direction_linked;
+  gboolean show_preview;
+  gboolean composited_preview;
+  gboolean preview_linked;
+  gboolean synchronous_preview;
+  gdouble preview_opacity;
+  GimpGuidesType grid_type;
+  gint grid_size;
+  gboolean constrain_move;
+  gboolean constrain_scale;
+  gboolean constrain_rotate;
+  gboolean constrain_shear;
+  gboolean constrain_perspective;
+  gboolean frompivot_scale;
+  gboolean frompivot_shear;
+  gboolean frompivot_perspective;
+  gboolean cornersnap;
+  gboolean fixedpivot;
 
-	/*  options gui  */
-	GtkWidget            *direction_chain_button;
+  /*  options gui  */
+  GtkWidget *direction_chain_button;
 };
 
-struct _GimpTransformGridOptionsClass
-{
-	GimpTransformOptionsClass parent_class;
+struct _GimpTransformGridOptionsClass {
+  GimpTransformOptionsClass parent_class;
 };
 
+GType gimp_transform_grid_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_transform_grid_options_get_type     (void) G_GNUC_CONST;
+GtkWidget *gimp_transform_grid_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_transform_grid_options_gui          (GimpToolOptions          *tool_options);
-
-gboolean    gimp_transform_grid_options_show_preview (GimpTransformGridOptions *options);
-
+gboolean
+gimp_transform_grid_options_show_preview(GimpTransformGridOptions *options);
 
 #endif /* __GIMP_TRANSFORM_GRID_OPTIONS_H__ */

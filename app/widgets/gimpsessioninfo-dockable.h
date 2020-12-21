@@ -21,39 +21,34 @@
 #ifndef __GIMP_SESSION_INFO_DOCKABLE_H__
 #define __GIMP_SESSION_INFO_DOCKABLE_H__
 
-
 /**
  * GimpSessionInfoDockable:
  *
  * Contains information about a dockable in the interface.
  */
-struct _GimpSessionInfoDockable
-{
-	gchar        *identifier;
-	gboolean locked;
-	GimpTabStyle tab_style;
-	gint view_size;
+struct _GimpSessionInfoDockable {
+  gchar *identifier;
+  gboolean locked;
+  GimpTabStyle tab_style;
+  gint view_size;
 
-	/*  dialog specific list of GimpSessionInfoAux  */
-	GList        *aux_info;
+  /*  dialog specific list of GimpSessionInfoAux  */
+  GList *aux_info;
 };
 
+GimpSessionInfoDockable *gimp_session_info_dockable_new(void);
+void gimp_session_info_dockable_free(GimpSessionInfoDockable *info);
+
+void gimp_session_info_dockable_serialize(GimpConfigWriter *writer,
+                                          GimpSessionInfoDockable *dockable);
+GTokenType
+gimp_session_info_dockable_deserialize(GScanner *scanner, gint scope,
+                                       GimpSessionInfoDockable **dockable);
 
 GimpSessionInfoDockable *
-gimp_session_info_dockable_new         (void);
-void           gimp_session_info_dockable_free        (GimpSessionInfoDockable  *info);
+gimp_session_info_dockable_from_widget(GimpDockable *dockable);
 
-void           gimp_session_info_dockable_serialize   (GimpConfigWriter         *writer,
-                                                       GimpSessionInfoDockable  *dockable);
-GTokenType     gimp_session_info_dockable_deserialize (GScanner                 *scanner,
-                                                       gint scope,
-                                                       GimpSessionInfoDockable **dockable);
+GimpDockable *gimp_session_info_dockable_restore(GimpSessionInfoDockable *info,
+                                                 GimpDock *dock);
 
-GimpSessionInfoDockable *
-gimp_session_info_dockable_from_widget (GimpDockable             *dockable);
-
-GimpDockable * gimp_session_info_dockable_restore     (GimpSessionInfoDockable  *info,
-                                                       GimpDock                 *dock);
-
-
-#endif  /* __GIMP_SESSION_INFO_DOCKABLE_H__ */
+#endif /* __GIMP_SESSION_INFO_DOCKABLE_H__ */

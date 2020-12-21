@@ -20,17 +20,12 @@
 #ifndef __GIMP_FILTER_TOOL_WIDGETS_H__
 #define __GIMP_FILTER_TOOL_WIDGETS_H__
 
+GimpToolWidget *gimp_filter_tool_create_widget(
+    GimpFilterTool *filter_tool, GimpControllerType controller_type,
+    const gchar *status_title, GCallback callback, gpointer callback_data,
+    GCallback *set_func, gpointer *set_func_data);
 
-GimpToolWidget * gimp_filter_tool_create_widget (GimpFilterTool     *filter_tool,
-                                                 GimpControllerType controller_type,
-                                                 const gchar        *status_title,
-                                                 GCallback callback,
-                                                 gpointer callback_data,
-                                                 GCallback          *set_func,
-                                                 gpointer           *set_func_data);
-
-void             gimp_filter_tool_reset_widget  (GimpFilterTool     *filter_tool,
-                                                 GimpToolWidget     *widget);
-
+void gimp_filter_tool_reset_widget(GimpFilterTool *filter_tool,
+                                   GimpToolWidget *widget);
 
 #endif /* __GIMP_FILTER_TOOL_WIDGETS_H__ */

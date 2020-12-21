@@ -22,9 +22,7 @@
 #error You must not #include "sanity.h" from an app/ subdir
 #endif
 
-
-const gchar * sanity_check_early (void);
-const gchar * sanity_check_late  (void);
-
+const gchar *sanity_check_early(void);
+const gchar *sanity_check_late(void);
 
 #endif /* __SANITY_H__ */

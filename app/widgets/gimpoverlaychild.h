@@ -21,67 +21,51 @@
 #ifndef __GIMP_OVERLAY_CHILD_H__
 #define __GIMP_OVERLAY_CHILD_H__
 
-
 typedef struct _GimpOverlayChild GimpOverlayChild;
 
-struct _GimpOverlayChild
-{
-	GtkWidget      *widget;
-	GdkWindow      *window;
+struct _GimpOverlayChild {
+  GtkWidget *widget;
+  GdkWindow *window;
 
-	gboolean has_position;
-	gdouble xalign;
-	gdouble yalign;
-	gdouble x;
-	gdouble y;
+  gboolean has_position;
+  gdouble xalign;
+  gdouble yalign;
+  gdouble x;
+  gdouble y;
 
-	gdouble angle;
-	gdouble opacity;
+  gdouble angle;
+  gdouble opacity;
 
-	/* updated in size_allocate */
-	cairo_matrix_t matrix;
+  /* updated in size_allocate */
+  cairo_matrix_t matrix;
 };
 
+GimpOverlayChild *gimp_overlay_child_new(GimpOverlayBox *box, GtkWidget *widget,
+                                         gdouble xalign, gdouble yalign,
+                                         gdouble angle, gdouble opacity);
+void gimp_overlay_child_free(GimpOverlayBox *box, GimpOverlayChild *child);
 
-GimpOverlayChild * gimp_overlay_child_new                  (GimpOverlayBox  *box,
-                                                            GtkWidget       *widget,
-                                                            gdouble xalign,
-                                                            gdouble yalign,
-                                                            gdouble angle,
-                                                            gdouble opacity);
-void               gimp_overlay_child_free                 (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child);
+GimpOverlayChild *gimp_overlay_child_find(GimpOverlayBox *box,
+                                          GtkWidget *widget);
 
-GimpOverlayChild * gimp_overlay_child_find                 (GimpOverlayBox   *box,
-                                                            GtkWidget        *widget);
+void gimp_overlay_child_realize(GimpOverlayBox *box, GimpOverlayChild *child);
+void gimp_overlay_child_unrealize(GimpOverlayBox *box, GimpOverlayChild *child);
+void gimp_overlay_child_get_preferred_width(GimpOverlayBox *box,
+                                            GimpOverlayChild *child,
+                                            gint *minimum, gint *natural);
+void gimp_overlay_child_get_preferred_height(GimpOverlayBox *box,
+                                             GimpOverlayChild *child,
+                                             gint *minimum, gint *natural);
+void gimp_overlay_child_size_allocate(GimpOverlayBox *box,
+                                      GimpOverlayChild *child);
+gboolean gimp_overlay_child_draw(GimpOverlayBox *box, GimpOverlayChild *child,
+                                 cairo_t *cr);
+gboolean gimp_overlay_child_damage(GimpOverlayBox *box, GimpOverlayChild *child,
+                                   GdkEventExpose *event);
 
-void               gimp_overlay_child_realize              (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child);
-void               gimp_overlay_child_unrealize            (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child);
-void               gimp_overlay_child_get_preferred_width  (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child,
-                                                            gint             *minimum,
-                                                            gint             *natural);
-void               gimp_overlay_child_get_preferred_height (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child,
-                                                            gint             *minimum,
-                                                            gint             *natural);
-void               gimp_overlay_child_size_allocate        (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child);
-gboolean           gimp_overlay_child_draw                 (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child,
-                                                            cairo_t          *cr);
-gboolean           gimp_overlay_child_damage               (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child,
-                                                            GdkEventExpose   *event);
-
-void               gimp_overlay_child_invalidate           (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child);
-gboolean           gimp_overlay_child_pick                 (GimpOverlayBox   *box,
-                                                            GimpOverlayChild *child,
-                                                            gdouble box_x,
-                                                            gdouble box_y);
-
+void gimp_overlay_child_invalidate(GimpOverlayBox *box,
+                                   GimpOverlayChild *child);
+gboolean gimp_overlay_child_pick(GimpOverlayBox *box, GimpOverlayChild *child,
+                                 gdouble box_x, gdouble box_y);
 
 #endif /* __GIMP_OVERLAY_CHILD_H__ */

@@ -15,11 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_MYBRUSH_OPTIONS_GUI_H__
-#define  __GIMP_MYBRUSH_OPTIONS_GUI_H__
+#ifndef __GIMP_MYBRUSH_OPTIONS_GUI_H__
+#define __GIMP_MYBRUSH_OPTIONS_GUI_H__
 
+GtkWidget *gimp_mybrush_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_mybrush_options_gui (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_MYBRUSH_OPTIONS_GUI_H__  */
+#endif /*  __GIMP_MYBRUSH_OPTIONS_GUI_H__  */

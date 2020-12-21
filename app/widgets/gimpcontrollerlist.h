@@ -21,48 +21,50 @@
 #ifndef __GIMP_CONTROLLER_LIST_H__
 #define __GIMP_CONTROLLER_LIST_H__
 
-
-#define GIMP_TYPE_CONTROLLER_LIST            (gimp_controller_list_get_type ())
-#define GIMP_CONTROLLER_LIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTROLLER_LIST, GimpControllerList))
-#define GIMP_CONTROLLER_LIST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CONTROLLER_LIST, GimpControllerListClass))
-#define GIMP_IS_CONTROLLER_LIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CONTROLLER_LIST))
-#define GIMP_IS_CONTROLLER_LIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CONTROLLER_LIST))
-#define GIMP_CONTROLLER_LIST_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONTROLLER_LIST, GimpControllerListClass))
-
+#define GIMP_TYPE_CONTROLLER_LIST (gimp_controller_list_get_type())
+#define GIMP_CONTROLLER_LIST(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CONTROLLER_LIST,                \
+                              GimpControllerList))
+#define GIMP_CONTROLLER_LIST_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CONTROLLER_LIST,                 \
+                           GimpControllerListClass))
+#define GIMP_IS_CONTROLLER_LIST(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CONTROLLER_LIST))
+#define GIMP_IS_CONTROLLER_LIST_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CONTROLLER_LIST))
+#define GIMP_CONTROLLER_LIST_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CONTROLLER_LIST,                 \
+                             GimpControllerListClass))
 
 typedef struct _GimpControllerListClass GimpControllerListClass;
 
-struct _GimpControllerList
-{
-	GtkBox parent_instance;
+struct _GimpControllerList {
+  GtkBox parent_instance;
 
-	Gimp               *gimp;
+  Gimp *gimp;
 
-	GtkWidget          *hbox;
+  GtkWidget *hbox;
 
-	GtkListStore       *src;
-	GtkTreeSelection   *src_sel;
-	GType src_gtype;
+  GtkListStore *src;
+  GtkTreeSelection *src_sel;
+  GType src_gtype;
 
-	GtkWidget          *dest;
-	GimpControllerInfo *dest_info;
+  GtkWidget *dest;
+  GimpControllerInfo *dest_info;
 
-	GtkWidget          *add_button;
-	GtkWidget          *remove_button;
-	GtkWidget          *edit_button;
-	GtkWidget          *up_button;
-	GtkWidget          *down_button;
+  GtkWidget *add_button;
+  GtkWidget *remove_button;
+  GtkWidget *edit_button;
+  GtkWidget *up_button;
+  GtkWidget *down_button;
 };
 
-struct _GimpControllerListClass
-{
-	GtkBoxClass parent_class;
+struct _GimpControllerListClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_controller_list_get_type(void) G_GNUC_CONST;
 
-GType       gimp_controller_list_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_controller_list_new(Gimp *gimp);
 
-GtkWidget * gimp_controller_list_new      (Gimp *gimp);
-
-
-#endif  /*  __GIMP_CONTROLLER_LIST_H__  */
+#endif /*  __GIMP_CONTROLLER_LIST_H__  */

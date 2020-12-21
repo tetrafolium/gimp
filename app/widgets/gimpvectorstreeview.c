@@ -34,9 +34,9 @@
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 
-#include "vectors/gimpvectors.h"
 #include "vectors/gimpvectors-export.h"
 #include "vectors/gimpvectors-import.h"
+#include "vectors/gimpvectors.h"
 
 #include "gimpactiongroup.h"
 #include "gimpcontainerview.h"
@@ -48,236 +48,200 @@
 
 #include "gimp-intl.h"
 
+static void
+gimp_vectors_tree_view_view_iface_init(GimpContainerViewInterface *iface);
 
-static void    gimp_vectors_tree_view_view_iface_init (GimpContainerViewInterface *iface);
+static void gimp_vectors_tree_view_constructed(GObject *object);
 
-static void      gimp_vectors_tree_view_constructed   (GObject                  *object);
+static void gimp_vectors_tree_view_set_container(GimpContainerView *view,
+                                                 GimpContainer *container);
+static void gimp_vectors_tree_view_drop_svg(GimpContainerTreeView *tree_view,
+                                            const gchar *svg_data,
+                                            gsize svg_data_len,
+                                            GimpViewable *dest_viewable,
+                                            GtkTreeViewDropPosition drop_pos);
+static GimpItem *gimp_vectors_tree_view_item_new(GimpImage *image);
+static guchar *gimp_vectors_tree_view_drag_svg(GtkWidget *widget,
+                                               gsize *svg_data_len,
+                                               gpointer data);
 
-static void      gimp_vectors_tree_view_set_container (GimpContainerView        *view,
-                                                       GimpContainer            *container);
-static void      gimp_vectors_tree_view_drop_svg      (GimpContainerTreeView    *tree_view,
-                                                       const gchar              *svg_data,
-                                                       gsize svg_data_len,
-                                                       GimpViewable             *dest_viewable,
-                                                       GtkTreeViewDropPosition drop_pos);
-static GimpItem * gimp_vectors_tree_view_item_new     (GimpImage                *image);
-static guchar   * gimp_vectors_tree_view_drag_svg     (GtkWidget                *widget,
-                                                       gsize                    *svg_data_len,
-                                                       gpointer data);
-
-
-G_DEFINE_TYPE_WITH_CODE (GimpVectorsTreeView, gimp_vectors_tree_view,
-                         GIMP_TYPE_ITEM_TREE_VIEW,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONTAINER_VIEW,
-                                                gimp_vectors_tree_view_view_iface_init))
+G_DEFINE_TYPE_WITH_CODE(
+    GimpVectorsTreeView, gimp_vectors_tree_view, GIMP_TYPE_ITEM_TREE_VIEW,
+    G_IMPLEMENT_INTERFACE(GIMP_TYPE_CONTAINER_VIEW,
+                          gimp_vectors_tree_view_view_iface_init))
 
 #define parent_class gimp_vectors_tree_view_parent_class
 
 static GimpContainerViewInterface *parent_view_iface = NULL;
 
+static void gimp_vectors_tree_view_class_init(GimpVectorsTreeViewClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GimpContainerTreeViewClass *view_class =
+      GIMP_CONTAINER_TREE_VIEW_CLASS(klass);
+  GimpItemTreeViewClass *iv_class = GIMP_ITEM_TREE_VIEW_CLASS(klass);
 
-static void
-gimp_vectors_tree_view_class_init (GimpVectorsTreeViewClass *klass)
-{
-	GObjectClass               *object_class = G_OBJECT_CLASS (klass);
-	GimpContainerTreeViewClass *view_class   = GIMP_CONTAINER_TREE_VIEW_CLASS (klass);
-	GimpItemTreeViewClass      *iv_class     = GIMP_ITEM_TREE_VIEW_CLASS (klass);
+  object_class->constructed = gimp_vectors_tree_view_constructed;
 
-	object_class->constructed = gimp_vectors_tree_view_constructed;
+  view_class->drop_svg = gimp_vectors_tree_view_drop_svg;
 
-	view_class->drop_svg      = gimp_vectors_tree_view_drop_svg;
+  iv_class->item_type = GIMP_TYPE_VECTORS;
+  iv_class->signal_name = "selected-vectors-changed";
 
-	iv_class->item_type       = GIMP_TYPE_VECTORS;
-	iv_class->signal_name     = "selected-vectors-changed";
+  iv_class->get_container = gimp_image_get_vectors;
+  iv_class->get_active_item = (GimpGetItemFunc)gimp_image_get_active_vectors;
+  iv_class->set_active_item = (GimpSetItemFunc)gimp_image_set_active_vectors;
+  iv_class->get_selected_items =
+      (GimpGetItemsFunc)gimp_image_get_selected_vectors;
+  iv_class->set_selected_items =
+      (GimpSetItemsFunc)gimp_image_set_selected_vectors;
+  iv_class->add_item = (GimpAddItemFunc)gimp_image_add_vectors;
+  iv_class->remove_item = (GimpRemoveItemFunc)gimp_image_remove_vectors;
+  iv_class->new_item = gimp_vectors_tree_view_item_new;
 
-	iv_class->get_container   = gimp_image_get_vectors;
-	iv_class->get_active_item = (GimpGetItemFunc) gimp_image_get_active_vectors;
-	iv_class->set_active_item = (GimpSetItemFunc) gimp_image_set_active_vectors;
-	iv_class->get_selected_items = (GimpGetItemsFunc) gimp_image_get_selected_vectors;
-	iv_class->set_selected_items = (GimpSetItemsFunc) gimp_image_set_selected_vectors;
-	iv_class->add_item        = (GimpAddItemFunc) gimp_image_add_vectors;
-	iv_class->remove_item     = (GimpRemoveItemFunc) gimp_image_remove_vectors;
-	iv_class->new_item        = gimp_vectors_tree_view_item_new;
-
-	iv_class->action_group            = "vectors";
-	iv_class->activate_action         = "vectors-edit";
-	iv_class->new_action              = "vectors-new";
-	iv_class->new_default_action      = "vectors-new-last-values";
-	iv_class->raise_action            = "vectors-raise";
-	iv_class->raise_top_action        = "vectors-raise-to-top";
-	iv_class->lower_action            = "vectors-lower";
-	iv_class->lower_bottom_action     = "vectors-lower-to-bottom";
-	iv_class->duplicate_action        = "vectors-duplicate";
-	iv_class->delete_action           = "vectors-delete";
-	iv_class->lock_content_icon_name  = GIMP_ICON_TOOL_PATH;
-	iv_class->lock_content_tooltip    = _("Lock path strokes");
-	iv_class->lock_content_help_id    = GIMP_HELP_PATH_LOCK_STROKES;
-	iv_class->lock_position_icon_name = GIMP_ICON_TOOL_MOVE;
-	iv_class->lock_position_tooltip   = _("Lock path position");
-	iv_class->lock_position_help_id   = GIMP_HELP_PATH_LOCK_POSITION;
+  iv_class->action_group = "vectors";
+  iv_class->activate_action = "vectors-edit";
+  iv_class->new_action = "vectors-new";
+  iv_class->new_default_action = "vectors-new-last-values";
+  iv_class->raise_action = "vectors-raise";
+  iv_class->raise_top_action = "vectors-raise-to-top";
+  iv_class->lower_action = "vectors-lower";
+  iv_class->lower_bottom_action = "vectors-lower-to-bottom";
+  iv_class->duplicate_action = "vectors-duplicate";
+  iv_class->delete_action = "vectors-delete";
+  iv_class->lock_content_icon_name = GIMP_ICON_TOOL_PATH;
+  iv_class->lock_content_tooltip = _("Lock path strokes");
+  iv_class->lock_content_help_id = GIMP_HELP_PATH_LOCK_STROKES;
+  iv_class->lock_position_icon_name = GIMP_ICON_TOOL_MOVE;
+  iv_class->lock_position_tooltip = _("Lock path position");
+  iv_class->lock_position_help_id = GIMP_HELP_PATH_LOCK_POSITION;
 }
 
 static void
-gimp_vectors_tree_view_view_iface_init (GimpContainerViewInterface *iface)
-{
-	parent_view_iface = g_type_interface_peek_parent (iface);
+gimp_vectors_tree_view_view_iface_init(GimpContainerViewInterface *iface) {
+  parent_view_iface = g_type_interface_peek_parent(iface);
 
-	iface->set_container = gimp_vectors_tree_view_set_container;
+  iface->set_container = gimp_vectors_tree_view_set_container;
 }
 
-static void
-gimp_vectors_tree_view_init (GimpVectorsTreeView *view)
-{
+static void gimp_vectors_tree_view_init(GimpVectorsTreeView *view) {}
+
+static void gimp_vectors_tree_view_constructed(GObject *object) {
+  GimpEditor *editor = GIMP_EDITOR(object);
+  GimpContainerTreeView *tree_view = GIMP_CONTAINER_TREE_VIEW(object);
+  GimpVectorsTreeView *view = GIMP_VECTORS_TREE_VIEW(object);
+  GdkModifierType extend_mask;
+  GdkModifierType modify_mask;
+
+  G_OBJECT_CLASS(parent_class)->constructed(object);
+
+  extend_mask = gtk_widget_get_modifier_mask(
+      GTK_WIDGET(object), GDK_MODIFIER_INTENT_EXTEND_SELECTION);
+  modify_mask = gtk_widget_get_modifier_mask(
+      GTK_WIDGET(object), GDK_MODIFIER_INTENT_MODIFY_SELECTION);
+
+  view->toselection_button = gimp_editor_add_action_button(
+      editor, "vectors", "vectors-selection-replace", "vectors-selection-add",
+      extend_mask, "vectors-selection-subtract", modify_mask,
+      "vectors-selection-intersect", extend_mask | modify_mask, NULL);
+  gimp_container_view_enable_dnd(GIMP_CONTAINER_VIEW(editor),
+                                 GTK_BUTTON(view->toselection_button),
+                                 GIMP_TYPE_VECTORS);
+  gtk_box_reorder_child(gimp_editor_get_button_box(editor),
+                        view->toselection_button, 4);
+
+  view->tovectors_button = gimp_editor_add_action_button(
+      editor, "vectors", "vectors-selection-to-vectors",
+      "vectors-selection-to-vectors-advanced", GDK_SHIFT_MASK, NULL);
+  gtk_box_reorder_child(gimp_editor_get_button_box(editor),
+                        view->tovectors_button, 5);
+
+  view->stroke_button = gimp_editor_add_action_button(
+      editor, "vectors", "vectors-stroke", "vectors-stroke-last-values",
+      GDK_SHIFT_MASK, NULL);
+  gimp_container_view_enable_dnd(GIMP_CONTAINER_VIEW(editor),
+                                 GTK_BUTTON(view->stroke_button),
+                                 GIMP_TYPE_VECTORS);
+  gtk_box_reorder_child(gimp_editor_get_button_box(editor), view->stroke_button,
+                        6);
+
+  gimp_dnd_svg_dest_add(GTK_WIDGET(tree_view->view), NULL, view);
 }
 
-static void
-gimp_vectors_tree_view_constructed (GObject *object)
-{
-	GimpEditor            *editor    = GIMP_EDITOR (object);
-	GimpContainerTreeView *tree_view = GIMP_CONTAINER_TREE_VIEW (object);
-	GimpVectorsTreeView   *view      = GIMP_VECTORS_TREE_VIEW (object);
-	GdkModifierType extend_mask;
-	GdkModifierType modify_mask;
+static void gimp_vectors_tree_view_set_container(GimpContainerView *view,
+                                                 GimpContainer *container) {
+  GimpContainerTreeView *tree_view = GIMP_CONTAINER_TREE_VIEW(view);
+  GimpContainer *old_container;
 
-	G_OBJECT_CLASS (parent_class)->constructed (object);
+  old_container = gimp_container_view_get_container(GIMP_CONTAINER_VIEW(view));
 
-	extend_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
-	                                            GDK_MODIFIER_INTENT_EXTEND_SELECTION);
-	modify_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
-	                                            GDK_MODIFIER_INTENT_MODIFY_SELECTION);
+  if (old_container && !container) {
+    gimp_dnd_svg_source_remove(GTK_WIDGET(tree_view->view));
+  }
 
-	view->toselection_button =
-		gimp_editor_add_action_button (editor, "vectors",
-		                               "vectors-selection-replace",
-		                               "vectors-selection-add",
-		                               extend_mask,
-		                               "vectors-selection-subtract",
-		                               modify_mask,
-		                               "vectors-selection-intersect",
-		                               extend_mask | modify_mask,
-		                               NULL);
-	gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (editor),
-	                                GTK_BUTTON (view->toselection_button),
-	                                GIMP_TYPE_VECTORS);
-	gtk_box_reorder_child (gimp_editor_get_button_box (editor),
-	                       view->toselection_button, 4);
+  parent_view_iface->set_container(view, container);
 
-	view->tovectors_button =
-		gimp_editor_add_action_button (editor, "vectors",
-		                               "vectors-selection-to-vectors",
-		                               "vectors-selection-to-vectors-advanced",
-		                               GDK_SHIFT_MASK,
-		                               NULL);
-	gtk_box_reorder_child (gimp_editor_get_button_box (editor),
-	                       view->tovectors_button, 5);
-
-	view->stroke_button =
-		gimp_editor_add_action_button (editor, "vectors",
-		                               "vectors-stroke",
-		                               "vectors-stroke-last-values",
-		                               GDK_SHIFT_MASK,
-		                               NULL);
-	gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (editor),
-	                                GTK_BUTTON (view->stroke_button),
-	                                GIMP_TYPE_VECTORS);
-	gtk_box_reorder_child (gimp_editor_get_button_box (editor),
-	                       view->stroke_button, 6);
-
-	gimp_dnd_svg_dest_add (GTK_WIDGET (tree_view->view), NULL, view);
+  if (!old_container && container) {
+    gimp_dnd_svg_source_add(GTK_WIDGET(tree_view->view),
+                            gimp_vectors_tree_view_drag_svg, tree_view);
+  }
 }
 
-static void
-gimp_vectors_tree_view_set_container (GimpContainerView *view,
-                                      GimpContainer     *container)
-{
-	GimpContainerTreeView *tree_view = GIMP_CONTAINER_TREE_VIEW (view);
-	GimpContainer         *old_container;
+static void gimp_vectors_tree_view_drop_svg(GimpContainerTreeView *tree_view,
+                                            const gchar *svg_data,
+                                            gsize svg_data_len,
+                                            GimpViewable *dest_viewable,
+                                            GtkTreeViewDropPosition drop_pos) {
+  GimpItemTreeView *item_view = GIMP_ITEM_TREE_VIEW(tree_view);
+  GimpImage *image = gimp_item_tree_view_get_image(item_view);
+  GimpVectors *parent;
+  gint index;
+  GError *error = NULL;
 
-	old_container = gimp_container_view_get_container (GIMP_CONTAINER_VIEW (view));
+  if (image->gimp->be_verbose)
+    g_print("%s: SVG dropped (len = %d)\n", G_STRFUNC, (gint)svg_data_len);
 
-	if (old_container && !container)
-	{
-		gimp_dnd_svg_source_remove (GTK_WIDGET (tree_view->view));
-	}
+  index = gimp_item_tree_view_get_drop_index(item_view, dest_viewable, drop_pos,
+                                             (GimpViewable **)&parent);
 
-	parent_view_iface->set_container (view, container);
-
-	if (!old_container && container)
-	{
-		gimp_dnd_svg_source_add (GTK_WIDGET (tree_view->view),
-		                         gimp_vectors_tree_view_drag_svg,
-		                         tree_view);
-	}
+  if (!gimp_vectors_import_buffer(image, svg_data, svg_data_len, TRUE, FALSE,
+                                  parent, index, NULL, &error)) {
+    gimp_message_literal(image->gimp, G_OBJECT(tree_view), GIMP_MESSAGE_ERROR,
+                         error->message);
+    g_clear_error(&error);
+  } else {
+    gimp_image_flush(image);
+  }
 }
 
-static void
-gimp_vectors_tree_view_drop_svg (GimpContainerTreeView   *tree_view,
-                                 const gchar             *svg_data,
-                                 gsize svg_data_len,
-                                 GimpViewable            *dest_viewable,
-                                 GtkTreeViewDropPosition drop_pos)
-{
-	GimpItemTreeView *item_view = GIMP_ITEM_TREE_VIEW (tree_view);
-	GimpImage        *image     = gimp_item_tree_view_get_image (item_view);
-	GimpVectors      *parent;
-	gint index;
-	GError           *error = NULL;
+static GimpItem *gimp_vectors_tree_view_item_new(GimpImage *image) {
+  GimpVectors *new_vectors;
 
-	if (image->gimp->be_verbose)
-		g_print ("%s: SVG dropped (len = %d)\n", G_STRFUNC, (gint) svg_data_len);
+  new_vectors = gimp_vectors_new(image, _("Path"));
 
-	index = gimp_item_tree_view_get_drop_index (item_view, dest_viewable,
-	                                            drop_pos,
-	                                            (GimpViewable **) &parent);
+  gimp_image_add_vectors(image, new_vectors, GIMP_IMAGE_ACTIVE_PARENT, -1,
+                         TRUE);
 
-	if (!gimp_vectors_import_buffer (image, svg_data, svg_data_len,
-	                                 TRUE, FALSE, parent, index, NULL, &error))
-	{
-		gimp_message_literal (image->gimp,
-		                      G_OBJECT (tree_view), GIMP_MESSAGE_ERROR,
-		                      error->message);
-		g_clear_error (&error);
-	}
-	else
-	{
-		gimp_image_flush (image);
-	}
+  return GIMP_ITEM(new_vectors);
 }
 
-static GimpItem *
-gimp_vectors_tree_view_item_new (GimpImage *image)
-{
-	GimpVectors *new_vectors;
+static guchar *gimp_vectors_tree_view_drag_svg(GtkWidget *widget,
+                                               gsize *svg_data_len,
+                                               gpointer data) {
+  GimpItemTreeView *view = GIMP_ITEM_TREE_VIEW(data);
+  GimpImage *image = gimp_item_tree_view_get_image(view);
+  GimpItem *item;
+  gchar *svg_data = NULL;
 
-	new_vectors = gimp_vectors_new (image, _("Path"));
+  item = GIMP_ITEM_TREE_VIEW_GET_CLASS(view)->get_active_item(image);
 
-	gimp_image_add_vectors (image, new_vectors,
-	                        GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
+  *svg_data_len = 0;
 
-	return GIMP_ITEM (new_vectors);
-}
+  if (item) {
+    svg_data = gimp_vectors_export_string(image, GIMP_VECTORS(item));
 
-static guchar *
-gimp_vectors_tree_view_drag_svg (GtkWidget *widget,
-                                 gsize     *svg_data_len,
-                                 gpointer data)
-{
-	GimpItemTreeView *view  = GIMP_ITEM_TREE_VIEW (data);
-	GimpImage        *image = gimp_item_tree_view_get_image (view);
-	GimpItem         *item;
-	gchar            *svg_data = NULL;
+    if (svg_data)
+      *svg_data_len = strlen(svg_data);
+  }
 
-	item = GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->get_active_item (image);
-
-	*svg_data_len = 0;
-
-	if (item)
-	{
-		svg_data = gimp_vectors_export_string (image, GIMP_VECTORS (item));
-
-		if (svg_data)
-			*svg_data_len = strlen (svg_data);
-	}
-
-	return (guchar *) svg_data;
+  return (guchar *)svg_data;
 }

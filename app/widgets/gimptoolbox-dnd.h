@@ -18,9 +18,6 @@
 #ifndef __GIMP_TOOLBOX_DND_H__
 #define __GIMP_TOOLBOX_DND_H__
 
-
-void   gimp_toolbox_dnd_init (GimpToolbox *toolbox,
-                              GtkWidget   *vbox);
-
+void gimp_toolbox_dnd_init(GimpToolbox *toolbox, GtkWidget *vbox);
 
 #endif /* __GIMP_TOOLBOX_DND_H__ */

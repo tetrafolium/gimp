@@ -25,33 +25,35 @@
 
 G_BEGIN_DECLS
 
-#define GIMP_TYPE_EXPORT_DIALOG            (gimp_export_dialog_get_type ())
-#define GIMP_EXPORT_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_EXPORT_DIALOG, GimpExportDialog))
-#define GIMP_EXPORT_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_EXPORT_DIALOG, GimpExportDialogClass))
-#define GIMP_IS_EXPORT_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_EXPORT_DIALOG))
-#define GIMP_IS_EXPORT_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_EXPORT_DIALOG))
-#define GIMP_EXPORT_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_EXPORT_DIALOG, GimpExportDialogClass))
-
+#define GIMP_TYPE_EXPORT_DIALOG (gimp_export_dialog_get_type())
+#define GIMP_EXPORT_DIALOG(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_EXPORT_DIALOG, GimpExportDialog))
+#define GIMP_EXPORT_DIALOG_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_EXPORT_DIALOG,                   \
+                           GimpExportDialogClass))
+#define GIMP_IS_EXPORT_DIALOG(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_EXPORT_DIALOG))
+#define GIMP_IS_EXPORT_DIALOG_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_EXPORT_DIALOG))
+#define GIMP_EXPORT_DIALOG_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_EXPORT_DIALOG,                   \
+                             GimpExportDialogClass))
 
 typedef struct _GimpExportDialogClass GimpExportDialogClass;
 
-struct _GimpExportDialog
-{
-	GimpFileDialog parent_instance;
+struct _GimpExportDialog {
+  GimpFileDialog parent_instance;
 };
 
-struct _GimpExportDialogClass
-{
-	GimpFileDialogClass parent_class;
+struct _GimpExportDialogClass {
+  GimpFileDialogClass parent_class;
 };
 
+GType gimp_export_dialog_get_type(void) G_GNUC_CONST;
 
-GType       gimp_export_dialog_get_type  (void) G_GNUC_CONST;
+GtkWidget *gimp_export_dialog_new(Gimp *gimp);
 
-GtkWidget * gimp_export_dialog_new       (Gimp             *gimp);
-
-void        gimp_export_dialog_set_image (GimpExportDialog *dialog,
-                                          GimpImage        *image);
+void gimp_export_dialog_set_image(GimpExportDialog *dialog, GimpImage *image);
 
 G_END_DECLS
 

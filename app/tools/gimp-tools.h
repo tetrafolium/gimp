@@ -18,28 +18,21 @@
 #ifndef __GIMP_TOOLS_H__
 #define __GIMP_TOOLS_H__
 
+void gimp_tools_init(Gimp *gimp);
+void gimp_tools_exit(Gimp *gimp);
 
-void       gimp_tools_init        (Gimp              *gimp);
-void       gimp_tools_exit        (Gimp              *gimp);
+void gimp_tools_restore(Gimp *gimp);
+void gimp_tools_save(Gimp *gimp, gboolean save_tool_options,
+                     gboolean always_save);
 
-void       gimp_tools_restore     (Gimp              *gimp);
-void       gimp_tools_save        (Gimp              *gimp,
-                                   gboolean save_tool_options,
-                                   gboolean always_save);
+gboolean gimp_tools_clear(Gimp *gimp, GError **error);
 
-gboolean   gimp_tools_clear       (Gimp              *gimp,
-                                   GError           **error);
+gboolean gimp_tools_serialize(Gimp *gimp, GimpContainer *container,
+                              GimpConfigWriter *writer);
+gboolean gimp_tools_deserialize(Gimp *gimp, GimpContainer *container,
+                                GScanner *scanner);
 
-gboolean   gimp_tools_serialize   (Gimp              *gimp,
-                                   GimpContainer     *container,
-                                   GimpConfigWriter  *writer);
-gboolean   gimp_tools_deserialize (Gimp              *gimp,
-                                   GimpContainer     *container,
-                                   GScanner          *scanner);
+void gimp_tools_reset(Gimp *gimp, GimpContainer *container,
+                      gboolean user_toolrc);
 
-void       gimp_tools_reset       (Gimp              *gimp,
-                                   GimpContainer     *container,
-                                   gboolean user_toolrc);
-
-
-#endif  /* __GIMP_TOOLS_H__ */
+#endif /* __GIMP_TOOLS_H__ */

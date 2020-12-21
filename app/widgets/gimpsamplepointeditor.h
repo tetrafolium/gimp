@@ -21,49 +21,51 @@
 #ifndef __GIMP_SAMPLE_POINT_EDITOR_H__
 #define __GIMP_SAMPLE_POINT_EDITOR_H__
 
-
 #include "gimpimageeditor.h"
 
-
-#define GIMP_TYPE_SAMPLE_POINT_EDITOR            (gimp_sample_point_editor_get_type ())
-#define GIMP_SAMPLE_POINT_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SAMPLE_POINT_EDITOR, GimpSamplePointEditor))
-#define GIMP_SAMPLE_POINT_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SAMPLE_POINT_EDITOR, GimpSamplePointEditorClass))
-#define GIMP_IS_SAMPLE_POINT_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SAMPLE_POINT_EDITOR))
-#define GIMP_IS_SAMPLE_POINT_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SAMPLE_POINT_EDITOR))
-#define GIMP_SAMPLE_POINT_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SAMPLE_POINT_EDITOR, GimpSamplePointEditorClass))
-
+#define GIMP_TYPE_SAMPLE_POINT_EDITOR (gimp_sample_point_editor_get_type())
+#define GIMP_SAMPLE_POINT_EDITOR(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SAMPLE_POINT_EDITOR,            \
+                              GimpSamplePointEditor))
+#define GIMP_SAMPLE_POINT_EDITOR_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SAMPLE_POINT_EDITOR,             \
+                           GimpSamplePointEditorClass))
+#define GIMP_IS_SAMPLE_POINT_EDITOR(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SAMPLE_POINT_EDITOR))
+#define GIMP_IS_SAMPLE_POINT_EDITOR_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SAMPLE_POINT_EDITOR))
+#define GIMP_SAMPLE_POINT_EDITOR_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SAMPLE_POINT_EDITOR,             \
+                             GimpSamplePointEditorClass))
 
 typedef struct _GimpSamplePointEditorClass GimpSamplePointEditorClass;
 
-struct _GimpSamplePointEditor
-{
-	GimpImageEditor parent_instance;
+struct _GimpSamplePointEditor {
+  GimpImageEditor parent_instance;
 
-	GtkWidget       *empty_icon;
-	GtkWidget       *empty_label;
+  GtkWidget *empty_icon;
+  GtkWidget *empty_label;
 
-	GtkWidget       *grid;
-	GtkWidget      **color_frames;
-	gint n_color_frames;
+  GtkWidget *grid;
+  GtkWidget **color_frames;
+  gint n_color_frames;
 
-	guint dirty_idle_id;
+  guint dirty_idle_id;
 
-	gboolean sample_merged;
+  gboolean sample_merged;
 };
 
-struct _GimpSamplePointEditorClass
-{
-	GimpImageEditorClass parent_class;
+struct _GimpSamplePointEditorClass {
+  GimpImageEditorClass parent_class;
 };
 
+GType gimp_sample_point_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_sample_point_editor_get_type          (void) G_GNUC_CONST;
+GtkWidget *gimp_sample_point_editor_new(GimpMenuFactory *menu_factory);
 
-GtkWidget * gimp_sample_point_editor_new               (GimpMenuFactory *menu_factory);
-
-void        gimp_sample_point_editor_set_sample_merged (GimpSamplePointEditor *editor,
-                                                        gboolean sample_merged);
-gboolean    gimp_sample_point_editor_get_sample_merged (GimpSamplePointEditor *editor);
-
+void gimp_sample_point_editor_set_sample_merged(GimpSamplePointEditor *editor,
+                                                gboolean sample_merged);
+gboolean
+gimp_sample_point_editor_get_sample_merged(GimpSamplePointEditor *editor);
 
 #endif /* __GIMP_SAMPLE_POINT_EDITOR_H__ */

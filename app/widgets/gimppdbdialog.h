@@ -23,63 +23,59 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_PDB_DIALOG            (gimp_pdb_dialog_get_type ())
-#define GIMP_PDB_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PDB_DIALOG, GimpPdbDialog))
-#define GIMP_PDB_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PDB_DIALOG, GimpPdbDialogClass))
-#define GIMP_IS_PDB_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PDB_DIALOG))
-#define GIMP_IS_PDB_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PDB_DIALOG))
-#define GIMP_PDB_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PDB_DIALOG, GimpPdbDialogClass))
-
+#define GIMP_TYPE_PDB_DIALOG (gimp_pdb_dialog_get_type())
+#define GIMP_PDB_DIALOG(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PDB_DIALOG, GimpPdbDialog))
+#define GIMP_PDB_DIALOG_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PDB_DIALOG, GimpPdbDialogClass))
+#define GIMP_IS_PDB_DIALOG(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PDB_DIALOG))
+#define GIMP_IS_PDB_DIALOG_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PDB_DIALOG))
+#define GIMP_PDB_DIALOG_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PDB_DIALOG, GimpPdbDialogClass))
 
 typedef struct _GimpPdbDialogClass GimpPdbDialogClass;
 
-struct _GimpPdbDialog
-{
-	GimpDialog parent_instance;
+struct _GimpPdbDialog {
+  GimpDialog parent_instance;
 
-	GimpPDB         *pdb;
+  GimpPDB *pdb;
 
-	/*  The context we were created with. This is the context the plug-in
-	 *  exists in and must be used when calling the plug-in.
-	 */
-	GimpContext     *caller_context;
+  /*  The context we were created with. This is the context the plug-in
+   *  exists in and must be used when calling the plug-in.
+   */
+  GimpContext *caller_context;
 
-	/*  The dialog's private context, serves just as model for the
-	 *  select widgets and must not be used when calling the plug-in.
-	 */
-	GimpContext     *context;
+  /*  The dialog's private context, serves just as model for the
+   *  select widgets and must not be used when calling the plug-in.
+   */
+  GimpContext *context;
 
-	GType select_type;
-	GimpObject      *initial_object;
-	gchar           *callback_name;
-	gboolean callback_busy;
+  GType select_type;
+  GimpObject *initial_object;
+  gchar *callback_name;
+  gboolean callback_busy;
 
-	GimpMenuFactory *menu_factory;
-	GtkWidget       *view;
+  GimpMenuFactory *menu_factory;
+  GtkWidget *view;
 };
 
-struct _GimpPdbDialogClass
-{
-	GimpDialogClass parent_class;
+struct _GimpPdbDialogClass {
+  GimpDialogClass parent_class;
 
-	GList           *dialogs;
+  GList *dialogs;
 
-	GimpValueArray * (* run_callback) (GimpPdbDialog  *dialog,
-	                                   GimpObject     *object,
-	                                   gboolean closing,
-	                                   GError        **error);
+  GimpValueArray *(*run_callback)(GimpPdbDialog *dialog, GimpObject *object,
+                                  gboolean closing, GError **error);
 };
 
+GType gimp_pdb_dialog_get_type(void) G_GNUC_CONST;
 
-GType           gimp_pdb_dialog_get_type        (void) G_GNUC_CONST;
+void gimp_pdb_dialog_run_callback(GimpPdbDialog *dialog, gboolean closing);
 
-void            gimp_pdb_dialog_run_callback    (GimpPdbDialog      *dialog,
-                                                 gboolean closing);
-
-GimpPdbDialog * gimp_pdb_dialog_get_by_callback (GimpPdbDialogClass *klass,
-                                                 const gchar        *callback_name);
-
+GimpPdbDialog *gimp_pdb_dialog_get_by_callback(GimpPdbDialogClass *klass,
+                                               const gchar *callback_name);
 
 G_END_DECLS
 

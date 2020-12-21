@@ -21,35 +21,36 @@
 #ifndef __GIMP_ACTION_EDITOR_H__
 #define __GIMP_ACTION_EDITOR_H__
 
-
-#define GIMP_TYPE_ACTION_EDITOR            (gimp_action_editor_get_type ())
-#define GIMP_ACTION_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ACTION_EDITOR, GimpActionEditor))
-#define GIMP_ACTION_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ACTION_EDITOR, GimpActionEditorClass))
-#define GIMP_IS_ACTION_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ACTION_EDITOR))
-#define GIMP_IS_ACTION_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ACTION_EDITOR))
-#define GIMP_ACTION_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ACTION_EDITOR, GimpActionEditorClass))
-
+#define GIMP_TYPE_ACTION_EDITOR (gimp_action_editor_get_type())
+#define GIMP_ACTION_EDITOR(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ACTION_EDITOR, GimpActionEditor))
+#define GIMP_ACTION_EDITOR_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ACTION_EDITOR,                   \
+                           GimpActionEditorClass))
+#define GIMP_IS_ACTION_EDITOR(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ACTION_EDITOR))
+#define GIMP_IS_ACTION_EDITOR_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ACTION_EDITOR))
+#define GIMP_ACTION_EDITOR_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ACTION_EDITOR,                   \
+                             GimpActionEditorClass))
 
 typedef struct _GimpActionEditorClass GimpActionEditorClass;
 
-struct _GimpActionEditor
-{
-	GtkBox parent_instance;
+struct _GimpActionEditor {
+  GtkBox parent_instance;
 
-	GtkWidget *view;
+  GtkWidget *view;
 };
 
-struct _GimpActionEditorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpActionEditorClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_action_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_action_editor_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_action_editor_new(GimpUIManager *manager,
+                                  const gchar *select_action,
+                                  gboolean show_shortcuts);
 
-GtkWidget * gimp_action_editor_new      (GimpUIManager *manager,
-                                         const gchar   *select_action,
-                                         gboolean show_shortcuts);
-
-
-#endif  /*  __GIMP_ACTION_EDITOR_H__  */
+#endif /*  __GIMP_ACTION_EDITOR_H__  */

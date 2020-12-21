@@ -21,35 +21,32 @@
 #ifndef __GIMP_POPUP_H__
 #define __GIMP_POPUP_H__
 
-
-#define GIMP_TYPE_POPUP            (gimp_popup_get_type ())
-#define GIMP_POPUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_POPUP, GimpPopup))
-#define GIMP_POPUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_POPUP, GimpPopupClass))
-#define GIMP_IS_POPUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_POPUP))
-#define GIMP_IS_POPUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_POPUP))
-#define GIMP_POPUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_POPUP, GimpPopupClass))
-
+#define GIMP_TYPE_POPUP (gimp_popup_get_type())
+#define GIMP_POPUP(obj)                                                        \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_POPUP, GimpPopup))
+#define GIMP_POPUP_CLASS(klass)                                                \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_POPUP, GimpPopupClass))
+#define GIMP_IS_POPUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_POPUP))
+#define GIMP_IS_POPUP_CLASS(klass)                                             \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_POPUP))
+#define GIMP_POPUP_GET_CLASS(obj)                                              \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_POPUP, GimpPopupClass))
 
 typedef struct _GimpPopupClass GimpPopupClass;
 
-struct _GimpPopup
-{
-	GtkWindow parent_instance;
+struct _GimpPopup {
+  GtkWindow parent_instance;
 };
 
-struct _GimpPopupClass
-{
-	GtkWindowClass parent_instance;
+struct _GimpPopupClass {
+  GtkWindowClass parent_instance;
 
-	void (* cancel)  (GimpPopup *popup);
-	void (* confirm) (GimpPopup *popup);
+  void (*cancel)(GimpPopup *popup);
+  void (*confirm)(GimpPopup *popup);
 };
 
+GType gimp_popup_get_type(void) G_GNUC_CONST;
 
-GType   gimp_popup_get_type (void) G_GNUC_CONST;
+void gimp_popup_show(GimpPopup *popup, GtkWidget *widget);
 
-void    gimp_popup_show     (GimpPopup *popup,
-                             GtkWidget *widget);
-
-
-#endif  /*  __GIMP_POPUP_H__  */
+#endif /*  __GIMP_POPUP_H__  */

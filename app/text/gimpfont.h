@@ -22,24 +22,23 @@
 #ifndef __GIMP_FONT_H__
 #define __GIMP_FONT_H__
 
-
 #include "core/gimpdata.h"
 
-
-#define GIMP_TYPE_FONT            (gimp_font_get_type ())
-#define GIMP_FONT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FONT, GimpFont))
-#define GIMP_FONT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FONT, GimpFontClass))
-#define GIMP_IS_FONT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FONT))
-#define GIMP_IS_FONT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FONT))
-#define GIMP_FONT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FONT, GimpFontClass))
-
+#define GIMP_TYPE_FONT (gimp_font_get_type())
+#define GIMP_FONT(obj)                                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FONT, GimpFont))
+#define GIMP_FONT_CLASS(klass)                                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FONT, GimpFontClass))
+#define GIMP_IS_FONT(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FONT))
+#define GIMP_IS_FONT_CLASS(klass)                                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FONT))
+#define GIMP_FONT_GET_CLASS(obj)                                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FONT, GimpFontClass))
 
 typedef struct _GimpFontClass GimpFontClass;
 
+GType gimp_font_get_type(void) G_GNUC_CONST;
 
-GType      gimp_font_get_type     (void) G_GNUC_CONST;
-
-GimpData * gimp_font_get_standard (void);
-
+GimpData *gimp_font_get_standard(void);
 
 #endif /* __GIMP_FONT_H__ */

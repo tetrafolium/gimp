@@ -22,40 +22,39 @@
 #ifndef __GIMP_TOGGLE_ACTION_H__
 #define __GIMP_TOGGLE_ACTION_H__
 
-
-#define GIMP_TYPE_TOGGLE_ACTION            (gimp_toggle_action_get_type ())
-#define GIMP_TOGGLE_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOGGLE_ACTION, GimpToggleAction))
-#define GIMP_TOGGLE_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOGGLE_ACTION, GimpToggleActionClass))
-#define GIMP_IS_TOGGLE_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOGGLE_ACTION))
-#define GIMP_IS_TOGGLE_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), GIMP_TYPE_ACTION))
-#define GIMP_TOGGLE_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOGGLE_ACTION, GimpToggleActionClass))
-
+#define GIMP_TYPE_TOGGLE_ACTION (gimp_toggle_action_get_type())
+#define GIMP_TOGGLE_ACTION(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOGGLE_ACTION, GimpToggleAction))
+#define GIMP_TOGGLE_ACTION_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOGGLE_ACTION,                   \
+                           GimpToggleActionClass))
+#define GIMP_IS_TOGGLE_ACTION(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOGGLE_ACTION))
+#define GIMP_IS_TOGGLE_ACTION_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), GIMP_TYPE_ACTION))
+#define GIMP_TOGGLE_ACTION_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOGGLE_ACTION,                   \
+                             GimpToggleActionClass))
 
 typedef struct _GimpToggleAction GimpToggleAction;
 typedef struct _GimpToggleActionClass GimpToggleActionClass;
 
-struct _GimpToggleAction
-{
-	GtkToggleAction parent_instance;
+struct _GimpToggleAction {
+  GtkToggleAction parent_instance;
 };
 
-struct _GimpToggleActionClass
-{
-	GtkToggleActionClass parent_class;
+struct _GimpToggleActionClass {
+  GtkToggleActionClass parent_class;
 };
 
+GType gimp_toggle_action_get_type(void) G_GNUC_CONST;
 
-GType             gimp_toggle_action_get_type  (void) G_GNUC_CONST;
+GtkToggleAction *gimp_toggle_action_new(const gchar *name, const gchar *label,
+                                        const gchar *tooltip,
+                                        const gchar *icon_name,
+                                        const gchar *help_id);
 
-GtkToggleAction * gimp_toggle_action_new       (const gchar *name,
-                                                const gchar *label,
-                                                const gchar *tooltip,
-                                                const gchar *icon_name,
-                                                const gchar *help_id);
+void gimp_toggle_action_set_active(GimpToggleAction *action, gboolean active);
+gboolean gimp_toggle_action_get_active(GimpToggleAction *action);
 
-void              gimp_toggle_action_set_active (GimpToggleAction *action,
-                                                 gboolean active);
-gboolean          gimp_toggle_action_get_active (GimpToggleAction *action);
-
-
-#endif  /* __GIMP_TOGGLE_ACTION_H__ */
+#endif /* __GIMP_TOGGLE_ACTION_H__ */

@@ -15,38 +15,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_COLOR_PICKER_OPTIONS_H__
-#define  __GIMP_COLOR_PICKER_OPTIONS_H__
-
+#ifndef __GIMP_COLOR_PICKER_OPTIONS_H__
+#define __GIMP_COLOR_PICKER_OPTIONS_H__
 
 #include "gimpcoloroptions.h"
 
-
-#define GIMP_TYPE_COLOR_PICKER_OPTIONS            (gimp_color_picker_options_get_type ())
-#define GIMP_COLOR_PICKER_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_PICKER_OPTIONS, GimpColorPickerOptions))
-#define GIMP_COLOR_PICKER_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_PICKER_OPTIONS, GimpColorPickerOptionsClass))
-#define GIMP_IS_COLOR_PICKER_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_PICKER_OPTIONS))
-#define GIMP_IS_COLOR_PICKER_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_PICKER_OPTIONS))
-#define GIMP_COLOR_PICKER_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_PICKER_OPTIONS, GimpColorPickerOptionsClass))
-
+#define GIMP_TYPE_COLOR_PICKER_OPTIONS (gimp_color_picker_options_get_type())
+#define GIMP_COLOR_PICKER_OPTIONS(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_PICKER_OPTIONS,           \
+                              GimpColorPickerOptions))
+#define GIMP_COLOR_PICKER_OPTIONS_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_PICKER_OPTIONS,            \
+                           GimpColorPickerOptionsClass))
+#define GIMP_IS_COLOR_PICKER_OPTIONS(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_PICKER_OPTIONS))
+#define GIMP_IS_COLOR_PICKER_OPTIONS_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_PICKER_OPTIONS))
+#define GIMP_COLOR_PICKER_OPTIONS_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_PICKER_OPTIONS,            \
+                             GimpColorPickerOptionsClass))
 
 typedef struct _GimpColorPickerOptions GimpColorPickerOptions;
 typedef struct _GimpToolOptionsClass GimpColorPickerOptionsClass;
 
-struct _GimpColorPickerOptions
-{
-	GimpColorOptions parent_instance;
+struct _GimpColorPickerOptions {
+  GimpColorOptions parent_instance;
 
-	GimpColorPickTarget pick_target;
-	gboolean use_info_window;
-	GimpColorPickMode frame1_mode;
-	GimpColorPickMode frame2_mode;
+  GimpColorPickTarget pick_target;
+  gboolean use_info_window;
+  GimpColorPickMode frame1_mode;
+  GimpColorPickMode frame2_mode;
 };
 
+GType gimp_color_picker_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_color_picker_options_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_color_picker_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_color_picker_options_gui      (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_COLOR_PICKER_OPTIONS_H__  */
+#endif /*  __GIMP_COLOR_PICKER_OPTIONS_H__  */

@@ -18,31 +18,20 @@
 #ifndef __GIMP_PAINT_TOOL_PAINT_H__
 #define __GIMP_PAINT_TOOL_PAINT_H__
 
+typedef void (*GimpPaintToolPaintFunc)(GimpPaintTool *tool, gpointer data);
 
-typedef void (* GimpPaintToolPaintFunc) (GimpPaintTool *tool,
-                                         gpointer data);
+gboolean gimp_paint_tool_paint_start(GimpPaintTool *tool, GimpDisplay *display,
+                                     const GimpCoords *coords, guint32 time,
+                                     gboolean constrain, GError **error);
+void gimp_paint_tool_paint_end(GimpPaintTool *tool, guint32 time,
+                               gboolean cancel);
 
+gboolean gimp_paint_tool_paint_is_active(GimpPaintTool *tool);
 
+void gimp_paint_tool_paint_push(GimpPaintTool *tool,
+                                GimpPaintToolPaintFunc func, gpointer data);
 
-gboolean   gimp_paint_tool_paint_start     (GimpPaintTool           *tool,
-                                            GimpDisplay             *display,
-                                            const GimpCoords        *coords,
-                                            guint32 time,
-                                            gboolean constrain,
-                                            GError                 **error);
-void       gimp_paint_tool_paint_end       (GimpPaintTool           *tool,
-                                            guint32 time,
-                                            gboolean cancel);
+void gimp_paint_tool_paint_motion(GimpPaintTool *tool, const GimpCoords *coords,
+                                  guint32 time);
 
-gboolean   gimp_paint_tool_paint_is_active (GimpPaintTool           *tool);
-
-void       gimp_paint_tool_paint_push      (GimpPaintTool           *tool,
-                                            GimpPaintToolPaintFunc func,
-                                            gpointer data);
-
-void       gimp_paint_tool_paint_motion    (GimpPaintTool           *tool,
-                                            const GimpCoords        *coords,
-                                            guint32 time);
-
-
-#endif  /*  __GIMP_PAINT_TOOL_PAINT_H__  */
+#endif /*  __GIMP_PAINT_TOOL_PAINT_H__  */

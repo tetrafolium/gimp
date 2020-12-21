@@ -21,27 +21,24 @@
 #ifndef __GIMP_CONTAINER_TREE_VIEW_PRIVATE_H__
 #define __GIMP_CONTAINER_TREE_VIEW_PRIVATE_H__
 
+struct _GimpContainerTreeViewPrivate {
+  GtkTreeSelection *selection;
 
-struct _GimpContainerTreeViewPrivate
-{
-	GtkTreeSelection   *selection;
+  GtkCellRenderer *name_cell;
 
-	GtkCellRenderer    *name_cell;
+  GList *editable_cells;
+  gchar *editing_path;
 
-	GList              *editable_cells;
-	gchar              *editing_path;
+  GimpViewRenderer *dnd_renderer;
 
-	GimpViewRenderer   *dnd_renderer;
+  GList *toggle_cells;
+  GList *renderer_cells;
 
-	GList              *toggle_cells;
-	GList              *renderer_cells;
+  guint scroll_timeout_id;
+  guint scroll_timeout_interval;
+  GdkScrollDirection scroll_dir;
 
-	guint scroll_timeout_id;
-	guint scroll_timeout_interval;
-	GdkScrollDirection scroll_dir;
-
-	gboolean dnd_drop_to_empty;
+  gboolean dnd_drop_to_empty;
 };
 
-
-#endif  /*  __GIMP_CONTAINER_TREE_VIEW_PRIVATE_H__  */
+#endif /*  __GIMP_CONTAINER_TREE_VIEW_PRIVATE_H__  */

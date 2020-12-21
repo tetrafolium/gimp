@@ -18,46 +18,43 @@
 #ifndef __GIMP_BRUSH_TOOL_H__
 #define __GIMP_BRUSH_TOOL_H__
 
-
 #include "gimppainttool.h"
 
-
-#define GIMP_TYPE_BRUSH_TOOL            (gimp_brush_tool_get_type ())
-#define GIMP_BRUSH_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_TOOL, GimpBrushTool))
-#define GIMP_BRUSH_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_TOOL, GimpBrushToolClass))
-#define GIMP_IS_BRUSH_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_TOOL))
-#define GIMP_IS_BRUSH_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_TOOL))
-#define GIMP_BRUSH_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_TOOL, GimpBrushToolClass))
-
+#define GIMP_TYPE_BRUSH_TOOL (gimp_brush_tool_get_type())
+#define GIMP_BRUSH_TOOL(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_TOOL, GimpBrushTool))
+#define GIMP_BRUSH_TOOL_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_TOOL, GimpBrushToolClass))
+#define GIMP_IS_BRUSH_TOOL(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_TOOL))
+#define GIMP_IS_BRUSH_TOOL_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_TOOL))
+#define GIMP_BRUSH_TOOL_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_TOOL, GimpBrushToolClass))
 
 typedef struct _GimpBrushToolClass GimpBrushToolClass;
 
-struct _GimpBrushTool
-{
-	GimpPaintTool parent_instance;
+struct _GimpBrushTool {
+  GimpPaintTool parent_instance;
 
-	GimpBezierDesc *boundary;
-	gint boundary_width;
-	gint boundary_height;
-	gdouble boundary_scale;
-	gdouble boundary_aspect_ratio;
-	gdouble boundary_angle;
-	gboolean boundary_reflect;
-	gdouble boundary_hardness;
+  GimpBezierDesc *boundary;
+  gint boundary_width;
+  gint boundary_height;
+  gdouble boundary_scale;
+  gdouble boundary_aspect_ratio;
+  gdouble boundary_angle;
+  gboolean boundary_reflect;
+  gdouble boundary_hardness;
 };
 
-struct _GimpBrushToolClass
-{
-	GimpPaintToolClass parent_class;
+struct _GimpBrushToolClass {
+  GimpPaintToolClass parent_class;
 };
 
+GType gimp_brush_tool_get_type(void) G_GNUC_CONST;
 
-GType            gimp_brush_tool_get_type       (void) G_GNUC_CONST;
+GimpCanvasItem *gimp_brush_tool_create_outline(GimpBrushTool *brush_tool,
+                                               GimpDisplay *display, gdouble x,
+                                               gdouble y);
 
-GimpCanvasItem * gimp_brush_tool_create_outline (GimpBrushTool *brush_tool,
-                                                 GimpDisplay   *display,
-                                                 gdouble x,
-                                                 gdouble y);
-
-
-#endif  /*  __GIMP_BRUSH_TOOL_H__  */
+#endif /*  __GIMP_BRUSH_TOOL_H__  */

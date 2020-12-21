@@ -21,46 +21,48 @@
 #ifndef __GIMP_DEVICE_MANAGER_H__
 #define __GIMP_DEVICE_MANAGER_H__
 
-
 #include "core/gimplist.h"
-
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_DEVICE_MANAGER            (gimp_device_manager_get_type ())
-#define GIMP_DEVICE_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DEVICE_MANAGER, GimpDeviceManager))
-#define GIMP_DEVICE_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DEVICE_MANAGER, GimpDeviceManagerClass))
-#define GIMP_IS_DEVICE_MANAGER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DEVICE_MANAGER))
-#define GIMP_IS_DEVICE_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DEVICE_MANAGER))
-#define GIMP_DEVICE_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DEVICE_MANAGER, GimpDeviceManagerClass))
-
+#define GIMP_TYPE_DEVICE_MANAGER (gimp_device_manager_get_type())
+#define GIMP_DEVICE_MANAGER(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DEVICE_MANAGER,                 \
+                              GimpDeviceManager))
+#define GIMP_DEVICE_MANAGER_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DEVICE_MANAGER,                  \
+                           GimpDeviceManagerClass))
+#define GIMP_IS_DEVICE_MANAGER(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DEVICE_MANAGER))
+#define GIMP_IS_DEVICE_MANAGER_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DEVICE_MANAGER))
+#define GIMP_DEVICE_MANAGER_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DEVICE_MANAGER,                  \
+                             GimpDeviceManagerClass))
 
 typedef struct _GimpDeviceManagerPrivate GimpDeviceManagerPrivate;
 typedef struct _GimpDeviceManagerClass GimpDeviceManagerClass;
 
-struct _GimpDeviceManager
-{
-	GimpList parent_instance;
+struct _GimpDeviceManager {
+  GimpList parent_instance;
 
-	GimpDeviceManagerPrivate *priv;
+  GimpDeviceManagerPrivate *priv;
 };
 
-struct _GimpDeviceManagerClass
-{
-	GimpListClass parent_class;
+struct _GimpDeviceManagerClass {
+  GimpListClass parent_class;
 };
 
+GType gimp_device_manager_get_type(void) G_GNUC_CONST;
 
-GType               gimp_device_manager_get_type           (void) G_GNUC_CONST;
+GimpDeviceManager *gimp_device_manager_new(Gimp *gimp);
 
-GimpDeviceManager * gimp_device_manager_new                (Gimp *gimp);
+GimpDeviceInfo *
+gimp_device_manager_get_current_device(GimpDeviceManager *manager);
+void gimp_device_manager_set_current_device(GimpDeviceManager *manager,
+                                            GimpDeviceInfo *info);
 
-GimpDeviceInfo    * gimp_device_manager_get_current_device (GimpDeviceManager *manager);
-void                gimp_device_manager_set_current_device (GimpDeviceManager *manager,
-                                                            GimpDeviceInfo    *info);
-
-void                gimp_device_manager_reset              (GimpDeviceManager *manager);
+void gimp_device_manager_reset(GimpDeviceManager *manager);
 
 G_END_DECLS
 

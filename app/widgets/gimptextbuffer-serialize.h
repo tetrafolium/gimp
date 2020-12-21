@@ -25,31 +25,23 @@
 #ifndef __GIMP_TEXT_BUFFER_SERIALIZE_H__
 #define __GIMP_TEXT_BUFFER_SERIALIZE_H__
 
-
-#define WORD_JOINER        "\342\201\240"
+#define WORD_JOINER "\342\201\240"
 #define WORD_JOINER_LENGTH 3
 
+guint8 *gimp_text_buffer_serialize(GtkTextBuffer *register_buffer,
+                                   GtkTextBuffer *content_buffer,
+                                   const GtkTextIter *start,
+                                   const GtkTextIter *end, gsize *length,
+                                   gpointer user_data);
+gboolean gimp_text_buffer_deserialize(GtkTextBuffer *register_buffer,
+                                      GtkTextBuffer *content_buffer,
+                                      GtkTextIter *iter, const guint8 *data,
+                                      gsize length, gboolean create_tags,
+                                      gpointer user_data, GError **error);
 
-guint8   * gimp_text_buffer_serialize        (GtkTextBuffer     *register_buffer,
-                                              GtkTextBuffer     *content_buffer,
-                                              const GtkTextIter *start,
-                                              const GtkTextIter *end,
-                                              gsize             *length,
-                                              gpointer user_data);
-gboolean   gimp_text_buffer_deserialize      (GtkTextBuffer     *register_buffer,
-                                              GtkTextBuffer     *content_buffer,
-                                              GtkTextIter       *iter,
-                                              const guint8      *data,
-                                              gsize length,
-                                              gboolean create_tags,
-                                              gpointer user_data,
-                                              GError           **error);
-
-void       gimp_text_buffer_pre_serialize    (GimpTextBuffer    *buffer,
-                                              GtkTextBuffer     *content);
-void       gimp_text_buffer_post_deserialize (GimpTextBuffer    *buffer,
-                                              GtkTextBuffer     *content);
-
-
+void gimp_text_buffer_pre_serialize(GimpTextBuffer *buffer,
+                                    GtkTextBuffer *content);
+void gimp_text_buffer_post_deserialize(GimpTextBuffer *buffer,
+                                       GtkTextBuffer *content);
 
 #endif /* __GIMP_TEXT_BUFFER_SERIALIZE_H__ */

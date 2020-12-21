@@ -26,41 +26,27 @@
 
 #include "gimpwindowstrategy.h"
 
-
-G_DEFINE_INTERFACE (GimpWindowStrategy, gimp_window_strategy, G_TYPE_OBJECT)
-
+G_DEFINE_INTERFACE(GimpWindowStrategy, gimp_window_strategy, G_TYPE_OBJECT)
 
 /*  private functions  */
 
-
 static void
-gimp_window_strategy_default_init (GimpWindowStrategyInterface *iface)
-{
-}
-
+gimp_window_strategy_default_init(GimpWindowStrategyInterface *iface) {}
 
 /*  public functions  */
 
+GtkWidget *gimp_window_strategy_show_dockable_dialog(
+    GimpWindowStrategy *strategy, Gimp *gimp, GimpDialogFactory *factory,
+    GdkMonitor *monitor, const gchar *identifiers) {
+  GimpWindowStrategyInterface *iface;
 
-GtkWidget *
-gimp_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
-                                           Gimp               *gimp,
-                                           GimpDialogFactory  *factory,
-                                           GdkMonitor         *monitor,
-                                           const gchar        *identifiers)
-{
-	GimpWindowStrategyInterface *iface;
+  g_return_val_if_fail(GIMP_IS_WINDOW_STRATEGY(strategy), NULL);
 
-	g_return_val_if_fail (GIMP_IS_WINDOW_STRATEGY (strategy), NULL);
+  iface = GIMP_WINDOW_STRATEGY_GET_IFACE(strategy);
 
-	iface = GIMP_WINDOW_STRATEGY_GET_IFACE (strategy);
+  if (iface->show_dockable_dialog)
+    return iface->show_dockable_dialog(strategy, gimp, factory, monitor,
+                                       identifiers);
 
-	if (iface->show_dockable_dialog)
-		return iface->show_dockable_dialog (strategy,
-		                                    gimp,
-		                                    factory,
-		                                    monitor,
-		                                    identifiers);
-
-	return NULL;
+  return NULL;
 }

@@ -23,12 +23,19 @@
 
 #include "gimppopup.h"
 
-#define GIMP_TYPE_SEARCH_POPUP            (gimp_search_popup_get_type ())
-#define GIMP_SEARCH_POPUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SEARCH_POPUP, GimpSearchPopup))
-#define GIMP_SEARCH_POPUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_SEARCH_POPUP, GimpSearchPopupClass))
-#define GIMP_IS_SEARCH_POPUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_SEARCH_POPUP))
-#define GIMP_IS_SEARCH_POPUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_SEARCH_POPUP))
-#define GIMP_SEARCH_POPUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_SEARCH_POPUP, GimpSearchPopupClass))
+#define GIMP_TYPE_SEARCH_POPUP (gimp_search_popup_get_type())
+#define GIMP_SEARCH_POPUP(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_SEARCH_POPUP, GimpSearchPopup))
+#define GIMP_SEARCH_POPUP_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_SEARCH_POPUP,                    \
+                           GimpSearchPopupClass))
+#define GIMP_IS_SEARCH_POPUP(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_SEARCH_POPUP))
+#define GIMP_IS_SEARCH_POPUP_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_SEARCH_POPUP))
+#define GIMP_SEARCH_POPUP_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_SEARCH_POPUP,                    \
+                             GimpSearchPopupClass))
 
 /**
  * GimpSearchPopupCallback:
@@ -43,32 +50,27 @@ typedef struct _GimpSearchPopup GimpSearchPopup;
 typedef struct _GimpSearchPopupClass GimpSearchPopupClass;
 typedef struct _GimpSearchPopupPrivate GimpSearchPopupPrivate;
 
-typedef void (*GimpSearchPopupCallback) (GimpSearchPopup  *popup,
-                                         const gchar      *search,
-                                         gpointer data);
+typedef void (*GimpSearchPopupCallback)(GimpSearchPopup *popup,
+                                        const gchar *search, gpointer data);
 
-struct _GimpSearchPopup
-{
-	GimpPopup parent_instance;
+struct _GimpSearchPopup {
+  GimpPopup parent_instance;
 
-	GimpSearchPopupPrivate *priv;
+  GimpSearchPopupPrivate *priv;
 };
 
-struct _GimpSearchPopupClass
-{
-	GimpPopupClass parent_class;
+struct _GimpSearchPopupClass {
+  GimpPopupClass parent_class;
 };
 
-GType       gimp_search_popup_get_type   (void);
+GType gimp_search_popup_get_type(void);
 
-GtkWidget * gimp_search_popup_new        (Gimp                    *gimp,
-                                          const gchar             *role,
-                                          const gchar             *title,
-                                          GimpSearchPopupCallback callback,
-                                          gpointer callback_data);
+GtkWidget *gimp_search_popup_new(Gimp *gimp, const gchar *role,
+                                 const gchar *title,
+                                 GimpSearchPopupCallback callback,
+                                 gpointer callback_data);
 
-void        gimp_search_popup_add_result (GimpSearchPopup *popup,
-                                          GimpAction      *action,
-                                          gint section);
+void gimp_search_popup_add_result(GimpSearchPopup *popup, GimpAction *action,
+                                  gint section);
 
-#endif  /*  __GIMP_SEARCH_POPUP_H__  */
+#endif /*  __GIMP_SEARCH_POPUP_H__  */

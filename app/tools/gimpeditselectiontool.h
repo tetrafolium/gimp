@@ -18,33 +18,32 @@
 #ifndef __GIMP_EDIT_SELECTION_TOOL_H__
 #define __GIMP_EDIT_SELECTION_TOOL_H__
 
-
 #include "gimpdrawtool.h"
 
+#define GIMP_TYPE_EDIT_SELECTION_TOOL (gimp_edit_selection_tool_get_type())
+#define GIMP_EDIT_SELECTION_TOOL(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_EDIT_SELECTION_TOOL,            \
+                              GimpEditSelectionTool))
+#define GIMP_EDIT_SELECTION_TOOL_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_EDIT_SELECTION_TOOL,             \
+                           GimpEditSelectionToolClass))
+#define GIMP_IS_EDIT_SELECTION_TOOL(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_EDIT_SELECTION_TOOL))
+#define GIMP_IS_EDIT_SELECTION_TOOL_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_EDIT_SELECTION_TOOL))
 
-#define GIMP_TYPE_EDIT_SELECTION_TOOL            (gimp_edit_selection_tool_get_type ())
-#define GIMP_EDIT_SELECTION_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_EDIT_SELECTION_TOOL, GimpEditSelectionTool))
-#define GIMP_EDIT_SELECTION_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_EDIT_SELECTION_TOOL, GimpEditSelectionToolClass))
-#define GIMP_IS_EDIT_SELECTION_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_EDIT_SELECTION_TOOL))
-#define GIMP_IS_EDIT_SELECTION_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_EDIT_SELECTION_TOOL))
+GType gimp_edit_selection_tool_get_type(void) G_GNUC_CONST;
 
+void gimp_edit_selection_tool_start(GimpTool *parent_tool, GimpDisplay *display,
+                                    const GimpCoords *coords,
+                                    GimpTranslateMode edit_mode,
+                                    gboolean propagate_release);
 
-GType      gimp_edit_selection_tool_get_type  (void) G_GNUC_CONST;
+gboolean gimp_edit_selection_tool_key_press(GimpTool *tool, GdkEventKey *kevent,
+                                            GimpDisplay *display);
+gboolean gimp_edit_selection_tool_translate(GimpTool *tool, GdkEventKey *kevent,
+                                            GimpTransformType translate_type,
+                                            GimpDisplay *display,
+                                            GtkWidget *type_box);
 
-void       gimp_edit_selection_tool_start     (GimpTool          *parent_tool,
-                                               GimpDisplay       *display,
-                                               const GimpCoords  *coords,
-                                               GimpTranslateMode edit_mode,
-                                               gboolean propagate_release);
-
-gboolean   gimp_edit_selection_tool_key_press (GimpTool          *tool,
-                                               GdkEventKey       *kevent,
-                                               GimpDisplay       *display);
-gboolean   gimp_edit_selection_tool_translate (GimpTool          *tool,
-                                               GdkEventKey       *kevent,
-                                               GimpTransformType translate_type,
-                                               GimpDisplay       *display,
-                                               GtkWidget         *type_box);
-
-
-#endif  /*  __GIMP_EDIT_SELECTION_TOOL_H__  */
+#endif /*  __GIMP_EDIT_SELECTION_TOOL_H__  */

@@ -21,49 +21,50 @@
 #ifndef __GIMP_COMPONENT_EDITOR_H__
 #define __GIMP_COMPONENT_EDITOR_H__
 
-
 #include "gimpimageeditor.h"
 
-
-#define GIMP_TYPE_COMPONENT_EDITOR            (gimp_component_editor_get_type ())
-#define GIMP_COMPONENT_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COMPONENT_EDITOR, GimpComponentEditor))
-#define GIMP_COMPONENT_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COMPONENT_EDITOR, GimpComponentEditorClass))
-#define GIMP_IS_COMPONENT_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COMPONENT_EDITOR))
-#define GIMP_IS_COMPONENT_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COMPONENT_EDITOR))
-#define GIMP_COMPONENT_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COMPONENT_EDITOR, GimpComponentEditorClass))
-
+#define GIMP_TYPE_COMPONENT_EDITOR (gimp_component_editor_get_type())
+#define GIMP_COMPONENT_EDITOR(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COMPONENT_EDITOR,               \
+                              GimpComponentEditor))
+#define GIMP_COMPONENT_EDITOR_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COMPONENT_EDITOR,                \
+                           GimpComponentEditorClass))
+#define GIMP_IS_COMPONENT_EDITOR(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COMPONENT_EDITOR))
+#define GIMP_IS_COMPONENT_EDITOR_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COMPONENT_EDITOR))
+#define GIMP_COMPONENT_EDITOR_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COMPONENT_EDITOR,                \
+                             GimpComponentEditorClass))
 
 typedef struct _GimpComponentEditorClass GimpComponentEditorClass;
 
-struct _GimpComponentEditor
-{
-	GimpImageEditor parent_instance;
+struct _GimpComponentEditor {
+  GimpImageEditor parent_instance;
 
-	gint view_size;
+  gint view_size;
 
-	GtkTreeModel      *model;
-	GtkTreeView       *view;
-	GtkTreeSelection  *selection;
+  GtkTreeModel *model;
+  GtkTreeView *view;
+  GtkTreeSelection *selection;
 
-	GtkTreeViewColumn *eye_column;
-	GtkCellRenderer   *eye_cell;
-	GtkCellRenderer   *renderer_cell;
+  GtkTreeViewColumn *eye_column;
+  GtkCellRenderer *eye_cell;
+  GtkCellRenderer *renderer_cell;
 
-	GimpChannelType clicked_component;
+  GimpChannelType clicked_component;
 };
 
-struct _GimpComponentEditorClass
-{
-	GimpImageEditorClass parent_class;
+struct _GimpComponentEditorClass {
+  GimpImageEditorClass parent_class;
 };
 
+GType gimp_component_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_component_editor_get_type      (void) G_GNUC_CONST;
+GtkWidget *gimp_component_editor_new(gint view_size,
+                                     GimpMenuFactory *menu_factory);
+void gimp_component_editor_set_view_size(GimpComponentEditor *editor,
+                                         gint view_size);
 
-GtkWidget * gimp_component_editor_new           (gint view_size,
-                                                 GimpMenuFactory     *menu_factory);
-void        gimp_component_editor_set_view_size (GimpComponentEditor *editor,
-                                                 gint view_size);
-
-
-#endif  /*  __GIMP_COMPONENT_EDITOR_H__  */
+#endif /*  __GIMP_COMPONENT_EDITOR_H__  */

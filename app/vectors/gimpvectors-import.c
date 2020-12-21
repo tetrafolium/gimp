@@ -30,8 +30,8 @@
 
 #include "config.h"
 
-#include <string.h>
 #include <errno.h>
+#include <string.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
@@ -44,156 +44,104 @@
 #include "config/gimpxmlparser.h"
 
 #include "core/gimperror.h"
-#include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
+#include "core/gimpimage.h"
 
 #include "gimpbezierstroke.h"
 #include "gimpstroke.h"
-#include "gimpvectors.h"
 #include "gimpvectors-import.h"
+#include "gimpvectors.h"
 
 #include "gimp-intl.h"
 
+#define COORDS_INIT                                                            \
+  {                                                                            \
+    .x = 0.0, .y = 0.0, .pressure = 1.0, .xtilt = 0.0, .ytilt = 0.0,           \
+    .wheel = 0.5, .velocity = 0.0, .direction = 0.0                            \
+  }
 
-#define COORDS_INIT   \
-	{                   \
-		.x         = 0.0, \
-		.y         = 0.0, \
-		.pressure  = 1.0, \
-		.xtilt     = 0.0, \
-		.ytilt     = 0.0, \
-		.wheel     = 0.5, \
-		.velocity  = 0.0, \
-		.direction = 0.0  \
-	}
-
-
-typedef struct
-{
-	GQueue       *stack;
-	GimpImage    *image;
-	gboolean scale;
-	gint svg_depth;
+typedef struct {
+  GQueue *stack;
+  GimpImage *image;
+  gboolean scale;
+  gint svg_depth;
 } SvgParser;
-
 
 typedef struct _SvgHandler SvgHandler;
 
-struct _SvgHandler
-{
-	const gchar  *name;
+struct _SvgHandler {
+  const gchar *name;
 
-	void (* start) (SvgHandler   *handler,
-	                const gchar **names,
-	                const gchar **values,
-	                SvgParser    *parser);
-	void (* end)   (SvgHandler   *handler,
-	                SvgParser    *parser);
+  void (*start)(SvgHandler *handler, const gchar **names, const gchar **values,
+                SvgParser *parser);
+  void (*end)(SvgHandler *handler, SvgParser *parser);
 
-	gdouble width;
-	gdouble height;
-	gchar        *id;
-	GList        *paths;
-	GimpMatrix3  *transform;
+  gdouble width;
+  gdouble height;
+  gchar *id;
+  GList *paths;
+  GimpMatrix3 *transform;
 };
 
-
-typedef struct
-{
-	gchar        *id;
-	GList        *strokes;
+typedef struct {
+  gchar *id;
+  GList *strokes;
 } SvgPath;
 
+static gboolean gimp_vectors_import(GimpImage *image, GFile *file,
+                                    const gchar *str, gsize len, gboolean merge,
+                                    gboolean scale, GimpVectors *parent,
+                                    gint position, GList **ret_vectors,
+                                    GError **error);
 
-static gboolean  gimp_vectors_import  (GimpImage            *image,
-                                       GFile                *file,
-                                       const gchar          *str,
-                                       gsize len,
-                                       gboolean merge,
-                                       gboolean scale,
-                                       GimpVectors          *parent,
-                                       gint position,
-                                       GList               **ret_vectors,
-                                       GError              **error);
+static void svg_parser_start_element(GMarkupParseContext *context,
+                                     const gchar *element_name,
+                                     const gchar **attribute_names,
+                                     const gchar **attribute_values,
+                                     gpointer user_data, GError **error);
+static void svg_parser_end_element(GMarkupParseContext *context,
+                                   const gchar *element_name,
+                                   gpointer user_data, GError **error);
 
-static void  svg_parser_start_element (GMarkupParseContext  *context,
-                                       const gchar          *element_name,
-                                       const gchar         **attribute_names,
-                                       const gchar         **attribute_values,
-                                       gpointer user_data,
-                                       GError              **error);
-static void  svg_parser_end_element   (GMarkupParseContext  *context,
-                                       const gchar          *element_name,
-                                       gpointer user_data,
-                                       GError              **error);
-
-static const GMarkupParser markup_parser =
-{
-	svg_parser_start_element,
-	svg_parser_end_element,
-	NULL, /*  characters   */
-	NULL, /*  passthrough  */
-	NULL /*  error        */
+static const GMarkupParser markup_parser = {
+    svg_parser_start_element, svg_parser_end_element, NULL, /*  characters   */
+    NULL,                                                   /*  passthrough  */
+    NULL                                                    /*  error        */
 };
 
+static void svg_handler_svg_start(SvgHandler *handler, const gchar **names,
+                                  const gchar **values, SvgParser *parser);
+static void svg_handler_svg_end(SvgHandler *handler, SvgParser *parser);
+static void svg_handler_group_start(SvgHandler *handler, const gchar **names,
+                                    const gchar **values, SvgParser *parser);
+static void svg_handler_path_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser);
+static void svg_handler_rect_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser);
+static void svg_handler_ellipse_start(SvgHandler *handler, const gchar **names,
+                                      const gchar **values, SvgParser *parser);
+static void svg_handler_line_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser);
+static void svg_handler_poly_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser);
 
-static void  svg_handler_svg_start     (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
-static void  svg_handler_svg_end       (SvgHandler   *handler,
-                                        SvgParser    *parser);
-static void  svg_handler_group_start   (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
-static void  svg_handler_path_start    (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
-static void  svg_handler_rect_start    (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
-static void  svg_handler_ellipse_start (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
-static void  svg_handler_line_start    (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
-static void  svg_handler_poly_start    (SvgHandler   *handler,
-                                        const gchar **names,
-                                        const gchar **values,
-                                        SvgParser    *parser);
+static const SvgHandler svg_handlers[] = {
+    {"svg", svg_handler_svg_start, svg_handler_svg_end},
+    {"g", svg_handler_group_start, NULL},
+    {"path", svg_handler_path_start, NULL},
+    {"rect", svg_handler_rect_start, NULL},
+    {"circle", svg_handler_ellipse_start, NULL},
+    {"ellipse", svg_handler_ellipse_start, NULL},
+    {"line", svg_handler_line_start, NULL},
+    {"polyline", svg_handler_poly_start, NULL},
+    {"polygon", svg_handler_poly_start, NULL}};
 
-static const SvgHandler svg_handlers[] =
-{
-	{ "svg",      svg_handler_svg_start,     svg_handler_svg_end },
-	{ "g",        svg_handler_group_start,   NULL                },
-	{ "path",     svg_handler_path_start,    NULL                },
-	{ "rect",     svg_handler_rect_start,    NULL                },
-	{ "circle",   svg_handler_ellipse_start, NULL                },
-	{ "ellipse",  svg_handler_ellipse_start, NULL                },
-	{ "line",     svg_handler_line_start,    NULL                },
-	{ "polyline", svg_handler_poly_start,    NULL                },
-	{ "polygon",  svg_handler_poly_start,    NULL                }
-};
-
-
-static gboolean   parse_svg_length    (const gchar  *value,
-                                       gdouble reference,
-                                       gdouble resolution,
-                                       gdouble      *length);
-static gboolean   parse_svg_viewbox   (const gchar  *value,
-                                       gdouble      *width,
-                                       gdouble      *height,
-                                       GimpMatrix3  *matrix);
-static gboolean   parse_svg_transform (const gchar  *value,
-                                       GimpMatrix3  *matrix);
-static GList    * parse_path_data     (const gchar  *data);
-
+static gboolean parse_svg_length(const gchar *value, gdouble reference,
+                                 gdouble resolution, gdouble *length);
+static gboolean parse_svg_viewbox(const gchar *value, gdouble *width,
+                                  gdouble *height, GimpMatrix3 *matrix);
+static gboolean parse_svg_transform(const gchar *value, GimpMatrix3 *matrix);
+static GList *parse_path_data(const gchar *data);
 
 /**
  * gimp_vectors_import_file:
@@ -208,38 +156,29 @@ static GList    * parse_path_data     (const gchar  *data);
  *
  * Returns: %TRUE on success, %FALSE if an error occurred
  **/
-gboolean
-gimp_vectors_import_file (GimpImage    *image,
-                          GFile        *file,
-                          gboolean merge,
-                          gboolean scale,
-                          GimpVectors  *parent,
-                          gint position,
-                          GList       **ret_vectors,
-                          GError      **error)
-{
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-	g_return_val_if_fail (G_IS_FILE (file), FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      GIMP_IS_VECTORS (parent), FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      gimp_item_is_attached (GIMP_ITEM (parent)), FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      gimp_item_get_image (GIMP_ITEM (parent)) == image,
-	                      FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      gimp_viewable_get_children (GIMP_VIEWABLE (parent)),
-	                      FALSE);
-	g_return_val_if_fail (ret_vectors == NULL || *ret_vectors == NULL, FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+gboolean gimp_vectors_import_file(GimpImage *image, GFile *file, gboolean merge,
+                                  gboolean scale, GimpVectors *parent,
+                                  gint position, GList **ret_vectors,
+                                  GError **error) {
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
+  g_return_val_if_fail(G_IS_FILE(file), FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           GIMP_IS_VECTORS(parent),
+                       FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           gimp_item_is_attached(GIMP_ITEM(parent)),
+                       FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           gimp_item_get_image(GIMP_ITEM(parent)) == image,
+                       FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           gimp_viewable_get_children(GIMP_VIEWABLE(parent)),
+                       FALSE);
+  g_return_val_if_fail(ret_vectors == NULL || *ret_vectors == NULL, FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	return gimp_vectors_import (image, file, NULL, 0, merge, scale,
-	                            parent, position,
-	                            ret_vectors, error);
+  return gimp_vectors_import(image, file, NULL, 0, merge, scale, parent,
+                             position, ret_vectors, error);
 }
 
 /**
@@ -255,1114 +194,947 @@ gimp_vectors_import_file (GimpImage    *image,
  *
  * Returns: %TRUE on success, %FALSE if an error occurred
  **/
-gboolean
-gimp_vectors_import_buffer (GimpImage    *image,
-                            const gchar  *buffer,
-                            gsize len,
-                            gboolean merge,
-                            gboolean scale,
-                            GimpVectors  *parent,
-                            gint position,
-                            GList       **ret_vectors,
-                            GError      **error)
-{
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-	g_return_val_if_fail (buffer != NULL || len == 0, FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      GIMP_IS_VECTORS (parent), FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      gimp_item_is_attached (GIMP_ITEM (parent)), FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      gimp_item_get_image (GIMP_ITEM (parent)) == image,
-	                      FALSE);
-	g_return_val_if_fail (parent == NULL ||
-	                      parent == GIMP_IMAGE_ACTIVE_PARENT ||
-	                      gimp_viewable_get_children (GIMP_VIEWABLE (parent)),
-	                      FALSE);
-	g_return_val_if_fail (ret_vectors == NULL || *ret_vectors == NULL, FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+gboolean gimp_vectors_import_buffer(GimpImage *image, const gchar *buffer,
+                                    gsize len, gboolean merge, gboolean scale,
+                                    GimpVectors *parent, gint position,
+                                    GList **ret_vectors, GError **error) {
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), FALSE);
+  g_return_val_if_fail(buffer != NULL || len == 0, FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           GIMP_IS_VECTORS(parent),
+                       FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           gimp_item_is_attached(GIMP_ITEM(parent)),
+                       FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           gimp_item_get_image(GIMP_ITEM(parent)) == image,
+                       FALSE);
+  g_return_val_if_fail(parent == NULL || parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                           gimp_viewable_get_children(GIMP_VIEWABLE(parent)),
+                       FALSE);
+  g_return_val_if_fail(ret_vectors == NULL || *ret_vectors == NULL, FALSE);
+  g_return_val_if_fail(error == NULL || *error == NULL, FALSE);
 
-	return gimp_vectors_import (image, NULL, buffer, len, merge, scale,
-	                            parent, position,
-	                            ret_vectors, error);
+  return gimp_vectors_import(image, NULL, buffer, len, merge, scale, parent,
+                             position, ret_vectors, error);
 }
 
-static gboolean
-gimp_vectors_import (GimpImage    *image,
-                     GFile        *file,
-                     const gchar  *str,
-                     gsize len,
-                     gboolean merge,
-                     gboolean scale,
-                     GimpVectors  *parent,
-                     gint position,
-                     GList       **ret_vectors,
-                     GError      **error)
-{
-	GimpXmlParser *xml_parser;
-	SvgParser parser;
-	GList         *paths;
-	SvgHandler    *base;
-	gboolean success = TRUE;
+static gboolean gimp_vectors_import(GimpImage *image, GFile *file,
+                                    const gchar *str, gsize len, gboolean merge,
+                                    gboolean scale, GimpVectors *parent,
+                                    gint position, GList **ret_vectors,
+                                    GError **error) {
+  GimpXmlParser *xml_parser;
+  SvgParser parser;
+  GList *paths;
+  SvgHandler *base;
+  gboolean success = TRUE;
 
-	parser.stack     = g_queue_new ();
-	parser.image     = image;
-	parser.scale     = scale;
-	parser.svg_depth = 0;
+  parser.stack = g_queue_new();
+  parser.image = image;
+  parser.scale = scale;
+  parser.svg_depth = 0;
 
-	/*  the base of the stack, defines the size of the view-port  */
-	base = g_slice_new0 (SvgHandler);
-	base->name   = "image";
-	base->width  = gimp_image_get_width  (image);
-	base->height = gimp_image_get_height (image);
+  /*  the base of the stack, defines the size of the view-port  */
+  base = g_slice_new0(SvgHandler);
+  base->name = "image";
+  base->width = gimp_image_get_width(image);
+  base->height = gimp_image_get_height(image);
 
-	g_queue_push_head (parser.stack, base);
+  g_queue_push_head(parser.stack, base);
 
-	xml_parser = gimp_xml_parser_new (&markup_parser, &parser);
+  xml_parser = gimp_xml_parser_new(&markup_parser, &parser);
 
-	if (file)
-		success = gimp_xml_parser_parse_gfile (xml_parser, file, error);
-	else
-		success = gimp_xml_parser_parse_buffer (xml_parser, str, len, error);
+  if (file)
+    success = gimp_xml_parser_parse_gfile(xml_parser, file, error);
+  else
+    success = gimp_xml_parser_parse_buffer(xml_parser, str, len, error);
 
-	gimp_xml_parser_free (xml_parser);
+  gimp_xml_parser_free(xml_parser);
 
-	if (success)
-	{
-		if (base->paths)
-		{
-			GimpVectors *vectors = NULL;
+  if (success) {
+    if (base->paths) {
+      GimpVectors *vectors = NULL;
 
-			base->paths = g_list_reverse (base->paths);
+      base->paths = g_list_reverse(base->paths);
 
-			merge = merge && base->paths->next;
+      merge = merge && base->paths->next;
 
-			gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_VECTORS_IMPORT,
-			                             _("Import Paths"));
+      gimp_image_undo_group_start(image, GIMP_UNDO_GROUP_VECTORS_IMPORT,
+                                  _("Import Paths"));
 
-			for (paths = base->paths; paths; paths = paths->next)
-			{
-				SvgPath *path = paths->data;
-				GList   *list;
+      for (paths = base->paths; paths; paths = paths->next) {
+        SvgPath *path = paths->data;
+        GList *list;
 
-				if (!merge || !vectors)
-				{
-					vectors = gimp_vectors_new (image,
-					                            ((merge || !path->id) ?
-					                             _("Imported Path") : path->id));
-					gimp_image_add_vectors (image, vectors,
-					                        parent, position, TRUE);
-					gimp_vectors_freeze (vectors);
+        if (!merge || !vectors) {
+          vectors = gimp_vectors_new(
+              image, ((merge || !path->id) ? _("Imported Path") : path->id));
+          gimp_image_add_vectors(image, vectors, parent, position, TRUE);
+          gimp_vectors_freeze(vectors);
 
-					if (ret_vectors)
-						*ret_vectors = g_list_prepend (*ret_vectors, vectors);
+          if (ret_vectors)
+            *ret_vectors = g_list_prepend(*ret_vectors, vectors);
 
-					if (position != -1)
-						position++;
-				}
+          if (position != -1)
+            position++;
+        }
 
-				for (list = path->strokes; list; list = list->next)
-					gimp_vectors_stroke_add (vectors, GIMP_STROKE (list->data));
+        for (list = path->strokes; list; list = list->next)
+          gimp_vectors_stroke_add(vectors, GIMP_STROKE(list->data));
 
-				if (!merge)
-					gimp_vectors_thaw (vectors);
+        if (!merge)
+          gimp_vectors_thaw(vectors);
 
-				g_list_free_full (path->strokes, g_object_unref);
-				path->strokes = NULL;
-			}
+        g_list_free_full(path->strokes, g_object_unref);
+        path->strokes = NULL;
+      }
 
-			if (merge)
-				gimp_vectors_thaw (vectors);
+      if (merge)
+        gimp_vectors_thaw(vectors);
 
-			gimp_image_undo_group_end (image);
-		}
-		else
-		{
-			if (file)
-				g_set_error (error, GIMP_ERROR, GIMP_FAILED,
-				             _("No paths found in '%s'"),
-				             gimp_file_get_utf8_name (file));
-			else
-				g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-				                     _("No paths found in the buffer"));
+      gimp_image_undo_group_end(image);
+    } else {
+      if (file)
+        g_set_error(error, GIMP_ERROR, GIMP_FAILED, _("No paths found in '%s'"),
+                    gimp_file_get_utf8_name(file));
+      else
+        g_set_error_literal(error, GIMP_ERROR, GIMP_FAILED,
+                            _("No paths found in the buffer"));
 
-			success = FALSE;
-		}
-	}
-	else if (error && *error && file) /*  parser reported an error  */
-	{
-		gchar *msg = (*error)->message;
+      success = FALSE;
+    }
+  } else if (error && *error && file) /*  parser reported an error  */
+  {
+    gchar *msg = (*error)->message;
 
-		(*error)->message =
-			g_strdup_printf (_("Failed to import paths from '%s': %s"),
-			                 gimp_file_get_utf8_name (file), msg);
+    (*error)->message =
+        g_strdup_printf(_("Failed to import paths from '%s': %s"),
+                        gimp_file_get_utf8_name(file), msg);
 
-		g_free (msg);
-	}
+    g_free(msg);
+  }
 
-	while ((base = g_queue_pop_head (parser.stack)) != NULL)
-	{
-		for (paths = base->paths; paths; paths = paths->next)
-		{
-			SvgPath *path = paths->data;
-			GList   *list;
+  while ((base = g_queue_pop_head(parser.stack)) != NULL) {
+    for (paths = base->paths; paths; paths = paths->next) {
+      SvgPath *path = paths->data;
+      GList *list;
 
-			g_free (path->id);
+      g_free(path->id);
 
-			for (list = path->strokes; list; list = list->next)
-				g_object_unref (list->data);
+      for (list = path->strokes; list; list = list->next)
+        g_object_unref(list->data);
 
-			g_list_free (path->strokes);
+      g_list_free(path->strokes);
 
-			g_slice_free (SvgPath, path);
-		}
+      g_slice_free(SvgPath, path);
+    }
 
-		g_list_free (base->paths);
+    g_list_free(base->paths);
 
-		g_slice_free (GimpMatrix3, base->transform);
-		g_slice_free (SvgHandler, base);
-	}
+    g_slice_free(GimpMatrix3, base->transform);
+    g_slice_free(SvgHandler, base);
+  }
 
-	g_queue_free (parser.stack);
+  g_queue_free(parser.stack);
 
-	return success;
+  return success;
 }
 
-static void
-svg_parser_start_element (GMarkupParseContext  *context,
-                          const gchar          *element_name,
-                          const gchar         **attribute_names,
-                          const gchar         **attribute_values,
-                          gpointer user_data,
-                          GError              **error)
-{
-	SvgParser  *parser = user_data;
-	SvgHandler *handler;
-	SvgHandler *base;
-	gint i = 0;
+static void svg_parser_start_element(GMarkupParseContext *context,
+                                     const gchar *element_name,
+                                     const gchar **attribute_names,
+                                     const gchar **attribute_values,
+                                     gpointer user_data, GError **error) {
+  SvgParser *parser = user_data;
+  SvgHandler *handler;
+  SvgHandler *base;
+  gint i = 0;
 
-	handler = g_slice_new0 (SvgHandler);
-	base    = g_queue_peek_head (parser->stack);
+  handler = g_slice_new0(SvgHandler);
+  base = g_queue_peek_head(parser->stack);
 
-	/* if the element is not rendered, always use the generic handler */
-	if (base->width <= 0.0 || base->height <= 0.0)
-		i = G_N_ELEMENTS (svg_handlers);
+  /* if the element is not rendered, always use the generic handler */
+  if (base->width <= 0.0 || base->height <= 0.0)
+    i = G_N_ELEMENTS(svg_handlers);
 
-	for (; i < G_N_ELEMENTS (svg_handlers); i++)
-		if (strcmp (svg_handlers[i].name, element_name) == 0)
-		{
-			handler->name  = svg_handlers[i].name;
-			handler->start = svg_handlers[i].start;
-			break;
-		}
+  for (; i < G_N_ELEMENTS(svg_handlers); i++)
+    if (strcmp(svg_handlers[i].name, element_name) == 0) {
+      handler->name = svg_handlers[i].name;
+      handler->start = svg_handlers[i].start;
+      break;
+    }
 
-	handler->width  = base->width;
-	handler->height = base->height;
+  handler->width = base->width;
+  handler->height = base->height;
 
-	g_queue_push_head (parser->stack, handler);
+  g_queue_push_head(parser->stack, handler);
 
-	if (handler->start)
-		handler->start (handler, attribute_names, attribute_values, parser);
+  if (handler->start)
+    handler->start(handler, attribute_names, attribute_values, parser);
 }
 
-static void
-svg_parser_end_element (GMarkupParseContext  *context,
-                        const gchar          *element_name,
-                        gpointer user_data,
-                        GError              **error)
-{
-	SvgParser  *parser = user_data;
-	SvgHandler *handler;
-	SvgHandler *base;
-	GList      *paths;
+static void svg_parser_end_element(GMarkupParseContext *context,
+                                   const gchar *element_name,
+                                   gpointer user_data, GError **error) {
+  SvgParser *parser = user_data;
+  SvgHandler *handler;
+  SvgHandler *base;
+  GList *paths;
 
-	handler = g_queue_pop_head (parser->stack);
+  handler = g_queue_pop_head(parser->stack);
 
-	g_return_if_fail (handler != NULL &&
-	                  (handler->name == NULL ||
-	                   strcmp (handler->name, element_name) == 0));
+  g_return_if_fail(
+      handler != NULL &&
+      (handler->name == NULL || strcmp(handler->name, element_name) == 0));
 
-	if (handler->end)
-		handler->end (handler, parser);
+  if (handler->end)
+    handler->end(handler, parser);
 
-	if (handler->paths)
-	{
-		if (handler->transform)
-		{
-			for (paths = handler->paths; paths; paths = paths->next)
-			{
-				SvgPath *path = paths->data;
-				GList   *list;
+  if (handler->paths) {
+    if (handler->transform) {
+      for (paths = handler->paths; paths; paths = paths->next) {
+        SvgPath *path = paths->data;
+        GList *list;
 
-				for (list = path->strokes; list; list = list->next)
-					gimp_stroke_transform (GIMP_STROKE (list->data),
-					                       handler->transform, NULL);
-			}
+        for (list = path->strokes; list; list = list->next)
+          gimp_stroke_transform(GIMP_STROKE(list->data), handler->transform,
+                                NULL);
+      }
 
-			g_slice_free (GimpMatrix3, handler->transform);
-		}
+      g_slice_free(GimpMatrix3, handler->transform);
+    }
 
-		base = g_queue_peek_head (parser->stack);
-		base->paths = g_list_concat (base->paths, handler->paths);
-	}
+    base = g_queue_peek_head(parser->stack);
+    base->paths = g_list_concat(base->paths, handler->paths);
+  }
 
-	g_slice_free (SvgHandler, handler);
+  g_slice_free(SvgHandler, handler);
 }
 
-static void
-svg_handler_svg_start (SvgHandler   *handler,
-                       const gchar **names,
-                       const gchar **values,
-                       SvgParser    *parser)
-{
-	GimpMatrix3 *matrix;
-	GimpMatrix3 box;
-	const gchar *viewbox = NULL;
-	gdouble x = 0;
-	gdouble y = 0;
-	gdouble w = handler->width;
-	gdouble h = handler->height;
-	gdouble xres;
-	gdouble yres;
+static void svg_handler_svg_start(SvgHandler *handler, const gchar **names,
+                                  const gchar **values, SvgParser *parser) {
+  GimpMatrix3 *matrix;
+  GimpMatrix3 box;
+  const gchar *viewbox = NULL;
+  gdouble x = 0;
+  gdouble y = 0;
+  gdouble w = handler->width;
+  gdouble h = handler->height;
+  gdouble xres;
+  gdouble yres;
 
-	matrix = g_slice_new (GimpMatrix3);
-	gimp_matrix3_identity (matrix);
+  matrix = g_slice_new(GimpMatrix3);
+  gimp_matrix3_identity(matrix);
 
-	gimp_image_get_resolution (parser->image, &xres, &yres);
+  gimp_image_get_resolution(parser->image, &xres, &yres);
 
-	while (*names)
-	{
-		switch (*names[0])
-		{
-		case 'x':
-			if (strcmp (*names, "x") == 0)
-				parse_svg_length (*values, handler->width, xres, &x);
-			break;
+  while (*names) {
+    switch (*names[0]) {
+    case 'x':
+      if (strcmp(*names, "x") == 0)
+        parse_svg_length(*values, handler->width, xres, &x);
+      break;
 
-		case 'y':
-			if (strcmp (*names, "y") == 0)
-				parse_svg_length (*values, handler->height, yres, &y);
-			break;
+    case 'y':
+      if (strcmp(*names, "y") == 0)
+        parse_svg_length(*values, handler->height, yres, &y);
+      break;
 
-		case 'w':
-			if (strcmp (*names, "width") == 0)
-				parse_svg_length (*values, handler->width, xres, &w);
-			break;
+    case 'w':
+      if (strcmp(*names, "width") == 0)
+        parse_svg_length(*values, handler->width, xres, &w);
+      break;
 
-		case 'h':
-			if (strcmp (*names, "height") == 0)
-				parse_svg_length (*values, handler->height, yres, &h);
-			break;
+    case 'h':
+      if (strcmp(*names, "height") == 0)
+        parse_svg_length(*values, handler->height, yres, &h);
+      break;
 
-		case 'v':
-			if (strcmp (*names, "viewBox") == 0)
-				viewbox = *values;
-			break;
-		}
+    case 'v':
+      if (strcmp(*names, "viewBox") == 0)
+        viewbox = *values;
+      break;
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 
-	if (x || y)
-	{
-		/* according to the spec offsets are meaningless on the outermost svg */
-		if (parser->svg_depth > 0)
-			gimp_matrix3_translate (matrix, x, y);
-	}
+  if (x || y) {
+    /* according to the spec offsets are meaningless on the outermost svg */
+    if (parser->svg_depth > 0)
+      gimp_matrix3_translate(matrix, x, y);
+  }
 
-	if (viewbox && parse_svg_viewbox (viewbox, &w, &h, &box))
-	{
-		gimp_matrix3_mult (&box, matrix);
-	}
+  if (viewbox && parse_svg_viewbox(viewbox, &w, &h, &box)) {
+    gimp_matrix3_mult(&box, matrix);
+  }
 
-	/*  optionally scale the outermost svg to image size  */
-	if (parser->scale && parser->svg_depth == 0)
-	{
-		if (w > 0.0 && h > 0.0)
-			gimp_matrix3_scale (matrix,
-			                    gimp_image_get_width  (parser->image) / w,
-			                    gimp_image_get_height (parser->image) / h);
-	}
+  /*  optionally scale the outermost svg to image size  */
+  if (parser->scale && parser->svg_depth == 0) {
+    if (w > 0.0 && h > 0.0)
+      gimp_matrix3_scale(matrix, gimp_image_get_width(parser->image) / w,
+                         gimp_image_get_height(parser->image) / h);
+  }
 
-	handler->width  = w;
-	handler->height = h;
+  handler->width = w;
+  handler->height = h;
 
-	handler->transform = matrix;
+  handler->transform = matrix;
 
-	parser->svg_depth++;
+  parser->svg_depth++;
 }
 
-static void
-svg_handler_svg_end (SvgHandler   *handler,
-                     SvgParser    *parser)
-{
-	parser->svg_depth--;
+static void svg_handler_svg_end(SvgHandler *handler, SvgParser *parser) {
+  parser->svg_depth--;
 }
 
-static void
-svg_handler_group_start (SvgHandler   *handler,
-                         const gchar **names,
-                         const gchar **values,
-                         SvgParser    *parser)
-{
-	while (*names)
-	{
-		if (strcmp (*names, "transform") == 0 && !handler->transform)
-		{
-			GimpMatrix3 matrix;
+static void svg_handler_group_start(SvgHandler *handler, const gchar **names,
+                                    const gchar **values, SvgParser *parser) {
+  while (*names) {
+    if (strcmp(*names, "transform") == 0 && !handler->transform) {
+      GimpMatrix3 matrix;
 
-			if (parse_svg_transform (*values, &matrix))
-			{
-				handler->transform = g_slice_dup (GimpMatrix3, &matrix);
+      if (parse_svg_transform(*values, &matrix)) {
+        handler->transform = g_slice_dup(GimpMatrix3, &matrix);
 
 #ifdef DEBUG_VECTORS_IMPORT
-				g_printerr ("transform %s: %g %g %g   %g %g %g   %g %g %g\n",
-				            handler->id ? handler->id : "(null)",
-				            handler->transform->coeff[0][0],
-				            handler->transform->coeff[0][1],
-				            handler->transform->coeff[0][2],
-				            handler->transform->coeff[1][0],
-				            handler->transform->coeff[1][1],
-				            handler->transform->coeff[1][2],
-				            handler->transform->coeff[2][0],
-				            handler->transform->coeff[2][1],
-				            handler->transform->coeff[2][2]);
+        g_printerr(
+            "transform %s: %g %g %g   %g %g %g   %g %g %g\n",
+            handler->id ? handler->id : "(null)",
+            handler->transform->coeff[0][0], handler->transform->coeff[0][1],
+            handler->transform->coeff[0][2], handler->transform->coeff[1][0],
+            handler->transform->coeff[1][1], handler->transform->coeff[1][2],
+            handler->transform->coeff[2][0], handler->transform->coeff[2][1],
+            handler->transform->coeff[2][2]);
 #endif
-			}
-		}
+      }
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 }
 
-static void
-svg_handler_path_start (SvgHandler   *handler,
-                        const gchar **names,
-                        const gchar **values,
-                        SvgParser    *parser)
-{
-	SvgPath *path = g_slice_new0 (SvgPath);
+static void svg_handler_path_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser) {
+  SvgPath *path = g_slice_new0(SvgPath);
 
-	while (*names)
-	{
-		switch (*names[0])
-		{
-		case 'i':
-			if (strcmp (*names, "id") == 0 && !path->id)
-				path->id = g_strdup (*values);
-			break;
+  while (*names) {
+    switch (*names[0]) {
+    case 'i':
+      if (strcmp(*names, "id") == 0 && !path->id)
+        path->id = g_strdup(*values);
+      break;
 
-		case 'd':
-			if (strcmp (*names, "d") == 0 && !path->strokes)
-				path->strokes = parse_path_data (*values);
-			break;
+    case 'd':
+      if (strcmp(*names, "d") == 0 && !path->strokes)
+        path->strokes = parse_path_data(*values);
+      break;
 
-		case 't':
-			if (strcmp (*names, "transform") == 0 && !handler->transform)
-			{
-				GimpMatrix3 matrix;
+    case 't':
+      if (strcmp(*names, "transform") == 0 && !handler->transform) {
+        GimpMatrix3 matrix;
 
-				if (parse_svg_transform (*values, &matrix))
-				{
-					handler->transform = g_slice_dup (GimpMatrix3, &matrix);
-				}
-			}
-			break;
-		}
+        if (parse_svg_transform(*values, &matrix)) {
+          handler->transform = g_slice_dup(GimpMatrix3, &matrix);
+        }
+      }
+      break;
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 
-	handler->paths = g_list_prepend (handler->paths, path);
+  handler->paths = g_list_prepend(handler->paths, path);
 }
 
-static void
-svg_handler_rect_start (SvgHandler   *handler,
-                        const gchar **names,
-                        const gchar **values,
-                        SvgParser    *parser)
-{
-	SvgPath *path   = g_slice_new0 (SvgPath);
-	gdouble x      = 0.0;
-	gdouble y      = 0.0;
-	gdouble width  = 0.0;
-	gdouble height = 0.0;
-	gdouble rx     = 0.0;
-	gdouble ry     = 0.0;
-	gdouble xres;
-	gdouble yres;
+static void svg_handler_rect_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser) {
+  SvgPath *path = g_slice_new0(SvgPath);
+  gdouble x = 0.0;
+  gdouble y = 0.0;
+  gdouble width = 0.0;
+  gdouble height = 0.0;
+  gdouble rx = 0.0;
+  gdouble ry = 0.0;
+  gdouble xres;
+  gdouble yres;
 
-	gimp_image_get_resolution (parser->image, &xres, &yres);
+  gimp_image_get_resolution(parser->image, &xres, &yres);
 
-	while (*names)
-	{
-		switch (*names[0])
-		{
-		case 'i':
-			if (strcmp (*names, "id") == 0 && !path->id)
-				path->id = g_strdup (*values);
-			break;
+  while (*names) {
+    switch (*names[0]) {
+    case 'i':
+      if (strcmp(*names, "id") == 0 && !path->id)
+        path->id = g_strdup(*values);
+      break;
 
-		case 'x':
-			if (strcmp (*names, "x") == 0)
-				parse_svg_length (*values, handler->width, xres, &x);
-			break;
+    case 'x':
+      if (strcmp(*names, "x") == 0)
+        parse_svg_length(*values, handler->width, xres, &x);
+      break;
 
-		case 'y':
-			if (strcmp (*names, "y") == 0)
-				parse_svg_length (*values, handler->height, yres, &y);
-			break;
+    case 'y':
+      if (strcmp(*names, "y") == 0)
+        parse_svg_length(*values, handler->height, yres, &y);
+      break;
 
-		case 'w':
-			if (strcmp (*names, "width") == 0)
-				parse_svg_length (*values, handler->width, xres, &width);
-			break;
+    case 'w':
+      if (strcmp(*names, "width") == 0)
+        parse_svg_length(*values, handler->width, xres, &width);
+      break;
 
-		case 'h':
-			if (strcmp (*names, "height") == 0)
-				parse_svg_length (*values, handler->height, yres, &height);
-			break;
+    case 'h':
+      if (strcmp(*names, "height") == 0)
+        parse_svg_length(*values, handler->height, yres, &height);
+      break;
 
-		case 'r':
-			if (strcmp (*names, "rx") == 0)
-				parse_svg_length (*values, handler->width, xres, &rx);
-			else if (strcmp (*names, "ry") == 0)
-				parse_svg_length (*values, handler->height, yres, &ry);
-			break;
+    case 'r':
+      if (strcmp(*names, "rx") == 0)
+        parse_svg_length(*values, handler->width, xres, &rx);
+      else if (strcmp(*names, "ry") == 0)
+        parse_svg_length(*values, handler->height, yres, &ry);
+      break;
 
-		case 't':
-			if (strcmp (*names, "transform") == 0 && !handler->transform)
-			{
-				GimpMatrix3 matrix;
+    case 't':
+      if (strcmp(*names, "transform") == 0 && !handler->transform) {
+        GimpMatrix3 matrix;
 
-				if (parse_svg_transform (*values, &matrix))
-				{
-					handler->transform = g_slice_dup (GimpMatrix3, &matrix);
-				}
-			}
-			break;
-		}
+        if (parse_svg_transform(*values, &matrix)) {
+          handler->transform = g_slice_dup(GimpMatrix3, &matrix);
+        }
+      }
+      break;
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 
-	if (width > 0.0 && height > 0.0 && rx >= 0.0 && ry >= 0.0)
-	{
-		GimpStroke *stroke;
-		GimpCoords point = COORDS_INIT;
+  if (width > 0.0 && height > 0.0 && rx >= 0.0 && ry >= 0.0) {
+    GimpStroke *stroke;
+    GimpCoords point = COORDS_INIT;
 
-		if (rx == 0.0)
-			rx = ry;
-		if (ry == 0.0)
-			ry = rx;
+    if (rx == 0.0)
+      rx = ry;
+    if (ry == 0.0)
+      ry = rx;
 
-		rx = MIN (rx, width / 2);
-		ry = MIN (ry, height / 2);
+    rx = MIN(rx, width / 2);
+    ry = MIN(ry, height / 2);
 
-		point.x = x + width - rx;
-		point.y = y;
-		stroke = gimp_bezier_stroke_new_moveto (&point);
+    point.x = x + width - rx;
+    point.y = y;
+    stroke = gimp_bezier_stroke_new_moveto(&point);
 
-		if (rx)
-		{
-			GimpCoords end = COORDS_INIT;
+    if (rx) {
+      GimpCoords end = COORDS_INIT;
 
-			end.x = x + width;
-			end.y = y + ry;
+      end.x = x + width;
+      end.y = y + ry;
 
-			gimp_bezier_stroke_arcto (stroke, rx, ry, 0, FALSE, TRUE, &end);
-		}
+      gimp_bezier_stroke_arcto(stroke, rx, ry, 0, FALSE, TRUE, &end);
+    }
 
-		point.x = x + width;
-		point.y = y + height - ry;
-		gimp_bezier_stroke_lineto (stroke, &point);
+    point.x = x + width;
+    point.y = y + height - ry;
+    gimp_bezier_stroke_lineto(stroke, &point);
 
-		if (rx)
-		{
-			GimpCoords end = COORDS_INIT;
+    if (rx) {
+      GimpCoords end = COORDS_INIT;
 
-			end.x = x + width - rx;
-			end.y = y + height;
+      end.x = x + width - rx;
+      end.y = y + height;
 
-			gimp_bezier_stroke_arcto (stroke, rx, ry, 0, FALSE, TRUE, &end);
-		}
+      gimp_bezier_stroke_arcto(stroke, rx, ry, 0, FALSE, TRUE, &end);
+    }
 
-		point.x = x + rx;
-		point.y = y + height;
-		gimp_bezier_stroke_lineto (stroke, &point);
+    point.x = x + rx;
+    point.y = y + height;
+    gimp_bezier_stroke_lineto(stroke, &point);
 
-		if (rx)
-		{
-			GimpCoords end = COORDS_INIT;
+    if (rx) {
+      GimpCoords end = COORDS_INIT;
 
-			end.x = x;
-			end.y = y + height - ry;
+      end.x = x;
+      end.y = y + height - ry;
 
-			gimp_bezier_stroke_arcto (stroke, rx, ry, 0, FALSE, TRUE, &end);
-		}
+      gimp_bezier_stroke_arcto(stroke, rx, ry, 0, FALSE, TRUE, &end);
+    }
 
-		point.x = x;
-		point.y = y + ry;
-		gimp_bezier_stroke_lineto (stroke, &point);
+    point.x = x;
+    point.y = y + ry;
+    gimp_bezier_stroke_lineto(stroke, &point);
 
-		if (rx)
-		{
-			GimpCoords end = COORDS_INIT;
+    if (rx) {
+      GimpCoords end = COORDS_INIT;
 
-			end.x = x + rx;
-			end.y = y;
+      end.x = x + rx;
+      end.y = y;
 
-			gimp_bezier_stroke_arcto (stroke, rx, ry, 0, FALSE, TRUE, &end);
-		}
+      gimp_bezier_stroke_arcto(stroke, rx, ry, 0, FALSE, TRUE, &end);
+    }
 
-		/* the last line is handled by closing the stroke */
-		gimp_stroke_close (stroke);
+    /* the last line is handled by closing the stroke */
+    gimp_stroke_close(stroke);
 
-		path->strokes = g_list_prepend (path->strokes, stroke);
-	}
+    path->strokes = g_list_prepend(path->strokes, stroke);
+  }
 
-	handler->paths = g_list_prepend (handler->paths, path);
+  handler->paths = g_list_prepend(handler->paths, path);
 }
 
-static void
-svg_handler_ellipse_start (SvgHandler   *handler,
-                           const gchar **names,
-                           const gchar **values,
-                           SvgParser    *parser)
-{
-	SvgPath    *path   = g_slice_new0 (SvgPath);
-	GimpCoords center = COORDS_INIT;
-	gdouble rx     = 0.0;
-	gdouble ry     = 0.0;
-	gdouble xres;
-	gdouble yres;
+static void svg_handler_ellipse_start(SvgHandler *handler, const gchar **names,
+                                      const gchar **values, SvgParser *parser) {
+  SvgPath *path = g_slice_new0(SvgPath);
+  GimpCoords center = COORDS_INIT;
+  gdouble rx = 0.0;
+  gdouble ry = 0.0;
+  gdouble xres;
+  gdouble yres;
 
-	gimp_image_get_resolution (parser->image, &xres, &yres);
+  gimp_image_get_resolution(parser->image, &xres, &yres);
 
-	while (*names)
-	{
-		switch (*names[0])
-		{
-		case 'i':
-			if (strcmp (*names, "id") == 0 && !path->id)
-				path->id = g_strdup (*values);
-			break;
+  while (*names) {
+    switch (*names[0]) {
+    case 'i':
+      if (strcmp(*names, "id") == 0 && !path->id)
+        path->id = g_strdup(*values);
+      break;
 
-		case 'c':
-			if (strcmp (*names, "cx") == 0)
-				parse_svg_length (*values, handler->width, xres, &center.x);
-			else if (strcmp (*names, "cy") == 0)
-				parse_svg_length (*values, handler->height, yres, &center.y);
-			break;
+    case 'c':
+      if (strcmp(*names, "cx") == 0)
+        parse_svg_length(*values, handler->width, xres, &center.x);
+      else if (strcmp(*names, "cy") == 0)
+        parse_svg_length(*values, handler->height, yres, &center.y);
+      break;
 
-		case 'r':
-			if (strcmp (*names, "r") == 0)
-			{
-				parse_svg_length (*values, handler->width,  xres, &rx);
-				parse_svg_length (*values, handler->height, yres, &ry);
-			}
-			else if (strcmp (*names, "rx") == 0)
-			{
-				parse_svg_length (*values, handler->width, xres, &rx);
-			}
-			else if (strcmp (*names, "ry") == 0)
-			{
-				parse_svg_length (*values, handler->height, yres, &ry);
-			}
-			break;
+    case 'r':
+      if (strcmp(*names, "r") == 0) {
+        parse_svg_length(*values, handler->width, xres, &rx);
+        parse_svg_length(*values, handler->height, yres, &ry);
+      } else if (strcmp(*names, "rx") == 0) {
+        parse_svg_length(*values, handler->width, xres, &rx);
+      } else if (strcmp(*names, "ry") == 0) {
+        parse_svg_length(*values, handler->height, yres, &ry);
+      }
+      break;
 
-		case 't':
-			if (strcmp (*names, "transform") == 0 && !handler->transform)
-			{
-				GimpMatrix3 matrix;
+    case 't':
+      if (strcmp(*names, "transform") == 0 && !handler->transform) {
+        GimpMatrix3 matrix;
 
-				if (parse_svg_transform (*values, &matrix))
-				{
-					handler->transform = g_slice_dup (GimpMatrix3, &matrix);
-				}
-			}
-			break;
-		}
+        if (parse_svg_transform(*values, &matrix)) {
+          handler->transform = g_slice_dup(GimpMatrix3, &matrix);
+        }
+      }
+      break;
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 
-	if (rx >= 0.0 && ry >= 0.0)
-		path->strokes = g_list_prepend (path->strokes,
-		                                gimp_bezier_stroke_new_ellipse (&center,
-		                                                                rx, ry,
-		                                                                0.0));
+  if (rx >= 0.0 && ry >= 0.0)
+    path->strokes = g_list_prepend(
+        path->strokes, gimp_bezier_stroke_new_ellipse(&center, rx, ry, 0.0));
 
-	handler->paths = g_list_prepend (handler->paths, path);
+  handler->paths = g_list_prepend(handler->paths, path);
 }
 
-static void
-svg_handler_line_start (SvgHandler   *handler,
-                        const gchar **names,
-                        const gchar **values,
-                        SvgParser    *parser)
-{
-	SvgPath    *path  = g_slice_new0 (SvgPath);
-	GimpCoords start = COORDS_INIT;
-	GimpCoords end   = COORDS_INIT;
-	GimpStroke *stroke;
-	gdouble xres;
-	gdouble yres;
+static void svg_handler_line_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser) {
+  SvgPath *path = g_slice_new0(SvgPath);
+  GimpCoords start = COORDS_INIT;
+  GimpCoords end = COORDS_INIT;
+  GimpStroke *stroke;
+  gdouble xres;
+  gdouble yres;
 
-	gimp_image_get_resolution (parser->image, &xres, &yres);
+  gimp_image_get_resolution(parser->image, &xres, &yres);
 
-	while (*names)
-	{
-		switch (*names[0])
-		{
-		case 'i':
-			if (strcmp (*names, "id") == 0 && !path->id)
-				path->id = g_strdup (*values);
-			break;
+  while (*names) {
+    switch (*names[0]) {
+    case 'i':
+      if (strcmp(*names, "id") == 0 && !path->id)
+        path->id = g_strdup(*values);
+      break;
 
-		case 'x':
-			if (strcmp (*names, "x1") == 0)
-				parse_svg_length (*values, handler->width, xres, &start.x);
-			else if (strcmp (*names, "x2") == 0)
-				parse_svg_length (*values, handler->width, xres, &end.x);
-			break;
+    case 'x':
+      if (strcmp(*names, "x1") == 0)
+        parse_svg_length(*values, handler->width, xres, &start.x);
+      else if (strcmp(*names, "x2") == 0)
+        parse_svg_length(*values, handler->width, xres, &end.x);
+      break;
 
-		case 'y':
-			if (strcmp (*names, "y1") == 0)
-				parse_svg_length (*values, handler->height, yres, &start.y);
-			else if (strcmp (*names, "y2") == 0)
-				parse_svg_length (*values, handler->height, yres, &end.y);
-			break;
+    case 'y':
+      if (strcmp(*names, "y1") == 0)
+        parse_svg_length(*values, handler->height, yres, &start.y);
+      else if (strcmp(*names, "y2") == 0)
+        parse_svg_length(*values, handler->height, yres, &end.y);
+      break;
 
-		case 't':
-			if (strcmp (*names, "transform") == 0 && !handler->transform)
-			{
-				GimpMatrix3 matrix;
+    case 't':
+      if (strcmp(*names, "transform") == 0 && !handler->transform) {
+        GimpMatrix3 matrix;
 
-				if (parse_svg_transform (*values, &matrix))
-				{
-					handler->transform = g_slice_dup (GimpMatrix3, &matrix);
-				}
-			}
-			break;
-		}
+        if (parse_svg_transform(*values, &matrix)) {
+          handler->transform = g_slice_dup(GimpMatrix3, &matrix);
+        }
+      }
+      break;
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 
-	stroke = gimp_bezier_stroke_new_moveto (&start);
-	gimp_bezier_stroke_lineto (stroke, &end);
+  stroke = gimp_bezier_stroke_new_moveto(&start);
+  gimp_bezier_stroke_lineto(stroke, &end);
 
-	path->strokes = g_list_prepend (path->strokes, stroke);
+  path->strokes = g_list_prepend(path->strokes, stroke);
 
-	handler->paths = g_list_prepend (handler->paths, path);
+  handler->paths = g_list_prepend(handler->paths, path);
 }
 
-static void
-svg_handler_poly_start (SvgHandler   *handler,
-                        const gchar **names,
-                        const gchar **values,
-                        SvgParser    *parser)
-{
-	SvgPath *path   = g_slice_new0 (SvgPath);
-	GString *points = NULL;
+static void svg_handler_poly_start(SvgHandler *handler, const gchar **names,
+                                   const gchar **values, SvgParser *parser) {
+  SvgPath *path = g_slice_new0(SvgPath);
+  GString *points = NULL;
 
-	while (*names)
-	{
-		switch (*names[0])
-		{
-		case 'i':
-			if (strcmp (*names, "id") == 0 && !path->id)
-				path->id = g_strdup (*values);
-			break;
+  while (*names) {
+    switch (*names[0]) {
+    case 'i':
+      if (strcmp(*names, "id") == 0 && !path->id)
+        path->id = g_strdup(*values);
+      break;
 
-		case 'p':
-			if (strcmp (*names, "points") == 0 && !points)
-			{
-				const gchar *p = *values;
-				const gchar *m = NULL;
-				const gchar *l = NULL;
-				gint n = 0;
+    case 'p':
+      if (strcmp(*names, "points") == 0 && !points) {
+        const gchar *p = *values;
+        const gchar *m = NULL;
+        const gchar *l = NULL;
+        gint n = 0;
 
-				while (*p)
-				{
-					while (g_ascii_isspace (*p) || *p == ',')
-						p++;
+        while (*p) {
+          while (g_ascii_isspace(*p) || *p == ',')
+            p++;
 
-					switch (n)
-					{
-					case 0:
-						m = p;
-						break;
-					case 2:
-						l = p;
-						break;
-					}
+          switch (n) {
+          case 0:
+            m = p;
+            break;
+          case 2:
+            l = p;
+            break;
+          }
 
-					if (*p)
-						n++;
+          if (*p)
+            n++;
 
-					while (*p && !g_ascii_isspace (*p) && *p != ',')
-						p++;
-				}
+          while (*p && !g_ascii_isspace(*p) && *p != ',')
+            p++;
+        }
 
-				if ((n > 3) && (n % 2 == 0))
-				{
-					points = g_string_sized_new (p - *values + 8);
+        if ((n > 3) && (n % 2 == 0)) {
+          points = g_string_sized_new(p - *values + 8);
 
-					g_string_append_len (points, "M ", 2);
-					g_string_append_len (points, m, l - m);
+          g_string_append_len(points, "M ", 2);
+          g_string_append_len(points, m, l - m);
 
-					g_string_append_len (points, "L ", 2);
-					g_string_append_len (points, l, p - l);
+          g_string_append_len(points, "L ", 2);
+          g_string_append_len(points, l, p - l);
 
-					if (strcmp (handler->name, "polygon") == 0)
-						g_string_append_c (points, 'Z');
-				}
-			}
-			break;
+          if (strcmp(handler->name, "polygon") == 0)
+            g_string_append_c(points, 'Z');
+        }
+      }
+      break;
 
-		case 't':
-			if (strcmp (*names, "transform") == 0 && !handler->transform)
-			{
-				GimpMatrix3 matrix;
+    case 't':
+      if (strcmp(*names, "transform") == 0 && !handler->transform) {
+        GimpMatrix3 matrix;
 
-				if (parse_svg_transform (*values, &matrix))
-				{
-					handler->transform = g_slice_dup (GimpMatrix3, &matrix);
-				}
-			}
-			break;
-		}
+        if (parse_svg_transform(*values, &matrix)) {
+          handler->transform = g_slice_dup(GimpMatrix3, &matrix);
+        }
+      }
+      break;
+    }
 
-		names++;
-		values++;
-	}
+    names++;
+    values++;
+  }
 
-	if (points)
-	{
-		path->strokes = parse_path_data (points->str);
-		g_string_free (points, TRUE);
-	}
+  if (points) {
+    path->strokes = parse_path_data(points->str);
+    g_string_free(points, TRUE);
+  }
 
-	handler->paths = g_list_prepend (handler->paths, path);
+  handler->paths = g_list_prepend(handler->paths, path);
 }
 
-static gboolean
-parse_svg_length (const gchar *value,
-                  gdouble reference,
-                  gdouble resolution,
-                  gdouble     *length)
-{
-	GimpUnit unit = GIMP_UNIT_PIXEL;
-	gdouble len;
-	gchar    *ptr;
+static gboolean parse_svg_length(const gchar *value, gdouble reference,
+                                 gdouble resolution, gdouble *length) {
+  GimpUnit unit = GIMP_UNIT_PIXEL;
+  gdouble len;
+  gchar *ptr;
 
-	len = g_ascii_strtod (value, &ptr);
+  len = g_ascii_strtod(value, &ptr);
 
-	while (g_ascii_isspace (*ptr))
-		ptr++;
+  while (g_ascii_isspace(*ptr))
+    ptr++;
 
-	switch (ptr[0])
-	{
-	case '\0':
-		break;
+  switch (ptr[0]) {
+  case '\0':
+    break;
 
-	case 'p':
-		switch (ptr[1])
-		{
-		case 'x':
-			break;
-		case 't':
-			unit = GIMP_UNIT_POINT;
-			break;
-		case 'c':
-			unit = GIMP_UNIT_PICA;
-			break;
-		default:
-			return FALSE;
-		}
-		ptr += 2;
-		break;
+  case 'p':
+    switch (ptr[1]) {
+    case 'x':
+      break;
+    case 't':
+      unit = GIMP_UNIT_POINT;
+      break;
+    case 'c':
+      unit = GIMP_UNIT_PICA;
+      break;
+    default:
+      return FALSE;
+    }
+    ptr += 2;
+    break;
 
-	case 'c':
-		if (ptr[1] == 'm')
-			len *= 10.0, unit = GIMP_UNIT_MM;
-		else
-			return FALSE;
-		ptr += 2;
-		break;
+  case 'c':
+    if (ptr[1] == 'm')
+      len *= 10.0, unit = GIMP_UNIT_MM;
+    else
+      return FALSE;
+    ptr += 2;
+    break;
 
-	case 'm':
-		if (ptr[1] == 'm')
-			unit = GIMP_UNIT_MM;
-		else
-			return FALSE;
-		ptr += 2;
-		break;
+  case 'm':
+    if (ptr[1] == 'm')
+      unit = GIMP_UNIT_MM;
+    else
+      return FALSE;
+    ptr += 2;
+    break;
 
-	case 'i':
-		if (ptr[1] == 'n')
-			unit = GIMP_UNIT_INCH;
-		else
-			return FALSE;
-		ptr += 2;
-		break;
+  case 'i':
+    if (ptr[1] == 'n')
+      unit = GIMP_UNIT_INCH;
+    else
+      return FALSE;
+    ptr += 2;
+    break;
 
-	case '%':
-		unit = GIMP_UNIT_PERCENT;
-		ptr += 1;
-		break;
+  case '%':
+    unit = GIMP_UNIT_PERCENT;
+    ptr += 1;
+    break;
 
-	default:
-		return FALSE;
-	}
+  default:
+    return FALSE;
+  }
 
-	while (g_ascii_isspace (*ptr))
-		ptr++;
+  while (g_ascii_isspace(*ptr))
+    ptr++;
 
-	if (*ptr)
-		return FALSE;
+  if (*ptr)
+    return FALSE;
 
-	switch (unit)
-	{
-	case GIMP_UNIT_PERCENT:
-		*length = len * reference / 100.0;
-		break;
+  switch (unit) {
+  case GIMP_UNIT_PERCENT:
+    *length = len * reference / 100.0;
+    break;
 
-	case GIMP_UNIT_PIXEL:
-		*length = len;
-		break;
+  case GIMP_UNIT_PIXEL:
+    *length = len;
+    break;
 
-	default:
-		*length = len * resolution / gimp_unit_get_factor (unit);
-		break;
-	}
+  default:
+    *length = len * resolution / gimp_unit_get_factor(unit);
+    break;
+  }
 
-	return TRUE;
+  return TRUE;
 }
 
-static gboolean
-parse_svg_viewbox (const gchar *value,
-                   gdouble     *width,
-                   gdouble     *height,
-                   GimpMatrix3 *matrix)
-{
-	gdouble x, y, w, h;
-	gchar    *tok;
-	gchar    *str     = g_strdup (value);
-	gboolean success = FALSE;
+static gboolean parse_svg_viewbox(const gchar *value, gdouble *width,
+                                  gdouble *height, GimpMatrix3 *matrix) {
+  gdouble x, y, w, h;
+  gchar *tok;
+  gchar *str = g_strdup(value);
+  gboolean success = FALSE;
 
-	x = y = w = h = 0;
+  x = y = w = h = 0;
 
-	tok = strtok (str, ", \t");
-	if (tok)
-	{
-		x = g_ascii_strtod (tok, NULL);
-		tok = strtok (NULL, ", \t");
-		if (tok)
-		{
-			y = g_ascii_strtod (tok, NULL);
-			tok = strtok (NULL, ", \t");
-			if (tok != NULL)
-			{
-				w = g_ascii_strtod (tok, NULL);
-				tok = strtok (NULL, ", \t");
-				if (tok)
-				{
-					h = g_ascii_strtod (tok, NULL);
-					success = TRUE;
-				}
-			}
-		}
-	}
+  tok = strtok(str, ", \t");
+  if (tok) {
+    x = g_ascii_strtod(tok, NULL);
+    tok = strtok(NULL, ", \t");
+    if (tok) {
+      y = g_ascii_strtod(tok, NULL);
+      tok = strtok(NULL, ", \t");
+      if (tok != NULL) {
+        w = g_ascii_strtod(tok, NULL);
+        tok = strtok(NULL, ", \t");
+        if (tok) {
+          h = g_ascii_strtod(tok, NULL);
+          success = TRUE;
+        }
+      }
+    }
+  }
 
-	g_free (str);
+  g_free(str);
 
-	if (success)
-	{
-		gimp_matrix3_identity (matrix);
-		gimp_matrix3_translate (matrix, -x,  -y);
+  if (success) {
+    gimp_matrix3_identity(matrix);
+    gimp_matrix3_translate(matrix, -x, -y);
 
-		if (w > 0.0 && h > 0.0)
-		{
-			gimp_matrix3_scale (matrix, *width / w, *height / h);
-		}
-		else /* disable rendering of the element */
-		{
+    if (w > 0.0 && h > 0.0) {
+      gimp_matrix3_scale(matrix, *width / w, *height / h);
+    } else /* disable rendering of the element */
+    {
 #ifdef DEBUG_VECTORS_IMPORT
-			g_printerr ("empty viewBox");
+      g_printerr("empty viewBox");
 #endif
-			*width = *height = 0.0;
-		}
-	}
-	else
-	{
-		g_printerr ("SVG import: cannot parse viewBox attribute\n");
-	}
+      *width = *height = 0.0;
+    }
+  } else {
+    g_printerr("SVG import: cannot parse viewBox attribute\n");
+  }
 
-	return success;
+  return success;
 }
 
-static gboolean
-parse_svg_transform (const gchar *value,
-                     GimpMatrix3 *matrix)
-{
-	gint i;
+static gboolean parse_svg_transform(const gchar *value, GimpMatrix3 *matrix) {
+  gint i;
 
-	gimp_matrix3_identity (matrix);
+  gimp_matrix3_identity(matrix);
 
-	for (i = 0; value[i]; i++)
-	{
-		GimpMatrix3 trafo;
-		gchar keyword[32];
-		gdouble args[6];
-		gint n_args;
-		gint key_len;
+  for (i = 0; value[i]; i++) {
+    GimpMatrix3 trafo;
+    gchar keyword[32];
+    gdouble args[6];
+    gint n_args;
+    gint key_len;
 
-		gimp_matrix3_identity (&trafo);
+    gimp_matrix3_identity(&trafo);
 
-		/* skip initial whitespace */
-		while (g_ascii_isspace (value[i]))
-			i++;
+    /* skip initial whitespace */
+    while (g_ascii_isspace(value[i]))
+      i++;
 
-		/* parse keyword */
-		for (key_len = 0; key_len < sizeof (keyword); key_len++)
-		{
-			gchar c = value[i];
+    /* parse keyword */
+    for (key_len = 0; key_len < sizeof(keyword); key_len++) {
+      gchar c = value[i];
 
-			if (g_ascii_isalpha (c) || c == '-')
-				keyword[key_len] = value[i++];
-			else
-				break;
-		}
+      if (g_ascii_isalpha(c) || c == '-')
+        keyword[key_len] = value[i++];
+      else
+        break;
+    }
 
-		if (key_len >= sizeof (keyword))
-			return FALSE;
+    if (key_len >= sizeof(keyword))
+      return FALSE;
 
-		keyword[key_len] = '\0';
+    keyword[key_len] = '\0';
 
-		/* skip whitespace */
-		while (g_ascii_isspace (value[i]))
-			i++;
+    /* skip whitespace */
+    while (g_ascii_isspace(value[i]))
+      i++;
 
-		if (value[i] != '(')
-			return FALSE;
-		i++;
+    if (value[i] != '(')
+      return FALSE;
+    i++;
 
-		for (n_args = 0; ; n_args++)
-		{
-			gchar c;
-			gchar *end_ptr;
+    for (n_args = 0;; n_args++) {
+      gchar c;
+      gchar *end_ptr;
 
-			/* skip whitespace */
-			while (g_ascii_isspace (value[i]))
-				i++;
+      /* skip whitespace */
+      while (g_ascii_isspace(value[i]))
+        i++;
 
-			c = value[i];
-			if (g_ascii_isdigit (c) || c == '+' || c == '-' || c == '.')
-			{
-				if (n_args == G_N_ELEMENTS (args))
-					return FALSE; /* too many args */
+      c = value[i];
+      if (g_ascii_isdigit(c) || c == '+' || c == '-' || c == '.') {
+        if (n_args == G_N_ELEMENTS(args))
+          return FALSE; /* too many args */
 
-				args[n_args] = g_ascii_strtod (value + i, &end_ptr);
-				i = end_ptr - value;
+        args[n_args] = g_ascii_strtod(value + i, &end_ptr);
+        i = end_ptr - value;
 
-				while (g_ascii_isspace (value[i]))
-					i++;
+        while (g_ascii_isspace(value[i]))
+          i++;
 
-				/* skip optional comma */
-				if (value[i] == ',')
-					i++;
-			}
-			else if (c == ')')
-				break;
-			else
-				return FALSE;
-		}
+        /* skip optional comma */
+        if (value[i] == ',')
+          i++;
+      } else if (c == ')')
+        break;
+      else
+        return FALSE;
+    }
 
-		/* OK, have parsed keyword and args, now calculate the transform matrix */
+    /* OK, have parsed keyword and args, now calculate the transform matrix */
 
-		if (strcmp (keyword, "matrix") == 0)
-		{
-			if (n_args != 6)
-				return FALSE;
+    if (strcmp(keyword, "matrix") == 0) {
+      if (n_args != 6)
+        return FALSE;
 
-			gimp_matrix3_affine (&trafo,
-			                     args[0], args[1],
-			                     args[2], args[3],
-			                     args[4], args[5]);
-		}
-		else if (strcmp (keyword, "translate") == 0)
-		{
-			if (n_args == 1)
-				args[1] = 0.0;
-			else if (n_args != 2)
-				return FALSE;
+      gimp_matrix3_affine(&trafo, args[0], args[1], args[2], args[3], args[4],
+                          args[5]);
+    } else if (strcmp(keyword, "translate") == 0) {
+      if (n_args == 1)
+        args[1] = 0.0;
+      else if (n_args != 2)
+        return FALSE;
 
-			gimp_matrix3_translate (&trafo, args[0], args[1]);
-		}
-		else if (strcmp (keyword, "scale") == 0)
-		{
-			if (n_args == 1)
-				args[1] = args[0];
-			else if (n_args != 2)
-				return FALSE;
+      gimp_matrix3_translate(&trafo, args[0], args[1]);
+    } else if (strcmp(keyword, "scale") == 0) {
+      if (n_args == 1)
+        args[1] = args[0];
+      else if (n_args != 2)
+        return FALSE;
 
-			gimp_matrix3_scale (&trafo, args[0], args[1]);
-		}
-		else if (strcmp (keyword, "rotate") == 0)
-		{
-			if (n_args == 1)
-			{
-				gimp_matrix3_rotate (&trafo, gimp_deg_to_rad (args[0]));
-			}
-			else if (n_args == 3)
-			{
-				gimp_matrix3_translate (&trafo, -args[1], -args[2]);
-				gimp_matrix3_rotate (&trafo, gimp_deg_to_rad (args[0]));
-				gimp_matrix3_translate (&trafo, args[1], args[2]);
-			}
-			else
-				return FALSE;
-		}
-		else if (strcmp (keyword, "skewX") == 0)
-		{
-			if (n_args != 1)
-				return FALSE;
+      gimp_matrix3_scale(&trafo, args[0], args[1]);
+    } else if (strcmp(keyword, "rotate") == 0) {
+      if (n_args == 1) {
+        gimp_matrix3_rotate(&trafo, gimp_deg_to_rad(args[0]));
+      } else if (n_args == 3) {
+        gimp_matrix3_translate(&trafo, -args[1], -args[2]);
+        gimp_matrix3_rotate(&trafo, gimp_deg_to_rad(args[0]));
+        gimp_matrix3_translate(&trafo, args[1], args[2]);
+      } else
+        return FALSE;
+    } else if (strcmp(keyword, "skewX") == 0) {
+      if (n_args != 1)
+        return FALSE;
 
-			gimp_matrix3_xshear (&trafo, tan (gimp_deg_to_rad (args[0])));
-		}
-		else if (strcmp (keyword, "skewY") == 0)
-		{
-			if (n_args != 1)
-				return FALSE;
+      gimp_matrix3_xshear(&trafo, tan(gimp_deg_to_rad(args[0])));
+    } else if (strcmp(keyword, "skewY") == 0) {
+      if (n_args != 1)
+        return FALSE;
 
-			gimp_matrix3_yshear (&trafo, tan (gimp_deg_to_rad (args[0])));
-		}
-		else
-		{
-			return FALSE; /* unknown keyword */
-		}
+      gimp_matrix3_yshear(&trafo, tan(gimp_deg_to_rad(args[0])));
+    } else {
+      return FALSE; /* unknown keyword */
+    }
 
-		gimp_matrix3_invert (&trafo);
-		gimp_matrix3_mult (&trafo, matrix);
-	}
+    gimp_matrix3_invert(&trafo);
+    gimp_matrix3_mult(&trafo, matrix);
+  }
 
-	gimp_matrix3_invert (matrix);
+  gimp_matrix3_invert(matrix);
 
-	return TRUE;
+  return TRUE;
 }
-
 
 /**********************************************************/
 /*  Below is the code that parses the actual path data.   */
@@ -1371,419 +1143,358 @@ parse_svg_transform (const gchar *value,
 /*  written by Raph Levien <raph@artofcode.com> for Gill. */
 /**********************************************************/
 
-typedef struct
-{
-	GList       *strokes;
-	GimpStroke  *stroke;
-	gdouble cpx, cpy;   /* current point                               */
-	gdouble rpx, rpy;   /* reflection point (for 's' and 't' commands) */
-	gchar cmd;          /* current command (lowercase)                 */
-	gint param;         /* number of parameters                        */
-	gboolean rel;       /* true if relative coords                     */
-	gdouble params[7];  /* parameters that have been parsed            */
+typedef struct {
+  GList *strokes;
+  GimpStroke *stroke;
+  gdouble cpx, cpy;  /* current point                               */
+  gdouble rpx, rpy;  /* reflection point (for 's' and 't' commands) */
+  gchar cmd;         /* current command (lowercase)                 */
+  gint param;        /* number of parameters                        */
+  gboolean rel;      /* true if relative coords                     */
+  gdouble params[7]; /* parameters that have been parsed            */
 } ParsePathContext;
 
+static void parse_path_default_xy(ParsePathContext *ctx, gint n_params);
+static void parse_path_do_cmd(ParsePathContext *ctx, gboolean final);
 
-static void  parse_path_default_xy (ParsePathContext *ctx,
-                                    gint n_params);
-static void  parse_path_do_cmd     (ParsePathContext *ctx,
-                                    gboolean final);
+static GList *parse_path_data(const gchar *data) {
+  ParsePathContext ctx;
 
+  gboolean in_num = FALSE;
+  gboolean in_frac = FALSE;
+  gboolean in_exp = FALSE;
+  gboolean exp_wait_sign = FALSE;
+  gdouble val = 0.0;
+  gchar c = 0;
+  gint sign = 0;
+  gint exp = 0;
+  gint exp_sign = 0;
+  gdouble frac = 0.0;
+  gint i;
 
-static GList *
-parse_path_data (const gchar *data)
-{
-	ParsePathContext ctx;
+  memset(&ctx, 0, sizeof(ParsePathContext));
 
-	gboolean in_num        = FALSE;
-	gboolean in_frac       = FALSE;
-	gboolean in_exp        = FALSE;
-	gboolean exp_wait_sign = FALSE;
-	gdouble val           = 0.0;
-	gchar c             = 0;
-	gint sign          = 0;
-	gint exp           = 0;
-	gint exp_sign      = 0;
-	gdouble frac          = 0.0;
-	gint i;
+  for (i = 0;; i++) {
+    c = data[i];
 
-	memset (&ctx, 0, sizeof (ParsePathContext));
+    if (c >= '0' && c <= '9') {
+      /* digit */
+      if (in_num) {
+        if (in_exp) {
+          exp = (exp * 10) + c - '0';
+          exp_wait_sign = FALSE;
+        } else if (in_frac)
+          val += (frac *= 0.1) * (c - '0');
+        else
+          val = (val * 10) + c - '0';
+      } else {
+        in_num = TRUE;
+        in_frac = FALSE;
+        in_exp = FALSE;
+        exp = 0;
+        exp_sign = 1;
+        exp_wait_sign = FALSE;
+        val = c - '0';
+        sign = 1;
+      }
+    } else if (c == '.') {
+      if (!in_num) {
+        in_num = TRUE;
+        val = 0;
+      }
 
-	for (i = 0; ; i++)
-	{
-		c = data[i];
+      in_frac = TRUE;
+      frac = 1;
+    } else if ((c == 'E' || c == 'e') && in_num) {
+      in_exp = TRUE;
+      exp_wait_sign = TRUE;
+      exp = 0;
+      exp_sign = 1;
+    } else if ((c == '+' || c == '-') && in_exp) {
+      exp_sign = c == '+' ? 1 : -1;
+    } else if (in_num) {
+      /* end of number */
 
-		if (c >= '0' && c <= '9')
-		{
-			/* digit */
-			if (in_num)
-			{
-				if (in_exp)
-				{
-					exp = (exp * 10) + c - '0';
-					exp_wait_sign = FALSE;
-				}
-				else if (in_frac)
-					val += (frac *= 0.1) * (c - '0');
-				else
-					val = (val * 10) + c - '0';
-			}
-			else
-			{
-				in_num = TRUE;
-				in_frac = FALSE;
-				in_exp = FALSE;
-				exp = 0;
-				exp_sign = 1;
-				exp_wait_sign = FALSE;
-				val = c - '0';
-				sign = 1;
-			}
-		}
-		else if (c == '.')
-		{
-			if (!in_num)
-			{
-				in_num = TRUE;
-				val = 0;
-			}
+      val *= sign * pow(10, exp_sign * exp);
 
-			in_frac = TRUE;
-			frac = 1;
-		}
-		else if ((c == 'E' || c == 'e') && in_num)
-		{
-			in_exp = TRUE;
-			exp_wait_sign = TRUE;
-			exp = 0;
-			exp_sign = 1;
-		}
-		else if ((c == '+' || c == '-') && in_exp)
-		{
-			exp_sign = c == '+' ? 1 : -1;
-		}
-		else if (in_num)
-		{
-			/* end of number */
+      if (ctx.rel) {
+        /* Handle relative coordinates. This switch statement attempts
+           to determine _what_ the coords are relative to. This is
+           underspecified in the 12 Apr working draft. */
+        switch (ctx.cmd) {
+        case 'l':
+        case 'm':
+        case 'c':
+        case 's':
+        case 'q':
+        case 't':
+          /* rule: even-numbered params are x-relative, odd-numbered
+             are y-relative */
+          if ((ctx.param & 1) == 0)
+            val += ctx.cpx;
+          else if ((ctx.param & 1) == 1)
+            val += ctx.cpy;
+          break;
 
-			val *= sign * pow (10, exp_sign * exp);
+        case 'a':
+          /* rule: sixth and seventh are x and y, rest are not
+             relative */
+          if (ctx.param == 5)
+            val += ctx.cpx;
+          else if (ctx.param == 6)
+            val += ctx.cpy;
+          break;
 
-			if (ctx.rel)
-			{
-				/* Handle relative coordinates. This switch statement attempts
-				   to determine _what_ the coords are relative to. This is
-				   underspecified in the 12 Apr working draft. */
-				switch (ctx.cmd)
-				{
-				case 'l':
-				case 'm':
-				case 'c':
-				case 's':
-				case 'q':
-				case 't':
-					/* rule: even-numbered params are x-relative, odd-numbered
-					   are y-relative */
-					if ((ctx.param & 1) == 0)
-						val += ctx.cpx;
-					else if ((ctx.param & 1) == 1)
-						val += ctx.cpy;
-					break;
+        case 'h':
+          /* rule: x-relative */
+          val += ctx.cpx;
+          break;
 
-				case 'a':
-					/* rule: sixth and seventh are x and y, rest are not
-					   relative */
-					if (ctx.param == 5)
-						val += ctx.cpx;
-					else if (ctx.param == 6)
-						val += ctx.cpy;
-					break;
+        case 'v':
+          /* rule: y-relative */
+          val += ctx.cpy;
+          break;
+        }
+      }
 
-				case 'h':
-					/* rule: x-relative */
-					val += ctx.cpx;
-					break;
+      ctx.params[ctx.param++] = val;
+      parse_path_do_cmd(&ctx, FALSE);
+      in_num = FALSE;
+    }
 
-				case 'v':
-					/* rule: y-relative */
-					val += ctx.cpy;
-					break;
-				}
-			}
+    if (c == '\0') {
+      break;
+    } else if ((c == '+' || c == '-') && !exp_wait_sign) {
+      sign = c == '+' ? 1 : -1;
+      val = 0;
+      in_num = TRUE;
+      in_frac = FALSE;
+      in_exp = FALSE;
+      exp = 0;
+      exp_sign = 1;
+      exp_wait_sign = FALSE;
+    } else if (c == 'z' || c == 'Z') {
+      if (ctx.param)
+        parse_path_do_cmd(&ctx, TRUE);
 
-			ctx.params[ctx.param++] = val;
-			parse_path_do_cmd (&ctx, FALSE);
-			in_num = FALSE;
-		}
+      if (ctx.stroke)
+        gimp_stroke_close(ctx.stroke);
+    } else if (c >= 'A' && c <= 'Z' && c != 'E') {
+      if (ctx.param)
+        parse_path_do_cmd(&ctx, TRUE);
 
-		if (c == '\0')
-		{
-			break;
-		}
-		else if ((c == '+' || c == '-') && !exp_wait_sign)
-		{
-			sign = c == '+' ? 1 : -1;
-			val = 0;
-			in_num = TRUE;
-			in_frac = FALSE;
-			in_exp = FALSE;
-			exp = 0;
-			exp_sign = 1;
-			exp_wait_sign = FALSE;
-		}
-		else if (c == 'z' || c == 'Z')
-		{
-			if (ctx.param)
-				parse_path_do_cmd (&ctx, TRUE);
+      ctx.cmd = c + 'a' - 'A';
+      ctx.rel = FALSE;
+    } else if (c >= 'a' && c <= 'z' && c != 'e') {
+      if (ctx.param)
+        parse_path_do_cmd(&ctx, TRUE);
 
-			if (ctx.stroke)
-				gimp_stroke_close (ctx.stroke);
-		}
-		else if (c >= 'A' && c <= 'Z' && c != 'E')
-		{
-			if (ctx.param)
-				parse_path_do_cmd (&ctx, TRUE);
+      ctx.cmd = c;
+      ctx.rel = TRUE;
+    }
+    /* else c _should_ be whitespace or , */
+  }
 
-			ctx.cmd = c + 'a' - 'A';
-			ctx.rel = FALSE;
-		}
-		else if (c >= 'a' && c <= 'z' && c != 'e')
-		{
-			if (ctx.param)
-				parse_path_do_cmd (&ctx, TRUE);
-
-			ctx.cmd = c;
-			ctx.rel = TRUE;
-		}
-		/* else c _should_ be whitespace or , */
-	}
-
-	return g_list_reverse (ctx.strokes);
+  return g_list_reverse(ctx.strokes);
 }
 
 /* supply defaults for missing parameters, assuming relative coordinates
    are to be interpreted as x,y */
-static void
-parse_path_default_xy (ParsePathContext *ctx,
-                       gint n_params)
-{
-	gint i;
+static void parse_path_default_xy(ParsePathContext *ctx, gint n_params) {
+  gint i;
 
-	if (ctx->rel)
-	{
-		for (i = ctx->param; i < n_params; i++)
-		{
-			if (i > 2)
-				ctx->params[i] = ctx->params[i - 2];
-			else if (i == 1)
-				ctx->params[i] = ctx->cpy;
-			else if (i == 0)
-				/* we shouldn't get here (ctx->param > 0 as precondition) */
-				ctx->params[i] = ctx->cpx;
-		}
-	}
-	else
-	{
-		for (i = ctx->param; i < n_params; i++)
-			ctx->params[i] = 0.0;
-	}
+  if (ctx->rel) {
+    for (i = ctx->param; i < n_params; i++) {
+      if (i > 2)
+        ctx->params[i] = ctx->params[i - 2];
+      else if (i == 1)
+        ctx->params[i] = ctx->cpy;
+      else if (i == 0)
+        /* we shouldn't get here (ctx->param > 0 as precondition) */
+        ctx->params[i] = ctx->cpx;
+    }
+  } else {
+    for (i = ctx->param; i < n_params; i++)
+      ctx->params[i] = 0.0;
+  }
 }
 
-static void
-parse_path_do_cmd (ParsePathContext *ctx,
-                   gboolean final)
-{
-	GimpCoords coords = COORDS_INIT;
+static void parse_path_do_cmd(ParsePathContext *ctx, gboolean final) {
+  GimpCoords coords = COORDS_INIT;
 
-	switch (ctx->cmd)
-	{
-	case 'm':
-		/* moveto */
-		if (ctx->param == 2 || final)
-		{
-			parse_path_default_xy (ctx, 2);
+  switch (ctx->cmd) {
+  case 'm':
+    /* moveto */
+    if (ctx->param == 2 || final) {
+      parse_path_default_xy(ctx, 2);
 
-			coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
-			coords.y = ctx->cpy = ctx->rpy = ctx->params[1];
+      coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
+      coords.y = ctx->cpy = ctx->rpy = ctx->params[1];
 
-			ctx->stroke = gimp_bezier_stroke_new_moveto (&coords);
-			ctx->strokes = g_list_prepend (ctx->strokes, ctx->stroke);
+      ctx->stroke = gimp_bezier_stroke_new_moveto(&coords);
+      ctx->strokes = g_list_prepend(ctx->strokes, ctx->stroke);
 
-			ctx->param = 0;
+      ctx->param = 0;
 
-			/* If a moveto is followed by multiple pairs of coordinates,
-			 * the subsequent pairs are treated as implicit lineto commands.
-			 */
-			ctx->cmd = 'l';
-		}
-		break;
+      /* If a moveto is followed by multiple pairs of coordinates,
+       * the subsequent pairs are treated as implicit lineto commands.
+       */
+      ctx->cmd = 'l';
+    }
+    break;
 
-	case 'l':
-		/* lineto */
-		if (ctx->param == 2 || final)
-		{
-			parse_path_default_xy (ctx, 2);
+  case 'l':
+    /* lineto */
+    if (ctx->param == 2 || final) {
+      parse_path_default_xy(ctx, 2);
 
-			coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
-			coords.y = ctx->cpy = ctx->rpy = ctx->params[1];
+      coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
+      coords.y = ctx->cpy = ctx->rpy = ctx->params[1];
 
-			gimp_bezier_stroke_lineto (ctx->stroke, &coords);
+      gimp_bezier_stroke_lineto(ctx->stroke, &coords);
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 'c':
-		/* curveto */
-		if (ctx->param == 6 || final)
-		{
-			GimpCoords ctrl1 = COORDS_INIT;
-			GimpCoords ctrl2 = COORDS_INIT;
+  case 'c':
+    /* curveto */
+    if (ctx->param == 6 || final) {
+      GimpCoords ctrl1 = COORDS_INIT;
+      GimpCoords ctrl2 = COORDS_INIT;
 
-			parse_path_default_xy (ctx, 6);
+      parse_path_default_xy(ctx, 6);
 
-			ctrl1.x  = ctx->params[0];
-			ctrl1.y  = ctx->params[1];
-			ctrl2.x  = ctx->rpx = ctx->params[2];
-			ctrl2.y  = ctx->rpy = ctx->params[3];
-			coords.x = ctx->cpx = ctx->params[4];
-			coords.y = ctx->cpy = ctx->params[5];
+      ctrl1.x = ctx->params[0];
+      ctrl1.y = ctx->params[1];
+      ctrl2.x = ctx->rpx = ctx->params[2];
+      ctrl2.y = ctx->rpy = ctx->params[3];
+      coords.x = ctx->cpx = ctx->params[4];
+      coords.y = ctx->cpy = ctx->params[5];
 
-			gimp_bezier_stroke_cubicto (ctx->stroke, &ctrl1, &ctrl2, &coords);
+      gimp_bezier_stroke_cubicto(ctx->stroke, &ctrl1, &ctrl2, &coords);
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 's':
-		/* smooth curveto */
-		if (ctx->param == 4 || final)
-		{
-			GimpCoords ctrl1 = COORDS_INIT;
-			GimpCoords ctrl2 = COORDS_INIT;
+  case 's':
+    /* smooth curveto */
+    if (ctx->param == 4 || final) {
+      GimpCoords ctrl1 = COORDS_INIT;
+      GimpCoords ctrl2 = COORDS_INIT;
 
-			parse_path_default_xy (ctx, 4);
+      parse_path_default_xy(ctx, 4);
 
-			ctrl1.x  = 2 * ctx->cpx - ctx->rpx;
-			ctrl1.y  = 2 * ctx->cpy - ctx->rpy;
-			ctrl2.x  = ctx->rpx = ctx->params[0];
-			ctrl2.y  = ctx->rpy = ctx->params[1];
-			coords.x = ctx->cpx = ctx->params[2];
-			coords.y = ctx->cpy = ctx->params[3];
+      ctrl1.x = 2 * ctx->cpx - ctx->rpx;
+      ctrl1.y = 2 * ctx->cpy - ctx->rpy;
+      ctrl2.x = ctx->rpx = ctx->params[0];
+      ctrl2.y = ctx->rpy = ctx->params[1];
+      coords.x = ctx->cpx = ctx->params[2];
+      coords.y = ctx->cpy = ctx->params[3];
 
-			gimp_bezier_stroke_cubicto (ctx->stroke, &ctrl1, &ctrl2, &coords);
+      gimp_bezier_stroke_cubicto(ctx->stroke, &ctrl1, &ctrl2, &coords);
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 'h':
-		/* horizontal lineto */
-		if (ctx->param == 1)
-		{
-			coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
-			coords.y = ctx->cpy;
+  case 'h':
+    /* horizontal lineto */
+    if (ctx->param == 1) {
+      coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
+      coords.y = ctx->cpy;
 
-			gimp_bezier_stroke_lineto (ctx->stroke, &coords);
+      gimp_bezier_stroke_lineto(ctx->stroke, &coords);
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 'v':
-		/* vertical lineto */
-		if (ctx->param == 1)
-		{
-			coords.x = ctx->cpx;
-			coords.y = ctx->cpy = ctx->rpy = ctx->params[0];
+  case 'v':
+    /* vertical lineto */
+    if (ctx->param == 1) {
+      coords.x = ctx->cpx;
+      coords.y = ctx->cpy = ctx->rpy = ctx->params[0];
 
-			gimp_bezier_stroke_lineto (ctx->stroke, &coords);
+      gimp_bezier_stroke_lineto(ctx->stroke, &coords);
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 'q':
-		/* quadratic bezier curveto */
-		if (ctx->param == 4 || final)
-		{
-			GimpCoords ctrl = COORDS_INIT;
+  case 'q':
+    /* quadratic bezier curveto */
+    if (ctx->param == 4 || final) {
+      GimpCoords ctrl = COORDS_INIT;
 
-			parse_path_default_xy (ctx, 4);
+      parse_path_default_xy(ctx, 4);
 
-			ctrl.x   = ctx->rpx = ctx->params[0];
-			ctrl.y   = ctx->rpy = ctx->params[1];
-			coords.x = ctx->cpx = ctx->params[2];
-			coords.y = ctx->cpy = ctx->params[3];
+      ctrl.x = ctx->rpx = ctx->params[0];
+      ctrl.y = ctx->rpy = ctx->params[1];
+      coords.x = ctx->cpx = ctx->params[2];
+      coords.y = ctx->cpy = ctx->params[3];
 
-			gimp_bezier_stroke_conicto (ctx->stroke, &ctrl, &coords);
+      gimp_bezier_stroke_conicto(ctx->stroke, &ctrl, &coords);
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 't':
-		/* truetype quadratic bezier curveto */
-		if (ctx->param == 2 || final)
-		{
-			GimpCoords ctrl = COORDS_INIT;
+  case 't':
+    /* truetype quadratic bezier curveto */
+    if (ctx->param == 2 || final) {
+      GimpCoords ctrl = COORDS_INIT;
 
-			parse_path_default_xy (ctx, 2);
+      parse_path_default_xy(ctx, 2);
 
-			ctrl.x   = ctx->rpx = 2 * ctx->cpx - ctx->rpx;
-			ctrl.y   = ctx->rpy = 2 * ctx->cpy - ctx->rpy;
-			coords.x = ctx->cpx = ctx->params[0];
-			coords.y = ctx->cpy = ctx->params[1];
+      ctrl.x = ctx->rpx = 2 * ctx->cpx - ctx->rpx;
+      ctrl.y = ctx->rpy = 2 * ctx->cpy - ctx->rpy;
+      coords.x = ctx->cpx = ctx->params[0];
+      coords.y = ctx->cpy = ctx->params[1];
 
-			gimp_bezier_stroke_conicto (ctx->stroke, &ctrl, &coords);
+      gimp_bezier_stroke_conicto(ctx->stroke, &ctrl, &coords);
 
-			ctx->param = 0;
-		}
-		else if (final)
-		{
-			if (ctx->param > 2)
-			{
-				GimpCoords ctrl = COORDS_INIT;
+      ctx->param = 0;
+    } else if (final) {
+      if (ctx->param > 2) {
+        GimpCoords ctrl = COORDS_INIT;
 
-				parse_path_default_xy (ctx, 4);
+        parse_path_default_xy(ctx, 4);
 
-				ctrl.x   = ctx->rpx = ctx->params[0];
-				ctrl.y   = ctx->rpy = ctx->params[1];
-				coords.x = ctx->cpx = ctx->params[2];
-				coords.y = ctx->cpy = ctx->params[3];
+        ctrl.x = ctx->rpx = ctx->params[0];
+        ctrl.y = ctx->rpy = ctx->params[1];
+        coords.x = ctx->cpx = ctx->params[2];
+        coords.y = ctx->cpy = ctx->params[3];
 
-				gimp_bezier_stroke_conicto (ctx->stroke, &ctrl, &coords);
-			}
-			else
-			{
-				parse_path_default_xy (ctx, 2);
+        gimp_bezier_stroke_conicto(ctx->stroke, &ctrl, &coords);
+      } else {
+        parse_path_default_xy(ctx, 2);
 
-				coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
-				coords.y = ctx->cpy = ctx->rpy = ctx->params[1];
+        coords.x = ctx->cpx = ctx->rpx = ctx->params[0];
+        coords.y = ctx->cpy = ctx->rpy = ctx->params[1];
 
-				gimp_bezier_stroke_lineto (ctx->stroke, &coords);
-			}
+        gimp_bezier_stroke_lineto(ctx->stroke, &coords);
+      }
 
-			ctx->param = 0;
-		}
-		break;
+      ctx->param = 0;
+    }
+    break;
 
-	case 'a':
-		if (ctx->param == 7 || final)
-		{
-			coords.x = ctx->cpx = ctx->rpx = ctx->params[5];
-			coords.y = ctx->cpy = ctx->rpy = ctx->params[6];
+  case 'a':
+    if (ctx->param == 7 || final) {
+      coords.x = ctx->cpx = ctx->rpx = ctx->params[5];
+      coords.y = ctx->cpy = ctx->rpy = ctx->params[6];
 
-			gimp_bezier_stroke_arcto (ctx->stroke,
-			                          ctx->params[0], ctx->params[1],
-			                          gimp_deg_to_rad (ctx->params[2]),
-			                          ctx->params[3], ctx->params[4],
-			                          &coords);
-			ctx->param = 0;
-		}
-		break;
+      gimp_bezier_stroke_arcto(ctx->stroke, ctx->params[0], ctx->params[1],
+                               gimp_deg_to_rad(ctx->params[2]), ctx->params[3],
+                               ctx->params[4], &coords);
+      ctx->param = 0;
+    }
+    break;
 
-	default:
-		ctx->param = 0;
-		break;
-	}
+  default:
+    ctx->param = 0;
+    break;
+  }
 }

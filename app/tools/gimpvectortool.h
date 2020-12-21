@@ -21,46 +21,46 @@
 #ifndef __GIMP_VECTOR_TOOL_H__
 #define __GIMP_VECTOR_TOOL_H__
 
-
 #include "gimpdrawtool.h"
 
+#define GIMP_TYPE_VECTOR_TOOL (gimp_vector_tool_get_type())
+#define GIMP_VECTOR_TOOL(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VECTOR_TOOL, GimpVectorTool))
+#define GIMP_VECTOR_TOOL_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VECTOR_TOOL, GimpVectorToolClass))
+#define GIMP_IS_VECTOR_TOOL(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_VECTOR_TOOL))
+#define GIMP_IS_VECTOR_TOOL_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VECTOR_TOOL))
+#define GIMP_VECTOR_TOOL_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VECTOR_TOOL, GimpVectorToolClass))
 
-#define GIMP_TYPE_VECTOR_TOOL            (gimp_vector_tool_get_type ())
-#define GIMP_VECTOR_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VECTOR_TOOL, GimpVectorTool))
-#define GIMP_VECTOR_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VECTOR_TOOL, GimpVectorToolClass))
-#define GIMP_IS_VECTOR_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_VECTOR_TOOL))
-#define GIMP_IS_VECTOR_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VECTOR_TOOL))
-#define GIMP_VECTOR_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VECTOR_TOOL, GimpVectorToolClass))
-
-#define GIMP_VECTOR_TOOL_GET_OPTIONS(t)  (GIMP_VECTOR_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_VECTOR_TOOL_GET_OPTIONS(t)                                        \
+  (GIMP_VECTOR_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpVectorTool GimpVectorTool;
 typedef struct _GimpVectorToolClass GimpVectorToolClass;
 
-struct _GimpVectorTool
-{
-	GimpDrawTool parent_instance;
+struct _GimpVectorTool {
+  GimpDrawTool parent_instance;
 
-	GimpVectors    *vectors;    /* the current Vector data           */
-	GimpVectorMode saved_mode;  /* used by modifier_key()            */
+  GimpVectors *vectors;      /* the current Vector data           */
+  GimpVectorMode saved_mode; /* used by modifier_key()            */
 
-	GimpToolWidget *widget;
-	GimpToolWidget *grab_widget;
+  GimpToolWidget *widget;
+  GimpToolWidget *grab_widget;
 };
 
-struct _GimpVectorToolClass
-{
-	GimpDrawToolClass parent_class;
+struct _GimpVectorToolClass {
+  GimpDrawToolClass parent_class;
 };
 
+void gimp_vector_tool_register(GimpToolRegisterCallback callback,
+                               gpointer data);
 
-void    gimp_vector_tool_register    (GimpToolRegisterCallback callback,
-                                      gpointer data);
+GType gimp_vector_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_vector_tool_get_type    (void) G_GNUC_CONST;
+void gimp_vector_tool_set_vectors(GimpVectorTool *vector_tool,
+                                  GimpVectors *vectors);
 
-void    gimp_vector_tool_set_vectors (GimpVectorTool           *vector_tool,
-                                      GimpVectors              *vectors);
-
-#endif  /*  __GIMP_VECTOR_TOOL_H__  */
+#endif /*  __GIMP_VECTOR_TOOL_H__  */

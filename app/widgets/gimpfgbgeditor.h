@@ -21,70 +21,67 @@
 #ifndef __GIMP_FG_BG_EDITOR_H__
 #define __GIMP_FG_BG_EDITOR_H__
 
-
-typedef enum
-{
-	GIMP_FG_BG_TARGET_INVALID,
-	GIMP_FG_BG_TARGET_FOREGROUND,
-	GIMP_FG_BG_TARGET_BACKGROUND,
-	GIMP_FG_BG_TARGET_SWAP,
-	GIMP_FG_BG_TARGET_DEFAULT
+typedef enum {
+  GIMP_FG_BG_TARGET_INVALID,
+  GIMP_FG_BG_TARGET_FOREGROUND,
+  GIMP_FG_BG_TARGET_BACKGROUND,
+  GIMP_FG_BG_TARGET_SWAP,
+  GIMP_FG_BG_TARGET_DEFAULT
 } GimpFgBgTarget;
 
-
-#define GIMP_TYPE_FG_BG_EDITOR            (gimp_fg_bg_editor_get_type ())
-#define GIMP_FG_BG_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FG_BG_EDITOR, GimpFgBgEditor))
-#define GIMP_FG_BG_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FG_BG_EDITOR, GimpFgBgEditorClass))
-#define GIMP_IS_FG_BG_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_FG_BG_EDITOR))
-#define GIMP_IS_FG_BG_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_FG_BG_EDITOR))
-#define GIMP_FG_BG_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FG_BG_EDITOR, GimpFgBgEditorClass))
-
+#define GIMP_TYPE_FG_BG_EDITOR (gimp_fg_bg_editor_get_type())
+#define GIMP_FG_BG_EDITOR(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_FG_BG_EDITOR, GimpFgBgEditor))
+#define GIMP_FG_BG_EDITOR_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_FG_BG_EDITOR,                    \
+                           GimpFgBgEditorClass))
+#define GIMP_IS_FG_BG_EDITOR(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_FG_BG_EDITOR))
+#define GIMP_IS_FG_BG_EDITOR_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_FG_BG_EDITOR))
+#define GIMP_FG_BG_EDITOR_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_FG_BG_EDITOR,                    \
+                             GimpFgBgEditorClass))
 
 typedef struct _GimpFgBgEditorClass GimpFgBgEditorClass;
 
-struct _GimpFgBgEditor
-{
-	GtkEventBox parent_instance;
+struct _GimpFgBgEditor {
+  GtkEventBox parent_instance;
 
-	GimpContext        *context;
-	GimpColorConfig    *color_config;
-	GimpColorTransform *transform;
+  GimpContext *context;
+  GimpColorConfig *color_config;
+  GimpColorTransform *transform;
 
-	GimpActiveColor active_color;
+  GimpActiveColor active_color;
 
-	GimpImage          *active_image;
+  GimpImage *active_image;
 
-	GdkPixbuf          *default_icon;
-	GdkPixbuf          *swap_icon;
+  GdkPixbuf *default_icon;
+  GdkPixbuf *swap_icon;
 
-	gint rect_width;
-	gint rect_height;
-	gint click_target;
+  gint rect_width;
+  gint rect_height;
+  gint click_target;
 };
 
-struct _GimpFgBgEditorClass
-{
-	GtkEventBoxClass parent_class;
+struct _GimpFgBgEditorClass {
+  GtkEventBoxClass parent_class;
 
-	/*  signals  */
+  /*  signals  */
 
-	void (* color_clicked) (GimpFgBgEditor  *editor,
-	                        GimpActiveColor color);
+  void (*color_clicked)(GimpFgBgEditor *editor, GimpActiveColor color);
 
-	void (* tooltip)       (GimpFgBgEditor *editor,
-	                        GimpFgBgTarget target,
-	                        GtkTooltip tooltip);
+  void (*tooltip)(GimpFgBgEditor *editor, GimpFgBgTarget target,
+                  GtkTooltip tooltip);
 };
 
+GType gimp_fg_bg_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_fg_bg_editor_get_type    (void) G_GNUC_CONST;
+GtkWidget *gimp_fg_bg_editor_new(GimpContext *context);
 
-GtkWidget * gimp_fg_bg_editor_new         (GimpContext     *context);
+void gimp_fg_bg_editor_set_context(GimpFgBgEditor *editor,
+                                   GimpContext *context);
+void gimp_fg_bg_editor_set_active(GimpFgBgEditor *editor,
+                                  GimpActiveColor active);
 
-void        gimp_fg_bg_editor_set_context (GimpFgBgEditor  *editor,
-                                           GimpContext     *context);
-void        gimp_fg_bg_editor_set_active  (GimpFgBgEditor  *editor,
-                                           GimpActiveColor active);
-
-
-#endif  /*  __GIMP_FG_BG_EDITOR_H__  */
+#endif /*  __GIMP_FG_BG_EDITOR_H__  */

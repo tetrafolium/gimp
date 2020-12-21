@@ -23,39 +23,40 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_PROGRESS_BOX            (gimp_progress_box_get_type ())
-#define GIMP_PROGRESS_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PROGRESS_BOX, GimpProgressBox))
-#define GIMP_PROGRESS_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PROGRESS_BOX, GimpProgressBoxClass))
-#define GIMP_IS_PROGRESS_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PROGRESS_BOX))
-#define GIMP_IS_PROGRESS_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PROGRESS_BOX))
-#define GIMP_PROGRESS_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PROGRESS_BOX, GimpProgressBoxClass))
-
+#define GIMP_TYPE_PROGRESS_BOX (gimp_progress_box_get_type())
+#define GIMP_PROGRESS_BOX(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PROGRESS_BOX, GimpProgressBox))
+#define GIMP_PROGRESS_BOX_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PROGRESS_BOX,                    \
+                           GimpProgressBoxClass))
+#define GIMP_IS_PROGRESS_BOX(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PROGRESS_BOX))
+#define GIMP_IS_PROGRESS_BOX_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PROGRESS_BOX))
+#define GIMP_PROGRESS_BOX_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PROGRESS_BOX,                    \
+                             GimpProgressBoxClass))
 
 typedef struct _GimpProgressBoxClass GimpProgressBoxClass;
 
-struct _GimpProgressBox
-{
-	GtkBox parent_instance;
+struct _GimpProgressBox {
+  GtkBox parent_instance;
 
-	gboolean active;
-	gboolean cancellable;
-	gdouble value;
+  gboolean active;
+  gboolean cancellable;
+  gdouble value;
 
-	GtkWidget *label;
-	GtkWidget *progress;
+  GtkWidget *label;
+  GtkWidget *progress;
 };
 
-struct _GimpProgressBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpProgressBoxClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_progress_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_progress_box_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_progress_box_new      (void);
-
+GtkWidget *gimp_progress_box_new(void);
 
 G_END_DECLS
 

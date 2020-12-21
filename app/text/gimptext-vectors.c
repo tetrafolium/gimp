@@ -21,235 +21,201 @@
 #include "config.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <pango/pangocairo.h>
 #include <gegl.h>
+#include <pango/pangocairo.h>
 
 #include "text-types.h"
 
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 
+#include "vectors/gimpanchor.h"
 #include "vectors/gimpbezierstroke.h"
 #include "vectors/gimpvectors.h"
-#include "vectors/gimpanchor.h"
 
-#include "gimptext.h"
 #include "gimptext-vectors.h"
-#include "gimptextlayout.h"
+#include "gimptext.h"
 #include "gimptextlayout-render.h"
+#include "gimptextlayout.h"
 
-
-typedef struct
-{
-	GimpVectors *vectors;
-	GimpStroke  *stroke;
-	GimpAnchor  *anchor;
+typedef struct {
+  GimpVectors *vectors;
+  GimpStroke *stroke;
+  GimpAnchor *anchor;
 } RenderContext;
 
+static void gimp_text_render_vectors(cairo_t *cr, RenderContext *context);
 
-static void  gimp_text_render_vectors (cairo_t       *cr,
-                                       RenderContext *context);
+GimpVectors *gimp_text_vectors_new(GimpImage *image, GimpText *text) {
+  GimpVectors *vectors;
+  RenderContext context = {
+      NULL,
+  };
 
+  g_return_val_if_fail(GIMP_IS_IMAGE(image), NULL);
+  g_return_val_if_fail(GIMP_IS_TEXT(text), NULL);
 
-GimpVectors *
-gimp_text_vectors_new (GimpImage *image,
-                       GimpText  *text)
-{
-	GimpVectors   *vectors;
-	RenderContext context = { NULL, };
+  vectors = gimp_vectors_new(image, NULL);
 
-	g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-	g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
+  if (text->text || text->markup) {
+    GimpTextLayout *layout;
+    cairo_surface_t *surface;
+    cairo_t *cr;
+    gdouble xres;
+    gdouble yres;
+    GError *error = NULL;
 
-	vectors = gimp_vectors_new (image, NULL);
+    if (text->text)
+      gimp_object_set_name_safe(GIMP_OBJECT(vectors), text->text);
 
-	if (text->text || text->markup)
-	{
-		GimpTextLayout  *layout;
-		cairo_surface_t *surface;
-		cairo_t         *cr;
-		gdouble xres;
-		gdouble yres;
-		GError          *error = NULL;
+    context.vectors = vectors;
 
-		if (text->text)
-			gimp_object_set_name_safe (GIMP_OBJECT (vectors), text->text);
+    surface = cairo_recording_surface_create(CAIRO_CONTENT_ALPHA, NULL);
+    cr = cairo_create(surface);
 
-		context.vectors = vectors;
+    gimp_image_get_resolution(image, &xres, &yres);
 
-		surface = cairo_recording_surface_create (CAIRO_CONTENT_ALPHA, NULL);
-		cr = cairo_create (surface);
+    layout = gimp_text_layout_new(text, xres, yres, &error);
+    if (error) {
+      gimp_message_literal(image->gimp, NULL, GIMP_MESSAGE_ERROR,
+                           error->message);
+      g_error_free(error);
+    }
+    gimp_text_layout_render(layout, cr, text->base_dir, TRUE);
+    g_object_unref(layout);
 
-		gimp_image_get_resolution (image, &xres, &yres);
+    gimp_text_render_vectors(cr, &context);
 
-		layout = gimp_text_layout_new (text, xres, yres, &error);
-		if (error)
-		{
-			gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
-			g_error_free (error);
-		}
-		gimp_text_layout_render (layout, cr, text->base_dir, TRUE);
-		g_object_unref (layout);
+    cairo_destroy(cr);
+    cairo_surface_destroy(surface);
 
-		gimp_text_render_vectors (cr, &context);
+    if (context.stroke)
+      gimp_stroke_close(context.stroke);
+  }
 
-		cairo_destroy (cr);
-		cairo_surface_destroy (surface);
-
-		if (context.stroke)
-			gimp_stroke_close (context.stroke);
-	}
-
-	return vectors;
+  return vectors;
 }
 
+static inline void gimp_text_vector_coords(const double x, const double y,
+                                           GimpCoords *coords) {
+  const GimpCoords default_values = GIMP_COORDS_DEFAULT_VALUES;
 
-static inline void
-gimp_text_vector_coords (const double x,
-                         const double y,
-                         GimpCoords   *coords)
-{
-	const GimpCoords default_values = GIMP_COORDS_DEFAULT_VALUES;
+  *coords = default_values;
 
-	*coords = default_values;
-
-	coords->x = x;
-	coords->y = y;
+  coords->x = x;
+  coords->y = y;
 }
 
-static gint
-moveto (RenderContext *context,
-        const double x,
-        const double y)
-{
-	GimpCoords start;
+static gint moveto(RenderContext *context, const double x, const double y) {
+  GimpCoords start;
 
 #if GIMP_TEXT_DEBUG
-	g_printerr ("moveto  %f, %f\n", x, y);
+  g_printerr("moveto  %f, %f\n", x, y);
 #endif
 
-	gimp_text_vector_coords (x, y, &start);
+  gimp_text_vector_coords(x, y, &start);
 
-	if (context->stroke)
-		gimp_stroke_close (context->stroke);
+  if (context->stroke)
+    gimp_stroke_close(context->stroke);
 
-	context->stroke = gimp_bezier_stroke_new_moveto (&start);
+  context->stroke = gimp_bezier_stroke_new_moveto(&start);
 
-	gimp_vectors_stroke_add (context->vectors, context->stroke);
-	g_object_unref (context->stroke);
+  gimp_vectors_stroke_add(context->vectors, context->stroke);
+  g_object_unref(context->stroke);
 
-	return 0;
+  return 0;
 }
 
-static gint
-lineto (RenderContext *context,
-        const double x,
-        const double y)
-{
-	GimpCoords end;
+static gint lineto(RenderContext *context, const double x, const double y) {
+  GimpCoords end;
 
 #if GIMP_TEXT_DEBUG
-	g_printerr ("lineto  %f, %f\n", x, y);
+  g_printerr("lineto  %f, %f\n", x, y);
 #endif
 
-	if (!context->stroke)
-		return 0;
+  if (!context->stroke)
+    return 0;
 
-	gimp_text_vector_coords (x, y, &end);
+  gimp_text_vector_coords(x, y, &end);
 
-	gimp_bezier_stroke_lineto (context->stroke, &end);
+  gimp_bezier_stroke_lineto(context->stroke, &end);
 
-	return 0;
+  return 0;
 }
 
-static gint
-cubicto (RenderContext *context,
-         const double x1,
-         const double y1,
-         const double x2,
-         const double y2,
-         const double x3,
-         const double y3)
-{
-	GimpCoords control1;
-	GimpCoords control2;
-	GimpCoords end;
+static gint cubicto(RenderContext *context, const double x1, const double y1,
+                    const double x2, const double y2, const double x3,
+                    const double y3) {
+  GimpCoords control1;
+  GimpCoords control2;
+  GimpCoords end;
 
 #if GIMP_TEXT_DEBUG
-	g_printerr ("cubicto %f, %f\n", x3, y3);
+  g_printerr("cubicto %f, %f\n", x3, y3);
 #endif
 
-	if (!context->stroke)
-		return 0;
+  if (!context->stroke)
+    return 0;
 
-	gimp_text_vector_coords (x1, y1, &control1);
-	gimp_text_vector_coords (x2, y2, &control2);
-	gimp_text_vector_coords (x3, y3, &end);
+  gimp_text_vector_coords(x1, y1, &control1);
+  gimp_text_vector_coords(x2, y2, &control2);
+  gimp_text_vector_coords(x3, y3, &end);
 
-	gimp_bezier_stroke_cubicto (context->stroke, &control1, &control2, &end);
+  gimp_bezier_stroke_cubicto(context->stroke, &control1, &control2, &end);
 
-	return 0;
+  return 0;
 }
 
-static gint
-closepath (RenderContext *context)
-{
+static gint closepath(RenderContext *context) {
 #if GIMP_TEXT_DEBUG
-	g_printerr ("moveto\n");
+  g_printerr("moveto\n");
 #endif
 
-	if (!context->stroke)
-		return 0;
+  if (!context->stroke)
+    return 0;
 
-	gimp_stroke_close (context->stroke);
+  gimp_stroke_close(context->stroke);
 
-	context->stroke = NULL;
+  context->stroke = NULL;
 
-	return 0;
+  return 0;
 }
 
-static void
-gimp_text_render_vectors (cairo_t       *cr,
-                          RenderContext *context)
-{
-	cairo_path_t *path;
-	gint i;
+static void gimp_text_render_vectors(cairo_t *cr, RenderContext *context) {
+  cairo_path_t *path;
+  gint i;
 
-	path = cairo_copy_path (cr);
+  path = cairo_copy_path(cr);
 
-	for (i = 0; i < path->num_data; i += path->data[i].header.length)
-	{
-		cairo_path_data_t *data = &path->data[i];
+  for (i = 0; i < path->num_data; i += path->data[i].header.length) {
+    cairo_path_data_t *data = &path->data[i];
 
-		/* if the drawing operation is the final moveto of the glyph,
-		 * break to avoid creating an empty point. This is because cairo
-		 * always adds a moveto after each closepath.
-		 */
-		if (i + data->header.length >= path->num_data)
-			break;
+    /* if the drawing operation is the final moveto of the glyph,
+     * break to avoid creating an empty point. This is because cairo
+     * always adds a moveto after each closepath.
+     */
+    if (i + data->header.length >= path->num_data)
+      break;
 
-		switch (data->header.type)
-		{
-		case CAIRO_PATH_MOVE_TO:
-			moveto (context, data[1].point.x, data[1].point.y);
-			break;
+    switch (data->header.type) {
+    case CAIRO_PATH_MOVE_TO:
+      moveto(context, data[1].point.x, data[1].point.y);
+      break;
 
-		case CAIRO_PATH_LINE_TO:
-			lineto (context, data[1].point.x, data[1].point.y);
-			break;
+    case CAIRO_PATH_LINE_TO:
+      lineto(context, data[1].point.x, data[1].point.y);
+      break;
 
-		case CAIRO_PATH_CURVE_TO:
-			cubicto (context,
-			         data[1].point.x, data[1].point.y,
-			         data[2].point.x, data[2].point.y,
-			         data[3].point.x, data[3].point.y);
-			break;
+    case CAIRO_PATH_CURVE_TO:
+      cubicto(context, data[1].point.x, data[1].point.y, data[2].point.x,
+              data[2].point.y, data[3].point.x, data[3].point.y);
+      break;
 
-		case CAIRO_PATH_CLOSE_PATH:
-			closepath (context);
-			break;
-		}
-	}
+    case CAIRO_PATH_CLOSE_PATH:
+      closepath(context);
+      break;
+    }
+  }
 
-	cairo_path_destroy (path);
+  cairo_path_destroy(path);
 }

@@ -15,44 +15,46 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef  __GIMP_BUCKET_FILL_TOOL_H__
-#define  __GIMP_BUCKET_FILL_TOOL_H__
-
+#ifndef __GIMP_BUCKET_FILL_TOOL_H__
+#define __GIMP_BUCKET_FILL_TOOL_H__
 
 #include "gimpcolortool.h"
 
+#define GIMP_TYPE_BUCKET_FILL_TOOL (gimp_bucket_fill_tool_get_type())
+#define GIMP_BUCKET_FILL_TOOL(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BUCKET_FILL_TOOL,               \
+                              GimpBucketFillTool))
+#define GIMP_BUCKET_FILL_TOOL_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BUCKET_FILL_TOOL,                \
+                           GimpBucketFillToolClass))
+#define GIMP_IS_BUCKET_FILL_TOOL(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BUCKET_FILL_TOOL))
+#define GIMP_IS_BUCKET_FILL_TOOL_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BUCKET_FILL_TOOL))
+#define GIMP_BUCKET_FILL_TOOL_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BUCKET_FILL_TOOL,                \
+                             GimpBucketFillToolClass))
 
-#define GIMP_TYPE_BUCKET_FILL_TOOL            (gimp_bucket_fill_tool_get_type ())
-#define GIMP_BUCKET_FILL_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BUCKET_FILL_TOOL, GimpBucketFillTool))
-#define GIMP_BUCKET_FILL_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BUCKET_FILL_TOOL, GimpBucketFillToolClass))
-#define GIMP_IS_BUCKET_FILL_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BUCKET_FILL_TOOL))
-#define GIMP_IS_BUCKET_FILL_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BUCKET_FILL_TOOL))
-#define GIMP_BUCKET_FILL_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BUCKET_FILL_TOOL, GimpBucketFillToolClass))
-
-#define GIMP_BUCKET_FILL_TOOL_GET_OPTIONS(t)  (GIMP_BUCKET_FILL_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_BUCKET_FILL_TOOL_GET_OPTIONS(t)                                   \
+  (GIMP_BUCKET_FILL_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpBucketFillTool GimpBucketFillTool;
 typedef struct _GimpBucketFillToolClass GimpBucketFillToolClass;
 typedef struct _GimpBucketFillToolPrivate GimpBucketFillToolPrivate;
 
-struct _GimpBucketFillTool
-{
-	GimpColorTool parent_instance;
+struct _GimpBucketFillTool {
+  GimpColorTool parent_instance;
 
-	GimpBucketFillToolPrivate *priv;
+  GimpBucketFillToolPrivate *priv;
 };
 
-struct _GimpBucketFillToolClass
-{
-	GimpColorToolClass parent_class;
+struct _GimpBucketFillToolClass {
+  GimpColorToolClass parent_class;
 };
 
+void gimp_bucket_fill_tool_register(GimpToolRegisterCallback callback,
+                                    gpointer data);
 
-void    gimp_bucket_fill_tool_register (GimpToolRegisterCallback callback,
-                                        gpointer data);
+GType gimp_bucket_fill_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_bucket_fill_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_BUCKET_FILL_TOOL_H__  */
+#endif /*  __GIMP_BUCKET_FILL_TOOL_H__  */

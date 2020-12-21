@@ -23,54 +23,51 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_VIEWABLE_DIALOG            (gimp_viewable_dialog_get_type ())
-#define GIMP_VIEWABLE_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEWABLE_DIALOG, GimpViewableDialog))
-#define GIMP_VIEWABLE_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEWABLE_DIALOG, GimpViewableDialogClass))
-#define GIMP_IS_VIEWABLE_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_VIEWABLE_DIALOG))
-#define GIMP_IS_VIEWABLE_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEWABLE_DIALOG))
-#define GIMP_VIEWABLE_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEWABLE_DIALOG, GimpViewableDialogClass))
-
+#define GIMP_TYPE_VIEWABLE_DIALOG (gimp_viewable_dialog_get_type())
+#define GIMP_VIEWABLE_DIALOG(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEWABLE_DIALOG,                \
+                              GimpViewableDialog))
+#define GIMP_VIEWABLE_DIALOG_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEWABLE_DIALOG,                 \
+                           GimpViewableDialogClass))
+#define GIMP_IS_VIEWABLE_DIALOG(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_VIEWABLE_DIALOG))
+#define GIMP_IS_VIEWABLE_DIALOG_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEWABLE_DIALOG))
+#define GIMP_VIEWABLE_DIALOG_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEWABLE_DIALOG,                 \
+                             GimpViewableDialogClass))
 
 typedef struct _GimpViewableDialogClass GimpViewableDialogClass;
 
-struct _GimpViewableDialog
-{
-	GimpDialog parent_instance;
+struct _GimpViewableDialog {
+  GimpDialog parent_instance;
 
-	GimpContext *context;
+  GimpContext *context;
 
-	GList       *viewables;
+  GList *viewables;
 
-	GtkWidget   *icon;
-	GtkWidget   *view;
-	GtkWidget   *desc_label;
-	GtkWidget   *viewable_label;
+  GtkWidget *icon;
+  GtkWidget *view;
+  GtkWidget *desc_label;
+  GtkWidget *viewable_label;
 };
 
-struct _GimpViewableDialogClass
-{
-	GimpDialogClass parent_class;
+struct _GimpViewableDialogClass {
+  GimpDialogClass parent_class;
 };
 
+GType gimp_viewable_dialog_get_type(void) G_GNUC_CONST;
 
-GType       gimp_viewable_dialog_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_viewable_dialog_new(GList *viewables, GimpContext *context,
+                                    const gchar *title, const gchar *role,
+                                    const gchar *icon_name, const gchar *desc,
+                                    GtkWidget *parent, GimpHelpFunc help_func,
+                                    const gchar *help_id,
+                                    ...) G_GNUC_NULL_TERMINATED;
 
-GtkWidget * gimp_viewable_dialog_new      (GList              *viewables,
-                                           GimpContext        *context,
-                                           const gchar        *title,
-                                           const gchar        *role,
-                                           const gchar        *icon_name,
-                                           const gchar        *desc,
-                                           GtkWidget          *parent,
-                                           GimpHelpFunc help_func,
-                                           const gchar        *help_id,
-                                           ...) G_GNUC_NULL_TERMINATED;
-
-void    gimp_viewable_dialog_set_viewables (GimpViewableDialog *dialog,
-                                            GList              *viewables,
-                                            GimpContext        *context);
-
+void gimp_viewable_dialog_set_viewables(GimpViewableDialog *dialog,
+                                        GList *viewables, GimpContext *context);
 
 G_END_DECLS
 

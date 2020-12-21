@@ -25,30 +25,32 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_PATTERN_SELECT            (gimp_pattern_select_get_type ())
-#define GIMP_PATTERN_SELECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PATTERN_SELECT, GimpPatternSelect))
-#define GIMP_PATTERN_SELECT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PATTERN_SELECT, GimpPatternSelectClass))
-#define GIMP_IS_PATTERN_SELECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PATTERN_SELECT))
-#define GIMP_IS_PATTERN_SELECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PATTERN_SELECT))
-#define GIMP_PATTERN_SELECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PATTERN_SELECT, GimpPatternSelectClass))
-
+#define GIMP_TYPE_PATTERN_SELECT (gimp_pattern_select_get_type())
+#define GIMP_PATTERN_SELECT(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PATTERN_SELECT,                 \
+                              GimpPatternSelect))
+#define GIMP_PATTERN_SELECT_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PATTERN_SELECT,                  \
+                           GimpPatternSelectClass))
+#define GIMP_IS_PATTERN_SELECT(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PATTERN_SELECT))
+#define GIMP_IS_PATTERN_SELECT_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PATTERN_SELECT))
+#define GIMP_PATTERN_SELECT_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PATTERN_SELECT,                  \
+                             GimpPatternSelectClass))
 
 typedef struct _GimpPatternSelectClass GimpPatternSelectClass;
 
-struct _GimpPatternSelect
-{
-	GimpPdbDialog parent_instance;
+struct _GimpPatternSelect {
+  GimpPdbDialog parent_instance;
 };
 
-struct _GimpPatternSelectClass
-{
-	GimpPdbDialogClass parent_class;
+struct _GimpPatternSelectClass {
+  GimpPdbDialogClass parent_class;
 };
 
-
-GType  gimp_pattern_select_get_type (void) G_GNUC_CONST;
-
+GType gimp_pattern_select_get_type(void) G_GNUC_CONST;
 
 G_END_DECLS
 

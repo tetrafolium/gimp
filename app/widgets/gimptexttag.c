@@ -29,91 +29,64 @@
 
 #include "gimptexttag.h"
 
+gint gimp_text_tag_get_size(GtkTextTag *tag) {
+  gint size;
 
-gint
-gimp_text_tag_get_size (GtkTextTag *tag)
-{
-	gint size;
+  g_return_val_if_fail(GTK_IS_TEXT_TAG(tag), 0);
 
-	g_return_val_if_fail (GTK_IS_TEXT_TAG (tag), 0);
+  g_object_get(tag, GIMP_TEXT_PROP_NAME_SIZE, &size, NULL);
 
-	g_object_get (tag,
-	              GIMP_TEXT_PROP_NAME_SIZE, &size,
-	              NULL);
-
-	return size;
+  return size;
 }
 
-gint
-gimp_text_tag_get_baseline (GtkTextTag *tag)
-{
-	gint baseline;
+gint gimp_text_tag_get_baseline(GtkTextTag *tag) {
+  gint baseline;
 
-	g_object_get (tag,
-	              GIMP_TEXT_PROP_NAME_BASELINE, &baseline,
-	              NULL);
+  g_object_get(tag, GIMP_TEXT_PROP_NAME_BASELINE, &baseline, NULL);
 
-	return baseline;
+  return baseline;
 }
 
-gint
-gimp_text_tag_get_kerning (GtkTextTag *tag)
-{
-	gint kerning;
+gint gimp_text_tag_get_kerning(GtkTextTag *tag) {
+  gint kerning;
 
-	g_object_get (tag,
-	              GIMP_TEXT_PROP_NAME_KERNING, &kerning,
-	              NULL);
+  g_object_get(tag, GIMP_TEXT_PROP_NAME_KERNING, &kerning, NULL);
 
-	return kerning;
+  return kerning;
 }
 
-gchar *
-gimp_text_tag_get_font (GtkTextTag *tag)
-{
-	gchar *font;
+gchar *gimp_text_tag_get_font(GtkTextTag *tag) {
+  gchar *font;
 
-	g_object_get (tag,
-	              GIMP_TEXT_PROP_NAME_FONT, &font,
-	              NULL);
+  g_object_get(tag, GIMP_TEXT_PROP_NAME_FONT, &font, NULL);
 
-	return font;
+  return font;
 }
 
-gboolean
-gimp_text_tag_get_fg_color (GtkTextTag *tag,
-                            GimpRGB    *color)
-{
-	GdkRGBA  *rgba;
-	gboolean set;
+gboolean gimp_text_tag_get_fg_color(GtkTextTag *tag, GimpRGB *color) {
+  GdkRGBA *rgba;
+  gboolean set;
 
-	g_object_get (tag,
-	              "foreground-set",             &set,
-	              GIMP_TEXT_PROP_NAME_FG_COLOR, &rgba,
-	              NULL);
+  g_object_get(tag, "foreground-set", &set, GIMP_TEXT_PROP_NAME_FG_COLOR, &rgba,
+               NULL);
 
-	gimp_rgb_set (color, rgba->red, rgba->green, rgba->blue);
+  gimp_rgb_set(color, rgba->red, rgba->green, rgba->blue);
 
-	gdk_rgba_free (rgba);
+  gdk_rgba_free(rgba);
 
-	return set;
+  return set;
 }
 
-gboolean
-gimp_text_tag_get_bg_color (GtkTextTag *tag,
-                            GimpRGB    *color)
-{
-	GdkRGBA  *rgba;
-	gboolean set;
+gboolean gimp_text_tag_get_bg_color(GtkTextTag *tag, GimpRGB *color) {
+  GdkRGBA *rgba;
+  gboolean set;
 
-	g_object_get (tag,
-	              "background-set",             &set,
-	              GIMP_TEXT_PROP_NAME_BG_COLOR, &rgba,
-	              NULL);
+  g_object_get(tag, "background-set", &set, GIMP_TEXT_PROP_NAME_BG_COLOR, &rgba,
+               NULL);
 
-	gimp_rgb_set (color, rgba->red, rgba->green, rgba->blue);
+  gimp_rgb_set(color, rgba->red, rgba->green, rgba->blue);
 
-	gdk_rgba_free (rgba);
+  gdk_rgba_free(rgba);
 
-	return set;
+  return set;
 }

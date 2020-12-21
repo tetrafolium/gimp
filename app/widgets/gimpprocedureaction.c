@@ -20,8 +20,8 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
 #include <gegl.h>
+#include <gtk/gtk.h>
 
 #include "widgets-types.h"
 
@@ -29,201 +29,154 @@
 
 #include "pdb/gimpprocedure.h"
 
-#include "gimpaction.h"
 #include "gimpaction-history.h"
+#include "gimpaction.h"
 #include "gimpprocedureaction.h"
 #include "gimpwidgets-utils.h"
 
+enum { PROP_0, PROP_PROCEDURE };
 
-enum
-{
-	PROP_0,
-	PROP_PROCEDURE
-};
+static void gimp_procedure_action_finalize(GObject *object);
+static void gimp_procedure_action_set_property(GObject *object, guint prop_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec);
+static void gimp_procedure_action_get_property(GObject *object, guint prop_id,
+                                               GValue *value,
+                                               GParamSpec *pspec);
 
+static void gimp_procedure_action_activate(GtkAction *action);
+static void gimp_procedure_action_connect_proxy(GtkAction *action,
+                                                GtkWidget *proxy);
 
-static void   gimp_procedure_action_finalize      (GObject      *object);
-static void   gimp_procedure_action_set_property  (GObject      *object,
-                                                   guint prop_id,
-                                                   const GValue *value,
-                                                   GParamSpec   *pspec);
-static void   gimp_procedure_action_get_property  (GObject      *object,
-                                                   guint prop_id,
-                                                   GValue       *value,
-                                                   GParamSpec   *pspec);
-
-static void   gimp_procedure_action_activate      (GtkAction    *action);
-static void   gimp_procedure_action_connect_proxy (GtkAction    *action,
-                                                   GtkWidget    *proxy);
-
-
-G_DEFINE_TYPE (GimpProcedureAction, gimp_procedure_action,
-               GIMP_TYPE_ACTION_IMPL)
+G_DEFINE_TYPE(GimpProcedureAction, gimp_procedure_action, GIMP_TYPE_ACTION_IMPL)
 
 #define parent_class gimp_procedure_action_parent_class
 
+static void gimp_procedure_action_class_init(GimpProcedureActionClass *klass) {
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
+  GtkActionClass *action_class = GTK_ACTION_CLASS(klass);
 
-static void
-gimp_procedure_action_class_init (GimpProcedureActionClass *klass)
-{
-	GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-	GtkActionClass *action_class = GTK_ACTION_CLASS (klass);
+  object_class->finalize = gimp_procedure_action_finalize;
+  object_class->set_property = gimp_procedure_action_set_property;
+  object_class->get_property = gimp_procedure_action_get_property;
 
-	object_class->finalize      = gimp_procedure_action_finalize;
-	object_class->set_property  = gimp_procedure_action_set_property;
-	object_class->get_property  = gimp_procedure_action_get_property;
+  action_class->activate = gimp_procedure_action_activate;
+  action_class->connect_proxy = gimp_procedure_action_connect_proxy;
 
-	action_class->activate      = gimp_procedure_action_activate;
-	action_class->connect_proxy = gimp_procedure_action_connect_proxy;
-
-	g_object_class_install_property (object_class, PROP_PROCEDURE,
-	                                 g_param_spec_object ("procedure",
-	                                                      NULL, NULL,
-	                                                      GIMP_TYPE_PROCEDURE,
-	                                                      GIMP_PARAM_READWRITE));
+  g_object_class_install_property(object_class, PROP_PROCEDURE,
+                                  g_param_spec_object("procedure", NULL, NULL,
+                                                      GIMP_TYPE_PROCEDURE,
+                                                      GIMP_PARAM_READWRITE));
 }
 
-static void
-gimp_procedure_action_init (GimpProcedureAction *action)
-{
+static void gimp_procedure_action_init(GimpProcedureAction *action) {}
+
+static void gimp_procedure_action_finalize(GObject *object) {
+  GimpProcedureAction *action = GIMP_PROCEDURE_ACTION(object);
+
+  g_clear_object(&action->procedure);
+
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-static void
-gimp_procedure_action_finalize (GObject *object)
-{
-	GimpProcedureAction *action = GIMP_PROCEDURE_ACTION (object);
+static void gimp_procedure_action_get_property(GObject *object, guint prop_id,
+                                               GValue *value,
+                                               GParamSpec *pspec) {
+  GimpProcedureAction *action = GIMP_PROCEDURE_ACTION(object);
 
-	g_clear_object (&action->procedure);
+  switch (prop_id) {
+  case PROP_PROCEDURE:
+    g_value_set_object(value, action->procedure);
+    break;
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_procedure_action_get_property (GObject    *object,
-                                    guint prop_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
-{
-	GimpProcedureAction *action = GIMP_PROCEDURE_ACTION (object);
+static void gimp_procedure_action_set_property(GObject *object, guint prop_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec) {
+  GimpProcedureAction *action = GIMP_PROCEDURE_ACTION(object);
 
-	switch (prop_id)
-	{
-	case PROP_PROCEDURE:
-		g_value_set_object (value, action->procedure);
-		break;
+  switch (prop_id) {
+  case PROP_PROCEDURE:
+    if (action->procedure)
+      g_object_unref(action->procedure);
+    action->procedure = g_value_dup_object(value);
+    break;
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+    break;
+  }
 }
 
-static void
-gimp_procedure_action_set_property (GObject      *object,
-                                    guint prop_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
-{
-	GimpProcedureAction *action = GIMP_PROCEDURE_ACTION (object);
+static void gimp_procedure_action_activate(GtkAction *action) {
+  GimpProcedureAction *procedure_action = GIMP_PROCEDURE_ACTION(action);
 
-	switch (prop_id)
-	{
-	case PROP_PROCEDURE:
-		if (action->procedure)
-			g_object_unref (action->procedure);
-		action->procedure = g_value_dup_object (value);
-		break;
+  /* Not all actions have procedures associated with them, for example
+   * unused "filters-recent-[N]" actions, so check for NULL before we
+   * invoke the action
+   */
+  if (procedure_action->procedure) {
+    gsize hack = GPOINTER_TO_SIZE(procedure_action->procedure);
 
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
+    gimp_action_emit_activate(GIMP_ACTION(action), g_variant_new_uint64(hack));
+
+    gimp_action_history_action_activated(GIMP_ACTION(action));
+  }
 }
 
-static void
-gimp_procedure_action_activate (GtkAction *action)
-{
-	GimpProcedureAction *procedure_action = GIMP_PROCEDURE_ACTION (action);
+static void gimp_procedure_action_connect_proxy(GtkAction *action,
+                                                GtkWidget *proxy) {
+  GimpProcedureAction *procedure_action = GIMP_PROCEDURE_ACTION(action);
 
-	/* Not all actions have procedures associated with them, for example
-	 * unused "filters-recent-[N]" actions, so check for NULL before we
-	 * invoke the action
-	 */
-	if (procedure_action->procedure)
-	{
-		gsize hack = GPOINTER_TO_SIZE (procedure_action->procedure);
+  GTK_ACTION_CLASS(parent_class)->connect_proxy(action, proxy);
 
-		gimp_action_emit_activate (GIMP_ACTION (action),
-		                           g_variant_new_uint64 (hack));
+  if (GTK_IS_MENU_ITEM(proxy) && procedure_action->procedure) {
+    GdkPixbuf *pixbuf;
 
-		gimp_action_history_action_activated (GIMP_ACTION (action));
-	}
+    g_object_get(procedure_action->procedure, "icon-pixbuf", &pixbuf, NULL);
+
+    if (pixbuf) {
+      GtkWidget *image;
+      gint width;
+      gint height;
+
+      gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
+
+      if (width != gdk_pixbuf_get_width(pixbuf) ||
+          height != gdk_pixbuf_get_height(pixbuf)) {
+        GdkPixbuf *copy;
+
+        copy =
+            gdk_pixbuf_scale_simple(pixbuf, width, height, GDK_INTERP_BILINEAR);
+        g_object_unref(pixbuf);
+        pixbuf = copy;
+      }
+
+      image = gtk_image_new_from_pixbuf(pixbuf);
+      gimp_menu_item_set_image(GTK_MENU_ITEM(proxy), image);
+      g_object_unref(pixbuf);
+    }
+  }
 }
-
-static void
-gimp_procedure_action_connect_proxy (GtkAction *action,
-                                     GtkWidget *proxy)
-{
-	GimpProcedureAction *procedure_action = GIMP_PROCEDURE_ACTION (action);
-
-	GTK_ACTION_CLASS (parent_class)->connect_proxy (action, proxy);
-
-	if (GTK_IS_MENU_ITEM (proxy) && procedure_action->procedure)
-	{
-		GdkPixbuf *pixbuf;
-
-		g_object_get (procedure_action->procedure,
-		              "icon-pixbuf", &pixbuf,
-		              NULL);
-
-		if (pixbuf)
-		{
-			GtkWidget *image;
-			gint width;
-			gint height;
-
-			gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &width, &height);
-
-			if (width  != gdk_pixbuf_get_width  (pixbuf) ||
-			    height != gdk_pixbuf_get_height (pixbuf))
-			{
-				GdkPixbuf *copy;
-
-				copy = gdk_pixbuf_scale_simple (pixbuf, width, height,
-				                                GDK_INTERP_BILINEAR);
-				g_object_unref (pixbuf);
-				pixbuf = copy;
-			}
-
-			image = gtk_image_new_from_pixbuf (pixbuf);
-			gimp_menu_item_set_image (GTK_MENU_ITEM (proxy), image);
-			g_object_unref (pixbuf);
-		}
-	}
-}
-
 
 /*  public functions  */
 
 GimpProcedureAction *
-gimp_procedure_action_new (const gchar   *name,
-                           const gchar   *label,
-                           const gchar   *tooltip,
-                           const gchar   *icon_name,
-                           const gchar   *help_id,
-                           GimpProcedure *procedure)
-{
-	GimpProcedureAction *action;
+gimp_procedure_action_new(const gchar *name, const gchar *label,
+                          const gchar *tooltip, const gchar *icon_name,
+                          const gchar *help_id, GimpProcedure *procedure) {
+  GimpProcedureAction *action;
 
-	action = g_object_new (GIMP_TYPE_PROCEDURE_ACTION,
-	                       "name",       name,
-	                       "label",      label,
-	                       "tooltip",    tooltip,
-	                       "icon-name",  icon_name,
-	                       "procedure",  procedure,
-	                       NULL);
+  action = g_object_new(GIMP_TYPE_PROCEDURE_ACTION, "name", name, "label",
+                        label, "tooltip", tooltip, "icon-name", icon_name,
+                        "procedure", procedure, NULL);
 
-	gimp_action_set_help_id (GIMP_ACTION (action), help_id);
+  gimp_action_set_help_id(GIMP_ACTION(action), help_id);
 
-	return action;
+  return action;
 }

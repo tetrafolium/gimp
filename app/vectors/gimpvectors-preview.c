@@ -30,64 +30,56 @@
 #include "core/gimptempbuf.h"
 
 #include "gimpstroke.h"
-#include "gimpvectors.h"
 #include "gimpvectors-preview.h"
-
+#include "gimpvectors.h"
 
 /*  public functions  */
 
-GimpTempBuf *
-gimp_vectors_get_new_preview (GimpViewable *viewable,
-                              GimpContext  *context,
-                              gint width,
-                              gint height)
-{
-	GimpVectors *vectors;
-	GimpItem    *item;
-	GimpStroke  *cur_stroke;
-	gdouble xscale, yscale;
-	guchar      *data;
-	GimpTempBuf *temp_buf;
+GimpTempBuf *gimp_vectors_get_new_preview(GimpViewable *viewable,
+                                          GimpContext *context, gint width,
+                                          gint height) {
+  GimpVectors *vectors;
+  GimpItem *item;
+  GimpStroke *cur_stroke;
+  gdouble xscale, yscale;
+  guchar *data;
+  GimpTempBuf *temp_buf;
 
-	vectors = GIMP_VECTORS (viewable);
-	item    = GIMP_ITEM (viewable);
+  vectors = GIMP_VECTORS(viewable);
+  item = GIMP_ITEM(viewable);
 
-	xscale = ((gdouble) width)  / gimp_image_get_width  (gimp_item_get_image (item));
-	yscale = ((gdouble) height) / gimp_image_get_height (gimp_item_get_image (item));
+  xscale = ((gdouble)width) / gimp_image_get_width(gimp_item_get_image(item));
+  yscale = ((gdouble)height) / gimp_image_get_height(gimp_item_get_image(item));
 
-	temp_buf = gimp_temp_buf_new (width, height, babl_format ("Y' u8"));
-	data = gimp_temp_buf_get_data (temp_buf);
-	memset (data, 255, width * height);
+  temp_buf = gimp_temp_buf_new(width, height, babl_format("Y' u8"));
+  data = gimp_temp_buf_get_data(temp_buf);
+  memset(data, 255, width * height);
 
-	for (cur_stroke = gimp_vectors_stroke_get_next (vectors, NULL);
-	     cur_stroke;
-	     cur_stroke = gimp_vectors_stroke_get_next (vectors, cur_stroke))
-	{
-		GArray   *coords;
-		gboolean closed;
-		gint i;
+  for (cur_stroke = gimp_vectors_stroke_get_next(vectors, NULL); cur_stroke;
+       cur_stroke = gimp_vectors_stroke_get_next(vectors, cur_stroke)) {
+    GArray *coords;
+    gboolean closed;
+    gint i;
 
-		coords = gimp_stroke_interpolate (cur_stroke, 0.5, &closed);
+    coords = gimp_stroke_interpolate(cur_stroke, 0.5, &closed);
 
-		if (coords)
-		{
-			for (i = 0; i < coords->len; i++)
-			{
-				GimpCoords point;
-				gint x, y;
+    if (coords) {
+      for (i = 0; i < coords->len; i++) {
+        GimpCoords point;
+        gint x, y;
 
-				point = g_array_index (coords, GimpCoords, i);
+        point = g_array_index(coords, GimpCoords, i);
 
-				x = ROUND (point.x * xscale);
-				y = ROUND (point.y * yscale);
+        x = ROUND(point.x * xscale);
+        y = ROUND(point.y * yscale);
 
-				if (x >= 0 && y >= 0 && x < width && y < height)
-					data[y * width + x] = 0;
-			}
+        if (x >= 0 && y >= 0 && x < width && y < height)
+          data[y * width + x] = 0;
+      }
 
-			g_array_free (coords, TRUE);
-		}
-	}
+      g_array_free(coords, TRUE);
+    }
+  }
 
-	return temp_buf;
+  return temp_buf;
 }

@@ -18,9 +18,6 @@
 #ifndef __GIMP_TOOLS_UTILS_H__
 #define __GIMP_TOOLS_UTILS_H__
 
+void gimp_tools_blink_lock_box(Gimp *gimp, GimpItem *item);
 
-void   gimp_tools_blink_lock_box (Gimp     *gimp,
-                                  GimpItem *item);
-
-
-#endif  /* __GIMP_TOOLS_UTILS_H__ */
+#endif /* __GIMP_TOOLS_UTILS_H__ */

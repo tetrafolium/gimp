@@ -21,31 +21,32 @@
 #ifndef __GIMP_DEVICE_EDITOR_H__
 #define __GIMP_DEVICE_EDITOR_H__
 
-
-#define GIMP_TYPE_DEVICE_EDITOR            (gimp_device_editor_get_type ())
-#define GIMP_DEVICE_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DEVICE_EDITOR, GimpDeviceEditor))
-#define GIMP_DEVICE_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DEVICE_EDITOR, GimpDeviceEditorClass))
-#define GIMP_IS_DEVICE_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DEVICE_EDITOR))
-#define GIMP_IS_DEVICE_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DEVICE_EDITOR))
-#define GIMP_DEVICE_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DEVICE_EDITOR, GimpDeviceEditorClass))
-
+#define GIMP_TYPE_DEVICE_EDITOR (gimp_device_editor_get_type())
+#define GIMP_DEVICE_EDITOR(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DEVICE_EDITOR, GimpDeviceEditor))
+#define GIMP_DEVICE_EDITOR_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DEVICE_EDITOR,                   \
+                           GimpDeviceEditorClass))
+#define GIMP_IS_DEVICE_EDITOR(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DEVICE_EDITOR))
+#define GIMP_IS_DEVICE_EDITOR_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DEVICE_EDITOR))
+#define GIMP_DEVICE_EDITOR_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DEVICE_EDITOR,                   \
+                             GimpDeviceEditorClass))
 
 typedef struct _GimpDeviceEditorClass GimpDeviceEditorClass;
 
-struct _GimpDeviceEditor
-{
-	GtkPaned parent_instance;
+struct _GimpDeviceEditor {
+  GtkPaned parent_instance;
 };
 
-struct _GimpDeviceEditorClass
-{
-	GtkPanedClass parent_class;
+struct _GimpDeviceEditorClass {
+  GtkPanedClass parent_class;
 };
 
+GType gimp_device_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_device_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_device_editor_new      (Gimp *gimp);
-
+GtkWidget *gimp_device_editor_new(Gimp *gimp);
 
 #endif /* __GIMP_DEVICE_EDITOR_H__ */

@@ -18,59 +18,55 @@
 #ifndef __GIMP_ALIGN_TOOL_H__
 #define __GIMP_ALIGN_TOOL_H__
 
-
 #include "gimpdrawtool.h"
 
-
 /*  tool function/operation/state/mode  */
-typedef enum
-{
-	ALIGN_TOOL_IDLE,
-	ALIGN_TOOL_PICK_LAYER,
-	ALIGN_TOOL_ADD_LAYER,
-	ALIGN_TOOL_PICK_GUIDE,
-	ALIGN_TOOL_ADD_GUIDE,
-	ALIGN_TOOL_PICK_PATH,
-	ALIGN_TOOL_ADD_PATH,
-	ALIGN_TOOL_DRAG_BOX
+typedef enum {
+  ALIGN_TOOL_IDLE,
+  ALIGN_TOOL_PICK_LAYER,
+  ALIGN_TOOL_ADD_LAYER,
+  ALIGN_TOOL_PICK_GUIDE,
+  ALIGN_TOOL_ADD_GUIDE,
+  ALIGN_TOOL_PICK_PATH,
+  ALIGN_TOOL_ADD_PATH,
+  ALIGN_TOOL_DRAG_BOX
 } GimpAlignToolFunction;
 
+#define GIMP_TYPE_ALIGN_TOOL (gimp_align_tool_get_type())
+#define GIMP_ALIGN_TOOL(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ALIGN_TOOL, GimpAlignTool))
+#define GIMP_ALIGN_TOOL_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ALIGN_TOOL, GimpAlignToolClass))
+#define GIMP_IS_ALIGN_TOOL(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ALIGN_TOOL))
+#define GIMP_IS_ALIGN_TOOL_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ALIGN_TOOL))
+#define GIMP_ALIGN_TOOL_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ALIGN_TOOL, GimpAlignToolClass))
 
-#define GIMP_TYPE_ALIGN_TOOL            (gimp_align_tool_get_type ())
-#define GIMP_ALIGN_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ALIGN_TOOL, GimpAlignTool))
-#define GIMP_ALIGN_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ALIGN_TOOL, GimpAlignToolClass))
-#define GIMP_IS_ALIGN_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ALIGN_TOOL))
-#define GIMP_IS_ALIGN_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ALIGN_TOOL))
-#define GIMP_ALIGN_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ALIGN_TOOL, GimpAlignToolClass))
-
-#define GIMP_ALIGN_TOOL_GET_OPTIONS(t)  (GIMP_ALIGN_OPTIONS (gimp_tool_get_options (GIMP_TOOL (t))))
-
+#define GIMP_ALIGN_TOOL_GET_OPTIONS(t)                                         \
+  (GIMP_ALIGN_OPTIONS(gimp_tool_get_options(GIMP_TOOL(t))))
 
 typedef struct _GimpAlignTool GimpAlignTool;
 typedef struct _GimpAlignToolClass GimpAlignToolClass;
 
-struct _GimpAlignTool
-{
-	GimpDrawTool parent_instance;
+struct _GimpAlignTool {
+  GimpDrawTool parent_instance;
 
-	GimpAlignToolFunction function;
-	GList                 *selected_objects;
+  GimpAlignToolFunction function;
+  GList *selected_objects;
 
-	gint x1, y1, x2, y2;                 /* rubber-band rectangle */
+  gint x1, y1, x2, y2; /* rubber-band rectangle */
 
-	gboolean set_reference;
+  gboolean set_reference;
 };
 
-struct _GimpAlignToolClass
-{
-	GimpDrawToolClass parent_class;
+struct _GimpAlignToolClass {
+  GimpDrawToolClass parent_class;
 };
 
+void gimp_align_tool_register(GimpToolRegisterCallback callback, gpointer data);
 
-void    gimp_align_tool_register (GimpToolRegisterCallback callback,
-                                  gpointer data);
+GType gimp_align_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_align_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_ALIGN_TOOL_H__  */
+#endif /*  __GIMP_ALIGN_TOOL_H__  */

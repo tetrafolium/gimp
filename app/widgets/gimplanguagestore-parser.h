@@ -22,11 +22,11 @@
 #ifndef __GIMP_LANGUAGE_STORE_PARSER_H__
 #define __GIMP_LANGUAGE_STORE_PARSER_H__
 
+void gimp_language_store_parser_init(void);
 
-void        gimp_language_store_parser_init          (void);
+void gimp_language_store_parser_clean(void);
 
-void        gimp_language_store_parser_clean         (void);
+GHashTable *
+gimp_language_store_parser_get_languages(gboolean localization_only);
 
-GHashTable* gimp_language_store_parser_get_languages (gboolean localization_only);
-
-#endif  /* __GIMP_LANGUAGE_STORE_PARSER_H__ */
+#endif /* __GIMP_LANGUAGE_STORE_PARSER_H__ */

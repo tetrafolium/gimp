@@ -18,59 +18,57 @@
 #ifndef __GIMP_LEVELS_TOOL_H__
 #define __GIMP_LEVELS_TOOL_H__
 
-
 #include "gimpfiltertool.h"
 
-
-#define GIMP_TYPE_LEVELS_TOOL            (gimp_levels_tool_get_type ())
-#define GIMP_LEVELS_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LEVELS_TOOL, GimpLevelsTool))
-#define GIMP_LEVELS_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LEVELS_TOOL, GimpLevelsToolClass))
-#define GIMP_IS_LEVELS_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LEVELS_TOOL))
-#define GIMP_IS_LEVELS_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LEVELS_TOOL))
-#define GIMP_LEVELS_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LEVELS_TOOL, GimpLevelsToolClass))
-
+#define GIMP_TYPE_LEVELS_TOOL (gimp_levels_tool_get_type())
+#define GIMP_LEVELS_TOOL(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LEVELS_TOOL, GimpLevelsTool))
+#define GIMP_LEVELS_TOOL_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LEVELS_TOOL, GimpLevelsToolClass))
+#define GIMP_IS_LEVELS_TOOL(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LEVELS_TOOL))
+#define GIMP_IS_LEVELS_TOOL_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LEVELS_TOOL))
+#define GIMP_LEVELS_TOOL_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LEVELS_TOOL, GimpLevelsToolClass))
 
 typedef struct _GimpLevelsTool GimpLevelsTool;
 typedef struct _GimpLevelsToolClass GimpLevelsToolClass;
 
-struct _GimpLevelsTool
-{
-	GimpFilterTool parent_instance;
+struct _GimpLevelsTool {
+  GimpFilterTool parent_instance;
 
-	/* dialog */
-	GimpHistogram  *histogram;
-	GimpAsync      *histogram_async;
+  /* dialog */
+  GimpHistogram *histogram;
+  GimpAsync *histogram_async;
 
-	GtkWidget      *channel_menu;
+  GtkWidget *channel_menu;
 
-	GtkWidget      *histogram_view;
+  GtkWidget *histogram_view;
 
-	GtkWidget      *input_bar;
-	GtkWidget      *low_input_spinbutton;
-	GtkWidget      *high_input_spinbutton;
-	GtkWidget      *low_output_spinbutton;
-	GtkWidget      *high_output_spinbutton;
-	GtkAdjustment  *low_input;
-	GtkAdjustment  *gamma;
-	GtkAdjustment  *gamma_linear;
-	GtkAdjustment  *high_input;
+  GtkWidget *input_bar;
+  GtkWidget *low_input_spinbutton;
+  GtkWidget *high_input_spinbutton;
+  GtkWidget *low_output_spinbutton;
+  GtkWidget *high_output_spinbutton;
+  GtkAdjustment *low_input;
+  GtkAdjustment *gamma;
+  GtkAdjustment *gamma_linear;
+  GtkAdjustment *high_input;
 
-	GtkWidget      *output_bar;
+  GtkWidget *output_bar;
 
-	/* export dialog */
-	gboolean export_old_format;
+  /* export dialog */
+  gboolean export_old_format;
 };
 
-struct _GimpLevelsToolClass
-{
-	GimpFilterToolClass parent_class;
+struct _GimpLevelsToolClass {
+  GimpFilterToolClass parent_class;
 };
 
+void gimp_levels_tool_register(GimpToolRegisterCallback callback,
+                               gpointer data);
 
-void    gimp_levels_tool_register (GimpToolRegisterCallback callback,
-                                   gpointer data);
+GType gimp_levels_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_levels_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_LEVELS_TOOL_H__  */
+#endif /*  __GIMP_LEVELS_TOOL_H__  */

@@ -20,38 +20,38 @@
 #ifndef __GIMP_CAGE_OPTIONS_H__
 #define __GIMP_CAGE_OPTIONS_H__
 
-
 #include "core/gimptooloptions.h"
 
-
-#define GIMP_TYPE_CAGE_OPTIONS            (gimp_cage_options_get_type ())
-#define GIMP_CAGE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CAGE_OPTIONS, GimpCageOptions))
-#define GIMP_CAGE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CAGE_OPTIONS, GimpCageOptionsClass))
-#define GIMP_IS_CAGE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CAGE_OPTIONS))
-#define GIMP_IS_CAGE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CAGE_OPTIONS))
-#define GIMP_CAGE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CAGE_OPTIONS, GimpCageOptionsClass))
-
+#define GIMP_TYPE_CAGE_OPTIONS (gimp_cage_options_get_type())
+#define GIMP_CAGE_OPTIONS(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CAGE_OPTIONS, GimpCageOptions))
+#define GIMP_CAGE_OPTIONS_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CAGE_OPTIONS,                    \
+                           GimpCageOptionsClass))
+#define GIMP_IS_CAGE_OPTIONS(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CAGE_OPTIONS))
+#define GIMP_IS_CAGE_OPTIONS_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CAGE_OPTIONS))
+#define GIMP_CAGE_OPTIONS_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CAGE_OPTIONS,                    \
+                             GimpCageOptionsClass))
 
 typedef struct _GimpCageOptions GimpCageOptions;
 typedef struct _GimpCageOptionsClass GimpCageOptionsClass;
 
-struct _GimpCageOptions
-{
-	GimpToolOptions parent_instance;
+struct _GimpCageOptions {
+  GimpToolOptions parent_instance;
 
-	GimpCageMode cage_mode;
-	gboolean fill_plain_color;
+  GimpCageMode cage_mode;
+  gboolean fill_plain_color;
 };
 
-struct _GimpCageOptionsClass
-{
-	GimpToolOptionsClass parent_class;
+struct _GimpCageOptionsClass {
+  GimpToolOptionsClass parent_class;
 };
 
+GType gimp_cage_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_cage_options_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_cage_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_cage_options_gui      (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_CAGE_OPTIONS_H__  */
+#endif /*  __GIMP_CAGE_OPTIONS_H__  */

@@ -26,67 +26,56 @@
 #include "core/gimpcontext.h"
 
 #include "gimpcontainereditor.h"
-#include "gimpcontainerview.h"
 #include "gimpcontainerview-utils.h"
+#include "gimpcontainerview.h"
 #include "gimpdockable.h"
-
 
 /*  public functions  */
 
-GimpContainerView *
-gimp_container_view_get_by_dockable (GimpDockable *dockable)
-{
-	GtkWidget *child;
+GimpContainerView *gimp_container_view_get_by_dockable(GimpDockable *dockable) {
+  GtkWidget *child;
 
-	g_return_val_if_fail (GIMP_IS_DOCKABLE (dockable), NULL);
+  g_return_val_if_fail(GIMP_IS_DOCKABLE(dockable), NULL);
 
-	child = gtk_bin_get_child (GTK_BIN (dockable));
+  child = gtk_bin_get_child(GTK_BIN(dockable));
 
-	if (child)
-	{
-		if (GIMP_IS_CONTAINER_EDITOR (child))
-		{
-			return GIMP_CONTAINER_EDITOR (child)->view;
-		}
-		else if (GIMP_IS_CONTAINER_VIEW (child))
-		{
-			return GIMP_CONTAINER_VIEW (child);
-		}
-	}
+  if (child) {
+    if (GIMP_IS_CONTAINER_EDITOR(child)) {
+      return GIMP_CONTAINER_EDITOR(child)->view;
+    } else if (GIMP_IS_CONTAINER_VIEW(child)) {
+      return GIMP_CONTAINER_VIEW(child);
+    }
+  }
 
-	return NULL;
+  return NULL;
 }
 
-void
-gimp_container_view_remove_active (GimpContainerView *view)
-{
-	GimpContext   *context;
-	GimpContainer *container;
+void gimp_container_view_remove_active(GimpContainerView *view) {
+  GimpContext *context;
+  GimpContainer *container;
 
-	g_return_if_fail (GIMP_IS_CONTAINER_VIEW (view));
+  g_return_if_fail(GIMP_IS_CONTAINER_VIEW(view));
 
-	context   = gimp_container_view_get_context (view);
-	container = gimp_container_view_get_container (view);
+  context = gimp_container_view_get_context(view);
+  container = gimp_container_view_get_container(view);
 
-	if (context && container)
-	{
-		GType children_type;
-		GimpObject *active;
+  if (context && container) {
+    GType children_type;
+    GimpObject *active;
 
-		children_type = gimp_container_get_children_type (container);
+    children_type = gimp_container_get_children_type(container);
 
-		active = gimp_context_get_by_type (context, children_type);
+    active = gimp_context_get_by_type(context, children_type);
 
-		if (active)
-		{
-			GimpObject *new;
+    if (active) {
+      GimpObject *new;
 
-			new = gimp_container_get_neighbor_of (container, active);
+      new = gimp_container_get_neighbor_of(container, active);
 
-			if (new)
-				gimp_context_set_by_type (context, children_type, new);
+      if (new)
+        gimp_context_set_by_type(context, children_type, new);
 
-			gimp_container_remove (container, active);
-		}
-	}
+      gimp_container_remove(container, active);
+    }
+  }
 }

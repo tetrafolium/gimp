@@ -21,31 +21,34 @@
 #ifndef __GIMP_LANGUAGE_COMBO_BOX_H__
 #define __GIMP_LANGUAGE_COMBO_BOX_H__
 
-
-#define GIMP_TYPE_LANGUAGE_COMBO_BOX            (gimp_language_combo_box_get_type ())
-#define GIMP_LANGUAGE_COMBO_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX, GimpLanguageComboBox))
-#define GIMP_LANGUAGE_COMBO_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LANGUAGE_COMBO_BOX, GimpLanguageComboBoxClass))
-#define GIMP_IS_LANGUAGE_COMBO_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX))
-#define GIMP_IS_LANGUAGE_COMBO_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LANGUAGE_COMBO_BOX))
-#define GIMP_LANGUAGE_COMBO_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX, GimpLanguageComboBoxClass))
-
+#define GIMP_TYPE_LANGUAGE_COMBO_BOX (gimp_language_combo_box_get_type())
+#define GIMP_LANGUAGE_COMBO_BOX(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX,             \
+                              GimpLanguageComboBox))
+#define GIMP_LANGUAGE_COMBO_BOX_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LANGUAGE_COMBO_BOX,              \
+                           GimpLanguageComboBoxClass))
+#define GIMP_IS_LANGUAGE_COMBO_BOX(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX))
+#define GIMP_IS_LANGUAGE_COMBO_BOX_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LANGUAGE_COMBO_BOX))
+#define GIMP_LANGUAGE_COMBO_BOX_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LANGUAGE_COMBO_BOX,              \
+                             GimpLanguageComboBoxClass))
 
 typedef struct _GimpLanguageComboBoxClass GimpLanguageComboBoxClass;
 
-struct _GimpLanguageComboBoxClass
-{
-	GtkComboBoxClass parent_class;
+struct _GimpLanguageComboBoxClass {
+  GtkComboBoxClass parent_class;
 };
 
+GType gimp_language_combo_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_language_combo_box_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_language_combo_box_new(gboolean manual_l18n,
+                                       const gchar *empty_label);
 
-GtkWidget * gimp_language_combo_box_new      (gboolean manual_l18n,
-                                              const gchar          *empty_label);
+gchar *gimp_language_combo_box_get_code(GimpLanguageComboBox *combo);
+gboolean gimp_language_combo_box_set_code(GimpLanguageComboBox *combo,
+                                          const gchar *code);
 
-gchar     * gimp_language_combo_box_get_code (GimpLanguageComboBox *combo);
-gboolean    gimp_language_combo_box_set_code (GimpLanguageComboBox *combo,
-                                              const gchar          *code);
-
-
-#endif  /* __GIMP_LANGUAGE_COMBO_BOX_H__ */
+#endif /* __GIMP_LANGUAGE_COMBO_BOX_H__ */

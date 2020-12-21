@@ -21,48 +21,44 @@
 #ifndef __GIMP_BUFFER_VIEW_H__
 #define __GIMP_BUFFER_VIEW_H__
 
-
 #include "gimpcontainereditor.h"
 
-
-#define GIMP_TYPE_BUFFER_VIEW            (gimp_buffer_view_get_type ())
-#define GIMP_BUFFER_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BUFFER_VIEW, GimpBufferView))
-#define GIMP_BUFFER_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BUFFER_VIEW, GimpBufferViewClass))
-#define GIMP_IS_BUFFER_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BUFFER_VIEW))
-#define GIMP_IS_BUFFER_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BUFFER_VIEW))
-#define GIMP_BUFFER_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BUFFER_VIEW, GimpBufferViewClass))
-
+#define GIMP_TYPE_BUFFER_VIEW (gimp_buffer_view_get_type())
+#define GIMP_BUFFER_VIEW(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BUFFER_VIEW, GimpBufferView))
+#define GIMP_BUFFER_VIEW_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BUFFER_VIEW, GimpBufferViewClass))
+#define GIMP_IS_BUFFER_VIEW(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BUFFER_VIEW))
+#define GIMP_IS_BUFFER_VIEW_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BUFFER_VIEW))
+#define GIMP_BUFFER_VIEW_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BUFFER_VIEW, GimpBufferViewClass))
 
 typedef struct _GimpBufferViewClass GimpBufferViewClass;
 
-struct _GimpBufferView
-{
-	GimpContainerEditor parent_instance;
+struct _GimpBufferView {
+  GimpContainerEditor parent_instance;
 
-	GtkWidget           *clipboard_view;
-	GtkWidget           *clipboard_label;
+  GtkWidget *clipboard_view;
+  GtkWidget *clipboard_label;
 
-	GtkWidget           *paste_button;
-	GtkWidget           *paste_into_button;
-	GtkWidget           *paste_as_new_layer_button;
-	GtkWidget           *paste_as_new_image_button;
-	GtkWidget           *delete_button;
+  GtkWidget *paste_button;
+  GtkWidget *paste_into_button;
+  GtkWidget *paste_as_new_layer_button;
+  GtkWidget *paste_as_new_image_button;
+  GtkWidget *delete_button;
 };
 
-struct _GimpBufferViewClass
-{
-	GimpContainerEditorClass parent_class;
+struct _GimpBufferViewClass {
+  GimpContainerEditorClass parent_class;
 };
 
+GType gimp_buffer_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_buffer_view_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_buffer_view_new(GimpViewType view_type,
+                                GimpContainer *container, GimpContext *context,
+                                gint view_size, gint view_border_width,
+                                GimpMenuFactory *menu_factory);
 
-GtkWidget * gimp_buffer_view_new      (GimpViewType view_type,
-                                       GimpContainer   *container,
-                                       GimpContext     *context,
-                                       gint view_size,
-                                       gint view_border_width,
-                                       GimpMenuFactory *menu_factory);
-
-
-#endif  /*  __GIMP_BUFFER_VIEW_H__  */
+#endif /*  __GIMP_BUFFER_VIEW_H__  */

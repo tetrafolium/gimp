@@ -21,28 +21,24 @@
 #ifndef __GIMP_ANCHOR_H__
 #define __GIMP_ANCHOR_H__
 
-#define GIMP_ANCHOR(anchor)  ((GimpAnchor *) (anchor))
+#define GIMP_ANCHOR(anchor) ((GimpAnchor *)(anchor))
 
-#define GIMP_TYPE_ANCHOR               (gimp_anchor_get_type ())
-#define GIMP_VALUE_HOLDS_ANCHOR(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_ANCHOR))
+#define GIMP_TYPE_ANCHOR (gimp_anchor_get_type())
+#define GIMP_VALUE_HOLDS_ANCHOR(value)                                         \
+  (G_TYPE_CHECK_VALUE_TYPE((value), GIMP_TYPE_ANCHOR))
 
-GType   gimp_anchor_get_type           (void) G_GNUC_CONST;
+GType gimp_anchor_get_type(void) G_GNUC_CONST;
 
+struct _GimpAnchor {
+  GimpCoords position;
 
-struct _GimpAnchor
-{
-	GimpCoords position;
-
-	GimpAnchorType type;  /* Interpretation dependent on GimpStroke type */
-	gboolean selected;
+  GimpAnchorType type; /* Interpretation dependent on GimpStroke type */
+  gboolean selected;
 };
 
+GimpAnchor *gimp_anchor_new(GimpAnchorType type, const GimpCoords *position);
 
-GimpAnchor  * gimp_anchor_new  (GimpAnchorType type,
-                                const GimpCoords *position);
-
-GimpAnchor  * gimp_anchor_copy (const GimpAnchor *anchor);
-void          gimp_anchor_free (GimpAnchor       *anchor);
-
+GimpAnchor *gimp_anchor_copy(const GimpAnchor *anchor);
+void gimp_anchor_free(GimpAnchor *anchor);
 
 #endif /* __GIMP_ANCHOR_H__ */

@@ -18,41 +18,39 @@
 #ifndef __GIMP_ROTATE_TOOL_H__
 #define __GIMP_ROTATE_TOOL_H__
 
-
 #include "gimptransformgridtool.h"
 
-
-#define GIMP_TYPE_ROTATE_TOOL            (gimp_rotate_tool_get_type ())
-#define GIMP_ROTATE_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ROTATE_TOOL, GimpRotateTool))
-#define GIMP_ROTATE_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_ROTATE_TOOL, GimpRotateToolClass))
-#define GIMP_IS_ROTATE_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_ROTATE_TOOL))
-#define GIMP_IS_ROTATE_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_ROTATE_TOOL))
-#define GIMP_ROTATE_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ROTATE_TOOL, GimpRotateToolClass))
-
+#define GIMP_TYPE_ROTATE_TOOL (gimp_rotate_tool_get_type())
+#define GIMP_ROTATE_TOOL(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_ROTATE_TOOL, GimpRotateTool))
+#define GIMP_ROTATE_TOOL_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_ROTATE_TOOL, GimpRotateToolClass))
+#define GIMP_IS_ROTATE_TOOL(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_ROTATE_TOOL))
+#define GIMP_IS_ROTATE_TOOL_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_ROTATE_TOOL))
+#define GIMP_ROTATE_TOOL_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_ROTATE_TOOL, GimpRotateToolClass))
 
 typedef struct _GimpRotateTool GimpRotateTool;
 typedef struct _GimpRotateToolClass GimpRotateToolClass;
 
-struct _GimpRotateTool
-{
-	GimpTransformGridTool parent_instance;
+struct _GimpRotateTool {
+  GimpTransformGridTool parent_instance;
 
-	GtkAdjustment         *angle_adj;
-	GtkWidget             *angle_spin_button;
-	GtkWidget             *sizeentry;
-	GtkWidget             *pivot_selector;
+  GtkAdjustment *angle_adj;
+  GtkWidget *angle_spin_button;
+  GtkWidget *sizeentry;
+  GtkWidget *pivot_selector;
 };
 
-struct _GimpRotateToolClass
-{
-	GimpTransformGridToolClass parent_class;
+struct _GimpRotateToolClass {
+  GimpTransformGridToolClass parent_class;
 };
 
+void gimp_rotate_tool_register(GimpToolRegisterCallback callback,
+                               gpointer data);
 
-void    gimp_rotate_tool_register (GimpToolRegisterCallback callback,
-                                   gpointer data);
+GType gimp_rotate_tool_get_type(void) G_GNUC_CONST;
 
-GType   gimp_rotate_tool_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_ROTATE_TOOL_H__  */
+#endif /*  __GIMP_ROTATE_TOOL_H__  */

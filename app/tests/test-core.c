@@ -25,8 +25,8 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimplayer.h"
 #include "core/gimplayer-new.h"
+#include "core/gimplayer.h"
 
 #include "operations/gimplevelsconfig.h"
 
@@ -34,37 +34,23 @@
 
 #include "gimp-app-test-utils.h"
 
-
 #define GIMP_TEST_IMAGE_SIZE 100
 
-#define ADD_IMAGE_TEST(function) \
-	g_test_add ("/gimp-core/" #function, \
-	            GimpTestFixture, \
-	            gimp, \
-	            gimp_test_image_setup, \
-	            function, \
-	            gimp_test_image_teardown);
+#define ADD_IMAGE_TEST(function)                                               \
+  g_test_add("/gimp-core/" #function, GimpTestFixture, gimp,                   \
+             gimp_test_image_setup, function, gimp_test_image_teardown);
 
-#define ADD_TEST(function) \
-	g_test_add ("/gimp-core/" #function, \
-	            GimpTestFixture, \
-	            gimp, \
-	            NULL, \
-	            function, \
-	            NULL);
+#define ADD_TEST(function)                                                     \
+  g_test_add("/gimp-core/" #function, GimpTestFixture, gimp, NULL, function,   \
+             NULL);
 
-
-typedef struct
-{
-	GimpImage *image;
+typedef struct {
+  GimpImage *image;
 } GimpTestFixture;
 
-
-static void gimp_test_image_setup    (GimpTestFixture *fixture,
-                                      gconstpointer data);
-static void gimp_test_image_teardown (GimpTestFixture *fixture,
-                                      gconstpointer data);
-
+static void gimp_test_image_setup(GimpTestFixture *fixture, gconstpointer data);
+static void gimp_test_image_teardown(GimpTestFixture *fixture,
+                                     gconstpointer data);
 
 /**
  * gimp_test_image_setup:
@@ -73,17 +59,13 @@ static void gimp_test_image_teardown (GimpTestFixture *fixture,
  *
  * Test fixture setup for a single image.
  **/
-static void
-gimp_test_image_setup (GimpTestFixture *fixture,
-                       gconstpointer data)
-{
-	Gimp *gimp = GIMP (data);
+static void gimp_test_image_setup(GimpTestFixture *fixture,
+                                  gconstpointer data) {
+  Gimp *gimp = GIMP(data);
 
-	fixture->image = gimp_image_new (gimp,
-	                                 GIMP_TEST_IMAGE_SIZE,
-	                                 GIMP_TEST_IMAGE_SIZE,
-	                                 GIMP_RGB,
-	                                 GIMP_PRECISION_FLOAT_LINEAR);
+  fixture->image =
+      gimp_image_new(gimp, GIMP_TEST_IMAGE_SIZE, GIMP_TEST_IMAGE_SIZE, GIMP_RGB,
+                     GIMP_PRECISION_FLOAT_LINEAR);
 }
 
 /**
@@ -93,11 +75,9 @@ gimp_test_image_setup (GimpTestFixture *fixture,
  *
  * Test fixture teardown for a single image.
  **/
-static void
-gimp_test_image_teardown (GimpTestFixture *fixture,
-                          gconstpointer data)
-{
-	g_object_unref (fixture->image);
+static void gimp_test_image_teardown(GimpTestFixture *fixture,
+                                     gconstpointer data) {
+  g_object_unref(fixture->image);
 }
 
 /**
@@ -109,39 +89,30 @@ gimp_test_image_teardown (GimpTestFixture *fixture,
  * and call gimp_item_rotate with center at (0, -10)
  * without triggering a failed assertion .
  **/
-static void
-rotate_non_overlapping (GimpTestFixture *fixture,
-                        gconstpointer data)
-{
-	Gimp        *gimp    = GIMP (data);
-	GimpImage   *image   = fixture->image;
-	GimpLayer   *layer;
-	GimpContext *context = gimp_context_new (gimp, "Test", NULL /*template*/);
-	gboolean result;
+static void rotate_non_overlapping(GimpTestFixture *fixture,
+                                   gconstpointer data) {
+  Gimp *gimp = GIMP(data);
+  GimpImage *image = fixture->image;
+  GimpLayer *layer;
+  GimpContext *context = gimp_context_new(gimp, "Test", NULL /*template*/);
+  gboolean result;
 
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 0);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 0);
 
-	layer = gimp_layer_new (image,
-	                        GIMP_TEST_IMAGE_SIZE,
-	                        GIMP_TEST_IMAGE_SIZE,
-	                        babl_format ("R'G'B'A u8"),
-	                        "Test Layer",
-	                        GIMP_OPACITY_OPAQUE,
-	                        GIMP_LAYER_MODE_NORMAL);
+  layer = gimp_layer_new(image, GIMP_TEST_IMAGE_SIZE, GIMP_TEST_IMAGE_SIZE,
+                         babl_format("R'G'B'A u8"), "Test Layer",
+                         GIMP_OPACITY_OPAQUE, GIMP_LAYER_MODE_NORMAL);
 
-	g_assert_cmpint (GIMP_IS_LAYER (layer), ==, TRUE);
+  g_assert_cmpint(GIMP_IS_LAYER(layer), ==, TRUE);
 
-	result = gimp_image_add_layer (image,
-	                               layer,
-	                               GIMP_IMAGE_ACTIVE_PARENT,
-	                               0,
-	                               FALSE);
+  result =
+      gimp_image_add_layer(image, layer, GIMP_IMAGE_ACTIVE_PARENT, 0, FALSE);
 
-	gimp_item_rotate (GIMP_ITEM (layer), context, GIMP_ROTATE_90, 0., -10., TRUE);
+  gimp_item_rotate(GIMP_ITEM(layer), context, GIMP_ROTATE_90, 0., -10., TRUE);
 
-	g_assert_cmpint (result, ==, TRUE);
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 1);
-	g_object_unref (context);
+  g_assert_cmpint(result, ==, TRUE);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 1);
+  g_object_unref(context);
 }
 
 /**
@@ -151,34 +122,24 @@ rotate_non_overlapping (GimpTestFixture *fixture,
  *
  * Super basic test that makes sure we can add a layer.
  **/
-static void
-add_layer (GimpTestFixture *fixture,
-           gconstpointer data)
-{
-	GimpImage *image = fixture->image;
-	GimpLayer *layer;
-	gboolean result;
+static void add_layer(GimpTestFixture *fixture, gconstpointer data) {
+  GimpImage *image = fixture->image;
+  GimpLayer *layer;
+  gboolean result;
 
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 0);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 0);
 
-	layer = gimp_layer_new (image,
-	                        GIMP_TEST_IMAGE_SIZE,
-	                        GIMP_TEST_IMAGE_SIZE,
-	                        babl_format ("R'G'B'A u8"),
-	                        "Test Layer",
-	                        GIMP_OPACITY_OPAQUE,
-	                        GIMP_LAYER_MODE_NORMAL);
+  layer = gimp_layer_new(image, GIMP_TEST_IMAGE_SIZE, GIMP_TEST_IMAGE_SIZE,
+                         babl_format("R'G'B'A u8"), "Test Layer",
+                         GIMP_OPACITY_OPAQUE, GIMP_LAYER_MODE_NORMAL);
 
-	g_assert_cmpint (GIMP_IS_LAYER (layer), ==, TRUE);
+  g_assert_cmpint(GIMP_IS_LAYER(layer), ==, TRUE);
 
-	result = gimp_image_add_layer (image,
-	                               layer,
-	                               GIMP_IMAGE_ACTIVE_PARENT,
-	                               0,
-	                               FALSE);
+  result =
+      gimp_image_add_layer(image, layer, GIMP_IMAGE_ACTIVE_PARENT, 0, FALSE);
 
-	g_assert_cmpint (result, ==, TRUE);
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 1);
+  g_assert_cmpint(result, ==, TRUE);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 1);
 }
 
 /**
@@ -188,41 +149,28 @@ add_layer (GimpTestFixture *fixture,
  *
  * Super basic test that makes sure we can remove a layer.
  **/
-static void
-remove_layer (GimpTestFixture *fixture,
-              gconstpointer data)
-{
-	GimpImage *image = fixture->image;
-	GimpLayer *layer;
-	gboolean result;
+static void remove_layer(GimpTestFixture *fixture, gconstpointer data) {
+  GimpImage *image = fixture->image;
+  GimpLayer *layer;
+  gboolean result;
 
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 0);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 0);
 
-	layer = gimp_layer_new (image,
-	                        GIMP_TEST_IMAGE_SIZE,
-	                        GIMP_TEST_IMAGE_SIZE,
-	                        babl_format ("R'G'B'A u8"),
-	                        "Test Layer",
-	                        GIMP_OPACITY_OPAQUE,
-	                        GIMP_LAYER_MODE_NORMAL);
+  layer = gimp_layer_new(image, GIMP_TEST_IMAGE_SIZE, GIMP_TEST_IMAGE_SIZE,
+                         babl_format("R'G'B'A u8"), "Test Layer",
+                         GIMP_OPACITY_OPAQUE, GIMP_LAYER_MODE_NORMAL);
 
-	g_assert_cmpint (GIMP_IS_LAYER (layer), ==, TRUE);
+  g_assert_cmpint(GIMP_IS_LAYER(layer), ==, TRUE);
 
-	result = gimp_image_add_layer (image,
-	                               layer,
-	                               GIMP_IMAGE_ACTIVE_PARENT,
-	                               0,
-	                               FALSE);
+  result =
+      gimp_image_add_layer(image, layer, GIMP_IMAGE_ACTIVE_PARENT, 0, FALSE);
 
-	g_assert_cmpint (result, ==, TRUE);
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 1);
+  g_assert_cmpint(result, ==, TRUE);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 1);
 
-	gimp_image_remove_layer (image,
-	                         layer,
-	                         FALSE,
-	                         NULL);
+  gimp_image_remove_layer(image, layer, FALSE, NULL);
 
-	g_assert_cmpint (gimp_image_get_n_layers (image), ==, 0);
+  g_assert_cmpint(gimp_image_get_n_layers(image), ==, 0);
 }
 
 /**
@@ -234,60 +182,49 @@ remove_layer (GimpTestFixture *fixture,
  * white. It's easy to get a divide by zero problem when trying to
  * calculate what gamma will give a white graypoint.
  **/
-static void
-white_graypoint_in_red_levels (GimpTestFixture *fixture,
-                               gconstpointer data)
-{
-	GimpRGB black   = { 0, 0, 0, 0 };
-	GimpRGB gray    = { 1, 1, 1, 1 };
-	GimpRGB white   = { 1, 1, 1, 1 };
-	GimpHistogramChannel channel = GIMP_HISTOGRAM_RED;
-	GimpLevelsConfig    *config;
+static void white_graypoint_in_red_levels(GimpTestFixture *fixture,
+                                          gconstpointer data) {
+  GimpRGB black = {0, 0, 0, 0};
+  GimpRGB gray = {1, 1, 1, 1};
+  GimpRGB white = {1, 1, 1, 1};
+  GimpHistogramChannel channel = GIMP_HISTOGRAM_RED;
+  GimpLevelsConfig *config;
 
-	config = g_object_new (GIMP_TYPE_LEVELS_CONFIG, NULL);
+  config = g_object_new(GIMP_TYPE_LEVELS_CONFIG, NULL);
 
-	gimp_levels_config_adjust_by_colors (config,
-	                                     channel,
-	                                     &black,
-	                                     &gray,
-	                                     &white);
+  gimp_levels_config_adjust_by_colors(config, channel, &black, &gray, &white);
 
-	/* Make sure we didn't end up with an invalid gamma value */
-	g_object_set (config,
-	              "gamma", config->gamma[channel],
-	              NULL);
+  /* Make sure we didn't end up with an invalid gamma value */
+  g_object_set(config, "gamma", config->gamma[channel], NULL);
 }
 
-int
-main (int argc,
-      char **argv)
-{
-	Gimp *gimp;
-	int result;
+int main(int argc, char **argv) {
+  Gimp *gimp;
+  int result;
 
-	g_test_init (&argc, &argv, NULL);
+  g_test_init(&argc, &argv, NULL);
 
-	gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
-	                                     "app/tests/gimpdir");
+  gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR",
+                                      "app/tests/gimpdir");
 
-	/* We share the same application instance across all tests */
-	gimp = gimp_init_for_testing ();
+  /* We share the same application instance across all tests */
+  gimp = gimp_init_for_testing();
 
-	/* Add tests */
-	ADD_IMAGE_TEST (add_layer);
-	ADD_IMAGE_TEST (remove_layer);
-	ADD_IMAGE_TEST (rotate_non_overlapping);
-	ADD_TEST (white_graypoint_in_red_levels);
+  /* Add tests */
+  ADD_IMAGE_TEST(add_layer);
+  ADD_IMAGE_TEST(remove_layer);
+  ADD_IMAGE_TEST(rotate_non_overlapping);
+  ADD_TEST(white_graypoint_in_red_levels);
 
-	/* Run the tests */
-	result = g_test_run ();
+  /* Run the tests */
+  result = g_test_run();
 
-	/* Don't write files to the source dir */
-	gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
-	                                     "app/tests/gimpdir-output");
+  /* Don't write files to the source dir */
+  gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR",
+                                      "app/tests/gimpdir-output");
 
-	/* Exit so we don't break script-fu plug-in wire */
-	gimp_exit (gimp, TRUE);
+  /* Exit so we don't break script-fu plug-in wire */
+  gimp_exit(gimp, TRUE);
 
-	return result;
+  return result;
 }

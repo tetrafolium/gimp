@@ -23,49 +23,45 @@
 
 G_BEGIN_DECLS
 
-
-#define GIMP_TYPE_MESSAGE_BOX            (gimp_message_box_get_type ())
-#define GIMP_MESSAGE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MESSAGE_BOX, GimpMessageBox))
-#define GIMP_MESSAGE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MESSAGE_BOX, GimpMessageBoxClass))
-#define GIMP_IS_MESSAGE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MESSAGE_BOX))
-#define GIMP_IS_MESSAGE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MESSAGE_BOX))
-#define GIMP_MESSAGE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MESSAGE_BOX, GimpMessageBoxClass))
-
+#define GIMP_TYPE_MESSAGE_BOX (gimp_message_box_get_type())
+#define GIMP_MESSAGE_BOX(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MESSAGE_BOX, GimpMessageBox))
+#define GIMP_MESSAGE_BOX_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MESSAGE_BOX, GimpMessageBoxClass))
+#define GIMP_IS_MESSAGE_BOX(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MESSAGE_BOX))
+#define GIMP_IS_MESSAGE_BOX_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MESSAGE_BOX))
+#define GIMP_MESSAGE_BOX_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MESSAGE_BOX, GimpMessageBoxClass))
 
 typedef struct _GimpMessageBoxClass GimpMessageBoxClass;
 
-struct _GimpMessageBox
-{
-	GtkBox parent_instance;
+struct _GimpMessageBox {
+  GtkBox parent_instance;
 
-	gchar     *icon_name;
-	gint repeat;
-	GtkWidget *label[3];
-	GtkWidget *image;
+  gchar *icon_name;
+  gint repeat;
+  GtkWidget *label[3];
+  GtkWidget *image;
 
-	guint idle_id;
+  guint idle_id;
 };
 
-struct _GimpMessageBoxClass
-{
-	GtkBoxClass parent_class;
+struct _GimpMessageBoxClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_message_box_get_type(void) G_GNUC_CONST;
 
-GType       gimp_message_box_get_type         (void) G_GNUC_CONST;
-
-GtkWidget * gimp_message_box_new              (const gchar    *icon_name);
-void        gimp_message_box_set_primary_text (GimpMessageBox *box,
-                                               const gchar    *format,
-                                               ...) G_GNUC_PRINTF (2, 3);
-void        gimp_message_box_set_text         (GimpMessageBox *box,
-                                               const gchar    *format,
-                                               ...) G_GNUC_PRINTF (2, 3);
-void        gimp_message_box_set_markup       (GimpMessageBox *box,
-                                               const gchar    *format,
-                                               ...) G_GNUC_PRINTF (2, 3);
-gint        gimp_message_box_repeat           (GimpMessageBox *box);
-
+GtkWidget *gimp_message_box_new(const gchar *icon_name);
+void gimp_message_box_set_primary_text(GimpMessageBox *box, const gchar *format,
+                                       ...) G_GNUC_PRINTF(2, 3);
+void gimp_message_box_set_text(GimpMessageBox *box, const gchar *format, ...)
+    G_GNUC_PRINTF(2, 3);
+void gimp_message_box_set_markup(GimpMessageBox *box, const gchar *format, ...)
+    G_GNUC_PRINTF(2, 3);
+gint gimp_message_box_repeat(GimpMessageBox *box);
 
 G_END_DECLS
 

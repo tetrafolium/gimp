@@ -21,41 +21,41 @@
 #ifndef __GIMP_PICKABLE_POPUP_H__
 #define __GIMP_PICKABLE_POPUP_H__
 
-
 #include "gimppopup.h"
 
-
-#define GIMP_TYPE_PICKABLE_POPUP            (gimp_pickable_popup_get_type ())
-#define GIMP_PICKABLE_POPUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PICKABLE_POPUP, GimpPickablePopup))
-#define GIMP_PICKABLE_POPUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PICKABLE_POPUP, GimpPickablePopupClass))
-#define GIMP_IS_PICKABLE_POPUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PICKABLE_POPUP))
-#define GIMP_IS_PICKABLE_POPUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PICKABLE_POPUP))
-#define GIMP_PICKABLE_POPUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PICKABLE_POPUP, GimpPickablePopupClass))
-
+#define GIMP_TYPE_PICKABLE_POPUP (gimp_pickable_popup_get_type())
+#define GIMP_PICKABLE_POPUP(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_PICKABLE_POPUP,                 \
+                              GimpPickablePopup))
+#define GIMP_PICKABLE_POPUP_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_PICKABLE_POPUP,                  \
+                           GimpPickablePopupClass))
+#define GIMP_IS_PICKABLE_POPUP(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_PICKABLE_POPUP))
+#define GIMP_IS_PICKABLE_POPUP_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_PICKABLE_POPUP))
+#define GIMP_PICKABLE_POPUP_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_PICKABLE_POPUP,                  \
+                             GimpPickablePopupClass))
 
 typedef struct _GimpPickablePopupPrivate GimpPickablePopupPrivate;
 typedef struct _GimpPickablePopupClass GimpPickablePopupClass;
 
-struct _GimpPickablePopup
-{
-	GimpPopup parent_instance;
+struct _GimpPickablePopup {
+  GimpPopup parent_instance;
 
-	GimpPickablePopupPrivate *priv;
+  GimpPickablePopupPrivate *priv;
 };
 
-struct _GimpPickablePopupClass
-{
-	GimpPopupClass parent_instance;
+struct _GimpPickablePopupClass {
+  GimpPopupClass parent_instance;
 };
 
+GType gimp_pickable_popup_get_type(void) G_GNUC_CONST;
 
-GType          gimp_pickable_popup_get_type     (void) G_GNUC_CONST;
+GtkWidget *gimp_pickable_popup_new(GimpContext *context, gint view_size,
+                                   gint view_border_width);
 
-GtkWidget    * gimp_pickable_popup_new          (GimpContext       *context,
-                                                 gint view_size,
-                                                 gint view_border_width);
+GimpPickable *gimp_pickable_popup_get_pickable(GimpPickablePopup *popup);
 
-GimpPickable * gimp_pickable_popup_get_pickable (GimpPickablePopup *popup);
-
-
-#endif  /*  __GIMP_PICKABLE_POPUP_H__  */
+#endif /*  __GIMP_PICKABLE_POPUP_H__  */

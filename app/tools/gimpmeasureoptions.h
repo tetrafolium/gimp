@@ -18,41 +18,42 @@
 #ifndef __GIMP_MEASURE_OPTIONS_H__
 #define __GIMP_MEASURE_OPTIONS_H__
 
-
 #include "gimptransformoptions.h"
 
-
-#define GIMP_TYPE_MEASURE_OPTIONS            (gimp_measure_options_get_type ())
-#define GIMP_MEASURE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MEASURE_OPTIONS, GimpMeasureOptions))
-#define GIMP_MEASURE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MEASURE_OPTIONS, GimpMeasureOptionsClass))
-#define GIMP_IS_MEASURE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MEASURE_OPTIONS))
-#define GIMP_IS_MEASURE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MEASURE_OPTIONS))
-#define GIMP_MEASURE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MEASURE_OPTIONS, GimpMeasureOptionsClass))
-
+#define GIMP_TYPE_MEASURE_OPTIONS (gimp_measure_options_get_type())
+#define GIMP_MEASURE_OPTIONS(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MEASURE_OPTIONS,                \
+                              GimpMeasureOptions))
+#define GIMP_MEASURE_OPTIONS_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MEASURE_OPTIONS,                 \
+                           GimpMeasureOptionsClass))
+#define GIMP_IS_MEASURE_OPTIONS(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MEASURE_OPTIONS))
+#define GIMP_IS_MEASURE_OPTIONS_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MEASURE_OPTIONS))
+#define GIMP_MEASURE_OPTIONS_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MEASURE_OPTIONS,                 \
+                             GimpMeasureOptionsClass))
 
 typedef struct _GimpMeasureOptions GimpMeasureOptions;
 typedef struct _GimpMeasureOptionsClass GimpMeasureOptionsClass;
 
-struct _GimpMeasureOptions
-{
-	GimpTransformOptions parent_instance;
+struct _GimpMeasureOptions {
+  GimpTransformOptions parent_instance;
 
-	GimpCompassOrientation orientation;
-	gboolean use_info_window;
+  GimpCompassOrientation orientation;
+  gboolean use_info_window;
 
-	/*  options gui  */
-	GtkWidget              *straighten_button;
+  /*  options gui  */
+  GtkWidget *straighten_button;
 };
 
-struct _GimpMeasureOptionsClass
-{
-	GimpTransformOptionsClass parent_class;
+struct _GimpMeasureOptionsClass {
+  GimpTransformOptionsClass parent_class;
 };
 
+GType gimp_measure_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_measure_options_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_measure_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_measure_options_gui      (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_MEASURE_OPTIONS_H__  */
+#endif /*  __GIMP_MEASURE_OPTIONS_H__  */

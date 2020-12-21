@@ -21,44 +21,43 @@
 #ifndef __GIMP_COLOR_HISTORY_H__
 #define __GIMP_COLOR_HISTORY_H__
 
-
-#define GIMP_TYPE_COLOR_HISTORY            (gimp_color_history_get_type ())
-#define GIMP_COLOR_HISTORY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_HISTORY, GimpColorHistory))
-#define GIMP_COLOR_HISTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_HISTORY, GimpColorHistoryClass))
-#define GIMP_IS_COLOR_HISTORY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_HISTORY))
-#define GIMP_IS_COLOR_HISTORY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_HISTORY))
-#define GIMP_COLOR_HISTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_HISTORY, GimpColorHistoryClass))
-
+#define GIMP_TYPE_COLOR_HISTORY (gimp_color_history_get_type())
+#define GIMP_COLOR_HISTORY(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_HISTORY, GimpColorHistory))
+#define GIMP_COLOR_HISTORY_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_HISTORY,                   \
+                           GimpColorHistoryClass))
+#define GIMP_IS_COLOR_HISTORY(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_HISTORY))
+#define GIMP_IS_COLOR_HISTORY_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_HISTORY))
+#define GIMP_COLOR_HISTORY_GET_CLASS(obj)                                      \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_HISTORY,                   \
+                             GimpColorHistoryClass))
 
 typedef struct _GimpColorHistoryClass GimpColorHistoryClass;
 
-struct _GimpColorHistory
-{
-	GtkGrid parent_instance;
+struct _GimpColorHistory {
+  GtkGrid parent_instance;
 
-	GimpContext  *context;
-	GimpImage    *active_image;
+  GimpContext *context;
+  GimpImage *active_image;
 
-	GtkWidget   **color_areas;
-	GtkWidget   **buttons;
-	gint history_size;
-	gint n_rows;
+  GtkWidget **color_areas;
+  GtkWidget **buttons;
+  gint history_size;
+  gint n_rows;
 };
 
-struct _GimpColorHistoryClass
-{
-	GtkGridClass parent_class;
+struct _GimpColorHistoryClass {
+  GtkGridClass parent_class;
 
-	/*  signals  */
-	void (* color_selected) (GimpColorHistory *history,
-	                         const GimpRGB    *rgb);
+  /*  signals  */
+  void (*color_selected)(GimpColorHistory *history, const GimpRGB *rgb);
 };
 
+GType gimp_color_history_get_type(void) G_GNUC_CONST;
 
-GType       gimp_color_history_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_color_history_new      (GimpContext     *context,
-                                         gint history_size);
+GtkWidget *gimp_color_history_new(GimpContext *context, gint history_size);
 
 #endif /* __GIMP_COLOR_HISTORY_H__ */
-

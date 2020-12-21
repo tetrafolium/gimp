@@ -18,33 +18,35 @@
 #ifndef __GIMP_MAGNIFY_OPTIONS_H__
 #define __GIMP_MAGNIFY_OPTIONS_H__
 
-
 #include "core/gimptooloptions.h"
 
-
-#define GIMP_TYPE_MAGNIFY_OPTIONS            (gimp_magnify_options_get_type ())
-#define GIMP_MAGNIFY_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MAGNIFY_OPTIONS, GimpMagnifyOptions))
-#define GIMP_MAGNIFY_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MAGNIFY_OPTIONS, GimpMagnifyOptionsClass))
-#define GIMP_IS_MAGNIFY_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MAGNIFY_OPTIONS))
-#define GIMP_IS_MAGNIFY_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MAGNIFY_OPTIONS))
-#define GIMP_MAGNIFY_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MAGNIFY_OPTIONS, GimpMagnifyOptionsClass))
-
+#define GIMP_TYPE_MAGNIFY_OPTIONS (gimp_magnify_options_get_type())
+#define GIMP_MAGNIFY_OPTIONS(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MAGNIFY_OPTIONS,                \
+                              GimpMagnifyOptions))
+#define GIMP_MAGNIFY_OPTIONS_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MAGNIFY_OPTIONS,                 \
+                           GimpMagnifyOptionsClass))
+#define GIMP_IS_MAGNIFY_OPTIONS(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MAGNIFY_OPTIONS))
+#define GIMP_IS_MAGNIFY_OPTIONS_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MAGNIFY_OPTIONS))
+#define GIMP_MAGNIFY_OPTIONS_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MAGNIFY_OPTIONS,                 \
+                             GimpMagnifyOptionsClass))
 
 typedef struct _GimpMagnifyOptions GimpMagnifyOptions;
 typedef struct _GimpToolOptionsClass GimpMagnifyOptionsClass;
 
-struct _GimpMagnifyOptions
-{
-	GimpToolOptions parent_instance;
+struct _GimpMagnifyOptions {
+  GimpToolOptions parent_instance;
 
-	gboolean auto_resize;
-	GimpZoomType zoom_type;
+  gboolean auto_resize;
+  GimpZoomType zoom_type;
 };
 
+GType gimp_magnify_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_magnify_options_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_magnify_options_gui(GimpToolOptions *tool_options);
 
-GtkWidget * gimp_magnify_options_gui      (GimpToolOptions *tool_options);
-
-
-#endif  /*  __GIMP_MAGNIFY_OPTIONS_H__  */
+#endif /*  __GIMP_MAGNIFY_OPTIONS_H__  */

@@ -18,48 +18,43 @@
 #ifndef __GIMP_COLOR_PANEL_H__
 #define __GIMP_COLOR_PANEL_H__
 
-
-#define GIMP_TYPE_COLOR_PANEL            (gimp_color_panel_get_type ())
-#define GIMP_COLOR_PANEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_PANEL, GimpColorPanel))
-#define GIMP_COLOR_PANEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_PANEL, GimpColorPanelClass))
-#define GIMP_IS_COLOR_PANEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COLOR_PANEL))
-#define GIMP_IS_COLOR_PANEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_PANEL))
-#define GIMP_COLOR_PANEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COLOR_PANEL, GimpColorPanelClass))
-
+#define GIMP_TYPE_COLOR_PANEL (gimp_color_panel_get_type())
+#define GIMP_COLOR_PANEL(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COLOR_PANEL, GimpColorPanel))
+#define GIMP_COLOR_PANEL_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COLOR_PANEL, GimpColorPanelClass))
+#define GIMP_IS_COLOR_PANEL(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COLOR_PANEL))
+#define GIMP_IS_COLOR_PANEL_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COLOR_PANEL))
+#define GIMP_COLOR_PANEL_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COLOR_PANEL, GimpColorPanelClass))
 
 typedef struct _GimpColorPanelClass GimpColorPanelClass;
 
-struct _GimpColorPanel
-{
-	GimpColorButton parent_instance;
+struct _GimpColorPanel {
+  GimpColorButton parent_instance;
 
-	GimpContext     *context;
-	GtkWidget       *color_dialog;
+  GimpContext *context;
+  GtkWidget *color_dialog;
 };
 
-struct _GimpColorPanelClass
-{
-	GimpColorButtonClass parent_class;
+struct _GimpColorPanelClass {
+  GimpColorButtonClass parent_class;
 
-	/*  signals  */
-	void (* response) (GimpColorPanel       *panel,
-	                   GimpColorDialogState state);
+  /*  signals  */
+  void (*response)(GimpColorPanel *panel, GimpColorDialogState state);
 };
 
+GType gimp_color_panel_get_type(void) G_GNUC_CONST;
 
-GType       gimp_color_panel_get_type        (void) G_GNUC_CONST;
+GtkWidget *gimp_color_panel_new(const gchar *title, const GimpRGB *color,
+                                GimpColorAreaType type, gint width,
+                                gint height);
 
-GtkWidget * gimp_color_panel_new             (const gchar          *title,
-                                              const GimpRGB        *color,
-                                              GimpColorAreaType type,
-                                              gint width,
-                                              gint height);
+void gimp_color_panel_set_context(GimpColorPanel *panel, GimpContext *context);
 
-void        gimp_color_panel_set_context     (GimpColorPanel       *panel,
-                                              GimpContext          *context);
+void gimp_color_panel_dialog_response(GimpColorPanel *panel,
+                                      GimpColorDialogState state);
 
-void        gimp_color_panel_dialog_response (GimpColorPanel       *panel,
-                                              GimpColorDialogState state);
-
-
-#endif  /*  __GIMP_COLOR_PANEL_H__  */
+#endif /*  __GIMP_COLOR_PANEL_H__  */

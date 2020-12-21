@@ -18,51 +18,52 @@
 #ifndef __GIMP_HISTOGRAM_EDITOR_H__
 #define __GIMP_HISTOGRAM_EDITOR_H__
 
-
 #include "gimpimageeditor.h"
 
-
-#define GIMP_TYPE_HISTOGRAM_EDITOR            (gimp_histogram_editor_get_type ())
-#define GIMP_HISTOGRAM_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HISTOGRAM_EDITOR, GimpHistogramEditor))
-#define GIMP_HISTOGRAM_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_HISTOGRAM_EDITOR, GimpHistogramEditorClass))
-#define GIMP_IS_HISTOGRAM_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_HISTOGRAM_EDITOR))
-#define GIMP_IS_HISTOGRAM_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_HISTOGRAM_EDITOR))
-#define GIMP_HISTOGRAM_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_HISTOGRAM_EDITOR, GimpHistogramEditorClass))
-
+#define GIMP_TYPE_HISTOGRAM_EDITOR (gimp_histogram_editor_get_type())
+#define GIMP_HISTOGRAM_EDITOR(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_HISTOGRAM_EDITOR,               \
+                              GimpHistogramEditor))
+#define GIMP_HISTOGRAM_EDITOR_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_HISTOGRAM_EDITOR,                \
+                           GimpHistogramEditorClass))
+#define GIMP_IS_HISTOGRAM_EDITOR(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_HISTOGRAM_EDITOR))
+#define GIMP_IS_HISTOGRAM_EDITOR_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_HISTOGRAM_EDITOR))
+#define GIMP_HISTOGRAM_EDITOR_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_HISTOGRAM_EDITOR,                \
+                             GimpHistogramEditorClass))
 
 typedef struct _GimpHistogramEditorClass GimpHistogramEditorClass;
 
-struct _GimpHistogramEditor
-{
-	GimpImageEditor parent_instance;
+struct _GimpHistogramEditor {
+  GimpImageEditor parent_instance;
 
-	GimpTRCType trc;
+  GimpTRCType trc;
 
-	GimpDrawable         *drawable;
-	GimpHistogram        *histogram;
-	GimpHistogram        *bg_histogram;
+  GimpDrawable *drawable;
+  GimpHistogram *histogram;
+  GimpHistogram *bg_histogram;
 
-	guint idle_id;
-	gboolean recompute;
+  guint idle_id;
+  gboolean recompute;
 
-	GimpAsync            *calculate_async;
-	gboolean bg_pending;
-	gboolean update_pending;
+  GimpAsync *calculate_async;
+  gboolean bg_pending;
+  gboolean update_pending;
 
-	GtkWidget            *menu;
-	GtkWidget            *box;
-	GtkWidget            *labels[6];
+  GtkWidget *menu;
+  GtkWidget *box;
+  GtkWidget *labels[6];
 };
 
-struct _GimpHistogramEditorClass
-{
-	GimpImageEditorClass parent_class;
+struct _GimpHistogramEditorClass {
+  GimpImageEditorClass parent_class;
 };
 
+GType gimp_histogram_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_histogram_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_histogram_editor_new      (void);
-
+GtkWidget *gimp_histogram_editor_new(void);
 
 #endif /* __GIMP_HISTOGRAM_EDITOR_H__ */

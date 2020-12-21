@@ -23,31 +23,35 @@
 
 #include "gimpviewrenderer.h"
 
-#define GIMP_TYPE_VIEW_RENDERER_DRAWABLE            (gimp_view_renderer_drawable_get_type ())
-#define GIMP_VIEW_RENDERER_DRAWABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_VIEW_RENDERER_DRAWABLE, GimpViewRendererDrawable))
-#define GIMP_VIEW_RENDERER_DRAWABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_VIEW_RENDERER_DRAWABLE, GimpViewRendererDrawableClass))
-#define GIMP_IS_VIEW_RENDERER_DRAWABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_VIEW_RENDERER_DRAWABLE))
-#define GIMP_IS_VIEW_RENDERER_DRAWABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_VIEW_RENDERER_DRAWABLE))
-#define GIMP_VIEW_RENDERER_DRAWABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_DRAWABLE, GimpViewRendererDrawableClass))
-
+#define GIMP_TYPE_VIEW_RENDERER_DRAWABLE                                       \
+  (gimp_view_renderer_drawable_get_type())
+#define GIMP_VIEW_RENDERER_DRAWABLE(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_VIEW_RENDERER_DRAWABLE,         \
+                              GimpViewRendererDrawable))
+#define GIMP_VIEW_RENDERER_DRAWABLE_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_VIEW_RENDERER_DRAWABLE,          \
+                           GimpViewRendererDrawableClass))
+#define GIMP_IS_VIEW_RENDERER_DRAWABLE(obj)                                    \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_VIEW_RENDERER_DRAWABLE))
+#define GIMP_IS_VIEW_RENDERER_DRAWABLE_CLASS(klass)                            \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_VIEW_RENDERER_DRAWABLE))
+#define GIMP_VIEW_RENDERER_DRAWABLE_GET_CLASS(obj)                             \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_VIEW_RENDERER_DRAWABLE,          \
+                             GimpViewRendererDrawableClass))
 
 typedef struct _GimpViewRendererDrawablePrivate GimpViewRendererDrawablePrivate;
 typedef struct _GimpViewRendererDrawableClass GimpViewRendererDrawableClass;
 
-struct _GimpViewRendererDrawable
-{
-	GimpViewRenderer parent_instance;
+struct _GimpViewRendererDrawable {
+  GimpViewRenderer parent_instance;
 
-	GimpViewRendererDrawablePrivate *priv;
+  GimpViewRendererDrawablePrivate *priv;
 };
 
-struct _GimpViewRendererDrawableClass
-{
-	GimpViewRendererClass parent_class;
+struct _GimpViewRendererDrawableClass {
+  GimpViewRendererClass parent_class;
 };
 
-
-GType   gimp_view_renderer_drawable_get_type (void) G_GNUC_CONST;
-
+GType gimp_view_renderer_drawable_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_VIEW_RENDERER_DRAWABLE_H__ */

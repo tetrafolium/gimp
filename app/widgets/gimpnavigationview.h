@@ -26,62 +26,49 @@
 
 #include "gimpview.h"
 
-
-#define GIMP_TYPE_NAVIGATION_VIEW            (gimp_navigation_view_get_type ())
-#define GIMP_NAVIGATION_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_NAVIGATION_VIEW, GimpNavigationView))
-#define GIMP_NAVIGATION_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_NAVIGATION_VIEW, GimpNavigationViewClass))
-#define GIMP_IS_NAVIGATION_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE (obj, GIMP_TYPE_NAVIGATION_VIEW))
-#define GIMP_IS_NAVIGATION_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_NAVIGATION_VIEW))
-#define GIMP_NAVIGATION_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_NAVIGATION_VIEW, GimpNavigationViewClass))
-
+#define GIMP_TYPE_NAVIGATION_VIEW (gimp_navigation_view_get_type())
+#define GIMP_NAVIGATION_VIEW(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_NAVIGATION_VIEW,                \
+                              GimpNavigationView))
+#define GIMP_NAVIGATION_VIEW_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_NAVIGATION_VIEW,                 \
+                           GimpNavigationViewClass))
+#define GIMP_IS_NAVIGATION_VIEW(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE(obj, GIMP_TYPE_NAVIGATION_VIEW))
+#define GIMP_IS_NAVIGATION_VIEW_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_NAVIGATION_VIEW))
+#define GIMP_NAVIGATION_VIEW_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_NAVIGATION_VIEW,                 \
+                             GimpNavigationViewClass))
 
 typedef struct _GimpNavigationViewClass GimpNavigationViewClass;
 
-struct _GimpNavigationViewClass
-{
-	GimpViewClass parent_class;
+struct _GimpNavigationViewClass {
+  GimpViewClass parent_class;
 
-	void (* marker_changed) (GimpNavigationView *view,
-	                         gdouble center_x,
-	                         gdouble center_y,
-	                         gdouble width,
-	                         gdouble height);
-	void (* zoom)           (GimpNavigationView *view,
-	                         GimpZoomType direction,
-	                         gdouble delta);
-	void (* scroll)         (GimpNavigationView *view,
-	                         GdkEventScroll     *sevent);
+  void (*marker_changed)(GimpNavigationView *view, gdouble center_x,
+                         gdouble center_y, gdouble width, gdouble height);
+  void (*zoom)(GimpNavigationView *view, GimpZoomType direction, gdouble delta);
+  void (*scroll)(GimpNavigationView *view, GdkEventScroll *sevent);
 };
 
+GType gimp_navigation_view_get_type(void) G_GNUC_CONST;
 
-GType   gimp_navigation_view_get_type     (void) G_GNUC_CONST;
-
-void    gimp_navigation_view_set_marker   (GimpNavigationView *view,
-                                           gdouble center_x,
-                                           gdouble center_y,
-                                           gdouble width,
-                                           gdouble height,
-                                           gboolean flip_horizontally,
-                                           gboolean flip_vertically,
-                                           gdouble rotate_angle);
-void    gimp_navigation_view_set_canvas   (GimpNavigationView *view,
-                                           gboolean visible,
-                                           gdouble x,
-                                           gdouble y,
-                                           gdouble width,
-                                           gdouble height);
-void    gimp_navigation_view_set_motion_offset
-        (GimpNavigationView *view,
-        gint motion_offset_x,
-        gint motion_offset_y);
-void    gimp_navigation_view_get_local_marker
-        (GimpNavigationView *view,
-        gint               *center_x,
-        gint               *center_y,
-        gint               *width,
-        gint               *height);
-void    gimp_navigation_view_grab_pointer (GimpNavigationView *view,
-                                           GdkEvent           *event);
-
+void gimp_navigation_view_set_marker(GimpNavigationView *view, gdouble center_x,
+                                     gdouble center_y, gdouble width,
+                                     gdouble height, gboolean flip_horizontally,
+                                     gboolean flip_vertically,
+                                     gdouble rotate_angle);
+void gimp_navigation_view_set_canvas(GimpNavigationView *view, gboolean visible,
+                                     gdouble x, gdouble y, gdouble width,
+                                     gdouble height);
+void gimp_navigation_view_set_motion_offset(GimpNavigationView *view,
+                                            gint motion_offset_x,
+                                            gint motion_offset_y);
+void gimp_navigation_view_get_local_marker(GimpNavigationView *view,
+                                           gint *center_x, gint *center_y,
+                                           gint *width, gint *height);
+void gimp_navigation_view_grab_pointer(GimpNavigationView *view,
+                                       GdkEvent *event);
 
 #endif /* __GIMP_NAVIGATION_VIEW_H__ */

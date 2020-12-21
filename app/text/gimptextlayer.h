@@ -21,58 +21,53 @@
 #ifndef __GIMP_TEXT_LAYER_H__
 #define __GIMP_TEXT_LAYER_H__
 
-
 #include "core/gimplayer.h"
 
-
-#define GIMP_TYPE_TEXT_LAYER            (gimp_text_layer_get_type ())
-#define GIMP_TEXT_LAYER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEXT_LAYER, GimpTextLayer))
-#define GIMP_TEXT_LAYER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TEXT_LAYER, GimpTextLayerClass))
-#define GIMP_IS_TEXT_LAYER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEXT_LAYER))
-#define GIMP_IS_TEXT_LAYER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TEXT_LAYER))
-#define GIMP_TEXT_LAYER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TEXT_LAYER, GimpTextLayerClass))
-
+#define GIMP_TYPE_TEXT_LAYER (gimp_text_layer_get_type())
+#define GIMP_TEXT_LAYER(obj)                                                   \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEXT_LAYER, GimpTextLayer))
+#define GIMP_TEXT_LAYER_CLASS(klass)                                           \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TEXT_LAYER, GimpTextLayerClass))
+#define GIMP_IS_TEXT_LAYER(obj)                                                \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEXT_LAYER))
+#define GIMP_IS_TEXT_LAYER_CLASS(klass)                                        \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TEXT_LAYER))
+#define GIMP_TEXT_LAYER_GET_CLASS(obj)                                         \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TEXT_LAYER, GimpTextLayerClass))
 
 typedef struct _GimpTextLayerClass GimpTextLayerClass;
 typedef struct _GimpTextLayerPrivate GimpTextLayerPrivate;
 
-struct _GimpTextLayer
-{
-	GimpLayer layer;
+struct _GimpTextLayer {
+  GimpLayer layer;
 
-	GimpText     *text;
-	const gchar  *text_parasite;/*  parasite name that this text was set from,
-	                             *  and that should be removed when the text
-	                             *  is changed.
-	                             */
-	gboolean auto_rename;
-	gboolean modified;
+  GimpText *text;
+  const gchar *text_parasite; /*  parasite name that this text was set from,
+                               *  and that should be removed when the text
+                               *  is changed.
+                               */
+  gboolean auto_rename;
+  gboolean modified;
 
-	const Babl   *convert_format;
+  const Babl *convert_format;
 
-	GimpTextLayerPrivate *private;
+  GimpTextLayerPrivate *private;
 };
 
-struct _GimpTextLayerClass
-{
-	GimpLayerClass parent_class;
+struct _GimpTextLayerClass {
+  GimpLayerClass parent_class;
 };
 
+GType gimp_text_layer_get_type(void) G_GNUC_CONST;
 
-GType       gimp_text_layer_get_type    (void) G_GNUC_CONST;
+GimpLayer *gimp_text_layer_new(GimpImage *image, GimpText *text);
+GimpText *gimp_text_layer_get_text(GimpTextLayer *layer);
+void gimp_text_layer_set_text(GimpTextLayer *layer, GimpText *text);
+void gimp_text_layer_discard(GimpTextLayer *layer);
+void gimp_text_layer_set(GimpTextLayer *layer, const gchar *undo_desc,
+                         const gchar *first_property_name,
+                         ...) G_GNUC_NULL_TERMINATED;
 
-GimpLayer * gimp_text_layer_new         (GimpImage     *image,
-                                         GimpText      *text);
-GimpText  * gimp_text_layer_get_text    (GimpTextLayer *layer);
-void        gimp_text_layer_set_text    (GimpTextLayer *layer,
-                                         GimpText      *text);
-void        gimp_text_layer_discard     (GimpTextLayer *layer);
-void        gimp_text_layer_set         (GimpTextLayer *layer,
-                                         const gchar   *undo_desc,
-                                         const gchar   *first_property_name,
-                                         ...) G_GNUC_NULL_TERMINATED;
-
-gboolean    gimp_item_is_text_layer     (GimpItem      *item);
-
+gboolean gimp_item_is_text_layer(GimpItem *item);
 
 #endif /* __GIMP_TEXT_LAYER_H__ */

@@ -31,65 +31,42 @@
 
 #include "gimprender.h"
 
-
-static void   gimp_render_setup_notify (gpointer config,
-                                        GParamSpec *param_spec,
-                                        Gimp       *gimp);
-
+static void gimp_render_setup_notify(gpointer config, GParamSpec *param_spec,
+                                     Gimp *gimp);
 
 static GimpRGB light;
 static GimpRGB dark;
 
+void gimp_render_init(Gimp *gimp) {
+  g_return_if_fail(GIMP_IS_GIMP(gimp));
 
-void
-gimp_render_init (Gimp *gimp)
-{
-	g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_signal_connect(gimp->config, "notify::transparency-type",
+                   G_CALLBACK(gimp_render_setup_notify), gimp);
 
-	g_signal_connect (gimp->config, "notify::transparency-type",
-	                  G_CALLBACK (gimp_render_setup_notify),
-	                  gimp);
-
-	gimp_render_setup_notify (gimp->config, NULL, gimp);
+  gimp_render_setup_notify(gimp->config, NULL, gimp);
 }
 
-void
-gimp_render_exit (Gimp *gimp)
-{
-	g_return_if_fail (GIMP_IS_GIMP (gimp));
+void gimp_render_exit(Gimp *gimp) {
+  g_return_if_fail(GIMP_IS_GIMP(gimp));
 
-	g_signal_handlers_disconnect_by_func (gimp->config,
-	                                      gimp_render_setup_notify,
-	                                      gimp);
+  g_signal_handlers_disconnect_by_func(gimp->config, gimp_render_setup_notify,
+                                       gimp);
 }
 
-const GimpRGB *
-gimp_render_light_check_color (void)
-{
-	return &light;
-}
+const GimpRGB *gimp_render_light_check_color(void) { return &light; }
 
-const GimpRGB *
-gimp_render_dark_check_color (void)
-{
-	return &dark;
-}
+const GimpRGB *gimp_render_dark_check_color(void) { return &dark; }
 
-static void
-gimp_render_setup_notify (gpointer config,
-                          GParamSpec *param_spec,
-                          Gimp       *gimp)
-{
-	GimpCheckType check_type;
-	guchar dark_check;
-	guchar light_check;
+static void gimp_render_setup_notify(gpointer config, GParamSpec *param_spec,
+                                     Gimp *gimp) {
+  GimpCheckType check_type;
+  guchar dark_check;
+  guchar light_check;
 
-	g_object_get (config,
-	              "transparency-type", &check_type,
-	              NULL);
+  g_object_get(config, "transparency-type", &check_type, NULL);
 
-	gimp_checks_get_shades (check_type, &light_check, &dark_check);
+  gimp_checks_get_shades(check_type, &light_check, &dark_check);
 
-	gimp_rgba_set_uchar (&light, light_check, light_check, light_check, 255);
-	gimp_rgba_set_uchar (&dark,  dark_check,  dark_check,  dark_check,  255);
+  gimp_rgba_set_uchar(&light, light_check, light_check, light_check, 255);
+  gimp_rgba_set_uchar(&dark, dark_check, dark_check, dark_check, 255);
 }

@@ -18,42 +18,43 @@
 #ifndef __GIMP_TRANSFORM_3D_OPTIONS_H__
 #define __GIMP_TRANSFORM_3D_OPTIONS_H__
 
-
 #include "gimptransformgridoptions.h"
 
-
-#define GIMP_TYPE_TRANSFORM_3D_OPTIONS            (gimp_transform_3d_options_get_type ())
-#define GIMP_TRANSFORM_3D_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS, GimpTransform3DOptions))
-#define GIMP_TRANSFORM_3D_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TRANSFORM_3D_OPTIONS, GimpTransform3DOptionsClass))
-#define GIMP_IS_TRANSFORM_3D_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS))
-#define GIMP_IS_TRANSFORM_3D_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TRANSFORM_3D_OPTIONS))
-#define GIMP_TRANSFORM_3D_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS, GimpTransform3DOptionsClass))
-
+#define GIMP_TYPE_TRANSFORM_3D_OPTIONS (gimp_transform_3d_options_get_type())
+#define GIMP_TRANSFORM_3D_OPTIONS(obj)                                         \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS,           \
+                              GimpTransform3DOptions))
+#define GIMP_TRANSFORM_3D_OPTIONS_CLASS(klass)                                 \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TRANSFORM_3D_OPTIONS,            \
+                           GimpTransform3DOptionsClass))
+#define GIMP_IS_TRANSFORM_3D_OPTIONS(obj)                                      \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS))
+#define GIMP_IS_TRANSFORM_3D_OPTIONS_CLASS(klass)                              \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TRANSFORM_3D_OPTIONS))
+#define GIMP_TRANSFORM_3D_OPTIONS_GET_CLASS(obj)                               \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TRANSFORM_3D_OPTIONS,            \
+                             GimpTransform3DOptionsClass))
 
 typedef struct _GimpTransform3DOptions GimpTransform3DOptions;
 typedef struct _GimpTransform3DOptionsClass GimpTransform3DOptionsClass;
 
-struct _GimpTransform3DOptions
-{
-	GimpTransformGridOptions parent_instance;
+struct _GimpTransform3DOptions {
+  GimpTransformGridOptions parent_instance;
 
-	GimpTransform3DMode mode;
-	gboolean unified;
+  GimpTransform3DMode mode;
+  gboolean unified;
 
-	gboolean constrain_axis;
-	gboolean z_axis;
-	gboolean local_frame;
+  gboolean constrain_axis;
+  gboolean z_axis;
+  gboolean local_frame;
 };
 
-struct _GimpTransform3DOptionsClass
-{
-	GimpTransformGridOptionsClass parent_class;
+struct _GimpTransform3DOptionsClass {
+  GimpTransformGridOptionsClass parent_class;
 };
 
+GType gimp_transform_3d_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_transform_3d_options_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_transform_3d_options_gui      (GimpToolOptions *tool_options);
-
+GtkWidget *gimp_transform_3d_options_gui(GimpToolOptions *tool_options);
 
 #endif /* __GIMP_TRANSFORM_3D_OPTIONS_H__ */

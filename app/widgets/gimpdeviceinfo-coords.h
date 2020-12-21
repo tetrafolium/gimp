@@ -18,26 +18,21 @@
 #ifndef __GIMP_DEVICE_INFO_COORDS_H__
 #define __GIMP_DEVICE_INFO_COORDS_H__
 
+gboolean gimp_device_info_get_event_coords(GimpDeviceInfo *info,
+                                           GdkWindow *window,
+                                           const GdkEvent *event,
+                                           GimpCoords *coords);
+void gimp_device_info_get_device_coords(GimpDeviceInfo *info, GdkWindow *window,
+                                        GimpCoords *coords);
 
-gboolean gimp_device_info_get_event_coords   (GimpDeviceInfo  *info,
-                                              GdkWindow       *window,
-                                              const GdkEvent  *event,
-                                              GimpCoords      *coords);
-void     gimp_device_info_get_device_coords  (GimpDeviceInfo  *info,
-                                              GdkWindow       *window,
-                                              GimpCoords      *coords);
+void gimp_device_info_get_time_coords(GimpDeviceInfo *info, GdkTimeCoord *event,
+                                      GimpCoords *coords);
 
-void     gimp_device_info_get_time_coords    (GimpDeviceInfo  *info,
-                                              GdkTimeCoord    *event,
-                                              GimpCoords      *coords);
-
-gboolean gimp_device_info_get_event_state    (GimpDeviceInfo  *info,
-                                              GdkWindow       *window,
-                                              const GdkEvent  *event,
-                                              GdkModifierType *state);
-void     gimp_device_info_get_device_state   (GimpDeviceInfo  *info,
-                                              GdkWindow       *window,
-                                              GdkModifierType *state);
-
+gboolean gimp_device_info_get_event_state(GimpDeviceInfo *info,
+                                          GdkWindow *window,
+                                          const GdkEvent *event,
+                                          GdkModifierType *state);
+void gimp_device_info_get_device_state(GimpDeviceInfo *info, GdkWindow *window,
+                                       GdkModifierType *state);
 
 #endif /* __GIMP_DEVICE_INFO_COORDS_H__ */

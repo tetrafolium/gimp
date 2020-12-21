@@ -18,38 +18,36 @@
 #ifndef __GIMP_TEXT_UNDO_H__
 #define __GIMP_TEXT_UNDO_H__
 
-
 #include "core/gimpitemundo.h"
 
-
-#define GIMP_TYPE_TEXT_UNDO            (gimp_text_undo_get_type ())
-#define GIMP_TEXT_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TEXT_UNDO, GimpTextUndo))
-#define GIMP_TEXT_UNDO_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TEXT_UNDO, GimpTextUndoClass))
-#define GIMP_IS_TEXT_UNDO(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TEXT_UNDO))
-#define GIMP_IS_TEXT_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TEXT_UNDO))
-#define GIMP_TEXT_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TEXT_UNDO, GimpTextUndoClass))
-
+#define GIMP_TYPE_TEXT_UNDO (gimp_text_undo_get_type())
+#define GIMP_TEXT_UNDO(obj)                                                    \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TEXT_UNDO, GimpTextUndo))
+#define GIMP_TEXT_UNDO_CLASS(klass)                                            \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TEXT_UNDO, GimpTextUndoClass))
+#define GIMP_IS_TEXT_UNDO(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TEXT_UNDO))
+#define GIMP_IS_TEXT_UNDO_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TEXT_UNDO))
+#define GIMP_TEXT_UNDO_GET_CLASS(obj)                                          \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TEXT_UNDO, GimpTextUndoClass))
 
 typedef struct _GimpTextUndoClass GimpTextUndoClass;
 
-struct _GimpTextUndo
-{
-	GimpItemUndo parent_instance;
+struct _GimpTextUndo {
+  GimpItemUndo parent_instance;
 
-	GimpText         *text;
-	const GParamSpec *pspec;
-	GValue           *value;
-	gboolean modified;
-	const Babl       *format;
+  GimpText *text;
+  const GParamSpec *pspec;
+  GValue *value;
+  gboolean modified;
+  const Babl *format;
 };
 
-struct _GimpTextUndoClass
-{
-	GimpItemClass parent_class;
+struct _GimpTextUndoClass {
+  GimpItemClass parent_class;
 };
 
-
-GType      gimp_text_undo_get_type (void) G_GNUC_CONST;
-
+GType gimp_text_undo_get_type(void) G_GNUC_CONST;
 
 #endif /* __GIMP_TEXT_UNDO_H__ */

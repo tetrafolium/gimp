@@ -23,33 +23,36 @@
 
 #include "gimptagentry.h"
 
-#define GIMP_TYPE_COMBO_TAG_ENTRY            (gimp_combo_tag_entry_get_type ())
-#define GIMP_COMBO_TAG_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COMBO_TAG_ENTRY, GimpComboTagEntry))
-#define GIMP_COMBO_TAG_ENTRY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COMBO_TAG_ENTRY, GimpComboTagEntryClass))
-#define GIMP_IS_COMBO_TAG_ENTRY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_COMBO_TAG_ENTRY))
-#define GIMP_IS_COMBO_TAG_ENTRY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COMBO_TAG_ENTRY))
-#define GIMP_COMBO_TAG_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_COMBO_TAG_ENTRY, GimpComboTagEntryClass))
-
+#define GIMP_TYPE_COMBO_TAG_ENTRY (gimp_combo_tag_entry_get_type())
+#define GIMP_COMBO_TAG_ENTRY(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_COMBO_TAG_ENTRY,                \
+                              GimpComboTagEntry))
+#define GIMP_COMBO_TAG_ENTRY_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_COMBO_TAG_ENTRY,                 \
+                           GimpComboTagEntryClass))
+#define GIMP_IS_COMBO_TAG_ENTRY(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_COMBO_TAG_ENTRY))
+#define GIMP_IS_COMBO_TAG_ENTRY_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_COMBO_TAG_ENTRY))
+#define GIMP_COMBO_TAG_ENTRY_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_COMBO_TAG_ENTRY,                 \
+                             GimpComboTagEntryClass))
 
 typedef struct _GimpComboTagEntryClass GimpComboTagEntryClass;
 
-struct _GimpComboTagEntry
-{
-	GimpTagEntry parent_instance;
+struct _GimpComboTagEntry {
+  GimpTagEntry parent_instance;
 
-	GtkWidget    *popup;
+  GtkWidget *popup;
 };
 
-struct _GimpComboTagEntryClass
-{
-	GimpTagEntryClass parent_class;
+struct _GimpComboTagEntryClass {
+  GimpTagEntryClass parent_class;
 };
 
+GType gimp_combo_tag_entry_get_type(void) G_GNUC_CONST;
 
-GType       gimp_combo_tag_entry_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_combo_tag_entry_new(GimpTaggedContainer *container,
+                                    GimpTagEntryMode mode);
 
-GtkWidget * gimp_combo_tag_entry_new      (GimpTaggedContainer *container,
-                                           GimpTagEntryMode mode);
-
-
-#endif  /*  __GIMP_COMBO_TAG_ENTRY_H__  */
+#endif /*  __GIMP_COMBO_TAG_ENTRY_H__  */

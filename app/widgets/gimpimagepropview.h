@@ -21,49 +21,51 @@
 #ifndef __GIMP_IMAGE_PROP_VIEW_H__
 #define __GIMP_IMAGE_PROP_VIEW_H__
 
-
-#define GIMP_TYPE_IMAGE_PROP_VIEW            (gimp_image_prop_view_get_type ())
-#define GIMP_IMAGE_PROP_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_IMAGE_PROP_VIEW, GimpImagePropView))
-#define GIMP_IMAGE_PROP_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_IMAGE_PROP_VIEW, GimpImagePropViewClass))
-#define GIMP_IS_IMAGE_PROP_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_IMAGE_PROP_VIEW))
-#define GIMP_IS_IMAGE_PROP_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_IMAGE_PROP_VIEW))
-#define GIMP_IMAGE_PROP_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE_PROP_VIEW, GimpImagePropViewClass))
-
+#define GIMP_TYPE_IMAGE_PROP_VIEW (gimp_image_prop_view_get_type())
+#define GIMP_IMAGE_PROP_VIEW(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_IMAGE_PROP_VIEW,                \
+                              GimpImagePropView))
+#define GIMP_IMAGE_PROP_VIEW_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_IMAGE_PROP_VIEW,                 \
+                           GimpImagePropViewClass))
+#define GIMP_IS_IMAGE_PROP_VIEW(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_IMAGE_PROP_VIEW))
+#define GIMP_IS_IMAGE_PROP_VIEW_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_IMAGE_PROP_VIEW))
+#define GIMP_IMAGE_PROP_VIEW_GET_CLASS(obj)                                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_IMAGE_PROP_VIEW,                 \
+                             GimpImagePropViewClass))
 
 typedef struct _GimpImagePropViewClass GimpImagePropViewClass;
 
-struct _GimpImagePropView
-{
-	GtkGrid parent_instance;
+struct _GimpImagePropView {
+  GtkGrid parent_instance;
 
-	GimpImage *image;
+  GimpImage *image;
 
-	GtkWidget *pixel_size_label;
-	GtkWidget *print_size_label;
-	GtkWidget *resolution_label;
-	GtkWidget *colorspace_label;
-	GtkWidget *precision_label;
-	GtkWidget *filename_label;
-	GtkWidget *filesize_label;
-	GtkWidget *filetype_label;
-	GtkWidget *memsize_label;
-	GtkWidget *undo_label;
-	GtkWidget *redo_label;
-	GtkWidget *pixels_label;
-	GtkWidget *layers_label;
-	GtkWidget *channels_label;
-	GtkWidget *vectors_label;
+  GtkWidget *pixel_size_label;
+  GtkWidget *print_size_label;
+  GtkWidget *resolution_label;
+  GtkWidget *colorspace_label;
+  GtkWidget *precision_label;
+  GtkWidget *filename_label;
+  GtkWidget *filesize_label;
+  GtkWidget *filetype_label;
+  GtkWidget *memsize_label;
+  GtkWidget *undo_label;
+  GtkWidget *redo_label;
+  GtkWidget *pixels_label;
+  GtkWidget *layers_label;
+  GtkWidget *channels_label;
+  GtkWidget *vectors_label;
 };
 
-struct _GimpImagePropViewClass
-{
-	GtkGridClass parent_class;
+struct _GimpImagePropViewClass {
+  GtkGridClass parent_class;
 };
 
+GType gimp_image_prop_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_image_prop_view_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_image_prop_view_new      (GimpImage *image);
-
+GtkWidget *gimp_image_prop_view_new(GimpImage *image);
 
 #endif /*  __GIMP_IMAGE_PROP_VIEW_H__  */

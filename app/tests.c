@@ -34,8 +34,8 @@
 
 #include "config/gimpgeglconfig.h"
 
-#include "core/gimp.h"
 #include "core/gimp-contexts.h"
+#include "core/gimp.h"
 
 #include "gegl/gimp-gegl.h"
 
@@ -46,13 +46,8 @@
 #include <Cocoa/Cocoa.h>
 #endif
 
-
-static void
-gimp_status_func_dummy (const gchar *text1,
-                        const gchar *text2,
-                        gdouble percentage)
-{
-}
+static void gimp_status_func_dummy(const gchar *text1, const gchar *text2,
+                                   gdouble percentage) {}
 
 /**
  * gimp_init_for_testing:
@@ -60,93 +55,83 @@ gimp_status_func_dummy (const gchar *text1,
  * Initialize the GIMP object system for unit testing. This is a
  * selected subset of the initialization happening in app_run().
  **/
-Gimp *
-gimp_init_for_testing (void)
-{
-	Gimp *gimp;
+Gimp *gimp_init_for_testing(void) {
+  Gimp *gimp;
 
-	gimp_log_init ();
-	gegl_init (NULL, NULL);
+  gimp_log_init();
+  gegl_init(NULL, NULL);
 
-	gimp = gimp_new ("Unit Tested GIMP", NULL, NULL, FALSE, TRUE, TRUE, TRUE,
-	                 FALSE, FALSE, TRUE, FALSE, FALSE,
-	                 GIMP_STACK_TRACE_QUERY, GIMP_PDB_COMPAT_OFF);
+  gimp = gimp_new("Unit Tested GIMP", NULL, NULL, FALSE, TRUE, TRUE, TRUE,
+                  FALSE, FALSE, TRUE, FALSE, FALSE, GIMP_STACK_TRACE_QUERY,
+                  GIMP_PDB_COMPAT_OFF);
 
-	gimp_load_config (gimp, NULL, NULL);
+  gimp_load_config(gimp, NULL, NULL);
 
-	gimp_gegl_init (gimp);
-	gimp_initialize (gimp, gimp_status_func_dummy);
-	gimp_restore (gimp, gimp_status_func_dummy, NULL);
+  gimp_gegl_init(gimp);
+  gimp_initialize(gimp, gimp_status_func_dummy);
+  gimp_restore(gimp, gimp_status_func_dummy, NULL);
 
-	return gimp;
+  return gimp;
 }
-
 
 #ifndef GIMP_CONSOLE_COMPILATION
 
-static void
-gimp_init_icon_theme_for_testing (void)
-{
-	gchar       *icon_root;
+static void gimp_init_icon_theme_for_testing(void) {
+  gchar *icon_root;
 
-	icon_root = g_test_build_filename (G_TEST_BUILT, "gimp-test-icon-theme", NULL);
-	gtk_icon_theme_prepend_search_path (gtk_icon_theme_get_default (),
-	                                    icon_root);
-	g_free (icon_root);
-	return;
+  icon_root = g_test_build_filename(G_TEST_BUILT, "gimp-test-icon-theme", NULL);
+  gtk_icon_theme_prepend_search_path(gtk_icon_theme_get_default(), icon_root);
+  g_free(icon_root);
+  return;
 }
 
 #ifdef GDK_WINDOWING_QUARTZ
-static gboolean
-gimp_osx_focus_window (gpointer user_data)
-{
-	[NSApp activateIgnoringOtherApps: YES];
-	return FALSE;
+static gboolean gimp_osx_focus_window(gpointer user_data) {
+  [NSApp activateIgnoringOtherApps:YES];
+  return FALSE;
 }
 #endif
 
-static Gimp *
-gimp_init_for_gui_testing_internal (gboolean show_gui,
-                                    GFile    *gimprc)
-{
-	Gimp *gimp;
+static Gimp *gimp_init_for_gui_testing_internal(gboolean show_gui,
+                                                GFile *gimprc) {
+  Gimp *gimp;
 
-#if defined (G_OS_WIN32)
-	/* g_test_init() sets warnings always fatal, which is a usually a good
-	   testing default. Nevertheless the Windows platform may have a few
-	   quirks generating warnings, yet we want to finish tests. So we
-	   allow some relaxed rules on this platform. */
+#if defined(G_OS_WIN32)
+  /* g_test_init() sets warnings always fatal, which is a usually a good
+     testing default. Nevertheless the Windows platform may have a few
+     quirks generating warnings, yet we want to finish tests. So we
+     allow some relaxed rules on this platform. */
 
-	GLogLevelFlags fatal_mask;
+  GLogLevelFlags fatal_mask;
 
-	fatal_mask = (GLogLevelFlags) (G_LOG_FATAL_MASK | G_LOG_LEVEL_CRITICAL);
-	g_log_set_always_fatal (fatal_mask);
+  fatal_mask = (GLogLevelFlags)(G_LOG_FATAL_MASK | G_LOG_LEVEL_CRITICAL);
+  g_log_set_always_fatal(fatal_mask);
 #endif
 
-	/* from main() */
-	gimp_log_init ();
-	gegl_init (NULL, NULL);
+  /* from main() */
+  gimp_log_init();
+  gegl_init(NULL, NULL);
 
-	/* Introduce an error margin for positions written to sessionrc */
-	gimp_session_info_set_position_accuracy (5);
+  /* Introduce an error margin for positions written to sessionrc */
+  gimp_session_info_set_position_accuracy(5);
 
-	/* from app_run() */
-	gimp = gimp_new ("Unit Tested GIMP", NULL, NULL, FALSE, TRUE, TRUE, !show_gui,
-	                 FALSE, FALSE, TRUE, FALSE, FALSE,
-	                 GIMP_STACK_TRACE_QUERY, GIMP_PDB_COMPAT_OFF);
+  /* from app_run() */
+  gimp = gimp_new("Unit Tested GIMP", NULL, NULL, FALSE, TRUE, TRUE, !show_gui,
+                  FALSE, FALSE, TRUE, FALSE, FALSE, GIMP_STACK_TRACE_QUERY,
+                  GIMP_PDB_COMPAT_OFF);
 
-	gimp_set_show_gui (gimp, show_gui);
-	gimp_load_config (gimp, gimprc, NULL);
-	gimp_gegl_init (gimp);
-	gui_init (gimp, TRUE);
-	gimp_init_icon_theme_for_testing ();
-	gimp_initialize (gimp, gimp_status_func_dummy);
-	gimp_restore (gimp, gimp_status_func_dummy, NULL);
+  gimp_set_show_gui(gimp, show_gui);
+  gimp_load_config(gimp, gimprc, NULL);
+  gimp_gegl_init(gimp);
+  gui_init(gimp, TRUE);
+  gimp_init_icon_theme_for_testing();
+  gimp_initialize(gimp, gimp_status_func_dummy);
+  gimp_restore(gimp, gimp_status_func_dummy, NULL);
 #ifdef GDK_WINDOWING_QUARTZ
-	g_idle_add (gimp_osx_focus_window, NULL);
+  g_idle_add(gimp_osx_focus_window, NULL);
 #endif
 
-	return gimp;
+  return gimp;
 }
 
 /**
@@ -158,10 +143,8 @@ gimp_init_for_gui_testing_internal (gboolean show_gui,
  *
  * Returns: The #Gimp instance.
  **/
-Gimp *
-gimp_init_for_gui_testing (gboolean show_gui)
-{
-	return gimp_init_for_gui_testing_internal (show_gui, NULL);
+Gimp *gimp_init_for_gui_testing(gboolean show_gui) {
+  return gimp_init_for_gui_testing_internal(show_gui, NULL);
 }
 
 /**
@@ -174,21 +157,16 @@ gimp_init_for_gui_testing (gboolean show_gui)
  *
  * Returns: The #Gimp instance.
  **/
-Gimp *
-gimp_init_for_gui_testing_with_rc (gboolean show_gui,
-                                   GFile    *gimprc)
-{
-	return gimp_init_for_gui_testing_internal (show_gui, gimprc);
+Gimp *gimp_init_for_gui_testing_with_rc(gboolean show_gui, GFile *gimprc) {
+  return gimp_init_for_gui_testing_internal(show_gui, gimprc);
 }
 
 #endif /* GIMP_CONSOLE_COMPILATION */
 
-static gboolean
-gimp_tests_quit_mainloop (GMainLoop *loop)
-{
-	g_main_loop_quit (loop);
+static gboolean gimp_tests_quit_mainloop(GMainLoop *loop) {
+  g_main_loop_quit(loop);
 
-	return FALSE;
+  return FALSE;
 }
 
 /**
@@ -199,19 +177,15 @@ gimp_tests_quit_mainloop (GMainLoop *loop)
  * while. Useful when you want GIMP's state to settle before doing
  * tests.
  **/
-void
-gimp_test_run_temp_mainloop (guint32 running_time)
-{
-	GMainLoop *loop;
-	loop = g_main_loop_new (NULL, FALSE);
+void gimp_test_run_temp_mainloop(guint32 running_time) {
+  GMainLoop *loop;
+  loop = g_main_loop_new(NULL, FALSE);
 
-	g_timeout_add (running_time,
-	               (GSourceFunc) gimp_tests_quit_mainloop,
-	               loop);
+  g_timeout_add(running_time, (GSourceFunc)gimp_tests_quit_mainloop, loop);
 
-	g_main_loop_run (loop);
+  g_main_loop_run(loop);
 
-	g_main_loop_unref (loop);
+  g_main_loop_unref(loop);
 }
 
 /**
@@ -220,16 +194,14 @@ gimp_test_run_temp_mainloop (guint32 running_time)
  * Creates and runs a main loop until it is idle, i.e. has no more
  * work to do.
  **/
-void
-gimp_test_run_mainloop_until_idle (void)
-{
-	GMainLoop *loop = g_main_loop_new (NULL, FALSE);
+void gimp_test_run_mainloop_until_idle(void) {
+  GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 
-	g_idle_add ((GSourceFunc) gimp_tests_quit_mainloop, loop);
+  g_idle_add((GSourceFunc)gimp_tests_quit_mainloop, loop);
 
-	g_main_loop_run (loop);
+  g_main_loop_run(loop);
 
-	g_main_loop_unref (loop);
+  g_main_loop_unref(loop);
 }
 
 /**
@@ -239,12 +211,9 @@ gimp_test_run_mainloop_until_idle (void)
  * If no DISPLAY is set, call exit(EXIT_SUCCESS). There is no use in
  * having UI tests failing in DISPLAY-less environments.
  **/
-void
-gimp_test_bail_if_no_display (void)
-{
-	if (!g_getenv ("DISPLAY"))
-	{
-		g_message ("No DISPLAY set, not running UI tests\n");
-		exit (EXIT_SUCCESS);
-	}
+void gimp_test_bail_if_no_display(void) {
+  if (!g_getenv("DISPLAY")) {
+    g_message("No DISPLAY set, not running UI tests\n");
+    exit(EXIT_SUCCESS);
+  }
 }

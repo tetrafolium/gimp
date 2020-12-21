@@ -18,8 +18,6 @@
 #ifndef __GIMP_TOOLBOX_INDICATOR_AREA_H__
 #define __GIMP_TOOLBOX_INDICATOR_AREA_H__
 
+GtkWidget *gimp_toolbox_indicator_area_create(GimpToolbox *toolbox);
 
-GtkWidget * gimp_toolbox_indicator_area_create (GimpToolbox *toolbox);
-
-
-#endif  /*  __GIMP_TOOLBOX_INDICATOR_AREA_H__  */
+#endif /*  __GIMP_TOOLBOX_INDICATOR_AREA_H__  */

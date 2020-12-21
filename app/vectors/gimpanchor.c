@@ -26,35 +26,27 @@
 
 #include "gimpanchor.h"
 
+G_DEFINE_BOXED_TYPE(GimpAnchor, gimp_anchor, gimp_anchor_copy, gimp_anchor_free)
 
-G_DEFINE_BOXED_TYPE (GimpAnchor, gimp_anchor, gimp_anchor_copy, gimp_anchor_free)
+GimpAnchor *gimp_anchor_new(GimpAnchorType type, const GimpCoords *position) {
+  GimpAnchor *anchor = g_slice_new0(GimpAnchor);
 
-GimpAnchor *
-gimp_anchor_new (GimpAnchorType type,
-                 const GimpCoords *position)
-{
-	GimpAnchor *anchor = g_slice_new0 (GimpAnchor);
+  anchor->type = type;
 
-	anchor->type = type;
+  if (position)
+    anchor->position = *position;
 
-	if (position)
-		anchor->position = *position;
-
-	return anchor;
+  return anchor;
 }
 
-GimpAnchor *
-gimp_anchor_copy (const GimpAnchor *anchor)
-{
-	g_return_val_if_fail (anchor != NULL, NULL);
+GimpAnchor *gimp_anchor_copy(const GimpAnchor *anchor) {
+  g_return_val_if_fail(anchor != NULL, NULL);
 
-	return g_slice_dup (GimpAnchor, anchor);
+  return g_slice_dup(GimpAnchor, anchor);
 }
 
-void
-gimp_anchor_free (GimpAnchor *anchor)
-{
-	g_return_if_fail (anchor != NULL);
+void gimp_anchor_free(GimpAnchor *anchor) {
+  g_return_if_fail(anchor != NULL);
 
-	g_slice_free (GimpAnchor, anchor);
+  g_slice_free(GimpAnchor, anchor);
 }

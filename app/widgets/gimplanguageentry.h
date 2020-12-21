@@ -21,30 +21,33 @@
 #ifndef __GIMP_LANGUAGE_ENTRY_H__
 #define __GIMP_LANGUAGE_ENTRY_H__
 
-
-#define GIMP_TYPE_LANGUAGE_ENTRY            (gimp_language_entry_get_type ())
-#define GIMP_LANGUAGE_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LANGUAGE_ENTRY, GimpLanguageEntry))
-#define GIMP_LANGUAGE_ENTRY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_LANGUAGE_ENTRY, GimpLanguageEntryClass))
-#define GIMP_IS_LANGUAGE_ENTRY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LANGUAGE_ENTRY))
-#define GIMP_IS_LANGUAGE_ENTRY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_LANGUAGE_ENTRY))
-#define GIMP_LANGUAGE_ENTRY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_LANGUAGE_ENTRY, GimpLanguageEntryClass))
-
+#define GIMP_TYPE_LANGUAGE_ENTRY (gimp_language_entry_get_type())
+#define GIMP_LANGUAGE_ENTRY(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_LANGUAGE_ENTRY,                 \
+                              GimpLanguageEntry))
+#define GIMP_LANGUAGE_ENTRY_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_LANGUAGE_ENTRY,                  \
+                           GimpLanguageEntryClass))
+#define GIMP_IS_LANGUAGE_ENTRY(obj)                                            \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_LANGUAGE_ENTRY))
+#define GIMP_IS_LANGUAGE_ENTRY_CLASS(klass)                                    \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_LANGUAGE_ENTRY))
+#define GIMP_LANGUAGE_ENTRY_GET_CLASS(obj)                                     \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_LANGUAGE_ENTRY,                  \
+                             GimpLanguageEntryClass))
 
 typedef struct _GimpLanguageEntryClass GimpLanguageEntryClass;
 
-struct _GimpLanguageEntryClass
-{
-	GtkEntryClass parent_class;
+struct _GimpLanguageEntryClass {
+  GtkEntryClass parent_class;
 };
 
+GType gimp_language_entry_get_type(void) G_GNUC_CONST;
 
-GType         gimp_language_entry_get_type     (void) G_GNUC_CONST;
+GtkWidget *gimp_language_entry_new(void);
 
-GtkWidget   * gimp_language_entry_new      (void);
+const gchar *gimp_language_entry_get_code(GimpLanguageEntry *entry);
+gboolean gimp_language_entry_set_code(GimpLanguageEntry *entry,
+                                      const gchar *code);
 
-const gchar * gimp_language_entry_get_code (GimpLanguageEntry *entry);
-gboolean      gimp_language_entry_set_code (GimpLanguageEntry *entry,
-                                            const gchar       *code);
-
-
-#endif  /* __GIMP_LANGUAGE_ENTRY_H__ */
+#endif /* __GIMP_LANGUAGE_ENTRY_H__ */

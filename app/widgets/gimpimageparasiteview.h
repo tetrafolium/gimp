@@ -21,40 +21,43 @@
 #ifndef __GIMP_IMAGE_PARASITE_VIEW_H__
 #define __GIMP_IMAGE_PARASITE_VIEW_H__
 
-
-#define GIMP_TYPE_IMAGE_PARASITE_VIEW            (gimp_image_parasite_view_get_type ())
-#define GIMP_IMAGE_PARASITE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_IMAGE_PARASITE_VIEW, GimpImageParasiteView))
-#define GIMP_IMAGE_PARASITE_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_IMAGE_PARASITE_VIEW, GimpImageParasiteViewClass))
-#define GIMP_IS_IMAGE_PARASITE_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_IMAGE_PARASITE_VIEW))
-#define GIMP_IS_IMAGE_PARASITE_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_IMAGE_PARASITE_VIEW))
-#define GIMP_IMAGE_PARASITE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE_PARASITE_VIEW, GimpImageParasiteViewClass))
-
+#define GIMP_TYPE_IMAGE_PARASITE_VIEW (gimp_image_parasite_view_get_type())
+#define GIMP_IMAGE_PARASITE_VIEW(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_IMAGE_PARASITE_VIEW,            \
+                              GimpImageParasiteView))
+#define GIMP_IMAGE_PARASITE_VIEW_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_IMAGE_PARASITE_VIEW,             \
+                           GimpImageParasiteViewClass))
+#define GIMP_IS_IMAGE_PARASITE_VIEW(obj)                                       \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_IMAGE_PARASITE_VIEW))
+#define GIMP_IS_IMAGE_PARASITE_VIEW_CLASS(klass)                               \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_IMAGE_PARASITE_VIEW))
+#define GIMP_IMAGE_PARASITE_VIEW_GET_CLASS(obj)                                \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_IMAGE_PARASITE_VIEW,             \
+                             GimpImageParasiteViewClass))
 
 typedef struct _GimpImageParasiteViewClass GimpImageParasiteViewClass;
 
-struct _GimpImageParasiteView
-{
-	GtkBox parent_instance;
+struct _GimpImageParasiteView {
+  GtkBox parent_instance;
 
-	GimpImage *image;
-	gchar     *parasite;
+  GimpImage *image;
+  gchar *parasite;
 };
 
-struct _GimpImageParasiteViewClass
-{
-	GtkBoxClass parent_class;
+struct _GimpImageParasiteViewClass {
+  GtkBoxClass parent_class;
 
-	/*  signals  */
-	void (* update) (GimpImageParasiteView *view);
+  /*  signals  */
+  void (*update)(GimpImageParasiteView *view);
 };
 
+GType gimp_image_parasite_view_get_type(void) G_GNUC_CONST;
 
-GType                gimp_image_parasite_view_get_type     (void) G_GNUC_CONST;
-
-GtkWidget          * gimp_image_parasite_view_new          (GimpImage   *image,
-                                                            const gchar *parasite);
-GimpImage          * gimp_image_parasite_view_get_image    (GimpImageParasiteView *view);
-const GimpParasite * gimp_image_parasite_view_get_parasite (GimpImageParasiteView *view);
-
+GtkWidget *gimp_image_parasite_view_new(GimpImage *image,
+                                        const gchar *parasite);
+GimpImage *gimp_image_parasite_view_get_image(GimpImageParasiteView *view);
+const GimpParasite *
+gimp_image_parasite_view_get_parasite(GimpImageParasiteView *view);
 
 #endif /*  __GIMP_IMAGE_PARASITE_VIEW_H__  */

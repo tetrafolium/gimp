@@ -21,32 +21,33 @@
 #ifndef __GIMP_DRAWABLE_TREE_VIEW_H__
 #define __GIMP_DRAWABLE_TREE_VIEW_H__
 
-
 #include "gimpitemtreeview.h"
 
-
-#define GIMP_TYPE_DRAWABLE_TREE_VIEW            (gimp_drawable_tree_view_get_type ())
-#define GIMP_DRAWABLE_TREE_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DRAWABLE_TREE_VIEW, GimpDrawableTreeView))
-#define GIMP_DRAWABLE_TREE_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_DRAWABLE_TREE_VIEW, GimpDrawableTreeViewClass))
-#define GIMP_IS_DRAWABLE_TREE_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_DRAWABLE_TREE_VIEW))
-#define GIMP_IS_DRAWABLE_TREE_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_DRAWABLE_TREE_VIEW))
-#define GIMP_DRAWABLE_TREE_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DRAWABLE_TREE_VIEW, GimpDrawableTreeViewClass))
-
+#define GIMP_TYPE_DRAWABLE_TREE_VIEW (gimp_drawable_tree_view_get_type())
+#define GIMP_DRAWABLE_TREE_VIEW(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_DRAWABLE_TREE_VIEW,             \
+                              GimpDrawableTreeView))
+#define GIMP_DRAWABLE_TREE_VIEW_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_DRAWABLE_TREE_VIEW,              \
+                           GimpDrawableTreeViewClass))
+#define GIMP_IS_DRAWABLE_TREE_VIEW(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_DRAWABLE_TREE_VIEW))
+#define GIMP_IS_DRAWABLE_TREE_VIEW_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_DRAWABLE_TREE_VIEW))
+#define GIMP_DRAWABLE_TREE_VIEW_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_DRAWABLE_TREE_VIEW,              \
+                             GimpDrawableTreeViewClass))
 
 typedef struct _GimpDrawableTreeViewClass GimpDrawableTreeViewClass;
 
-struct _GimpDrawableTreeView
-{
-	GimpItemTreeView parent_instance;
+struct _GimpDrawableTreeView {
+  GimpItemTreeView parent_instance;
 };
 
-struct _GimpDrawableTreeViewClass
-{
-	GimpItemTreeViewClass parent_class;
+struct _GimpDrawableTreeViewClass {
+  GimpItemTreeViewClass parent_class;
 };
 
+GType gimp_drawable_tree_view_get_type(void) G_GNUC_CONST;
 
-GType   gimp_drawable_tree_view_get_type (void) G_GNUC_CONST;
-
-
-#endif  /*  __GIMP_DRAWABLE_TREE_VIEW_H__  */
+#endif /*  __GIMP_DRAWABLE_TREE_VIEW_H__  */

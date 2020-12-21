@@ -24,54 +24,47 @@
 
 #include "text-types.h"
 
-#include "gimptextlayout.h"
 #include "gimptextlayout-render.h"
+#include "gimptextlayout.h"
 
+void gimp_text_layout_render(GimpTextLayout *layout, cairo_t *cr,
+                             GimpTextDirection base_dir, gboolean path) {
+  PangoLayout *pango_layout;
+  cairo_matrix_t trafo;
+  gint x, y;
+  gint width, height;
 
-void
-gimp_text_layout_render (GimpTextLayout    *layout,
-                         cairo_t           *cr,
-                         GimpTextDirection base_dir,
-                         gboolean path)
-{
-	PangoLayout    *pango_layout;
-	cairo_matrix_t trafo;
-	gint x, y;
-	gint width, height;
+  g_return_if_fail(GIMP_IS_TEXT_LAYOUT(layout));
+  g_return_if_fail(cr != NULL);
 
-	g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
-	g_return_if_fail (cr != NULL);
+  cairo_save(cr);
 
-	cairo_save (cr);
+  gimp_text_layout_get_offsets(layout, &x, &y);
+  cairo_translate(cr, x, y);
 
-	gimp_text_layout_get_offsets (layout, &x, &y);
-	cairo_translate (cr, x, y);
+  gimp_text_layout_get_transform(layout, &trafo);
+  cairo_transform(cr, &trafo);
 
-	gimp_text_layout_get_transform (layout, &trafo);
-	cairo_transform (cr, &trafo);
+  if (base_dir == GIMP_TEXT_DIRECTION_TTB_RTL ||
+      base_dir == GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT) {
+    gimp_text_layout_get_size(layout, &width, &height);
+    cairo_translate(cr, width, 0);
+    cairo_rotate(cr, G_PI_2);
+  }
 
-	if (base_dir == GIMP_TEXT_DIRECTION_TTB_RTL ||
-	    base_dir == GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT)
-	{
-		gimp_text_layout_get_size (layout, &width, &height);
-		cairo_translate (cr, width, 0);
-		cairo_rotate (cr, G_PI_2);
-	}
+  if (base_dir == GIMP_TEXT_DIRECTION_TTB_LTR ||
+      base_dir == GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT) {
+    gimp_text_layout_get_size(layout, &width, &height);
+    cairo_translate(cr, 0, height);
+    cairo_rotate(cr, -G_PI_2);
+  }
 
-	if (base_dir == GIMP_TEXT_DIRECTION_TTB_LTR ||
-	    base_dir == GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT)
-	{
-		gimp_text_layout_get_size (layout, &width, &height);
-		cairo_translate (cr, 0, height);
-		cairo_rotate (cr, -G_PI_2);
-	}
+  pango_layout = gimp_text_layout_get_pango_layout(layout);
 
-	pango_layout = gimp_text_layout_get_pango_layout (layout);
+  if (path)
+    pango_cairo_layout_path(cr, pango_layout);
+  else
+    pango_cairo_show_layout(cr, pango_layout);
 
-	if (path)
-		pango_cairo_layout_path (cr, pango_layout);
-	else
-		pango_cairo_show_layout (cr, pango_layout);
-
-	cairo_restore (cr);
+  cairo_restore(cr);
 }

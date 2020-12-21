@@ -26,28 +26,21 @@
 
 #include "gimp-intl.h"
 
+gboolean xcf_seek_pos(XcfInfo *info, goffset pos, GError **error) {
+  if (info->cp != pos) {
+    GError *my_error = NULL;
 
-gboolean
-xcf_seek_pos (XcfInfo  *info,
-              goffset pos,
-              GError  **error)
-{
-	if (info->cp != pos)
-	{
-		GError *my_error = NULL;
+    info->cp = pos;
 
-		info->cp = pos;
+    if (!g_seekable_seek(info->seekable, info->cp, G_SEEK_SET, NULL,
+                         &my_error)) {
+      g_propagate_prefixed_error(error, my_error,
+                                 _("Could not seek in XCF file: "));
+      return FALSE;
+    }
 
-		if (!g_seekable_seek (info->seekable, info->cp, G_SEEK_SET,
-		                      NULL, &my_error))
-		{
-			g_propagate_prefixed_error (error, my_error,
-			                            _("Could not seek in XCF file: "));
-			return FALSE;
-		}
+    gimp_assert(info->cp == g_seekable_tell(info->seekable));
+  }
 
-		gimp_assert (info->cp == g_seekable_tell (info->seekable));
-	}
-
-	return TRUE;
+  return TRUE;
 }

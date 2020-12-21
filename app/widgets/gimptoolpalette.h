@@ -21,36 +21,36 @@
 #ifndef __GIMP_TOOL_PALETTE_H__
 #define __GIMP_TOOL_PALETTE_H__
 
-
-#define GIMP_TYPE_TOOL_PALETTE            (gimp_tool_palette_get_type ())
-#define GIMP_TOOL_PALETTE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_PALETTE, GimpToolPalette))
-#define GIMP_TOOL_PALETTE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_TOOL_PALETTE, GimpToolPaletteClass))
-#define GIMP_IS_TOOL_PALETTE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_TOOL_PALETTE))
-#define GIMP_IS_TOOL_PALETTE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_TOOL_PALETTE))
-#define GIMP_TOOL_PALETTE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TOOL_PALETTE, GimpToolPaletteClass))
-
+#define GIMP_TYPE_TOOL_PALETTE (gimp_tool_palette_get_type())
+#define GIMP_TOOL_PALETTE(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_TOOL_PALETTE, GimpToolPalette))
+#define GIMP_TOOL_PALETTE_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_TOOL_PALETTE,                    \
+                           GimpToolPaletteClass))
+#define GIMP_IS_TOOL_PALETTE(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_TOOL_PALETTE))
+#define GIMP_IS_TOOL_PALETTE_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_TOOL_PALETTE))
+#define GIMP_TOOL_PALETTE_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_TOOL_PALETTE,                    \
+                             GimpToolPaletteClass))
 
 typedef struct _GimpToolPaletteClass GimpToolPaletteClass;
 
-struct _GimpToolPalette
-{
-	GtkToolPalette parent_instance;
+struct _GimpToolPalette {
+  GtkToolPalette parent_instance;
 };
 
-struct _GimpToolPaletteClass
-{
-	GtkToolPaletteClass parent_class;
+struct _GimpToolPaletteClass {
+  GtkToolPaletteClass parent_class;
 };
 
+GType gimp_tool_palette_get_type(void) G_GNUC_CONST;
 
-GType       gimp_tool_palette_get_type        (void) G_GNUC_CONST;
-
-GtkWidget * gimp_tool_palette_new             (void);
-void        gimp_tool_palette_set_toolbox     (GimpToolPalette   *palette,
-                                               GimpToolbox       *toolbox);
-gboolean    gimp_tool_palette_get_button_size (GimpToolPalette   *palette,
-                                               gint              *width,
-                                               gint              *height);
-
+GtkWidget *gimp_tool_palette_new(void);
+void gimp_tool_palette_set_toolbox(GimpToolPalette *palette,
+                                   GimpToolbox *toolbox);
+gboolean gimp_tool_palette_get_button_size(GimpToolPalette *palette,
+                                           gint *width, gint *height);
 
 #endif /* __GIMP_TOOL_PALETTE_H__ */

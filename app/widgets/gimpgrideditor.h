@@ -21,39 +21,36 @@
 #ifndef __GIMP_GRID_EDITOR_H__
 #define __GIMP_GRID_EDITOR_H__
 
-
-#define GIMP_TYPE_GRID_EDITOR            (gimp_grid_editor_get_type ())
-#define GIMP_GRID_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GRID_EDITOR, GimpGridEditor))
-#define GIMP_GRID_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_GRID_EDITOR, GimpGridEditorClass))
-#define GIMP_IS_GRID_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_GRID_EDITOR))
-#define GIMP_IS_GRID_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_GRID_EDITOR))
-#define GIMP_GRID_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_GRID_EDITOR, GimpGridEditorClass))
-
+#define GIMP_TYPE_GRID_EDITOR (gimp_grid_editor_get_type())
+#define GIMP_GRID_EDITOR(obj)                                                  \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_GRID_EDITOR, GimpGridEditor))
+#define GIMP_GRID_EDITOR_CLASS(klass)                                          \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_GRID_EDITOR, GimpGridEditorClass))
+#define GIMP_IS_GRID_EDITOR(obj)                                               \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_GRID_EDITOR))
+#define GIMP_IS_GRID_EDITOR_CLASS(klass)                                       \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_GRID_EDITOR))
+#define GIMP_GRID_EDITOR_GET_CLASS(obj)                                        \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_GRID_EDITOR, GimpGridEditorClass))
 
 typedef struct _GimpGridEditorClass GimpGridEditorClass;
 
-struct _GimpGridEditor
-{
-	GtkBox parent_instance;
+struct _GimpGridEditor {
+  GtkBox parent_instance;
 
-	GimpGrid    *grid;
-	GimpContext *context;
-	gdouble xresolution;
-	gdouble yresolution;
+  GimpGrid *grid;
+  GimpContext *context;
+  gdouble xresolution;
+  gdouble yresolution;
 };
 
-struct _GimpGridEditorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpGridEditorClass {
+  GtkBoxClass parent_class;
 };
 
+GType gimp_grid_editor_get_type(void) G_GNUC_CONST;
 
-GType       gimp_grid_editor_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_grid_editor_new      (GimpGrid    *grid,
-                                       GimpContext *context,
-                                       gdouble xresolution,
-                                       gdouble yresolution);
-
+GtkWidget *gimp_grid_editor_new(GimpGrid *grid, GimpContext *context,
+                                gdouble xresolution, gdouble yresolution);
 
 #endif /*  __GIMP_GRID_EDITOR_H__  */

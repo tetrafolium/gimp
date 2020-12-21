@@ -23,43 +23,44 @@
 
 #include "gimpdatafactoryview.h"
 
-
-#define GIMP_TYPE_BRUSH_FACTORY_VIEW            (gimp_brush_factory_view_get_type ())
-#define GIMP_BRUSH_FACTORY_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_FACTORY_VIEW, GimpBrushFactoryView))
-#define GIMP_BRUSH_FACTORY_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BRUSH_FACTORY_VIEW, GimpBrushFactoryViewClass))
-#define GIMP_IS_BRUSH_FACTORY_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BRUSH_FACTORY_VIEW))
-#define GIMP_IS_BRUSH_FACTORY_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BRUSH_FACTORY_VIEW))
-#define GIMP_BRUSH_FACTORY_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BRUSH_FACTORY_VIEW, GimpBrushFactoryViewClass))
-
+#define GIMP_TYPE_BRUSH_FACTORY_VIEW (gimp_brush_factory_view_get_type())
+#define GIMP_BRUSH_FACTORY_VIEW(obj)                                           \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_BRUSH_FACTORY_VIEW,             \
+                              GimpBrushFactoryView))
+#define GIMP_BRUSH_FACTORY_VIEW_CLASS(klass)                                   \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_BRUSH_FACTORY_VIEW,              \
+                           GimpBrushFactoryViewClass))
+#define GIMP_IS_BRUSH_FACTORY_VIEW(obj)                                        \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_BRUSH_FACTORY_VIEW))
+#define GIMP_IS_BRUSH_FACTORY_VIEW_CLASS(klass)                                \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_BRUSH_FACTORY_VIEW))
+#define GIMP_BRUSH_FACTORY_VIEW_GET_CLASS(obj)                                 \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_BRUSH_FACTORY_VIEW,              \
+                             GimpBrushFactoryViewClass))
 
 typedef struct _GimpBrushFactoryViewClass GimpBrushFactoryViewClass;
 
-struct _GimpBrushFactoryView
-{
-	GimpDataFactoryView parent_instance;
+struct _GimpBrushFactoryView {
+  GimpDataFactoryView parent_instance;
 
-	GtkWidget           *spacing_scale;
-	GtkAdjustment       *spacing_adjustment;
+  GtkWidget *spacing_scale;
+  GtkAdjustment *spacing_adjustment;
 
-	gboolean change_brush_spacing;
-	GQuark spacing_changed_handler_id;
+  gboolean change_brush_spacing;
+  GQuark spacing_changed_handler_id;
 };
 
-struct _GimpBrushFactoryViewClass
-{
-	GimpDataFactoryViewClass parent_class;
+struct _GimpBrushFactoryViewClass {
+  GimpDataFactoryViewClass parent_class;
 };
 
+GType gimp_brush_factory_view_get_type(void) G_GNUC_CONST;
 
-GType       gimp_brush_factory_view_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_brush_factory_view_new(GimpViewType view_type,
+                                       GimpDataFactory *factory,
+                                       GimpContext *context,
+                                       gboolean change_brush_spacing,
+                                       gint view_size, gint view_border_width,
+                                       GimpMenuFactory *menu_factory);
 
-GtkWidget * gimp_brush_factory_view_new      (GimpViewType view_type,
-                                              GimpDataFactory *factory,
-                                              GimpContext     *context,
-                                              gboolean change_brush_spacing,
-                                              gint view_size,
-                                              gint view_border_width,
-                                              GimpMenuFactory *menu_factory);
-
-
-#endif  /*  __GIMP_BRUSH_FACTORY_VIEW_H__  */
+#endif /*  __GIMP_BRUSH_FACTORY_VIEW_H__  */

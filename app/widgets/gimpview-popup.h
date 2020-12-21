@@ -21,14 +21,9 @@
 #ifndef __GIMP_VIEW_POPUP_H__
 #define __GIMP_VIEW_POPUP_H__
 
-
-gboolean   gimp_view_popup_show (GtkWidget      *widget,
-                                 GdkEventButton *bevent,
-                                 GimpContext    *context,
-                                 GimpViewable   *viewable,
-                                 gint view_width,
-                                 gint view_height,
-                                 gboolean dot_for_dot);
-
+gboolean gimp_view_popup_show(GtkWidget *widget, GdkEventButton *bevent,
+                              GimpContext *context, GimpViewable *viewable,
+                              gint view_width, gint view_height,
+                              gboolean dot_for_dot);
 
 #endif /* __GIMP_VIEW_POPUP_H__ */

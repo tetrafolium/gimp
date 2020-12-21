@@ -18,11 +18,8 @@
 #ifndef __GIMP_WIDGETS_CONSTRUCTORS_H__
 #define __GIMP_WIDGETS_CONSTRUCTORS_H__
 
+GtkWidget *gimp_icon_button_new(const gchar *icon_name, const gchar *label);
 
-GtkWidget * gimp_icon_button_new         (const gchar      *icon_name,
-                                          const gchar      *label);
+GtkWidget *gimp_color_profile_label_new(GimpColorProfile *profile);
 
-GtkWidget * gimp_color_profile_label_new (GimpColorProfile *profile);
-
-
-#endif  /*  __GIMP_WIDGETS_CONSTRUCTORS_H__  */
+#endif /*  __GIMP_WIDGETS_CONSTRUCTORS_H__  */

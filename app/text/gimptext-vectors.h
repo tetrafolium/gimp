@@ -21,9 +21,6 @@
 #ifndef __GIMP_TEXT_VECTORS_H__
 #define __GIMP_TEXT_VECTORS_H__
 
-
-GimpVectors * gimp_text_vectors_new    (GimpImage *image,
-                                        GimpText  *text);
-
+GimpVectors *gimp_text_vectors_new(GimpImage *image, GimpText *text);
 
 #endif /* __GIMP_TEXT_VECTORS_H__ */

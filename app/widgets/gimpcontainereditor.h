@@ -21,49 +21,49 @@
 #ifndef __GIMP_CONTAINER_EDITOR_H__
 #define __GIMP_CONTAINER_EDITOR_H__
 
-
-#define GIMP_TYPE_CONTAINER_EDITOR            (gimp_container_editor_get_type ())
-#define GIMP_CONTAINER_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTAINER_EDITOR, GimpContainerEditor))
-#define GIMP_CONTAINER_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CONTAINER_EDITOR, GimpContainerEditorClass))
-#define GIMP_IS_CONTAINER_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CONTAINER_EDITOR))
-#define GIMP_IS_CONTAINER_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CONTAINER_EDITOR))
-#define GIMP_CONTAINER_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONTAINER_EDITOR, GimpContainerEditorClass))
-
+#define GIMP_TYPE_CONTAINER_EDITOR (gimp_container_editor_get_type())
+#define GIMP_CONTAINER_EDITOR(obj)                                             \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_CONTAINER_EDITOR,               \
+                              GimpContainerEditor))
+#define GIMP_CONTAINER_EDITOR_CLASS(klass)                                     \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_CONTAINER_EDITOR,                \
+                           GimpContainerEditorClass))
+#define GIMP_IS_CONTAINER_EDITOR(obj)                                          \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_CONTAINER_EDITOR))
+#define GIMP_IS_CONTAINER_EDITOR_CLASS(klass)                                  \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_CONTAINER_EDITOR))
+#define GIMP_CONTAINER_EDITOR_GET_CLASS(obj)                                   \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_CONTAINER_EDITOR,                \
+                             GimpContainerEditorClass))
 
 typedef struct _GimpContainerEditorPrivate GimpContainerEditorPrivate;
 typedef struct _GimpContainerEditorClass GimpContainerEditorClass;
 
-struct _GimpContainerEditor
-{
-	GtkBox parent_instance;
+struct _GimpContainerEditor {
+  GtkBox parent_instance;
 
-	GimpContainerView *view;
+  GimpContainerView *view;
 
-	GimpContainerEditorPrivate *priv;
+  GimpContainerEditorPrivate *priv;
 };
 
-struct _GimpContainerEditorClass
-{
-	GtkBoxClass parent_class;
+struct _GimpContainerEditorClass {
+  GtkBoxClass parent_class;
 
-	void (* select_item)   (GimpContainerEditor *editor,
-	                        GimpViewable        *object);
-	void (* activate_item) (GimpContainerEditor *editor,
-	                        GimpViewable        *object);
-	void (* context_item)  (GimpContainerEditor *editor,
-	                        GimpViewable        *object);
+  void (*select_item)(GimpContainerEditor *editor, GimpViewable *object);
+  void (*activate_item)(GimpContainerEditor *editor, GimpViewable *object);
+  void (*context_item)(GimpContainerEditor *editor, GimpViewable *object);
 };
 
+GType gimp_container_editor_get_type(void) G_GNUC_CONST;
 
-GType            gimp_container_editor_get_type           (void) G_GNUC_CONST;
+GtkSelectionMode
+gimp_container_editor_get_selection_mode(GimpContainerEditor *editor);
+void gimp_container_editor_set_selection_mode(GimpContainerEditor *editor,
+                                              GtkSelectionMode mode);
 
-GtkSelectionMode gimp_container_editor_get_selection_mode (GimpContainerEditor *editor);
-void             gimp_container_editor_set_selection_mode (GimpContainerEditor *editor,
-                                                           GtkSelectionMode mode);
+void gimp_container_editor_bind_to_async_set(GimpContainerEditor *editor,
+                                             GimpAsyncSet *async_set,
+                                             const gchar *message);
 
-void             gimp_container_editor_bind_to_async_set  (GimpContainerEditor *editor,
-                                                           GimpAsyncSet        *async_set,
-                                                           const gchar         *message);
-
-
-#endif  /*  __GIMP_CONTAINER_EDITOR_H__  */
+#endif /*  __GIMP_CONTAINER_EDITOR_H__  */

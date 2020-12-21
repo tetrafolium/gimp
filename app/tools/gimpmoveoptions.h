@@ -18,36 +18,37 @@
 #ifndef __GIMP_MOVE_OPTIONS_H__
 #define __GIMP_MOVE_OPTIONS_H__
 
-
 #include "core/gimptooloptions.h"
 
-
-#define GIMP_TYPE_MOVE_OPTIONS            (gimp_move_options_get_type ())
-#define GIMP_MOVE_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MOVE_OPTIONS, GimpMoveOptions))
-#define GIMP_MOVE_OPTIONS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_MOVE_OPTIONS, GimpMoveOptionsClass))
-#define GIMP_IS_MOVE_OPTIONS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_MOVE_OPTIONS))
-#define GIMP_IS_MOVE_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_MOVE_OPTIONS))
-#define GIMP_MOVE_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_MOVE_OPTIONS, GimpMoveOptionsClass))
-
+#define GIMP_TYPE_MOVE_OPTIONS (gimp_move_options_get_type())
+#define GIMP_MOVE_OPTIONS(obj)                                                 \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), GIMP_TYPE_MOVE_OPTIONS, GimpMoveOptions))
+#define GIMP_MOVE_OPTIONS_CLASS(klass)                                         \
+  (G_TYPE_CHECK_CLASS_CAST((klass), GIMP_TYPE_MOVE_OPTIONS,                    \
+                           GimpMoveOptionsClass))
+#define GIMP_IS_MOVE_OPTIONS(obj)                                              \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), GIMP_TYPE_MOVE_OPTIONS))
+#define GIMP_IS_MOVE_OPTIONS_CLASS(klass)                                      \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), GIMP_TYPE_MOVE_OPTIONS))
+#define GIMP_MOVE_OPTIONS_GET_CLASS(obj)                                       \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), GIMP_TYPE_MOVE_OPTIONS,                    \
+                             GimpMoveOptionsClass))
 
 typedef struct _GimpMoveOptions GimpMoveOptions;
 typedef struct _GimpToolOptionsClass GimpMoveOptionsClass;
 
-struct _GimpMoveOptions
-{
-	GimpToolOptions parent_instance;
+struct _GimpMoveOptions {
+  GimpToolOptions parent_instance;
 
-	GimpTransformType move_type;
-	gboolean move_current;
+  GimpTransformType move_type;
+  gboolean move_current;
 
-	/*  options gui  */
-	GtkWidget         *type_box;
+  /*  options gui  */
+  GtkWidget *type_box;
 };
 
+GType gimp_move_options_get_type(void) G_GNUC_CONST;
 
-GType       gimp_move_options_get_type (void) G_GNUC_CONST;
-
-GtkWidget * gimp_move_options_gui      (GimpToolOptions *tool_options);
-
+GtkWidget *gimp_move_options_gui(GimpToolOptions *tool_options);
 
 #endif /* __GIMP_MOVE_OPTIONS_H__ */

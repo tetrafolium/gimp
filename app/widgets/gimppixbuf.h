@@ -21,13 +21,10 @@
 #ifndef __APP_GIMP_PIXBUF_H__
 #define __APP_GIMP_PIXBUF_H__
 
+GSList *gimp_pixbuf_get_formats(void);
 
-GSList * gimp_pixbuf_get_formats (void);
-
-void     gimp_pixbuf_targets_add    (GtkTargetList *target_list,
-                                     guint info,
-                                     gboolean writable);
-void     gimp_pixbuf_targets_remove (GtkTargetList *target_list);
-
+void gimp_pixbuf_targets_add(GtkTargetList *target_list, guint info,
+                             gboolean writable);
+void gimp_pixbuf_targets_remove(GtkTargetList *target_list);
 
 #endif /* __APP_GIMP_PIXBUF_H__ */

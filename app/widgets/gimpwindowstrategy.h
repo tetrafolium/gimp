@@ -21,29 +21,22 @@
 #ifndef __GIMP_WINDOW_STRATEGY_H__
 #define __GIMP_WINDOW_STRATEGY_H__
 
+#define GIMP_TYPE_WINDOW_STRATEGY (gimp_window_strategy_get_type())
+G_DECLARE_INTERFACE(GimpWindowStrategy, gimp_window_strategy, GIMP,
+                    WINDOW_STRATEGY, GObject)
 
-#define GIMP_TYPE_WINDOW_STRATEGY (gimp_window_strategy_get_type ())
-G_DECLARE_INTERFACE (GimpWindowStrategy, gimp_window_strategy, GIMP, WINDOW_STRATEGY, GObject)
+struct _GimpWindowStrategyInterface {
+  GTypeInterface base_iface;
 
-
-struct _GimpWindowStrategyInterface
-{
-	GTypeInterface base_iface;
-
-	/*  virtual functions  */
-	GtkWidget * (* show_dockable_dialog) (GimpWindowStrategy *strategy,
-	                                      Gimp               *gimp,
-	                                      GimpDialogFactory  *factory,
-	                                      GdkMonitor         *monitor,
-	                                      const gchar        *identifiers);
+  /*  virtual functions  */
+  GtkWidget *(*show_dockable_dialog)(GimpWindowStrategy *strategy, Gimp *gimp,
+                                     GimpDialogFactory *factory,
+                                     GdkMonitor *monitor,
+                                     const gchar *identifiers);
 };
 
+GtkWidget *gimp_window_strategy_show_dockable_dialog(
+    GimpWindowStrategy *strategy, Gimp *gimp, GimpDialogFactory *factory,
+    GdkMonitor *monitor, const gchar *identifiers);
 
-GtkWidget * gimp_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
-                                                       Gimp               *gimp,
-                                                       GimpDialogFactory  *factory,
-                                                       GdkMonitor         *monitor,
-                                                       const gchar        *identifiers);
-
-
-#endif  /*  __GIMP_WINDOW_STRATEGY_H__  */
+#endif /*  __GIMP_WINDOW_STRATEGY_H__  */
