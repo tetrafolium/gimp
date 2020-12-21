@@ -38,12 +38,12 @@ typedef struct _GimpOperationSoftlightLegacyClass GimpOperationSoftlightLegacyCl
 
 struct _GimpOperationSoftlightLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationSoftlightLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

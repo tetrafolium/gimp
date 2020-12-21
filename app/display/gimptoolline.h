@@ -50,49 +50,49 @@ typedef struct _GimpToolLineClass   GimpToolLineClass;
 
 struct _GimpToolLine
 {
-  GimpToolWidget       parent_instance;
+    GimpToolWidget       parent_instance;
 
-  GimpToolLinePrivate *private;
+    GimpToolLinePrivate *private;
 };
 
 struct _GimpToolLineClass
 {
-  GimpToolWidgetClass  parent_class;
+    GimpToolWidgetClass  parent_class;
 
-  /*  signals  */
-  gboolean (* can_add_slider)           (GimpToolLine        *line,
-                                         gdouble              value);
-  gint     (* add_slider)               (GimpToolLine        *line,
-                                         gdouble              value);
-  void     (* prepare_to_remove_slider) (GimpToolLine        *line,
-                                         gint                 slider,
-                                         gboolean             remove);
-  void     (* remove_slider)            (GimpToolLine        *line,
-                                         gint                 slider);
-  void     (* selection_changed)        (GimpToolLine        *line);
-  gboolean (* handle_clicked)           (GimpToolLine        *line,
-                                         gint                 handle,
-                                         GdkModifierType      state,
-                                         GimpButtonPressType  press_type);
+    /*  signals  */
+    gboolean (* can_add_slider)           (GimpToolLine        *line,
+                                           gdouble              value);
+    gint     (* add_slider)               (GimpToolLine        *line,
+                                           gdouble              value);
+    void     (* prepare_to_remove_slider) (GimpToolLine        *line,
+                                           gint                 slider,
+                                           gboolean             remove);
+    void     (* remove_slider)            (GimpToolLine        *line,
+                                           gint                 slider);
+    void     (* selection_changed)        (GimpToolLine        *line);
+    gboolean (* handle_clicked)           (GimpToolLine        *line,
+                                           gint                 handle,
+                                           GdkModifierType      state,
+                                           GimpButtonPressType  press_type);
 };
 
 
 GType                        gimp_tool_line_get_type      (void) G_GNUC_CONST;
 
 GimpToolWidget             * gimp_tool_line_new           (GimpDisplayShell           *shell,
-                                                           gdouble                     x1,
-                                                           gdouble                     y1,
-                                                           gdouble                     x2,
-                                                           gdouble                     y2);
+        gdouble                     x1,
+        gdouble                     y1,
+        gdouble                     x2,
+        gdouble                     y2);
 
 void                         gimp_tool_line_set_sliders   (GimpToolLine               *line,
-                                                           const GimpControllerSlider *sliders,
-                                                           gint                        n_sliders);
+        const GimpControllerSlider *sliders,
+        gint                        n_sliders);
 const GimpControllerSlider * gimp_tool_line_get_sliders   (GimpToolLine               *line,
-                                                           gint                       *n_sliders);
+        gint                       *n_sliders);
 
 void                         gimp_tool_line_set_selection (GimpToolLine               *line,
-                                                           gint                        handle);
+        gint                        handle);
 gint                         gimp_tool_line_get_selection (GimpToolLine               *line);
 
 

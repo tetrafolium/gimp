@@ -34,12 +34,12 @@ typedef struct _GimpHealClass GimpHealClass;
 
 struct _GimpHeal
 {
-  GimpSourceCore  parent_instance;
+    GimpSourceCore  parent_instance;
 };
 
 struct _GimpHealClass
 {
-  GimpSourceCoreClass  parent_class;
+    GimpSourceCoreClass  parent_class;
 };
 
 

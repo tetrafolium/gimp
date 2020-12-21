@@ -29,7 +29,7 @@ void   gimp_display_shell_selection_pause    (GimpDisplayShell     *shell);
 void   gimp_display_shell_selection_resume   (GimpDisplayShell     *shell);
 
 void   gimp_display_shell_selection_set_show (GimpDisplayShell     *shell,
-                                              gboolean              show);
+        gboolean              show);
 
 
 #endif  /*  __GIMP_DISPLAY_SHELL_SELECTION_H__  */

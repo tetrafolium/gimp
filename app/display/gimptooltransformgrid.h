@@ -32,28 +32,28 @@
 
 typedef enum
 {
-  GIMP_TRANSFORM_HANDLE_NONE,
-  GIMP_TRANSFORM_HANDLE_NW_P,     /* north west perspective         */
-  GIMP_TRANSFORM_HANDLE_NE_P,     /* north east perspective         */
-  GIMP_TRANSFORM_HANDLE_SW_P,     /* south west perspective         */
-  GIMP_TRANSFORM_HANDLE_SE_P,     /* south east perspective         */
-  GIMP_TRANSFORM_HANDLE_NW,       /* north west                     */
-  GIMP_TRANSFORM_HANDLE_NE,       /* north east                     */
-  GIMP_TRANSFORM_HANDLE_SW,       /* south west                     */
-  GIMP_TRANSFORM_HANDLE_SE,       /* south east                     */
-  GIMP_TRANSFORM_HANDLE_N,        /* north                          */
-  GIMP_TRANSFORM_HANDLE_S,        /* south                          */
-  GIMP_TRANSFORM_HANDLE_E,        /* east                           */
-  GIMP_TRANSFORM_HANDLE_W,        /* west                           */
-  GIMP_TRANSFORM_HANDLE_CENTER,   /* center for moving              */
-  GIMP_TRANSFORM_HANDLE_PIVOT,    /* pivot for rotation and scaling */
-  GIMP_TRANSFORM_HANDLE_N_S,      /* north shearing                 */
-  GIMP_TRANSFORM_HANDLE_S_S,      /* south shearing                 */
-  GIMP_TRANSFORM_HANDLE_E_S,      /* east shearing                  */
-  GIMP_TRANSFORM_HANDLE_W_S,      /* west shearing                  */
-  GIMP_TRANSFORM_HANDLE_ROTATION, /* rotation                       */
+    GIMP_TRANSFORM_HANDLE_NONE,
+    GIMP_TRANSFORM_HANDLE_NW_P,     /* north west perspective         */
+    GIMP_TRANSFORM_HANDLE_NE_P,     /* north east perspective         */
+    GIMP_TRANSFORM_HANDLE_SW_P,     /* south west perspective         */
+    GIMP_TRANSFORM_HANDLE_SE_P,     /* south east perspective         */
+    GIMP_TRANSFORM_HANDLE_NW,       /* north west                     */
+    GIMP_TRANSFORM_HANDLE_NE,       /* north east                     */
+    GIMP_TRANSFORM_HANDLE_SW,       /* south west                     */
+    GIMP_TRANSFORM_HANDLE_SE,       /* south east                     */
+    GIMP_TRANSFORM_HANDLE_N,        /* north                          */
+    GIMP_TRANSFORM_HANDLE_S,        /* south                          */
+    GIMP_TRANSFORM_HANDLE_E,        /* east                           */
+    GIMP_TRANSFORM_HANDLE_W,        /* west                           */
+    GIMP_TRANSFORM_HANDLE_CENTER,   /* center for moving              */
+    GIMP_TRANSFORM_HANDLE_PIVOT,    /* pivot for rotation and scaling */
+    GIMP_TRANSFORM_HANDLE_N_S,      /* north shearing                 */
+    GIMP_TRANSFORM_HANDLE_S_S,      /* south shearing                 */
+    GIMP_TRANSFORM_HANDLE_E_S,      /* east shearing                  */
+    GIMP_TRANSFORM_HANDLE_W_S,      /* west shearing                  */
+    GIMP_TRANSFORM_HANDLE_ROTATION, /* rotation                       */
 
-  GIMP_N_TRANSFORM_HANDLES /* keep this last so *handles[] is the right size */
+    GIMP_N_TRANSFORM_HANDLES /* keep this last so *handles[] is the right size */
 } GimpTransformHandle;
 
 
@@ -71,25 +71,25 @@ typedef struct _GimpToolTransformGridClass   GimpToolTransformGridClass;
 
 struct _GimpToolTransformGrid
 {
-  GimpToolWidget                parent_instance;
+    GimpToolWidget                parent_instance;
 
-  GimpToolTransformGridPrivate *private;
+    GimpToolTransformGridPrivate *private;
 };
 
 struct _GimpToolTransformGridClass
 {
-  GimpToolWidgetClass  parent_class;
+    GimpToolWidgetClass  parent_class;
 };
 
 
 GType                 gimp_tool_transform_grid_get_type   (void) G_GNUC_CONST;
 
 GimpToolWidget      * gimp_tool_transform_grid_new        (GimpDisplayShell      *shell,
-                                                           const GimpMatrix3     *transform,
-                                                           gdouble                x1,
-                                                           gdouble                y1,
-                                                           gdouble                x2,
-                                                           gdouble                y2);
+        const GimpMatrix3     *transform,
+        gdouble                x1,
+        gdouble                y1,
+        gdouble                x2,
+        gdouble                y2);
 
 /*  protected functions  */
 

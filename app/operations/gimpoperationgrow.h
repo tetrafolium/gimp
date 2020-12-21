@@ -38,15 +38,15 @@ typedef struct _GimpOperationGrowClass GimpOperationGrowClass;
 
 struct _GimpOperationGrow
 {
-  GeglOperationFilter  parent_instance;
+    GeglOperationFilter  parent_instance;
 
-  gint                 radius_x;
-  gint                 radius_y;
+    gint                 radius_x;
+    gint                 radius_y;
 };
 
 struct _GimpOperationGrowClass
 {
-  GeglOperationFilterClass  parent_class;
+    GeglOperationFilterClass  parent_class;
 };
 
 

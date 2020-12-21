@@ -34,14 +34,14 @@ typedef struct _GimpCloneOptionsClass GimpCloneOptionsClass;
 
 struct _GimpCloneOptions
 {
-  GimpSourceOptions  parent_instance;
+    GimpSourceOptions  parent_instance;
 
-  GimpCloneType      clone_type;
+    GimpCloneType      clone_type;
 };
 
 struct _GimpCloneOptionsClass
 {
-  GimpSourceOptionsClass  parent_class;
+    GimpSourceOptionsClass  parent_class;
 };
 
 

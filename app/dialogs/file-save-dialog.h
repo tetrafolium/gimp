@@ -23,19 +23,19 @@
 
 
 GtkWidget * file_save_dialog_new        (Gimp                *gimp,
-                                         gboolean             export);
+        gboolean             export);
 
 gboolean    file_save_dialog_save_image (GimpProgress        *progress_and_handler,
-                                         Gimp                *gimp,
-                                         GimpImage           *image,
-                                         GFile               *file,
-                                         GimpPlugInProcedure *write_proc,
-                                         GimpRunMode          run_mode,
-                                         gboolean             save_a_copy,
-                                         gboolean             export_backward,
-                                         gboolean             export_forward,
-                                         gboolean             xcf_compression,
-                                         gboolean             verbose_cancel);
+        Gimp                *gimp,
+        GimpImage           *image,
+        GFile               *file,
+        GimpPlugInProcedure *write_proc,
+        GimpRunMode          run_mode,
+        gboolean             save_a_copy,
+        gboolean             export_backward,
+        gboolean             export_forward,
+        gboolean             xcf_compression,
+        gboolean             verbose_cancel);
 
 
 

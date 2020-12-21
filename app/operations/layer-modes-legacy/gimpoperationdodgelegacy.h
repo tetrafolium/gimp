@@ -38,12 +38,12 @@ typedef struct _GimpOperationDodgeLegacyClass GimpOperationDodgeLegacyClass;
 
 struct _GimpOperationDodgeLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationDodgeLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

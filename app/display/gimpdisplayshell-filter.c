@@ -34,7 +34,7 @@
 /*  local function prototypes  */
 
 static void   gimp_display_shell_filter_changed (GimpColorDisplayStack *stack,
-                                                 GimpDisplayShell      *shell);
+        GimpDisplayShell      *shell);
 
 
 /*  public functions  */
@@ -43,51 +43,51 @@ void
 gimp_display_shell_filter_set (GimpDisplayShell      *shell,
                                GimpColorDisplayStack *stack)
 {
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-  g_return_if_fail (stack == NULL || GIMP_IS_COLOR_DISPLAY_STACK (stack));
+    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+    g_return_if_fail (stack == NULL || GIMP_IS_COLOR_DISPLAY_STACK (stack));
 
-  if (stack == shell->filter_stack)
-    return;
+    if (stack == shell->filter_stack)
+        return;
 
-  if (shell->filter_stack)
+    if (shell->filter_stack)
     {
-      g_signal_handlers_disconnect_by_func (shell->filter_stack,
-                                            gimp_display_shell_filter_changed,
-                                            shell);
+        g_signal_handlers_disconnect_by_func (shell->filter_stack,
+                                              gimp_display_shell_filter_changed,
+                                              shell);
     }
 
-  g_set_object (&shell->filter_stack, stack);
+    g_set_object (&shell->filter_stack, stack);
 
-  if (shell->filter_stack)
+    if (shell->filter_stack)
     {
-      g_signal_connect (shell->filter_stack, "changed",
-                        G_CALLBACK (gimp_display_shell_filter_changed),
-                        shell);
+        g_signal_connect (shell->filter_stack, "changed",
+                          G_CALLBACK (gimp_display_shell_filter_changed),
+                          shell);
     }
 
-  gimp_display_shell_filter_changed (NULL, shell);
+    gimp_display_shell_filter_changed (NULL, shell);
 }
 
 gboolean
 gimp_display_shell_has_filter (GimpDisplayShell *shell)
 {
-  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+    g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
 
-  if (shell->filter_stack)
+    if (shell->filter_stack)
     {
-      GList *filters;
-      GList *iter;
+        GList *filters;
+        GList *iter;
 
-      filters = gimp_color_display_stack_get_filters (shell->filter_stack);
+        filters = gimp_color_display_stack_get_filters (shell->filter_stack);
 
-      for (iter = filters; iter; iter = g_list_next (iter))
+        for (iter = filters; iter; iter = g_list_next (iter))
         {
-          if (gimp_color_display_get_enabled (GIMP_COLOR_DISPLAY (iter->data)))
-            return TRUE;
+            if (gimp_color_display_get_enabled (GIMP_COLOR_DISPLAY (iter->data)))
+                return TRUE;
         }
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 
@@ -96,26 +96,26 @@ gimp_display_shell_has_filter (GimpDisplayShell *shell)
 static gboolean
 gimp_display_shell_filter_changed_idle (gpointer data)
 {
-  GimpDisplayShell *shell = data;
+    GimpDisplayShell *shell = data;
 
-  gimp_display_shell_profile_update (shell);
-  gimp_display_shell_expose_full (shell);
-  gimp_display_shell_render_invalidate_full (shell);
+    gimp_display_shell_profile_update (shell);
+    gimp_display_shell_expose_full (shell);
+    gimp_display_shell_render_invalidate_full (shell);
 
-  shell->filter_idle_id = 0;
+    shell->filter_idle_id = 0;
 
-  return FALSE;
+    return FALSE;
 }
 
 static void
 gimp_display_shell_filter_changed (GimpColorDisplayStack *stack,
                                    GimpDisplayShell      *shell)
 {
-  if (shell->filter_idle_id)
-    g_source_remove (shell->filter_idle_id);
+    if (shell->filter_idle_id)
+        g_source_remove (shell->filter_idle_id);
 
-  shell->filter_idle_id =
-    g_idle_add_full (G_PRIORITY_LOW,
-                     gimp_display_shell_filter_changed_idle,
-                     shell, NULL);
+    shell->filter_idle_id =
+        g_idle_add_full (G_PRIORITY_LOW,
+                         gimp_display_shell_filter_changed_idle,
+                         shell, NULL);
 }

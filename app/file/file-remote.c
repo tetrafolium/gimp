@@ -42,49 +42,49 @@
 
 typedef enum
 {
-  DOWNLOAD,
-  UPLOAD
+    DOWNLOAD,
+    UPLOAD
 } RemoteCopyMode;
 
 typedef struct
 {
-  GimpProgress *progress;
-  GCancellable *cancellable;
-  gboolean      cancel;
-  GMainLoop    *main_loop;
-  GError       *error;
+    GimpProgress *progress;
+    GCancellable *cancellable;
+    gboolean      cancel;
+    GMainLoop    *main_loop;
+    GError       *error;
 } RemoteMount;
 
 typedef struct
 {
-  RemoteCopyMode  mode;
-  GimpProgress   *progress;
-  GCancellable   *cancellable;
-  gboolean        cancel;
-  gint64          last_time;
+    RemoteCopyMode  mode;
+    GimpProgress   *progress;
+    GCancellable   *cancellable;
+    gboolean        cancel;
+    gint64          last_time;
 } RemoteProgress;
 
 
 static void       file_remote_mount_volume_ready (GFile           *file,
-                                                  GAsyncResult    *result,
-                                                  RemoteMount     *mount);
+        GAsyncResult    *result,
+        RemoteMount     *mount);
 static void       file_remote_mount_file_cancel  (GimpProgress    *progress,
-                                                  RemoteMount     *mount);
+        RemoteMount     *mount);
 
 static GFile    * file_remote_get_temp_file      (Gimp            *gimp,
-                                                  GFile           *file);
+        GFile           *file);
 static gboolean   file_remote_copy_file          (Gimp            *gimp,
-                                                  GFile           *src_file,
-                                                  GFile           *dest_file,
-                                                  RemoteCopyMode   mode,
-                                                  GimpProgress    *progress,
-                                                  GError         **error);
+        GFile           *src_file,
+        GFile           *dest_file,
+        RemoteCopyMode   mode,
+        GimpProgress    *progress,
+        GError         **error);
 static void       file_remote_copy_file_cancel   (GimpProgress    *progress,
-                                                  RemoteProgress  *remote_progress);
+        RemoteProgress  *remote_progress);
 
 static void       file_remote_progress_callback  (goffset          current_num_bytes,
-                                                  goffset          total_num_bytes,
-                                                  gpointer         user_data);
+        goffset          total_num_bytes,
+        gpointer         user_data);
 
 
 /*  public functions  */
@@ -95,66 +95,66 @@ file_remote_mount_file (Gimp          *gimp,
                         GimpProgress  *progress,
                         GError       **error)
 {
-  GMountOperation *operation;
-  RemoteMount      mount = { 0, };
+    GMountOperation *operation;
+    RemoteMount      mount = { 0, };
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
-  g_return_val_if_fail (G_IS_FILE (file), FALSE);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+    g_return_val_if_fail (G_IS_FILE (file), FALSE);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  mount.progress  = progress;
-  mount.main_loop = g_main_loop_new (NULL, FALSE);
+    mount.progress  = progress;
+    mount.main_loop = g_main_loop_new (NULL, FALSE);
 
-  operation = gimp_get_mount_operation (gimp, progress);
+    operation = gimp_get_mount_operation (gimp, progress);
 
-  if (progress)
+    if (progress)
     {
-      gimp_progress_start (progress, TRUE, _("Mounting remote volume"));
+        gimp_progress_start (progress, TRUE, _("Mounting remote volume"));
 
-      mount.cancellable = g_cancellable_new ();
+        mount.cancellable = g_cancellable_new ();
 
-      g_signal_connect (progress, "cancel",
-                        G_CALLBACK (file_remote_mount_file_cancel),
-                        &mount);
+        g_signal_connect (progress, "cancel",
+                          G_CALLBACK (file_remote_mount_file_cancel),
+                          &mount);
     }
 
-  g_file_mount_enclosing_volume (file, G_MOUNT_MOUNT_NONE,
-                                 operation, mount.cancellable,
-                                 (GAsyncReadyCallback) file_remote_mount_volume_ready,
-                                 &mount);
+    g_file_mount_enclosing_volume (file, G_MOUNT_MOUNT_NONE,
+                                   operation, mount.cancellable,
+                                   (GAsyncReadyCallback) file_remote_mount_volume_ready,
+                                   &mount);
 
-  g_main_loop_run (mount.main_loop);
-  g_main_loop_unref (mount.main_loop);
+    g_main_loop_run (mount.main_loop);
+    g_main_loop_unref (mount.main_loop);
 
-  if (progress)
+    if (progress)
     {
-      g_signal_handlers_disconnect_by_func (progress,
-                                            file_remote_mount_file_cancel,
-                                            &mount);
+        g_signal_handlers_disconnect_by_func (progress,
+                                              file_remote_mount_file_cancel,
+                                              &mount);
 
-      g_object_unref (mount.cancellable);
+        g_object_unref (mount.cancellable);
 
-      gimp_progress_end (progress);
+        gimp_progress_end (progress);
     }
 
-  g_object_unref (operation);
+    g_object_unref (operation);
 
-  if (mount.error)
+    if (mount.error)
     {
-      if (mount.error->domain != G_IO_ERROR ||
-          mount.error->code   != G_IO_ERROR_ALREADY_MOUNTED)
+        if (mount.error->domain != G_IO_ERROR ||
+                mount.error->code   != G_IO_ERROR_ALREADY_MOUNTED)
         {
-          g_propagate_error (error, mount.error);
-          return FALSE;
+            g_propagate_error (error, mount.error);
+            return FALSE;
         }
-      else
+        else
         {
-          g_clear_error (&mount.error);
+            g_clear_error (&mount.error);
         }
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 GFile *
@@ -163,23 +163,23 @@ file_remote_download_image (Gimp          *gimp,
                             GimpProgress  *progress,
                             GError       **error)
 {
-  GFile *local_file;
+    GFile *local_file;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (G_IS_FILE (file), NULL);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+    g_return_val_if_fail (G_IS_FILE (file), NULL);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  local_file = file_remote_get_temp_file (gimp, file);
+    local_file = file_remote_get_temp_file (gimp, file);
 
-  if (! file_remote_copy_file (gimp, file, local_file, DOWNLOAD,
-                               progress, error))
+    if (! file_remote_copy_file (gimp, file, local_file, DOWNLOAD,
+                                 progress, error))
     {
-      g_object_unref (local_file);
-      return NULL;
+        g_object_unref (local_file);
+        return NULL;
     }
 
-  return local_file;
+    return local_file;
 }
 
 GFile *
@@ -188,16 +188,16 @@ file_remote_upload_image_prepare (Gimp          *gimp,
                                   GimpProgress  *progress,
                                   GError       **error)
 {
-  GFile *local_file;
+    GFile *local_file;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (G_IS_FILE (file), NULL);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+    g_return_val_if_fail (G_IS_FILE (file), NULL);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+    g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  local_file = file_remote_get_temp_file (gimp, file);
+    local_file = file_remote_get_temp_file (gimp, file);
 
-  return local_file;
+    return local_file;
 }
 
 gboolean
@@ -207,19 +207,19 @@ file_remote_upload_image_finish (Gimp          *gimp,
                                  GimpProgress  *progress,
                                  GError       **error)
 {
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
-  g_return_val_if_fail (G_IS_FILE (file), FALSE);
-  g_return_val_if_fail (G_IS_FILE (local_file), FALSE);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+    g_return_val_if_fail (G_IS_FILE (file), FALSE);
+    g_return_val_if_fail (G_IS_FILE (local_file), FALSE);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+    g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (! file_remote_copy_file (gimp, local_file, file, UPLOAD,
-                               progress, error))
+    if (! file_remote_copy_file (gimp, local_file, file, UPLOAD,
+                                 progress, error))
     {
-      return FALSE;
+        return FALSE;
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -230,43 +230,43 @@ file_remote_mount_volume_ready (GFile        *file,
                                 GAsyncResult *result,
                                 RemoteMount  *mount)
 {
-  g_file_mount_enclosing_volume_finish (file, result, &mount->error);
+    g_file_mount_enclosing_volume_finish (file, result, &mount->error);
 
-  g_main_loop_quit (mount->main_loop);
+    g_main_loop_quit (mount->main_loop);
 }
 
 static void
 file_remote_mount_file_cancel (GimpProgress *progress,
                                RemoteMount  *mount)
 {
-  mount->cancel = TRUE;
+    mount->cancel = TRUE;
 
-  g_cancellable_cancel (mount->cancellable);
+    g_cancellable_cancel (mount->cancellable);
 }
 
 static GFile *
 file_remote_get_temp_file (Gimp  *gimp,
                            GFile *file)
 {
-  gchar *basename;
-  GFile *temp_file = NULL;
+    gchar *basename;
+    GFile *temp_file = NULL;
 
-  basename = g_path_get_basename (gimp_file_get_utf8_name (file));
+    basename = g_path_get_basename (gimp_file_get_utf8_name (file));
 
-  if (basename)
+    if (basename)
     {
-      const gchar *ext = strchr (basename, '.');
+        const gchar *ext = strchr (basename, '.');
 
-      if (ext && strlen (ext))
-        temp_file = gimp_get_temp_file (gimp, ext + 1);
+        if (ext && strlen (ext))
+            temp_file = gimp_get_temp_file (gimp, ext + 1);
 
-      g_free (basename);
+        g_free (basename);
     }
 
-  if (! temp_file)
-    temp_file = gimp_get_temp_file (gimp, "xxx");
+    if (! temp_file)
+        temp_file = gimp_get_temp_file (gimp, "xxx");
 
-  return temp_file;
+    return temp_file;
 }
 
 static gboolean
@@ -277,54 +277,54 @@ file_remote_copy_file (Gimp            *gimp,
                        GimpProgress    *progress,
                        GError         **error)
 {
-  RemoteProgress  remote_progress = { 0, };
-  gboolean        success;
-  GError         *my_error = NULL;
+    RemoteProgress  remote_progress = { 0, };
+    gboolean        success;
+    GError         *my_error = NULL;
 
-  remote_progress.mode     = mode;
-  remote_progress.progress = progress;
+    remote_progress.mode     = mode;
+    remote_progress.progress = progress;
 
-  if (progress)
+    if (progress)
     {
-      gimp_progress_start (progress, TRUE, _("Opening remote file"));
+        gimp_progress_start (progress, TRUE, _("Opening remote file"));
 
-      remote_progress.cancellable = g_cancellable_new ();
+        remote_progress.cancellable = g_cancellable_new ();
 
-      g_signal_connect (progress, "cancel",
-                        G_CALLBACK (file_remote_copy_file_cancel),
-                        &remote_progress);
+        g_signal_connect (progress, "cancel",
+                          G_CALLBACK (file_remote_copy_file_cancel),
+                          &remote_progress);
 
-      success = g_file_copy (src_file, dest_file, G_FILE_COPY_OVERWRITE,
-                             remote_progress.cancellable,
-                             file_remote_progress_callback, &remote_progress,
-                             &my_error);
+        success = g_file_copy (src_file, dest_file, G_FILE_COPY_OVERWRITE,
+                               remote_progress.cancellable,
+                               file_remote_progress_callback, &remote_progress,
+                               &my_error);
 
-      g_signal_handlers_disconnect_by_func (progress,
-                                            file_remote_copy_file_cancel,
-                                            &remote_progress);
+        g_signal_handlers_disconnect_by_func (progress,
+                                              file_remote_copy_file_cancel,
+                                              &remote_progress);
 
-      g_object_unref (remote_progress.cancellable);
+        g_object_unref (remote_progress.cancellable);
 
-      gimp_progress_set_value (progress, 1.0);
-      gimp_progress_end (progress);
+        gimp_progress_set_value (progress, 1.0);
+        gimp_progress_end (progress);
     }
-  else
+    else
     {
-      success = g_file_copy (src_file, dest_file, G_FILE_COPY_OVERWRITE,
-                             NULL, NULL, NULL,
-                             &my_error);
+        success = g_file_copy (src_file, dest_file, G_FILE_COPY_OVERWRITE,
+                               NULL, NULL, NULL,
+                               &my_error);
     }
 
-  return success;
+    return success;
 }
 
 static void
 file_remote_copy_file_cancel (GimpProgress   *progress,
                               RemoteProgress *remote_progress)
 {
-  remote_progress->cancel = TRUE;
+    remote_progress->cancel = TRUE;
 
-  g_cancellable_cancel (remote_progress->cancellable);
+    g_cancellable_cancel (remote_progress->cancellable);
 }
 
 static void
@@ -332,70 +332,70 @@ file_remote_progress_callback (goffset  current_num_bytes,
                                goffset  total_num_bytes,
                                gpointer user_data)
 {
-  RemoteProgress *progress = user_data;
-  gint64          now;
+    RemoteProgress *progress = user_data;
+    gint64          now;
 
-  /*  update the progress only up to 10 times a second  */
-  now = g_get_monotonic_time ();
+    /*  update the progress only up to 10 times a second  */
+    now = g_get_monotonic_time ();
 
-  if ((now - progress->last_time) / 1000 < 100)
-    return;
+    if ((now - progress->last_time) / 1000 < 100)
+        return;
 
-  progress->last_time = now;
+    progress->last_time = now;
 
-  if (total_num_bytes > 0)
+    if (total_num_bytes > 0)
     {
-      const gchar *format;
-      gchar       *done  = g_format_size (current_num_bytes);
-      gchar       *total = g_format_size (total_num_bytes);
+        const gchar *format;
+        gchar       *done  = g_format_size (current_num_bytes);
+        gchar       *total = g_format_size (total_num_bytes);
 
-      switch (progress->mode)
+        switch (progress->mode)
         {
         case DOWNLOAD:
-          format = _("Downloading image (%s of %s)");
-          break;
+            format = _("Downloading image (%s of %s)");
+            break;
 
         case UPLOAD:
-          format = _("Uploading image (%s of %s)");
-          break;
+            format = _("Uploading image (%s of %s)");
+            break;
 
         default:
-          gimp_assert_not_reached ();
+            gimp_assert_not_reached ();
         }
 
-      gimp_progress_set_text (progress->progress, format, done, total);
-      g_free (total);
-      g_free (done);
+        gimp_progress_set_text (progress->progress, format, done, total);
+        g_free (total);
+        g_free (done);
 
-      gimp_progress_set_value (progress->progress,
-                               (gdouble) current_num_bytes /
-                               (gdouble) total_num_bytes);
+        gimp_progress_set_value (progress->progress,
+                                 (gdouble) current_num_bytes /
+                                 (gdouble) total_num_bytes);
     }
-  else
+    else
     {
-      const gchar *format;
-      gchar       *done = g_format_size (current_num_bytes);
+        const gchar *format;
+        gchar       *done = g_format_size (current_num_bytes);
 
-      switch (progress->mode)
+        switch (progress->mode)
         {
         case DOWNLOAD:
-          format = _("Downloaded %s of image data");
-          break;
+            format = _("Downloaded %s of image data");
+            break;
 
         case UPLOAD:
-          format = _("Uploaded %s of image data");
-          break;
+            format = _("Uploaded %s of image data");
+            break;
 
         default:
-          gimp_assert_not_reached ();
+            gimp_assert_not_reached ();
         }
 
-      gimp_progress_set_text (progress->progress, format, done);
-      g_free (done);
+        gimp_progress_set_text (progress->progress, format, done);
+        g_free (done);
 
-      gimp_progress_pulse (progress->progress);
+        gimp_progress_pulse (progress->progress);
     }
 
-  while (! progress->cancel && g_main_context_pending (NULL))
-    g_main_context_iteration (NULL, FALSE);
+    while (! progress->cancel && g_main_context_pending (NULL))
+        g_main_context_iteration (NULL, FALSE);
 }

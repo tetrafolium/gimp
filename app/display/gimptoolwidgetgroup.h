@@ -38,14 +38,14 @@ typedef struct _GimpToolWidgetGroupClass   GimpToolWidgetGroupClass;
 
 struct _GimpToolWidgetGroup
 {
-  GimpToolWidget              parent_instance;
+    GimpToolWidget              parent_instance;
 
-  GimpToolWidgetGroupPrivate *priv;
+    GimpToolWidgetGroupPrivate *priv;
 };
 
 struct _GimpToolWidgetGroupClass
 {
-  GimpToolWidgetClass  parent_class;
+    GimpToolWidgetClass  parent_class;
 };
 
 
@@ -58,7 +58,7 @@ GimpContainer  * gimp_tool_widget_group_get_children     (GimpToolWidgetGroup *g
 GimpToolWidget * gimp_tool_widget_group_get_focus_widget (GimpToolWidgetGroup *group);
 
 void             gimp_tool_widget_group_set_auto_raise   (GimpToolWidgetGroup *group,
-                                                          gboolean             auto_raise);
+        gboolean             auto_raise);
 gboolean         gimp_tool_widget_group_get_auto_raise   (GimpToolWidgetGroup *group);
 
 

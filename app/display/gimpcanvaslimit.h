@@ -38,47 +38,47 @@ typedef struct _GimpCanvasLimitClass GimpCanvasLimitClass;
 
 struct _GimpCanvasLimit
 {
-  GimpCanvasItem  parent_instance;
+    GimpCanvasItem  parent_instance;
 };
 
 struct _GimpCanvasLimitClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
 GType            gimp_canvas_limit_get_type        (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_limit_new             (GimpDisplayShell *shell,
-                                                    GimpLimitType     type,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gdouble           radius,
-                                                    gdouble           aspect_ratio,
-                                                    gdouble           angle,
-                                                    gboolean          dashed);
+        GimpLimitType     type,
+        gdouble           x,
+        gdouble           y,
+        gdouble           radius,
+        gdouble           aspect_ratio,
+        gdouble           angle,
+        gboolean          dashed);
 
 void             gimp_canvas_limit_get_radii       (GimpCanvasLimit  *limit,
-                                                    gdouble          *rx,
-                                                    gdouble          *ry);
+        gdouble          *rx,
+        gdouble          *ry);
 
 gboolean         gimp_canvas_limit_is_inside       (GimpCanvasLimit  *limit,
-                                                    gdouble           x,
-                                                    gdouble           y);
+        gdouble           x,
+        gdouble           y);
 void             gimp_canvas_limit_boundary_point  (GimpCanvasLimit  *limit,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gdouble          *bx,
-                                                    gdouble          *by);
+        gdouble           x,
+        gdouble           y,
+        gdouble          *bx,
+        gdouble          *by);
 gdouble          gimp_canvas_limit_boundary_radius (GimpCanvasLimit  *limit,
-                                                    gdouble           x,
-                                                    gdouble           y);
+        gdouble           x,
+        gdouble           y);
 
 void             gimp_canvas_limit_center_point    (GimpCanvasLimit  *limit,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gdouble          *cx,
-                                                    gdouble          *cy);
+        gdouble           x,
+        gdouble           y,
+        gdouble          *cx,
+        gdouble          *cy);
 
 
 #endif /* __GIMP_CANVAS_LIMIT_H__ */

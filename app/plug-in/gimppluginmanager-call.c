@@ -59,7 +59,7 @@ static void
 gimp_allow_set_foreground_window (GimpPlugIn *plug_in)
 {
 #ifdef G_OS_WIN32
-  AllowSetForegroundWindow (GetProcessId (plug_in->pid));
+    AllowSetForegroundWindow (GetProcessId (plug_in->pid));
 #endif
 }
 
@@ -71,38 +71,38 @@ gimp_plug_in_manager_call_query (GimpPlugInManager *manager,
                                  GimpContext       *context,
                                  GimpPlugInDef     *plug_in_def)
 {
-  GimpPlugIn *plug_in;
+    GimpPlugIn *plug_in;
 
-  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-  g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
-  g_return_if_fail (GIMP_IS_PLUG_IN_DEF (plug_in_def));
+    g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
+    g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
+    g_return_if_fail (GIMP_IS_PLUG_IN_DEF (plug_in_def));
 
-  plug_in = gimp_plug_in_new (manager, context, NULL,
-                              NULL, plug_in_def->file);
+    plug_in = gimp_plug_in_new (manager, context, NULL,
+                                NULL, plug_in_def->file);
 
-  if (plug_in)
+    if (plug_in)
     {
-      plug_in->plug_in_def = plug_in_def;
+        plug_in->plug_in_def = plug_in_def;
 
-      if (gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_QUERY, TRUE))
+        if (gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_QUERY, TRUE))
         {
-          while (plug_in->open)
+            while (plug_in->open)
             {
-              GimpWireMessage msg;
+                GimpWireMessage msg;
 
-              if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
+                if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
                 {
-                  gimp_plug_in_close (plug_in, TRUE);
+                    gimp_plug_in_close (plug_in, TRUE);
                 }
-              else
+                else
                 {
-                  gimp_plug_in_handle_message (plug_in, &msg);
-                  gimp_wire_destroy (&msg);
+                    gimp_plug_in_handle_message (plug_in, &msg);
+                    gimp_wire_destroy (&msg);
                 }
             }
         }
 
-      g_object_unref (plug_in);
+        g_object_unref (plug_in);
     }
 }
 
@@ -111,38 +111,38 @@ gimp_plug_in_manager_call_init (GimpPlugInManager *manager,
                                 GimpContext       *context,
                                 GimpPlugInDef     *plug_in_def)
 {
-  GimpPlugIn *plug_in;
+    GimpPlugIn *plug_in;
 
-  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-  g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
-  g_return_if_fail (GIMP_IS_PLUG_IN_DEF (plug_in_def));
+    g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
+    g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
+    g_return_if_fail (GIMP_IS_PLUG_IN_DEF (plug_in_def));
 
-  plug_in = gimp_plug_in_new (manager, context, NULL,
-                              NULL, plug_in_def->file);
+    plug_in = gimp_plug_in_new (manager, context, NULL,
+                                NULL, plug_in_def->file);
 
-  if (plug_in)
+    if (plug_in)
     {
-      plug_in->plug_in_def = plug_in_def;
+        plug_in->plug_in_def = plug_in_def;
 
-      if (gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_INIT, TRUE))
+        if (gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_INIT, TRUE))
         {
-          while (plug_in->open)
+            while (plug_in->open)
             {
-              GimpWireMessage msg;
+                GimpWireMessage msg;
 
-              if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
+                if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
                 {
-                  gimp_plug_in_close (plug_in, TRUE);
+                    gimp_plug_in_close (plug_in, TRUE);
                 }
-              else
+                else
                 {
-                  gimp_plug_in_handle_message (plug_in, &msg);
-                  gimp_wire_destroy (&msg);
+                    gimp_plug_in_handle_message (plug_in, &msg);
+                    gimp_wire_destroy (&msg);
                 }
             }
         }
 
-      g_object_unref (plug_in);
+        g_object_unref (plug_in);
     }
 }
 
@@ -155,152 +155,152 @@ gimp_plug_in_manager_call_run (GimpPlugInManager   *manager,
                                gboolean             synchronous,
                                GimpDisplay         *display)
 {
-  GimpValueArray *return_vals = NULL;
-  GimpPlugIn     *plug_in;
+    GimpValueArray *return_vals = NULL;
+    GimpPlugIn     *plug_in;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
-  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-  g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
-  g_return_val_if_fail (args != NULL, NULL);
-  g_return_val_if_fail (display == NULL || GIMP_IS_DISPLAY (display), NULL);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
+    g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
+    g_return_val_if_fail (args != NULL, NULL);
+    g_return_val_if_fail (display == NULL || GIMP_IS_DISPLAY (display), NULL);
 
-  plug_in = gimp_plug_in_new (manager, context, progress, procedure, NULL);
+    plug_in = gimp_plug_in_new (manager, context, progress, procedure, NULL);
 
-  if (plug_in)
+    if (plug_in)
     {
-      GimpCoreConfig    *core_config    = manager->gimp->config;
-      GimpGeglConfig    *gegl_config    = GIMP_GEGL_CONFIG (core_config);
-      GimpDisplayConfig *display_config = GIMP_DISPLAY_CONFIG (core_config);
-      GimpGuiConfig     *gui_config     = GIMP_GUI_CONFIG (core_config);
-      GPConfig           config;
-      GPProcRun          proc_run;
-      gint               display_id;
-      GObject           *monitor;
-      GFile             *icon_theme_dir;
+        GimpCoreConfig    *core_config    = manager->gimp->config;
+        GimpGeglConfig    *gegl_config    = GIMP_GEGL_CONFIG (core_config);
+        GimpDisplayConfig *display_config = GIMP_DISPLAY_CONFIG (core_config);
+        GimpGuiConfig     *gui_config     = GIMP_GUI_CONFIG (core_config);
+        GPConfig           config;
+        GPProcRun          proc_run;
+        gint               display_id;
+        GObject           *monitor;
+        GFile             *icon_theme_dir;
 
-      if (! gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_RUN, FALSE))
+        if (! gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_RUN, FALSE))
         {
-          const gchar *name  = gimp_object_get_name (plug_in);
-          GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
-                                            GIMP_PLUG_IN_EXECUTION_FAILED,
-                                            _("Failed to run plug-in \"%s\""),
-                                            name);
+            const gchar *name  = gimp_object_get_name (plug_in);
+            GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
+                                              GIMP_PLUG_IN_EXECUTION_FAILED,
+                                              _("Failed to run plug-in \"%s\""),
+                                              name);
 
-          g_object_unref (plug_in);
+            g_object_unref (plug_in);
 
-          return_vals = gimp_procedure_get_return_values (GIMP_PROCEDURE (procedure),
-                                                          FALSE, error);
-          g_error_free (error);
+            return_vals = gimp_procedure_get_return_values (GIMP_PROCEDURE (procedure),
+                          FALSE, error);
+            g_error_free (error);
 
-          return return_vals;
+            return return_vals;
         }
 
-      display_id = display ? gimp_display_get_id (display) : -1;
+        display_id = display ? gimp_display_get_id (display) : -1;
 
-      icon_theme_dir = gimp_get_icon_theme_dir (manager->gimp);
+        icon_theme_dir = gimp_get_icon_theme_dir (manager->gimp);
 
-      config.tile_width           = GIMP_PLUG_IN_TILE_WIDTH;
-      config.tile_height          = GIMP_PLUG_IN_TILE_HEIGHT;
-      config.shm_id               = (manager->shm ?
-                                     gimp_plug_in_shm_get_id (manager->shm) :
-                                     -1);
-      config.check_size           = display_config->transparency_size;
-      config.check_type           = display_config->transparency_type;
-      config.show_help_button     = (gui_config->use_help &&
-                                     gui_config->show_help_button);
-      config.use_cpu_accel        = manager->gimp->use_cpu_accel;
-      config.use_opencl           = gegl_config->use_opencl;
-      config.export_color_profile = core_config->export_color_profile;
-      config.export_comment       = core_config->export_comment;
-      config.export_exif          = core_config->export_metadata_exif;
-      config.export_xmp           = core_config->export_metadata_xmp;
-      config.export_iptc          = core_config->export_metadata_iptc;
-      config.default_display_id   = display_id;
-      config.app_name             = (gchar *) g_get_application_name ();
-      config.wm_class             = (gchar *) gimp_get_program_class (manager->gimp);
-      config.display_name         = gimp_get_display_name (manager->gimp,
-                                                           display_id,
-                                                           &monitor,
-                                                           &config.monitor_number);
-      config.timestamp            = gimp_get_user_time (manager->gimp);
-      config.icon_theme_dir       = (icon_theme_dir ?
-                                     g_file_get_path (icon_theme_dir) :
-                                     NULL);
-      config.tile_cache_size      = gegl_config->tile_cache_size;
-      config.swap_path            = gegl_config->swap_path;
-      config.swap_compression     = gegl_config->swap_compression;
-      config.num_processors       = gegl_config->num_processors;
+        config.tile_width           = GIMP_PLUG_IN_TILE_WIDTH;
+        config.tile_height          = GIMP_PLUG_IN_TILE_HEIGHT;
+        config.shm_id               = (manager->shm ?
+                                       gimp_plug_in_shm_get_id (manager->shm) :
+                                       -1);
+        config.check_size           = display_config->transparency_size;
+        config.check_type           = display_config->transparency_type;
+        config.show_help_button     = (gui_config->use_help &&
+                                       gui_config->show_help_button);
+        config.use_cpu_accel        = manager->gimp->use_cpu_accel;
+        config.use_opencl           = gegl_config->use_opencl;
+        config.export_color_profile = core_config->export_color_profile;
+        config.export_comment       = core_config->export_comment;
+        config.export_exif          = core_config->export_metadata_exif;
+        config.export_xmp           = core_config->export_metadata_xmp;
+        config.export_iptc          = core_config->export_metadata_iptc;
+        config.default_display_id   = display_id;
+        config.app_name             = (gchar *) g_get_application_name ();
+        config.wm_class             = (gchar *) gimp_get_program_class (manager->gimp);
+        config.display_name         = gimp_get_display_name (manager->gimp,
+                                      display_id,
+                                      &monitor,
+                                      &config.monitor_number);
+        config.timestamp            = gimp_get_user_time (manager->gimp);
+        config.icon_theme_dir       = (icon_theme_dir ?
+                                       g_file_get_path (icon_theme_dir) :
+                                       NULL);
+        config.tile_cache_size      = gegl_config->tile_cache_size;
+        config.swap_path            = gegl_config->swap_path;
+        config.swap_compression     = gegl_config->swap_compression;
+        config.num_processors       = gegl_config->num_processors;
 
-      proc_run.name     = (gchar *) gimp_object_get_name (procedure);
-      proc_run.n_params = gimp_value_array_length (args);
-      proc_run.params   = _gimp_value_array_to_gp_params (args, FALSE);
+        proc_run.name     = (gchar *) gimp_object_get_name (procedure);
+        proc_run.n_params = gimp_value_array_length (args);
+        proc_run.params   = _gimp_value_array_to_gp_params (args, FALSE);
 
-      if (! gp_config_write (plug_in->my_write, &config, plug_in)     ||
-          ! gp_proc_run_write (plug_in->my_write, &proc_run, plug_in) ||
-          ! gimp_wire_flush (plug_in->my_write, plug_in))
+        if (! gp_config_write (plug_in->my_write, &config, plug_in)     ||
+                ! gp_proc_run_write (plug_in->my_write, &proc_run, plug_in) ||
+                ! gimp_wire_flush (plug_in->my_write, plug_in))
         {
-          const gchar *name  = gimp_object_get_name (plug_in);
-          GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
-                                            GIMP_PLUG_IN_EXECUTION_FAILED,
-                                            _("Failed to run plug-in \"%s\""),
-                                            name);
+            const gchar *name  = gimp_object_get_name (plug_in);
+            GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
+                                              GIMP_PLUG_IN_EXECUTION_FAILED,
+                                              _("Failed to run plug-in \"%s\""),
+                                              name);
 
-          g_free (config.display_name);
-          g_free (config.icon_theme_dir);
+            g_free (config.display_name);
+            g_free (config.icon_theme_dir);
 
-          _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
+            _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
 
-          g_object_unref (plug_in);
+            g_object_unref (plug_in);
 
-          return_vals = gimp_procedure_get_return_values (GIMP_PROCEDURE (procedure),
-                                                          FALSE, error);
-          g_error_free (error);
+            return_vals = gimp_procedure_get_return_values (GIMP_PROCEDURE (procedure),
+                          FALSE, error);
+            g_error_free (error);
 
-          return return_vals;
+            return return_vals;
         }
 
-      g_free (config.display_name);
-      g_free (config.icon_theme_dir);
+        g_free (config.display_name);
+        g_free (config.icon_theme_dir);
 
-      _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
+        _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
 
-      /* If this is an extension,
-       * wait for an installation-confirmation message
-       */
-      if (GIMP_PROCEDURE (procedure)->proc_type == GIMP_PDB_PROC_TYPE_EXTENSION)
+        /* If this is an extension,
+         * wait for an installation-confirmation message
+         */
+        if (GIMP_PROCEDURE (procedure)->proc_type == GIMP_PDB_PROC_TYPE_EXTENSION)
         {
-          plug_in->ext_main_loop = g_main_loop_new (NULL, FALSE);
+            plug_in->ext_main_loop = g_main_loop_new (NULL, FALSE);
 
-          g_main_loop_run (plug_in->ext_main_loop);
+            g_main_loop_run (plug_in->ext_main_loop);
 
-          /*  main_loop is quit in gimp_plug_in_handle_extension_ack()  */
+            /*  main_loop is quit in gimp_plug_in_handle_extension_ack()  */
 
-          g_clear_pointer (&plug_in->ext_main_loop, g_main_loop_unref);
+            g_clear_pointer (&plug_in->ext_main_loop, g_main_loop_unref);
         }
 
-      /* If this plug-in is requested to run synchronously,
-       * wait for its return values
-       */
-      if (synchronous)
+        /* If this plug-in is requested to run synchronously,
+         * wait for its return values
+         */
+        if (synchronous)
         {
-          GimpPlugInProcFrame *proc_frame = &plug_in->main_proc_frame;
+            GimpPlugInProcFrame *proc_frame = &plug_in->main_proc_frame;
 
-          proc_frame->main_loop = g_main_loop_new (NULL, FALSE);
+            proc_frame->main_loop = g_main_loop_new (NULL, FALSE);
 
-          g_main_loop_run (proc_frame->main_loop);
+            g_main_loop_run (proc_frame->main_loop);
 
-          /*  main_loop is quit in gimp_plug_in_handle_proc_return()  */
+            /*  main_loop is quit in gimp_plug_in_handle_proc_return()  */
 
-          g_clear_pointer (&proc_frame->main_loop, g_main_loop_unref);
+            g_clear_pointer (&proc_frame->main_loop, g_main_loop_unref);
 
-          return_vals = gimp_plug_in_proc_frame_get_return_values (proc_frame);
+            return_vals = gimp_plug_in_proc_frame_get_return_values (proc_frame);
         }
 
-      g_object_unref (plug_in);
+        g_object_unref (plug_in);
     }
 
-  return return_vals;
+    return return_vals;
 }
 
 GimpValueArray *
@@ -310,67 +310,67 @@ gimp_plug_in_manager_call_run_temp (GimpPlugInManager      *manager,
                                     GimpTemporaryProcedure *procedure,
                                     GimpValueArray         *args)
 {
-  GimpValueArray *return_vals = NULL;
-  GimpPlugIn     *plug_in;
+    GimpValueArray *return_vals = NULL;
+    GimpPlugIn     *plug_in;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
-  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-  g_return_val_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (procedure), NULL);
-  g_return_val_if_fail (args != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
+    g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+    g_return_val_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (procedure), NULL);
+    g_return_val_if_fail (args != NULL, NULL);
 
-  plug_in = procedure->plug_in;
+    plug_in = procedure->plug_in;
 
-  if (plug_in)
+    if (plug_in)
     {
-      GimpPlugInProcFrame *proc_frame;
-      GPProcRun            proc_run;
+        GimpPlugInProcFrame *proc_frame;
+        GPProcRun            proc_run;
 
-      proc_frame = gimp_plug_in_proc_frame_push (plug_in, context, progress,
-                                                 procedure);
+        proc_frame = gimp_plug_in_proc_frame_push (plug_in, context, progress,
+                     procedure);
 
-      proc_run.name     = (gchar *) gimp_object_get_name (procedure);
-      proc_run.n_params = gimp_value_array_length (args);
-      proc_run.params   = _gimp_value_array_to_gp_params (args, FALSE);
+        proc_run.name     = (gchar *) gimp_object_get_name (procedure);
+        proc_run.n_params = gimp_value_array_length (args);
+        proc_run.params   = _gimp_value_array_to_gp_params (args, FALSE);
 
-      if (! gp_temp_proc_run_write (plug_in->my_write, &proc_run, plug_in) ||
-          ! gimp_wire_flush (plug_in->my_write, plug_in))
+        if (! gp_temp_proc_run_write (plug_in->my_write, &proc_run, plug_in) ||
+                ! gimp_wire_flush (plug_in->my_write, plug_in))
         {
-          const gchar *name  = gimp_object_get_name (plug_in);
-          GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
-                                            GIMP_PLUG_IN_EXECUTION_FAILED,
-                                            _("Failed to run plug-in \"%s\""),
-                                            name);
+            const gchar *name  = gimp_object_get_name (plug_in);
+            GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
+                                              GIMP_PLUG_IN_EXECUTION_FAILED,
+                                              _("Failed to run plug-in \"%s\""),
+                                              name);
 
 
-          _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
-          gimp_plug_in_proc_frame_pop (plug_in);
+            _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
+            gimp_plug_in_proc_frame_pop (plug_in);
 
-          return_vals = gimp_procedure_get_return_values (GIMP_PROCEDURE (procedure),
-                                                          FALSE, error);
-          g_error_free (error);
+            return_vals = gimp_procedure_get_return_values (GIMP_PROCEDURE (procedure),
+                          FALSE, error);
+            g_error_free (error);
 
-          return return_vals;
+            return return_vals;
         }
 
-      gimp_allow_set_foreground_window (plug_in);
+        gimp_allow_set_foreground_window (plug_in);
 
-      _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
+        _gimp_gp_params_free (proc_run.params, proc_run.n_params, FALSE);
 
-      g_object_ref (plug_in);
-      gimp_plug_in_proc_frame_ref (proc_frame);
+        g_object_ref (plug_in);
+        gimp_plug_in_proc_frame_ref (proc_frame);
 
-      gimp_plug_in_main_loop (plug_in);
+        gimp_plug_in_main_loop (plug_in);
 
-      /*  main_loop is quit and proc_frame is popped in
-       *  gimp_plug_in_handle_temp_proc_return()
-       */
+        /*  main_loop is quit and proc_frame is popped in
+         *  gimp_plug_in_handle_temp_proc_return()
+         */
 
-      return_vals = gimp_plug_in_proc_frame_get_return_values (proc_frame);
+        return_vals = gimp_plug_in_proc_frame_get_return_values (proc_frame);
 
-      gimp_plug_in_proc_frame_unref (proc_frame, plug_in);
-      g_object_unref (plug_in);
+        gimp_plug_in_proc_frame_unref (proc_frame, plug_in);
+        g_object_unref (plug_in);
     }
 
-  return return_vals;
+    return return_vals;
 }

@@ -35,17 +35,17 @@ typedef struct _GimpOperationOffsetClass GimpOperationOffsetClass;
 
 struct _GimpOperationOffset
 {
-  GeglOperationFilter  parent_instance;
+    GeglOperationFilter  parent_instance;
 
-  GimpContext         *context;
-  GimpOffsetType       type;
-  gint                 x;
-  gint                 y;
+    GimpContext         *context;
+    GimpOffsetType       type;
+    gint                 x;
+    gint                 y;
 };
 
 struct _GimpOperationOffsetClass
 {
-  GeglOperationFilterClass  parent_class;
+    GeglOperationFilterClass  parent_class;
 };
 
 

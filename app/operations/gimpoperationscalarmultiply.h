@@ -38,15 +38,15 @@ typedef struct _GimpOperationScalarMultiplyClass GimpOperationScalarMultiplyClas
 
 struct _GimpOperationScalarMultiply
 {
-  GeglOperationPointFilter  parent_instance;
+    GeglOperationPointFilter  parent_instance;
 
-  gint                      n_components;
-  gdouble                   factor;
+    gint                      n_components;
+    gdouble                   factor;
 };
 
 struct _GimpOperationScalarMultiplyClass
 {
-  GeglOperationPointFilterClass  parent_class;
+    GeglOperationPointFilterClass  parent_class;
 };
 
 

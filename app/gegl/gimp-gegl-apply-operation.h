@@ -27,25 +27,25 @@
 /*  generic functions, also used by the specific ones below  */
 
 void       gimp_gegl_apply_operation        (GeglBuffer          *src_buffer,
-                                             GimpProgress        *progress,
-                                             const gchar         *undo_desc,
-                                             GeglNode            *operation,
-                                             GeglBuffer          *dest_buffer,
-                                             const GeglRectangle *dest_rect,
-                                             gboolean             crop_input);
+        GimpProgress        *progress,
+        const gchar         *undo_desc,
+        GeglNode            *operation,
+        GeglBuffer          *dest_buffer,
+        const GeglRectangle *dest_rect,
+        gboolean             crop_input);
 
 gboolean   gimp_gegl_apply_cached_operation (GeglBuffer          *src_buffer,
-                                             GimpProgress        *progress,
-                                             const gchar         *undo_desc,
-                                             GeglNode            *operation,
-                                             gboolean             connect_src_buffer,
-                                             GeglBuffer          *dest_buffer,
-                                             const GeglRectangle *dest_rect,
-                                             gboolean             crop_input,
-                                             GeglBuffer          *cache,
-                                             const GeglRectangle *valid_rects,
-                                             gint                 n_valid_rects,
-                                             gboolean             cancelable);
+        GimpProgress        *progress,
+        const gchar         *undo_desc,
+        GeglNode            *operation,
+        gboolean             connect_src_buffer,
+        GeglBuffer          *dest_buffer,
+        const GeglRectangle *dest_rect,
+        gboolean             crop_input,
+        GeglBuffer          *cache,
+        const GeglRectangle *valid_rects,
+        gint                 n_valid_rects,
+        gboolean             cancelable);
 
 
 /*  apply specific operations  */
@@ -110,8 +110,8 @@ void   gimp_gegl_apply_flood           (GeglBuffer             *src_buffer,
 /* UGLY: private enum of gegl:gaussian-blur */
 typedef enum
 {
-  GAUSSIAN_BLUR_ABYSS_NONE,
-  GAUSSIAN_BLUR_ABYSS_CLAMP
+    GAUSSIAN_BLUR_ABYSS_NONE,
+    GAUSSIAN_BLUR_ABYSS_CLAMP
 } GaussianBlurAbyssPolicy;
 
 void   gimp_gegl_apply_gaussian_blur   (GeglBuffer             *src_buffer,

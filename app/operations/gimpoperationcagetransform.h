@@ -38,17 +38,17 @@ typedef struct _GimpOperationCageTransformClass GimpOperationCageTransformClass;
 
 struct _GimpOperationCageTransform
 {
-  GeglOperationComposer  parent_instance;
+    GeglOperationComposer  parent_instance;
 
-  GimpCageConfig        *config;
-  gboolean               fill_plain_color;
+    GimpCageConfig        *config;
+    gboolean               fill_plain_color;
 
-  const Babl            *format_coords;
+    const Babl            *format_coords;
 };
 
 struct _GimpOperationCageTransformClass
 {
-  GeglOperationComposerClass  parent_class;
+    GeglOperationComposerClass  parent_class;
 };
 
 

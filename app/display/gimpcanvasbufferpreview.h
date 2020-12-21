@@ -38,19 +38,19 @@ typedef struct _GimpCanvasBufferPreviewClass GimpCanvasBufferPreviewClass;
 
 struct _GimpCanvasBufferPreview
 {
-  GimpCanvasItem  parent_instance;
+    GimpCanvasItem  parent_instance;
 };
 
 struct _GimpCanvasBufferPreviewClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
 GType            gimp_canvas_buffer_preview_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_buffer_preview_new      (GimpDisplayShell  *shell,
-                                                      GeglBuffer        *buffer);
+        GeglBuffer        *buffer);
 
 
 #endif /* __GIMP_CANVAS_BUFFER_PREVIEW_H__ */

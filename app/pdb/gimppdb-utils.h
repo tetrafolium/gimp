@@ -20,101 +20,101 @@
 
 
 GimpBrush     * gimp_pdb_get_brush              (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GimpPDBDataAccess   access,
-                                                 GError            **error);
+        const gchar        *name,
+        GimpPDBDataAccess   access,
+        GError            **error);
 GimpBrush     * gimp_pdb_get_generated_brush    (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GimpPDBDataAccess   access,
-                                                 GError            **error);
+        const gchar        *name,
+        GimpPDBDataAccess   access,
+        GError            **error);
 GimpDynamics  * gimp_pdb_get_dynamics           (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GimpPDBDataAccess   access,
-                                                 GError            **error);
+        const gchar        *name,
+        GimpPDBDataAccess   access,
+        GError            **error);
 GimpMybrush   * gimp_pdb_get_mybrush            (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GimpPDBDataAccess   access,
-                                                 GError            **error);
+        const gchar        *name,
+        GimpPDBDataAccess   access,
+        GError            **error);
 GimpPattern   * gimp_pdb_get_pattern            (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GError            **error);
+        const gchar        *name,
+        GError            **error);
 GimpGradient  * gimp_pdb_get_gradient           (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GimpPDBDataAccess   access,
-                                                 GError            **error);
+        const gchar        *name,
+        GimpPDBDataAccess   access,
+        GError            **error);
 GimpPalette   * gimp_pdb_get_palette            (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GimpPDBDataAccess   access,
-                                                 GError            **error);
+        const gchar        *name,
+        GimpPDBDataAccess   access,
+        GError            **error);
 GimpFont      * gimp_pdb_get_font               (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GError            **error);
+        const gchar        *name,
+        GError            **error);
 GimpBuffer    * gimp_pdb_get_buffer             (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GError            **error);
+        const gchar        *name,
+        GError            **error);
 GimpPaintInfo * gimp_pdb_get_paint_info         (Gimp               *gimp,
-                                                 const gchar        *name,
-                                                 GError            **error);
+        const gchar        *name,
+        GError            **error);
 
 gboolean        gimp_pdb_item_is_attached       (GimpItem           *item,
-                                                 GimpImage          *image,
-                                                 GimpPDBItemModify   modify,
-                                                 GError            **error);
+        GimpImage          *image,
+        GimpPDBItemModify   modify,
+        GError            **error);
 gboolean        gimp_pdb_item_is_in_tree        (GimpItem           *item,
-                                                 GimpImage          *image,
-                                                 GimpPDBItemModify   modify,
-                                                 GError            **error);
+        GimpImage          *image,
+        GimpPDBItemModify   modify,
+        GError            **error);
 gboolean        gimp_pdb_item_is_in_same_tree   (GimpItem           *item,
-                                                 GimpItem           *item2,
-                                                 GimpImage          *image,
-                                                 GError            **error);
+        GimpItem           *item2,
+        GimpImage          *image,
+        GError            **error);
 gboolean        gimp_pdb_item_is_not_ancestor   (GimpItem           *item,
-                                                 GimpItem           *not_descendant,
-                                                 GError            **error);
+        GimpItem           *not_descendant,
+        GError            **error);
 gboolean        gimp_pdb_item_is_floating       (GimpItem           *item,
-                                                 GimpImage          *dest_image,
-                                                 GError            **error);
+        GimpImage          *dest_image,
+        GError            **error);
 gboolean        gimp_pdb_item_is_modifiable     (GimpItem           *item,
-                                                 GimpPDBItemModify   modify,
-                                                 GError            **error);
+        GimpPDBItemModify   modify,
+        GError            **error);
 gboolean        gimp_pdb_item_is_group          (GimpItem           *item,
-                                                 GError            **error);
+        GError            **error);
 gboolean        gimp_pdb_item_is_not_group      (GimpItem           *item,
-                                                 GError            **error);
+        GError            **error);
 
 gboolean        gimp_pdb_layer_is_text_layer    (GimpLayer          *layer,
-                                                 GimpPDBItemModify   modify,
-                                                 GError            **error);
+        GimpPDBItemModify   modify,
+        GError            **error);
 
 gboolean        gimp_pdb_image_is_base_type     (GimpImage          *image,
-                                                 GimpImageBaseType   type,
-                                                 GError            **error);
+        GimpImageBaseType   type,
+        GError            **error);
 gboolean        gimp_pdb_image_is_not_base_type (GimpImage          *image,
-                                                 GimpImageBaseType   type,
-                                                 GError            **error);
+        GimpImageBaseType   type,
+        GError            **error);
 
 gboolean        gimp_pdb_image_is_precision     (GimpImage          *image,
-                                                 GimpPrecision       precision,
-                                                 GError            **error);
+        GimpPrecision       precision,
+        GError            **error);
 gboolean        gimp_pdb_image_is_not_precision (GimpImage          *image,
-                                                 GimpPrecision       precision,
-                                                 GError            **error);
+        GimpPrecision       precision,
+        GError            **error);
 
 GimpGuide     * gimp_pdb_image_get_guide        (GimpImage          *image,
-                                                 gint                guide_id,
-                                                 GError            **error);
+        gint                guide_id,
+        GError            **error);
 GimpSamplePoint *
-                gimp_pdb_image_get_sample_point (GimpImage          *image,
-                                                 gint                sample_point_id,
-                                                 GError            **error);
+gimp_pdb_image_get_sample_point (GimpImage          *image,
+                                 gint                sample_point_id,
+                                 GError            **error);
 
 GimpStroke    * gimp_pdb_get_vectors_stroke     (GimpVectors        *vectors,
-                                                 gint                stroke_id,
-                                                 GimpPDBItemModify   modify,
-                                                 GError            **error);
+        gint                stroke_id,
+        GimpPDBItemModify   modify,
+        GError            **error);
 
 gboolean        gimp_pdb_is_canonical_procedure (const gchar        *procedure_name,
-                                                 GError            **error);
+        GError            **error);
 
 
 #endif /* __GIMP_PDB_UTILS_H__ */

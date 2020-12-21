@@ -38,12 +38,12 @@ typedef struct _GimpOperationColorBalanceClass GimpOperationColorBalanceClass;
 
 struct _GimpOperationColorBalance
 {
-  GimpOperationPointFilter  parent_instance;
+    GimpOperationPointFilter  parent_instance;
 };
 
 struct _GimpOperationColorBalanceClass
 {
-  GimpOperationPointFilterClass  parent_class;
+    GimpOperationPointFilterClass  parent_class;
 };
 
 

@@ -38,12 +38,12 @@ typedef struct _GimpOperationReplaceClass GimpOperationReplaceClass;
 
 struct _GimpOperationReplace
 {
-  GimpOperationLayerMode parent_instance;
+    GimpOperationLayerMode parent_instance;
 };
 
 struct _GimpOperationReplaceClass
 {
-  GimpOperationLayerModeClass parent_class;
+    GimpOperationLayerModeClass parent_class;
 };
 
 

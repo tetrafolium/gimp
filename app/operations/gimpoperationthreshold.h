@@ -38,16 +38,16 @@ typedef struct _GimpOperationThresholdClass GimpOperationThresholdClass;
 
 struct _GimpOperationThreshold
 {
-  GimpOperationPointFilter  parent_instance;
+    GimpOperationPointFilter  parent_instance;
 
-  GimpHistogramChannel      channel;
-  gdouble                   low;
-  gdouble                   high;
+    GimpHistogramChannel      channel;
+    gdouble                   low;
+    gdouble                   high;
 };
 
 struct _GimpOperationThresholdClass
 {
-  GimpOperationPointFilterClass  parent_class;
+    GimpOperationPointFilterClass  parent_class;
 };
 
 

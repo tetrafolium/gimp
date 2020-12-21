@@ -38,12 +38,12 @@ typedef struct _GimpOperationHsvValueLegacyClass GimpOperationHsvValueLegacyClas
 
 struct _GimpOperationHsvValueLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationHsvValueLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

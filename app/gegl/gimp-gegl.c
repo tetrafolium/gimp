@@ -53,59 +53,59 @@ static void  gimp_gegl_notify_use_opencl       (GimpGeglConfig *config);
 void
 gimp_gegl_init (Gimp *gimp)
 {
-  GimpGeglConfig *config;
+    GimpGeglConfig *config;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  config = GIMP_GEGL_CONFIG (gimp->config);
+    config = GIMP_GEGL_CONFIG (gimp->config);
 
-  /* make sure temp and swap directories exist */
-  gimp_gegl_notify_temp_path (config);
-  gimp_gegl_notify_swap_path (config);
+    /* make sure temp and swap directories exist */
+    gimp_gegl_notify_temp_path (config);
+    gimp_gegl_notify_swap_path (config);
 
-  g_object_set (gegl_config (),
-                "swap-compression", config->swap_compression,
-                "tile-cache-size",  (guint64) config->tile_cache_size,
-                "threads",          config->num_processors,
-                "use-opencl",       config->use_opencl,
-                NULL);
+    g_object_set (gegl_config (),
+                  "swap-compression", config->swap_compression,
+                  "tile-cache-size",  (guint64) config->tile_cache_size,
+                  "threads",          config->num_processors,
+                  "use-opencl",       config->use_opencl,
+                  NULL);
 
-  gimp_parallel_init (gimp);
+    gimp_parallel_init (gimp);
 
-  g_signal_connect (config, "notify::temp-path",
-                    G_CALLBACK (gimp_gegl_notify_temp_path),
-                    NULL);
-  g_signal_connect (config, "notify::swap-path",
-                    G_CALLBACK (gimp_gegl_notify_swap_path),
-                    NULL);
-  g_signal_connect (config, "notify::swap-compression",
-                    G_CALLBACK (gimp_gegl_notify_swap_compression),
-                    NULL);
-  g_signal_connect (config, "notify::num-processors",
-                    G_CALLBACK (gimp_gegl_notify_num_processors),
-                    NULL);
-  g_signal_connect (config, "notify::tile-cache-size",
-                    G_CALLBACK (gimp_gegl_notify_tile_cache_size),
-                    NULL);
-  g_signal_connect (config, "notify::num-processors",
-                    G_CALLBACK (gimp_gegl_notify_num_processors),
-                    NULL);
-  g_signal_connect (config, "notify::use-opencl",
-                    G_CALLBACK (gimp_gegl_notify_use_opencl),
-                    NULL);
+    g_signal_connect (config, "notify::temp-path",
+                      G_CALLBACK (gimp_gegl_notify_temp_path),
+                      NULL);
+    g_signal_connect (config, "notify::swap-path",
+                      G_CALLBACK (gimp_gegl_notify_swap_path),
+                      NULL);
+    g_signal_connect (config, "notify::swap-compression",
+                      G_CALLBACK (gimp_gegl_notify_swap_compression),
+                      NULL);
+    g_signal_connect (config, "notify::num-processors",
+                      G_CALLBACK (gimp_gegl_notify_num_processors),
+                      NULL);
+    g_signal_connect (config, "notify::tile-cache-size",
+                      G_CALLBACK (gimp_gegl_notify_tile_cache_size),
+                      NULL);
+    g_signal_connect (config, "notify::num-processors",
+                      G_CALLBACK (gimp_gegl_notify_num_processors),
+                      NULL);
+    g_signal_connect (config, "notify::use-opencl",
+                      G_CALLBACK (gimp_gegl_notify_use_opencl),
+                      NULL);
 
-  gimp_babl_init ();
+    gimp_babl_init ();
 
-  gimp_operations_init (gimp);
+    gimp_operations_init (gimp);
 }
 
 void
 gimp_gegl_exit (Gimp *gimp)
 {
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+    g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  gimp_operations_exit (gimp);
-  gimp_parallel_exit (gimp);
+    gimp_operations_exit (gimp);
+    gimp_parallel_exit (gimp);
 }
 
 
@@ -114,59 +114,59 @@ gimp_gegl_exit (Gimp *gimp)
 static void
 gimp_gegl_notify_temp_path (GimpGeglConfig *config)
 {
-  GFile *file = gimp_file_new_for_config_path (config->temp_path, NULL);
+    GFile *file = gimp_file_new_for_config_path (config->temp_path, NULL);
 
-  if (! g_file_query_exists (file, NULL))
-    g_file_make_directory_with_parents (file, NULL, NULL);
+    if (! g_file_query_exists (file, NULL))
+        g_file_make_directory_with_parents (file, NULL, NULL);
 
-  g_object_unref (file);
+    g_object_unref (file);
 }
 
 static void
 gimp_gegl_notify_swap_path (GimpGeglConfig *config)
 {
-  GFile *file = gimp_file_new_for_config_path (config->swap_path, NULL);
-  gchar *path = g_file_get_path (file);
+    GFile *file = gimp_file_new_for_config_path (config->swap_path, NULL);
+    gchar *path = g_file_get_path (file);
 
-  if (! g_file_query_exists (file, NULL))
-    g_file_make_directory_with_parents (file, NULL, NULL);
+    if (! g_file_query_exists (file, NULL))
+        g_file_make_directory_with_parents (file, NULL, NULL);
 
-  g_object_set (gegl_config (),
-                "swap", path,
-                NULL);
+    g_object_set (gegl_config (),
+                  "swap", path,
+                  NULL);
 
-  g_free (path);
-  g_object_unref (file);
+    g_free (path);
+    g_object_unref (file);
 }
 
 static void
 gimp_gegl_notify_swap_compression (GimpGeglConfig *config)
 {
-  g_object_set (gegl_config (),
-                "swap-compression", config->swap_compression,
-                NULL);
+    g_object_set (gegl_config (),
+                  "swap-compression", config->swap_compression,
+                  NULL);
 }
 
 static void
 gimp_gegl_notify_tile_cache_size (GimpGeglConfig *config)
 {
-  g_object_set (gegl_config (),
-                "tile-cache-size", (guint64) config->tile_cache_size,
-                NULL);
+    g_object_set (gegl_config (),
+                  "tile-cache-size", (guint64) config->tile_cache_size,
+                  NULL);
 }
 
 static void
 gimp_gegl_notify_num_processors (GimpGeglConfig *config)
 {
-  g_object_set (gegl_config (),
-                "threads", config->num_processors,
-                NULL);
+    g_object_set (gegl_config (),
+                  "threads", config->num_processors,
+                  NULL);
 }
 
 static void
 gimp_gegl_notify_use_opencl (GimpGeglConfig *config)
 {
-  g_object_set (gegl_config (),
-                "use-opencl", config->use_opencl,
-                NULL);
+    g_object_set (gegl_config (),
+                  "use-opencl", config->use_opencl,
+                  NULL);
 }

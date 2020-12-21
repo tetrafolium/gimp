@@ -39,34 +39,34 @@ typedef struct _GimpToolCompassClass   GimpToolCompassClass;
 
 struct _GimpToolCompass
 {
-  GimpToolWidget          parent_instance;
+    GimpToolWidget          parent_instance;
 
-  GimpToolCompassPrivate *private;
+    GimpToolCompassPrivate *private;
 };
 
 struct _GimpToolCompassClass
 {
-  GimpToolWidgetClass  parent_class;
+    GimpToolWidgetClass  parent_class;
 
-  void (* create_guides) (GimpToolCompass *compass,
-                          gint             x,
-                          gint             y,
-                          gboolean         horizontal,
-                          gboolean         vertical);
+    void (* create_guides) (GimpToolCompass *compass,
+                            gint             x,
+                            gint             y,
+                            gboolean         horizontal,
+                            gboolean         vertical);
 };
 
 
 GType            gimp_tool_compass_get_type (void) G_GNUC_CONST;
 
 GimpToolWidget * gimp_tool_compass_new      (GimpDisplayShell       *shell,
-                                             GimpCompassOrientation  orinetation,
-                                             gint                    n_points,
-                                             gint                    x1,
-                                             gint                    y1,
-                                             gint                    x2,
-                                             gint                    y2,
-                                             gint                    y3,
-                                             gint                    x3);
+        GimpCompassOrientation  orinetation,
+        gint                    n_points,
+        gint                    x1,
+        gint                    y1,
+        gint                    x2,
+        gint                    y2,
+        gint                    y3,
+        gint                    x3);
 
 
 #endif /* __GIMP_TOOL_COMPASS_H__ */

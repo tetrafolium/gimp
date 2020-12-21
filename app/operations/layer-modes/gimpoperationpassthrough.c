@@ -35,18 +35,18 @@ G_DEFINE_TYPE (GimpOperationPassThrough, gimp_operation_pass_through,
 static void
 gimp_operation_pass_through_class_init (GimpOperationPassThroughClass *klass)
 {
-  GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-  GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
+    GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
+    GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:pass-through",
-                                 "description", "GIMP pass through mode operation",
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:pass-through",
+                                   "description", "GIMP pass through mode operation",
+                                   NULL);
 
-  /* don't use REPLACE mode's specialized get_affected_region(); PASS_THROUGH
-   * behaves like an ordinary layer mode here.
-   */
-  layer_mode_class->get_affected_region = NULL;
+    /* don't use REPLACE mode's specialized get_affected_region(); PASS_THROUGH
+     * behaves like an ordinary layer mode here.
+     */
+    layer_mode_class->get_affected_region = NULL;
 }
 
 static void

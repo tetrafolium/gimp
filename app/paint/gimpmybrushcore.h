@@ -35,14 +35,14 @@ typedef struct _GimpMybrushCoreClass   GimpMybrushCoreClass;
 
 struct _GimpMybrushCore
 {
-  GimpPaintCore           parent_instance;
+    GimpPaintCore           parent_instance;
 
-  GimpMybrushCorePrivate *private;
+    GimpMybrushCorePrivate *private;
 };
 
 struct _GimpMybrushCoreClass
 {
-  GimpPaintCoreClass  parent_class;
+    GimpPaintCoreClass  parent_class;
 };
 
 

@@ -33,9 +33,9 @@ typedef struct _GimpPlugInData GimpPlugInData;
 
 struct _GimpPlugInData
 {
-  gchar  *identifier;
-  gint32  bytes;
-  guint8 *data;
+    gchar  *identifier;
+    gint32  bytes;
+    guint8 *data;
 };
 
 
@@ -44,25 +44,25 @@ struct _GimpPlugInData
 void
 gimp_plug_in_manager_data_free (GimpPlugInManager *manager)
 {
-  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
+    g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
 
-  if (manager->data_list)
+    if (manager->data_list)
     {
-      GList *list;
+        GList *list;
 
-      for (list = manager->data_list;
-           list;
-           list = g_list_next (list))
+        for (list = manager->data_list;
+                list;
+                list = g_list_next (list))
         {
-          GimpPlugInData *data = list->data;
+            GimpPlugInData *data = list->data;
 
-          g_free (data->identifier);
-          g_free (data->data);
-          g_slice_free (GimpPlugInData, data);
+            g_free (data->identifier);
+            g_free (data->data);
+            g_slice_free (GimpPlugInData, data);
         }
 
-      g_list_free (manager->data_list);
-      manager->data_list = NULL;
+        g_list_free (manager->data_list);
+        manager->data_list = NULL;
     }
 }
 
@@ -72,37 +72,37 @@ gimp_plug_in_manager_set_data (GimpPlugInManager *manager,
                                gint32             bytes,
                                const guint8      *data)
 {
-  GimpPlugInData *plug_in_data;
-  GList          *list;
+    GimpPlugInData *plug_in_data;
+    GList          *list;
 
-  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-  g_return_if_fail (identifier != NULL);
-  g_return_if_fail (bytes > 0);
-  g_return_if_fail (data != NULL);
+    g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
+    g_return_if_fail (identifier != NULL);
+    g_return_if_fail (bytes > 0);
+    g_return_if_fail (data != NULL);
 
-  for (list = manager->data_list; list; list = g_list_next (list))
+    for (list = manager->data_list; list; list = g_list_next (list))
     {
-      plug_in_data = list->data;
+        plug_in_data = list->data;
 
-      if (! strcmp (plug_in_data->identifier, identifier))
-        break;
+        if (! strcmp (plug_in_data->identifier, identifier))
+            break;
     }
 
-  /* If there isn't already data with the specified identifier, create one */
-  if (list == NULL)
+    /* If there isn't already data with the specified identifier, create one */
+    if (list == NULL)
     {
-      plug_in_data = g_slice_new0 (GimpPlugInData);
-      plug_in_data->identifier = g_strdup (identifier);
+        plug_in_data = g_slice_new0 (GimpPlugInData);
+        plug_in_data->identifier = g_strdup (identifier);
 
-      manager->data_list = g_list_prepend (manager->data_list, plug_in_data);
+        manager->data_list = g_list_prepend (manager->data_list, plug_in_data);
     }
-  else
+    else
     {
-      g_free (plug_in_data->data);
+        g_free (plug_in_data->data);
     }
 
-  plug_in_data->bytes = bytes;
-  plug_in_data->data  = g_memdup (data, bytes);
+    plug_in_data->bytes = bytes;
+    plug_in_data->data  = g_memdup (data, bytes);
 }
 
 const guint8 *
@@ -110,24 +110,24 @@ gimp_plug_in_manager_get_data (GimpPlugInManager *manager,
                                const gchar       *identifier,
                                gint32            *bytes)
 {
-  GList *list;
+    GList *list;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
-  g_return_val_if_fail (identifier != NULL, NULL);
-  g_return_val_if_fail (bytes != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
+    g_return_val_if_fail (identifier != NULL, NULL);
+    g_return_val_if_fail (bytes != NULL, NULL);
 
-  *bytes = 0;
+    *bytes = 0;
 
-  for (list = manager->data_list; list; list = g_list_next (list))
+    for (list = manager->data_list; list; list = g_list_next (list))
     {
-      GimpPlugInData *plug_in_data = list->data;
+        GimpPlugInData *plug_in_data = list->data;
 
-      if (! strcmp (plug_in_data->identifier, identifier))
+        if (! strcmp (plug_in_data->identifier, identifier))
         {
-          *bytes = plug_in_data->bytes;
-          return plug_in_data->data;
+            *bytes = plug_in_data->bytes;
+            return plug_in_data->data;
         }
     }
 
-  return NULL;
+    return NULL;
 }

@@ -30,13 +30,13 @@
 
 
 static gboolean                   gimp_operation_anti_erase_process             (GeglOperation          *op,
-                                                                                 void                   *in,
-                                                                                 void                   *layer,
-                                                                                 void                   *mask,
-                                                                                 void                   *out,
-                                                                                 glong                   samples,
-                                                                                 const GeglRectangle    *roi,
-                                                                                 gint                    level);
+        void                   *in,
+        void                   *layer,
+        void                   *mask,
+        void                   *out,
+        glong                   samples,
+        const GeglRectangle    *roi,
+        gint                    level);
 static GimpLayerCompositeRegion   gimp_operation_anti_erase_get_affected_region (GimpOperationLayerMode *layer_mode);
 
 
@@ -47,16 +47,16 @@ G_DEFINE_TYPE (GimpOperationAntiErase, gimp_operation_anti_erase,
 static void
 gimp_operation_anti_erase_class_init (GimpOperationAntiEraseClass *klass)
 {
-  GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-  GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
+    GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
+    GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:anti-erase",
-                                 "description", "GIMP anti erase mode operation",
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:anti-erase",
+                                   "description", "GIMP anti erase mode operation",
+                                   NULL);
 
-  layer_mode_class->process             = gimp_operation_anti_erase_process;
-  layer_mode_class->get_affected_region = gimp_operation_anti_erase_get_affected_region;
+    layer_mode_class->process             = gimp_operation_anti_erase_process;
+    layer_mode_class->get_affected_region = gimp_operation_anti_erase_get_affected_region;
 }
 
 static void
@@ -74,115 +74,115 @@ gimp_operation_anti_erase_process (GeglOperation       *op,
                                    const GeglRectangle *roi,
                                    gint                 level)
 {
-  GimpOperationLayerMode *layer_mode = (gpointer) op;
-  gfloat                 *in         = in_p;
-  gfloat                 *out        = out_p;
-  gfloat                 *layer      = layer_p;
-  gfloat                 *mask       = mask_p;
-  gfloat                  opacity    = layer_mode->opacity;
-  const gboolean          has_mask   = mask != NULL;
+    GimpOperationLayerMode *layer_mode = (gpointer) op;
+    gfloat                 *in         = in_p;
+    gfloat                 *out        = out_p;
+    gfloat                 *layer      = layer_p;
+    gfloat                 *mask       = mask_p;
+    gfloat                  opacity    = layer_mode->opacity;
+    const gboolean          has_mask   = mask != NULL;
 
-  switch (layer_mode->composite_mode)
+    switch (layer_mode->composite_mode)
     {
     case GIMP_LAYER_COMPOSITE_UNION:
     case GIMP_LAYER_COMPOSITE_AUTO:
-      while (samples--)
+        while (samples--)
         {
-          gfloat value = opacity;
-          gint   b;
+            gfloat value = opacity;
+            gint   b;
 
-          if (has_mask)
-            value *= *mask;
+            if (has_mask)
+                value *= *mask;
 
-          out[ALPHA] = in[ALPHA] + (1.0 - in[ALPHA]) * layer[ALPHA] * value;
+            out[ALPHA] = in[ALPHA] + (1.0 - in[ALPHA]) * layer[ALPHA] * value;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = in[b];
+                out[b] = in[b];
             }
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
 
     case GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP:
-      while (samples--)
+        while (samples--)
         {
-          gint b;
+            gint b;
 
-          out[ALPHA] = in[ALPHA];
+            out[ALPHA] = in[ALPHA];
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = in[b];
+                out[b] = in[b];
             }
 
-          in  += 4;
-          out += 4;
+            in  += 4;
+            out += 4;
         }
-      break;
+        break;
 
     case GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER:
-      while (samples--)
+        while (samples--)
         {
-          gfloat value = opacity;
-          gint   b;
+            gfloat value = opacity;
+            gint   b;
 
-          if (has_mask)
-            value *= *mask;
+            if (has_mask)
+                value *= *mask;
 
-          out[ALPHA] = layer[ALPHA] * value;
+            out[ALPHA] = layer[ALPHA] * value;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = in[b];
+                out[b] = in[b];
             }
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
 
     case GIMP_LAYER_COMPOSITE_INTERSECTION:
-      while (samples--)
+        while (samples--)
         {
-          gfloat value = opacity;
-          gint   b;
+            gfloat value = opacity;
+            gint   b;
 
-          if (has_mask)
-            value *= *mask;
+            if (has_mask)
+                value *= *mask;
 
-          out[ALPHA] = in[ALPHA] * layer[ALPHA] * value;
+            out[ALPHA] = in[ALPHA] * layer[ALPHA] * value;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = in[b];
+                out[b] = in[b];
             }
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
     }
 
-  return TRUE;
+    return TRUE;
 }
 
 static GimpLayerCompositeRegion
 gimp_operation_anti_erase_get_affected_region (GimpOperationLayerMode *layer_mode)
 {
-  return GIMP_LAYER_COMPOSITE_REGION_SOURCE;
+    return GIMP_LAYER_COMPOSITE_REGION_SOURCE;
 }

@@ -38,14 +38,14 @@ typedef struct _GimpCursorViewPrivate GimpCursorViewPrivate;
 
 struct _GimpCursorView
 {
-  GimpEditor             parent_instance;
+    GimpEditor             parent_instance;
 
-  GimpCursorViewPrivate *priv;
+    GimpCursorViewPrivate *priv;
 };
 
 struct _GimpCursorViewClass
 {
-  GimpEditorClass  parent_class;
+    GimpEditorClass  parent_class;
 };
 
 
@@ -54,14 +54,14 @@ GType       gimp_cursor_view_get_type          (void) G_GNUC_CONST;
 GtkWidget * gimp_cursor_view_new               (GimpMenuFactory *menu_factory);
 
 void        gimp_cursor_view_set_sample_merged (GimpCursorView  *view,
-                                                gboolean         sample_merged);
+        gboolean         sample_merged);
 gboolean    gimp_cursor_view_get_sample_merged (GimpCursorView  *view);
 
 void        gimp_cursor_view_update_cursor     (GimpCursorView  *view,
-                                                GimpImage       *image,
-                                                GimpUnit         shell_unit,
-                                                gdouble          x,
-                                                gdouble          y);
+        GimpImage       *image,
+        GimpUnit         shell_unit,
+        gdouble          x,
+        gdouble          y);
 void        gimp_cursor_view_clear_cursor      (GimpCursorView  *view);
 
 

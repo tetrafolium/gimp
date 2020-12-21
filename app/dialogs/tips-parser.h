@@ -26,8 +26,8 @@ typedef struct _GimpTip GimpTip;
 
 struct _GimpTip
 {
-  gchar *text;
-  gchar *help_id;
+    gchar *text;
+    gchar *help_id;
 };
 
 

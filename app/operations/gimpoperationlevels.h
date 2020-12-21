@@ -38,20 +38,20 @@ typedef struct _GimpOperationLevelsClass GimpOperationLevelsClass;
 
 struct _GimpOperationLevels
 {
-  GimpOperationPointFilter  parent_instance;
+    GimpOperationPointFilter  parent_instance;
 };
 
 struct _GimpOperationLevelsClass
 {
-  GimpOperationPointFilterClass  parent_class;
+    GimpOperationPointFilterClass  parent_class;
 };
 
 
 GType     gimp_operation_levels_get_type  (void) G_GNUC_CONST;
 
 gdouble   gimp_operation_levels_map_input (GimpLevelsConfig     *config,
-                                           GimpHistogramChannel  channel,
-                                           gdouble               value);
+        GimpHistogramChannel  channel,
+        gdouble               value);
 
 
 #endif /* __GIMP_OPERATION_LEVELS_H__ */

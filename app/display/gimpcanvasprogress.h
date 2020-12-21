@@ -38,21 +38,21 @@ typedef struct _GimpCanvasProgressClass GimpCanvasProgressClass;
 
 struct _GimpCanvasProgress
 {
-  GimpCanvasItem  parent_instance;
+    GimpCanvasItem  parent_instance;
 };
 
 struct _GimpCanvasProgressClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
 GType            gimp_canvas_progress_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_progress_new      (GimpDisplayShell *shell,
-                                                GimpHandleAnchor  anchor,
-                                                gdouble           x,
-                                                gdouble           y);
+        GimpHandleAnchor  anchor,
+        gdouble           x,
+        gdouble           y);
 
 
 #endif /* __GIMP_CANVAS_PROGRESS_H__ */

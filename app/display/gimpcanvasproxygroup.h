@@ -38,12 +38,12 @@ typedef struct _GimpCanvasProxyGroupClass GimpCanvasProxyGroupClass;
 
 struct _GimpCanvasProxyGroup
 {
-  GimpCanvasGroup  parent_instance;
+    GimpCanvasGroup  parent_instance;
 };
 
 struct _GimpCanvasProxyGroupClass
 {
-  GimpCanvasGroupClass  parent_class;
+    GimpCanvasGroupClass  parent_class;
 };
 
 
@@ -52,12 +52,12 @@ GType            gimp_canvas_proxy_group_get_type    (void) G_GNUC_CONST;
 GimpCanvasItem * gimp_canvas_proxy_group_new         (GimpDisplayShell     *shell);
 
 void             gimp_canvas_proxy_group_add_item    (GimpCanvasProxyGroup *group,
-                                                      gpointer              object,
-                                                      GimpCanvasItem       *proxy_item);
+        gpointer              object,
+        GimpCanvasItem       *proxy_item);
 void             gimp_canvas_proxy_group_remove_item (GimpCanvasProxyGroup *group,
-                                                      gpointer              object);
+        gpointer              object);
 GimpCanvasItem * gimp_canvas_proxy_group_get_item    (GimpCanvasProxyGroup *group,
-                                                      gpointer              object);
+        gpointer              object);
 
 
 #endif /* __GIMP_CANVAS_PROXY_GROUP_H__ */

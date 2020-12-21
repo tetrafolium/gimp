@@ -24,8 +24,8 @@ GimpContainer * gimp_displays_get_dirty_images (Gimp      *gimp);
 void            gimp_displays_delete           (Gimp      *gimp);
 void            gimp_displays_close            (Gimp      *gimp);
 void            gimp_displays_reconnect        (Gimp      *gimp,
-                                                GimpImage *old,
-                                                GimpImage *new);
+        GimpImage *old,
+        GimpImage *new);
 
 gint            gimp_displays_get_num_visible  (Gimp      *gimp);
 

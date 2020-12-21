@@ -39,12 +39,12 @@ typedef struct _GimpOperationSplitClass GimpOperationSplitClass;
 
 struct _GimpOperationSplit
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationSplitClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

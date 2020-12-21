@@ -37,19 +37,19 @@ typedef struct _GimpOperationMaskComponentsClass GimpOperationMaskComponentsClas
 
 struct _GimpOperationMaskComponents
 {
-  GeglOperationPointComposer  parent_instance;
+    GeglOperationPointComposer  parent_instance;
 
-  GimpComponentMask           mask;
-  gdouble                     alpha;
+    GimpComponentMask           mask;
+    gdouble                     alpha;
 
-  guint32                     alpha_value;
-  gpointer                    process;
-  const Babl                 *format;
+    guint32                     alpha_value;
+    gpointer                    process;
+    const Babl                 *format;
 };
 
 struct _GimpOperationMaskComponentsClass
 {
-  GeglOperationPointComposerClass  parent_class;
+    GeglOperationPointComposerClass  parent_class;
 };
 
 
@@ -58,11 +58,11 @@ GType        gimp_operation_mask_components_get_type   (void) G_GNUC_CONST;
 const Babl * gimp_operation_mask_components_get_format (const Babl        *input_format);
 
 void         gimp_operation_mask_components_process    (const Babl        *format,
-                                                        gconstpointer      in,
-                                                        gconstpointer      aux,
-                                                        gpointer           out,
-                                                        gint               n,
-                                                        GimpComponentMask  mask);
+        gconstpointer      in,
+        gconstpointer      aux,
+        gpointer           out,
+        gint               n,
+        GimpComponentMask  mask);
 
 
 #endif /* __GIMP_OPERATION_MASK_COMPONENTS_H__ */

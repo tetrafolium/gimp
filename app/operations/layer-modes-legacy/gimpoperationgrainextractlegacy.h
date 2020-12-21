@@ -38,12 +38,12 @@ typedef struct _GimpOperationGrainExtractLegacyClass GimpOperationGrainExtractLe
 
 struct _GimpOperationGrainExtractLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationGrainExtractLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

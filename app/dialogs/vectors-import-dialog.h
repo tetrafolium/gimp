@@ -20,12 +20,12 @@
 
 
 typedef void (* GimpVectorsImportCallback) (GtkWidget *dialog,
-                                            GimpImage *image,
-                                            GFile     *file,
-                                            GFile     *import_folder,
-                                            gboolean   merge_vectors,
-                                            gboolean   scale_vectors,
-                                            gpointer   user_data);
+        GimpImage *image,
+        GFile     *file,
+        GFile     *import_folder,
+        gboolean   merge_vectors,
+        gboolean   scale_vectors,
+        gpointer   user_data);
 
 
 GtkWidget * vectors_import_dialog_new (GimpImage                 *image,

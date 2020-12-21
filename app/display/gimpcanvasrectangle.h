@@ -38,29 +38,29 @@ typedef struct _GimpCanvasRectangleClass GimpCanvasRectangleClass;
 
 struct _GimpCanvasRectangle
 {
-  GimpCanvasItem  parent_instance;
+    GimpCanvasItem  parent_instance;
 };
 
 struct _GimpCanvasRectangleClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
 GType            gimp_canvas_rectangle_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_rectangle_new      (GimpDisplayShell *shell,
-                                                 gdouble           x,
-                                                 gdouble           y,
-                                                 gdouble           width,
-                                                 gdouble           height,
-                                                 gboolean          filled);
+        gdouble           x,
+        gdouble           y,
+        gdouble           width,
+        gdouble           height,
+        gboolean          filled);
 
 void             gimp_canvas_rectangle_set      (GimpCanvasItem   *rectangle,
-                                                 gdouble           x,
-                                                 gdouble           y,
-                                                 gdouble           width,
-                                                 gdouble           height);
+        gdouble           x,
+        gdouble           y,
+        gdouble           width,
+        gdouble           height);
 
 
 #endif /* __GIMP_CANVAS_RECTANGLE_H__ */

@@ -37,20 +37,20 @@ typedef struct _GimpHueSaturationConfigClass GimpHueSaturationConfigClass;
 
 struct _GimpHueSaturationConfig
 {
-  GimpOperationSettings  parent_instance;
+    GimpOperationSettings  parent_instance;
 
-  GimpHueRange           range;
+    GimpHueRange           range;
 
-  gdouble                hue[7];
-  gdouble                saturation[7];
-  gdouble                lightness[7];
+    gdouble                hue[7];
+    gdouble                saturation[7];
+    gdouble                lightness[7];
 
-  gdouble                overlap;
+    gdouble                overlap;
 };
 
 struct _GimpHueSaturationConfigClass
 {
-  GimpOperationSettingsClass  parent_class;
+    GimpOperationSettingsClass  parent_class;
 };
 
 

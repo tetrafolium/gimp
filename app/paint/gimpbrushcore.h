@@ -39,59 +39,59 @@ typedef struct _GimpBrushCoreClass GimpBrushCoreClass;
 
 struct _GimpBrushCore
 {
-  GimpPaintCore      parent_instance;
+    GimpPaintCore      parent_instance;
 
-  GimpBrush         *main_brush;
-  GimpBrush         *brush;
-  GimpDynamics      *dynamics;
-  gdouble            spacing;
-  gdouble            scale;
-  gdouble            aspect_ratio;
-  gdouble            angle;
-  gboolean           reflect;
-  gdouble            hardness;
+    GimpBrush         *main_brush;
+    GimpBrush         *brush;
+    GimpDynamics      *dynamics;
+    gdouble            spacing;
+    gdouble            scale;
+    gdouble            aspect_ratio;
+    gdouble            angle;
+    gboolean           reflect;
+    gdouble            hardness;
 
-  gdouble            symmetry_angle;
-  gboolean           symmetry_reflect;
+    gdouble            symmetry_angle;
+    gboolean           symmetry_reflect;
 
-  /*  brush buffers  */
-  GimpTempBuf       *pressure_brush;
+    /*  brush buffers  */
+    GimpTempBuf       *pressure_brush;
 
-  GimpTempBuf       *solid_brushes[BRUSH_CORE_SOLID_SUBSAMPLE][BRUSH_CORE_SOLID_SUBSAMPLE];
-  const GimpTempBuf *last_solid_brush_mask;
-  gboolean           solid_cache_invalid;
+    GimpTempBuf       *solid_brushes[BRUSH_CORE_SOLID_SUBSAMPLE][BRUSH_CORE_SOLID_SUBSAMPLE];
+    const GimpTempBuf *last_solid_brush_mask;
+    gboolean           solid_cache_invalid;
 
-  const GimpTempBuf *transform_brush;
-  const GimpTempBuf *transform_pixmap;
+    const GimpTempBuf *transform_brush;
+    const GimpTempBuf *transform_pixmap;
 
-  GimpTempBuf       *subsample_brushes[BRUSH_CORE_SUBSAMPLE + 1][BRUSH_CORE_SUBSAMPLE + 1];
-  const GimpTempBuf *last_subsample_brush_mask;
-  gboolean           subsample_cache_invalid;
+    GimpTempBuf       *subsample_brushes[BRUSH_CORE_SUBSAMPLE + 1][BRUSH_CORE_SUBSAMPLE + 1];
+    const GimpTempBuf *last_subsample_brush_mask;
+    gboolean           subsample_cache_invalid;
 
-  gdouble            jitter;
-  gdouble            jitter_lut_x[BRUSH_CORE_JITTER_LUTSIZE];
-  gdouble            jitter_lut_y[BRUSH_CORE_JITTER_LUTSIZE];
+    gdouble            jitter;
+    gdouble            jitter_lut_x[BRUSH_CORE_JITTER_LUTSIZE];
+    gdouble            jitter_lut_y[BRUSH_CORE_JITTER_LUTSIZE];
 
-  GRand             *rand;
+    GRand             *rand;
 };
 
 struct _GimpBrushCoreClass
 {
-  GimpPaintCoreClass  parent_class;
+    GimpPaintCoreClass  parent_class;
 
-  /*  Set for tools that don't mind if the brush changes while painting  */
-  gboolean            handles_changing_brush;
+    /*  Set for tools that don't mind if the brush changes while painting  */
+    gboolean            handles_changing_brush;
 
-  /*  Set for tools that don't mind if the brush scales while painting  */
-  gboolean            handles_transforming_brush;
+    /*  Set for tools that don't mind if the brush scales while painting  */
+    gboolean            handles_transforming_brush;
 
-  /*  Set for tools that don't mind if the brush scales mid stroke  */
-  gboolean            handles_dynamic_transforming_brush;
+    /*  Set for tools that don't mind if the brush scales mid stroke  */
+    gboolean            handles_dynamic_transforming_brush;
 
-  void (* set_brush)    (GimpBrushCore *core,
-                         GimpBrush     *brush);
-  void (* set_dynamics) (GimpBrushCore *core,
-                         GimpDynamics  *brush);
+    void (* set_brush)    (GimpBrushCore *core,
+                           GimpBrush     *brush);
+    void (* set_dynamics) (GimpBrushCore *core,
+                           GimpDynamics  *brush);
 };
 
 
@@ -122,31 +122,31 @@ void   gimp_brush_core_replace_canvas (GimpBrushCore            *core,
                                        GimpPaintApplicationMode  mode);
 
 void   gimp_brush_core_color_area_with_pixmap
-                                      (GimpBrushCore            *core,
-                                       GimpDrawable             *drawable,
-                                       const GimpCoords         *coords,
-                                       GeglBuffer               *area,
-                                       gint                      area_x,
-                                       gint                      area_y,
-                                       gboolean                  apply_mask);
+(GimpBrushCore            *core,
+ GimpDrawable             *drawable,
+ const GimpCoords         *coords,
+ GeglBuffer               *area,
+ gint                      area_x,
+ gint                      area_y,
+ gboolean                  apply_mask);
 
 const GimpTempBuf * gimp_brush_core_get_brush_mask
-                                      (GimpBrushCore            *core,
-                                       const GimpCoords         *coords,
-                                       GimpBrushApplicationMode  brush_hardness,
-                                       gdouble                   dynamic_hardness);
+(GimpBrushCore            *core,
+ const GimpCoords         *coords,
+ GimpBrushApplicationMode  brush_hardness,
+ gdouble                   dynamic_hardness);
 const GimpTempBuf * gimp_brush_core_get_brush_pixmap
-                                      (GimpBrushCore            *core);
+(GimpBrushCore            *core);
 
 void   gimp_brush_core_eval_transform_dynamics
-                                      (GimpBrushCore            *core,
-                                       GimpDrawable             *drawable,
-                                       GimpPaintOptions         *paint_options,
-                                       const GimpCoords         *coords);
+(GimpBrushCore            *core,
+ GimpDrawable             *drawable,
+ GimpPaintOptions         *paint_options,
+ const GimpCoords         *coords);
 void   gimp_brush_core_eval_transform_symmetry
-                                      (GimpBrushCore            *core,
-                                       GimpSymmetry             *symmetry,
-                                       gint                      stroke);
+(GimpBrushCore            *core,
+ GimpSymmetry             *symmetry,
+ gint                      stroke);
 
 
 #endif  /*  __GIMP_BRUSH_CORE_H__  */

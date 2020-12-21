@@ -34,14 +34,14 @@ typedef struct _GimpConvolveClass GimpConvolveClass;
 
 struct _GimpConvolve
 {
-  GimpBrushCore  parent_instance;
-  gfloat         matrix[9];
-  gfloat         matrix_divisor;
+    GimpBrushCore  parent_instance;
+    gfloat         matrix[9];
+    gfloat         matrix_divisor;
 };
 
 struct _GimpConvolveClass
 {
-  GimpBrushCoreClass parent_class;
+    GimpBrushCoreClass parent_class;
 };
 
 

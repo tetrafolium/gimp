@@ -35,12 +35,12 @@ void
 gimp_pencil_register (Gimp                      *gimp,
                       GimpPaintRegisterCallback  callback)
 {
-  (* callback) (gimp,
-                GIMP_TYPE_PENCIL,
-                GIMP_TYPE_PENCIL_OPTIONS,
-                "gimp-pencil",
-                _("Pencil"),
-                "gimp-tool-pencil");
+    (* callback) (gimp,
+                  GIMP_TYPE_PENCIL,
+                  GIMP_TYPE_PENCIL_OPTIONS,
+                  "gimp-pencil",
+                  _("Pencil"),
+                  "gimp-tool-pencil");
 }
 
 static void

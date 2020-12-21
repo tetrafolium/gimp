@@ -43,8 +43,8 @@
 /*  local function prototypes  */
 
 static void   keyboard_shortcuts_dialog_response (GtkWidget *dialog,
-                                                  gint       response,
-                                                  Gimp      *gimp);
+        gint       response,
+        Gimp      *gimp);
 
 
 /*  public functions  */
@@ -52,52 +52,52 @@ static void   keyboard_shortcuts_dialog_response (GtkWidget *dialog,
 GtkWidget *
 keyboard_shortcuts_dialog_new (Gimp *gimp)
 {
-  GtkWidget *dialog;
-  GtkWidget *vbox;
-  GtkWidget *editor;
-  GtkWidget *box;
-  GtkWidget *button;
+    GtkWidget *dialog;
+    GtkWidget *vbox;
+    GtkWidget *editor;
+    GtkWidget *box;
+    GtkWidget *button;
 
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+    g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-  dialog = gimp_dialog_new (_("Configure Keyboard Shortcuts"),
-                            "gimp-keyboard-shortcuts-dialog",
-                            NULL, 0,
-                            gimp_standard_help_func,
-                            GIMP_HELP_KEYBOARD_SHORTCUTS,
+    dialog = gimp_dialog_new (_("Configure Keyboard Shortcuts"),
+                              "gimp-keyboard-shortcuts-dialog",
+                              NULL, 0,
+                              gimp_standard_help_func,
+                              GIMP_HELP_KEYBOARD_SHORTCUTS,
 
-                            _("_Save"),  RESPONSE_SAVE,
-                            _("_Close"), GTK_RESPONSE_CLOSE,
+                              _("_Save"),  RESPONSE_SAVE,
+                              _("_Close"), GTK_RESPONSE_CLOSE,
 
-                            NULL);
+                              NULL);
 
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (keyboard_shortcuts_dialog_response),
-                    gimp);
+    g_signal_connect (dialog, "response",
+                      G_CALLBACK (keyboard_shortcuts_dialog_response),
+                      gimp);
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      vbox, TRUE, TRUE, 0);
-  gtk_widget_show (vbox);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+    gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
+    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                        vbox, TRUE, TRUE, 0);
+    gtk_widget_show (vbox);
 
-  editor = gimp_action_editor_new (gimp_ui_managers_from_name ("<Image>")->data,
-                                   NULL, TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
-  gtk_widget_show (editor);
+    editor = gimp_action_editor_new (gimp_ui_managers_from_name ("<Image>")->data,
+                                     NULL, TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
+    gtk_widget_show (editor);
 
-  box = gimp_hint_box_new (_("To edit a shortcut key, click on the "
-                             "corresponding row and type a new "
-                             "accelerator, or press backspace to "
-                             "clear."));
-  gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 0);
-  gtk_widget_show (box);
+    box = gimp_hint_box_new (_("To edit a shortcut key, click on the "
+                               "corresponding row and type a new "
+                               "accelerator, or press backspace to "
+                               "clear."));
+    gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 0);
+    gtk_widget_show (box);
 
-  button = gimp_prop_check_button_new (G_OBJECT (gimp->config), "save-accels",
-                                       _("S_ave keyboard shortcuts on exit"));
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+    button = gimp_prop_check_button_new (G_OBJECT (gimp->config), "save-accels",
+                                         _("S_ave keyboard shortcuts on exit"));
+    gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
 
-  return dialog;
+    return dialog;
 }
 
 
@@ -108,14 +108,14 @@ keyboard_shortcuts_dialog_response (GtkWidget *dialog,
                                     gint       response,
                                     Gimp      *gimp)
 {
-  switch (response)
+    switch (response)
     {
     case RESPONSE_SAVE:
-      menus_save (gimp, TRUE);
-      break;
+        menus_save (gimp, TRUE);
+        break;
 
     default:
-      gtk_widget_destroy (dialog);
-      break;
+        gtk_widget_destroy (dialog);
+        break;
     }
 }

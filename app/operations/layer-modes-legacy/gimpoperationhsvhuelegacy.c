@@ -33,13 +33,13 @@
 
 
 static gboolean   gimp_operation_hsv_hue_legacy_process (GeglOperation       *op,
-                                                         void                *in,
-                                                         void                *layer,
-                                                         void                *mask,
-                                                         void                *out,
-                                                         glong                samples,
-                                                         const GeglRectangle *roi,
-                                                         gint                 level);
+        void                *in,
+        void                *layer,
+        void                *mask,
+        void                *out,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationHsvHueLegacy, gimp_operation_hsv_hue_legacy,
@@ -49,15 +49,15 @@ G_DEFINE_TYPE (GimpOperationHsvHueLegacy, gimp_operation_hsv_hue_legacy,
 static void
 gimp_operation_hsv_hue_legacy_class_init (GimpOperationHsvHueLegacyClass *klass)
 {
-  GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-  GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
+    GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
+    GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:hsv-hue-legacy",
-                                 "description", "GIMP hue mode operation",
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:hsv-hue-legacy",
+                                   "description", "GIMP hue mode operation",
+                                   NULL);
 
-  layer_mode_class->process = gimp_operation_hsv_hue_legacy_process;
+    layer_mode_class->process = gimp_operation_hsv_hue_legacy_process;
 }
 
 static void
@@ -75,72 +75,72 @@ gimp_operation_hsv_hue_legacy_process (GeglOperation       *op,
                                        const GeglRectangle *roi,
                                        gint                 level)
 {
-  GimpOperationLayerMode *layer_mode = (gpointer) op;
-  gfloat                 *in         = in_p;
-  gfloat                 *out        = out_p;
-  gfloat                 *layer      = layer_p;
-  gfloat                 *mask       = mask_p;
-  gfloat                  opacity    = layer_mode->opacity;
+    GimpOperationLayerMode *layer_mode = (gpointer) op;
+    gfloat                 *in         = in_p;
+    gfloat                 *out        = out_p;
+    gfloat                 *layer      = layer_p;
+    gfloat                 *mask       = mask_p;
+    gfloat                  opacity    = layer_mode->opacity;
 
-  while (samples--)
+    while (samples--)
     {
-      GimpHSV layer_hsv, out_hsv;
-      GimpRGB layer_rgb = {layer[0], layer[1], layer[2]};
-      GimpRGB out_rgb   = {in[0], in[1], in[2]};
-      gfloat  comp_alpha, new_alpha;
+        GimpHSV layer_hsv, out_hsv;
+        GimpRGB layer_rgb = {layer[0], layer[1], layer[2]};
+        GimpRGB out_rgb   = {in[0], in[1], in[2]};
+        gfloat  comp_alpha, new_alpha;
 
-      comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
-      if (mask)
-        comp_alpha *= *mask;
+        comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
+        if (mask)
+            comp_alpha *= *mask;
 
-      new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
+        new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
 
-      if (comp_alpha && new_alpha)
+        if (comp_alpha && new_alpha)
         {
-          gint   b;
-          gfloat out_tmp[3];
-          gfloat ratio = comp_alpha / new_alpha;
+            gint   b;
+            gfloat out_tmp[3];
+            gfloat ratio = comp_alpha / new_alpha;
 
-          gimp_rgb_to_hsv (&layer_rgb, &layer_hsv);
-          gimp_rgb_to_hsv (&out_rgb, &out_hsv);
+            gimp_rgb_to_hsv (&layer_rgb, &layer_hsv);
+            gimp_rgb_to_hsv (&out_rgb, &out_hsv);
 
-          /*  Composition should have no effect if saturation is zero.
-           *  otherwise, black would be painted red (see bug #123296).
-           */
-          if (layer_hsv.s)
+            /*  Composition should have no effect if saturation is zero.
+             *  otherwise, black would be painted red (see bug #123296).
+             */
+            if (layer_hsv.s)
             {
-              out_hsv.h = layer_hsv.h;
+                out_hsv.h = layer_hsv.h;
             }
-          gimp_hsv_to_rgb (&out_hsv, &out_rgb);
+            gimp_hsv_to_rgb (&out_hsv, &out_rgb);
 
-          out_tmp[0] = out_rgb.r;
-          out_tmp[1] = out_rgb.g;
-          out_tmp[2] = out_rgb.b;
+            out_tmp[0] = out_rgb.r;
+            out_tmp[1] = out_rgb.g;
+            out_tmp[2] = out_rgb.b;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = out_tmp[b] * ratio + in[b] * (1.0f - ratio);
+                out[b] = out_tmp[b] * ratio + in[b] * (1.0f - ratio);
             }
         }
-      else
+        else
         {
-          gint b;
+            gint b;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = in[b];
+                out[b] = in[b];
             }
         }
 
-      out[ALPHA] = in[ALPHA];
+        out[ALPHA] = in[ALPHA];
 
-      in    += 4;
-      layer += 4;
-      out   += 4;
+        in    += 4;
+        layer += 4;
+        out   += 4;
 
-      if (mask)
-        mask++;
+        if (mask)
+            mask++;
     }
 
-  return TRUE;
+    return TRUE;
 }

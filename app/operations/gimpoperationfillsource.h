@@ -35,17 +35,17 @@ typedef struct _GimpOperationFillSourceClass GimpOperationFillSourceClass;
 
 struct _GimpOperationFillSource
 {
-  GeglOperationSource  parent_instance;
+    GeglOperationSource  parent_instance;
 
-  GimpFillOptions     *options;
-  GimpDrawable        *drawable;
-  gint                 pattern_offset_x;
-  gint                 pattern_offset_y;
+    GimpFillOptions     *options;
+    GimpDrawable        *drawable;
+    gint                 pattern_offset_x;
+    gint                 pattern_offset_y;
 };
 
 struct _GimpOperationFillSourceClass
 {
-  GeglOperationSourceClass  parent_class;
+    GeglOperationSourceClass  parent_class;
 };
 
 

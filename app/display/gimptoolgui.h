@@ -37,15 +37,15 @@ typedef struct _GimpToolGuiClass GimpToolGuiClass;
 
 struct _GimpToolGui
 {
-  GimpObject  parent_instance;
+    GimpObject  parent_instance;
 };
 
 struct _GimpToolGuiClass
 {
-  GimpObjectClass  parent_instance;
+    GimpObjectClass  parent_instance;
 
-  void (* response) (GimpToolGui *gui,
-                     gint         response_id);
+    void (* response) (GimpToolGui *gui,
+                       gint         response_id);
 
 };
 
@@ -53,29 +53,29 @@ struct _GimpToolGuiClass
 GType         gimp_tool_gui_get_type               (void) G_GNUC_CONST;
 
 GimpToolGui * gimp_tool_gui_new                    (GimpToolInfo     *tool_info,
-                                                    const gchar      *title,
-                                                    const gchar      *description,
-                                                    const gchar      *icon_name,
-                                                    const gchar      *help_id,
-                                                    GdkMonitor       *monitor,
-                                                    gboolean          overlay,
-                                                    ...) G_GNUC_NULL_TERMINATED;
+        const gchar      *title,
+        const gchar      *description,
+        const gchar      *icon_name,
+        const gchar      *help_id,
+        GdkMonitor       *monitor,
+        gboolean          overlay,
+        ...) G_GNUC_NULL_TERMINATED;
 
 void          gimp_tool_gui_set_title              (GimpToolGui      *gui,
-                                                    const gchar      *title);
+        const gchar      *title);
 void          gimp_tool_gui_set_description        (GimpToolGui      *gui,
-                                                    const gchar      *description);
+        const gchar      *description);
 void          gimp_tool_gui_set_icon_name          (GimpToolGui      *gui,
-                                                    const gchar      *icon_name);
+        const gchar      *icon_name);
 void          gimp_tool_gui_set_help_id            (GimpToolGui      *gui,
-                                                    const gchar      *help_id);
+        const gchar      *help_id);
 
 void          gimp_tool_gui_set_shell              (GimpToolGui      *gui,
-                                                    GimpDisplayShell *shell);
+        GimpDisplayShell *shell);
 void          gimp_tool_gui_set_viewables          (GimpToolGui      *gui,
-                                                    GList            *viewables);
+        GList            *viewables);
 void          gimp_tool_gui_set_viewable           (GimpToolGui      *gui,
-                                                    GimpViewable     *viewable);
+        GimpViewable     *viewable);
 
 GtkWidget   * gimp_tool_gui_get_dialog             (GimpToolGui      *gui);
 GtkWidget   * gimp_tool_gui_get_vbox               (GimpToolGui      *gui);
@@ -85,31 +85,31 @@ void          gimp_tool_gui_show                   (GimpToolGui      *gui);
 void          gimp_tool_gui_hide                   (GimpToolGui      *gui);
 
 void          gimp_tool_gui_set_overlay            (GimpToolGui      *gui,
-                                                    GdkMonitor       *monitor,
-                                                    gboolean          overlay);
+        GdkMonitor       *monitor,
+        gboolean          overlay);
 gboolean      gimp_tool_gui_get_overlay            (GimpToolGui      *gui);
 
 void          gimp_tool_gui_set_auto_overlay       (GimpToolGui      *gui,
-                                                    gboolean          auto_overlay);
+        gboolean          auto_overlay);
 gboolean      gimp_tool_gui_get_auto_overlay       (GimpToolGui      *gui);
 
 void          gimp_tool_gui_set_focus_on_map       (GimpToolGui      *gui,
-                                                    gboolean          focus_on_map);
+        gboolean          focus_on_map);
 gboolean      gimp_tool_gui_get_focus_on_map       (GimpToolGui      *gui);
 
 
 void          gimp_tool_gui_add_buttons_valist     (GimpToolGui      *gui,
-                                                    va_list           args);
+        va_list           args);
 void          gimp_tool_gui_add_button             (GimpToolGui      *gui,
-                                                    const gchar      *button_text,
-                                                    gint              response_id);
+        const gchar      *button_text,
+        gint              response_id);
 void          gimp_tool_gui_set_default_response   (GimpToolGui      *gui,
-                                                    gint              response_id);
+        gint              response_id);
 void          gimp_tool_gui_set_response_sensitive (GimpToolGui      *gui,
-                                                    gint              response_id,
-                                                    gboolean          sensitive);
+        gint              response_id,
+        gboolean          sensitive);
 void    gimp_tool_gui_set_alternative_button_order (GimpToolGui      *gui,
-                                                    ...);
+        ...);
 
 
 #endif /* __GIMP_TOOL_GUI_H__ */

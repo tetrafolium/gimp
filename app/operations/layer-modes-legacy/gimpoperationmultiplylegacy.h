@@ -38,12 +38,12 @@ typedef struct _GimpOperationMultiplyLegacyClass GimpOperationMultiplyLegacyClas
 
 struct _GimpOperationMultiplyLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationMultiplyLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

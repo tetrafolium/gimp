@@ -34,15 +34,15 @@ typedef struct _GimpSourceOptionsClass GimpSourceOptionsClass;
 
 struct _GimpSourceOptions
 {
-  GimpPaintOptions     parent_instance;
+    GimpPaintOptions     parent_instance;
 
-  GimpSourceAlignMode  align_mode;
-  gboolean             sample_merged;
+    GimpSourceAlignMode  align_mode;
+    gboolean             sample_merged;
 };
 
 struct _GimpSourceOptionsClass
 {
-  GimpPaintOptionsClass  parent_class;
+    GimpPaintOptionsClass  parent_class;
 };
 
 

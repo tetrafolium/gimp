@@ -37,38 +37,38 @@ typedef struct _GimpOperationSettingsClass GimpOperationSettingsClass;
 
 struct _GimpOperationSettings
 {
-  GimpSettings         parent_instance;
+    GimpSettings         parent_instance;
 
-  GimpTransformResize  clip;
-  GimpFilterRegion     region;
-  GimpLayerMode        mode;
-  gdouble              opacity;
-  gboolean             gamma_hack;
+    GimpTransformResize  clip;
+    GimpFilterRegion     region;
+    GimpLayerMode        mode;
+    gdouble              opacity;
+    gboolean             gamma_hack;
 };
 
 struct _GimpOperationSettingsClass
 {
-  GimpSettingsClass  parent_class;
+    GimpSettingsClass  parent_class;
 };
 
 
 GType      gimp_operation_settings_get_type              (void) G_GNUC_CONST;
 
 void       gimp_operation_settings_sync_drawable_filter  (GimpOperationSettings *settings,
-                                                          GimpDrawableFilter    *filter);
+        GimpDrawableFilter    *filter);
 
 
 /*  protected  */
 
 gboolean   gimp_operation_settings_config_serialize_base (GimpConfig            *config,
-                                                          GimpConfigWriter      *writer,
-                                                          gpointer               data);
+        GimpConfigWriter      *writer,
+        gpointer               data);
 gboolean   gimp_operation_settings_config_equal_base     (GimpConfig            *a,
-                                                          GimpConfig            *b);
+        GimpConfig            *b);
 void       gimp_operation_settings_config_reset_base     (GimpConfig            *config);
 gboolean   gimp_operation_settings_config_copy_base      (GimpConfig            *src,
-                                                          GimpConfig            *dest,
-                                                          GParamFlags            flags);
+        GimpConfig            *dest,
+        GParamFlags            flags);
 
 
 #endif /* __GIMP_OPERATION_SETTINGS_H__ */

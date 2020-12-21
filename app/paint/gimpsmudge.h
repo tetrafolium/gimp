@@ -34,15 +34,15 @@ typedef struct _GimpSmudgeClass GimpSmudgeClass;
 
 struct _GimpSmudge
 {
-  GimpBrushCore  parent_instance;
+    GimpBrushCore  parent_instance;
 
-  gboolean       initialized;
-  GList         *accum_buffers;
+    gboolean       initialized;
+    GList         *accum_buffers;
 };
 
 struct _GimpSmudgeClass
 {
-  GimpBrushCoreClass  parent_class;
+    GimpBrushCoreClass  parent_class;
 };
 
 

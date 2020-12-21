@@ -34,14 +34,14 @@ typedef struct _GimpEraserOptionsClass GimpEraserOptionsClass;
 
 struct _GimpEraserOptions
 {
-  GimpPaintOptions  parent_instance;
+    GimpPaintOptions  parent_instance;
 
-  gboolean          anti_erase;
+    gboolean          anti_erase;
 };
 
 struct _GimpEraserOptionsClass
 {
-  GimpPaintOptionsClass  parent_class;
+    GimpPaintOptionsClass  parent_class;
 };
 
 

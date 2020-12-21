@@ -38,12 +38,12 @@ typedef struct _GimpOperationScreenLegacyClass GimpOperationScreenLegacyClass;
 
 struct _GimpOperationScreenLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationScreenLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

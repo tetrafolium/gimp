@@ -36,21 +36,21 @@ typedef GimpBlob * (* GimpBlobFunc) (gdouble xc,
 
 struct _GimpBlobPoint
 {
-  gint x;
-  gint y;
+    gint x;
+    gint y;
 };
 
 struct _GimpBlobSpan
 {
-  gint left;
-  gint right;
+    gint left;
+    gint right;
 };
 
 struct _GimpBlob
 {
-  gint         y;
-  gint         height;
-  GimpBlobSpan data[1];
+    gint         y;
+    gint         height;
+    GimpBlobSpan data[1];
 };
 
 

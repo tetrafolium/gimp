@@ -24,28 +24,28 @@ typedef guint *GimpLogHandler;
 
 typedef enum
 {
-  GIMP_LOG_TOOL_EVENTS        = 1 << 0,
-  GIMP_LOG_TOOL_FOCUS         = 1 << 1,
-  GIMP_LOG_DND                = 1 << 2,
-  GIMP_LOG_HELP               = 1 << 3,
-  GIMP_LOG_DIALOG_FACTORY     = 1 << 4,
-  GIMP_LOG_MENUS              = 1 << 5,
-  GIMP_LOG_SAVE_DIALOG        = 1 << 6,
-  GIMP_LOG_IMAGE_SCALE        = 1 << 7,
-  GIMP_LOG_SHADOW_TILES       = 1 << 8,
-  GIMP_LOG_SCALE              = 1 << 9,
-  GIMP_LOG_WM                 = 1 << 10,
-  GIMP_LOG_FLOATING_SELECTION = 1 << 11,
-  GIMP_LOG_SHM                = 1 << 12,
-  GIMP_LOG_TEXT_EDITING       = 1 << 13,
-  GIMP_LOG_KEY_EVENTS         = 1 << 14,
-  GIMP_LOG_AUTO_TAB_STYLE     = 1 << 15,
-  GIMP_LOG_INSTANCES          = 1 << 16,
-  GIMP_LOG_RECTANGLE_TOOL     = 1 << 17,
-  GIMP_LOG_BRUSH_CACHE        = 1 << 18,
-  GIMP_LOG_PROJECTION         = 1 << 19,
-  GIMP_LOG_XCF                = 1 << 20,
-  GIMP_LOG_MAGIC_MATCH        = 1 << 21
+    GIMP_LOG_TOOL_EVENTS        = 1 << 0,
+    GIMP_LOG_TOOL_FOCUS         = 1 << 1,
+    GIMP_LOG_DND                = 1 << 2,
+    GIMP_LOG_HELP               = 1 << 3,
+    GIMP_LOG_DIALOG_FACTORY     = 1 << 4,
+    GIMP_LOG_MENUS              = 1 << 5,
+    GIMP_LOG_SAVE_DIALOG        = 1 << 6,
+    GIMP_LOG_IMAGE_SCALE        = 1 << 7,
+    GIMP_LOG_SHADOW_TILES       = 1 << 8,
+    GIMP_LOG_SCALE              = 1 << 9,
+    GIMP_LOG_WM                 = 1 << 10,
+    GIMP_LOG_FLOATING_SELECTION = 1 << 11,
+    GIMP_LOG_SHM                = 1 << 12,
+    GIMP_LOG_TEXT_EDITING       = 1 << 13,
+    GIMP_LOG_KEY_EVENTS         = 1 << 14,
+    GIMP_LOG_AUTO_TAB_STYLE     = 1 << 15,
+    GIMP_LOG_INSTANCES          = 1 << 16,
+    GIMP_LOG_RECTANGLE_TOOL     = 1 << 17,
+    GIMP_LOG_BRUSH_CACHE        = 1 << 18,
+    GIMP_LOG_PROJECTION         = 1 << 19,
+    GIMP_LOG_XCF                = 1 << 20,
+    GIMP_LOG_MAGIC_MATCH        = 1 << 21
 } GimpLogFlags;
 
 
@@ -54,20 +54,20 @@ extern GimpLogFlags gimp_log_flags;
 
 void             gimp_log_init           (void);
 void             gimp_log                (GimpLogFlags    flags,
-                                          const gchar    *function,
-                                          gint            line,
-                                          const gchar    *format,
-                                          ...) G_GNUC_PRINTF (4, 5);
+        const gchar    *function,
+        gint            line,
+        const gchar    *format,
+        ...) G_GNUC_PRINTF (4, 5);
 void             gimp_logv               (GimpLogFlags    flags,
-                                          const gchar    *function,
-                                          gint            line,
-                                          const gchar    *format,
-                                          va_list         args) G_GNUC_PRINTF (4, 0);
+        const gchar    *function,
+        gint            line,
+        const gchar    *format,
+        va_list         args) G_GNUC_PRINTF (4, 0);
 
 GimpLogHandler   gimp_log_set_handler    (gboolean        global,
-                                          GLogLevelFlags  log_levels,
-                                          GLogFunc        log_func,
-                                          gpointer        user_data);
+        GLogLevelFlags  log_levels,
+        GLogFunc        log_func,
+        gpointer        user_data);
 void             gimp_log_remove_handler (GimpLogHandler  handler);
 
 
@@ -123,11 +123,11 @@ GIMP_LOG (GimpLogFlags flags,
           const gchar *format,
           ...)
 {
-  va_list args;
-  va_start (args, format);
-  if (gimp_log_flags & flags)
-    gimp_logv (type, "", 0, format, args);
-  va_end (args);
+    va_list args;
+    va_start (args, format);
+    if (gimp_log_flags & flags)
+        gimp_logv (type, "", 0, format, args);
+    va_end (args);
 }
 
 #endif  /* !__GNUC__ */

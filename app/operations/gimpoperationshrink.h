@@ -38,16 +38,16 @@ typedef struct _GimpOperationShrinkClass GimpOperationShrinkClass;
 
 struct _GimpOperationShrink
 {
-  GeglOperationFilter  parent_instance;
+    GeglOperationFilter  parent_instance;
 
-  gint                 radius_x;
-  gint                 radius_y;
-  gboolean             edge_lock;
+    gint                 radius_x;
+    gint                 radius_y;
+    gboolean             edge_lock;
 };
 
 struct _GimpOperationShrinkClass
 {
-  GeglOperationFilterClass  parent_class;
+    GeglOperationFilterClass  parent_class;
 };
 
 

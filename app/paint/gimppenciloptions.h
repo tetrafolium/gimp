@@ -34,12 +34,12 @@ typedef struct _GimpPencilOptionsClass GimpPencilOptionsClass;
 
 struct _GimpPencilOptions
 {
-  GimpPaintOptions  parent_instance;
+    GimpPaintOptions  parent_instance;
 };
 
 struct _GimpPencilOptionsClass
 {
-  GimpPaintOptionsClass  parent_class;
+    GimpPaintOptionsClass  parent_class;
 };
 
 

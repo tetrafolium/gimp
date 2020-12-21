@@ -38,12 +38,12 @@ typedef struct _GimpOperationSubtractLegacyClass GimpOperationSubtractLegacyClas
 
 struct _GimpOperationSubtractLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationSubtractLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

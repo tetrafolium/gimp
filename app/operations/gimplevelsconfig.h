@@ -37,28 +37,28 @@ typedef struct _GimpLevelsConfigClass GimpLevelsConfigClass;
 
 struct _GimpLevelsConfig
 {
-  GimpOperationSettings  parent_instance;
+    GimpOperationSettings  parent_instance;
 
-  GimpTRCType            trc;
+    GimpTRCType            trc;
 
-  GimpHistogramChannel   channel;
+    GimpHistogramChannel   channel;
 
-  gdouble                low_input[5];
-  gdouble                high_input[5];
+    gdouble                low_input[5];
+    gdouble                high_input[5];
 
-  gboolean               clamp_input;
+    gboolean               clamp_input;
 
-  gdouble                gamma[5];
+    gdouble                gamma[5];
 
-  gdouble                low_output[5];
-  gdouble                high_output[5];
+    gdouble                low_output[5];
+    gdouble                high_output[5];
 
-  gboolean               clamp_output;
+    gboolean               clamp_output;
 };
 
 struct _GimpLevelsConfigClass
 {
-  GimpOperationSettingsClass  parent_class;
+    GimpOperationSettingsClass  parent_class;
 };
 
 
@@ -67,26 +67,26 @@ GType      gimp_levels_config_get_type         (void) G_GNUC_CONST;
 void       gimp_levels_config_reset_channel    (GimpLevelsConfig      *config);
 
 void       gimp_levels_config_stretch          (GimpLevelsConfig      *config,
-                                                GimpHistogram         *histogram,
-                                                gboolean               is_color);
+        GimpHistogram         *histogram,
+        gboolean               is_color);
 void       gimp_levels_config_stretch_channel  (GimpLevelsConfig      *config,
-                                                GimpHistogram         *histogram,
-                                                GimpHistogramChannel   channel);
+        GimpHistogram         *histogram,
+        GimpHistogramChannel   channel);
 void       gimp_levels_config_adjust_by_colors (GimpLevelsConfig      *config,
-                                                GimpHistogramChannel   channel,
-                                                const GimpRGB         *black,
-                                                const GimpRGB         *gray,
-                                                const GimpRGB         *white);
+        GimpHistogramChannel   channel,
+        const GimpRGB         *black,
+        const GimpRGB         *gray,
+        const GimpRGB         *white);
 
 GimpCurvesConfig *
-           gimp_levels_config_to_curves_config (GimpLevelsConfig      *config);
+gimp_levels_config_to_curves_config (GimpLevelsConfig      *config);
 
 gboolean   gimp_levels_config_load_cruft       (GimpLevelsConfig      *config,
-                                                GInputStream          *input,
-                                                GError               **error);
+        GInputStream          *input,
+        GError               **error);
 gboolean   gimp_levels_config_save_cruft       (GimpLevelsConfig      *config,
-                                                GOutputStream         *output,
-                                                GError               **error);
+        GOutputStream         *output,
+        GError               **error);
 
 
 #endif /* __GIMP_LEVELS_CONFIG_H__ */

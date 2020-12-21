@@ -40,37 +40,37 @@ typedef struct _GimpTileHandlerValidateClass GimpTileHandlerValidateClass;
 
 struct _GimpTileHandlerValidate
 {
-  GeglTileHandler  parent_instance;
+    GeglTileHandler  parent_instance;
 
-  GeglNode        *graph;
-  cairo_region_t  *dirty_region;
-  const Babl      *format;
-  gint             tile_width;
-  gint             tile_height;
-  gboolean         whole_tile;
-  gint             validating;
-  gint             suspend_validate;
+    GeglNode        *graph;
+    cairo_region_t  *dirty_region;
+    const Babl      *format;
+    gint             tile_width;
+    gint             tile_height;
+    gboolean         whole_tile;
+    gint             validating;
+    gint             suspend_validate;
 };
 
 struct _GimpTileHandlerValidateClass
 {
-  GeglTileHandlerClass  parent_class;
+    GeglTileHandlerClass  parent_class;
 
-  /*  signals  */
-  void (* invalidated)     (GimpTileHandlerValidate *validate,
-                            const GeglRectangle     *rect);
+    /*  signals  */
+    void (* invalidated)     (GimpTileHandlerValidate *validate,
+                              const GeglRectangle     *rect);
 
-  /*  virtual functions  */
-  void (* begin_validate)  (GimpTileHandlerValidate *validate);
-  void (* end_validate)    (GimpTileHandlerValidate *validate);
-  void (* validate)        (GimpTileHandlerValidate *validate,
-                            const GeglRectangle     *rect,
-                            const Babl              *format,
-                            gpointer                 dest_buf,
-                            gint                     dest_stride);
-  void (* validate_buffer) (GimpTileHandlerValidate *validate,
-                            const GeglRectangle     *rect,
-                            GeglBuffer              *buffer);
+    /*  virtual functions  */
+    void (* begin_validate)  (GimpTileHandlerValidate *validate);
+    void (* end_validate)    (GimpTileHandlerValidate *validate);
+    void (* validate)        (GimpTileHandlerValidate *validate,
+                              const GeglRectangle     *rect,
+                              const Babl              *format,
+                              gpointer                 dest_buf,
+                              gint                     dest_stride);
+    void (* validate_buffer) (GimpTileHandlerValidate *validate,
+                              const GeglRectangle     *rect,
+                              GeglBuffer              *buffer);
 };
 
 
@@ -79,32 +79,32 @@ GType                     gimp_tile_handler_validate_get_type          (void) G_
 GeglTileHandler         * gimp_tile_handler_validate_new               (GeglNode                *graph);
 
 void                      gimp_tile_handler_validate_assign            (GimpTileHandlerValidate *validate,
-                                                                        GeglBuffer              *buffer);
+        GeglBuffer              *buffer);
 void                      gimp_tile_handler_validate_unassign          (GimpTileHandlerValidate *validate,
-                                                                        GeglBuffer              *buffer);
+        GeglBuffer              *buffer);
 GimpTileHandlerValidate * gimp_tile_handler_validate_get_assigned      (GeglBuffer              *buffer);
 
 void                      gimp_tile_handler_validate_invalidate        (GimpTileHandlerValidate *validate,
-                                                                        const GeglRectangle     *rect);
+        const GeglRectangle     *rect);
 void                      gimp_tile_handler_validate_undo_invalidate   (GimpTileHandlerValidate *validate,
-                                                                        const GeglRectangle     *rect);
+        const GeglRectangle     *rect);
 
 void                      gimp_tile_handler_validate_begin_validate    (GimpTileHandlerValidate *validate);
 void                      gimp_tile_handler_validate_end_validate      (GimpTileHandlerValidate *validate);
 
 void                      gimp_tile_handler_validate_validate          (GimpTileHandlerValidate *validate,
-                                                                        GeglBuffer              *buffer,
-                                                                        const GeglRectangle     *rect,
-                                                                        gboolean                 intersect,
-                                                                        gboolean                 chunked);
+        GeglBuffer              *buffer,
+        const GeglRectangle     *rect,
+        gboolean                 intersect,
+        gboolean                 chunked);
 
 gboolean                  gimp_tile_handler_validate_buffer_set_extent (GeglBuffer              *buffer,
-                                                                        const GeglRectangle     *extent);
+        const GeglRectangle     *extent);
 
 void                      gimp_tile_handler_validate_buffer_copy       (GeglBuffer              *src_buffer,
-                                                                        const GeglRectangle     *src_rect,
-                                                                        GeglBuffer              *dst_buffer,
-                                                                        const GeglRectangle     *dst_rect);
+        const GeglRectangle     *src_rect,
+        GeglBuffer              *dst_buffer,
+        const GeglRectangle     *dst_rect);
 
 
 G_END_DECLS

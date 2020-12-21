@@ -20,8 +20,8 @@
 
 
 void   gimp_display_shell_autoscroll_start (GimpDisplayShell *shell,
-                                            GdkModifierType   state,
-                                            GdkEventMotion   *mevent);
+        GdkModifierType   state,
+        GdkEventMotion   *mevent);
 void   gimp_display_shell_autoscroll_stop  (GimpDisplayShell *shell);
 
 

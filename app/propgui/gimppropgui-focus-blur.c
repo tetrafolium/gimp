@@ -42,15 +42,15 @@ find_param (GParamSpec  **param_specs,
             guint         n_param_specs,
             const gchar  *name)
 {
-  gint i;
+    gint i;
 
-  for (i = 0; i < n_param_specs; i++)
+    for (i = 0; i < n_param_specs; i++)
     {
-      if (! strcmp (param_specs[i]->name, name))
-        break;
+        if (! strcmp (param_specs[i]->name, name))
+            break;
     }
 
-  return i;
+    return i;
 }
 
 static void
@@ -65,23 +65,23 @@ focus_callback (GObject       *config,
                 gdouble        inner_limit,
                 gdouble        midpoint)
 {
-  g_object_set_data_full (G_OBJECT (config), "area",
-                          g_memdup (area, sizeof (GeglRectangle)),
-                          (GDestroyNotify) g_free);
+    g_object_set_data_full (G_OBJECT (config), "area",
+                            g_memdup (area, sizeof (GeglRectangle)),
+                            (GDestroyNotify) g_free);
 
-  g_object_set (config,
-                "shape",        type,
-                "x",            x / area->width,
-                "y",            y / area->height,
-                "radius",       2.0 * radius / area->width,
-                "focus",        inner_limit,
-                "midpoint",     midpoint,
-                "aspect-ratio", aspect_ratio,
-                "rotation",     fmod (
-                                  fmod (angle * 180.0 / G_PI + 180.0, 360.0) +
-                                  360.0,
-                                  360.0) - 180.0,
-                NULL);
+    g_object_set (config,
+                  "shape",        type,
+                  "x",            x / area->width,
+                  "y",            y / area->height,
+                  "radius",       2.0 * radius / area->width,
+                  "focus",        inner_limit,
+                  "midpoint",     midpoint,
+                  "aspect-ratio", aspect_ratio,
+                  "rotation",     fmod (
+                      fmod (angle * 180.0 / G_PI + 180.0, 360.0) +
+                      360.0,
+                      360.0) - 180.0,
+                  NULL);
 }
 
 static void
@@ -89,39 +89,39 @@ config_notify (GObject          *config,
                const GParamSpec *pspec,
                gpointer          set_data)
 {
-  GimpControllerFocusCallback  set_func;
-  GeglRectangle               *area;
-  GimpLimitType                shape;
-  gdouble                      radius;
-  gdouble                      focus;
-  gdouble                      midpoint;
-  gdouble                      x, y;
-  gdouble                      aspect_ratio;
-  gdouble                      rotation;
+    GimpControllerFocusCallback  set_func;
+    GeglRectangle               *area;
+    GimpLimitType                shape;
+    gdouble                      radius;
+    gdouble                      focus;
+    gdouble                      midpoint;
+    gdouble                      x, y;
+    gdouble                      aspect_ratio;
+    gdouble                      rotation;
 
-  set_func = g_object_get_data (G_OBJECT (config), "set-func");
-  area     = g_object_get_data (G_OBJECT (config), "area");
+    set_func = g_object_get_data (G_OBJECT (config), "set-func");
+    area     = g_object_get_data (G_OBJECT (config), "area");
 
-  g_object_get (config,
-                "shape",        &shape,
-                "radius",       &radius,
-                "focus",        &focus,
-                "midpoint",     &midpoint,
-                "x",            &x,
-                "y",            &y,
-                "aspect-ratio", &aspect_ratio,
-                "rotation",     &rotation,
-                NULL);
+    g_object_get (config,
+                  "shape",        &shape,
+                  "radius",       &radius,
+                  "focus",        &focus,
+                  "midpoint",     &midpoint,
+                  "x",            &x,
+                  "y",            &y,
+                  "aspect-ratio", &aspect_ratio,
+                  "rotation",     &rotation,
+                  NULL);
 
-  set_func (set_data, area,
-            shape,
-            x * area->width,
-            y * area->height,
-            radius * area->width / 2.0,
-            aspect_ratio,
-            rotation / 180.0 * G_PI,
-            focus,
-            midpoint);
+    set_func (set_data, area,
+              shape,
+              x * area->width,
+              y * area->height,
+              radius * area->width / 2.0,
+              aspect_ratio,
+              rotation / 180.0 * G_PI,
+              focus,
+              midpoint);
 }
 
 GtkWidget *
@@ -134,113 +134,113 @@ _gimp_prop_gui_new_focus_blur (GObject                  *config,
                                GimpCreateControllerFunc  create_controller_func,
                                gpointer                  creator)
 {
-  GtkWidget *vbox;
-  gint       first_geometry_param;
-  gint       last_geometry_param;
+    GtkWidget *vbox;
+    gint       first_geometry_param;
+    gint       last_geometry_param;
 
-  g_return_val_if_fail (G_IS_OBJECT (config), NULL);
-  g_return_val_if_fail (param_specs != NULL, NULL);
-  g_return_val_if_fail (n_param_specs > 0, NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+    g_return_val_if_fail (G_IS_OBJECT (config), NULL);
+    g_return_val_if_fail (param_specs != NULL, NULL);
+    g_return_val_if_fail (n_param_specs > 0, NULL);
+    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  first_geometry_param = find_param (param_specs, n_param_specs,
-                                     "shape") + 1;
-  last_geometry_param  = find_param (param_specs, n_param_specs,
-                                     "high-quality");
+    first_geometry_param = find_param (param_specs, n_param_specs,
+                                       "shape") + 1;
+    last_geometry_param  = find_param (param_specs, n_param_specs,
+                                       "high-quality");
 
-  if (last_geometry_param <= first_geometry_param)
+    if (last_geometry_param <= first_geometry_param)
     {
-      vbox = _gimp_prop_gui_new_generic (config,
-                                         param_specs, n_param_specs,
-                                         area, context,
-                                         create_picker_func,
-                                         create_controller_func,
-                                         creator);
-    }
-  else
-    {
-      GtkWidget   *widget;
-      GtkWidget   *expander;
-      GtkWidget   *frame;
-      const gchar *label;
-
-      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-
-      widget = gimp_prop_widget_new (config,
-                                     "shape",
-                                     area, context,
-                                     create_picker_func,
-                                     create_controller_func,
-                                     creator,
-                                     &label);
-      gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
-      gtk_widget_show (widget);
-
-      widget = _gimp_prop_gui_new_generic (config,
-                                           param_specs,
-                                           first_geometry_param - 1,
+        vbox = _gimp_prop_gui_new_generic (config,
+                                           param_specs, n_param_specs,
                                            area, context,
                                            create_picker_func,
                                            create_controller_func,
                                            creator);
-      gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
-      gtk_widget_show (widget);
-
-      widget = _gimp_prop_gui_new_generic (config,
-                                           param_specs + last_geometry_param,
-                                           n_param_specs - last_geometry_param,
-                                           area, context,
-                                           create_picker_func,
-                                           create_controller_func,
-                                           creator);
-      gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
-      gtk_widget_show (widget);
-
-      expander = gtk_expander_new (_("Geometry Options"));
-      gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 0);
-      gtk_widget_show (expander);
-
-      frame = gimp_frame_new (NULL);
-      gtk_container_add (GTK_CONTAINER (expander), frame);
-      gtk_widget_show (frame);
-
-      widget = _gimp_prop_gui_new_generic (config,
-                                           param_specs + first_geometry_param,
-                                           last_geometry_param -
-                                           first_geometry_param,
-                                           area, context,
-                                           create_picker_func,
-                                           create_controller_func,
-                                           creator);
-      gtk_container_add (GTK_CONTAINER (frame), widget);
-      gtk_widget_show (widget);
     }
-
-  if (create_controller_func)
+    else
     {
-      GCallback set_func;
-      gpointer  set_data;
+        GtkWidget   *widget;
+        GtkWidget   *expander;
+        GtkWidget   *frame;
+        const gchar *label;
 
-      set_func = create_controller_func (creator,
-                                         GIMP_CONTROLLER_TYPE_FOCUS,
-                                         _("Focus Blur: "),
-                                         (GCallback) focus_callback,
-                                         config,
-                                         &set_data);
+        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
-      g_object_set_data (G_OBJECT (config), "set-func", set_func);
+        widget = gimp_prop_widget_new (config,
+                                       "shape",
+                                       area, context,
+                                       create_picker_func,
+                                       create_controller_func,
+                                       creator,
+                                       &label);
+        gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
+        gtk_widget_show (widget);
 
-      g_object_set_data_full (G_OBJECT (config), "area",
-                              g_memdup (area, sizeof (GeglRectangle)),
-                              (GDestroyNotify) g_free);
+        widget = _gimp_prop_gui_new_generic (config,
+                                             param_specs,
+                                             first_geometry_param - 1,
+                                             area, context,
+                                             create_picker_func,
+                                             create_controller_func,
+                                             creator);
+        gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
+        gtk_widget_show (widget);
 
-      config_notify (config, NULL, set_data);
+        widget = _gimp_prop_gui_new_generic (config,
+                                             param_specs + last_geometry_param,
+                                             n_param_specs - last_geometry_param,
+                                             area, context,
+                                             create_picker_func,
+                                             create_controller_func,
+                                             creator);
+        gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
+        gtk_widget_show (widget);
 
-      g_signal_connect (config, "notify",
-                        G_CALLBACK (config_notify),
-                        set_data);
+        expander = gtk_expander_new (_("Geometry Options"));
+        gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 0);
+        gtk_widget_show (expander);
+
+        frame = gimp_frame_new (NULL);
+        gtk_container_add (GTK_CONTAINER (expander), frame);
+        gtk_widget_show (frame);
+
+        widget = _gimp_prop_gui_new_generic (config,
+                                             param_specs + first_geometry_param,
+                                             last_geometry_param -
+                                             first_geometry_param,
+                                             area, context,
+                                             create_picker_func,
+                                             create_controller_func,
+                                             creator);
+        gtk_container_add (GTK_CONTAINER (frame), widget);
+        gtk_widget_show (widget);
     }
 
-  return vbox;
+    if (create_controller_func)
+    {
+        GCallback set_func;
+        gpointer  set_data;
+
+        set_func = create_controller_func (creator,
+                                           GIMP_CONTROLLER_TYPE_FOCUS,
+                                           _("Focus Blur: "),
+                                           (GCallback) focus_callback,
+                                           config,
+                                           &set_data);
+
+        g_object_set_data (G_OBJECT (config), "set-func", set_func);
+
+        g_object_set_data_full (G_OBJECT (config), "area",
+                                g_memdup (area, sizeof (GeglRectangle)),
+                                (GDestroyNotify) g_free);
+
+        config_notify (config, NULL, set_data);
+
+        g_signal_connect (config, "notify",
+                          G_CALLBACK (config_notify),
+                          set_data);
+    }
+
+    return vbox;
 }
 

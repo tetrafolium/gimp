@@ -25,14 +25,14 @@
 #if COMPILE_SSE2_INTRINISICS
 
 void   gimp_gegl_smudge_with_paint_process_sse2 (gfloat       *accum,
-                                                 const gfloat *canvas,
-                                                 gfloat       *paint,
-                                                 gint          count,
-                                                 const gfloat *brush_color,
-                                                 gfloat        brush_a,
-                                                 gboolean      no_erasing,
-                                                 gfloat        flow,
-                                                 gfloat        rate);
+        const gfloat *canvas,
+        gfloat       *paint,
+        gint          count,
+        const gfloat *brush_color,
+        gfloat        brush_a,
+        gboolean      no_erasing,
+        gfloat        flow,
+        gfloat        rate);
 
 #endif /* COMPILE_SSE2_INTRINISICS */
 

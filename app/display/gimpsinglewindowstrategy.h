@@ -37,12 +37,12 @@ typedef struct _GimpSingleWindowStrategyClass GimpSingleWindowStrategyClass;
 
 struct _GimpSingleWindowStrategy
 {
-  GimpObject  parent_instance;
+    GimpObject  parent_instance;
 };
 
 struct _GimpSingleWindowStrategyClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 };
 
 

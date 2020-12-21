@@ -34,12 +34,12 @@ typedef struct _GimpEraserClass GimpEraserClass;
 
 struct _GimpEraser
 {
-  GimpPaintbrush  parent_instance;
+    GimpPaintbrush  parent_instance;
 };
 
 struct _GimpEraserClass
 {
-  GimpPaintbrushClass  parent_class;
+    GimpPaintbrushClass  parent_class;
 };
 
 

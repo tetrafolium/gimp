@@ -38,12 +38,12 @@ typedef struct _GimpOperationHslColorLegacyClass GimpOperationHslColorLegacyClas
 
 struct _GimpOperationHslColorLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationHslColorLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

@@ -38,12 +38,12 @@ typedef struct _GimpOperationBrightnessContrastClass GimpOperationBrightnessCont
 
 struct _GimpOperationBrightnessContrast
 {
-  GimpOperationPointFilter  parent_instance;
+    GimpOperationPointFilter  parent_instance;
 };
 
 struct _GimpOperationBrightnessContrastClass
 {
-  GimpOperationPointFilterClass  parent_class;
+    GimpOperationPointFilterClass  parent_class;
 };
 
 

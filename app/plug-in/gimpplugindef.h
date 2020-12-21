@@ -35,22 +35,22 @@ typedef struct _GimpPlugInDefClass GimpPlugInDefClass;
 
 struct _GimpPlugInDef
 {
-  GimpObject  parent_instance;
+    GimpObject  parent_instance;
 
-  GFile      *file;
-  GSList     *procedures;
-  gchar      *locale_domain_name;
-  gchar      *locale_domain_path;
-  gchar      *help_domain_name;
-  gchar      *help_domain_uri;
-  gint64      mtime;
-  gboolean    needs_query;  /* Does the plug-in need to be queried ?     */
-  gboolean    has_init;     /* Does the plug-in need to be initialized ? */
+    GFile      *file;
+    GSList     *procedures;
+    gchar      *locale_domain_name;
+    gchar      *locale_domain_path;
+    gchar      *help_domain_name;
+    gchar      *help_domain_uri;
+    gint64      mtime;
+    gboolean    needs_query;  /* Does the plug-in need to be queried ?     */
+    gboolean    has_init;     /* Does the plug-in need to be initialized ? */
 };
 
 struct _GimpPlugInDefClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 };
 
 
@@ -59,24 +59,24 @@ GType           gimp_plug_in_def_get_type (void) G_GNUC_CONST;
 GimpPlugInDef * gimp_plug_in_def_new      (GFile               *file);
 
 void   gimp_plug_in_def_add_procedure     (GimpPlugInDef       *plug_in_def,
-                                           GimpPlugInProcedure *proc);
+        GimpPlugInProcedure *proc);
 void   gimp_plug_in_def_remove_procedure  (GimpPlugInDef       *plug_in_def,
-                                           GimpPlugInProcedure *proc);
+        GimpPlugInProcedure *proc);
 
 void   gimp_plug_in_def_set_locale_domain (GimpPlugInDef       *plug_in_def,
-                                           const gchar         *domain_name,
-                                           const gchar         *domain_path);
+        const gchar         *domain_name,
+        const gchar         *domain_path);
 
 void   gimp_plug_in_def_set_help_domain   (GimpPlugInDef       *plug_in_def,
-                                           const gchar         *domain_name,
-                                           const gchar         *domain_uri);
+        const gchar         *domain_name,
+        const gchar         *domain_uri);
 
 void   gimp_plug_in_def_set_mtime         (GimpPlugInDef       *plug_in_def,
-                                           gint64               mtime);
+        gint64               mtime);
 void   gimp_plug_in_def_set_needs_query   (GimpPlugInDef       *plug_in_def,
-                                           gboolean             needs_query);
+        gboolean             needs_query);
 void   gimp_plug_in_def_set_has_init      (GimpPlugInDef       *plug_in_def,
-                                           gboolean             has_init);
+        gboolean             has_init);
 
 
 #endif /* __GIMP_PLUG_IN_DEF_H__ */

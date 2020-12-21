@@ -50,26 +50,26 @@ GimpLayerModeBlendFunc     gimp_layer_mode_get_blend_function         (GimpLayer
 GimpLayerModeContext       gimp_layer_mode_get_context                (GimpLayerMode           mode);
 
 GimpLayerMode            * gimp_layer_mode_get_context_array          (GimpLayerMode           mode,
-                                                                       GimpLayerModeContext    context,
-                                                                       gint                   *n_modes);
+        GimpLayerModeContext    context,
+        gint                   *n_modes);
 
 GimpLayerModeGroup         gimp_layer_mode_get_group                  (GimpLayerMode           mode);
 
 const GimpLayerMode      * gimp_layer_mode_get_group_array            (GimpLayerModeGroup      group,
-                                                                       gint                   *n_modes);
+        gint                   *n_modes);
 
 gboolean                   gimp_layer_mode_get_for_group              (GimpLayerMode           old_mode,
-                                                                       GimpLayerModeGroup      new_group,
-                                                                       GimpLayerMode          *new_mode);
+        GimpLayerModeGroup      new_group,
+        GimpLayerMode          *new_mode);
 
 const Babl               * gimp_layer_mode_get_format                 (GimpLayerMode           mode,
-                                                                       GimpLayerColorSpace     blend_space,
-                                                                       GimpLayerColorSpace     composite_space,
-                                                                       GimpLayerCompositeMode  composite_mode,
-                                                                       const Babl             *preferred_format);
+        GimpLayerColorSpace     blend_space,
+        GimpLayerColorSpace     composite_space,
+        GimpLayerCompositeMode  composite_mode,
+        const Babl             *preferred_format);
 
 GimpLayerCompositeRegion   gimp_layer_mode_get_included_region        (GimpLayerMode           mode,
-                                                                       GimpLayerCompositeMode  composite_mode);
+        GimpLayerCompositeMode  composite_mode);
 
 
 #endif /* __GIMP_LAYER_MODES_H__ */

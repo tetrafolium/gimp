@@ -39,14 +39,14 @@ typedef struct _GimpOperationThresholdAlphaClass GimpOperationThresholdAlphaClas
 
 struct _GimpOperationThresholdAlpha
 {
-  GeglOperationPointFilter  parent_instance;
+    GeglOperationPointFilter  parent_instance;
 
-  gdouble                   value;
+    gdouble                   value;
 };
 
 struct _GimpOperationThresholdAlphaClass
 {
-  GeglOperationPointFilterClass  parent_class;
+    GeglOperationPointFilterClass  parent_class;
 };
 
 

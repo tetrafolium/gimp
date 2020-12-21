@@ -20,11 +20,11 @@
 
 
 typedef void (* GimpResolutionCallback) (GtkWidget *dialog,
-                                         GimpImage *image,
-                                         gdouble    xresolution,
-                                         gdouble    yresolution,
-                                         GimpUnit   resolution_unit,
-                                         gpointer   user_data);
+        GimpImage *image,
+        gdouble    xresolution,
+        gdouble    yresolution,
+        GimpUnit   resolution_unit,
+        gpointer   user_data);
 
 
 GtkWidget * print_size_dialog_new (GimpImage              *image,

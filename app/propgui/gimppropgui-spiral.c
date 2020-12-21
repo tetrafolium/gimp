@@ -39,8 +39,8 @@
 
 typedef enum
 {
-  GEGL_SPIRAL_TYPE_LINEAR,
-  GEGL_SPIRAL_TYPE_LOGARITHMIC
+    GEGL_SPIRAL_TYPE_LINEAR,
+    GEGL_SPIRAL_TYPE_LOGARITHMIC
 } GeglSpiralType;
 
 
@@ -54,40 +54,40 @@ slider_line_callback (GObject                    *config,
                       const GimpControllerSlider *sliders,
                       gint                        n_sliders)
 {
-  GeglSpiralType type;
-  gdouble        x, y;
-  gdouble        radius;
-  gdouble        rotation;
-  gdouble        base;
-  gdouble        balance;
+    GeglSpiralType type;
+    gdouble        x, y;
+    gdouble        radius;
+    gdouble        rotation;
+    gdouble        base;
+    gdouble        balance;
 
-  g_object_set_data_full (G_OBJECT (config), "area",
-                          g_memdup (area, sizeof (GeglRectangle)),
-                          (GDestroyNotify) g_free);
+    g_object_set_data_full (G_OBJECT (config), "area",
+                            g_memdup (area, sizeof (GeglRectangle)),
+                            (GDestroyNotify) g_free);
 
-  g_object_get (config,
-                "type",    &type,
-                "base",    &base,
-                "balance", &balance,
-                NULL);
+    g_object_get (config,
+                  "type",    &type,
+                  "base",    &base,
+                  "balance", &balance,
+                  NULL);
 
-  x        = x1 / area->width;
-  y        = y1 / area->height;
-  radius   = sqrt (SQR (x2 - x1) + SQR (y2 - y1));
-  rotation = atan2 (-(y2 - y1), x2 - x1) * 180 / G_PI;
+    x        = x1 / area->width;
+    y        = y1 / area->height;
+    radius   = sqrt (SQR (x2 - x1) + SQR (y2 - y1));
+    rotation = atan2 (-(y2 - y1), x2 - x1) * 180 / G_PI;
 
-  if (rotation < 0)
-    rotation += 360.0;
+    if (rotation < 0)
+        rotation += 360.0;
 
-  switch (type)
+    switch (type)
     {
     case GEGL_SPIRAL_TYPE_LINEAR:
-      balance = 3.0 - 4.0 * sliders[0].value;
+        balance = 3.0 - 4.0 * sliders[0].value;
 
-      break;
+        break;
 
     case GEGL_SPIRAL_TYPE_LOGARITHMIC:
-      {
+    {
         gdouble old_base = base;
 
         base = 1.0 / sliders[1].value;
@@ -98,22 +98,22 @@ slider_line_callback (GObject                    *config,
          * can get NaN.
          */
         if (base == old_base && base > 1.0)
-          {
+        {
             balance = -4.0 * log (sliders[0].value) / log (base) - 1.0;
             balance = CLAMP (balance, -1.0, 1.0);
-          }
-      }
-      break;
+        }
+    }
+    break;
     }
 
-  g_object_set (config,
-                "x",        x,
-                "y",        y,
-                "radius",   radius,
-                "base",     base,
-                "rotation", rotation,
-                "balance",  balance,
-                NULL);
+    g_object_set (config,
+                  "x",        x,
+                  "y",        y,
+                  "radius",   radius,
+                  "base",     base,
+                  "rotation", rotation,
+                  "balance",  balance,
+                  NULL);
 }
 
 static void
@@ -121,68 +121,68 @@ config_notify (GObject          *config,
                const GParamSpec *pspec,
                gpointer          set_data)
 {
-  GimpControllerSliderLineCallback  set_func;
-  GeglRectangle                    *area;
-  GeglSpiralType                    type;
-  gdouble                           x, y;
-  gdouble                           radius;
-  gdouble                           rotation;
-  gdouble                           base;
-  gdouble                           balance;
-  gdouble                           x1, y1, x2, y2;
-  GimpControllerSlider              sliders[2];
-  gint                              n_sliders = 0;
+    GimpControllerSliderLineCallback  set_func;
+    GeglRectangle                    *area;
+    GeglSpiralType                    type;
+    gdouble                           x, y;
+    gdouble                           radius;
+    gdouble                           rotation;
+    gdouble                           base;
+    gdouble                           balance;
+    gdouble                           x1, y1, x2, y2;
+    GimpControllerSlider              sliders[2];
+    gint                              n_sliders = 0;
 
-  set_func = g_object_get_data (G_OBJECT (config), "set-func");
-  area     = g_object_get_data (G_OBJECT (config), "area");
+    set_func = g_object_get_data (G_OBJECT (config), "set-func");
+    area     = g_object_get_data (G_OBJECT (config), "area");
 
-  g_object_get (config,
-                "type",     &type,
-                "x",        &x,
-                "y",        &y,
-                "radius",   &radius,
-                "rotation", &rotation,
-                "base",     &base,
-                "balance",  &balance,
-                NULL);
+    g_object_get (config,
+                  "type",     &type,
+                  "x",        &x,
+                  "y",        &y,
+                  "radius",   &radius,
+                  "rotation", &rotation,
+                  "base",     &base,
+                  "balance",  &balance,
+                  NULL);
 
-  x1 = x * area->width;
-  y1 = y * area->height;
-  x2 = x1 + cos (rotation * (G_PI / 180.0)) * radius;
-  y2 = y1 - sin (rotation * (G_PI / 180.0)) * radius;
+    x1 = x * area->width;
+    y1 = y * area->height;
+    x2 = x1 + cos (rotation * (G_PI / 180.0)) * radius;
+    y2 = y1 - sin (rotation * (G_PI / 180.0)) * radius;
 
-  switch (type)
-  {
-  case GEGL_SPIRAL_TYPE_LINEAR:
-    n_sliders = 1;
+    switch (type)
+    {
+    case GEGL_SPIRAL_TYPE_LINEAR:
+        n_sliders = 1;
 
-    /* balance */
-    sliders[0]       = GIMP_CONTROLLER_SLIDER_DEFAULT;
-    sliders[0].min   = 0.5;
-    sliders[0].max   = 1.0;
-    sliders[0].value = 0.5 + (1.0 - balance) / 4.0;
+        /* balance */
+        sliders[0]       = GIMP_CONTROLLER_SLIDER_DEFAULT;
+        sliders[0].min   = 0.5;
+        sliders[0].max   = 1.0;
+        sliders[0].value = 0.5 + (1.0 - balance) / 4.0;
 
-    break;
+        break;
 
-  case GEGL_SPIRAL_TYPE_LOGARITHMIC:
-    n_sliders = 2;
+    case GEGL_SPIRAL_TYPE_LOGARITHMIC:
+        n_sliders = 2;
 
-    /* balance */
-    sliders[0]       = GIMP_CONTROLLER_SLIDER_DEFAULT;
-    sliders[0].min   = 1.0 / sqrt (base);
-    sliders[0].max   = 1.0;
-    sliders[0].value = pow (base, -(balance + 1.0) / 4.0);
+        /* balance */
+        sliders[0]       = GIMP_CONTROLLER_SLIDER_DEFAULT;
+        sliders[0].min   = 1.0 / sqrt (base);
+        sliders[0].max   = 1.0;
+        sliders[0].value = pow (base, -(balance + 1.0) / 4.0);
 
-    /* base */
-    sliders[1]       = GIMP_CONTROLLER_SLIDER_DEFAULT;
-    sliders[1].min   = 0.0;
-    sliders[1].max   = 1.0;
-    sliders[1].value = 1.0 / base;
+        /* base */
+        sliders[1]       = GIMP_CONTROLLER_SLIDER_DEFAULT;
+        sliders[1].min   = 0.0;
+        sliders[1].max   = 1.0;
+        sliders[1].value = 1.0 / base;
 
-    break;
-  }
+        break;
+    }
 
-  set_func (set_data, area, x1, y1, x2, y2, sliders, n_sliders);
+    set_func (set_data, area, x1, y1, x2, y2, sliders, n_sliders);
 }
 
 GtkWidget *
@@ -195,45 +195,45 @@ _gimp_prop_gui_new_spiral (GObject                  *config,
                            GimpCreateControllerFunc  create_controller_func,
                            gpointer                  creator)
 {
-  GtkWidget *vbox;
+    GtkWidget *vbox;
 
-  g_return_val_if_fail (G_IS_OBJECT (config), NULL);
-  g_return_val_if_fail (param_specs != NULL, NULL);
-  g_return_val_if_fail (n_param_specs > 0, NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+    g_return_val_if_fail (G_IS_OBJECT (config), NULL);
+    g_return_val_if_fail (param_specs != NULL, NULL);
+    g_return_val_if_fail (n_param_specs > 0, NULL);
+    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  vbox = _gimp_prop_gui_new_generic (config,
-                                     param_specs, n_param_specs,
-                                     area, context,
-                                     create_picker_func,
-                                     create_controller_func,
-                                     creator);
+    vbox = _gimp_prop_gui_new_generic (config,
+                                       param_specs, n_param_specs,
+                                       area, context,
+                                       create_picker_func,
+                                       create_controller_func,
+                                       creator);
 
 
-  if (create_controller_func)
+    if (create_controller_func)
     {
-      GCallback set_func;
-      gpointer  set_data;
+        GCallback set_func;
+        gpointer  set_data;
 
-      set_func = create_controller_func (creator,
-                                         GIMP_CONTROLLER_TYPE_SLIDER_LINE,
-                                         _("Spiral: "),
-                                         (GCallback) slider_line_callback,
-                                         config,
-                                         &set_data);
+        set_func = create_controller_func (creator,
+                                           GIMP_CONTROLLER_TYPE_SLIDER_LINE,
+                                           _("Spiral: "),
+                                           (GCallback) slider_line_callback,
+                                           config,
+                                           &set_data);
 
-      g_object_set_data (G_OBJECT (config), "set-func", set_func);
+        g_object_set_data (G_OBJECT (config), "set-func", set_func);
 
-      g_object_set_data_full (G_OBJECT (config), "area",
-                              g_memdup (area, sizeof (GeglRectangle)),
-                              (GDestroyNotify) g_free);
+        g_object_set_data_full (G_OBJECT (config), "area",
+                                g_memdup (area, sizeof (GeglRectangle)),
+                                (GDestroyNotify) g_free);
 
-      config_notify (config, NULL, set_data);
+        config_notify (config, NULL, set_data);
 
-      g_signal_connect (config, "notify",
-                        G_CALLBACK (config_notify),
-                        set_data);
+        g_signal_connect (config, "notify",
+                          G_CALLBACK (config_notify),
+                          set_data);
     }
 
-  return vbox;
+    return vbox;
 }

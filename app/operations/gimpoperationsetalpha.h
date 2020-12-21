@@ -38,14 +38,14 @@ typedef struct _GimpOperationSetAlphaClass GimpOperationSetAlphaClass;
 
 struct _GimpOperationSetAlpha
 {
-  GeglOperationPointComposer  parent_instance;
+    GeglOperationPointComposer  parent_instance;
 
-  gdouble                     value;
+    gdouble                     value;
 };
 
 struct _GimpOperationSetAlphaClass
 {
-  GeglOperationPointComposerClass  parent_class;
+    GeglOperationPointComposerClass  parent_class;
 };
 
 

@@ -29,13 +29,13 @@
 
 
 static gboolean   gimp_operation_merge_process (GeglOperation       *op,
-                                                void                *in,
-                                                void                *layer,
-                                                void                *mask,
-                                                void                *out,
-                                                glong                samples,
-                                                const GeglRectangle *roi,
-                                                gint                 level);
+        void                *in,
+        void                *layer,
+        void                *mask,
+        void                *out,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationMerge, gimp_operation_merge,
@@ -45,15 +45,15 @@ G_DEFINE_TYPE (GimpOperationMerge, gimp_operation_merge,
 static void
 gimp_operation_merge_class_init (GimpOperationMergeClass *klass)
 {
-  GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-  GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
+    GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
+    GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:merge",
-                                 "description", "GIMP merge mode operation",
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:merge",
+                                   "description", "GIMP merge mode operation",
+                                   NULL);
 
-  layer_mode_class->process = gimp_operation_merge_process;
+    layer_mode_class->process = gimp_operation_merge_process;
 }
 
 static void
@@ -71,173 +71,173 @@ gimp_operation_merge_process (GeglOperation       *op,
                               const GeglRectangle *roi,
                               gint                 level)
 {
-  GimpOperationLayerMode *layer_mode = (gpointer) op;
-  gfloat                 *in         = in_p;
-  gfloat                 *out        = out_p;
-  gfloat                 *layer      = layer_p;
-  gfloat                 *mask       = mask_p;
-  gfloat                  opacity    = layer_mode->opacity;
-  const gboolean          has_mask   = mask != NULL;
+    GimpOperationLayerMode *layer_mode = (gpointer) op;
+    gfloat                 *in         = in_p;
+    gfloat                 *out        = out_p;
+    gfloat                 *layer      = layer_p;
+    gfloat                 *mask       = mask_p;
+    gfloat                  opacity    = layer_mode->opacity;
+    const gboolean          has_mask   = mask != NULL;
 
-  switch (layer_mode->composite_mode)
+    switch (layer_mode->composite_mode)
     {
     case GIMP_LAYER_COMPOSITE_UNION:
     case GIMP_LAYER_COMPOSITE_AUTO:
-      while (samples--)
+        while (samples--)
         {
-          gfloat in_alpha    = in[ALPHA];
-          gfloat layer_alpha = layer[ALPHA] * opacity;
-          gfloat new_alpha;
-          gint   b;
+            gfloat in_alpha    = in[ALPHA];
+            gfloat layer_alpha = layer[ALPHA] * opacity;
+            gfloat new_alpha;
+            gint   b;
 
-          if (has_mask)
-            layer_alpha *= *mask;
+            if (has_mask)
+                layer_alpha *= *mask;
 
-          in_alpha = MIN (in_alpha, 1.0f - layer_alpha);
-          new_alpha  = in_alpha + layer_alpha;
+            in_alpha = MIN (in_alpha, 1.0f - layer_alpha);
+            new_alpha  = in_alpha + layer_alpha;
 
-          if (new_alpha)
+            if (new_alpha)
             {
-              gfloat ratio = layer_alpha / new_alpha;
+                gfloat ratio = layer_alpha / new_alpha;
 
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = in[b] + (layer[b] - in[b]) * ratio;
+                    out[b] = in[b] + (layer[b] - in[b]) * ratio;
                 }
             }
-          else
+            else
             {
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = in[b];
+                    out[b] = in[b];
                 }
             }
 
-          out[ALPHA] = new_alpha;
+            out[ALPHA] = new_alpha;
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
 
     case GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP:
-      while (samples--)
+        while (samples--)
         {
-          gfloat in_alpha    = in[ALPHA];
-          gfloat layer_alpha = layer[ALPHA] * opacity;
-          gint   b;
+            gfloat in_alpha    = in[ALPHA];
+            gfloat layer_alpha = layer[ALPHA] * opacity;
+            gint   b;
 
-          if (has_mask)
-            layer_alpha *= *mask;
+            if (has_mask)
+                layer_alpha *= *mask;
 
-          layer_alpha -= 1.0f - in_alpha;
+            layer_alpha -= 1.0f - in_alpha;
 
-          if (layer_alpha > 0.0f)
+            if (layer_alpha > 0.0f)
             {
-              gfloat ratio = layer_alpha / in_alpha;
+                gfloat ratio = layer_alpha / in_alpha;
 
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = in[b] + (layer[b] - in[b]) * ratio;
+                    out[b] = in[b] + (layer[b] - in[b]) * ratio;
                 }
             }
-          else
+            else
             {
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = in[b];
+                    out[b] = in[b];
                 }
             }
 
-          out[ALPHA] = in_alpha;
+            out[ALPHA] = in_alpha;
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
 
     case GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER:
-      while (samples--)
+        while (samples--)
         {
-          gfloat layer_alpha = layer[ALPHA] * opacity;
-          gint   b;
+            gfloat layer_alpha = layer[ALPHA] * opacity;
+            gint   b;
 
-          if (has_mask)
-            layer_alpha *= *mask;
+            if (has_mask)
+                layer_alpha *= *mask;
 
-          if (layer_alpha != 0.0f)
+            if (layer_alpha != 0.0f)
             {
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = layer[b];
+                    out[b] = layer[b];
                 }
             }
-          else
+            else
             {
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = in[b];
+                    out[b] = in[b];
                 }
             }
 
-          out[ALPHA] = layer_alpha;
+            out[ALPHA] = layer_alpha;
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
 
     case GIMP_LAYER_COMPOSITE_INTERSECTION:
-      while (samples--)
+        while (samples--)
         {
-          gfloat in_alpha    = in[ALPHA];
-          gfloat layer_alpha = layer[ALPHA] * opacity;
-          gint   b;
+            gfloat in_alpha    = in[ALPHA];
+            gfloat layer_alpha = layer[ALPHA] * opacity;
+            gint   b;
 
-          if (has_mask)
-            layer_alpha *= *mask;
+            if (has_mask)
+                layer_alpha *= *mask;
 
-          layer_alpha -= 1.0f - in_alpha;
-          layer_alpha = MAX (layer_alpha, 0.0f);
+            layer_alpha -= 1.0f - in_alpha;
+            layer_alpha = MAX (layer_alpha, 0.0f);
 
-          if (layer_alpha != 0.0f)
+            if (layer_alpha != 0.0f)
             {
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = layer[b];
+                    out[b] = layer[b];
                 }
             }
-          else
+            else
             {
-              for (b = RED; b < ALPHA; b++)
+                for (b = RED; b < ALPHA; b++)
                 {
-                  out[b] = in[b];
+                    out[b] = in[b];
                 }
             }
 
-          out[ALPHA] = layer_alpha;
+            out[ALPHA] = layer_alpha;
 
-          in    += 4;
-          layer += 4;
-          out   += 4;
+            in    += 4;
+            layer += 4;
+            out   += 4;
 
-          if (has_mask)
-            mask++;
+            if (has_mask)
+                mask++;
         }
-      break;
+        break;
     }
 
-  return TRUE;
+    return TRUE;
 }

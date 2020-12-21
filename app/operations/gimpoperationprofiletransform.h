@@ -39,23 +39,23 @@ typedef struct _GimpOperationProfileTransformClass GimpOperationProfileTransform
 
 struct _GimpOperationProfileTransform
 {
-  GeglOperationPointFilter  parent_instance;
+    GeglOperationPointFilter  parent_instance;
 
-  GimpColorProfile         *src_profile;
-  const Babl               *src_format;
+    GimpColorProfile         *src_profile;
+    const Babl               *src_format;
 
-  GimpColorProfile         *dest_profile;
-  const Babl               *dest_format;
+    GimpColorProfile         *dest_profile;
+    const Babl               *dest_format;
 
-  GimpColorRenderingIntent  rendering_intent;
-  gboolean                  black_point_compensation;
+    GimpColorRenderingIntent  rendering_intent;
+    gboolean                  black_point_compensation;
 
-  GimpColorTransform       *transform;
+    GimpColorTransform       *transform;
 };
 
 struct _GimpOperationProfileTransformClass
 {
-  GeglOperationPointFilterClass  parent_class;
+    GeglOperationPointFilterClass  parent_class;
 };
 
 

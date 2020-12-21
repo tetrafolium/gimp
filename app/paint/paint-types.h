@@ -63,14 +63,14 @@ typedef struct _GimpSmudgeOptions           GimpSmudgeOptions;
 /*  functions  */
 
 typedef void (* GimpPaintRegisterCallback) (Gimp        *gimp,
-                                            GType        paint_type,
-                                            GType        paint_options_type,
-                                            const gchar *identifier,
-                                            const gchar *blurb,
-                                            const gchar *icon_name);
+        GType        paint_type,
+        GType        paint_options_type,
+        const gchar *identifier,
+        const gchar *blurb,
+        const gchar *icon_name);
 
 typedef void (* GimpPaintRegisterFunc)     (Gimp                      *gimp,
-                                            GimpPaintRegisterCallback  callback);
+        GimpPaintRegisterCallback  callback);
 
 
 #endif /* __PAINT_TYPES_H__ */

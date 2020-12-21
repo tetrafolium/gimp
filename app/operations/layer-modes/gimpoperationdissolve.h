@@ -38,12 +38,12 @@ typedef struct _GimpOperationDissolveClass GimpOperationDissolveClass;
 
 struct _GimpOperationDissolveClass
 {
-  GimpOperationLayerModeClass parent_class;
+    GimpOperationLayerModeClass parent_class;
 };
 
 struct _GimpOperationDissolve
 {
-  GimpOperationLayerMode parent_instance;
+    GimpOperationLayerMode parent_instance;
 };
 
 

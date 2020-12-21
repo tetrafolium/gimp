@@ -38,15 +38,15 @@ typedef struct _GimpCanvasGroupClass   GimpCanvasGroupClass;
 
 struct _GimpCanvasGroup
 {
-  GimpCanvasItem          parent_instance;
+    GimpCanvasItem          parent_instance;
 
-  GimpCanvasGroupPrivate *priv;
+    GimpCanvasGroupPrivate *priv;
 
 };
 
 struct _GimpCanvasGroupClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
@@ -55,14 +55,14 @@ GType            gimp_canvas_group_get_type           (void) G_GNUC_CONST;
 GimpCanvasItem * gimp_canvas_group_new                (GimpDisplayShell *shell);
 
 void             gimp_canvas_group_add_item           (GimpCanvasGroup  *group,
-                                                       GimpCanvasItem   *item);
+        GimpCanvasItem   *item);
 void             gimp_canvas_group_remove_item        (GimpCanvasGroup  *group,
-                                                       GimpCanvasItem   *item);
+        GimpCanvasItem   *item);
 
 void             gimp_canvas_group_set_group_stroking (GimpCanvasGroup  *group,
-                                                       gboolean          group_stroking);
+        gboolean          group_stroking);
 void             gimp_canvas_group_set_group_filling  (GimpCanvasGroup  *group,
-                                                       gboolean          group_filling);
+        gboolean          group_filling);
 
 
 #endif /* __GIMP_CANVAS_GROUP_H__ */

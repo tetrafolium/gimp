@@ -34,17 +34,17 @@ typedef struct _GimpSmudgeOptionsClass GimpSmudgeOptionsClass;
 
 struct _GimpSmudgeOptions
 {
-  GimpPaintOptions  parent_instance;
+    GimpPaintOptions  parent_instance;
 
-  gdouble           rate;
-  gdouble           flow;
-  gboolean          no_erasing;
-  gboolean          sample_merged;
+    gdouble           rate;
+    gdouble           flow;
+    gboolean          no_erasing;
+    gboolean          sample_merged;
 };
 
 struct _GimpSmudgeOptionsClass
 {
-  GimpPaintOptionsClass  parent_class;
+    GimpPaintOptionsClass  parent_class;
 };
 
 

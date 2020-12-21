@@ -22,15 +22,15 @@
 void   gimp_display_shell_scrollbars_update           (GimpDisplayShell *shell);
 
 void   gimp_display_shell_scrollbars_setup_horizontal (GimpDisplayShell *shell,
-                                                       gdouble           value);
+        gdouble           value);
 void   gimp_display_shell_scrollbars_setup_vertical   (GimpDisplayShell *shell,
-                                                       gdouble           value);
+        gdouble           value);
 
 void   gimp_display_shell_scrollbars_update_steppers  (GimpDisplayShell *shell,
-                                                       gint              min_offset_x,
-                                                       gint              max_offset_x,
-                                                       gint              min_offset_y,
-                                                       gint              max_offset_y);
+        gint              min_offset_x,
+        gint              max_offset_x,
+        gint              min_offset_y,
+        gint              max_offset_y);
 
 
 #endif  /*  __GIMP_DISPLAY_SHELL_SCROLLBARS_H__  */

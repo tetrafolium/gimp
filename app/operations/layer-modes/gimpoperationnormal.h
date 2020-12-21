@@ -38,12 +38,12 @@ typedef struct _GimpOperationNormalClass GimpOperationNormalClass;
 
 struct _GimpOperationNormal
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationNormalClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 
@@ -53,37 +53,37 @@ GType      gimp_operation_normal_get_type     (void) G_GNUC_CONST;
 /*  protected  */
 
 gboolean   gimp_operation_normal_process      (GeglOperation       *op,
-                                               void                *in,
-                                               void                *layer,
-                                               void                *mask,
-                                               void                *out,
-                                               glong                samples,
-                                               const GeglRectangle *roi,
-                                               gint                 level);
+        void                *in,
+        void                *layer,
+        void                *mask,
+        void                *out,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 #if COMPILE_SSE2_INTRINISICS
 
 gboolean   gimp_operation_normal_process_sse2 (GeglOperation       *op,
-                                               void                *in,
-                                               void                *layer,
-                                               void                *mask,
-                                               void                *out,
-                                               glong                samples,
-                                               const GeglRectangle *roi,
-                                               gint                 level);
+        void                *in,
+        void                *layer,
+        void                *mask,
+        void                *out,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 #endif /* COMPILE_SSE2_INTRINISICS */
 
 #if COMPILE_SSE4_1_INTRINISICS
 
 gboolean   gimp_operation_normal_process_sse4 (GeglOperation       *op,
-                                               void                *in,
-                                               void                *layer,
-                                               void                *mask,
-                                               void                *out,
-                                               glong                samples,
-                                               const GeglRectangle *roi,
-                                               gint                 level);
+        void                *in,
+        void                *layer,
+        void                *mask,
+        void                *out,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 #endif /* COMPILE_SSE4_1_INTRINISICS */
 

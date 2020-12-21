@@ -38,12 +38,12 @@ typedef struct _GimpOperationFloodClass GimpOperationFloodClass;
 
 struct _GimpOperationFlood
 {
-  GeglOperationFilter  parent_instance;
+    GeglOperationFilter  parent_instance;
 };
 
 struct _GimpOperationFloodClass
 {
-  GeglOperationFilterClass  parent_class;
+    GeglOperationFilterClass  parent_class;
 };
 
 

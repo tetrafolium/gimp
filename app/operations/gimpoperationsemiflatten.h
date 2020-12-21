@@ -38,14 +38,14 @@ typedef struct _GimpOperationSemiFlattenClass GimpOperationSemiFlattenClass;
 
 struct _GimpOperationSemiFlatten
 {
-  GeglOperationPointFilter  parent_instance;
+    GeglOperationPointFilter  parent_instance;
 
-  GimpRGB                   color;
+    GimpRGB                   color;
 };
 
 struct _GimpOperationSemiFlattenClass
 {
-  GeglOperationPointFilterClass  parent_class;
+    GeglOperationPointFilterClass  parent_class;
 };
 
 

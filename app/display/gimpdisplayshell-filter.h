@@ -20,7 +20,7 @@
 
 
 void       gimp_display_shell_filter_set (GimpDisplayShell      *shell,
-                                          GimpColorDisplayStack *stack);
+        GimpColorDisplayStack *stack);
 
 gboolean   gimp_display_shell_has_filter (GimpDisplayShell      *shell);
 

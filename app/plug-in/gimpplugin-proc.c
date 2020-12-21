@@ -43,7 +43,7 @@
 /*  local function prototypes  */
 
 static GimpPlugInProcedure * gimp_plug_in_proc_find (GimpPlugIn  *plug_in,
-                                                     const gchar *proc_name);
+        const gchar *proc_name);
 
 
 /*  public functions  */
@@ -54,31 +54,31 @@ gimp_plug_in_set_proc_image_types (GimpPlugIn   *plug_in,
                                    const gchar  *image_types,
                                    GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register images types "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register images types "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_image_types (proc, image_types);
+    gimp_plug_in_procedure_set_image_types (proc, image_types);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
@@ -87,30 +87,30 @@ gimp_plug_in_set_proc_menu_label (GimpPlugIn   *plug_in,
                                   const gchar  *menu_label,
                                   GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
-  g_return_val_if_fail (menu_label != NULL && strlen (menu_label), FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (menu_label != NULL && strlen (menu_label), FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register the menu label \"%s\" "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   menu_label, proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register the menu label \"%s\" "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     menu_label, proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  return gimp_plug_in_procedure_set_menu_label (proc, menu_label, error);
+    return gimp_plug_in_procedure_set_menu_label (proc, menu_label, error);
 }
 
 gboolean
@@ -119,30 +119,30 @@ gimp_plug_in_add_proc_menu_path (GimpPlugIn   *plug_in,
                                  const gchar  *menu_path,
                                  GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
-  g_return_val_if_fail (menu_path != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (menu_path != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register the menu item \"%s\" "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   menu_path, proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register the menu item \"%s\" "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     menu_path, proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  return gimp_plug_in_procedure_add_menu_path (proc, menu_path, error);
+    return gimp_plug_in_procedure_add_menu_path (proc, menu_path, error);
 }
 
 gboolean
@@ -153,30 +153,30 @@ gimp_plug_in_set_proc_icon (GimpPlugIn    *plug_in,
                             gint           data_length,
                             GError       **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to set the icon "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to set the icon "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  return gimp_plug_in_procedure_set_icon (proc, type, data, data_length,
-                                          error);
+    return gimp_plug_in_procedure_set_icon (proc, type, data, data_length,
+                                            error);
 }
 
 gboolean
@@ -187,32 +187,32 @@ gimp_plug_in_set_proc_help (GimpPlugIn   *plug_in,
                             const gchar  *help_id,
                             GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register help "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register help "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_procedure_set_help (GIMP_PROCEDURE (proc),
-                           blurb, help, help_id);
+    gimp_procedure_set_help (GIMP_PROCEDURE (proc),
+                             blurb, help, help_id);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
@@ -223,165 +223,165 @@ gimp_plug_in_set_proc_attribution (GimpPlugIn   *plug_in,
                                    const gchar  *date,
                                    GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register the attribution "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register the attribution "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_procedure_set_attribution (GIMP_PROCEDURE (proc),
-                                  authors, copyright, date);
+    gimp_procedure_set_attribution (GIMP_PROCEDURE (proc),
+                                    authors, copyright, date);
 
-  return TRUE;
+    return TRUE;
 }
 
 static inline gboolean
 GIMP_IS_PARAM_SPEC_RUN_MODE (GParamSpec *pspec)
 {
-  return (G_IS_PARAM_SPEC_ENUM (pspec) &&
-          pspec->value_type == GIMP_TYPE_RUN_MODE);
+    return (G_IS_PARAM_SPEC_ENUM (pspec) &&
+            pspec->value_type == GIMP_TYPE_RUN_MODE);
 }
 
 static inline gboolean
 GIMP_IS_PARAM_SPEC_FILE (GParamSpec *pspec)
 {
-  return (G_IS_PARAM_SPEC_OBJECT (pspec) &&
-          pspec->value_type == G_TYPE_FILE);
+    return (G_IS_PARAM_SPEC_OBJECT (pspec) &&
+            pspec->value_type == G_TYPE_FILE);
 }
 
 gboolean
 gimp_plug_in_set_file_proc_load_handler (GimpPlugIn   *plug_in,
-                                         const gchar  *proc_name,
-                                         const gchar  *extensions,
-                                         const gchar  *prefixes,
-                                         const gchar  *magics,
-                                         GError      **error)
+        const gchar  *proc_name,
+        const gchar  *extensions,
+        const gchar  *prefixes,
+        const gchar  *magics,
+        GError      **error)
 {
-  GimpPlugInProcedure *proc;
-  GimpProcedure       *procedure;
+    GimpPlugInProcedure *proc;
+    GimpProcedure       *procedure;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register procedure \"%s\" "
-                   "as load handler.\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register procedure \"%s\" "
+                     "as load handler.\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  procedure = GIMP_PROCEDURE (proc);
+    procedure = GIMP_PROCEDURE (proc);
 
-  if (((procedure->num_args   < 2)                        ||
-       (procedure->num_values < 1)                        ||
-       ! GIMP_IS_PARAM_SPEC_RUN_MODE (procedure->args[0]) ||
-       ! GIMP_IS_PARAM_SPEC_FILE     (procedure->args[1]) ||
-       (! proc->generic_file_proc &&
-        ! GIMP_IS_PARAM_SPEC_IMAGE (procedure->values[0]))))
+    if (((procedure->num_args   < 2)                        ||
+            (procedure->num_values < 1)                        ||
+            ! GIMP_IS_PARAM_SPEC_RUN_MODE (procedure->args[0]) ||
+            ! GIMP_IS_PARAM_SPEC_FILE     (procedure->args[1]) ||
+            (! proc->generic_file_proc &&
+             ! GIMP_IS_PARAM_SPEC_IMAGE (procedure->values[0]))))
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_FAILED,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register procedure \"%s\" "
-                   "as load handler which does not take the standard "
-                   "load procedure arguments: "
-                   "(GimpRunMode, GFile) -> (GimpImage)",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_FAILED,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register procedure \"%s\" "
+                     "as load handler which does not take the standard "
+                     "load procedure arguments: "
+                     "(GimpRunMode, GFile) -> (GimpImage)",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_file_proc (proc, extensions, prefixes, magics);
+    gimp_plug_in_procedure_set_file_proc (proc, extensions, prefixes, magics);
 
-  gimp_plug_in_manager_add_load_procedure (plug_in->manager, proc);
+    gimp_plug_in_manager_add_load_procedure (plug_in->manager, proc);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
 gimp_plug_in_set_file_proc_save_handler (GimpPlugIn   *plug_in,
-                                         const gchar  *proc_name,
-                                         const gchar  *extensions,
-                                         const gchar  *prefixes,
-                                         GError      **error)
+        const gchar  *proc_name,
+        const gchar  *extensions,
+        const gchar  *prefixes,
+        GError      **error)
 {
-  GimpPlugInProcedure *proc;
-  GimpProcedure       *procedure;
+    GimpPlugInProcedure *proc;
+    GimpProcedure       *procedure;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register procedure \"%s\" "
-                   "as save handler.\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register procedure \"%s\" "
+                     "as save handler.\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  procedure = GIMP_PROCEDURE (proc);
+    procedure = GIMP_PROCEDURE (proc);
 
-  if ((procedure->num_args < 5)                              ||
-      ! GIMP_IS_PARAM_SPEC_RUN_MODE     (procedure->args[0]) ||
-      ! GIMP_IS_PARAM_SPEC_IMAGE        (procedure->args[1]) ||
-      ! G_IS_PARAM_SPEC_INT             (procedure->args[2]) ||
-      ! GIMP_IS_PARAM_SPEC_OBJECT_ARRAY (procedure->args[3]) ||
-      ! GIMP_IS_PARAM_SPEC_FILE         (procedure->args[4]))
+    if ((procedure->num_args < 5)                              ||
+            ! GIMP_IS_PARAM_SPEC_RUN_MODE     (procedure->args[0]) ||
+            ! GIMP_IS_PARAM_SPEC_IMAGE        (procedure->args[1]) ||
+            ! G_IS_PARAM_SPEC_INT             (procedure->args[2]) ||
+            ! GIMP_IS_PARAM_SPEC_OBJECT_ARRAY (procedure->args[3]) ||
+            ! GIMP_IS_PARAM_SPEC_FILE         (procedure->args[4]))
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_FAILED,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register procedure \"%s\" "
-                   "as save handler which does not take the standard "
-                   "save procedure arguments:\n"
-                   "(GimpRunMode, GimpImage, int [array size], GimpDrawable Array, GFile)",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_FAILED,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register procedure \"%s\" "
+                     "as save handler which does not take the standard "
+                     "save procedure arguments:\n"
+                     "(GimpRunMode, GimpImage, int [array size], GimpDrawable Array, GFile)",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_file_proc (proc, extensions, prefixes, NULL);
+    gimp_plug_in_procedure_set_file_proc (proc, extensions, prefixes, NULL);
 
-  gimp_plug_in_manager_add_save_procedure (plug_in->manager, proc);
+    gimp_plug_in_manager_add_save_procedure (plug_in->manager, proc);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
@@ -390,31 +390,31 @@ gimp_plug_in_set_file_proc_priority (GimpPlugIn   *plug_in,
                                      gint          priority,
                                      GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register the priority "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register the priority "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_priority (proc, priority);
+    gimp_plug_in_procedure_set_priority (proc, priority);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
@@ -423,63 +423,63 @@ gimp_plug_in_set_file_proc_mime_types (GimpPlugIn   *plug_in,
                                        const gchar  *mime_types,
                                        GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register mime types "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register mime types "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_mime_types (proc, mime_types);
+    gimp_plug_in_procedure_set_mime_types (proc, mime_types);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
 gimp_plug_in_set_file_proc_handles_remote (GimpPlugIn   *plug_in,
-                                           const gchar  *proc_name,
-                                           GError      **error)
+        const gchar  *proc_name,
+        GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register 'handles remote' "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register 'handles remote' "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_handles_remote (proc);
+    gimp_plug_in_procedure_set_handles_remote (proc);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
@@ -487,82 +487,82 @@ gimp_plug_in_set_file_proc_handles_raw (GimpPlugIn   *plug_in,
                                         const gchar  *proc_name,
                                         GError      **error)
 {
-  GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
 
-  proc = gimp_plug_in_proc_find (plug_in, proc_name);
+    proc = gimp_plug_in_proc_find (plug_in, proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register 'handles raw' "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register 'handles raw' "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_handles_raw (proc);
+    gimp_plug_in_procedure_set_handles_raw (proc);
 
-  return TRUE;
+    return TRUE;
 }
 
 gboolean
 gimp_plug_in_set_file_proc_thumb_loader (GimpPlugIn   *plug_in,
-                                         const gchar  *proc_name,
-                                         const gchar  *thumb_proc_name,
-                                         GError      **error)
+        const gchar  *proc_name,
+        const gchar  *thumb_proc_name,
+        GError      **error)
 {
-  GimpPlugInProcedure *proc;
-  GimpPlugInProcedure *thumb_proc;
+    GimpPlugInProcedure *proc;
+    GimpPlugInProcedure *thumb_proc;
 
-  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
-  g_return_val_if_fail (proc_name != NULL, FALSE);
-  g_return_val_if_fail (thumb_proc_name != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+    g_return_val_if_fail (proc_name != NULL, FALSE);
+    g_return_val_if_fail (thumb_proc_name != NULL, FALSE);
 
-  proc       = gimp_plug_in_proc_find (plug_in, proc_name);
-  thumb_proc = gimp_plug_in_proc_find (plug_in, thumb_proc_name);
+    proc       = gimp_plug_in_proc_find (plug_in, proc_name);
+    thumb_proc = gimp_plug_in_proc_find (plug_in, thumb_proc_name);
 
-  if (! proc)
+    if (! proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register a thumbnail loader "
-                   "for procedure \"%s\".\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register a thumbnail loader "
+                     "for procedure \"%s\".\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  if (! thumb_proc)
+    if (! thumb_proc)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
-                   "Plug-in \"%s\"\n(%s)\n"
-                   "attempted to register a procedure \"%s\" "
-                   "as thumbnail loader.\n"
-                   "It has however not installed that procedure. "
-                   "This is not allowed.",
-                   gimp_object_get_name (plug_in),
-                   gimp_file_get_utf8_name (plug_in->file),
-                   thumb_proc_name);
+        g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
+                     "Plug-in \"%s\"\n(%s)\n"
+                     "attempted to register a procedure \"%s\" "
+                     "as thumbnail loader.\n"
+                     "It has however not installed that procedure. "
+                     "This is not allowed.",
+                     gimp_object_get_name (plug_in),
+                     gimp_file_get_utf8_name (plug_in->file),
+                     thumb_proc_name);
 
-      return FALSE;
+        return FALSE;
     }
 
-  gimp_plug_in_procedure_set_thumb_loader (proc, thumb_proc_name);
+    gimp_plug_in_procedure_set_thumb_loader (proc, thumb_proc_name);
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -572,14 +572,14 @@ static GimpPlugInProcedure *
 gimp_plug_in_proc_find (GimpPlugIn  *plug_in,
                         const gchar *proc_name)
 {
-  GimpPlugInProcedure *proc = NULL;
+    GimpPlugInProcedure *proc = NULL;
 
-  if (plug_in->plug_in_def)
-    proc = gimp_plug_in_procedure_find (plug_in->plug_in_def->procedures,
-                                        proc_name);
+    if (plug_in->plug_in_def)
+        proc = gimp_plug_in_procedure_find (plug_in->plug_in_def->procedures,
+                                            proc_name);
 
-  if (! proc)
-    proc = gimp_plug_in_procedure_find (plug_in->temp_procedures, proc_name);
+    if (! proc)
+        proc = gimp_plug_in_procedure_find (plug_in->temp_procedures, proc_name);
 
-  return proc;
+    return proc;
 }

@@ -39,94 +39,94 @@
 
 static GtkWidget * user_install_dialog_new (GimpUserInstall *install);
 static void        user_install_dialog_log (const gchar     *message,
-                                            gboolean         error,
-                                            gpointer         data);
+        gboolean         error,
+        gpointer         data);
 
 
 gboolean
 user_install_dialog_run (GimpUserInstall *install)
 {
-  GtkWidget *dialog;
-  gboolean   success;
+    GtkWidget *dialog;
+    gboolean   success;
 
-  g_return_val_if_fail (install != NULL, FALSE);
+    g_return_val_if_fail (install != NULL, FALSE);
 
-  dialog = user_install_dialog_new (install);
+    dialog = user_install_dialog_new (install);
 
-  success = gimp_user_install_run (install);
+    success = gimp_user_install_run (install);
 
-  if (! success)
+    if (! success)
     {
-      g_signal_connect (dialog, "response",
-                        G_CALLBACK (gtk_main_quit),
-                        NULL);
+        g_signal_connect (dialog, "response",
+                          G_CALLBACK (gtk_main_quit),
+                          NULL);
 
-      gtk_widget_show (dialog);
+        gtk_widget_show (dialog);
 
-      gtk_main ();
+        gtk_main ();
     }
 
-  gtk_widget_destroy (dialog);
+    gtk_widget_destroy (dialog);
 
-  return success;
+    return success;
 }
 
 static GtkWidget *
 user_install_dialog_new (GimpUserInstall *install)
 {
-  GtkWidget     *dialog;
-  GtkWidget     *frame;
-  GtkWidget     *scrolled;
-  GtkTextBuffer *buffer;
-  GtkWidget     *view;
+    GtkWidget     *dialog;
+    GtkWidget     *frame;
+    GtkWidget     *scrolled;
+    GtkTextBuffer *buffer;
+    GtkWidget     *view;
 
-  gimp_icons_init ();
+    gimp_icons_init ();
 
-  dialog = gimp_message_dialog_new (_("GIMP User Installation"),
-                                    GIMP_ICON_WILBER_EEK,
-                                    NULL, 0, NULL, NULL,
+    dialog = gimp_message_dialog_new (_("GIMP User Installation"),
+                                      GIMP_ICON_WILBER_EEK,
+                                      NULL, 0, NULL, NULL,
 
-                                    _("_Quit"), GTK_RESPONSE_OK,
+                                      _("_Quit"), GTK_RESPONSE_OK,
 
-                                    NULL);
+                                      NULL);
 
-  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                     _("User installation failed!"));
-  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                             _("The GIMP user installation failed; "
-                               "see the log for details."));
+    gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                       _("User installation failed!"));
+    gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                               _("The GIMP user installation failed; "
+                                 "see the log for details."));
 
-  frame = gimp_frame_new (_("Installation Log"));
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      frame, TRUE, TRUE, 0);
-  gtk_widget_show (frame);
+    frame = gimp_frame_new (_("Installation Log"));
+    gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
+    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                        frame, TRUE, TRUE, 0);
+    gtk_widget_show (frame);
 
-  scrolled = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
-                                  GTK_POLICY_AUTOMATIC,
-                                  GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (frame), scrolled);
-  gtk_widget_show (scrolled);
+    scrolled = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+                                    GTK_POLICY_AUTOMATIC,
+                                    GTK_POLICY_AUTOMATIC);
+    gtk_container_add (GTK_CONTAINER (frame), scrolled);
+    gtk_widget_show (scrolled);
 
-  buffer = gtk_text_buffer_new (NULL);
+    buffer = gtk_text_buffer_new (NULL);
 
-  gtk_text_buffer_create_tag (buffer, "bold",
-                              "weight", PANGO_WEIGHT_BOLD,
-                              NULL);
+    gtk_text_buffer_create_tag (buffer, "bold",
+                                "weight", PANGO_WEIGHT_BOLD,
+                                NULL);
 
-  view = gtk_text_view_new_with_buffer (buffer);
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (view), GTK_WRAP_WORD);
-  gtk_widget_set_size_request (view, -1, 200);
-  gtk_container_add (GTK_CONTAINER (scrolled), view);
-  gtk_widget_show (view);
+    view = gtk_text_view_new_with_buffer (buffer);
+    gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
+    gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (view), GTK_WRAP_WORD);
+    gtk_widget_set_size_request (view, -1, 200);
+    gtk_container_add (GTK_CONTAINER (scrolled), view);
+    gtk_widget_show (view);
 
-  g_object_unref (buffer);
+    g_object_unref (buffer);
 
-  gimp_user_install_set_log_handler (install, user_install_dialog_log, buffer);
+    gimp_user_install_set_log_handler (install, user_install_dialog_log, buffer);
 
-  return dialog;
+    return dialog;
 }
 
 static void
@@ -134,20 +134,20 @@ user_install_dialog_log (const gchar *message,
                          gboolean     error,
                          gpointer     data)
 {
-  GtkTextBuffer *buffer = GTK_TEXT_BUFFER (data);
-  GtkTextIter    cursor;
+    GtkTextBuffer *buffer = GTK_TEXT_BUFFER (data);
+    GtkTextIter    cursor;
 
-  gtk_text_buffer_get_end_iter (buffer, &cursor);
+    gtk_text_buffer_get_end_iter (buffer, &cursor);
 
-  if (error && message)
+    if (error && message)
     {
-      gtk_text_buffer_insert_with_tags_by_name (buffer, &cursor, message, -1,
-                                                "bold", NULL);
+        gtk_text_buffer_insert_with_tags_by_name (buffer, &cursor, message, -1,
+                "bold", NULL);
     }
-  else if (message)
+    else if (message)
     {
-      gtk_text_buffer_insert (buffer, &cursor, message, -1);
+        gtk_text_buffer_insert (buffer, &cursor, message, -1);
     }
 
-  gtk_text_buffer_insert (buffer, &cursor, "\n", -1);
+    gtk_text_buffer_insert (buffer, &cursor, "\n", -1);
 }

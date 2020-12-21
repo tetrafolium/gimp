@@ -37,12 +37,12 @@ typedef struct _GimpMultiWindowStrategyClass GimpMultiWindowStrategyClass;
 
 struct _GimpMultiWindowStrategy
 {
-  GimpObject  parent_instance;
+    GimpObject  parent_instance;
 };
 
 struct _GimpMultiWindowStrategyClass
 {
-  GimpObjectClass  parent_class;
+    GimpObjectClass  parent_class;
 };
 
 

@@ -32,5 +32,5 @@
 GQuark
 gimp_pdb_error_quark (void)
 {
-  return g_quark_from_static_string ("gimp-pdb-error-quark");
+    return g_quark_from_static_string ("gimp-pdb-error-quark");
 }

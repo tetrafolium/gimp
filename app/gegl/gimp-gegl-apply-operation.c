@@ -59,22 +59,22 @@ gimp_gegl_apply_operation (GeglBuffer          *src_buffer,
                            const GeglRectangle *dest_rect,
                            gboolean             crop_input)
 {
-  gimp_gegl_apply_cached_operation (src_buffer,
-                                    progress, undo_desc,
-                                    operation,
-                                    src_buffer != NULL,
-                                    dest_buffer,
-                                    dest_rect,
-                                    crop_input,
-                                    NULL, NULL, 0,
-                                    FALSE);
+    gimp_gegl_apply_cached_operation (src_buffer,
+                                      progress, undo_desc,
+                                      operation,
+                                      src_buffer != NULL,
+                                      dest_buffer,
+                                      dest_rect,
+                                      crop_input,
+                                      NULL, NULL, 0,
+                                      FALSE);
 }
 
 static void
 gimp_gegl_apply_operation_cancel (GimpProgress *progress,
                                   gboolean     *cancel)
 {
-  *cancel = TRUE;
+    *cancel = TRUE;
 }
 
 gboolean
@@ -91,288 +91,288 @@ gimp_gegl_apply_cached_operation (GeglBuffer          *src_buffer,
                                   gint                 n_valid_rects,
                                   gboolean             cancelable)
 {
-  GeglNode          *gegl;
-  GeglNode          *effect;
-  GeglNode          *dest_node;
-  GeglNode          *underlying_operation;
-  GeglNode          *operation_src_node = NULL;
-  GeglBuffer        *result_buffer;
-  GimpChunkIterator *iter;
-  cairo_region_t    *region;
-  gboolean           progress_started   = FALSE;
-  gboolean           cancel             = FALSE;
-  gint64             all_pixels;
-  gint64             done_pixels;
+    GeglNode          *gegl;
+    GeglNode          *effect;
+    GeglNode          *dest_node;
+    GeglNode          *underlying_operation;
+    GeglNode          *operation_src_node = NULL;
+    GeglBuffer        *result_buffer;
+    GimpChunkIterator *iter;
+    cairo_region_t    *region;
+    gboolean           progress_started   = FALSE;
+    gboolean           cancel             = FALSE;
+    gint64             all_pixels;
+    gint64             done_pixels;
 
-  g_return_val_if_fail (src_buffer == NULL || GEGL_IS_BUFFER (src_buffer), FALSE);
-  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
-  g_return_val_if_fail (GEGL_IS_NODE (operation), FALSE);
-  g_return_val_if_fail (GEGL_IS_BUFFER (dest_buffer), FALSE);
-  g_return_val_if_fail (cache == NULL || GEGL_IS_BUFFER (cache), FALSE);
-  g_return_val_if_fail (valid_rects == NULL || cache != NULL, FALSE);
-  g_return_val_if_fail (valid_rects == NULL || n_valid_rects != 0, FALSE);
+    g_return_val_if_fail (src_buffer == NULL || GEGL_IS_BUFFER (src_buffer), FALSE);
+    g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+    g_return_val_if_fail (GEGL_IS_NODE (operation), FALSE);
+    g_return_val_if_fail (GEGL_IS_BUFFER (dest_buffer), FALSE);
+    g_return_val_if_fail (cache == NULL || GEGL_IS_BUFFER (cache), FALSE);
+    g_return_val_if_fail (valid_rects == NULL || cache != NULL, FALSE);
+    g_return_val_if_fail (valid_rects == NULL || n_valid_rects != 0, FALSE);
 
-  if (! dest_rect)
-    dest_rect = gegl_buffer_get_extent (dest_buffer);
+    if (! dest_rect)
+        dest_rect = gegl_buffer_get_extent (dest_buffer);
 
-  if (progress)
+    if (progress)
     {
-      if (gimp_progress_is_active (progress))
+        if (gimp_progress_is_active (progress))
         {
-          if (undo_desc)
-            gimp_progress_set_text_literal (progress, undo_desc);
+            if (undo_desc)
+                gimp_progress_set_text_literal (progress, undo_desc);
 
-          progress_started = FALSE;
-          cancelable       = FALSE;
+            progress_started = FALSE;
+            cancelable       = FALSE;
         }
-      else
+        else
         {
-          gimp_progress_start (progress, cancelable, "%s", undo_desc);
+            gimp_progress_start (progress, cancelable, "%s", undo_desc);
 
-          if (cancelable)
-            g_signal_connect (progress, "cancel",
-                              G_CALLBACK (gimp_gegl_apply_operation_cancel),
-                              &cancel);
+            if (cancelable)
+                g_signal_connect (progress, "cancel",
+                                  G_CALLBACK (gimp_gegl_apply_operation_cancel),
+                                  &cancel);
 
-          progress_started = TRUE;
-        }
-    }
-  else
-    {
-      cancelable = FALSE;
-    }
-
-  gegl_buffer_freeze_changed (dest_buffer);
-
-  underlying_operation = gimp_gegl_node_get_underlying_operation (operation);
-
-  result_buffer = dest_buffer;
-
-  if (result_buffer == src_buffer &&
-      ! (gimp_gegl_node_is_point_operation  (underlying_operation) ||
-         gimp_gegl_node_is_source_operation (underlying_operation)))
-    {
-      /* Write the result to a temporary buffer, instead of directly to
-       * dest_buffer, since reading and writing the same buffer doesn't
-       * generally work with non-point ops when working in chunks.
-       *
-       * See bug #701875.
-       */
-
-      if (cache)
-        {
-          /* If we have a cache, use it directly as the temporary result
-           * buffer, and skip copying the cached results to result_buffer
-           * below.  Instead, the cached results are copied together with the
-           * newly rendered results in a single step at the end of processing.
-           */
-
-          g_warn_if_fail (cache != dest_buffer);
-
-          result_buffer = g_object_ref (cache);
-
-          cache = NULL;
-        }
-      else
-        {
-          result_buffer = gegl_buffer_new (
-            dest_rect, gegl_buffer_get_format (dest_buffer));
+            progress_started = TRUE;
         }
     }
-
-  all_pixels  = (gint64) dest_rect->width * (gint64) dest_rect->height;
-  done_pixels = 0;
-
-  region = cairo_region_create_rectangle ((cairo_rectangle_int_t *) dest_rect);
-
-  if (n_valid_rects > 0)
+    else
     {
-      gint i;
+        cancelable = FALSE;
+    }
 
-      for (i = 0; i < n_valid_rects; i++)
+    gegl_buffer_freeze_changed (dest_buffer);
+
+    underlying_operation = gimp_gegl_node_get_underlying_operation (operation);
+
+    result_buffer = dest_buffer;
+
+    if (result_buffer == src_buffer &&
+            ! (gimp_gegl_node_is_point_operation  (underlying_operation) ||
+               gimp_gegl_node_is_source_operation (underlying_operation)))
+    {
+        /* Write the result to a temporary buffer, instead of directly to
+         * dest_buffer, since reading and writing the same buffer doesn't
+         * generally work with non-point ops when working in chunks.
+         *
+         * See bug #701875.
+         */
+
+        if (cache)
         {
-          GeglRectangle valid_rect;
+            /* If we have a cache, use it directly as the temporary result
+             * buffer, and skip copying the cached results to result_buffer
+             * below.  Instead, the cached results are copied together with the
+             * newly rendered results in a single step at the end of processing.
+             */
 
-          if (! gegl_rectangle_intersect (&valid_rect,
-                                          &valid_rects[i], dest_rect))
+            g_warn_if_fail (cache != dest_buffer);
+
+            result_buffer = g_object_ref (cache);
+
+            cache = NULL;
+        }
+        else
+        {
+            result_buffer = gegl_buffer_new (
+                                dest_rect, gegl_buffer_get_format (dest_buffer));
+        }
+    }
+
+    all_pixels  = (gint64) dest_rect->width * (gint64) dest_rect->height;
+    done_pixels = 0;
+
+    region = cairo_region_create_rectangle ((cairo_rectangle_int_t *) dest_rect);
+
+    if (n_valid_rects > 0)
+    {
+        gint i;
+
+        for (i = 0; i < n_valid_rects; i++)
+        {
+            GeglRectangle valid_rect;
+
+            if (! gegl_rectangle_intersect (&valid_rect,
+                                            &valid_rects[i], dest_rect))
             {
-              continue;
+                continue;
             }
 
-          if (cache)
+            if (cache)
             {
-              gimp_gegl_buffer_copy (
-                cache,         &valid_rect, GEGL_ABYSS_NONE,
-                result_buffer, &valid_rect);
+                gimp_gegl_buffer_copy (
+                    cache,         &valid_rect, GEGL_ABYSS_NONE,
+                    result_buffer, &valid_rect);
             }
 
-          cairo_region_subtract_rectangle (region,
-                                           (cairo_rectangle_int_t *)
-                                           &valid_rect);
+            cairo_region_subtract_rectangle (region,
+                                             (cairo_rectangle_int_t *)
+                                             &valid_rect);
 
-          done_pixels += (gint64) valid_rect.width * (gint64) valid_rect.height;
+            done_pixels += (gint64) valid_rect.width * (gint64) valid_rect.height;
 
-          if (progress)
+            if (progress)
             {
-              gimp_progress_set_value (progress,
-                                       (gdouble) done_pixels /
-                                       (gdouble) all_pixels);
+                gimp_progress_set_value (progress,
+                                         (gdouble) done_pixels /
+                                         (gdouble) all_pixels);
             }
         }
     }
 
-  gegl = gegl_node_new ();
+    gegl = gegl_node_new ();
 
-  if (! gegl_node_get_parent (operation))
-    gegl_node_add_child (gegl, operation);
+    if (! gegl_node_get_parent (operation))
+        gegl_node_add_child (gegl, operation);
 
-  effect = operation;
+    effect = operation;
 
-  if (connect_src_buffer || crop_input)
+    if (connect_src_buffer || crop_input)
     {
-      GeglNode *src_node;
+        GeglNode *src_node;
 
-      operation_src_node = gegl_node_get_producer (operation, "input", NULL);
+        operation_src_node = gegl_node_get_producer (operation, "input", NULL);
 
-      src_node = operation_src_node;
+        src_node = operation_src_node;
 
-      if (connect_src_buffer)
+        if (connect_src_buffer)
         {
-          src_node = gegl_node_new_child (gegl,
-                                          "operation", "gegl:buffer-source",
-                                          "buffer",    src_buffer,
+            src_node = gegl_node_new_child (gegl,
+                                            "operation", "gegl:buffer-source",
+                                            "buffer",    src_buffer,
+                                            NULL);
+        }
+
+        if (crop_input)
+        {
+            GeglNode *crop_node;
+
+            crop_node = gegl_node_new_child (gegl,
+                                             "operation", "gegl:crop",
+                                             "x",         (gdouble) dest_rect->x,
+                                             "y",         (gdouble) dest_rect->y,
+                                             "width",     (gdouble) dest_rect->width,
+                                             "height",    (gdouble) dest_rect->height,
+                                             NULL);
+
+            gegl_node_connect_to (src_node,  "output",
+                                  crop_node, "input");
+
+            src_node = crop_node;
+        }
+
+        if (! gegl_node_has_pad (operation, "input"))
+        {
+            effect = gegl_node_new_child (gegl,
+                                          "operation", "gimp:normal",
                                           NULL);
+
+            gegl_node_connect_to (operation, "output",
+                                  effect,    "aux");
         }
 
-      if (crop_input)
+        gegl_node_connect_to (src_node, "output",
+                              effect,   "input");
+    }
+
+    dest_node = gegl_node_new_child (gegl,
+                                     "operation", "gegl:write-buffer",
+                                     "buffer",    result_buffer,
+                                     NULL);
+
+    gegl_node_connect_to (effect,    "output",
+                          dest_node, "input");
+
+    iter = gimp_chunk_iterator_new (region);
+
+    if (progress &&
+            /* avoid the interactive iteration interval for area filters (or meta ops
+             * that potentially involve area filters), since their processing speed
+             * tends to be sensitive to the chunk size.
+             */
+            ! gimp_gegl_node_is_area_filter_operation (underlying_operation))
+    {
+        /* we use a shorter iteration interval for interactive use (when there's
+         * progress indication), to stay responsive.
+         */
+        gimp_chunk_iterator_set_interval (
+            iter,
+            APPLY_OPERATION_INTERACTIVE_INTERVAL);
+    }
+    else
+    {
+        /* we use a longer iteration interval for non-interactive use (when
+         * there's no progress indication), or when applying an area filter (see
+         * above), as this generally allows for faster processing.  we don't
+         * avoid chunking altogether, since *some* chunking is still desirable to
+         * reduce the space needed for intermediate results.
+         */
+        gimp_chunk_iterator_set_interval (
+            iter,
+            APPLY_OPERATION_NON_INTERACTIVE_INTERVAL);
+    }
+
+    while (gimp_chunk_iterator_next (iter))
+    {
+        GeglRectangle render_rect;
+
+        if (progress)
         {
-          GeglNode *crop_node;
+            while (! cancel && g_main_context_pending (NULL))
+                g_main_context_iteration (NULL, FALSE);
 
-          crop_node = gegl_node_new_child (gegl,
-                                           "operation", "gegl:crop",
-                                           "x",         (gdouble) dest_rect->x,
-                                           "y",         (gdouble) dest_rect->y,
-                                           "width",     (gdouble) dest_rect->width,
-                                           "height",    (gdouble) dest_rect->height,
-                                           NULL);
-
-          gegl_node_connect_to (src_node,  "output",
-                                crop_node, "input");
-
-          src_node = crop_node;
+            if (cancel)
+                break;
         }
 
-      if (! gegl_node_has_pad (operation, "input"))
+        while (gimp_chunk_iterator_get_rect (iter, &render_rect))
         {
-          effect = gegl_node_new_child (gegl,
-                                        "operation", "gimp:normal",
-                                        NULL);
+            gegl_node_blit (dest_node, 1.0, &render_rect, NULL, NULL, 0,
+                            GEGL_BLIT_DEFAULT);
 
-          gegl_node_connect_to (operation, "output",
-                                effect,    "aux");
+            done_pixels += (gint64) render_rect.width *
+                           (gint64) render_rect.height;
         }
 
-      gegl_node_connect_to (src_node, "output",
-                            effect,   "input");
-    }
-
-  dest_node = gegl_node_new_child (gegl,
-                                   "operation", "gegl:write-buffer",
-                                   "buffer",    result_buffer,
-                                   NULL);
-
-  gegl_node_connect_to (effect,    "output",
-                        dest_node, "input");
-
-  iter = gimp_chunk_iterator_new (region);
-
-  if (progress &&
-      /* avoid the interactive iteration interval for area filters (or meta ops
-       * that potentially involve area filters), since their processing speed
-       * tends to be sensitive to the chunk size.
-       */
-      ! gimp_gegl_node_is_area_filter_operation (underlying_operation))
-    {
-      /* we use a shorter iteration interval for interactive use (when there's
-       * progress indication), to stay responsive.
-       */
-      gimp_chunk_iterator_set_interval (
-        iter,
-        APPLY_OPERATION_INTERACTIVE_INTERVAL);
-    }
-  else
-    {
-      /* we use a longer iteration interval for non-interactive use (when
-       * there's no progress indication), or when applying an area filter (see
-       * above), as this generally allows for faster processing.  we don't
-       * avoid chunking altogether, since *some* chunking is still desirable to
-       * reduce the space needed for intermediate results.
-       */
-      gimp_chunk_iterator_set_interval (
-        iter,
-        APPLY_OPERATION_NON_INTERACTIVE_INTERVAL);
-    }
-
-  while (gimp_chunk_iterator_next (iter))
-    {
-      GeglRectangle render_rect;
-
-      if (progress)
+        if (progress)
         {
-          while (! cancel && g_main_context_pending (NULL))
-            g_main_context_iteration (NULL, FALSE);
-
-          if (cancel)
-            break;
-        }
-
-      while (gimp_chunk_iterator_get_rect (iter, &render_rect))
-        {
-          gegl_node_blit (dest_node, 1.0, &render_rect, NULL, NULL, 0,
-                          GEGL_BLIT_DEFAULT);
-
-          done_pixels += (gint64) render_rect.width *
-                         (gint64) render_rect.height;
-        }
-
-      if (progress)
-        {
-          gimp_progress_set_value (progress,
-                                   (gdouble) done_pixels /
-                                   (gdouble) all_pixels);
+            gimp_progress_set_value (progress,
+                                     (gdouble) done_pixels /
+                                     (gdouble) all_pixels);
         }
     }
 
-  if (result_buffer != dest_buffer)
+    if (result_buffer != dest_buffer)
     {
-      if (! cancel)
-        gimp_gegl_buffer_copy (result_buffer, dest_rect, GEGL_ABYSS_NONE,
-                               dest_buffer,   dest_rect);
+        if (! cancel)
+            gimp_gegl_buffer_copy (result_buffer, dest_rect, GEGL_ABYSS_NONE,
+                                   dest_buffer,   dest_rect);
 
-      g_object_unref (result_buffer);
+        g_object_unref (result_buffer);
     }
 
-  gegl_buffer_thaw_changed (dest_buffer);
+    gegl_buffer_thaw_changed (dest_buffer);
 
-  g_object_unref (gegl);
+    g_object_unref (gegl);
 
-  if (operation_src_node)
+    if (operation_src_node)
     {
-      gegl_node_connect_to (operation_src_node, "output",
-                            operation,          "input");
+        gegl_node_connect_to (operation_src_node, "output",
+                              operation,          "input");
     }
 
-  if (progress_started)
+    if (progress_started)
     {
-      gimp_progress_end (progress);
+        gimp_progress_end (progress);
 
-      if (cancelable)
-        g_signal_handlers_disconnect_by_func (progress,
-                                              gimp_gegl_apply_operation_cancel,
-                                              &cancel);
+        if (cancelable)
+            g_signal_handlers_disconnect_by_func (progress,
+                                                  gimp_gegl_apply_operation_cancel,
+                                                  &cancel);
     }
 
-  return ! cancel;
+    return ! cancel;
 }
 
 void
@@ -383,26 +383,26 @@ gimp_gegl_apply_dither (GeglBuffer   *src_buffer,
                         gint          levels,
                         gint          dither_type)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  levels = CLAMP (levels, 2, 65536);
+    levels = CLAMP (levels, 2, 65536);
 
-  node = gegl_node_new_child (NULL,
-                              "operation",     "gegl:dither",
-                              "red-levels",    levels,
-                              "green-levels",  levels,
-                              "blue-levels",   levels,
-                              "alpha-bits",    levels,
-                              "dither-method", dither_type,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation",     "gegl:dither",
+                                "red-levels",    levels,
+                                "green-levels",  levels,
+                                "blue-levels",   levels,
+                                "alpha-bits",    levels,
+                                "dither-method", dither_type,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -414,18 +414,18 @@ gimp_gegl_apply_flatten (GeglBuffer          *src_buffer,
                          const Babl          *space,
                          GimpLayerColorSpace  composite_space)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
-  g_return_if_fail (background != NULL);
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (background != NULL);
 
-  node = gimp_gegl_create_flatten_node (background, space, composite_space);
+    node = gimp_gegl_create_flatten_node (background, space, composite_space);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -438,26 +438,26 @@ gimp_gegl_apply_feather (GeglBuffer          *src_buffer,
                          gdouble              radius_y,
                          gboolean             edge_lock)
 {
-  GaussianBlurAbyssPolicy abyss_policy;
+    GaussianBlurAbyssPolicy abyss_policy;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  if (edge_lock)
-    abyss_policy = GAUSSIAN_BLUR_ABYSS_CLAMP;
-  else
-    abyss_policy = GAUSSIAN_BLUR_ABYSS_NONE;
+    if (edge_lock)
+        abyss_policy = GAUSSIAN_BLUR_ABYSS_CLAMP;
+    else
+        abyss_policy = GAUSSIAN_BLUR_ABYSS_NONE;
 
-  /* 3.5 is completely magic and picked to visually match the old
-   * gaussian_blur_region() on a crappy laptop display
-   */
-  gimp_gegl_apply_gaussian_blur (src_buffer,
-                                 progress, undo_desc,
-                                 dest_buffer, dest_rect,
-                                 radius_x / 3.5,
-                                 radius_y / 3.5,
-                                 abyss_policy);
+    /* 3.5 is completely magic and picked to visually match the old
+     * gaussian_blur_region() on a crappy laptop display
+     */
+    gimp_gegl_apply_gaussian_blur (src_buffer,
+                                   progress, undo_desc,
+                                   dest_buffer, dest_rect,
+                                   radius_x / 3.5,
+                                   radius_y / 3.5,
+                                   abyss_policy);
 }
 
 void
@@ -471,17 +471,17 @@ gimp_gegl_apply_border (GeglBuffer             *src_buffer,
                         GimpChannelBorderStyle  style,
                         gboolean                edge_lock)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  switch (style)
+    switch (style)
     {
     case GIMP_CHANNEL_BORDER_STYLE_HARD:
     case GIMP_CHANNEL_BORDER_STYLE_FEATHERED:
-      {
+    {
         gboolean feather = style == GIMP_CHANNEL_BORDER_STYLE_FEATHERED;
 
         node = gegl_node_new_child (NULL,
@@ -491,11 +491,11 @@ gimp_gegl_apply_border (GeglBuffer             *src_buffer,
                                     "feather",   feather,
                                     "edge-lock", edge_lock,
                                     NULL);
-      }
-      break;
+    }
+    break;
 
     case GIMP_CHANNEL_BORDER_STYLE_SMOOTH:
-      {
+    {
         GeglNode *input, *output;
         GeglNode *grow, *shrink, *subtract;
 
@@ -506,7 +506,7 @@ gimp_gegl_apply_border (GeglBuffer             *src_buffer,
 
         /* Duplicate special-case behavior of "gimp:border". */
         if (radius_x == 1 && radius_y == 1)
-          {
+        {
             grow   = gegl_node_new_child (node,
                                           "operation", "gegl:nop",
                                           NULL);
@@ -516,9 +516,9 @@ gimp_gegl_apply_border (GeglBuffer             *src_buffer,
                                           "radius-y",  1,
                                           "edge-lock", edge_lock,
                                           NULL);
-          }
+        }
         else
-          {
+        {
             grow   = gegl_node_new_child (node,
                                           "operation", "gimp:grow",
                                           "radius-x",  radius_x,
@@ -530,7 +530,7 @@ gimp_gegl_apply_border (GeglBuffer             *src_buffer,
                                           "radius-y",  radius_y + 1,
                                           "edge-lock", edge_lock,
                                           NULL);
-          }
+        }
 
         subtract = gegl_node_new_child (node,
                                         "operation", "gegl:subtract",
@@ -539,16 +539,16 @@ gimp_gegl_apply_border (GeglBuffer             *src_buffer,
         gegl_node_link_many (input, grow, subtract, output, NULL);
         gegl_node_link (input, shrink);
         gegl_node_connect_to (shrink, "output", subtract, "aux");
-      }
-      break;
+    }
+    break;
 
     default:
-      gimp_assert_not_reached ();
+        gimp_assert_not_reached ();
     }
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, dest_rect, TRUE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, dest_rect, TRUE);
+    g_object_unref (node);
 }
 
 void
@@ -560,21 +560,21 @@ gimp_gegl_apply_grow (GeglBuffer          *src_buffer,
                       gint                 radius_x,
                       gint                 radius_y)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gimp:grow",
-                              "radius-x",  radius_x,
-                              "radius-y",  radius_y,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gimp:grow",
+                                "radius-x",  radius_x,
+                                "radius-y",  radius_y,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, dest_rect, TRUE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, dest_rect, TRUE);
+    g_object_unref (node);
 }
 
 void
@@ -587,22 +587,22 @@ gimp_gegl_apply_shrink (GeglBuffer          *src_buffer,
                         gint                 radius_y,
                         gboolean             edge_lock)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gimp:shrink",
-                              "radius-x",  radius_x,
-                              "radius-y",  radius_y,
-                              "edge-lock", edge_lock,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gimp:shrink",
+                                "radius-x",  radius_x,
+                                "radius-y",  radius_y,
+                                "edge-lock", edge_lock,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, dest_rect, TRUE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, dest_rect, TRUE);
+    g_object_unref (node);
 }
 
 void
@@ -612,19 +612,19 @@ gimp_gegl_apply_flood (GeglBuffer          *src_buffer,
                        GeglBuffer          *dest_buffer,
                        const GeglRectangle *dest_rect)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gimp:flood",
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gimp:flood",
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, dest_rect, TRUE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, dest_rect, TRUE);
+    g_object_unref (node);
 }
 
 void
@@ -637,22 +637,22 @@ gimp_gegl_apply_gaussian_blur (GeglBuffer              *src_buffer,
                                gdouble                  std_dev_y,
                                GaussianBlurAbyssPolicy  abyss_policy)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation",    "gegl:gaussian-blur",
-                              "std-dev-x",    std_dev_x,
-                              "std-dev-y",    std_dev_y,
-                              "abyss-policy", abyss_policy,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation",    "gegl:gaussian-blur",
+                                "std-dev-x",    std_dev_x,
+                                "std-dev-y",    std_dev_y,
+                                "abyss-policy", abyss_policy,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, dest_rect, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, dest_rect, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -661,19 +661,19 @@ gimp_gegl_apply_invert_gamma (GeglBuffer    *src_buffer,
                               const gchar   *undo_desc,
                               GeglBuffer    *dest_buffer)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gegl:invert-gamma",
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gegl:invert-gamma",
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -682,19 +682,19 @@ gimp_gegl_apply_invert_linear (GeglBuffer    *src_buffer,
                                const gchar   *undo_desc,
                                GeglBuffer    *dest_buffer)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gegl:invert-linear",
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gegl:invert-linear",
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -707,21 +707,21 @@ gimp_gegl_apply_opacity (GeglBuffer    *src_buffer,
                          gint           mask_offset_y,
                          gdouble        opacity)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
-  g_return_if_fail (mask == NULL || GEGL_IS_BUFFER (mask));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (mask == NULL || GEGL_IS_BUFFER (mask));
 
-  node = gimp_gegl_create_apply_opacity_node (mask,
-                                              mask_offset_x,
-                                              mask_offset_y,
-                                              opacity);
+    node = gimp_gegl_create_apply_opacity_node (mask,
+            mask_offset_x,
+            mask_offset_y,
+            opacity);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -733,25 +733,25 @@ gimp_gegl_apply_scale (GeglBuffer            *src_buffer,
                        gdouble                x,
                        gdouble                y)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation",   "gegl:scale-ratio",
-                              "origin-x",     0.0,
-                              "origin-y",     0.0,
-                              "sampler",      interpolation_type,
-                              "abyss-policy", GEGL_ABYSS_CLAMP,
-                              "x",            x,
-                              "y",            y,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation",   "gegl:scale-ratio",
+                                "origin-x",     0.0,
+                                "origin-y",     0.0,
+                                "sampler",      interpolation_type,
+                                "abyss-policy", GEGL_ABYSS_CLAMP,
+                                "x",            x,
+                                "y",            y,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -761,20 +761,20 @@ gimp_gegl_apply_set_alpha (GeglBuffer    *src_buffer,
                            GeglBuffer    *dest_buffer,
                            gdouble        value)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gimp:set-alpha",
-                              "value",     value,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gimp:set-alpha",
+                                "value",     value,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -784,20 +784,20 @@ gimp_gegl_apply_threshold (GeglBuffer    *src_buffer,
                            GeglBuffer    *dest_buffer,
                            gdouble        value)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gegl:threshold",
-                              "value",     value,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gegl:threshold",
+                                "value",     value,
+                                NULL);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }
 
 void
@@ -808,21 +808,21 @@ gimp_gegl_apply_transform (GeglBuffer            *src_buffer,
                            GimpInterpolationType  interpolation_type,
                            GimpMatrix3           *transform)
 {
-  GeglNode *node;
+    GeglNode *node;
 
-  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+    g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+    g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+    g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
 
-  node = gegl_node_new_child (NULL,
-                              "operation", "gegl:transform",
-                              "near-z",    GIMP_TRANSFORM_NEAR_Z,
-                              "sampler",   interpolation_type,
-                              NULL);
+    node = gegl_node_new_child (NULL,
+                                "operation", "gegl:transform",
+                                "near-z",    GIMP_TRANSFORM_NEAR_Z,
+                                "sampler",   interpolation_type,
+                                NULL);
 
-  gimp_gegl_node_set_matrix (node, transform);
+    gimp_gegl_node_set_matrix (node, transform);
 
-  gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
-                             node, dest_buffer, NULL, FALSE);
-  g_object_unref (node);
+    gimp_gegl_apply_operation (src_buffer, progress, undo_desc,
+                               node, dest_buffer, NULL, FALSE);
+    g_object_unref (node);
 }

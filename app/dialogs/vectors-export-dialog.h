@@ -20,11 +20,11 @@
 
 
 typedef void (* GimpVectorsExportCallback) (GtkWidget *dialog,
-                                            GimpImage *image,
-                                            GFile     *file,
-                                            GFile     *export_folder,
-                                            gboolean   active_only,
-                                            gpointer   user_data);
+        GimpImage *image,
+        GFile     *file,
+        GFile     *export_folder,
+        gboolean   active_only,
+        gpointer   user_data);
 
 
 GtkWidget * vectors_export_dialog_new (GimpImage                 *image,

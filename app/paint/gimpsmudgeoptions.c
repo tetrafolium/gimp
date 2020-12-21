@@ -37,22 +37,22 @@
 
 enum
 {
-  PROP_0,
-  PROP_RATE,
-  PROP_FLOW,
-  PROP_NO_ERASING,
-  PROP_SAMPLE_MERGED
+    PROP_0,
+    PROP_RATE,
+    PROP_FLOW,
+    PROP_NO_ERASING,
+    PROP_SAMPLE_MERGED
 };
 
 
 static void   gimp_smudge_options_set_property (GObject      *object,
-                                                guint         property_id,
-                                                const GValue *value,
-                                                GParamSpec   *pspec);
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec);
 static void   gimp_smudge_options_get_property (GObject      *object,
-                                                guint         property_id,
-                                                GValue       *value,
-                                                GParamSpec   *pspec);
+        guint         property_id,
+        GValue       *value,
+        GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpSmudgeOptions, gimp_smudge_options,
@@ -62,38 +62,38 @@ G_DEFINE_TYPE (GimpSmudgeOptions, gimp_smudge_options,
 static void
 gimp_smudge_options_class_init (GimpSmudgeOptionsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_smudge_options_set_property;
-  object_class->get_property = gimp_smudge_options_get_property;
+    object_class->set_property = gimp_smudge_options_set_property;
+    object_class->get_property = gimp_smudge_options_get_property;
 
-  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_RATE,
-                           "rate",
-                           C_("smudge-tool", "Rate"),
-                           _("The strength of smudging"),
-                           0.0, 100.0, SMUDGE_DEFAULT_RATE,
-                           GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_RATE,
+                             "rate",
+                             C_("smudge-tool", "Rate"),
+                             _("The strength of smudging"),
+                             0.0, 100.0, SMUDGE_DEFAULT_RATE,
+                             GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_FLOW,
-                           "flow",
-                           C_("smudge-tool", "Flow"),
-                           _("The amount of brush color to blend"),
-                           0.0, 100.0, SMUDGE_DEFAULT_FLOW,
-                           GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_FLOW,
+                             "flow",
+                             C_("smudge-tool", "Flow"),
+                             _("The amount of brush color to blend"),
+                             0.0, 100.0, SMUDGE_DEFAULT_FLOW,
+                             GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_NO_ERASING,
-                            "no-erasing",
-                            C_("smudge-tool", "No erasing effect"),
-                            _("Never decrease alpha of existing pixels"),
-                            SMUDGE_DEFAULT_NO_ERASING,
-                            GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_NO_ERASING,
+                              "no-erasing",
+                              C_("smudge-tool", "No erasing effect"),
+                              _("Never decrease alpha of existing pixels"),
+                              SMUDGE_DEFAULT_NO_ERASING,
+                              GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,
-                            "sample-merged",
-                            _("Sample merged"),
-                            NULL,
-                            FALSE,
-                            GIMP_PARAM_STATIC_STRINGS);
+    GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,
+                              "sample-merged",
+                              _("Sample merged"),
+                              NULL,
+                              FALSE,
+                              GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -107,26 +107,26 @@ gimp_smudge_options_set_property (GObject      *object,
                                   const GValue *value,
                                   GParamSpec   *pspec)
 {
-  GimpSmudgeOptions *options = GIMP_SMUDGE_OPTIONS (object);
+    GimpSmudgeOptions *options = GIMP_SMUDGE_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_RATE:
-      options->rate = g_value_get_double (value);
-      break;
+        options->rate = g_value_get_double (value);
+        break;
     case PROP_FLOW:
-      options->flow = g_value_get_double (value);
-      break;
+        options->flow = g_value_get_double (value);
+        break;
     case PROP_NO_ERASING:
-      options->no_erasing = g_value_get_boolean (value);
-      break;
+        options->no_erasing = g_value_get_boolean (value);
+        break;
     case PROP_SAMPLE_MERGED:
-      options->sample_merged = g_value_get_boolean (value);
-      break;
+        options->sample_merged = g_value_get_boolean (value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -136,25 +136,25 @@ gimp_smudge_options_get_property (GObject    *object,
                                   GValue     *value,
                                   GParamSpec *pspec)
 {
-  GimpSmudgeOptions *options = GIMP_SMUDGE_OPTIONS (object);
+    GimpSmudgeOptions *options = GIMP_SMUDGE_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_RATE:
-      g_value_set_double (value, options->rate);
-      break;
+        g_value_set_double (value, options->rate);
+        break;
     case PROP_FLOW:
-      g_value_set_double (value, options->flow);
-      break;
+        g_value_set_double (value, options->flow);
+        break;
     case PROP_NO_ERASING:
-      g_value_set_boolean (value, options->no_erasing);
-      break;
+        g_value_set_boolean (value, options->no_erasing);
+        break;
     case PROP_SAMPLE_MERGED:
-      g_value_set_boolean (value, options->sample_merged);
-      break;
+        g_value_set_boolean (value, options->sample_merged);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }

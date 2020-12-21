@@ -38,19 +38,19 @@ typedef struct _GimpCanvasGridClass GimpCanvasGridClass;
 
 struct _GimpCanvasGrid
 {
-  GimpCanvasItem  parent_instance;
+    GimpCanvasItem  parent_instance;
 };
 
 struct _GimpCanvasGridClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
 GType            gimp_canvas_grid_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_grid_new      (GimpDisplayShell *shell,
-                                            GimpGrid         *grid);
+        GimpGrid         *grid);
 
 
 #endif /* __GIMP_CANVAS_GRID_H__ */

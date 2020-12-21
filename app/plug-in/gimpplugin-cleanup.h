@@ -22,32 +22,32 @@
 
 
 gboolean   gimp_plug_in_cleanup_undo_group_start (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 gboolean   gimp_plug_in_cleanup_undo_group_end   (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 
 gboolean   gimp_plug_in_cleanup_layers_freeze    (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 gboolean   gimp_plug_in_cleanup_layers_thaw      (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 
 gboolean   gimp_plug_in_cleanup_channels_freeze  (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 gboolean   gimp_plug_in_cleanup_channels_thaw    (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 
 gboolean   gimp_plug_in_cleanup_vectors_freeze   (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 gboolean   gimp_plug_in_cleanup_vectors_thaw     (GimpPlugIn          *plug_in,
-                                                  GimpImage           *image);
+        GimpImage           *image);
 
 gboolean   gimp_plug_in_cleanup_add_shadow       (GimpPlugIn          *plug_in,
-                                                  GimpDrawable        *drawable);
+        GimpDrawable        *drawable);
 gboolean   gimp_plug_in_cleanup_remove_shadow    (GimpPlugIn          *plug_in,
-                                                  GimpDrawable        *drawable);
+        GimpDrawable        *drawable);
 
 void       gimp_plug_in_cleanup                  (GimpPlugIn          *plug_in,
-                                                  GimpPlugInProcFrame *proc_frame);
+        GimpPlugInProcFrame *proc_frame);
 
 
 #endif /* __GIMP_PLUG_IN_CLEANUP_H__ */

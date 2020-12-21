@@ -60,23 +60,23 @@ void
 gimp_dodge_burn_register (Gimp                      *gimp,
                           GimpPaintRegisterCallback  callback)
 {
-  (* callback) (gimp,
-                GIMP_TYPE_DODGE_BURN,
-                GIMP_TYPE_DODGE_BURN_OPTIONS,
-                "gimp-dodge-burn",
-                _("Dodge/Burn"),
-                "gimp-tool-dodge");
+    (* callback) (gimp,
+                  GIMP_TYPE_DODGE_BURN,
+                  GIMP_TYPE_DODGE_BURN_OPTIONS,
+                  "gimp-dodge-burn",
+                  _("Dodge/Burn"),
+                  "gimp-tool-dodge");
 }
 
 static void
 gimp_dodge_burn_class_init (GimpDodgeBurnClass *klass)
 {
-  GimpPaintCoreClass *paint_core_class = GIMP_PAINT_CORE_CLASS (klass);
-  GimpBrushCoreClass *brush_core_class = GIMP_BRUSH_CORE_CLASS (klass);
+    GimpPaintCoreClass *paint_core_class = GIMP_PAINT_CORE_CLASS (klass);
+    GimpBrushCoreClass *brush_core_class = GIMP_BRUSH_CORE_CLASS (klass);
 
-  paint_core_class->paint = gimp_dodge_burn_paint;
+    paint_core_class->paint = gimp_dodge_burn_paint;
 
-  brush_core_class->handles_changing_brush = TRUE;
+    brush_core_class->handles_changing_brush = TRUE;
 }
 
 static void
@@ -92,17 +92,17 @@ gimp_dodge_burn_paint (GimpPaintCore    *paint_core,
                        GimpPaintState    paint_state,
                        guint32           time)
 {
-  switch (paint_state)
+    switch (paint_state)
     {
     case GIMP_PAINT_STATE_INIT:
-      break;
+        break;
 
     case GIMP_PAINT_STATE_MOTION:
-      gimp_dodge_burn_motion (paint_core, drawable, paint_options, sym);
-      break;
+        gimp_dodge_burn_motion (paint_core, drawable, paint_options, sym);
+        break;
 
     case GIMP_PAINT_STATE_FINISH:
-      break;
+        break;
     }
 }
 
@@ -112,90 +112,90 @@ gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
                         GimpPaintOptions *paint_options,
                         GimpSymmetry     *sym)
 {
-  GimpBrushCore        *brush_core = GIMP_BRUSH_CORE (paint_core);
-  GimpDodgeBurnOptions *options    = GIMP_DODGE_BURN_OPTIONS (paint_options);
-  GimpContext          *context    = GIMP_CONTEXT (paint_options);
-  GimpDynamics         *dynamics   = GIMP_BRUSH_CORE (paint_core)->dynamics;
-  GimpImage            *image      = gimp_item_get_image (GIMP_ITEM (drawable));
-  GeglBuffer           *src_buffer;
-  GeglBuffer           *paint_buffer;
-  gint                  paint_buffer_x;
-  gint                  paint_buffer_y;
-  gdouble               fade_point;
-  gdouble               opacity;
-  gdouble               force;
-  const GimpCoords     *coords;
-  gint                  paint_width, paint_height;
-  gint                  n_strokes;
-  gint                  i;
+    GimpBrushCore        *brush_core = GIMP_BRUSH_CORE (paint_core);
+    GimpDodgeBurnOptions *options    = GIMP_DODGE_BURN_OPTIONS (paint_options);
+    GimpContext          *context    = GIMP_CONTEXT (paint_options);
+    GimpDynamics         *dynamics   = GIMP_BRUSH_CORE (paint_core)->dynamics;
+    GimpImage            *image      = gimp_item_get_image (GIMP_ITEM (drawable));
+    GeglBuffer           *src_buffer;
+    GeglBuffer           *paint_buffer;
+    gint                  paint_buffer_x;
+    gint                  paint_buffer_y;
+    gdouble               fade_point;
+    gdouble               opacity;
+    gdouble               force;
+    const GimpCoords     *coords;
+    gint                  paint_width, paint_height;
+    gint                  n_strokes;
+    gint                  i;
 
-  fade_point = gimp_paint_options_get_fade (paint_options, image,
-                                            paint_core->pixel_dist);
+    fade_point = gimp_paint_options_get_fade (paint_options, image,
+                 paint_core->pixel_dist);
 
-  coords = gimp_symmetry_get_origin (sym);
-  opacity = gimp_dynamics_get_linear_value (dynamics,
-                                            GIMP_DYNAMICS_OUTPUT_OPACITY,
-                                            coords,
-                                            paint_options,
-                                            fade_point);
-  if (opacity == 0.0)
-    return;
+    coords = gimp_symmetry_get_origin (sym);
+    opacity = gimp_dynamics_get_linear_value (dynamics,
+              GIMP_DYNAMICS_OUTPUT_OPACITY,
+              coords,
+              paint_options,
+              fade_point);
+    if (opacity == 0.0)
+        return;
 
-  if (paint_options->application_mode == GIMP_PAINT_CONSTANT)
-    src_buffer = gimp_paint_core_get_orig_image (paint_core);
-  else
-    src_buffer = gimp_drawable_get_buffer (drawable);
+    if (paint_options->application_mode == GIMP_PAINT_CONSTANT)
+        src_buffer = gimp_paint_core_get_orig_image (paint_core);
+    else
+        src_buffer = gimp_drawable_get_buffer (drawable);
 
-  gimp_brush_core_eval_transform_dynamics (brush_core,
-                                           drawable,
-                                           paint_options,
-                                           coords);
-  n_strokes = gimp_symmetry_get_size (sym);
-  for (i = 0; i < n_strokes; i++)
+    gimp_brush_core_eval_transform_dynamics (brush_core,
+            drawable,
+            paint_options,
+            coords);
+    n_strokes = gimp_symmetry_get_size (sym);
+    for (i = 0; i < n_strokes; i++)
     {
-      coords = gimp_symmetry_get_coords (sym, i);
+        coords = gimp_symmetry_get_coords (sym, i);
 
-      gimp_brush_core_eval_transform_symmetry (brush_core, sym, i);
+        gimp_brush_core_eval_transform_symmetry (brush_core, sym, i);
 
-      paint_buffer = gimp_paint_core_get_paint_buffer (paint_core, drawable,
-                                                       paint_options,
-                                                       GIMP_LAYER_MODE_NORMAL,
-                                                       coords,
-                                                       &paint_buffer_x,
-                                                       &paint_buffer_y,
-                                                       &paint_width,
-                                                       &paint_height);
-      if (! paint_buffer)
-        continue;
+        paint_buffer = gimp_paint_core_get_paint_buffer (paint_core, drawable,
+                       paint_options,
+                       GIMP_LAYER_MODE_NORMAL,
+                       coords,
+                       &paint_buffer_x,
+                       &paint_buffer_y,
+                       &paint_width,
+                       &paint_height);
+        if (! paint_buffer)
+            continue;
 
-      /*  DodgeBurn the region  */
-      gimp_gegl_dodgeburn (src_buffer,
-                           GEGL_RECTANGLE (paint_buffer_x,
-                                           paint_buffer_y,
-                                           gegl_buffer_get_width  (paint_buffer),
-                                           gegl_buffer_get_height (paint_buffer)),
-                           paint_buffer,
-                           GEGL_RECTANGLE (0, 0, 0, 0),
-                           options->exposure / 100.0,
-                           options->type,
-                           options->mode);
+        /*  DodgeBurn the region  */
+        gimp_gegl_dodgeburn (src_buffer,
+                             GEGL_RECTANGLE (paint_buffer_x,
+                                             paint_buffer_y,
+                                             gegl_buffer_get_width  (paint_buffer),
+                                             gegl_buffer_get_height (paint_buffer)),
+                             paint_buffer,
+                             GEGL_RECTANGLE (0, 0, 0, 0),
+                             options->exposure / 100.0,
+                             options->type,
+                             options->mode);
 
-      if (gimp_dynamics_is_output_enabled (dynamics, GIMP_DYNAMICS_OUTPUT_FORCE))
-        force = gimp_dynamics_get_linear_value (dynamics,
-                                                GIMP_DYNAMICS_OUTPUT_FORCE,
-                                                coords,
-                                                paint_options,
-                                                fade_point);
-      else
-        force = paint_options->brush_force;
+        if (gimp_dynamics_is_output_enabled (dynamics, GIMP_DYNAMICS_OUTPUT_FORCE))
+            force = gimp_dynamics_get_linear_value (dynamics,
+                                                    GIMP_DYNAMICS_OUTPUT_FORCE,
+                                                    coords,
+                                                    paint_options,
+                                                    fade_point);
+        else
+            force = paint_options->brush_force;
 
-      /* Replace the newly dodgedburned area (paint_area) to the image */
-      gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
-                                      coords,
-                                      MIN (opacity, GIMP_OPACITY_OPAQUE),
-                                      gimp_context_get_opacity (context),
-                                      gimp_paint_options_get_brush_mode (paint_options),
-                                      force,
-                                      paint_options->application_mode);
+        /* Replace the newly dodgedburned area (paint_area) to the image */
+        gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
+                                        coords,
+                                        MIN (opacity, GIMP_OPACITY_OPAQUE),
+                                        gimp_context_get_opacity (context),
+                                        gimp_paint_options_get_brush_mode (paint_options),
+                                        force,
+                                        paint_options->application_mode);
     }
 }

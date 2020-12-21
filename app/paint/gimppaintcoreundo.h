@@ -35,15 +35,15 @@ typedef struct _GimpPaintCoreUndoClass GimpPaintCoreUndoClass;
 
 struct _GimpPaintCoreUndo
 {
-  GimpUndo       parent_instance;
+    GimpUndo       parent_instance;
 
-  GimpPaintCore *paint_core;
-  GimpCoords     last_coords;
+    GimpPaintCore *paint_core;
+    GimpCoords     last_coords;
 };
 
 struct _GimpPaintCoreUndoClass
 {
-  GimpUndoClass  parent_class;
+    GimpUndoClass  parent_class;
 };
 
 

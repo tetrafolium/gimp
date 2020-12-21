@@ -34,12 +34,12 @@ typedef struct _GimpCloneClass GimpCloneClass;
 
 struct _GimpClone
 {
-  GimpSourceCore  parent_instance;
+    GimpSourceCore  parent_instance;
 };
 
 struct _GimpCloneClass
 {
-  GimpSourceCoreClass  parent_class;
+    GimpSourceCoreClass  parent_class;
 };
 
 

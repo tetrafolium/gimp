@@ -20,14 +20,14 @@
 
 
 void   gimp_display_shell_set_action_sensitive (GimpDisplayShell *shell,
-                                                const gchar      *action,
-                                                gboolean          sensitive);
+        const gchar      *action,
+        gboolean          sensitive);
 void   gimp_display_shell_set_action_active    (GimpDisplayShell *shell,
-                                                const gchar      *action,
-                                                gboolean          active);
+        const gchar      *action,
+        gboolean          active);
 void   gimp_display_shell_set_action_color     (GimpDisplayShell *shell,
-                                                const gchar      *action,
-                                                const GimpRGB    *color);
+        const gchar      *action,
+        const GimpRGB    *color);
 
 
 #endif /* __GIMP_DISPLAY_SHELL_ACTIONS_H__ */

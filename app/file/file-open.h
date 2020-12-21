@@ -22,61 +22,61 @@
 
 
 GimpImage * file_open_image                 (Gimp                *gimp,
-                                             GimpContext         *context,
-                                             GimpProgress        *progress,
-                                             GFile               *file,
-                                             gboolean             as_new,
-                                             GimpPlugInProcedure *file_proc,
-                                             GimpRunMode          run_mode,
-                                             GimpPDBStatusType   *status,
-                                             const gchar        **mime_type,
-                                             GError             **error);
+        GimpContext         *context,
+        GimpProgress        *progress,
+        GFile               *file,
+        gboolean             as_new,
+        GimpPlugInProcedure *file_proc,
+        GimpRunMode          run_mode,
+        GimpPDBStatusType   *status,
+        const gchar        **mime_type,
+        GError             **error);
 
 GimpImage * file_open_thumbnail             (Gimp                *gimp,
-                                             GimpContext         *context,
-                                             GimpProgress        *progress,
-                                             GFile               *file,
-                                             gint                 size,
-                                             const gchar        **mime_type,
-                                             gint                *image_width,
-                                             gint                *image_height,
-                                             const Babl         **format,
-                                             gint                *num_layers,
-                                             GError             **error);
+        GimpContext         *context,
+        GimpProgress        *progress,
+        GFile               *file,
+        gint                 size,
+        const gchar        **mime_type,
+        gint                *image_width,
+        gint                *image_height,
+        const Babl         **format,
+        gint                *num_layers,
+        GError             **error);
 GimpImage * file_open_with_display          (Gimp                *gimp,
-                                             GimpContext         *context,
-                                             GimpProgress        *progress,
-                                             GFile               *file,
-                                             gboolean             as_new,
-                                             GObject             *monitor,
-                                             GimpPDBStatusType   *status,
-                                             GError             **error);
+        GimpContext         *context,
+        GimpProgress        *progress,
+        GFile               *file,
+        gboolean             as_new,
+        GObject             *monitor,
+        GimpPDBStatusType   *status,
+        GError             **error);
 
 GimpImage * file_open_with_proc_and_display (Gimp                *gimp,
-                                             GimpContext         *context,
-                                             GimpProgress        *progress,
-                                             GFile               *file,
-                                             gboolean             as_new,
-                                             GimpPlugInProcedure *file_proc,
-                                             GObject             *monitor,
-                                             GimpPDBStatusType   *status,
-                                             GError             **error);
+        GimpContext         *context,
+        GimpProgress        *progress,
+        GFile               *file,
+        gboolean             as_new,
+        GimpPlugInProcedure *file_proc,
+        GObject             *monitor,
+        GimpPDBStatusType   *status,
+        GError             **error);
 
 GList     * file_open_layers                (Gimp                *gimp,
-                                             GimpContext         *context,
-                                             GimpProgress        *progress,
-                                             GimpImage           *dest_image,
-                                             gboolean             merge_visible,
-                                             GFile               *file,
-                                             GimpRunMode          run_mode,
-                                             GimpPlugInProcedure *file_proc,
-                                             GimpPDBStatusType   *status,
-                                             GError             **error);
+        GimpContext         *context,
+        GimpProgress        *progress,
+        GimpImage           *dest_image,
+        gboolean             merge_visible,
+        GFile               *file,
+        GimpRunMode          run_mode,
+        GimpPlugInProcedure *file_proc,
+        GimpPDBStatusType   *status,
+        GError             **error);
 
 gboolean    file_open_from_command_line     (Gimp                *gimp,
-                                             GFile               *file,
-                                             gboolean             as_new,
-                                             GObject             *monitor);
+        GFile               *file,
+        gboolean             as_new,
+        GObject             *monitor);
 
 
 #endif /* __FILE_OPEN_H__ */

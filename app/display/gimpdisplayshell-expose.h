@@ -20,12 +20,12 @@
 
 
 void   gimp_display_shell_expose_area   (GimpDisplayShell   *shell,
-                                         gint                x,
-                                         gint                y,
-                                         gint                w,
-                                         gint                h);
+        gint                x,
+        gint                y,
+        gint                w,
+        gint                h);
 void   gimp_display_shell_expose_region (GimpDisplayShell   *shell,
-                                         cairo_region_t     *region);
+        cairo_region_t     *region);
 void   gimp_display_shell_expose_full   (GimpDisplayShell   *shell);
 
 

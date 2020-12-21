@@ -29,28 +29,28 @@
 
 enum
 {
-  PROP_0,
-  PROP_VALUE
+    PROP_0,
+    PROP_VALUE
 };
 
 
 static void       gimp_operation_set_alpha_get_property (GObject             *object,
-                                                         guint                property_id,
-                                                         GValue              *value,
-                                                         GParamSpec          *pspec);
+        guint                property_id,
+        GValue              *value,
+        GParamSpec          *pspec);
 static void       gimp_operation_set_alpha_set_property (GObject             *object,
-                                                         guint                property_id,
-                                                         const GValue        *value,
-                                                         GParamSpec          *pspec);
+        guint                property_id,
+        const GValue        *value,
+        GParamSpec          *pspec);
 
 static void       gimp_operation_set_alpha_prepare      (GeglOperation       *operation);
 static gboolean   gimp_operation_set_alpha_process      (GeglOperation       *operation,
-                                                         void                *in_buf,
-                                                         void                *aux_buf,
-                                                         void                *out_buf,
-                                                         glong                samples,
-                                                         const GeglRectangle *roi,
-                                                         gint                 level);
+        void                *in_buf,
+        void                *aux_buf,
+        void                *out_buf,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationSetAlpha, gimp_operation_set_alpha,
@@ -62,30 +62,30 @@ G_DEFINE_TYPE (GimpOperationSetAlpha, gimp_operation_set_alpha,
 static void
 gimp_operation_set_alpha_class_init (GimpOperationSetAlphaClass *klass)
 {
-  GObjectClass                    *object_class    = G_OBJECT_CLASS (klass);
-  GeglOperationClass              *operation_class = GEGL_OPERATION_CLASS (klass);
-  GeglOperationPointComposerClass *point_class     = GEGL_OPERATION_POINT_COMPOSER_CLASS (klass);
+    GObjectClass                    *object_class    = G_OBJECT_CLASS (klass);
+    GeglOperationClass              *operation_class = GEGL_OPERATION_CLASS (klass);
+    GeglOperationPointComposerClass *point_class     = GEGL_OPERATION_POINT_COMPOSER_CLASS (klass);
 
-  object_class->set_property = gimp_operation_set_alpha_set_property;
-  object_class->get_property = gimp_operation_set_alpha_get_property;
+    object_class->set_property = gimp_operation_set_alpha_set_property;
+    object_class->get_property = gimp_operation_set_alpha_get_property;
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:set-alpha",
-                                 "categories",  "color",
-                                 "description", "Set a buffer's alpha channel to a value",
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:set-alpha",
+                                   "categories",  "color",
+                                   "description", "Set a buffer's alpha channel to a value",
+                                   NULL);
 
-  operation_class->prepare = gimp_operation_set_alpha_prepare;
+    operation_class->prepare = gimp_operation_set_alpha_prepare;
 
-  point_class->process     = gimp_operation_set_alpha_process;
+    point_class->process     = gimp_operation_set_alpha_process;
 
-  g_object_class_install_property (object_class, PROP_VALUE,
-                                   g_param_spec_double ("value",
-                                                        "Value",
-                                                        "The alpha value",
-                                                        0.0, 1.0, 1.0,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+    g_object_class_install_property (object_class, PROP_VALUE,
+                                     g_param_spec_double ("value",
+                                             "Value",
+                                             "The alpha value",
+                                             0.0, 1.0, 1.0,
+                                             G_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT));
 }
 
 static void
@@ -99,17 +99,17 @@ gimp_operation_set_alpha_get_property (GObject    *object,
                                        GValue     *value,
                                        GParamSpec *pspec)
 {
-  GimpOperationSetAlpha *self = GIMP_OPERATION_SET_ALPHA (object);
+    GimpOperationSetAlpha *self = GIMP_OPERATION_SET_ALPHA (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_VALUE:
-      g_value_set_double (value, self->value);
-      break;
+        g_value_set_double (value, self->value);
+        break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -119,27 +119,27 @@ gimp_operation_set_alpha_set_property (GObject      *object,
                                        const GValue *value,
                                        GParamSpec   *pspec)
 {
-  GimpOperationSetAlpha *self = GIMP_OPERATION_SET_ALPHA (object);
+    GimpOperationSetAlpha *self = GIMP_OPERATION_SET_ALPHA (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_VALUE:
-      self->value = g_value_get_double (value);
-      break;
+        self->value = g_value_get_double (value);
+        break;
 
-   default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
 static void
 gimp_operation_set_alpha_prepare (GeglOperation *operation)
 {
-  const Babl *space = gegl_operation_get_source_space (operation, "input");
-  gegl_operation_set_format (operation, "input",  babl_format_with_space ("RGBA float", space));
-  gegl_operation_set_format (operation, "aux",    babl_format_with_space ("Y float", space));
-  gegl_operation_set_format (operation, "output", babl_format_with_space ("RGBA float", space));
+    const Babl *space = gegl_operation_get_source_space (operation, "input");
+    gegl_operation_set_format (operation, "input",  babl_format_with_space ("RGBA float", space));
+    gegl_operation_set_format (operation, "aux",    babl_format_with_space ("Y float", space));
+    gegl_operation_set_format (operation, "output", babl_format_with_space ("RGBA float", space));
 }
 
 static gboolean
@@ -151,38 +151,38 @@ gimp_operation_set_alpha_process (GeglOperation       *operation,
                                   const GeglRectangle *roi,
                                   gint                 level)
 {
-  GimpOperationSetAlpha *self = GIMP_OPERATION_SET_ALPHA (operation);
-  gfloat                *src  = in_buf;
-  gfloat                *aux  = aux_buf;
-  gfloat                *dest = out_buf;
+    GimpOperationSetAlpha *self = GIMP_OPERATION_SET_ALPHA (operation);
+    gfloat                *src  = in_buf;
+    gfloat                *aux  = aux_buf;
+    gfloat                *dest = out_buf;
 
-  if (aux)
+    if (aux)
     {
-      while (samples--)
+        while (samples--)
         {
-          dest[RED]   = src[RED];
-          dest[GREEN] = src[GREEN];
-          dest[BLUE]  = src[BLUE];
-          dest[ALPHA] = self->value * *aux;
+            dest[RED]   = src[RED];
+            dest[GREEN] = src[GREEN];
+            dest[BLUE]  = src[BLUE];
+            dest[ALPHA] = self->value * *aux;
 
-          src  += 4;
-          aux  += 1;
-          dest += 4;
+            src  += 4;
+            aux  += 1;
+            dest += 4;
         }
     }
-  else
+    else
     {
-      while (samples--)
+        while (samples--)
         {
-          dest[RED]   = src[RED];
-          dest[GREEN] = src[GREEN];
-          dest[BLUE]  = src[BLUE];
-          dest[ALPHA] = self->value;
+            dest[RED]   = src[RED];
+            dest[GREEN] = src[GREEN];
+            dest[BLUE]  = src[BLUE];
+            dest[ALPHA] = self->value;
 
-          src  += 4;
-          dest += 4;
+            src  += 4;
+            dest += 4;
         }
     }
 
-  return TRUE;
+    return TRUE;
 }

@@ -38,16 +38,16 @@ typedef struct _GimpOperationEqualizeClass GimpOperationEqualizeClass;
 
 struct _GimpOperationEqualize
 {
-  GimpOperationPointFilter  parent_instance;
+    GimpOperationPointFilter  parent_instance;
 
-  GimpHistogram            *histogram;
-  gdouble                  *values;
-  gint                      n_bins;
+    GimpHistogram            *histogram;
+    gdouble                  *values;
+    gint                      n_bins;
 };
 
 struct _GimpOperationEqualizeClass
 {
-  GimpOperationPointFilterClass  parent_class;
+    GimpOperationPointFilterClass  parent_class;
 };
 
 

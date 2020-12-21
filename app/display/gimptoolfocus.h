@@ -39,14 +39,14 @@ typedef struct _GimpToolFocusClass   GimpToolFocusClass;
 
 struct _GimpToolFocus
 {
-  GimpToolWidget        parent_instance;
+    GimpToolWidget        parent_instance;
 
-  GimpToolFocusPrivate *priv;
+    GimpToolFocusPrivate *priv;
 };
 
 struct _GimpToolFocusClass
 {
-  GimpToolWidgetClass  parent_class;
+    GimpToolWidgetClass  parent_class;
 };
 
 

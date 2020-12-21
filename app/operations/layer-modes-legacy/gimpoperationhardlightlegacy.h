@@ -38,12 +38,12 @@ typedef struct _GimpOperationHardlightLegacyClass GimpOperationHardlightLegacyCl
 
 struct _GimpOperationHardlightLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationHardlightLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

@@ -38,23 +38,23 @@ typedef struct _GimpCanvasPenClass GimpCanvasPenClass;
 
 struct _GimpCanvasPen
 {
-  GimpCanvasPolygon  parent_instance;
+    GimpCanvasPolygon  parent_instance;
 };
 
 struct _GimpCanvasPenClass
 {
-  GimpCanvasPolygonClass  parent_class;
+    GimpCanvasPolygonClass  parent_class;
 };
 
 
 GType            gimp_canvas_pen_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_pen_new      (GimpDisplayShell  *shell,
-                                           const GimpVector2 *points,
-                                           gint               n_points,
-                                           GimpContext       *context,
-                                           GimpActiveColor    color,
-                                           gint               width);
+        const GimpVector2 *points,
+        gint               n_points,
+        GimpContext       *context,
+        GimpActiveColor    color,
+        gint               width);
 
 
 #endif /* __GIMP_CANVAS_PEN_H__ */

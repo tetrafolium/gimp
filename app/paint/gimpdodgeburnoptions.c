@@ -37,21 +37,21 @@
 
 enum
 {
-  PROP_0,
-  PROP_TYPE,
-  PROP_MODE,
-  PROP_EXPOSURE
+    PROP_0,
+    PROP_TYPE,
+    PROP_MODE,
+    PROP_EXPOSURE
 };
 
 
 static void   gimp_dodge_burn_options_set_property (GObject      *object,
-                                                    guint         property_id,
-                                                    const GValue *value,
-                                                    GParamSpec   *pspec);
+        guint         property_id,
+        const GValue *value,
+        GParamSpec   *pspec);
 static void   gimp_dodge_burn_options_get_property (GObject      *object,
-                                                    guint         property_id,
-                                                    GValue       *value,
-                                                    GParamSpec   *pspec);
+        guint         property_id,
+        GValue       *value,
+        GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpDodgeBurnOptions, gimp_dodge_burn_options,
@@ -61,33 +61,33 @@ G_DEFINE_TYPE (GimpDodgeBurnOptions, gimp_dodge_burn_options,
 static void
 gimp_dodge_burn_options_class_init (GimpDodgeBurnOptionsClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gimp_dodge_burn_options_set_property;
-  object_class->get_property = gimp_dodge_burn_options_get_property;
+    object_class->set_property = gimp_dodge_burn_options_set_property;
+    object_class->get_property = gimp_dodge_burn_options_get_property;
 
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
-                         "type",
-                         _("Type"),
-                         NULL,
-                         GIMP_TYPE_DODGE_BURN_TYPE,
-                         DODGE_BURN_DEFAULT_TYPE,
-                         GIMP_PARAM_STATIC_STRINGS);
-
-  GIMP_CONFIG_PROP_ENUM (object_class, PROP_MODE,
-                         "mode",
-                         _("Range"),
-                         NULL,
-                         GIMP_TYPE_TRANSFER_MODE,
-                         DODGE_BURN_DEFAULT_MODE,
-                         GIMP_PARAM_STATIC_STRINGS);
-
-  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_EXPOSURE,
-                           "exposure",
-                           _("Exposure"),
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
+                           "type",
+                           _("Type"),
                            NULL,
-                           0.0, 100.0, DODGE_BURN_DEFAULT_EXPOSURE,
+                           GIMP_TYPE_DODGE_BURN_TYPE,
+                           DODGE_BURN_DEFAULT_TYPE,
                            GIMP_PARAM_STATIC_STRINGS);
+
+    GIMP_CONFIG_PROP_ENUM (object_class, PROP_MODE,
+                           "mode",
+                           _("Range"),
+                           NULL,
+                           GIMP_TYPE_TRANSFER_MODE,
+                           DODGE_BURN_DEFAULT_MODE,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+    GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_EXPOSURE,
+                             "exposure",
+                             _("Exposure"),
+                             NULL,
+                             0.0, 100.0, DODGE_BURN_DEFAULT_EXPOSURE,
+                             GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -101,22 +101,22 @@ gimp_dodge_burn_options_set_property (GObject      *object,
                                       const GValue *value,
                                       GParamSpec   *pspec)
 {
-  GimpDodgeBurnOptions *options = GIMP_DODGE_BURN_OPTIONS (object);
+    GimpDodgeBurnOptions *options = GIMP_DODGE_BURN_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_TYPE:
-      options->type = g_value_get_enum (value);
-      break;
+        options->type = g_value_get_enum (value);
+        break;
     case PROP_MODE:
-      options->mode = g_value_get_enum (value);
-      break;
+        options->mode = g_value_get_enum (value);
+        break;
     case PROP_EXPOSURE:
-      options->exposure = g_value_get_double (value);
-      break;
+        options->exposure = g_value_get_double (value);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -126,21 +126,21 @@ gimp_dodge_burn_options_get_property (GObject    *object,
                                       GValue     *value,
                                       GParamSpec *pspec)
 {
-  GimpDodgeBurnOptions *options = GIMP_DODGE_BURN_OPTIONS (object);
+    GimpDodgeBurnOptions *options = GIMP_DODGE_BURN_OPTIONS (object);
 
-  switch (property_id)
+    switch (property_id)
     {
     case PROP_TYPE:
-      g_value_set_enum (value, options->type);
-      break;
+        g_value_set_enum (value, options->type);
+        break;
     case PROP_MODE:
-      g_value_set_enum (value, options->mode);
-      break;
+        g_value_set_enum (value, options->mode);
+        break;
     case PROP_EXPOSURE:
-      g_value_set_double (value, options->exposure);
-      break;
+        g_value_set_double (value, options->exposure);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }

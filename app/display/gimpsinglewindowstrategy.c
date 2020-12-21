@@ -41,15 +41,15 @@
 
 static void        gimp_single_window_strategy_window_strategy_iface_init (GimpWindowStrategyInterface *iface);
 static GtkWidget * gimp_single_window_strategy_show_dockable_dialog       (GimpWindowStrategy          *strategy,
-                                                                           Gimp                        *gimp,
-                                                                           GimpDialogFactory           *factory,
-                                                                           GdkMonitor                  *monitor,
-                                                                           const gchar                 *identifiers);
+        Gimp                        *gimp,
+        GimpDialogFactory           *factory,
+        GdkMonitor                  *monitor,
+        const gchar                 *identifiers);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpSingleWindowStrategy, gimp_single_window_strategy, GIMP_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_WINDOW_STRATEGY,
-                                                gimp_single_window_strategy_window_strategy_iface_init))
+                                 gimp_single_window_strategy_window_strategy_iface_init))
 
 #define parent_class gimp_single_window_strategy_parent_class
 
@@ -67,88 +67,88 @@ gimp_single_window_strategy_init (GimpSingleWindowStrategy *strategy)
 static void
 gimp_single_window_strategy_window_strategy_iface_init (GimpWindowStrategyInterface *iface)
 {
-  iface->show_dockable_dialog = gimp_single_window_strategy_show_dockable_dialog;
+    iface->show_dockable_dialog = gimp_single_window_strategy_show_dockable_dialog;
 }
 
 static GtkWidget *
 gimp_single_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
-                                                  Gimp               *gimp,
-                                                  GimpDialogFactory  *factory,
-                                                  GdkMonitor         *monitor,
-                                                  const gchar        *identifiers)
+        Gimp               *gimp,
+        GimpDialogFactory  *factory,
+        GdkMonitor         *monitor,
+        const gchar        *identifiers)
 {
-  GList           *windows = gimp_get_image_windows (gimp);
-  GtkWidget       *widget  = NULL;
-  GimpImageWindow *window;
+    GList           *windows = gimp_get_image_windows (gimp);
+    GtkWidget       *widget  = NULL;
+    GimpImageWindow *window;
 
-  g_return_val_if_fail (windows != NULL, NULL);
+    g_return_val_if_fail (windows != NULL, NULL);
 
-  /* In single-window mode, there should only be one window... */
-  window = GIMP_IMAGE_WINDOW (windows->data);
+    /* In single-window mode, there should only be one window... */
+    window = GIMP_IMAGE_WINDOW (windows->data);
 
-  if (strcmp ("gimp-toolbox", identifiers) == 0)
+    if (strcmp ("gimp-toolbox", identifiers) == 0)
     {
-      /* Only allow one toolbox... */
-      if (! gimp_image_window_has_toolbox (window))
+        /* Only allow one toolbox... */
+        if (! gimp_image_window_has_toolbox (window))
         {
-          GimpDockColumns *columns;
-          GimpUIManager   *ui_manager = gimp_image_window_get_ui_manager (window);
+            GimpDockColumns *columns;
+            GimpUIManager   *ui_manager = gimp_image_window_get_ui_manager (window);
 
-          widget = gimp_dialog_factory_dialog_new (factory, monitor,
-                                                   ui_manager,
-                                                   GTK_WIDGET (window),
-                                                   "gimp-toolbox",
-                                                   -1 /*view_size*/,
-                                                   FALSE /*present*/);
-          gtk_widget_show (widget);
+            widget = gimp_dialog_factory_dialog_new (factory, monitor,
+                     ui_manager,
+                     GTK_WIDGET (window),
+                     "gimp-toolbox",
+                     -1 /*view_size*/,
+                     FALSE /*present*/);
+            gtk_widget_show (widget);
 
-          columns = gimp_image_window_get_left_docks (window);
-          gimp_dock_columns_add_dock (columns,
-                                      GIMP_DOCK (widget),
-                                      -1 /*index*/);
+            columns = gimp_image_window_get_left_docks (window);
+            gimp_dock_columns_add_dock (columns,
+                                        GIMP_DOCK (widget),
+                                        -1 /*index*/);
         }
     }
-  else if (gimp_dialog_factory_find_widget (factory, identifiers))
+    else if (gimp_dialog_factory_find_widget (factory, identifiers))
     {
-      /* if the dialog is already open, simply raise it */
-      return gimp_dialog_factory_dialog_raise (factory, monitor,
-                                               GTK_WIDGET (window),
-                                               identifiers, -1);
-   }
-  else
+        /* if the dialog is already open, simply raise it */
+        return gimp_dialog_factory_dialog_raise (factory, monitor,
+                GTK_WIDGET (window),
+                identifiers, -1);
+    }
+    else
     {
-      GtkWidget *dockbook;
+        GtkWidget *dockbook;
 
-      dockbook = gimp_image_window_get_default_dockbook (window);
+        dockbook = gimp_image_window_get_default_dockbook (window);
 
-      if (! dockbook)
+        if (! dockbook)
         {
-          GimpDockColumns *dock_columns;
+            GimpDockColumns *dock_columns;
 
-          /* No dock, need to add one */
-          dock_columns = gimp_image_window_get_right_docks (window);
-          gimp_dock_columns_prepare_dockbook (dock_columns,
-                                              -1 /*index*/,
-                                              &dockbook);
+            /* No dock, need to add one */
+            dock_columns = gimp_image_window_get_right_docks (window);
+            gimp_dock_columns_prepare_dockbook (dock_columns,
+                                                -1 /*index*/,
+                                                &dockbook);
         }
 
-      widget = gimp_dockbook_add_from_dialog_factory (GIMP_DOCKBOOK (dockbook),
-                                                      identifiers);
+        widget = gimp_dockbook_add_from_dialog_factory (GIMP_DOCKBOOK (dockbook),
+                 identifiers);
     }
 
 
-  g_list_free (windows);
+    g_list_free (windows);
 
-  return widget;
+    return widget;
 }
 
 GimpObject *
 gimp_single_window_strategy_get_singleton (void)
 {
-  static GimpObject *singleton = NULL;
+    static GimpObject *singleton = NULL;
 
-  if (! singleton)
-    singleton = g_object_new (GIMP_TYPE_SINGLE_WINDOW_STRATEGY, NULL);
+    if (! singleton)
+        singleton = g_object_new (GIMP_TYPE_SINGLE_WINDOW_STRATEGY, NULL);
 
-  return singleton;
+    return singleton;
 }

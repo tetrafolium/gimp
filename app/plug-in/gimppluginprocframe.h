@@ -23,45 +23,45 @@
 
 struct _GimpPlugInProcFrame
 {
-  gint                 ref_count;
+    gint                 ref_count;
 
-  GimpContext         *main_context;
-  GList               *context_stack;
+    GimpContext         *main_context;
+    GList               *context_stack;
 
-  GimpProcedure       *procedure;
-  GMainLoop           *main_loop;
+    GimpProcedure       *procedure;
+    GMainLoop           *main_loop;
 
-  GimpValueArray      *return_vals;
+    GimpValueArray      *return_vals;
 
-  GimpProgress        *progress;
-  gboolean             progress_created;
-  gulong               progress_cancel_id;
+    GimpProgress        *progress;
+    gboolean             progress_created;
+    gulong               progress_cancel_id;
 
-  GimpPDBErrorHandler  error_handler;
+    GimpPDBErrorHandler  error_handler;
 
-  /*  lists of things to clean up on dispose  */
-  GList               *image_cleanups;
-  GList               *item_cleanups;
+    /*  lists of things to clean up on dispose  */
+    GList               *image_cleanups;
+    GList               *item_cleanups;
 };
 
 
 GimpPlugInProcFrame * gimp_plug_in_proc_frame_new     (GimpContext         *context,
-                                                       GimpProgress        *progress,
-                                                       GimpPlugInProcedure *procedure);
+        GimpProgress        *progress,
+        GimpPlugInProcedure *procedure);
 void                  gimp_plug_in_proc_frame_init    (GimpPlugInProcFrame *proc_frame,
-                                                       GimpContext         *context,
-                                                       GimpProgress        *progress,
-                                                       GimpPlugInProcedure *procedure);
+        GimpContext         *context,
+        GimpProgress        *progress,
+        GimpPlugInProcedure *procedure);
 
 void                  gimp_plug_in_proc_frame_dispose (GimpPlugInProcFrame *proc_frame,
-                                                       GimpPlugIn          *plug_in);
+        GimpPlugIn          *plug_in);
 
 GimpPlugInProcFrame * gimp_plug_in_proc_frame_ref     (GimpPlugInProcFrame *proc_frame);
 void                  gimp_plug_in_proc_frame_unref   (GimpPlugInProcFrame *proc_frame,
-                                                       GimpPlugIn          *plug_in);
+        GimpPlugIn          *plug_in);
 
 GimpValueArray      * gimp_plug_in_proc_frame_get_return_values
-                                                      (GimpPlugInProcFrame *proc_frame);
+(GimpPlugInProcFrame *proc_frame);
 
 
 #endif /* __GIMP_PLUG_IN_PROC_FRAME_H__ */

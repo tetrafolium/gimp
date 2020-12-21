@@ -38,12 +38,12 @@ typedef struct _GimpCanvasCursorClass GimpCanvasCursorClass;
 
 struct _GimpCanvasCursor
 {
-  GimpCanvasItem  parent_instance;
+    GimpCanvasItem  parent_instance;
 };
 
 struct _GimpCanvasCursorClass
 {
-  GimpCanvasItemClass  parent_class;
+    GimpCanvasItemClass  parent_class;
 };
 
 
@@ -52,8 +52,8 @@ GType            gimp_canvas_cursor_get_type (void) G_GNUC_CONST;
 GimpCanvasItem * gimp_canvas_cursor_new      (GimpDisplayShell *shell);
 
 void             gimp_canvas_cursor_set      (GimpCanvasItem   *cursor,
-                                              gdouble           x,
-                                              gdouble           y);
+        gdouble           x,
+        gdouble           y);
 
 
 #endif /* __GIMP_CANVAS_CURSOR_H__ */

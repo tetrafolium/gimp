@@ -39,8 +39,8 @@ typedef struct _VectorsOptionsDialog VectorsOptionsDialog;
 
 struct _VectorsOptionsDialog
 {
-  GimpVectorsOptionsCallback  callback;
-  gpointer                    user_data;
+    GimpVectorsOptionsCallback  callback;
+    gpointer                    user_data;
 };
 
 
@@ -48,16 +48,16 @@ struct _VectorsOptionsDialog
 
 static void  vectors_options_dialog_free     (VectorsOptionsDialog *private);
 static void  vectors_options_dialog_callback (GtkWidget            *dialog,
-                                              GimpImage            *image,
-                                              GimpItem             *item,
-                                              GimpContext          *context,
-                                              const gchar          *item_name,
-                                              gboolean              item_visible,
-                                              gboolean              item_linked,
-                                              GimpColorTag          item_color_tag,
-                                              gboolean              item_lock_content,
-                                              gboolean              item_lock_position,
-                                              gpointer              user_data);
+        GimpImage            *image,
+        GimpItem             *item,
+        GimpContext          *context,
+        const gchar          *item_name,
+        gboolean              item_visible,
+        gboolean              item_linked,
+        GimpColorTag          item_color_tag,
+        gboolean              item_lock_content,
+        gboolean              item_lock_position,
+        gpointer              user_data);
 
 
 /*  public functions  */
@@ -81,45 +81,45 @@ vectors_options_dialog_new (GimpImage                  *image,
                             GimpVectorsOptionsCallback  callback,
                             gpointer                    user_data)
 {
-  VectorsOptionsDialog *private;
-  GtkWidget            *dialog;
+    VectorsOptionsDialog *private;
+    GtkWidget            *dialog;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (vectors == NULL || GIMP_IS_VECTORS (vectors), NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-  g_return_val_if_fail (GTK_IS_WIDGET (parent), NULL);
-  g_return_val_if_fail (title != NULL, NULL);
-  g_return_val_if_fail (role != NULL, NULL);
-  g_return_val_if_fail (icon_name != NULL, NULL);
-  g_return_val_if_fail (desc != NULL, NULL);
-  g_return_val_if_fail (help_id != NULL, NULL);
-  g_return_val_if_fail (callback != NULL, NULL);
+    g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+    g_return_val_if_fail (vectors == NULL || GIMP_IS_VECTORS (vectors), NULL);
+    g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+    g_return_val_if_fail (GTK_IS_WIDGET (parent), NULL);
+    g_return_val_if_fail (title != NULL, NULL);
+    g_return_val_if_fail (role != NULL, NULL);
+    g_return_val_if_fail (icon_name != NULL, NULL);
+    g_return_val_if_fail (desc != NULL, NULL);
+    g_return_val_if_fail (help_id != NULL, NULL);
+    g_return_val_if_fail (callback != NULL, NULL);
 
-  private = g_slice_new0 (VectorsOptionsDialog);
+    private = g_slice_new0 (VectorsOptionsDialog);
 
-  private->callback  = callback;
-  private->user_data = user_data;
+    private->callback  = callback;
+    private->user_data = user_data;
 
-  dialog = item_options_dialog_new (image, GIMP_ITEM (vectors), context,
-                                    parent, title, role,
-                                    icon_name, desc, help_id,
-                                    _("Path _name:"),
-                                    GIMP_ICON_TOOL_PATH,
-                                    _("Lock path _strokes"),
-                                    _("Lock path _position"),
-                                    vectors_name,
-                                    vectors_visible,
-                                    vectors_linked,
-                                    vectors_color_tag,
-                                    vectors_lock_content,
-                                    vectors_lock_position,
-                                    vectors_options_dialog_callback,
-                                    private);
+    dialog = item_options_dialog_new (image, GIMP_ITEM (vectors), context,
+                                      parent, title, role,
+                                      icon_name, desc, help_id,
+                                      _("Path _name:"),
+                                      GIMP_ICON_TOOL_PATH,
+                                      _("Lock path _strokes"),
+                                      _("Lock path _position"),
+                                      vectors_name,
+                                      vectors_visible,
+                                      vectors_linked,
+                                      vectors_color_tag,
+                                      vectors_lock_content,
+                                      vectors_lock_position,
+                                      vectors_options_dialog_callback,
+                                      private);
 
-  g_object_weak_ref (G_OBJECT (dialog),
-                     (GWeakNotify) vectors_options_dialog_free, private);
+    g_object_weak_ref (G_OBJECT (dialog),
+                       (GWeakNotify) vectors_options_dialog_free, private);
 
-  return dialog;
+    return dialog;
 }
 
 
@@ -128,7 +128,7 @@ vectors_options_dialog_new (GimpImage                  *image,
 static void
 vectors_options_dialog_free (VectorsOptionsDialog *private)
 {
-  g_slice_free (VectorsOptionsDialog, private);
+    g_slice_free (VectorsOptionsDialog, private);
 }
 
 static void
@@ -144,17 +144,17 @@ vectors_options_dialog_callback (GtkWidget    *dialog,
                                  gboolean      item_lock_position,
                                  gpointer      user_data)
 {
-  VectorsOptionsDialog *private = user_data;
+    VectorsOptionsDialog *private = user_data;
 
-  private->callback (dialog,
-                     image,
-                     GIMP_VECTORS (item),
-                     context,
-                     item_name,
-                     item_visible,
-                     item_linked,
-                     item_color_tag,
-                     item_lock_content,
-                     item_lock_position,
-                     private->user_data);
+    private->callback (dialog,
+                       image,
+                       GIMP_VECTORS (item),
+                       context,
+                       item_name,
+                       item_visible,
+                       item_linked,
+                       item_color_tag,
+                       item_lock_content,
+                       item_lock_position,
+                       private->user_data);
 }

@@ -33,29 +33,29 @@ gimp_display_shell_expose_area (GimpDisplayShell *shell,
                                 gint              w,
                                 gint              h)
 {
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  gtk_widget_queue_draw_area (shell->canvas, x, y, w, h);
+    gtk_widget_queue_draw_area (shell->canvas, x, y, w, h);
 }
 
 void
 gimp_display_shell_expose_region (GimpDisplayShell *shell,
                                   cairo_region_t   *region)
 {
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-  g_return_if_fail (region != NULL);
+    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+    g_return_if_fail (region != NULL);
 
-  if (! gtk_widget_get_realized (shell->canvas))
-    return;
+    if (! gtk_widget_get_realized (shell->canvas))
+        return;
 
-  gdk_window_invalidate_region (gtk_widget_get_window (shell->canvas),
-                                region, TRUE);
+    gdk_window_invalidate_region (gtk_widget_get_window (shell->canvas),
+                                  region, TRUE);
 }
 
 void
 gimp_display_shell_expose_full (GimpDisplayShell *shell)
 {
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+    g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  gtk_widget_queue_draw (shell->canvas);
+    gtk_widget_queue_draw (shell->canvas);
 }

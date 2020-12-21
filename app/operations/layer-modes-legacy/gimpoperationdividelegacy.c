@@ -31,13 +31,13 @@
 
 
 static gboolean   gimp_operation_divide_legacy_process (GeglOperation       *op,
-                                                        void                *in,
-                                                        void                *layer,
-                                                        void                *mask,
-                                                        void                *out,
-                                                        glong                samples,
-                                                        const GeglRectangle *roi,
-                                                        gint                 level);
+        void                *in,
+        void                *layer,
+        void                *mask,
+        void                *out,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationDivideLegacy, gimp_operation_divide_legacy,
@@ -47,15 +47,15 @@ G_DEFINE_TYPE (GimpOperationDivideLegacy, gimp_operation_divide_legacy,
 static void
 gimp_operation_divide_legacy_class_init (GimpOperationDivideLegacyClass *klass)
 {
-  GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
-  GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
+    GeglOperationClass          *operation_class  = GEGL_OPERATION_CLASS (klass);
+    GimpOperationLayerModeClass *layer_mode_class = GIMP_OPERATION_LAYER_MODE_CLASS (klass);
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:divide-legacy",
-                                 "description", "GIMP divide mode operation",
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:divide-legacy",
+                                   "description", "GIMP divide mode operation",
+                                   NULL);
 
-  layer_mode_class->process = gimp_operation_divide_legacy_process;
+    layer_mode_class->process = gimp_operation_divide_legacy_process;
 }
 
 static void
@@ -73,55 +73,55 @@ gimp_operation_divide_legacy_process (GeglOperation       *op,
                                       const GeglRectangle *roi,
                                       gint                 level)
 {
-  GimpOperationLayerMode *layer_mode = (gpointer) op;
-  gfloat                 *in         = in_p;
-  gfloat                 *out        = out_p;
-  gfloat                 *layer      = layer_p;
-  gfloat                 *mask       = mask_p;
-  gfloat                  opacity    = layer_mode->opacity;
+    GimpOperationLayerMode *layer_mode = (gpointer) op;
+    gfloat                 *in         = in_p;
+    gfloat                 *out        = out_p;
+    gfloat                 *layer      = layer_p;
+    gfloat                 *mask       = mask_p;
+    gfloat                  opacity    = layer_mode->opacity;
 
-  while (samples--)
+    while (samples--)
     {
-      gfloat comp_alpha, new_alpha;
+        gfloat comp_alpha, new_alpha;
 
-      comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
-      if (mask)
-        comp_alpha *= *mask;
+        comp_alpha = MIN (in[ALPHA], layer[ALPHA]) * opacity;
+        if (mask)
+            comp_alpha *= *mask;
 
-      new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
+        new_alpha = in[ALPHA] + (1.0f - in[ALPHA]) * comp_alpha;
 
-      if (comp_alpha && new_alpha)
+        if (comp_alpha && new_alpha)
         {
-          gint   b;
-          gfloat ratio = comp_alpha / new_alpha;
+            gint   b;
+            gfloat ratio = comp_alpha / new_alpha;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              gfloat comp = in[b] / layer[b];
-              comp = SAFE_CLAMP (comp, 0.0f, 1.0f);
+                gfloat comp = in[b] / layer[b];
+                comp = SAFE_CLAMP (comp, 0.0f, 1.0f);
 
-              out[b] = comp * ratio + in[b] * (1.0f - ratio);
+                out[b] = comp * ratio + in[b] * (1.0f - ratio);
             }
         }
-      else
+        else
         {
-          gint b;
+            gint b;
 
-          for (b = RED; b < ALPHA; b++)
+            for (b = RED; b < ALPHA; b++)
             {
-              out[b] = in[b];
+                out[b] = in[b];
             }
         }
 
-      out[ALPHA] = in[ALPHA];
+        out[ALPHA] = in[ALPHA];
 
-      in    += 4;
-      layer += 4;
-      out   += 4;
+        in    += 4;
+        layer += 4;
+        out   += 4;
 
-      if (mask)
-        mask++;
+        if (mask)
+            mask++;
     }
 
-  return TRUE;
+    return TRUE;
 }

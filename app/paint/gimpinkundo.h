@@ -35,14 +35,14 @@ typedef struct _GimpInkUndoClass GimpInkUndoClass;
 
 struct _GimpInkUndo
 {
-  GimpPaintCoreUndo  parent_instance;
+    GimpPaintCoreUndo  parent_instance;
 
-  GList             *last_blobs;
+    GList             *last_blobs;
 };
 
 struct _GimpInkUndoClass
 {
-  GimpPaintCoreUndoClass  parent_class;
+    GimpPaintCoreUndoClass  parent_class;
 };
 
 

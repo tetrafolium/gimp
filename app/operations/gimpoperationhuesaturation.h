@@ -38,21 +38,21 @@ typedef struct _GimpOperationHueSaturationClass GimpOperationHueSaturationClass;
 
 struct _GimpOperationHueSaturation
 {
-  GimpOperationPointFilter  parent_instance;
+    GimpOperationPointFilter  parent_instance;
 };
 
 struct _GimpOperationHueSaturationClass
 {
-  GimpOperationPointFilterClass  parent_class;
+    GimpOperationPointFilterClass  parent_class;
 };
 
 
 GType   gimp_operation_hue_saturation_get_type (void) G_GNUC_CONST;
 
 void    gimp_operation_hue_saturation_map      (GimpHueSaturationConfig *config,
-                                                const GimpRGB           *color,
-                                                GimpHueRange             range,
-                                                GimpRGB                 *result);
+        const GimpRGB           *color,
+        GimpHueRange             range,
+        GimpRGB                 *result);
 
 
 #endif /* __GIMP_OPERATION_HUE_SATURATION_H__ */

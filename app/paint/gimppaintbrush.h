@@ -34,31 +34,31 @@ typedef struct _GimpPaintbrushClass GimpPaintbrushClass;
 
 struct _GimpPaintbrush
 {
-  GimpBrushCore      parent_instance;
+    GimpBrushCore      parent_instance;
 
-  GeglBuffer        *paint_buffer;
-  const GimpTempBuf *paint_pixmap;
-  GimpRGB            paint_color;
+    GeglBuffer        *paint_buffer;
+    const GimpTempBuf *paint_pixmap;
+    GimpRGB            paint_color;
 };
 
 struct _GimpPaintbrushClass
 {
-  GimpBrushCoreClass  parent_class;
+    GimpBrushCoreClass  parent_class;
 
-  /*  virtual functions  */
-  gboolean   (* get_color_history_color) (GimpPaintbrush            *paintbrush,
-                                          GimpDrawable              *drawable,
-                                          GimpPaintOptions          *paint_options,
-                                          GimpRGB                   *color);
-  void       (* get_paint_params)        (GimpPaintbrush            *paintbrush,
-                                          GimpDrawable              *drawable,
-                                          GimpPaintOptions          *paint_options,
-                                          GimpSymmetry              *sym,
-                                          gdouble                    grad_point,
-                                          GimpLayerMode             *paint_mode,
-                                          GimpPaintApplicationMode  *paint_appl_mode,
-                                          const GimpTempBuf        **paint_pixmap,
-                                          GimpRGB                   *paint_color);
+    /*  virtual functions  */
+    gboolean   (* get_color_history_color) (GimpPaintbrush            *paintbrush,
+                                            GimpDrawable              *drawable,
+                                            GimpPaintOptions          *paint_options,
+                                            GimpRGB                   *color);
+    void       (* get_paint_params)        (GimpPaintbrush            *paintbrush,
+                                            GimpDrawable              *drawable,
+                                            GimpPaintOptions          *paint_options,
+                                            GimpSymmetry              *sym,
+                                            gdouble                    grad_point,
+                                            GimpLayerMode             *paint_mode,
+                                            GimpPaintApplicationMode  *paint_appl_mode,
+                                            const GimpTempBuf        **paint_pixmap,
+                                            GimpRGB                   *paint_color);
 };
 
 

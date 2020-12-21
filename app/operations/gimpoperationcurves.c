@@ -38,11 +38,11 @@
 
 
 static gboolean gimp_operation_curves_process (GeglOperation       *operation,
-                                               void                *in_buf,
-                                               void                *out_buf,
-                                               glong                samples,
-                                               const GeglRectangle *roi,
-                                               gint                 level);
+        void                *in_buf,
+        void                *out_buf,
+        glong                samples,
+        const GeglRectangle *roi,
+        gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationCurves, gimp_operation_curves,
@@ -54,38 +54,38 @@ G_DEFINE_TYPE (GimpOperationCurves, gimp_operation_curves,
 static void
 gimp_operation_curves_class_init (GimpOperationCurvesClass *klass)
 {
-  GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
-  GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
-  GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
+    GObjectClass                  *object_class    = G_OBJECT_CLASS (klass);
+    GeglOperationClass            *operation_class = GEGL_OPERATION_CLASS (klass);
+    GeglOperationPointFilterClass *point_class     = GEGL_OPERATION_POINT_FILTER_CLASS (klass);
 
-  object_class->set_property   = gimp_operation_point_filter_set_property;
-  object_class->get_property   = gimp_operation_point_filter_get_property;
+    object_class->set_property   = gimp_operation_point_filter_set_property;
+    object_class->get_property   = gimp_operation_point_filter_get_property;
 
-  gegl_operation_class_set_keys (operation_class,
-                                 "name",        "gimp:curves",
-                                 "categories",  "color",
-                                 "description", _("Adjust color curves"),
-                                 NULL);
+    gegl_operation_class_set_keys (operation_class,
+                                   "name",        "gimp:curves",
+                                   "categories",  "color",
+                                   "description", _("Adjust color curves"),
+                                   NULL);
 
-  point_class->process = gimp_operation_curves_process;
+    point_class->process = gimp_operation_curves_process;
 
-  g_object_class_install_property (object_class,
-                                   GIMP_OPERATION_POINT_FILTER_PROP_TRC,
-                                   g_param_spec_enum ("trc",
-                                                      "Linear/Percptual",
-                                                      "What TRC to operate on",
-                                                      GIMP_TYPE_TRC_TYPE,
-                                                      GIMP_TRC_NON_LINEAR,
-                                                      G_PARAM_READWRITE));
+    g_object_class_install_property (object_class,
+                                     GIMP_OPERATION_POINT_FILTER_PROP_TRC,
+                                     g_param_spec_enum ("trc",
+                                             "Linear/Percptual",
+                                             "What TRC to operate on",
+                                             GIMP_TYPE_TRC_TYPE,
+                                             GIMP_TRC_NON_LINEAR,
+                                             G_PARAM_READWRITE));
 
-  g_object_class_install_property (object_class,
-                                   GIMP_OPERATION_POINT_FILTER_PROP_CONFIG,
-                                   g_param_spec_object ("config",
-                                                        "Config",
-                                                        "The config object",
-                                                        GIMP_TYPE_CURVES_CONFIG,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+    g_object_class_install_property (object_class,
+                                     GIMP_OPERATION_POINT_FILTER_PROP_CONFIG,
+                                     g_param_spec_object ("config",
+                                             "Config",
+                                             "The config object",
+                                             GIMP_TYPE_CURVES_CONFIG,
+                                             G_PARAM_READWRITE |
+                                             G_PARAM_CONSTRUCT));
 }
 
 static void
@@ -101,19 +101,19 @@ gimp_operation_curves_process (GeglOperation       *operation,
                                const GeglRectangle *roi,
                                gint                 level)
 {
-  GimpOperationPointFilter *point  = GIMP_OPERATION_POINT_FILTER (operation);
-  GimpCurvesConfig         *config = GIMP_CURVES_CONFIG (point->config);
-  gfloat                   *src    = in_buf;
-  gfloat                   *dest   = out_buf;
+    GimpOperationPointFilter *point  = GIMP_OPERATION_POINT_FILTER (operation);
+    GimpCurvesConfig         *config = GIMP_CURVES_CONFIG (point->config);
+    gfloat                   *src    = in_buf;
+    gfloat                   *dest   = out_buf;
 
-  if (! config)
-    return FALSE;
+    if (! config)
+        return FALSE;
 
-  gimp_curve_map_pixels (config->curve[0],
-                         config->curve[1],
-                         config->curve[2],
-                         config->curve[3],
-                         config->curve[4], src, dest, samples);
+    gimp_curve_map_pixels (config->curve[0],
+                           config->curve[1],
+                           config->curve[2],
+                           config->curve[3],
+                           config->curve[4], src, dest, samples);
 
-  return TRUE;
+    return TRUE;
 }

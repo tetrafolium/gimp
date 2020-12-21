@@ -38,14 +38,14 @@ typedef struct _GimpOperationComposeCropClass GimpOperationComposeCropClass;
 
 struct _GimpOperationComposeCrop
 {
-  GeglOperationPointComposer  parent_instance;
+    GeglOperationPointComposer  parent_instance;
 
-  GeglRectangle               rect;
+    GeglRectangle               rect;
 };
 
 struct _GimpOperationComposeCropClass
 {
-  GeglOperationPointComposerClass  parent_class;
+    GeglOperationPointComposerClass  parent_class;
 };
 
 

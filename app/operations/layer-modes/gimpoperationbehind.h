@@ -38,12 +38,12 @@ typedef struct _GimpOperationBehindClass GimpOperationBehindClass;
 
 struct _GimpOperationBehind
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationBehindClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

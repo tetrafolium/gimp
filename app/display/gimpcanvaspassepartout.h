@@ -38,22 +38,22 @@ typedef struct _GimpCanvasPassePartoutClass GimpCanvasPassePartoutClass;
 
 struct _GimpCanvasPassePartout
 {
-  GimpCanvasRectangle  parent_instance;
+    GimpCanvasRectangle  parent_instance;
 };
 
 struct _GimpCanvasPassePartoutClass
 {
-  GimpCanvasRectangleClass  parent_class;
+    GimpCanvasRectangleClass  parent_class;
 };
 
 
 GType            gimp_canvas_passe_partout_get_type (void) G_GNUC_CONST;
 
 GimpCanvasItem * gimp_canvas_passe_partout_new      (GimpDisplayShell *shell,
-                                                     gdouble           x,
-                                                     gdouble           y,
-                                                     gdouble           width,
-                                                     gdouble           height);
+        gdouble           x,
+        gdouble           y,
+        gdouble           width,
+        gdouble           height);
 
 
 #endif /* __GIMP_CANVAS_PASSE_PARTOUT_H__ */

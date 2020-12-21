@@ -35,14 +35,14 @@ typedef struct _GimpOperationBufferSourceValidateClass GimpOperationBufferSource
 
 struct _GimpOperationBufferSourceValidate
 {
-  GeglOperationSource  parent_instance;
+    GeglOperationSource  parent_instance;
 
-  GeglBuffer          *buffer;
+    GeglBuffer          *buffer;
 };
 
 struct _GimpOperationBufferSourceValidateClass
 {
-  GeglOperationSourceClass  parent_class;
+    GeglOperationSourceClass  parent_class;
 };
 
 

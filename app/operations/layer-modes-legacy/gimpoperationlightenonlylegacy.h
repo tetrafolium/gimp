@@ -38,12 +38,12 @@ typedef struct _GimpOperationLightenOnlyLegacyClass GimpOperationLightenOnlyLega
 
 struct _GimpOperationLightenOnlyLegacy
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationLightenOnlyLegacyClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

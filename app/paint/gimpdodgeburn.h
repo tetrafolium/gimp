@@ -33,12 +33,12 @@ typedef struct _GimpDodgeBurnClass GimpDodgeBurnClass;
 
 struct _GimpDodgeBurn
 {
-  GimpBrushCore  parent_instance;
+    GimpBrushCore  parent_instance;
 };
 
 struct _GimpDodgeBurnClass
 {
-  GimpBrushCoreClass  parent_class;
+    GimpBrushCoreClass  parent_class;
 };
 
 

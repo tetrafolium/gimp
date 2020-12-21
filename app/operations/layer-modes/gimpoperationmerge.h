@@ -39,12 +39,12 @@ typedef struct _GimpOperationMergeClass GimpOperationMergeClass;
 
 struct _GimpOperationMerge
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationMergeClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

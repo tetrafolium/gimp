@@ -36,14 +36,14 @@ typedef struct _GimpTemporaryProcedureClass GimpTemporaryProcedureClass;
 
 struct _GimpTemporaryProcedure
 {
-  GimpPlugInProcedure  parent_instance;
+    GimpPlugInProcedure  parent_instance;
 
-  GimpPlugIn          *plug_in;
+    GimpPlugIn          *plug_in;
 };
 
 struct _GimpTemporaryProcedureClass
 {
-  GimpPlugInProcedureClass parent_class;
+    GimpPlugInProcedureClass parent_class;
 };
 
 

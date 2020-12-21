@@ -42,14 +42,14 @@
 
 enum
 {
-  PROP_0
+    PROP_0
 };
 
 enum
 {
-  STROKE,
-  HOVER,
-  LAST_SIGNAL
+    STROKE,
+    HOVER,
+    LAST_SIGNAL
 };
 
 
@@ -58,21 +58,21 @@ enum
 static void     gimp_motion_buffer_dispose             (GObject          *object);
 static void     gimp_motion_buffer_finalize            (GObject          *object);
 static void     gimp_motion_buffer_set_property        (GObject          *object,
-                                                        guint             property_id,
-                                                        const GValue     *value,
-                                                        GParamSpec       *pspec);
+        guint             property_id,
+        const GValue     *value,
+        GParamSpec       *pspec);
 static void     gimp_motion_buffer_get_property        (GObject          *object,
-                                                        guint             property_id,
-                                                        GValue           *value,
-                                                        GParamSpec       *pspec);
+        guint             property_id,
+        GValue           *value,
+        GParamSpec       *pspec);
 
 static void     gimp_motion_buffer_push_event_history  (GimpMotionBuffer *buffer,
-                                                        const GimpCoords *coords);
+        const GimpCoords *coords);
 static void     gimp_motion_buffer_pop_event_queue     (GimpMotionBuffer *buffer,
-                                                        GimpCoords       *coords);
+        GimpCoords       *coords);
 
 static void     gimp_motion_buffer_interpolate_stroke  (GimpMotionBuffer *buffer,
-                                                        GimpCoords       *coords);
+        GimpCoords       *coords);
 static gboolean gimp_motion_buffer_event_queue_timeout (GimpMotionBuffer *buffer);
 
 
@@ -86,77 +86,77 @@ static guint motion_buffer_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_motion_buffer_class_init (GimpMotionBufferClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  motion_buffer_signals[STROKE] =
-    g_signal_new ("stroke",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpMotionBufferClass, stroke),
-                  NULL, NULL,
-                  gimp_marshal_VOID__POINTER_UINT_FLAGS,
-                  G_TYPE_NONE, 3,
-                  G_TYPE_POINTER,
-                  G_TYPE_UINT,
-                  GDK_TYPE_MODIFIER_TYPE);
+    motion_buffer_signals[STROKE] =
+        g_signal_new ("stroke",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpMotionBufferClass, stroke),
+                      NULL, NULL,
+                      gimp_marshal_VOID__POINTER_UINT_FLAGS,
+                      G_TYPE_NONE, 3,
+                      G_TYPE_POINTER,
+                      G_TYPE_UINT,
+                      GDK_TYPE_MODIFIER_TYPE);
 
-  motion_buffer_signals[HOVER] =
-    g_signal_new ("hover",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (GimpMotionBufferClass, hover),
-                  NULL, NULL,
-                  gimp_marshal_VOID__POINTER_FLAGS_BOOLEAN,
-                  G_TYPE_NONE, 3,
-                  G_TYPE_POINTER,
-                  GDK_TYPE_MODIFIER_TYPE,
-                  G_TYPE_BOOLEAN);
+    motion_buffer_signals[HOVER] =
+        g_signal_new ("hover",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (GimpMotionBufferClass, hover),
+                      NULL, NULL,
+                      gimp_marshal_VOID__POINTER_FLAGS_BOOLEAN,
+                      G_TYPE_NONE, 3,
+                      G_TYPE_POINTER,
+                      GDK_TYPE_MODIFIER_TYPE,
+                      G_TYPE_BOOLEAN);
 
-  object_class->dispose      = gimp_motion_buffer_dispose;
-  object_class->finalize     = gimp_motion_buffer_finalize;
-  object_class->set_property = gimp_motion_buffer_set_property;
-  object_class->get_property = gimp_motion_buffer_get_property;
+    object_class->dispose      = gimp_motion_buffer_dispose;
+    object_class->finalize     = gimp_motion_buffer_finalize;
+    object_class->set_property = gimp_motion_buffer_set_property;
+    object_class->get_property = gimp_motion_buffer_get_property;
 }
 
 static void
 gimp_motion_buffer_init (GimpMotionBuffer *buffer)
 {
-  buffer->event_history = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
-  buffer->event_queue   = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
+    buffer->event_history = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
+    buffer->event_queue   = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
 }
 
 static void
 gimp_motion_buffer_dispose (GObject *object)
 {
-  GimpMotionBuffer *buffer = GIMP_MOTION_BUFFER (object);
+    GimpMotionBuffer *buffer = GIMP_MOTION_BUFFER (object);
 
-  if (buffer->event_delay_timeout)
+    if (buffer->event_delay_timeout)
     {
-      g_source_remove (buffer->event_delay_timeout);
-      buffer->event_delay_timeout = 0;
+        g_source_remove (buffer->event_delay_timeout);
+        buffer->event_delay_timeout = 0;
     }
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+    G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
 gimp_motion_buffer_finalize (GObject *object)
 {
-  GimpMotionBuffer *buffer = GIMP_MOTION_BUFFER (object);
+    GimpMotionBuffer *buffer = GIMP_MOTION_BUFFER (object);
 
-  if (buffer->event_history)
+    if (buffer->event_history)
     {
-      g_array_free (buffer->event_history, TRUE);
-      buffer->event_history = NULL;
+        g_array_free (buffer->event_history, TRUE);
+        buffer->event_history = NULL;
     }
 
-  if (buffer->event_queue)
+    if (buffer->event_queue)
     {
-      g_array_free (buffer->event_queue, TRUE);
-      buffer->event_queue = NULL;
+        g_array_free (buffer->event_queue, TRUE);
+        buffer->event_queue = NULL;
     }
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -165,11 +165,11 @@ gimp_motion_buffer_set_property (GObject      *object,
                                  const GValue *value,
                                  GParamSpec   *pspec)
 {
-  switch (property_id)
+    switch (property_id)
     {
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -179,11 +179,11 @@ gimp_motion_buffer_get_property (GObject    *object,
                                  GValue     *value,
                                  GParamSpec *pspec)
 {
-  switch (property_id)
+    switch (property_id)
     {
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
     }
 }
 
@@ -193,8 +193,8 @@ gimp_motion_buffer_get_property (GObject    *object,
 GimpMotionBuffer *
 gimp_motion_buffer_new (void)
 {
-  return g_object_new (GIMP_TYPE_MOTION_BUFFER,
-                       NULL);
+    return g_object_new (GIMP_TYPE_MOTION_BUFFER,
+                         NULL);
 }
 
 void
@@ -202,26 +202,26 @@ gimp_motion_buffer_begin_stroke (GimpMotionBuffer *buffer,
                                  guint32           time,
                                  GimpCoords       *last_motion)
 {
-  g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
-  g_return_if_fail (last_motion != NULL);
+    g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
+    g_return_if_fail (last_motion != NULL);
 
-  buffer->last_read_motion_time = time;
+    buffer->last_read_motion_time = time;
 
-  *last_motion = buffer->last_coords;
+    *last_motion = buffer->last_coords;
 }
 
 void
 gimp_motion_buffer_end_stroke (GimpMotionBuffer *buffer)
 {
-  g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
+    g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
 
-  if (buffer->event_delay_timeout)
+    if (buffer->event_delay_timeout)
     {
-      g_source_remove (buffer->event_delay_timeout);
-      buffer->event_delay_timeout = 0;
+        g_source_remove (buffer->event_delay_timeout);
+        buffer->event_delay_timeout = 0;
     }
 
-  gimp_motion_buffer_event_queue_timeout (buffer);
+    gimp_motion_buffer_event_queue_timeout (buffer);
 }
 
 /**
@@ -255,193 +255,193 @@ gimp_motion_buffer_motion_event (GimpMotionBuffer *buffer,
                                  guint32           time,
                                  gboolean          event_fill)
 {
-  gdouble  delta_time  = 0.001;
-  gdouble  delta_x     = 0.0;
-  gdouble  delta_y     = 0.0;
-  gdouble  distance    = 1.0;
-  gdouble  scale_x     = coords->xscale;
-  gdouble  scale_y     = coords->yscale;
+    gdouble  delta_time  = 0.001;
+    gdouble  delta_x     = 0.0;
+    gdouble  delta_y     = 0.0;
+    gdouble  distance    = 1.0;
+    gdouble  scale_x     = coords->xscale;
+    gdouble  scale_y     = coords->yscale;
 
-  g_return_val_if_fail (GIMP_IS_MOTION_BUFFER (buffer), FALSE);
-  g_return_val_if_fail (coords != NULL, FALSE);
+    g_return_val_if_fail (GIMP_IS_MOTION_BUFFER (buffer), FALSE);
+    g_return_val_if_fail (coords != NULL, FALSE);
 
-  /*  the last_read_motion_time most be set unconditionally, so set
-   *  it early
-   */
-  buffer->last_read_motion_time = time;
+    /*  the last_read_motion_time most be set unconditionally, so set
+     *  it early
+     */
+    buffer->last_read_motion_time = time;
 
-  delta_time = (buffer->last_motion_delta_time * (1 - SMOOTH_FACTOR) +
-                (time - buffer->last_motion_time) * SMOOTH_FACTOR);
+    delta_time = (buffer->last_motion_delta_time * (1 - SMOOTH_FACTOR) +
+                  (time - buffer->last_motion_time) * SMOOTH_FACTOR);
 
-  if (buffer->last_motion_time == 0)
+    if (buffer->last_motion_time == 0)
     {
-      /*  First pair is invalid to do any velocity calculation, so we
-       *  apply a constant value.
-       */
-      coords->velocity = 1.0;
+        /*  First pair is invalid to do any velocity calculation, so we
+         *  apply a constant value.
+         */
+        coords->velocity = 1.0;
     }
-  else
+    else
     {
-      GimpCoords last_dir_event = buffer->last_coords;
-      gdouble    filter;
-      gdouble    dist;
-      gdouble    delta_dir;
-      gdouble    dir_delta_x = 0.0;
-      gdouble    dir_delta_y = 0.0;
+        GimpCoords last_dir_event = buffer->last_coords;
+        gdouble    filter;
+        gdouble    dist;
+        gdouble    delta_dir;
+        gdouble    dir_delta_x = 0.0;
+        gdouble    dir_delta_y = 0.0;
 
-      delta_x = last_dir_event.x - coords->x;
-      delta_y = last_dir_event.y - coords->y;
+        delta_x = last_dir_event.x - coords->x;
+        delta_y = last_dir_event.y - coords->y;
 
-      /*  Events with distances less than the screen resolution are
-       *  not worth handling.
-       */
-      filter = MIN (1.0 / scale_x, 1.0 / scale_y) / 2.0;
+        /*  Events with distances less than the screen resolution are
+         *  not worth handling.
+         */
+        filter = MIN (1.0 / scale_x, 1.0 / scale_y) / 2.0;
 
-      if (fabs (delta_x) < filter &&
-          fabs (delta_y) < filter)
+        if (fabs (delta_x) < filter &&
+                fabs (delta_y) < filter)
         {
-          return FALSE;
+            return FALSE;
         }
 
-      distance = dist = sqrt (SQR (delta_x) + SQR (delta_y));
+        distance = dist = sqrt (SQR (delta_x) + SQR (delta_y));
 
-      /*  If even smoothed time resolution does not allow to guess for
-       *  speed, use last velocity.
-       */
-      if (delta_time == 0)
+        /*  If even smoothed time resolution does not allow to guess for
+         *  speed, use last velocity.
+         */
+        if (delta_time == 0)
         {
-          coords->velocity = buffer->last_coords.velocity;
+            coords->velocity = buffer->last_coords.velocity;
         }
-      else
+        else
         {
-          /*  We need to calculate the velocity in screen coordinates
-           *  for human interaction
-           */
-          gdouble screen_distance = (distance * MIN (scale_x, scale_y));
+            /*  We need to calculate the velocity in screen coordinates
+             *  for human interaction
+             */
+            gdouble screen_distance = (distance * MIN (scale_x, scale_y));
 
-          /* Calculate raw valocity */
-          coords->velocity = ((screen_distance / delta_time) / VELOCITY_UNIT);
+            /* Calculate raw valocity */
+            coords->velocity = ((screen_distance / delta_time) / VELOCITY_UNIT);
 
-          /* Adding velocity dependent smoothing, feels better in tools. */
-          coords->velocity = (buffer->last_coords.velocity *
-                              (1 - MIN (SMOOTH_FACTOR, coords->velocity)) +
-                              coords->velocity *
-                              MIN (SMOOTH_FACTOR, coords->velocity));
+            /* Adding velocity dependent smoothing, feels better in tools. */
+            coords->velocity = (buffer->last_coords.velocity *
+                                (1 - MIN (SMOOTH_FACTOR, coords->velocity)) +
+                                coords->velocity *
+                                MIN (SMOOTH_FACTOR, coords->velocity));
 
-          /* Speed needs upper limit */
-          coords->velocity = MIN (coords->velocity, 1.0);
+            /* Speed needs upper limit */
+            coords->velocity = MIN (coords->velocity, 1.0);
         }
 
-      if (((fabs (delta_x) > DIRECTION_RADIUS) &&
-           (fabs (delta_y) > DIRECTION_RADIUS)) ||
-          (buffer->event_history->len < 4))
+        if (((fabs (delta_x) > DIRECTION_RADIUS) &&
+                (fabs (delta_y) > DIRECTION_RADIUS)) ||
+                (buffer->event_history->len < 4))
         {
-          dir_delta_x = delta_x;
-          dir_delta_y = delta_y;
+            dir_delta_x = delta_x;
+            dir_delta_y = delta_y;
         }
-      else
+        else
         {
-          gint x = CLAMP ((buffer->event_history->len - 1), 3, 15);
+            gint x = CLAMP ((buffer->event_history->len - 1), 3, 15);
 
-          while (((fabs (dir_delta_x) < DIRECTION_RADIUS) ||
-                  (fabs (dir_delta_y) < DIRECTION_RADIUS)) &&
-                 (x >= 0))
+            while (((fabs (dir_delta_x) < DIRECTION_RADIUS) ||
+                    (fabs (dir_delta_y) < DIRECTION_RADIUS)) &&
+                    (x >= 0))
             {
-              last_dir_event = g_array_index (buffer->event_history,
-                                              GimpCoords, x);
+                last_dir_event = g_array_index (buffer->event_history,
+                                                GimpCoords, x);
 
-              dir_delta_x = last_dir_event.x - coords->x;
-              dir_delta_y = last_dir_event.y - coords->y;
+                dir_delta_x = last_dir_event.x - coords->x;
+                dir_delta_y = last_dir_event.y - coords->y;
 
-              x--;
+                x--;
             }
         }
 
-      if ((fabs (dir_delta_x) < DIRECTION_RADIUS) ||
-          (fabs (dir_delta_y) < DIRECTION_RADIUS))
+        if ((fabs (dir_delta_x) < DIRECTION_RADIUS) ||
+                (fabs (dir_delta_y) < DIRECTION_RADIUS))
         {
-          coords->direction = buffer->last_coords.direction;
+            coords->direction = buffer->last_coords.direction;
         }
-      else
+        else
         {
-          coords->direction = gimp_coords_direction (&last_dir_event, coords);
-        }
-
-      coords->direction = coords->direction - floor (coords->direction);
-
-      delta_dir = coords->direction - buffer->last_coords.direction;
-
-      if (delta_dir < -0.5)
-        {
-          coords->direction = (0.5 * coords->direction +
-                               0.5 * (buffer->last_coords.direction - 1.0));
-        }
-      else if (delta_dir > 0.5)
-        {
-          coords->direction = (0.5 * coords->direction +
-                               0.5 * (buffer->last_coords.direction + 1.0));
-        }
-      else
-        {
-          coords->direction = (0.5 * coords->direction +
-                               0.5 * buffer->last_coords.direction);
+            coords->direction = gimp_coords_direction (&last_dir_event, coords);
         }
 
-      coords->direction = coords->direction - floor (coords->direction);
+        coords->direction = coords->direction - floor (coords->direction);
 
-      /* do event fill for devices that do not provide enough events */
-      if (distance >= EVENT_FILL_PRECISION &&
-          event_fill                       &&
-          buffer->event_history->len >= 2)
+        delta_dir = coords->direction - buffer->last_coords.direction;
+
+        if (delta_dir < -0.5)
         {
-          if (buffer->event_delay)
+            coords->direction = (0.5 * coords->direction +
+                                 0.5 * (buffer->last_coords.direction - 1.0));
+        }
+        else if (delta_dir > 0.5)
+        {
+            coords->direction = (0.5 * coords->direction +
+                                 0.5 * (buffer->last_coords.direction + 1.0));
+        }
+        else
+        {
+            coords->direction = (0.5 * coords->direction +
+                                 0.5 * buffer->last_coords.direction);
+        }
+
+        coords->direction = coords->direction - floor (coords->direction);
+
+        /* do event fill for devices that do not provide enough events */
+        if (distance >= EVENT_FILL_PRECISION &&
+                event_fill                       &&
+                buffer->event_history->len >= 2)
+        {
+            if (buffer->event_delay)
             {
-              gimp_motion_buffer_interpolate_stroke (buffer, coords);
+                gimp_motion_buffer_interpolate_stroke (buffer, coords);
             }
-          else
+            else
             {
-              buffer->event_delay = TRUE;
-              gimp_motion_buffer_push_event_history (buffer, coords);
+                buffer->event_delay = TRUE;
+                gimp_motion_buffer_push_event_history (buffer, coords);
             }
         }
-      else
+        else
         {
-          if (buffer->event_delay)
-            buffer->event_delay = FALSE;
+            if (buffer->event_delay)
+                buffer->event_delay = FALSE;
 
-          gimp_motion_buffer_push_event_history (buffer, coords);
+            gimp_motion_buffer_push_event_history (buffer, coords);
         }
 
 #ifdef EVENT_VERBOSE
-      g_printerr ("DIST: %f, DT:%f, Vel:%f, Press:%f,smooth_dd:%f, POS: (%f, %f)\n",
-                  distance,
-                  delta_time,
-                  buffer->last_coords.velocity,
-                  coords->pressure,
-                  distance - dist,
-                  coords->x,
-                  coords->y);
+        g_printerr ("DIST: %f, DT:%f, Vel:%f, Press:%f,smooth_dd:%f, POS: (%f, %f)\n",
+                    distance,
+                    delta_time,
+                    buffer->last_coords.velocity,
+                    coords->pressure,
+                    distance - dist,
+                    coords->x,
+                    coords->y);
 #endif
     }
 
-  g_array_append_val (buffer->event_queue, *coords);
+    g_array_append_val (buffer->event_queue, *coords);
 
-  buffer->last_coords            = *coords;
-  buffer->last_motion_time       = time;
-  buffer->last_motion_delta_time = delta_time;
-  buffer->last_motion_delta_x    = delta_x;
-  buffer->last_motion_delta_y    = delta_y;
-  buffer->last_motion_distance   = distance;
+    buffer->last_coords            = *coords;
+    buffer->last_motion_time       = time;
+    buffer->last_motion_delta_time = delta_time;
+    buffer->last_motion_delta_x    = delta_x;
+    buffer->last_motion_delta_y    = delta_y;
+    buffer->last_motion_distance   = distance;
 
-  return TRUE;
+    return TRUE;
 }
 
 guint32
 gimp_motion_buffer_get_last_motion_time (GimpMotionBuffer *buffer)
 {
-  g_return_val_if_fail (GIMP_IS_MOTION_BUFFER (buffer), 0);
+    g_return_val_if_fail (GIMP_IS_MOTION_BUFFER (buffer), 0);
 
-  return buffer->last_read_motion_time;
+    return buffer->last_read_motion_time;
 }
 
 void
@@ -449,48 +449,48 @@ gimp_motion_buffer_request_stroke (GimpMotionBuffer *buffer,
                                    GdkModifierType   state,
                                    guint32           time)
 {
-  GdkModifierType  event_state;
-  gint             keep = 0;
+    GdkModifierType  event_state;
+    gint             keep = 0;
 
-  g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
+    g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
 
-  if (buffer->event_delay)
+    if (buffer->event_delay)
     {
-      /* If we are in delay we use LAST state, not current */
-      event_state = buffer->last_active_state;
+        /* If we are in delay we use LAST state, not current */
+        event_state = buffer->last_active_state;
 
-      keep = 1; /* Holding one event in buf */
+        keep = 1; /* Holding one event in buf */
     }
-  else
+    else
     {
-      /* Save the state */
-      event_state = state;
-    }
-
-  if (buffer->event_delay_timeout)
-    {
-      g_source_remove (buffer->event_delay_timeout);
-      buffer->event_delay_timeout = 0;
+        /* Save the state */
+        event_state = state;
     }
 
-  buffer->last_active_state = state;
-
-  while (buffer->event_queue->len > keep)
+    if (buffer->event_delay_timeout)
     {
-      GimpCoords buf_coords;
-
-      gimp_motion_buffer_pop_event_queue (buffer, &buf_coords);
-
-      g_signal_emit (buffer, motion_buffer_signals[STROKE], 0,
-                     &buf_coords, time, event_state);
+        g_source_remove (buffer->event_delay_timeout);
+        buffer->event_delay_timeout = 0;
     }
 
-  if (buffer->event_delay)
+    buffer->last_active_state = state;
+
+    while (buffer->event_queue->len > keep)
     {
-      buffer->event_delay_timeout =
-        g_timeout_add (50,
-                       (GSourceFunc) gimp_motion_buffer_event_queue_timeout,
-                       buffer);
+        GimpCoords buf_coords;
+
+        gimp_motion_buffer_pop_event_queue (buffer, &buf_coords);
+
+        g_signal_emit (buffer, motion_buffer_signals[STROKE], 0,
+                       &buf_coords, time, event_state);
+    }
+
+    if (buffer->event_delay)
+    {
+        buffer->event_delay_timeout =
+            g_timeout_add (50,
+                           (GSourceFunc) gimp_motion_buffer_event_queue_timeout,
+                           buffer);
     }
 }
 
@@ -499,18 +499,18 @@ gimp_motion_buffer_request_hover (GimpMotionBuffer *buffer,
                                   GdkModifierType   state,
                                   gboolean          proximity)
 {
-  g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
+    g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
 
-  if (buffer->event_queue->len > 0)
+    if (buffer->event_queue->len > 0)
     {
-      GimpCoords buf_coords = g_array_index (buffer->event_queue,
-                                             GimpCoords,
-                                             buffer->event_queue->len - 1);
+        GimpCoords buf_coords = g_array_index (buffer->event_queue,
+                                               GimpCoords,
+                                               buffer->event_queue->len - 1);
 
-      g_signal_emit (buffer, motion_buffer_signals[HOVER], 0,
-                     &buf_coords, state, proximity);
+        g_signal_emit (buffer, motion_buffer_signals[HOVER], 0,
+                       &buf_coords, state, proximity);
 
-      g_array_set_size (buffer->event_queue, 0);
+        g_array_set_size (buffer->event_queue, 0);
     }
 }
 
@@ -521,74 +521,74 @@ static void
 gimp_motion_buffer_push_event_history (GimpMotionBuffer *buffer,
                                        const GimpCoords *coords)
 {
-  if (buffer->event_history->len == 4)
-    g_array_remove_index (buffer->event_history, 0);
+    if (buffer->event_history->len == 4)
+        g_array_remove_index (buffer->event_history, 0);
 
-  g_array_append_val (buffer->event_history, *coords);
+    g_array_append_val (buffer->event_history, *coords);
 }
 
 static void
 gimp_motion_buffer_pop_event_queue (GimpMotionBuffer *buffer,
                                     GimpCoords       *coords)
 {
-  *coords = g_array_index (buffer->event_queue, GimpCoords, 0);
+    *coords = g_array_index (buffer->event_queue, GimpCoords, 0);
 
-  g_array_remove_index (buffer->event_queue, 0);
+    g_array_remove_index (buffer->event_queue, 0);
 }
 
 static void
 gimp_motion_buffer_interpolate_stroke (GimpMotionBuffer *buffer,
                                        GimpCoords       *coords)
 {
-  GimpCoords  catmull[4];
-  GArray     *ret_coords;
-  gint        i = buffer->event_history->len - 1;
+    GimpCoords  catmull[4];
+    GArray     *ret_coords;
+    gint        i = buffer->event_history->len - 1;
 
-  /* Note that there must be exactly one event in buffer or bad things
-   * can happen. This must never get called under other circumstances.
-   */
-  ret_coords = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
+    /* Note that there must be exactly one event in buffer or bad things
+     * can happen. This must never get called under other circumstances.
+     */
+    ret_coords = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
 
-  catmull[0] = g_array_index (buffer->event_history, GimpCoords, i - 1);
-  catmull[1] = g_array_index (buffer->event_history, GimpCoords, i);
-  catmull[2] = g_array_index (buffer->event_queue,   GimpCoords, 0);
-  catmull[3] = *coords;
+    catmull[0] = g_array_index (buffer->event_history, GimpCoords, i - 1);
+    catmull[1] = g_array_index (buffer->event_history, GimpCoords, i);
+    catmull[2] = g_array_index (buffer->event_queue,   GimpCoords, 0);
+    catmull[3] = *coords;
 
-  gimp_coords_interpolate_catmull (catmull, EVENT_FILL_PRECISION / 2,
-                                   ret_coords, NULL);
+    gimp_coords_interpolate_catmull (catmull, EVENT_FILL_PRECISION / 2,
+                                     ret_coords, NULL);
 
-  /* Push the last actual event in history */
-  gimp_motion_buffer_push_event_history (buffer,
-                                         &g_array_index (buffer->event_queue,
-                                                         GimpCoords, 0));
+    /* Push the last actual event in history */
+    gimp_motion_buffer_push_event_history (buffer,
+                                           &g_array_index (buffer->event_queue,
+                                                   GimpCoords, 0));
 
-  g_array_set_size (buffer->event_queue, 0);
+    g_array_set_size (buffer->event_queue, 0);
 
-  g_array_append_vals (buffer->event_queue,
-                       &g_array_index (ret_coords, GimpCoords, 0),
-                       ret_coords->len);
+    g_array_append_vals (buffer->event_queue,
+                         &g_array_index (ret_coords, GimpCoords, 0),
+                         ret_coords->len);
 
-  g_array_free (ret_coords, TRUE);
+    g_array_free (ret_coords, TRUE);
 }
 
 static gboolean
 gimp_motion_buffer_event_queue_timeout (GimpMotionBuffer *buffer)
 {
-  buffer->event_delay         = FALSE;
-  buffer->event_delay_timeout = 0;
+    buffer->event_delay         = FALSE;
+    buffer->event_delay_timeout = 0;
 
-  if (buffer->event_queue->len > 0)
+    if (buffer->event_queue->len > 0)
     {
-      GimpCoords last_coords = g_array_index (buffer->event_queue,
-                                              GimpCoords,
-                                              buffer->event_queue->len - 1);
+        GimpCoords last_coords = g_array_index (buffer->event_queue,
+                                                GimpCoords,
+                                                buffer->event_queue->len - 1);
 
-      gimp_motion_buffer_push_event_history (buffer, &last_coords);
+        gimp_motion_buffer_push_event_history (buffer, &last_coords);
 
-      gimp_motion_buffer_request_stroke (buffer,
-                                         buffer->last_active_state,
-                                         buffer->last_read_motion_time);
+        gimp_motion_buffer_request_stroke (buffer,
+                                           buffer->last_active_state,
+                                           buffer->last_read_motion_time);
     }
 
-  return FALSE;
+    return FALSE;
 }

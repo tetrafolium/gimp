@@ -21,45 +21,45 @@
 
 typedef enum
 {
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_NONE                                = 0,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_NONE                                = 0,
 
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_COMBINE_PAINT_MASK_TO_CANVAS_BUFFER = 1 << 0,
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_CANVAS_BUFFER_TO_PAINT_BUF_ALPHA    = 1 << 1,
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_PAINT_MASK_TO_PAINT_BUF_ALPHA       = 1 << 2,
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_CANVAS_BUFFER_TO_COMP_MASK          = 1 << 3,
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_PAINT_MASK_TO_COMP_MASK             = 1 << 4,
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_DO_LAYER_BLEND                      = 1 << 5,
-  GIMP_PAINT_CORE_LOOPS_ALGORITHM_MASK_COMPONENTS                     = 1 << 6
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_COMBINE_PAINT_MASK_TO_CANVAS_BUFFER = 1 << 0,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_CANVAS_BUFFER_TO_PAINT_BUF_ALPHA    = 1 << 1,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_PAINT_MASK_TO_PAINT_BUF_ALPHA       = 1 << 2,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_CANVAS_BUFFER_TO_COMP_MASK          = 1 << 3,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_PAINT_MASK_TO_COMP_MASK             = 1 << 4,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_DO_LAYER_BLEND                      = 1 << 5,
+    GIMP_PAINT_CORE_LOOPS_ALGORITHM_MASK_COMPONENTS                     = 1 << 6
 } GimpPaintCoreLoopsAlgorithm;
 
 
 typedef struct
 {
-  GeglBuffer        *canvas_buffer;
+    GeglBuffer        *canvas_buffer;
 
-  GimpTempBuf       *paint_buf;
-  gint               paint_buf_offset_x;
-  gint               paint_buf_offset_y;
+    GimpTempBuf       *paint_buf;
+    gint               paint_buf_offset_x;
+    gint               paint_buf_offset_y;
 
-  const GimpTempBuf *paint_mask;
-  gint               paint_mask_offset_x;
-  gint               paint_mask_offset_y;
+    const GimpTempBuf *paint_mask;
+    gint               paint_mask_offset_x;
+    gint               paint_mask_offset_y;
 
-  gboolean           stipple;
+    gboolean           stipple;
 
-  GeglBuffer        *src_buffer;
-  GeglBuffer        *dest_buffer;
+    GeglBuffer        *src_buffer;
+    GeglBuffer        *dest_buffer;
 
-  GeglBuffer        *mask_buffer;
-  gint               mask_offset_x;
-  gint               mask_offset_y;
+    GeglBuffer        *mask_buffer;
+    gint               mask_offset_x;
+    gint               mask_offset_y;
 
-  gdouble            paint_opacity;
-  gdouble            image_opacity;
+    gdouble            paint_opacity;
+    gdouble            image_opacity;
 
-  GimpLayerMode      paint_mode;
+    GimpLayerMode      paint_mode;
 
-  GimpComponentMask  affect;
+    GimpComponentMask  affect;
 } GimpPaintCoreLoopsParams;
 
 

@@ -38,12 +38,12 @@ typedef struct _GimpOperationAntiEraseClass GimpOperationAntiEraseClass;
 
 struct _GimpOperationAntiErase
 {
-  GimpOperationLayerMode  parent_instance;
+    GimpOperationLayerMode  parent_instance;
 };
 
 struct _GimpOperationAntiEraseClass
 {
-  GimpOperationLayerModeClass  parent_class;
+    GimpOperationLayerModeClass  parent_class;
 };
 
 

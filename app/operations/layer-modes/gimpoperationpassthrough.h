@@ -39,12 +39,12 @@ typedef struct _GimpOperationPassThroughClass GimpOperationPassThroughClass;
 
 struct _GimpOperationPassThrough
 {
-  GimpOperationReplace parent_instance;
+    GimpOperationReplace parent_instance;
 };
 
 struct _GimpOperationPassThroughClass
 {
-  GimpOperationReplaceClass parent_class;
+    GimpOperationReplaceClass parent_class;
 };
 
 

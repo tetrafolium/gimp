@@ -39,14 +39,14 @@ typedef struct _GimpOperationHistogramSinkClass GimpOperationHistogramSinkClass;
 
 struct _GimpOperationHistogramSink
 {
-  GeglOperation  parent_instance;
+    GeglOperation  parent_instance;
 
-  GimpHistogram *histogram;
+    GimpHistogram *histogram;
 };
 
 struct _GimpOperationHistogramSinkClass
 {
-  GeglOperationSinkClass  parent_class;
+    GeglOperationSinkClass  parent_class;
 };
 
 

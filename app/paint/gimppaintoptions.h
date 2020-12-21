@@ -38,30 +38,30 @@ typedef struct _GimpSmoothingOptions     GimpSmoothingOptions;
 
 struct _GimpJitterOptions
 {
-  gboolean  use_jitter;
-  gdouble   jitter_amount;
+    gboolean  use_jitter;
+    gdouble   jitter_amount;
 };
 
 struct _GimpFadeOptions
 {
-  gboolean        fade_reverse;
-  gdouble         fade_length;
-  GimpUnit        fade_unit;
-  GimpRepeatMode  fade_repeat;
+    gboolean        fade_reverse;
+    gdouble         fade_length;
+    GimpUnit        fade_unit;
+    GimpRepeatMode  fade_repeat;
 };
 
 struct _GimpGradientPaintOptions
 {
-  gboolean                    gradient_reverse;
-  GimpGradientBlendColorSpace gradient_blend_color_space;
-  GimpRepeatMode              gradient_repeat; /* only used by gradient tool */
+    gboolean                    gradient_reverse;
+    GimpGradientBlendColorSpace gradient_blend_color_space;
+    GimpRepeatMode              gradient_repeat; /* only used by gradient tool */
 };
 
 struct _GimpSmoothingOptions
 {
-  gboolean use_smoothing;
-  gint     smoothing_quality;
-  gdouble  smoothing_factor;
+    gboolean use_smoothing;
+    gint     smoothing_quality;
+    gdouble  smoothing_factor;
 };
 
 
@@ -77,100 +77,100 @@ typedef struct _GimpPaintOptionsClass GimpPaintOptionsClass;
 
 struct _GimpPaintOptions
 {
-  GimpToolOptions           parent_instance;
+    GimpToolOptions           parent_instance;
 
-  GimpPaintInfo            *paint_info;
+    GimpPaintInfo            *paint_info;
 
-  gboolean                  use_applicator;
+    gboolean                  use_applicator;
 
-  GimpBrush                *brush; /* weak-refed storage for the GUI */
+    GimpBrush                *brush; /* weak-refed storage for the GUI */
 
-  gdouble                   brush_size;
-  gdouble                   brush_angle;
-  gdouble                   brush_aspect_ratio;
-  gdouble                   brush_spacing;
-  gdouble                   brush_hardness;
-  gdouble                   brush_force;
+    gdouble                   brush_size;
+    gdouble                   brush_angle;
+    gdouble                   brush_aspect_ratio;
+    gdouble                   brush_spacing;
+    gdouble                   brush_hardness;
+    gdouble                   brush_force;
 
-  gboolean                  brush_link_size;
-  gboolean                  brush_link_aspect_ratio;
-  gboolean                  brush_link_angle;
-  gboolean                  brush_link_spacing;
-  gboolean                  brush_link_hardness;
+    gboolean                  brush_link_size;
+    gboolean                  brush_link_aspect_ratio;
+    gboolean                  brush_link_angle;
+    gboolean                  brush_link_spacing;
+    gboolean                  brush_link_hardness;
 
-  gboolean                  brush_lock_to_view;
+    gboolean                  brush_lock_to_view;
 
-  GimpPaintApplicationMode  application_mode;
-  GimpPaintApplicationMode  application_mode_save;
+    GimpPaintApplicationMode  application_mode;
+    GimpPaintApplicationMode  application_mode_save;
 
-  gboolean                  hard;
+    gboolean                  hard;
 
-  GimpJitterOptions        *jitter_options;
+    GimpJitterOptions        *jitter_options;
 
-  gboolean                  dynamics_expanded;
-  GimpFadeOptions          *fade_options;
-  GimpGradientPaintOptions *gradient_options;
-  GimpSmoothingOptions     *smoothing_options;
+    gboolean                  dynamics_expanded;
+    GimpFadeOptions          *fade_options;
+    GimpGradientPaintOptions *gradient_options;
+    GimpSmoothingOptions     *smoothing_options;
 
-  GimpViewType              brush_view_type;
-  GimpViewSize              brush_view_size;
-  GimpViewType              dynamics_view_type;
-  GimpViewSize              dynamics_view_size;
-  GimpViewType              pattern_view_type;
-  GimpViewSize              pattern_view_size;
-  GimpViewType              gradient_view_type;
-  GimpViewSize              gradient_view_size;
+    GimpViewType              brush_view_type;
+    GimpViewSize              brush_view_size;
+    GimpViewType              dynamics_view_type;
+    GimpViewSize              dynamics_view_size;
+    GimpViewType              pattern_view_type;
+    GimpViewSize              pattern_view_size;
+    GimpViewType              gradient_view_type;
+    GimpViewSize              gradient_view_size;
 };
 
 struct _GimpPaintOptionsClass
 {
-  GimpToolOptionsClass  parent_instance;
+    GimpToolOptionsClass  parent_instance;
 };
 
 
 GType    gimp_paint_options_get_type (void) G_GNUC_CONST;
 
 GimpPaintOptions *
-         gimp_paint_options_new                (GimpPaintInfo       *paint_info);
+gimp_paint_options_new                (GimpPaintInfo       *paint_info);
 
 gdouble  gimp_paint_options_get_fade           (GimpPaintOptions    *options,
-                                                GimpImage           *image,
-                                                gdouble              pixel_dist);
+        GimpImage           *image,
+        gdouble              pixel_dist);
 
 gdouble  gimp_paint_options_get_jitter         (GimpPaintOptions    *options,
-                                                GimpImage           *image);
+        GimpImage           *image);
 
 gboolean gimp_paint_options_get_gradient_color (GimpPaintOptions    *options,
-                                                GimpImage           *image,
-                                                gdouble              grad_point,
-                                                gdouble              pixel_dist,
-                                                GimpRGB             *color);
+        GimpImage           *image,
+        gdouble              grad_point,
+        gdouble              pixel_dist,
+        GimpRGB             *color);
 
 GimpBrushApplicationMode
-         gimp_paint_options_get_brush_mode     (GimpPaintOptions    *options);
+gimp_paint_options_get_brush_mode     (GimpPaintOptions    *options);
 
 void     gimp_paint_options_set_default_brush_size
-                                               (GimpPaintOptions    *options,
-                                                GimpBrush           *brush);
+(GimpPaintOptions    *options,
+ GimpBrush           *brush);
 void     gimp_paint_options_set_default_brush_angle
-                                               (GimpPaintOptions    *options,
-                                                GimpBrush           *brush);
+(GimpPaintOptions    *options,
+ GimpBrush           *brush);
 void     gimp_paint_options_set_default_brush_aspect_ratio
-                                               (GimpPaintOptions    *options,
-                                                GimpBrush           *brush);
+(GimpPaintOptions    *options,
+ GimpBrush           *brush);
 void     gimp_paint_options_set_default_brush_spacing
-                                               (GimpPaintOptions    *options,
-                                                GimpBrush           *brush);
+(GimpPaintOptions    *options,
+ GimpBrush           *brush);
 
 void     gimp_paint_options_set_default_brush_hardness
-                                               (GimpPaintOptions    *options,
-                                                GimpBrush           *brush);
+(GimpPaintOptions    *options,
+ GimpBrush           *brush);
 
 gboolean gimp_paint_options_is_prop            (const gchar         *prop_name,
-                                                GimpContextPropMask  prop_mask);
+        GimpContextPropMask  prop_mask);
 void     gimp_paint_options_copy_props         (GimpPaintOptions    *src,
-                                                GimpPaintOptions    *dest,
-                                                GimpContextPropMask  prop_mask);
+        GimpPaintOptions    *dest,
+        GimpContextPropMask  prop_mask);
 
 
 #endif  /*  __GIMP_PAINT_OPTIONS_H__  */

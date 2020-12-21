@@ -49,18 +49,18 @@ typedef struct _GimpCanvasClass GimpCanvasClass;
 
 struct _GimpCanvas
 {
-  GimpOverlayBox         parent_instance;
+    GimpOverlayBox         parent_instance;
 
-  GimpDisplayConfig     *config;
-  PangoLayout           *layout;
+    GimpDisplayConfig     *config;
+    PangoLayout           *layout;
 
-  GimpCanvasPaddingMode  padding_mode;
-  GimpRGB                padding_color;
+    GimpCanvasPaddingMode  padding_mode;
+    GimpRGB                padding_color;
 };
 
 struct _GimpCanvasClass
 {
-  GimpOverlayBoxClass  parent_class;
+    GimpOverlayBoxClass  parent_class;
 };
 
 
